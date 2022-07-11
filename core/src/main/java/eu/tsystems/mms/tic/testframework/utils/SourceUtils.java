@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -180,7 +181,7 @@ public final class SourceUtils {
 
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
         final List<String> classnames = new ArrayList<String>();
-        Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
+        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFULT_PACKAGES));
         Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
         for (Class aClass : subTypesOf) {
             classnames.add(aClass.getName());

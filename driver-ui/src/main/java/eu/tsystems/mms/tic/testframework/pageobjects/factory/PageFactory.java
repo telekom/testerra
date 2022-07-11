@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.ResponsiveClassFinder;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.openqa.selenium.WebDriver;
 
@@ -63,6 +64,6 @@ public final class PageFactory implements PageFactoryProvider {
 
     @Deprecated
     public static void clearCache() {
-        ClassFinder.clearCache();
+        ResponsiveClassFinder.clearCache();
     }
 }

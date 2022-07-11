@@ -22,7 +22,6 @@
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -32,12 +31,12 @@ public class ResponsivePageFactory extends DefaultPageFactory {
 
     @Override
     public <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
-        return super.createPageWithCheckRule(ClassFinder.getBestMatchingClass(pageClass, webDriver, ""), webDriver, checkRule);
+        return super.createPageWithCheckRule(ResponsiveClassFinder.getBestMatchingClass(pageClass, webDriver, ""), webDriver, checkRule);
     }
 
     @Override
     public PageFactory clearThreadLocalPagesPrefix() {
-        ClassFinder.clearCache();
+        ResponsiveClassFinder.clearCache();
         return super.clearThreadLocalPagesPrefix();
     }
 }

@@ -19,13 +19,12 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -38,12 +37,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final public class ClassFinder {
+final public class ResponsiveClassFinder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassFinder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponsiveClassFinder.class);
 
     private static final String SCHEMA_DIV = "_";
     private static final String KEYWORD_PIXEL = "px";
@@ -57,7 +58,7 @@ final public class ClassFinder {
     private static final String PATTERN_HI = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + KEYWORD_MAX;
     private static final String PATTERN_RES = "TODO"; // TODO
 
-    private ClassFinder() {
+    private ResponsiveClassFinder() {
 
     }
 
@@ -116,8 +117,7 @@ final public class ClassFinder {
             prefix = "";
         }
 
-        // TODO have to search also in project
-        final Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
+        final Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
         final String baseClassName = baseClass.getSimpleName();
 
         PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();

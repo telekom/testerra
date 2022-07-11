@@ -42,6 +42,10 @@ import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class is used in ResponsivePageFactory to find the best matching page implementation for the current page regarding the current browser resolution.
+ *
+ */
 final public class ResponsiveClassFinder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResponsiveClassFinder.class);

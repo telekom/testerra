@@ -58,6 +58,11 @@ final public class ResponsiveClassFinder {
     private static final String PATTERN_HI = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + KEYWORD_MAX;
     private static final String PATTERN_RES = "TODO"; // TODO
 
+    /**
+     * This call takes some time. It has an impact to the duration of the first page check (takes ca 2-3 seconds longer).
+     */
+    private static final Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
+
     private ResponsiveClassFinder() {
 
     }
@@ -116,10 +121,7 @@ final public class ResponsiveClassFinder {
         if (prefix == null) {
             prefix = "";
         }
-
-        final Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
         final String baseClassName = baseClass.getSimpleName();
-
         PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();
 
         // at first, add the base page it self, only if not abstract

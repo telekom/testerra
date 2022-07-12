@@ -51,14 +51,11 @@ public interface Formatter {
     String logTime(Date date);
 
     default String toString(ITestNGMethod method) {
-        StringBuilder sb = new StringBuilder();
-        sb
-                .append((method.isTest() ? "Test" : "Configuration"))
-                .append("(")
-                .append(method.getTestClass().getName())
-                .append(".")
-                .append(method.getMethodName())
-                .append(")");
-        return sb.toString();
+        return (method.isTest() ? "Test" : "Configuration")
+                .concat(" (")
+                .concat(method.getTestClass().getRealClass().getSimpleName())
+                .concat(".")
+                .concat(method.getMethodName())
+                .concat("())");
     }
 }

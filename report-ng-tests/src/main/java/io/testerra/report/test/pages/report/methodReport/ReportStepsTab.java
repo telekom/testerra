@@ -7,6 +7,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ReportStepsTab extends AbstractReportMethodPage {
 
 
@@ -39,10 +42,26 @@ public class ReportStepsTab extends AbstractReportMethodPage {
         Assert.assertTrue(amountOfSections > 1, "There should be at least 2 sections: setup and teardown!");
     }
 
-    public void stepsPageAssertsTestStepsContainFailureAspectMessage(String failureAspectMessage) {
+    public void assertsTestStepsContainFailureAspectMessage(String failureAspectMessage) {
         GuiElement errorMessage = testSteps.getSubElement(By.xpath("//expandable-error-context//class-name-markup"));
         errorMessage.asserts("Steps tab should contain an error message").assertIsDisplayed();
         errorMessage.asserts("Error message on steps tab should contain correct failureAspect-message").assertText(failureAspectMessage);
+    }
+
+    public void assertEachFailureAspectContainsExpectedStatement(String expectedStatement){
+        testSteps.getSubElement(By.xpath("//expandable-error-context")).getList().forEach(GuiElement::click);
+        List<GuiElement> errorCodes = testSteps.getSubElement(
+                By.xpath("//*[contains(@class,'mdc-expandable__content-container')]//*[@class='code-view']")).getList();
+        for(GuiElement code : errorCodes){
+            List<String> statements = code.getSubElement(By.xpath("//div[contains(@class,'line')]")).getList()
+                    .stream()
+                    .map(GuiElement::getText)
+                    .collect(Collectors.toList());
+            System.out.println(statements.size());
+            statements.forEach(System.out::println);
+            Assert.assertTrue(statements.stream().anyMatch(i -> i.contains(expectedStatement)),
+                    String.format("Failure Aspect code should contain expected Statement [%s].", expectedStatement));
+        }
     }
 
 }

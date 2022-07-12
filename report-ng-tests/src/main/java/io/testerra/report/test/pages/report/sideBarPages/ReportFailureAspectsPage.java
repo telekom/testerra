@@ -1,7 +1,9 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
+import com.google.common.collect.Streams;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 
@@ -9,8 +11,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -46,13 +50,17 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
      * @param column
      * @return
      */
-    private List<GuiElement> getColumns(int column) {
+    public List<GuiElement> getColumns(int column) {
         List<GuiElement> returnList = new ArrayList<>();
         for (GuiElement tableRows : failureAspectsTable.getSubElement(By.xpath("//tr")).getList()) {
             List<GuiElement> tableColumns = tableRows.getSubElement(By.xpath("//td")).getList();
             returnList.add(tableColumns.get(column));
         }
         return returnList;
+    }
+
+    private List<GuiElement> getRows(int row) {
+        return failureAspectsTable.getSubElement(By.xpath("//tr")).getList().get(row).getSubElement(By.xpath("//td")).getList();
     }
 
     public boolean getFailedStateExistence() {
@@ -173,5 +181,20 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     public void disableButton() {
         Assert.assertEquals(testShowExpectedFailsButton.getAttribute("aria-checked"), "true", "Button should be enabled!");
         testShowExpectedFailsButton.click();
+    }
+
+    public ReportTestsPage clickStateLink(String observedFailureAspect, Status expectedState) {
+        for(int i = 0; i < getColumns(0).size(); i++){
+            if (getRows(i).get(1).getText().equals(observedFailureAspect)){
+                getRows(i).get(2).getSubElement(By.xpath(String.format("//a[contains(text(), '%s')]", expectedState.title))).click();
+                return PageFactory.create(ReportTestsPage.class, getWebDriver());
+            }
+        }
+        return null;
+    }
+
+    public ReportTestsPage clickFailureAspectLink(GuiElement failureAspectLink) {
+        failureAspectLink.getSubElement(By.xpath("//a")).click();
+        return PageFactory.create(ReportTestsPage.class, getWebDriver());
     }
 }

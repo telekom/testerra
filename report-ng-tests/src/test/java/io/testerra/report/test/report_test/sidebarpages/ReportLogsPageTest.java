@@ -47,4 +47,30 @@ public class ReportLogsPageTest extends AbstractReportTest {
         reportLogsPage.assertLogReportIsCorrectWhenSearchingForDifferentLogLines();
     }
 
+    @Test(dataProvider = "dataProviderForPreTestMethods")
+    public void testT03_checkLogReportContainsTestMethods(String methodeName, String methodeClass, String methodStatus, String failureAspect){
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+
+        TestStep.begin("Navigate to logs page.");
+        ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
+
+        TestStep.begin("Check methode name is contained in log report");
+        reportLogsPage.search(methodeName);
+        reportLogsPage.assertMarkedLogLinesContainText(methodeName);
+        reportLogsPage.clearSearch();
+
+        TestStep.begin("Check methode class is contained in log report");
+        reportLogsPage.search(methodeClass);
+        reportLogsPage.assertMarkedLogLinesContainText(methodeClass);
+        reportLogsPage.clearSearch();
+
+        TestStep.begin("Check methode name is contained in log report");
+        reportLogsPage.search(methodStatus);
+        reportLogsPage.assertMarkedLogLinesContainText(methodStatus);
+        reportLogsPage.clearSearch();
+    }
+
 }

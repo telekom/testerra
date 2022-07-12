@@ -96,7 +96,7 @@ public class ReportMethodPage extends AbstractReportPage {
         if (getCurrentPageType() != ReportMethodPageType.STEPS) {
             Assert.fail("Steps tab should be selected");
         }
-        ((ReportStepsTab) currentPage).stepsPageAssertsTestStepsContainFailureAspectMessage(failureAspectMessage);
+        ((ReportStepsTab) currentPage).assertsTestStepsContainFailureAspectMessage(failureAspectMessage);
     }
 
     public void assertPageIsValid(ReportMethodPageType reportMethodPageType) {
@@ -111,6 +111,13 @@ public class ReportMethodPage extends AbstractReportPage {
     public String getFailureAspectFromDetailsPage(){
         if (getCurrentPageType() != ReportMethodPageType.DETAILS) Assert.fail("Details tab should be selected!");
         return ((ReportDetailsTab) currentPage).getFailureAspect();
+    }
+
+    public void stepsPageAssertsEachFailureAspectContainsExpectedStatement(String expectedStatement) {
+        if (getCurrentPageType() != ReportMethodPageType.STEPS) {
+            Assert.fail("Steps tab should be selected");
+        }
+        ((ReportStepsTab) currentPage).assertEachFailureAspectContainsExpectedStatement(expectedStatement);
     }
 
 }

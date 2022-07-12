@@ -35,6 +35,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -51,9 +52,7 @@ public class ReportTestsPage extends AbstractReportPage {
     private final GuiElement testSearchInput = pageContent.getSubElement(By.xpath(".//input[contains(@class, 'mdc-text-field__input')]"));
     @Check
     private final GuiElement configurationMethodsSwitch = pageContent.getSubElement(By.xpath("//button[@role='switch']"));
-    @Check
     private final GuiElement tableHead = pageContent.getSubElement(By.xpath(".//thead"));
-    @Check
     private final GuiElement tableRows = pageContent.getSubElement(By.xpath("//tbody//tr"));
 
     public ReportTestsPage(WebDriver driver) {
@@ -176,6 +175,13 @@ public class ReportTestsPage extends AbstractReportPage {
                 .stream()
                 .map(GuiElement::getText)
                 .forEach(i -> Assert.assertEquals(i, status.title, "There should be only methods with expected status listed"));
+    }
+
+    public void assertCorrectTestStates(Status... severalStatus) {
+        getColumnWithoutHead(0)
+                .stream()
+                .map(GuiElement::getText)
+                .forEach(i -> Assert.assertTrue(Arrays.stream(severalStatus).map(status -> status.title).anyMatch(statusTitle -> statusTitle.equals(i)), "There should be only methods with expected states listed"));
     }
 
     // TODO: separate action and assert, select in test, assert from test

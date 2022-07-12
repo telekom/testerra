@@ -41,6 +41,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -53,6 +54,38 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
 
     private final static File serverRootDir = FileUtils.getResourceFile("reports");
     private final static Server server = new Server(serverRootDir);
+
+    @DataProvider
+    public Object[][] dataProviderForPreTestMethods(){
+        return new Object[][]{
+                // method, class, status, failure aspect
+                //passed
+                {"test_Passed", "GeneratePassedStatusInTesterraReportTest", "Passed", null},
+                {"test_Optional_Assert", "GeneratePassedStatusInTesterraReportTest", "Passed", null},
+                {"test_GenerateScreenshotManually", "GenerateScreenshotsInTesterraReportTest", "Passed", null},
+                // recovered
+                {"test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", "Recovered", null},
+                // repaired
+                {"test_expectedFailedPassed", "GenerateExpectedFailedStatusInTesterraReportTest", "Repaired", null},
+                // skipped
+                {"test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", "Skipped", "SkipException: Test Skipped."},
+                {"test_Skipped_AfterErrorInDataProvider", "GenerateSkippedStatusInTesterraReportTest", "Skipped", "RuntimeException: Error in DataProvider."},
+                {"test_Skipped_DependingOnFailed", "GenerateSkippedStatusInTesterraReportTest", "Skipped", "Throwable:[...] depends on not successfully finished methods"},
+                {"test_Skipped_AfterErrorInBeforeMethod", "GenerateSkippedStatusViaBeforeMethodInTesterraReportTest", "Skipped", "AssertionError: Error in @BeforeMethod"},
+                // Failed
+                {"testAssertCollector", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: failed1\n AssertionError: failed2"},
+                {"test_failedPageNotFound", "GenerateFailedStatusInTesterraReportTest", "Failed", "PageNotFoundException: Test page not reached."},
+                {"test_Failed", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: Creating TestStatus 'Failed'"},
+                {"test_Failed", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: Creating TestStatus 'Failed'"},
+                {"test_Failed_WithScreenShot", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: 'Failed' on reached Page."},
+                // expected Failed
+                {"test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", "Expected Failed", "AssertionError: failed1\n AssertionError: failed2"},
+                {"test_expectedFailedPageNotFound", "GenerateExpectedFailedStatusInTesterraReportTest", "Expected Failed", "PageNotFoundException: Test page not reached."},
+                {"test_expectedFailed", "GenerateExpectedFailedStatusInTesterraReportTest", "Expected Failed", "AssertionError: No Oil."},
+                // retried
+                {"test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", "Retried", "AssertionError: test_FailedToPassedHistoryWithRetry"}
+        };
+    }
 
     @BeforeMethod(alwaysRun = true)
     public void configureChromeOptions(Method method) {

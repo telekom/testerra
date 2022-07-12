@@ -65,4 +65,26 @@ public class ReportStepsTabTest extends AbstractReportTest {
             reportTestsPage = reportMethodPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         }
     }
+
+    @Test
+    public void testT03_assertCollectorsAreListedInTestSteps(){
+        int assertCollectorPreTestIndex = 3 - 1; //testAssertCollector //index on Page: 3 but offset 1 (Starts counting with 1)
+        String expectedStatement = "AssertCollector";
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+
+        TestStep.begin("Navigate to tests page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+
+        TestStep.begin("Navigate to report method page of testAssertCollector()");
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(assertCollectorPreTestIndex);
+
+        TestStep.begin("Navigate to test steps tab");
+        reportMethodPage.navigateBetweenTabs(ReportMethodPageType.STEPS, ReportStepsTab.class);
+
+        TestStep.begin("Check that each failure aspect contains an 'AssertCollector' statement.");
+        reportMethodPage.stepsPageAssertsEachFailureAspectContainsExpectedStatement(expectedStatement);
+    }
 }

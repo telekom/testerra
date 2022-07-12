@@ -55,6 +55,6 @@ public class OmitInDevelopmentMethodInterceptor implements Loggable, InterceptMe
             });
         }
 
-        log().info("Execution plan for test context \"" + event.getTestContext().getName() + "\": " + event.getMethodInstances().stream().map(iMethodInstance -> iMethodInstance.getMethod().getConstructorOrMethod().getName()).collect(Collectors.joining(", ")));
+//        log().info("Execution plan for test context \"" + event.getTestContext().getName() + "\": " + event.getMethodInstances().stream().map(iMethodInstance -> iMethodInstance.getMethod().getConstructorOrMethod().getName()).collect(Collectors.joining(", ")));
     }
 }

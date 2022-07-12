@@ -181,7 +181,7 @@ public final class SourceUtils {
 
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
         final List<String> classnames = new ArrayList<String>();
-        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFULT_PACKAGES));
+        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFAULT_PACKAGES));
         Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
         for (Class aClass : subTypesOf) {
             classnames.add(aClass.getName());

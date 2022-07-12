@@ -92,7 +92,7 @@ public class TesterraListener implements
      *
      * Additional modules have to use
      */
-    public static final String[] DEFULT_PACKAGES = {"eu.tsystems.mms.tic", "io.testerra"};
+    public static final String[] DEFAULT_PACKAGES = {"eu.tsystems.mms.tic", "io.testerra"};
 
     /**
      * Skip test methods control.

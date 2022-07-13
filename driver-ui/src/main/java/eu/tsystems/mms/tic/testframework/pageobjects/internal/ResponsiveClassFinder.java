@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -65,10 +66,24 @@ final public class ResponsiveClassFinder {
     /**
      * This call takes some time. It has an impact to the duration of the first page check (takes ca 2-3 seconds longer).
      */
-    private static final Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
+    private static final Reflections reflections = new Reflections(filter(configure()));
 
     private ResponsiveClassFinder() {
 
+    }
+
+    /**
+     * This configuration is complete but vastly overgenerates.
+     * The method exists separately for Sanity Checking that {@link #filter(ConfigurationBuilder)} does not accidentally filter [i]too much[/i].
+     */
+    static ConfigurationBuilder configure() {
+        return new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath());
+    }
+    /** This method should prune resources we are not interested in, but not change the interesting results. */
+    static ConfigurationBuilder filter(final ConfigurationBuilder configuration) {
+        configuration.setScanners(new SubTypesScanner()); // drops TypeAnnotationScanner
+        configuration.filterInputsBy(name -> name.endsWith(".class"));
+        return configuration;
     }
 
     private static class Caches {

@@ -27,7 +27,6 @@ import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -140,10 +139,14 @@ public class Log4jFileReader implements Loggable {
     public void assertTestStatusPerMethod(final String classNameSlug, final String methodNameSlug, final Status expectedStatus) {
         final List<String> foundEntries = filterLogForTestMethod(classNameSlug, methodNameSlug);
 
-        for (final String entry : foundEntries) {
-            log().debug("Asserting '{}' for '{}'", expectedStatus, methodNameSlug);
-            Assert.assertTrue(entry.contains(expectedStatus.title), String.format("'%s' has status '%s'", methodNameSlug, expectedStatus));
-        }
+        log().debug("Asserting '{}' for '{}'", expectedStatus, methodNameSlug);
+        foundEntries.stream()
+                .filter(line -> line.contains(expectedStatus.title))
+                .findFirst()
+                .ifPresentOrElse(
+                        (value) -> log().info("Found status {}", expectedStatus.title),
+                        () -> Assert.fail(String.format("'%s' should have status '%s'", methodNameSlug, expectedStatus))
+                );
     }
 
     /**

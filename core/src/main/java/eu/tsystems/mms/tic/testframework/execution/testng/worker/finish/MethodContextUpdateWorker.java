@@ -51,7 +51,9 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         ITestResult testResult = event.getTestResult();
 
         // Handle assertions and exceptions in dataprovider methods
-        if (testResult.getMethod().isDataDriven() && methodContext.readErrors().findFirst().isPresent()) {
+        if (testResult.getMethod().isDataDriven()
+                && methodContext.readErrors().findFirst().isPresent()
+                && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
             testResult.setStatus(ITestResult.SKIP);
             methodContext.setStatus(Status.SKIPPED);
             StringBuilder sb = new StringBuilder();

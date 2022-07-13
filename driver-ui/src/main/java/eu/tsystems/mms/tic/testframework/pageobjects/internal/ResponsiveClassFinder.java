@@ -45,6 +45,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used in ResponsivePageFactory to find the best matching page implementation for the current page regarding the current browser resolution.
+ *
  */
 final public class ResponsiveClassFinder {
 
@@ -65,16 +66,24 @@ final public class ResponsiveClassFinder {
     /**
      * This call takes some time. It has an impact to the duration of the first page check (takes ca 2-3 seconds longer).
      */
-    private static final Reflections reflections = new Reflections(
-            new ConfigurationBuilder()
-                    .setUrls(ClasspathHelper.forJavaClassPath())
-                    .useParallelExecutor()
-                    .setScanners(new SubTypesScanner())
-                    .filterInputsBy(name -> name.endsWith(".class"))
-    );
+    private static final Reflections reflections = new Reflections(filter(configure()));
 
     private ResponsiveClassFinder() {
 
+    }
+
+    /**
+     * This configuration is complete but vastly overgenerates.
+     * The method exists separately for Sanity Checking that {@link #filter(ConfigurationBuilder)} does not accidentally filter [i]too much[/i].
+     */
+    static ConfigurationBuilder configure() {
+        return new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath());
+    }
+    /** This method should prune resources we are not interested in, but not change the interesting results. */
+    static ConfigurationBuilder filter(final ConfigurationBuilder configuration) {
+        configuration.setScanners(new SubTypesScanner()); // drops TypeAnnotationScanner
+        configuration.filterInputsBy(name -> name.endsWith(".class"));
+        return configuration;
     }
 
     private static class Caches {
@@ -138,19 +147,6 @@ final public class ResponsiveClassFinder {
         if (!Modifier.isAbstract(baseClass.getModifiers())) {
             prioritizedClassInfos.setBaseClass(baseClass);
         }
-
-//        Reflections reflections = new Reflections(
-//                new ConfigurationBuilder()
-//                        .setUrls(ClasspathHelper.forJavaClassPath())
-//                        .useParallelExecutor()
-//                        .setScanners(new SubTypesScanner())
-////                        .filterInputsBy(new FilterBuilder()
-////                                .excludePackage("org.seleniumhq")
-////                                .excludePackage("com.sun")
-////                                .excludePackage("org.bytedeco")
-////                                .excludePackage("org.apache"))
-//                        .filterInputsBy(name -> name.endsWith(".class"))
-//        );
 
         // search for sub pages
         Set<? extends Class<T>> subClasses = reflections.getSubTypesOf((Class) baseClass);

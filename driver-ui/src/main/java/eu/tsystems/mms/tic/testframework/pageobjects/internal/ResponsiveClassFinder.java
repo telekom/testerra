@@ -82,6 +82,7 @@ final public class ResponsiveClassFinder {
     /** This method should prune resources we are not interested in, but not change the interesting results. */
     static ConfigurationBuilder filter(final ConfigurationBuilder configuration) {
         configuration.setScanners(new SubTypesScanner()); // drops TypeAnnotationScanner
+        configuration.useParallelExecutor();
         configuration.filterInputsBy(name -> name.endsWith(".class"));
         return configuration;
     }

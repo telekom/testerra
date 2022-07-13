@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -44,7 +45,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is used in ResponsivePageFactory to find the best matching page implementation for the current page regarding the current browser resolution.
- *
  */
 final public class ResponsiveClassFinder {
 
@@ -65,7 +65,13 @@ final public class ResponsiveClassFinder {
     /**
      * This call takes some time. It has an impact to the duration of the first page check (takes ca 2-3 seconds longer).
      */
-    private static final Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()));
+    private static final Reflections reflections = new Reflections(
+            new ConfigurationBuilder()
+                    .setUrls(ClasspathHelper.forJavaClassPath())
+                    .useParallelExecutor()
+                    .setScanners(new SubTypesScanner())
+                    .filterInputsBy(name -> name.endsWith(".class"))
+    );
 
     private ResponsiveClassFinder() {
 
@@ -132,6 +138,19 @@ final public class ResponsiveClassFinder {
         if (!Modifier.isAbstract(baseClass.getModifiers())) {
             prioritizedClassInfos.setBaseClass(baseClass);
         }
+
+//        Reflections reflections = new Reflections(
+//                new ConfigurationBuilder()
+//                        .setUrls(ClasspathHelper.forJavaClassPath())
+//                        .useParallelExecutor()
+//                        .setScanners(new SubTypesScanner())
+////                        .filterInputsBy(new FilterBuilder()
+////                                .excludePackage("org.seleniumhq")
+////                                .excludePackage("com.sun")
+////                                .excludePackage("org.bytedeco")
+////                                .excludePackage("org.apache"))
+//                        .filterInputsBy(name -> name.endsWith(".class"))
+//        );
 
         // search for sub pages
         Set<? extends Class<T>> subClasses = reflections.getSubTypesOf((Class) baseClass);

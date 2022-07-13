@@ -56,6 +56,7 @@ public class PageOptionsTest extends AbstractTestSitesTest implements PageFactor
         }
 
         ASSERT.assertBetween(end - start, 3000, 3500);
+        log().info("Duration: {}ms", end - start);
     }
 
     @Test

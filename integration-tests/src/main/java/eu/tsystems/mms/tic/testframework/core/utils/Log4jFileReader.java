@@ -144,7 +144,7 @@ public class Log4jFileReader implements Loggable {
                 .filter(line -> line.contains(expectedStatus.title))
                 .findFirst()
                 .ifPresentOrElse(
-                        (value) -> log().info("Found status {}", expectedStatus.title),
+                        value -> log().info("Found status {}", expectedStatus.title),
                         () -> Assert.fail(String.format("'%s' should have status '%s'", methodNameSlug, expectedStatus))
                 );
     }

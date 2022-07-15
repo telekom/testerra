@@ -110,7 +110,7 @@
                                 <div repeat.for="failureAspect of methodDetails.failureAspects"
                                      mdc-body2
                                      class="st1"
-                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></div>
+                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span>${failureAspect.message|highlightText:_searchRegexp}</span></div>
                             </td>
                         </tr>
                     </tbody>

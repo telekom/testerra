@@ -69,17 +69,17 @@ public class ReportLogsPageTest extends AbstractReportTest {
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
 
         TestStep.begin("Check methode name is contained in log report");
-        reportLogsPage.search(methodeName);
+        reportLogsPage = reportLogsPage.search(methodeName);
         reportLogsPage.assertMarkedLogLinesContainText(methodeName);
-        reportLogsPage.clearSearch();
+        reportLogsPage = reportLogsPage.clearSearch();
 
         TestStep.begin("Check methode class is contained in log report");
-        reportLogsPage.search(methodeClass);
+        reportLogsPage =reportLogsPage.search(methodeClass);
         reportLogsPage.assertMarkedLogLinesContainText(methodeClass);
-        reportLogsPage.clearSearch();
+        reportLogsPage = reportLogsPage.clearSearch();
 
         TestStep.begin("Check methode name is contained in log report");
-        reportLogsPage.search(methodStatus.title);
+        reportLogsPage =reportLogsPage.search(methodStatus.title);
         reportLogsPage.assertMarkedLogLinesContainText(methodStatus.title);
         reportLogsPage.clearSearch();
     }

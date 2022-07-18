@@ -2,6 +2,7 @@ package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.utils.LogLevel;
 import org.openqa.selenium.By;
@@ -55,12 +56,14 @@ public class ReportLogsPage extends AbstractReportPage {
     }
 
 
-    public void search(String s) {
+    public ReportLogsPage search(String s) {
         testSearchbarInput.type(s.trim());
+        return PageFactory.create(ReportLogsPage.class, getWebDriver());
     }
 
-    public void clearSearch() {
+    public ReportLogsPage clearSearch() {
         testSearchbarInput.clear();
+        return PageFactory.create(ReportLogsPage.class, getWebDriver());
     }
 
     public GuiElement getTestLogLevelSelect() {

@@ -24,7 +24,8 @@ public class RegExUtils {
 
 
     public enum RegExp {
-        DIGITS_ONLY("\\d+");
+        DIGITS_ONLY("\\d+"),
+        LINE_BREAK("\\d+.+");
 
         private String patternString;
 

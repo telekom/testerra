@@ -1,6 +1,7 @@
 package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
@@ -8,14 +9,44 @@ import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 public class ReportTestsPageTest extends AbstractReportTest {
 
-    @Test
-    public void testT01_checkInitialTable() {
+    @DataProvider
+    public Object[][] dataProviderForDifferentTestStates() {
+        return new Object[][]{
+                {Status.PASSED}, {Status.SKIPPED}, {Status.FAILED}, {Status.FAILED_EXPECTED}, {Status.RETRIED}, {Status.RECOVERED}, {Status.REPAIRED}
+        };
+    }
+
+    @DataProvider
+    public Object[][] dataProviderForDifferentTestClasses() {
+        return new Object[][]{
+                {"GeneratePassedStatusInTesterraReportTest"},
+                {"GenerateFailedStatusInTesterraReportTest"},
+                {"GenerateSkippedStatusInTesterraReportTest"},
+                {"GenerateSkippedStatusViaBeforeMethodInTesterraReportTest"},
+                {"GenerateExpectedFailedStatusInTesterraReportTest"},
+                {"GenerateScreenshotsInTesterraReportTest"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] dataProviderForFailureAspects() {
+        return new Object[][]{
+                {"AssertionError"},
+                {"PageNotFoundException"},
+                {"SkipException"},
+                {"RuntimeException"},
+                {"Throwable"}
+        };
+    }
+
+    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    public void testT01_filterForTestStates(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -24,12 +55,14 @@ public class ReportTestsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Check whether the table on tests page is displayed correctly");
-        reportTestsPage.assertTableIsDisplayedCorrect();
+        TestStep.begin("Check whether the tests page table is correct for " + status.title + " state");
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
+        reportTestsPage.assertCorrectTestStatus(status);
+        reportTestsPage.assertStatusColumnHeadlineContainsCorrectText();
     }
 
-    @Test
-    public void testT02_filterForTestStates() {
+    @Test(dataProvider = "dataProviderForDifferentTestClasses")
+    public void testT02_filterForClasses(String className) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -38,16 +71,14 @@ public class ReportTestsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Get a list of all possible test states, which can be selected on tests page");
-        // TODO: use Dataprovider with TestStatus instead
-        List<String> testStates = reportTestsPage.getListOfAllSelectableStates();
-
-        TestStep.begin("Check whether the tests page table is correct for every test state");
-        reportTestsPage.LoopThroughPossibleTestStateListAndAssertTableIsDisplayedCorrect(testStates);
+        TestStep.begin("Check whether class-column contains correct classes");
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestClassSelect(), className);
+        reportTestsPage.assertClassColumnContainsCorrectClasses(className);
+        reportTestsPage.assertClassColumnHeadlineContainsCorrectText();
     }
 
-    @Test
-    public void testT03_filterForClasses() {
+    @Test(dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
+    public void testT03_SearchForTestMethods(String testMethod) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -56,12 +87,14 @@ public class ReportTestsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Loop through all available classes and check whether the table is displayed correctly.");
-        reportTestsPage.assertCorrectTableWhenLoopingThroughClasses();
+        TestStep.begin("Check whether method-column contains correct methods");
+        reportTestsPage.search(testMethod);
+        reportTestsPage.assertMethodColumnContainsCorrectMethods(testMethod);
+        reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
     }
 
-    @Test
-    public void testT04_SearchForTestMethods() {
+    @Test(dataProvider = "dataProviderForFailureAspects")
+    public void testT04_SearchForFailureAspect(String failureAspect) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -70,26 +103,14 @@ public class ReportTestsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Loop through all available methods and check whether the table is displayed correctly.");
-        reportTestsPage.assertCorrectTableWhenLoopingThroughMethods();
+        TestStep.begin("Check whether method-column contains methods with correct failure aspects");
+        reportTestsPage = reportTestsPage.search(failureAspect);
+        reportTestsPage.assertMethodColumnContainsCorrectMethods(failureAspect);
+        reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
     }
 
     @Test
-    public void testT05_SearchForFailureAspect() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
-
-        TestStep.begin("Navigate to tests page.");
-        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-
-        TestStep.begin("Loop through all available assertions and check whether the table is displayed correctly.");
-        reportTestsPage.assertCorrectTableWhenLoopingThroughFailureAspect();
-    }
-
-    @Test
-    public void testT06_showConfigurationMethods() {
+    public void testT05_showConfigurationMethods() {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -99,14 +120,15 @@ public class ReportTestsPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Enable 'Show configuration methods and check whether more methods are displayed");
-        // TODO: don't hide actions in asserts
-        reportTestsPage.assertShowConfigurationMethodsButtonDisplaysMoreMethods();
-
-        TestStep.begin("Enable 'Show configuration methods' and check whether more methods are displayed");
+        int amountOfMethodsBeforeSwitch = reportTestsPage.getAmountOfEntries();
+        reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
+        reportTestsPage.clickConfigurationMethodsSwitch();
+        int amountOfMethodsAfterSwitch = reportTestsPage.getAmountOfEntries();
+        Assert.assertTrue(amountOfMethodsBeforeSwitch < amountOfMethodsAfterSwitch,
+                "'Show configuration methods' switch should display some more (configuration) methods.");
         reportTestsPage.assertConfigurationMethodsAreDisplayed();
-
-        TestStep.begin("Check whether the table is displayed correctly");
-        reportTestsPage.assertTableIsDisplayedCorrect();
+        reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
+        reportTestsPage.assertTestMethodIndicDoesNotAppearTwice();
     }
 
 }

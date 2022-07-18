@@ -23,6 +23,7 @@ package io.testerra.report.test.pages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -47,7 +48,7 @@ public abstract class AbstractReportPage extends ReportSideBar {
     // specificDropBox.getSubElement(By.xpath("mdc-list-item[contains(text(), '<label>')]")).click();
     // following method is replaces the call above
     // TODO: use contains(., '<label>'): mdc-list-items has sub span, hence text() is not working
-    public void selectDropBoxElement(GuiElement dropbox, String label) {
+    public <T extends AbstractReportPage> T selectDropBoxElement(GuiElement dropbox, String label) {
         dropbox.click();
         Optional<GuiElement> optionalDropBoxSelection = dropbox.getSubElement(By.xpath("//mdc-list-item")).getList()
                 .stream()
@@ -55,5 +56,6 @@ public abstract class AbstractReportPage extends ReportSideBar {
                 .findFirst();
         Assert.assertTrue(optionalDropBoxSelection.isPresent());
         optionalDropBoxSelection.get().click();
+        return (T) PageFactory.create(this.getClass(), getWebDriver());
     }
 }

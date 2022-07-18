@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -56,34 +57,35 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     private final static Server server = new Server(serverRootDir);
 
     @DataProvider
-    public Object[][] dataProviderForPreTestMethods(){
+    public Object[][] dataProviderForDifferentTestMethodForEachStatus() {
+        return new Object[][]{
+                {"test_Passed"},
+                {"testAssertCollector"},
+                {"test_SkippedNoStatus"},
+                {"test_expectedFailed"},
+                {"test_PassedAfterRetry"},
+                {"test_expectedFailedPassed"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] dataProviderForPreTestMethods() {
         return new Object[][]{
                 // method, class, status, failure aspect
                 //passed
-                {"test_Passed", "GeneratePassedStatusInTesterraReportTest", "Passed", null},
-                {"test_Optional_Assert", "GeneratePassedStatusInTesterraReportTest", "Passed", null},
-                {"test_GenerateScreenshotManually", "GenerateScreenshotsInTesterraReportTest", "Passed", null},
+                {"test_Passed", "GeneratePassedStatusInTesterraReportTest", Status.PASSED, null},
                 // recovered
-                {"test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", "Recovered", null},
+                {"test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RECOVERED, null},
                 // repaired
-                {"test_expectedFailedPassed", "GenerateExpectedFailedStatusInTesterraReportTest", "Repaired", null},
+                {"test_expectedFailedPassed", "GenerateExpectedFailedStatusInTesterraReportTest", Status.REPAIRED, null},
                 // skipped
-                {"test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", "Skipped", "SkipException: Test Skipped."},
-                {"test_Skipped_AfterErrorInDataProvider", "GenerateSkippedStatusInTesterraReportTest", "Skipped", "RuntimeException: Error in DataProvider."},
-                {"test_Skipped_DependingOnFailed", "GenerateSkippedStatusInTesterraReportTest", "Skipped", "Throwable:[...] depends on not successfully finished methods"},
-                {"test_Skipped_AfterErrorInBeforeMethod", "GenerateSkippedStatusViaBeforeMethodInTesterraReportTest", "Skipped", "AssertionError: Error in @BeforeMethod"},
+                {"test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", Status.SKIPPED, "SkipException: Test Skipped."},
                 // Failed
-                {"testAssertCollector", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: failed1\n AssertionError: failed2"},
-                {"test_failedPageNotFound", "GenerateFailedStatusInTesterraReportTest", "Failed", "PageNotFoundException: Test page not reached."},
-                {"test_Failed", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: Creating TestStatus 'Failed'"},
-                {"test_Failed", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: Creating TestStatus 'Failed'"},
-                {"test_Failed_WithScreenShot", "GenerateFailedStatusInTesterraReportTest", "Failed", "AssertionError: 'Failed' on reached Page."},
+                {"testAssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED, "AssertionError: failed1\n AssertionError: failed2"},
                 // expected Failed
-                {"test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", "Expected Failed", "AssertionError: failed1\n AssertionError: failed2"},
-                {"test_expectedFailedPageNotFound", "GenerateExpectedFailedStatusInTesterraReportTest", "Expected Failed", "PageNotFoundException: Test page not reached."},
-                {"test_expectedFailed", "GenerateExpectedFailedStatusInTesterraReportTest", "Expected Failed", "AssertionError: No Oil."},
+                {"test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", Status.FAILED_EXPECTED, "AssertionError: failed1\n AssertionError: failed2"},
                 // retried
-                {"test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", "Retried", "AssertionError: test_FailedToPassedHistoryWithRetry"}
+                {"test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RETRIED, "AssertionError: test_FailedToPassedHistoryWithRetry"}
         };
     }
 

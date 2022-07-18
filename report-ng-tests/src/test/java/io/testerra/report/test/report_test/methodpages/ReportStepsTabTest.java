@@ -11,13 +11,36 @@ import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
+import org.graalvm.compiler.hotspot.phases.OnStackReplacementPhase;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ReportStepsTabTest extends AbstractReportTest {
 
-    @Test
-    public void testT01_passedTestsWithoutFailureAspectsLinkToStepsTab() {
+    @DataProvider
+    public Object[][] dataProviderForTestsWithoutFailureAspect() {
+        return new Object[][]{
+                {"test_Passed"},
+                {"test_expectedFailedPassed"},
+                {"test_GenerateScreenshotManually"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] dataProviderForPreTestMethodsWithFailureAspects(){
+        return new Object[][]{
+                {"test_SkippedNoStatus","SkipException: Test Skipped."},
+                {"test_Optional_Assert","AssertionError: minor fail"},
+                {"test_failedPageNotFound","PageNotFoundException: Test page not reached."},
+                {"test_expectedFailedPageNotFound","PageNotFoundException: Test page not reached."},
+        };
+    }
+
+
+
+    @Test(dataProvider = "dataProviderForTestsWithoutFailureAspect")
+    public void testT01_passedTestsWithoutFailureAspectsLinkToStepsTab(String method) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -28,20 +51,13 @@ public class ReportStepsTabTest extends AbstractReportTest {
 
         TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
-        for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
 
-            if (reportTestsPage.methodGotFailureAspect(i)) continue;
-
-            ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(i);
-            reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
-
-            reportTestsPage = reportMethodPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-            reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
-        }
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
     }
 
-    @Test
-    public void testT02_checkTestStepsContainFailureAspectMessage() {
+    @Test(dataProvider = "dataProviderForPreTestMethodsWithFailureAspects")
+    public void testT02_checkTestStepsContainFailureAspectMessage(String method, String failureAspect) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -50,25 +66,16 @@ public class ReportStepsTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
-        for (int i = 0; i < reportTestsPage.getAmountOfTableRows(); i++) {
-
-            if (!reportTestsPage.methodGotFailureAspect(i)) continue;
-
-            ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(i);
-            reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
-            String failureAspect = reportMethodPage.getFailureAspectFromDetailsPage();
-            reportMethodPage.navigateBetweenTabs(ReportMethodPageType.STEPS, ReportStepsTab.class);
-            reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
-            reportMethodPage.stepsPageAssertsTestStepsContainFailureAspectMessage(failureAspect);
-
-            reportTestsPage = reportMethodPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-        }
+        TestStep.begin("Check whether steps page contains correct failure aspects.");
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        reportMethodPage.navigateBetweenTabs(ReportMethodPageType.STEPS, ReportStepsTab.class);
+        reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
+        reportMethodPage.stepsPageAssertsTestStepsContainFailureAspectMessage(failureAspect);
     }
 
     @Test
     public void testT03_assertCollectorsAreListedInTestSteps(){
-        int assertCollectorPreTestIndex = 3 - 1; //testAssertCollector //index on Page: 3 but offset 1 (Starts counting with 1)
+        String preTestCollectorMethod = "testAssertCollector"; //testAssertCollector //index on Page: 3 but offset 1 (Starts counting with 1)
         String expectedStatement = "AssertCollector";
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -79,7 +86,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Navigate to report method page of testAssertCollector()");
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(assertCollectorPreTestIndex);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(preTestCollectorMethod);
 
         TestStep.begin("Navigate to test steps tab");
         reportMethodPage.navigateBetweenTabs(ReportMethodPageType.STEPS, ReportStepsTab.class);

@@ -2,10 +2,13 @@ package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.ReportMethodPageType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+
+import java.util.Locale;
 
 public class ReportDetailsTab extends AbstractReportMethodPage {
 
@@ -38,8 +41,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
 
     public void detailPageAssertsFailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
         String expectedStatusTitleFormatted = expectedStatusTitle.toLowerCase();
-        // TODO: use Status Enum instead of hardcoded String
-        if (expectedStatusTitleFormatted.equals("expected failed"))
+        if (expectedStatusTitleFormatted.equals(Status.FAILED_EXPECTED.title.toLowerCase(Locale.ROOT)))
             expectedStatusTitleFormatted = "failed-expected";
         GuiElement failureAspectColoredPart = testFailureAspect.getSubElement(By.xpath("//div[contains(@class, 'status')]"));
         failureAspectColoredPart.asserts(String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.getAttribute("class"), expectedStatusTitleFormatted)).assertAttributeContains("class", expectedStatusTitleFormatted);

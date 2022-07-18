@@ -18,7 +18,7 @@ public class ReportSessionsTabTest extends AbstractReportTest {
     @Test
     public void testT01_checkDisplayedSessionGotContent() {
         WebDriver driver = WebDriverManager.getWebDriver();
-        int methodeWithSessionsTabIndex = 20; // test_Failed_WithScreenShot
+        String preTestWithSessionTab = "test_Failed_WithScreenShot";
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
@@ -28,7 +28,7 @@ public class ReportSessionsTabTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to method sessions page and check for correct content");
         reportTestsPage.clickConfigurationMethodsSwitch();
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(methodeWithSessionsTabIndex - 1);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(preTestWithSessionTab);
         reportMethodPage.navigateBetweenTabs(ReportMethodPageType.SESSIONS, ReportSessionsTab.class);
     }
 }

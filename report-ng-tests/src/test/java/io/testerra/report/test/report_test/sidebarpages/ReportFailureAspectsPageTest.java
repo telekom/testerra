@@ -4,25 +4,22 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-
+import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.testerra.report.test.AbstractReportTest;
-import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
-import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
-
-import java.util.List;
 import java.util.Optional;
 
 public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @DataProvider
-    public static Object[][] dataProviderForFailureAspects() {
+    public static Object[][] dataProviderForFailureAspectsWithCorrespondingStates() {
         return new Object[][]{
                 {"AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED},
                 {"AssertionError: failed1", Status.FAILED, Status.FAILED_EXPECTED},
@@ -32,26 +29,45 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
                 {"AssertionError: 'Failed' on reached Page.", Status.FAILED, null},
                 {"AssertionError: minor fail", Status.PASSED, null},
                 {"SkipException: Test Skipped.", Status.SKIPPED, null},
-                {"RuntimeException: Error in DataProvider.",  Status.SKIPPED, null},
-                {/*[...]*/"depends on not successfully finished methods",  Status.SKIPPED, null},
+                {"RuntimeException: Error in DataProvider.", Status.SKIPPED, null},
+                {/*[...]*/"depends on not successfully finished methods", Status.SKIPPED, null},
                 {"AssertionError: test_FailedToPassedHistoryWithRetry", Status.RETRIED, null},
                 {"AssertionError: No Oil.", Status.FAILED_EXPECTED, null}
         };
     }
 
     @DataProvider
-    public Object[][] failureAspectsWithMultipleStatus(){
+    public Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
                 {"AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED},
-                {"AssertionError: failed1",  Status.FAILED, Status.FAILED_EXPECTED},
-                {"AssertionError: failed2",  Status.FAILED, Status.FAILED_EXPECTED},
-                {"PageNotFoundException: Test page not reached.",  Status.FAILED, Status.FAILED_EXPECTED},
-                {"AssertionError: Error in @BeforeMethod", Status.SKIPPED,  Status.FAILED}
+                {"AssertionError: failed1", Status.FAILED, Status.FAILED_EXPECTED},
+                {"AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED},
+                {"PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED},
+                {"AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED}
+        };
+    }
+
+    @DataProvider
+    public Object[][] dataProviderForFailureAspects() {
+        return new Object[][]{
+                {"AssertionError"},
+                {"PageNotFoundException"},
+                {"SkipException"},
+                {"RuntimeException"},
+                {"Throwable"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] dataProviderForFailureAspectsTypes() {
+        return new Object[][]{
+                {"Major"},
+                {"Minor"}
         };
     }
 
     @Test
-    public void testT01_checkInitialTable() {
+    public void testT01_checkFailureAspectIndicesDescendingCorrectly() {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -60,13 +76,12 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
-//      TODO:  call only needed asserts
-        reportFailureAspectsPage.assertFailureAspectsTableIsDisplayedCorrect();
+        TestStep.begin("Check whether the content table is displayed correct");
+        reportFailureAspectsPage.assertRankColumnDescends();
     }
 
-    // TODO: test with explicitly provided filter options via Dataprovider
-    @Test
-    public void testT02_checkTypeFilter() {
+    @Test(dataProvider = "dataProviderForFailureAspectsTypes")
+    public void testT02_checkTypeFilter(String failureAspectType) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -75,14 +90,13 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
-        // TODO: separate action and assert: make possible selection, assert result per selection, all separate methods
-        TestStep.begin("Check whether the table become adjusted correctly when different types are selected");
-        reportFailureAspectsPage.assertFailureAspectTableIsCorrectDisplayedWhenIteratingThroughSelectableTypes();
+        TestStep.begin("Check whether the table become adjusted correctly when type is selected");
+        reportFailureAspectsPage.selectDropBoxElement(reportFailureAspectsPage.getTestTypeSelect(), failureAspectType);
+        reportFailureAspectsPage.assertFailureAspectTypeIsFilteredCorrectly(failureAspectType);
     }
 
-    // TODO: test with explicitly provided failure aspects via Dataprovider
-    @Test
-    public void testT03_checkSearchFilter() {
+    @Test(dataProvider = "dataProviderForFailureAspects")
+    public void testT03_checkSearchFilter(String failureAspect) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -91,14 +105,13 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
-        // TODO: separate action and assert: get possible search terms, invoke search per termn, assert result per search, all separate methods
-        //  make test fail in case of no existing table rows/failure aspects
         TestStep.begin("Check whether the table become adjusted correctly when different search requests are queried");
-        reportFailureAspectsPage.assertFailureAspectTableIsCorrectDisplayedWhenSearchingForDifferentAspects();
+        reportFailureAspectsPage = reportFailureAspectsPage.search(failureAspect);
+        reportFailureAspectsPage.assertFailureAspectsColumnContainsCorrectAspects(failureAspect);
     }
 
     @Test
-    public void testT04_checkButtonFilter() {
+    public void testT04_checkShowExpectedFailedButton() {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -108,8 +121,12 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when 'show expected failed' button is enabled!");
-        reportFailureAspectsPage.assertShowExpectedFailedButtonWorksCorrectly();
-        reportFailureAspectsPage.assertFailureAspectsTableIsDisplayedCorrect();
+        int amountOfAspectsButtonEnabled = reportFailureAspectsPage.getColumns(2).size();
+        reportFailureAspectsPage.assertShowExpectedFailedButtonIsDisabled();
+        reportFailureAspectsPage = reportFailureAspectsPage.clickShowExpectedFailedButton();
+        int amountOfAspectsButtonDisabled = reportFailureAspectsPage.getColumns(2).size();
+        Assert.assertTrue(amountOfAspectsButtonDisabled < amountOfAspectsButtonEnabled,
+                "There should be more aspects listed, when expected fails button is enabled!");
     }
 
     @Test(dataProvider = "failureAspectsWithMultipleStatus")
@@ -134,7 +151,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportTestsPage.assertCorrectTestStatus(state2);
     }
 
-    @Test(dataProvider = "dataProviderForFailureAspects")
+    @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
     public void testT06_checkNavigationWithFailureAspect(String failureAspect, Status status1, Status status2){
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -148,6 +165,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         Optional<GuiElement> failureAspectLink = reportFailureAspectsPage.getColumns(1).stream().filter(i -> i.getText().contains(failureAspect)).findFirst();
         Assert.assertTrue(failureAspectLink.isPresent(), "Provided failure Aspect should be contained in failure-aspects-page");
         ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickFailureAspectLink(failureAspectLink.get());
+        reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
         reportTestsPage.assertCorrectTestStates(status1, status2);
     }
 

@@ -6,6 +6,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
+import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -55,10 +56,10 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
         testClassText.asserts("Displayed class name should equal to given class name at test overview!").assertText(className);
     }
 
-    public void assertMethodOverviewContainsCorrectContent(String[] methodContent) {
-        assertMethodStateIsCorrect(methodContent[0]);
-        assertMethodClassesAreCorrect(methodContent[1]);
-        assertMethodNamesAreCorrect(methodContent[3]);
+    public void assertMethodOverviewContainsCorrectContent(String methodeClass, String status, String name) {
+        assertMethodStateIsCorrect(status);
+        assertMethodClassesAreCorrect(methodeClass);
+        assertMethodNamesAreCorrect(name);
     }
 
     public ReportThreadsPage clickThreadLink() {
@@ -68,8 +69,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
 
     public String getTestDuration() {
         GuiElement durationGuiElement = testDurationCard.getSubElement(By.xpath("//div[contains(@class,'card-content')]"));
-        // TODO try using fitting regex
-        return durationGuiElement.getText().split("\n")[1];
+        return RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.LINE_BREAK, durationGuiElement.getText());
     }
 
     public GuiElement getTestDetailsTab() {

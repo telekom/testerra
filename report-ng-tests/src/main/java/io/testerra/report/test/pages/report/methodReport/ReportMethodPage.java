@@ -55,8 +55,8 @@ public class ReportMethodPage extends AbstractReportPage {
         currentPage = PageFactory.create(reportsTabClass, getWebDriver());
     }
 
-    public void assertMethodOverviewContainsCorrectContent(String[] methodContent) {
-        currentPage.assertMethodOverviewContainsCorrectContent(methodContent);
+    public void assertMethodOverviewContainsCorrectContent(String methodClass, String status, String name) {
+        currentPage.assertMethodOverviewContainsCorrectContent(methodClass, status, name);
     }
 
     public ReportThreadsPage clickThreadLink() {
@@ -71,7 +71,7 @@ public class ReportMethodPage extends AbstractReportPage {
         return currentPage.getCurrentPageType();
     }
 
-    public void detailPageAssertsFailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
+    public void detailPageAsserts_FailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
         if (getCurrentPageType() != ReportMethodPageType.DETAILS) {
             Assert.fail("Details tab should be selected");
         }

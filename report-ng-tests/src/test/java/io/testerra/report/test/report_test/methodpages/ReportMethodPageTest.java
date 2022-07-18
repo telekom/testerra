@@ -1,6 +1,7 @@
 package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
@@ -14,12 +15,11 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.List;
-
 public class ReportMethodPageTest extends AbstractReportTest {
 
-    @Test
-    public void testT01_methodOverviewIsCorrect() {
+
+    @Test(dataProvider = "dataProviderForPreTestMethods")
+    public void testT01_methodOverviewIsCorrect(String method, String methodClass, Status status, String failureAspect) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -28,37 +28,26 @@ public class ReportMethodPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Get content of all methods");
-        reportTestsPage.clickConfigurationMethodsSwitch();
-        List<String[]> methodsContentRows = reportTestsPage.getTable();
-
         TestStep.begin("Navigate to method detail page and check for correct content");
         ReportMethodPage reportMethodPage;
-        // TODO: rework: use method name as provided data and click link
-        //  one per status
-        //  expected values with data in provider, not with live reading in list of array from page
-        for (String[] row : methodsContentRows) {
-            reportMethodPage = reportTestsPage.navigateToMethodReport(Integer.parseInt(row[2]) - 1);
-
-            reportMethodPage.assertMethodOverviewContainsCorrectContent(row);
-            ReportThreadsPage reportThreadsPage = reportMethodPage.clickThreadLink();
-            reportThreadsPage.assertMethodBoxIsSelected(row[3]);
-
-            reportTestsPage = reportThreadsPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-            reportTestsPage.clickConfigurationMethodsSwitch();
-        }
+        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
+        reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        reportMethodPage.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
+        ReportThreadsPage reportThreadsPage = reportMethodPage.clickThreadLink();
+        reportThreadsPage.assertMethodBoxIsSelected(method);
     }
 
     @Test
     public void testT02_checkDurationFormat() {
         WebDriver driver = WebDriverManager.getWebDriver();
+        String exampleMethod = "test_Passed";
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to method page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(0);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(exampleMethod);
 
         TestStep.begin("Check whether the duration is displayed and correct");
         final String testDuration = reportMethodPage.getTestDuration();

@@ -8,14 +8,25 @@ import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.Set;
 
 public class ReportThreadsPageTest extends AbstractReportTest {
 
-    @Test
-    public void testT01_checkSearchForMethodsSelectionWorksCorrectly() {
+    @DataProvider
+    public Object[][] dataProviderTestStateRepresentative() {
+        return new Object[][]{
+                {"test_Passed"},
+                {"test_Failed"},
+                {"test_SkippedNoStatus"},
+                {"test_expectedFailed"},
+                {"test_expectedFailedPassed"},
+                {"test_PassedAfterRetry"}
+        };
+    }
+
+    @Test(dataProvider = "dataProviderTestStateRepresentative")
+    public void testT01_checkSearchForMethodsSelectionWorksCorrectly(String method) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -25,10 +36,15 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         ReportThreadsPage reportThreadsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.THREADS, ReportThreadsPage.class);
 
         TestStep.begin("Check whether thread report contains all methods");
+        reportThreadsPage = reportThreadsPage.search(method);
+        reportThreadsPage = reportThreadsPage.selectMethod(method);
+        reportThreadsPage.assertMethodBoxIsSelected(method);
+    }
+
+    @Test
+    public void testT02_() {
         // TODO: assert for initially existing Threads, before filtering
-        //  analyze usage of explicit DataProvider with some methods
-        Set<String> methods = reportThreadsPage.getThreadMethods();
-        reportThreadsPage.assertSearchForMethodWorksCorrect(methods);
+        //  (--> ??)
     }
 
 }

@@ -30,7 +30,9 @@ import java.lang.annotation.Target;
  * Annotation that indicates to which QualityCenter Test test results should be synchronized.
  *
  * @author mrgi, pele
+ * @deprecated Use annotation from Testerra hpqc-connector
  */
+@Deprecated
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface QCTestname {

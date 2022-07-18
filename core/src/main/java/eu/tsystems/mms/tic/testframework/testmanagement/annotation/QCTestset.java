@@ -31,7 +31,9 @@ import static java.lang.annotation.ElementType.TYPE;
  * Annotation that indicates to which QualityCenter TestSet test results should be synchronized.
  *
  * @author mrgi, pele
+ * @deprecated Use annotation from Testerra hpqc-connector
  */
+@Deprecated
 @Target({METHOD, TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface QCTestset {

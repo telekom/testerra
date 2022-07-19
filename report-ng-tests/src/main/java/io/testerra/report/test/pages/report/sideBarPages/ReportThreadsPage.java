@@ -6,9 +6,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import io.testerra.report.test.pages.AbstractReportPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
-
-import java.util.Optional;
 
 public class ReportThreadsPage extends AbstractReportPage {
 
@@ -34,37 +31,21 @@ public class ReportThreadsPage extends AbstractReportPage {
     }
 
     public ReportThreadsPage selectMethod(String method) {
-        // TODO: use explicit locator, like //div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='<method>']]
-        // does not work, I do not know why?
-        // GuiElement element = testMethodDropDownList.getSubElement(By.xpath(String.format("//mdc-list-item//mark[text()='%s']",method)));
-        // element.waits().waitForIsDisplayed();
-        // element.click();
-
-        //this does
-        testMethodDropDownList.getSubElement(By.xpath("//mdc-list-item")).waits().waitForIsDisplayed();
-        Optional<GuiElement> optional = testMethodDropDownList.getSubElement(By.xpath("//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().equals(method))
-                .findFirst();
-        Assert.assertTrue(optional.isPresent(), String.format("expected sth for %s", method));
-        optional.get().click();
-
+        GuiElement methodAsGuiElement = testMethodDropDownList.getSubElement(By.xpath(String.format("//mdc-list-item[.//span[text()='%s']]", method)));
+        methodAsGuiElement.waits().waitForIsDisplayed();
+        methodAsGuiElement.click();
         return PageFactory.create(ReportThreadsPage.class, getWebDriver());
     }
 
     public void assertMethodBoxIsSelected(String method) {
-        // TODO: use explicit locator, like //div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='<method>']]
+        GuiElement subElement = testThreadReport.getSubElement(
+                By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"));
+        subElement.asserts().assertIsDisplayed();
+        subElement.asserts().assertAttributeContains("class", "vis-selected");
+    }
 
-        // does not work, I do not know why not?
-        // testThreadReport.getSubElement(By.xpath("//div[contains(@class,'vis-selected')]")).asserts().assertTextContains(method);
-
-        // this does
-        for (GuiElement guiElement : testThreadReport.getSubElement(By.xpath("div")).getList()) {
-            if (guiElement.getText().split("\n")[0].equals(method.trim())) {
-                guiElement.getSubElement(By.xpath("/div"))
-                        .asserts("Searched element should marked as selected")
-                        .assertAttributeContains("class", "vis-selected");
-            }
-        }
+    public ReportThreadsPage clickSearchBar(){
+        testMethodSearchbar.click();
+        return PageFactory.create(ReportThreadsPage.class, getWebDriver());
     }
 }

@@ -2,6 +2,7 @@ package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
@@ -36,7 +37,8 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         ReportThreadsPage reportThreadsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.THREADS, ReportThreadsPage.class);
 
         TestStep.begin("Check whether thread report contains all methods");
-        reportThreadsPage = reportThreadsPage.search(method);
+
+        reportThreadsPage.clickSearchBar();
         reportThreadsPage = reportThreadsPage.selectMethod(method);
         reportThreadsPage.assertMethodBoxIsSelected(method);
     }

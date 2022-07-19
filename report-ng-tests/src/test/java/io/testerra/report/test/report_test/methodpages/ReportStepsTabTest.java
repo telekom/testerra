@@ -52,7 +52,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.STEPS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
     }
 
@@ -67,7 +67,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check whether steps page contains correct failure aspects.");
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.navigateBetweenTabs(ReportMethodPageType.STEPS, ReportStepsTab.class);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
         reportMethodPage.stepsPageAssertsTestStepsContainFailureAspectMessage(failureAspect);
@@ -86,7 +86,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Navigate to report method page of testAssertCollector()");
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(preTestCollectorMethod);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(preTestCollectorMethod, ReportMethodPageType.DETAILS);
 
         TestStep.begin("Navigate to test steps tab");
         reportMethodPage.navigateBetweenTabs(ReportMethodPageType.STEPS, ReportStepsTab.class);

@@ -18,24 +18,20 @@ public class ReportMethodPage extends AbstractReportPage {
      */
     public ReportMethodPage(WebDriver driver) {
         super(driver);
-        currentPage = getActivePage();
     }
 
-    public AbstractReportMethodPage getActivePage() {
-        // TODO: better solution than exception catching to distinguish Steps and Details Tab
-        try {
-            return PageFactory.create(ReportDetailsTab.class, getWebDriver());
-        } catch (Exception ignored) {
-
+    public void setActivePage(ReportMethodPageType pageType) {
+        switch (pageType) {
+            case STEPS:
+                currentPage = PageFactory.create(ReportStepsTab.class, getWebDriver());
+                break;
+            case DETAILS:
+                currentPage = PageFactory.create(ReportDetailsTab.class, getWebDriver());
+                break;
+            default:
+                throw new RuntimeException("Details- or Step-Tab should be selected!");
         }
-        try {
-            return PageFactory.create(ReportStepsTab.class, getWebDriver());
-        } catch (Exception ignored) {
-
-        }
-        throw new RuntimeException("Details- or Step-Tab should be selected!");
     }
-
 
     public <T extends AbstractReportMethodPage> void navigateBetweenTabs(ReportMethodPageType reportMethodPageType, Class<T> reportsTabClass) {
         switch (reportMethodPageType) {

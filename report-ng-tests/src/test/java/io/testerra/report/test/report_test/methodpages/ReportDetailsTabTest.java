@@ -84,7 +84,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         TestStep.begin("Check whether the displayed test state corresponds to each method");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailPageAsserts_FailureAspectsCorrespondsToCorrectStatus(status.title);
     }
@@ -104,7 +104,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(methodName);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(methodName, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailsPageAssertsTestMethodContainsCorrectFailureAspect(expectedFailureAspect);
     }
@@ -122,7 +122,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED.title);
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailsPageAssertsTestMethodContainsCorrectFailureAspect(expectedFailureAspects);
     }
@@ -141,7 +141,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED_EXPECTED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailsPageAssertsTestMethodContainsCorrectFailureAspect(expectedFailureAspects);
         reportMethodPage.assertTestMethodeReportContainsFailsAnnotation();
@@ -161,7 +161,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.REPAIRED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(repairedTest);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(repairedTest, ReportMethodPageType.STEPS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
         reportMethodPage.assertTestMethodeReportContainsFailsAnnotation();
     }
@@ -179,7 +179,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.SKIPPED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailsPageAssertSkippedTestContainsCorrespondingFailureAspect();
     }

@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
+import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
 import org.openqa.selenium.By;
@@ -164,14 +165,16 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
 
-    public ReportMethodPage navigateToMethodReport(String methodName) {
+    public ReportMethodPage navigateToMethodReport(String methodName, ReportMethodPageType pageType) {
         Optional<GuiElement> optionalLink = getColumnWithoutHead(3).stream().filter(i -> i.getText().contains(methodName)).findFirst();
         if (optionalLink.isPresent()) {
             optionalLink.get().getSubElement(By.xpath("//a")).click();
         } else {
             Assert.fail(String.format("Method %s not displayed!", methodName));
         }
-        return PageFactory.create(ReportMethodPage.class, getWebDriver());
+        ReportMethodPage reportMethodPage = PageFactory.create(ReportMethodPage.class, getWebDriver());
+        reportMethodPage.setActivePage(pageType);
+        return reportMethodPage;
     }
 
     public List<String[]> getTable() {

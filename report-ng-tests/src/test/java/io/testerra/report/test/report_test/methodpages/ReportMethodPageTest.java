@@ -5,6 +5,7 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
@@ -29,9 +30,8 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Navigate to method detail page and check for correct content");
-        ReportMethodPage reportMethodPage;
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
-        reportMethodPage = reportTestsPage.navigateToMethodReport(method);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportMethodPage.clickThreadLink();
         reportThreadsPage.assertMethodBoxIsSelected(method);
@@ -47,7 +47,7 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to method page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(exampleMethod);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(exampleMethod, ReportMethodPageType.STEPS);
 
         TestStep.begin("Check whether the duration is displayed and correct");
         final String testDuration = reportMethodPage.getTestDuration();

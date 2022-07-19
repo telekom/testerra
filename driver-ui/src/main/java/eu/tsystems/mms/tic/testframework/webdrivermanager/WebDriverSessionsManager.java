@@ -309,6 +309,7 @@ public final class WebDriverSessionsManager {
          */
         sessionContext.setSessionKey(exclusiveSessionKey);
         sessionContext.getWebDriverRequest().setShutdownAfterTest(false);
+        sessionContext.getWebDriverRequest().setShutdownAfterTestFailed(false);
         executionContextController.getExecutionContext().addExclusiveSessionContext(sessionContext);
         Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
@@ -371,8 +372,6 @@ public final class WebDriverSessionsManager {
                                 executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
                                         currentMethodContext.addSessionContext(sessionContext)
                                 ));
-
-
             } else {
                 // Link an normal sessionContext
                 executionContextController.getCurrentSessionContext().ifPresent(currentSessionContext ->

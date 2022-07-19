@@ -33,10 +33,6 @@ public class WebDriverShutDownWorker implements MethodEndEvent.Listener, WebDriv
     @Subscribe
     public void onMethodEnd(MethodEndEvent methodEndEvent) {
         ITestResult iTestResult = methodEndEvent.getTestResult();
-
-        /*
-         * Take Screenshot of failure and log it into report.
-         */
         if (iTestResult != null) {
             methodEndEvent.getMethodContext().readSessionContexts().forEach(sessionContext -> {
                 WebDriverRequest webDriverRequest = sessionContext.getWebDriverRequest();

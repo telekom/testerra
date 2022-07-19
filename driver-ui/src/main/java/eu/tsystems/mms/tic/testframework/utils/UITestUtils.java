@@ -32,6 +32,8 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import org.openqa.selenium.OutputType;
@@ -312,12 +314,24 @@ public class UITestUtils implements WebDriverManagerProvider {
      * @return ScreenshotPaths.
      */
     public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
-        Stream<Screenshot> screenshotStream = Stream.concat(WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread(), WEB_DRIVER_MANAGER.readExclusiveWebDrivers())
+        Optional<MethodContext> optionalMethodContext = executionContextController.getCurrentMethodContext();
+
+        // Find exclusive sessions linked to current method context
+        List<String> exclusiveSessionKeys = new ArrayList<>();
+        if (optionalMethodContext.isPresent()) {
+            exclusiveSessionKeys = optionalMethodContext.get().readSessionContexts()
+                    .map(SessionContext::getSessionKey)
+                    .filter(sessionKey -> sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX))
+                    .collect(Collectors.toList());
+        }
+
+        // Take all normal webdriver and linked exclusive webdriver and create screenshots
+        Stream<Screenshot> screenshotStream = Stream.concat(WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread(), exclusiveSessionKeys.stream().map(WEB_DRIVER_MANAGER::getWebDriver))
                 .map(UITestUtils::pTakeAllScreenshotsForSession)
                 .flatMap(Collection::stream);
 
-        if (publishToReport && executionContextController.getCurrentMethodContext().isPresent()) {
-            MethodContext methodContext = executionContextController.getCurrentMethodContext().get();
+        if (publishToReport && optionalMethodContext.isPresent()) {
+            MethodContext methodContext = optionalMethodContext.get();
             screenshotStream = screenshotStream.peek(screenshot -> {
                 methodContext.addScreenshot(screenshot);
                 report.addScreenshot(screenshot, Report.FileMode.MOVE);

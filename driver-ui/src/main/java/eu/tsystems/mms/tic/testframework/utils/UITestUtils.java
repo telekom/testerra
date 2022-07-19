@@ -308,7 +308,8 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     /**
-     * Make screenshots from all open browser windows/selenium, webdriver instances.
+     * Make screenshots from all open browser windows/selenium, webdriver instances of the current thread
+     * and of exclusive webdriver instances of the current method context (if exists).
      *
      * @param publishToReport True for publish directly into report.
      * @return ScreenshotPaths.

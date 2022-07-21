@@ -42,7 +42,8 @@ include::best-practices.adoc[leveloffset=+1]
 include::migration.adoc[leveloffset=+1]
 include::known-issues.adoc[leveloffset=+1]
 include::properties.adoc[leveloffset=+1]
-include::architecture.adoc[leveloffset+-1]
+include::architecture.adoc[leveloffset=+1]
+include::doc-versions.adoc[leveloffset=+1]
 
 [glossary]
 = Glossary

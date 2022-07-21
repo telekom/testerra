@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="suite1" parallel="methods" thread-count="20">
+<suite name="suite1" parallel="classes" thread-count="10">
 
     <test name="test1">
         <classes>
 <!--            <class name="eu.tsystems.mms.tic.testframework.test.common.PropertyManagerTest"></class>-->
-            <class name="eu.tsystems.mms.tic.testframework.test.page.AssertTextPageTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.playground.ExclusiveSession1"></class>
+            <class name="eu.tsystems.mms.tic.testframework.playground.ExclusiveSession2"></class>
         </classes>
     </test>
 </suite>

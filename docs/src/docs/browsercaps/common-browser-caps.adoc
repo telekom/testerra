@@ -1,4 +1,4 @@
-== Global capabilities
+= Global capabilities
 
 You can customize your browser session by setting capabilities for every browser type before
 the WebDriver has been initialized.
@@ -23,19 +23,27 @@ WEB_DRIVER_MANAGER.setGlobalCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
 
 ====
 
+= Request capabilities
 
-== Request capabilities
+A request defined capability means using a Webdriver request like `DesktopWebDriverRequest`.
 
-Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`.
-
+.Set capabilities to a DesktopWebDriverRequest object
 [source,java]
 ----
-WebDriverRequest myRequest = new DesktopWebDriverRequest();
+DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+DesiredCapabilities caps = request.getDesiredCapabilities();
 myRequest.getDesiredCapabilities().put(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
+// Start your session with the DesktopWebDriverRequest object
+WebDriver driver = WebDriverManager.getWebDriver(request);
 ----
 
-== User agent configuration
+[NOTE]
+=====
+Have a look into <<Browser specific knowledge>> for specific browser options. +
+Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
+=====
+
+= User agent configuration
 
 The user agent configuration is most precise, because it provides explicit browser options based on the Selenium driver.
 

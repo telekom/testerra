@@ -1,6 +1,4 @@
-= UITest Utilities (*deprecated*)
-
-NOTE: This class is marked as `@deprecated` and should not be used anymore.
+= UITest Utilities
 
 The `UITestUtils` supports you to generate additional screenshots.
 

@@ -26,7 +26,7 @@ public class ReportThreadsPageTest extends AbstractReportTest {
 
         TestStep.begin("Check whether thread report contains all methods");
 
-        reportThreadsPage.clickSearchBar();
+        reportThreadsPage = reportThreadsPage.clickSearchBar();
         reportThreadsPage = reportThreadsPage.selectMethod(method);
         reportThreadsPage.assertMethodBoxIsSelected(method);
     }

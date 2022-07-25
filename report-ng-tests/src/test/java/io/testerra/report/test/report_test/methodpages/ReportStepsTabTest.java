@@ -12,9 +12,7 @@ import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.TestData;
-import org.graalvm.compiler.hotspot.phases.OnStackReplacementPhase;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ReportStepsTabTest extends AbstractReportTest {

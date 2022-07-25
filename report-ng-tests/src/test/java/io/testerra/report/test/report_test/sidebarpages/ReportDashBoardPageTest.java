@@ -22,42 +22,7 @@ import java.util.List;
 
 public class ReportDashBoardPageTest extends AbstractReportTest {
 
-    @DataProvider
-    public Object[][] dataProviderForDifferentTestStates() {
-        return new Object[][]{{Status.PASSED}, {Status.FAILED}, {Status.FAILED_EXPECTED}, {Status.SKIPPED}};
-    }
-
-    @DataProvider
-    public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
-        return new Object[][]{
-                {5, Status.FAILED},
-                {3, Status.FAILED_EXPECTED},
-                {4, Status.SKIPPED},
-                {5, Status.PASSED}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForNavigationBetweenDifferentPages() {
-        return new Object[][]{
-                {ReportSidebarPageType.TESTS, ReportTestsPage.class},
-                {ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class},
-                {ReportSidebarPageType.LOGS, ReportLogsPage.class},
-                {ReportSidebarPageType.THREADS, ReportThreadsPage.class}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderFailureCorridorBounds() {
-        PropertyManager.loadProperties("report-ng-tests/src/test/resources/test.properties");
-        return new Object[][]{
-                {"High", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.high")},
-                {"Mid", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.mid")},
-                {"Low", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.low")}
-        };
-    }
-
-    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT01_showCorrectTestClassesWhenClickingOnPieChart(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -72,7 +37,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
     }
 
-    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT02_showCorrectTestClassesWhenClickingOnNumbersChart(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -118,7 +83,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
     }
 
-    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT05_barChartLinksToFilteredTestsPage(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -162,7 +127,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPieChartPercentages(amount, status);
     }
 
-    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT08_barChartFilterHovering(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 

@@ -15,37 +15,7 @@ import org.testng.annotations.Test;
 
 public class ReportTestsPageTest extends AbstractReportTest {
 
-    @DataProvider
-    public Object[][] dataProviderForDifferentTestStates() {
-        return new Object[][]{
-                {Status.PASSED}, {Status.SKIPPED}, {Status.FAILED}, {Status.FAILED_EXPECTED}, {Status.RETRIED}, {Status.RECOVERED}, {Status.REPAIRED}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForDifferentTestClasses() {
-        return new Object[][]{
-                {"GeneratePassedStatusInTesterraReportTest"},
-                {"GenerateFailedStatusInTesterraReportTest"},
-                {"GenerateSkippedStatusInTesterraReportTest"},
-                {"GenerateSkippedStatusViaBeforeMethodInTesterraReportTest"},
-                {"GenerateExpectedFailedStatusInTesterraReportTest"},
-                {"GenerateScreenshotsInTesterraReportTest"}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForFailureAspects() {
-        return new Object[][]{
-                {"AssertionError"},
-                {"PageNotFoundException"},
-                {"SkipException"},
-                {"RuntimeException"},
-                {"Throwable"}
-        };
-    }
-
-    @Test(dataProvider = "dataProviderForDifferentTestStates")
+    @Test(dataProvider = "dataProviderForTestStates")
     public void testT01_filterForTestStates(Status status) {
         WebDriver driver = WebDriverManager.getWebDriver();
 

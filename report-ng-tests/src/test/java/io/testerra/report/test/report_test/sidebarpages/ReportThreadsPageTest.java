@@ -14,19 +14,7 @@ import org.testng.annotations.Test;
 
 public class ReportThreadsPageTest extends AbstractReportTest {
 
-    @DataProvider
-    public Object[][] dataProviderTestStateRepresentative() {
-        return new Object[][]{
-                {"test_Passed"},
-                {"test_Failed"},
-                {"test_SkippedNoStatus"},
-                {"test_expectedFailed"},
-                {"test_expectedFailedPassed"},
-                {"test_PassedAfterRetry"}
-        };
-    }
-
-    @Test(dataProvider = "dataProviderTestStateRepresentative")
+    @Test(dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
     public void testT01_checkSearchForMethodsSelectionWorksCorrectly(String method) {
         WebDriver driver = WebDriverManager.getWebDriver();
 

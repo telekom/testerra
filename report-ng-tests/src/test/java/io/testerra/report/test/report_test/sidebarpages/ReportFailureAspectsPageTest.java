@@ -9,62 +9,14 @@ import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
+import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Optional;
 
 public class ReportFailureAspectsPageTest extends AbstractReportTest {
-
-    @DataProvider
-    public static Object[][] dataProviderForFailureAspectsWithCorrespondingStates() {
-        return new Object[][]{
-                {"AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED},
-                {"AssertionError: failed1", Status.FAILED, Status.FAILED_EXPECTED},
-                {"AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED},
-                {"PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED},
-                {"AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED},
-                {"AssertionError: 'Failed' on reached Page.", Status.FAILED, null},
-                {"AssertionError: minor fail", Status.PASSED, null},
-                {"SkipException: Test Skipped.", Status.SKIPPED, null},
-                {"RuntimeException: Error in DataProvider.", Status.SKIPPED, null},
-                {/*[...]*/"depends on not successfully finished methods", Status.SKIPPED, null},
-                {"AssertionError: test_FailedToPassedHistoryWithRetry", Status.RETRIED, null},
-                {"AssertionError: No Oil.", Status.FAILED_EXPECTED, null}
-        };
-    }
-
-    @DataProvider
-    public Object[][] failureAspectsWithMultipleStatus() {
-        return new Object[][]{
-                {"AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED},
-                {"AssertionError: failed1", Status.FAILED, Status.FAILED_EXPECTED},
-                {"AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED},
-                {"PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED},
-                {"AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForFailureAspects() {
-        return new Object[][]{
-                {"AssertionError"},
-                {"PageNotFoundException"},
-                {"SkipException"},
-                {"RuntimeException"},
-                {"Throwable"}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForFailureAspectsTypes() {
-        return new Object[][]{
-                {"Major"},
-                {"Minor"}
-        };
-    }
 
     @Test
     public void testT01_checkFailureAspectIndicesDescendingCorrectly() {
@@ -130,8 +82,11 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "failureAspectsWithMultipleStatus")
-    public void testT05_checkStatesRedirectCorrectForFailureAspectsWithDifferentStates(String failureAspect, Status state1, Status state2){
+    public void testT05_checkStatesRedirectCorrectForFailureAspectsWithDifferentStates(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        String failureAspect = data.getFailureAspect();
+        Status state1 = data.getStatus1();
+        Status state2 = data.getStatus2();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
@@ -152,8 +107,11 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
-    public void testT06_checkNavigationWithFailureAspect(String failureAspect, Status status1, Status status2){
+    public void testT06_checkNavigationWithFailureAspect(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        String failureAspect = data.getFailureAspect();
+        Status state1 = data.getStatus1();
+        Status state2 = data.getStatus2();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
@@ -166,7 +124,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         Assert.assertTrue(failureAspectLink.isPresent(), "Provided failure Aspect should be contained in failure-aspects-page");
         ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickFailureAspectLink(failureAspectLink.get());
         reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
-        reportTestsPage.assertCorrectTestStates(status1, status2);
+        reportTestsPage.assertCorrectTestStates(state1, state2);
     }
 
 }

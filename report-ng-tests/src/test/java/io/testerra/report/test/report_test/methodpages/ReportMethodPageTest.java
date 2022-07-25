@@ -12,6 +12,7 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import io.testerra.report.test.pages.utils.DateTimeUtils;
+import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -19,9 +20,13 @@ import org.testng.annotations.Test;
 public class ReportMethodPageTest extends AbstractReportTest {
 
 
-    @Test(dataProvider = "dataProviderForPreTestMethods")
-    public void testT01_methodOverviewIsCorrect(String method, String methodClass, Status status, String failureAspect) {
+    @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States_Types")
+    public void testT01_methodOverviewIsCorrect(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        String method = data.getMethod();
+        String methodClass = data.getMethodClass();
+        Status status = data.getStatus1();
+        ReportMethodPageType reportMethodPageType = data.getReportMethodPageType();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
@@ -31,7 +36,7 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to method detail page and check for correct content");
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, reportMethodPageType);
         reportMethodPage.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportMethodPage.clickThreadLink();
         reportThreadsPage.assertMethodBoxIsSelected(method);

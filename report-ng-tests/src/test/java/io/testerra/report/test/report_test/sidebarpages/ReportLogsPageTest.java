@@ -10,18 +10,11 @@ import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import io.testerra.report.test.pages.utils.LogLevel;
+import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ReportLogsPageTest extends AbstractReportTest {
-
-    @DataProvider
-    public Object[][] dataProviderForLogLevel() {
-        return new Object[][]{
-                {LogLevel.INFO}, {LogLevel.WARN}, {LogLevel.ERROR}
-        };
-    }
 
     @Test(dataProvider = "dataProviderForLogLevel")
     public void testT01_checkLogLevelFilter(LogLevel logLevel) {
@@ -58,9 +51,12 @@ public class ReportLogsPageTest extends AbstractReportTest {
         // reportLogsPage.assertLogReportIsCorrectWhenSearchingForDifferentLogLines();
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethods")
-    public void testT03_filterForMethodContent(String methodeName, String methodeClass, Status methodStatus, String failureAspect) {
+    @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
+    public void testT03_filterForMethodContent(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        String methodeName = data.getMethod();
+        String methodeClass = data.getMethodClass();
+        Status methodStatus = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));

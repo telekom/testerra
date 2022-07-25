@@ -11,33 +11,13 @@ import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
+import io.testerra.report.test.pages.utils.TestData;
 import org.graalvm.compiler.hotspot.phases.OnStackReplacementPhase;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ReportStepsTabTest extends AbstractReportTest {
-
-    @DataProvider
-    public Object[][] dataProviderForTestsWithoutFailureAspect() {
-        return new Object[][]{
-                {"test_Passed"},
-                {"test_expectedFailedPassed"},
-                {"test_GenerateScreenshotManually"}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForPreTestMethodsWithFailureAspects(){
-        return new Object[][]{
-                {"test_SkippedNoStatus","SkipException: Test Skipped."},
-                {"test_Optional_Assert","AssertionError: minor fail"},
-                {"test_failedPageNotFound","PageNotFoundException: Test page not reached."},
-                {"test_expectedFailedPageNotFound","PageNotFoundException: Test page not reached."},
-        };
-    }
-
-
 
     @Test(dataProvider = "dataProviderForTestsWithoutFailureAspect")
     public void testT01_passedTestsWithoutFailureAspectsLinkToStepsTab(String method) {
@@ -57,8 +37,10 @@ public class ReportStepsTabTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithFailureAspects")
-    public void testT02_checkTestStepsContainFailureAspectMessage(String method, String failureAspect) {
+    public void testT02_checkTestStepsContainFailureAspectMessage(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        String method = data.getMethod();
+        String failureAspect = data.getFailureAspect();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));

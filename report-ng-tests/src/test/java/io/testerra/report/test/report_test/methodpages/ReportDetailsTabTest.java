@@ -10,70 +10,18 @@ import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
+import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ReportDetailsTabTest extends AbstractReportTest {
 
-    @DataProvider
-    public Object[][] testStatesDataProvider() {
-        return new Object[][]{
-                {Status.PASSED},
-                {Status.SKIPPED},
-                {Status.FAILED_EXPECTED},
-                {Status.FAILED},
-                {Status.REPAIRED},
-                {Status.RECOVERED},
-                {Status.RETRIED}};
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForPreTestMethodsWithFailureAspect() {
-        return new Object[][]{
-                // skipped
-                {"test_SkippedNoStatus", Status.SKIPPED},
-                // Failed
-                {"testAssertCollector", Status.FAILED},
-                // expected Failed
-                {"test_expectedFailedAssertCollector", Status.FAILED_EXPECTED},
-                // retried
-                {"test_PassedAfterRetry", Status.RETRIED}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForPreTestMethodsWithStatusFailed() {
-        return new Object[][]{
-                {"testAssertCollector"},
-                {"test_failedPageNotFound"},
-                {"test_Failed"},
-                {"test_Failed_WithScreenShot"}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForPreTestMethodsWithStatusExpectedFailed() {
-        return new Object[][]{
-                {"test_expectedFailedAssertCollector"},
-                {"test_expectedFailedPageNotFound"},
-                {"test_expectedFailed"}
-        };
-    }
-
-    @DataProvider
-    public Object[][] dataProviderForPreTestMethodsWithStatusSkipped() {
-        return new Object[][]{
-                {"test_SkippedNoStatus"},
-                {"test_Skipped_AfterErrorInDataProvider"},
-                {"test_Skipped_DependingOnFailed"},
-                {"test_Skipped_AfterErrorInBeforeMethod"}
-        };
-    }
-
     @Test(dataProvider = "dataProviderForPreTestMethodsWithFailureAspect")
-    public void testT01_checkFailureAspectContainsCorrectStatus(String method, Status status) {
+    public void testT01_checkFailureAspectContainsCorrectStatus(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        String method = data.getMethod();
+        Status status = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));

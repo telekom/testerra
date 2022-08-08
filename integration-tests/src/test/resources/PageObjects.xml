@@ -8,6 +8,7 @@
     <test name="Page Factory" parallel="classes">
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.pagefactory"/>
+            <package name="eu.tsystems.mms.tic.testframework.pageobjects.internal"></package>
         </packages>
     </test>
 </suite>

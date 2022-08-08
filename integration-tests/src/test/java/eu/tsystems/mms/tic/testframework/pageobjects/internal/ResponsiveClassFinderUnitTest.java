@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -10,11 +11,12 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponsiveClassFinderUnitTest {
+public class ResponsiveClassFinderUnitTest extends TesterraTest {
     private static final String GROUP_CLASS = ".class";
     private static final String GROUP_OTHER = "other";
 
-    @Test
+    // Test is disabled because filtering is deactivated in ResponsiveClassFinder.filter
+    @Test(enabled = false)
     void test_filterConfigure_yieldSameResults() {
         final var reflectionsConfigure = new Reflections(ResponsiveClassFinder.configure());
         final var reflectionsFilter = new Reflections(ResponsiveClassFinder.filter(ResponsiveClassFinder.configure()));

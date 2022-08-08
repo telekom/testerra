@@ -83,7 +83,11 @@ final public class ResponsiveClassFinder {
     static ConfigurationBuilder filter(final ConfigurationBuilder configuration) {
         configuration.setScanners(new SubTypesScanner()); // drops TypeAnnotationScanner
         configuration.useParallelExecutor();
-        configuration.filterInputsBy(name -> name.endsWith(".class"));
+        /**
+         * TODO: This filter does not shrink the results and has no impact to safe time.
+         * activate Test eu.tsystems.mms.tic.testframework.pageobjects.internal.ResponsiveClassFinderUnitTest.test_filterConfigure_yieldSameResults
+         */
+//        configuration.filterInputsBy(name -> name.endsWith(".class"));
         return configuration;
     }
 

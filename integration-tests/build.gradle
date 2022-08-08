@@ -25,10 +25,6 @@ project.afterEvaluate {
 
 test {
 
-    filter {
-        includeTestsMatching("*.test_filterConfigure_yieldSameResults")
-    }
-
     String[] s = [
             'src/test/resources/Integration.xml',
     ]

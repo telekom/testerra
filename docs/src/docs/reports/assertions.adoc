@@ -5,7 +5,7 @@
 When <<#_collected_assertions, Collected assertions>> are used and some of its assertions fail the test is not aborted, but it will be marked as failure in `Report-NG`:
 
 image::report-ng-22.png[align="center", alt="Failed collected assertions"]
-image::report-ng-19.png[align="center", alt="Assert Collector Details"]
+image::report-ng-collected-assertions-01.png[align="center", alt="Assert Collector Details"]
 
 The failures are marked in the step view:
 

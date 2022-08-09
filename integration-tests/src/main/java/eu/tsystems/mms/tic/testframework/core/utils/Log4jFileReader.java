@@ -140,13 +140,11 @@ public class Log4jFileReader implements Loggable {
         final List<String> foundEntries = filterLogForTestMethod(classNameSlug, methodNameSlug);
 
         log().debug("Asserting '{}' for '{}'", expectedStatus, methodNameSlug);
-        foundEntries.stream()
-                .filter(line -> line.contains(expectedStatus.title))
-                .findFirst()
-                .ifPresentOrElse(
-                        value -> log().info("Found status {}", expectedStatus.title),
-                        () -> Assert.fail(String.format("'%s' should have status '%s'", methodNameSlug, expectedStatus))
-                );
+        if (foundEntries.stream().anyMatch(line -> line.contains(expectedStatus.title))) {
+            log().info("Found status {}", expectedStatus.title);
+        } else {
+            Assert.fail(String.format("'%s' should have status '%s'", methodNameSlug, expectedStatus));
+        }
     }
 
     /**

@@ -374,7 +374,7 @@ public final class WebDriverSessionsManager {
                                         currentMethodContext.addSessionContext(sessionContext)
                                 ));
             } else {
-                // Link an normal sessionContext
+                // Link a normal sessionContext
                 executionContextController.getCurrentSessionContext().ifPresent(currentSessionContext ->
                         executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
                                 currentMethodContext.addSessionContext(currentSessionContext)

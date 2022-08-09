@@ -93,13 +93,13 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         final WebDriver driver = new ChromeDriver(chromeOptions);
 
         // assert that webdrivermanager does not know about this session.
-        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0, "WebDriver Session should not active in this thread.");
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0, "No WebDriver sessions should active in this thread.");
         Assert.assertTrue(executionContextController.getCurrentSessionContext().isEmpty(), "The current session context should empty");
         // introduce it.
         WebDriverManager.introduceWebDriver(driver);
 
         // assert that webdrivermanager does know about the session.
-        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 1, "WebDriver Session should active in this thread.");
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 1, "One WebDriver session should active in this thread.");
         Assert.assertTrue(executionContextController.getCurrentSessionContext().isPresent(), "There should exist a current session context.");
     }
 
@@ -110,7 +110,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
         String sessionId = WEB_DRIVER_MANAGER.makeExclusive(exclusiveDriver);
 
-        Assert.assertTrue(executionContextController.getCurrentSessionContext().isEmpty(), "The current session context should empty");
+        Assert.assertTrue(executionContextController.getCurrentSessionContext().isEmpty(), "The current session context should be empty.");
 
         Assert.assertNotNull(WebDriverSessionsManager.getSessionContext(exclusiveDriver).get());
 
@@ -135,12 +135,12 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
         WEB_DRIVER_MANAGER.getWebDriver(t03aSessionId);
 
-        Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 1, "A session should link to current method context");
-        this.readSessionContextFromMethodContext()
-                .filter(sessionContext -> sessionContext.getSessionKey().equals(t03aSessionId))
-                .findAny()
-                .ifPresentOrElse(sessionContext -> Assert.assertTrue(true),
-                        () -> Assert.fail("Exclusive session not found in current method context"));
+        Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 1, "One session should link to current method context");
+        if (this.readSessionContextFromMethodContext()
+                .map(SessionContext::getSessionKey)
+                .noneMatch(t03aSessionId::equals)) {
+            Assert.fail("Exclusive session not found in current method context");
+        }
     }
 
     @Test
@@ -328,7 +328,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
         // Create a second session 'default'
         WEB_DRIVER_MANAGER.getWebDriver();
-        Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 2, "Current method context should 2 sessions.");
+        Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 2, "Current method context should have 2 sessions.");
 
         WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
     }

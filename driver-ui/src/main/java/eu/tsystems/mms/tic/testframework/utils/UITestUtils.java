@@ -318,16 +318,15 @@ public class UITestUtils implements WebDriverManagerProvider {
         Optional<MethodContext> optionalMethodContext = executionContextController.getCurrentMethodContext();
 
         // Find exclusive sessions linked to current method context
-        List<String> exclusiveSessionKeys = new ArrayList<>();
+        Stream<String> exclusiveSessionKeys = Stream.empty();
         if (optionalMethodContext.isPresent()) {
             exclusiveSessionKeys = optionalMethodContext.get().readSessionContexts()
                     .map(SessionContext::getSessionKey)
-                    .filter(sessionKey -> sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX))
-                    .collect(Collectors.toList());
+                    .filter(sessionKey -> sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX));
         }
 
         // Take all normal webdriver and linked exclusive webdriver and create screenshots
-        Stream<Screenshot> screenshotStream = Stream.concat(WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread(), exclusiveSessionKeys.stream().map(WEB_DRIVER_MANAGER::getWebDriver))
+        Stream<Screenshot> screenshotStream = Stream.concat(WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread(), exclusiveSessionKeys.map(WEB_DRIVER_MANAGER::getWebDriver))
                 .map(UITestUtils::pTakeAllScreenshotsForSession)
                 .flatMap(Collection::stream);
 

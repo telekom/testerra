@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
- * Created on 19.07.2022
  *
  * @author mgn
  */

@@ -227,7 +227,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
     @Test
     public void testT08_invalidWindowSize() {
         PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, "katze");
-        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE));
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE);
         Assert.assertEquals(property, "katze");
 
         assertNewWebDriverWindowSize(this.getDefaultDimension());

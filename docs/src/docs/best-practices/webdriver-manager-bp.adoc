@@ -1,0 +1,71 @@
+= Handling of WebDriver instances
+
+We strongly recommend the following rules for dealing with WebDriver instances:
+
+*Create or call your WebDriver instances only within the context of test or setup methods.*
+
+✅ Good practice
+[source, java]
+----
+@BeforeMethod
+public void before() {
+    // Context of a setup method
+    WebDriver driver = WebDriverManager.getWebDriver();
+}
+
+@Test
+public void myDemoTest() {
+    // Context of a test method
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+    ...
+}
+----
+
+❌ Bad practice - don't do this
+[source, java]
+----
+public class MyTest extends TesterraTest
+        implements WebDriverManagerProvider, PageFactoryProvider {
+
+    // This may cause side effects!
+    // The session information are missing in the report because
+    // your new session cannot link to the method context
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+    @Test
+    public void myDemoTest() {
+        StartPage startPage = PAGE_FACTORY.createPage(StartPage.class, driver);
+        ...
+    }
+}
+----
+
+*Only store the names of WebDriver instances, not the whole object.*
+
+✅ Good practice
+[source, java]
+----
+public class MyTest extends TesterraTest implements WebDriverManagerProvider {
+
+    private String exclusiveSessionId = "";
+    private String normalSesion = "mySession"
+
+    @BeforeClass
+    public void beforeClass() {
+        WebDriver driver1 = WEB_DRIVER_MANAGER.getWebDriver();
+        exclusiveSessionId = WEB_DRIVER_MANAGER.makeExclusive(driver1);
+
+        // Create a session with a custom name
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver(this.normalSesion);
+        ...
+    }
+
+    @Test
+    public void myDemoTest() {
+        // Always use the WEB_DRIVER_MANAGER
+        WebDriver driver1 = WEB_DRIVER_MANAGER.getWebDriver(this.exclusiveSessionId);
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver(this.normalSesion);
+        ...
+    }
+}
+----

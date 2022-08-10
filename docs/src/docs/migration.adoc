@@ -144,7 +144,7 @@ class MyPage extends Page {
 ====
 ```java
 class MyPage extends Page {
-    private GuiElement guiElement = new GuiElement(By.xpath("//div[1]"), driver);
+    private GuiElement guiElement = new GuiElement(driver, By.xpath("//div[1]"));
 }
 ```
 ====

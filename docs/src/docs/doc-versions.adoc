@@ -24,4 +24,4 @@
 |https://docs.testerra.io/testerra/2.0/index.html
 |===
 
-You will find detailed release notes at https://github.com/telekom/testerra.
+You will find detailed release notes at https://github.com/telekom/testerra/releases.

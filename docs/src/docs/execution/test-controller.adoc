@@ -16,7 +16,7 @@ CONTROL.collectAssertions(() -> {
 });
 ----
 
-IMPORTANT: Assertions can only collected by using <<_regular_assertions>> or `expect()`/`assertThat()` of UiElements. +
+IMPORTANT: Assertions can only be collected by using <<_regular_assertions>> or `expect()`/`assertThat()` of UiElements. +
 `CONTROL.collectAssertions(...)` does not work with `org.testng.Assert`.
 
 See <<#_collected_assertions_2, here>> how collected assertions are presented in Report-NG.

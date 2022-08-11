@@ -25,7 +25,7 @@ WEB_DRIVER_MANAGER.setGlobalCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
 
 = Request capabilities
 
-A request defined capability means using a Webdriver request like `DesktopWebDriverRequest`.
+Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`.
 
 .Set capabilities to a DesktopWebDriverRequest object
 [source,java]

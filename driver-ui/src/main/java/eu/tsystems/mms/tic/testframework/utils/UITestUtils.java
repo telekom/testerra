@@ -27,13 +27,11 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
-import java.util.Collection;
-import java.util.stream.Collectors;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TakesScreenshot;
@@ -43,6 +41,7 @@ import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -52,6 +51,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +60,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -297,7 +299,9 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     /**
-     * Make screenshots from all open browser windows/selenium, webdriver instances.
+     * Make screenshots from all open Webdriver instances of the current method context and add them to report.
+     * <p>
+     * If no method context found, the returned list will be empty.
      *
      * @return ScreenshotPaths.
      */
@@ -306,23 +310,44 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     /**
-     * Make screenshots from all open browser windows/selenium, webdriver instances.
+     * Make screenshots from all open Webdriver instances of the current method context.
+     * <p>
+     * If no method context found, the returned list will be empty.
      *
      * @param publishToReport True for publish directly into report.
      * @return ScreenshotPaths.
      */
     public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
-        Stream<Screenshot> screenshotStream = Stream.concat(WEB_DRIVER_MANAGER.readWebDriversFromCurrentThread(), WEB_DRIVER_MANAGER.readExclusiveWebDrivers())
+        Optional<MethodContext> methodContext = executionContextController.getCurrentMethodContext();
+
+        if (methodContext.isEmpty()) {
+            LOGGER.warn("Please use this method only in test or setup methods. Otherwise no screenshots are created.");
+            return Collections.emptyList();
+        }
+
+        if (methodContext.get().readSessionContexts().count() == 0) {
+            LOGGER.warn("Could not create screenshots: No sessions found in current test context.");
+            return Collections.emptyList();
+        }
+
+        // Find all sessions of current method context and create screenshots
+        Stream<Screenshot> screenshotStream = methodContext.get().readSessionContexts()
+                .map(SessionContext::getSessionKey)
+                .map(WEB_DRIVER_MANAGER::getWebDriver)
                 .map(UITestUtils::pTakeAllScreenshotsForSession)
                 .flatMap(Collection::stream);
 
-        if (publishToReport && executionContextController.getCurrentMethodContext().isPresent()) {
-            MethodContext methodContext = executionContextController.getCurrentMethodContext().get();
+        if (publishToReport) {
             screenshotStream = screenshotStream.peek(screenshot -> {
-                methodContext.addScreenshot(screenshot);
+                methodContext.get().addScreenshot(screenshot);
                 report.addScreenshot(screenshot, Report.FileMode.MOVE);
             });
         }
-        return screenshotStream.collect(Collectors.toList());
+
+        final var result = screenshotStream.collect(Collectors.toList());
+        if (result.isEmpty()) {
+            LOGGER.warn("Could not create screenshots of existing sessions.");
+        }
+        return result;
     }
 }

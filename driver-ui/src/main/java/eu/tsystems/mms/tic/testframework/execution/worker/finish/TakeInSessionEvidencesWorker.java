@@ -48,6 +48,9 @@ public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
     @Override
     @Subscribe
     public void onMethodEnd(MethodEndEvent methodEndEvent) {
+        /*
+         * Take Screenshot of failure and log it into report.
+         */
         if (methodEndEvent.isFailed()) {
             collect(methodEndEvent);
         } else if (methodEndEvent.isSkipped()) {

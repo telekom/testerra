@@ -193,6 +193,7 @@ public final class WebDriverSessionsManager {
         // store to method context
         executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
             methodContext.addSessionContext(sessionContext);
+            executionContextController.setCurrentSessionContext(sessionContext);
         });
         storeWebDriverSession(eventFiringWebDriver, sessionContext);
     }
@@ -309,6 +310,7 @@ public final class WebDriverSessionsManager {
          */
         sessionContext.setSessionKey(exclusiveSessionKey);
         sessionContext.getWebDriverRequest().setShutdownAfterTest(false);
+        sessionContext.getWebDriverRequest().setShutdownAfterTestFailed(false);
         executionContextController.getExecutionContext().addExclusiveSessionContext(sessionContext);
         Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
@@ -338,20 +340,21 @@ public final class WebDriverSessionsManager {
 
     public static EventFiringWebDriver getWebDriver(final WebDriverRequest webDriverRequest) {
         String sessionKey = webDriverRequest.getSessionKey();
+        EventFiringWebDriver existingWebDriver = null;
         /*
         Check for exclusive session
          */
         if (sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
             // returning exclusive session
             if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsKey(sessionKey)) {
-                return EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.get(sessionKey);
+                existingWebDriver = EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.get(sessionKey);
             } else {
                 throw new SystemException("No Session for key: " + sessionKey);
             }
+        } else {
+            String fullSessionKey = getThreadSessionKey(sessionKey);
+            existingWebDriver = THREAD_SESSION_KEY_WEBDRIVER_MAP.get(fullSessionKey);
         }
-
-        String fullSessionKey = getThreadSessionKey(sessionKey);
-        EventFiringWebDriver existingWebDriver = THREAD_SESSION_KEY_WEBDRIVER_MAP.get(fullSessionKey);
 
         /*
         session already exists?
@@ -359,13 +362,24 @@ public final class WebDriverSessionsManager {
         if (existingWebDriver != null) {
             /*
             Link sessionContext to methodContext if not exist
-             e.g. Session was created in setup method and reused in test method
+            e.g. Session was created in setup method and reused in test method or exclusive session is used in current test.
             */
-            executionContextController.getCurrentSessionContext().ifPresent(currentSessionContext ->
-                    executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
-                            currentMethodContext.addSessionContext(currentSessionContext)
-                    ));
-
+            if(sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
+                // Link an exclusive sessionContext
+                executionContextController.getExecutionContext().readExclusiveSessionContexts()
+                        .filter(sessionContext -> sessionContext.getSessionKey().equals(sessionKey))
+                        .findFirst()
+                        .ifPresent(sessionContext ->
+                                executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
+                                        currentMethodContext.addSessionContext(sessionContext)
+                                ));
+            } else {
+                // Link a normal sessionContext
+                executionContextController.getCurrentSessionContext().ifPresent(currentSessionContext ->
+                        executionContextController.getCurrentMethodContext().ifPresent(currentMethodContext ->
+                                currentMethodContext.addSessionContext(currentSessionContext)
+                        ));
+            }
             return existingWebDriver;
         }
 

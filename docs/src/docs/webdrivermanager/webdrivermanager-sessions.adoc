@@ -84,6 +84,8 @@ For every other call of `getWebDriver()` in the *same test context* WebDriverMan
 
 This makes it possible to retrieve the current session in any context and avoids to force the user to pass the instance around.
 
+IMPORTANT: Please have a look to <<_handling_of_webdriver_instances, best practices of dealing with WebDriver instances>>
+
 == WebDriver lifecycle
 
 The default behaviour of Testerra's `WebDriverManager` is, to create unique WebDrivers for each thread and/or test method.
@@ -137,7 +139,7 @@ WEB_DRIVER_MANAGER.shutdownAllSessions()
 [NOTE]
 ====
 Please do not use Selenium provided methods to close `WebDriver` sessions.
-Have a further read in our known issue section: <<Closing `WebDriver` sessions without using Testerra `WebDriverManager`>>.
+Have a further read in our known issue section: <<Close WebDriver sessions without WebDriverManager>>.
 ====
 
 == Shared sessions in one thread

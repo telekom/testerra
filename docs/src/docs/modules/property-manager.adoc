@@ -16,7 +16,7 @@ It will look for the property definition appearance in the following order:
 - `System.getProperties()` (`system.properties`)
 - <<Property files>> (`test.properties`)
 
-When it's still not defined, in will fall back to the given default value.
+When it's still not defined, it will fall back to the given default value.
 
 == Property files
 

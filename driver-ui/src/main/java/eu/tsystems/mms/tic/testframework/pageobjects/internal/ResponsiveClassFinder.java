@@ -19,13 +19,12 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -38,12 +37,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final public class ClassFinder {
+/**
+ * This class is used in ResponsivePageFactory to find the best matching page implementation for the current page regarding the current browser resolution.
+ *
+ */
+final public class ResponsiveClassFinder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassFinder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponsiveClassFinder.class);
 
     private static final String SCHEMA_DIV = "_";
     private static final String KEYWORD_PIXEL = "px";
@@ -57,8 +63,32 @@ final public class ClassFinder {
     private static final String PATTERN_HI = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + KEYWORD_MAX;
     private static final String PATTERN_RES = "TODO"; // TODO
 
-    private ClassFinder() {
+    /**
+     * This call takes some time. It has an impact to the duration of the first page check (takes ca 2-3 seconds longer).
+     */
+    private static final Reflections reflections = new Reflections(filter(configure()));
 
+    private ResponsiveClassFinder() {
+
+    }
+
+    /**
+     * This configuration is complete but vastly overgenerates.
+     * The method exists separately for Sanity Checking that {@link #filter(ConfigurationBuilder)} does not accidentally filter [i]too much[/i].
+     */
+    static ConfigurationBuilder configure() {
+        return new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath());
+    }
+    /** This method should prune resources we are not interested in, but not change the interesting results. */
+    static ConfigurationBuilder filter(final ConfigurationBuilder configuration) {
+        configuration.setScanners(new SubTypesScanner()); // drops TypeAnnotationScanner
+        configuration.useParallelExecutor();
+        /**
+         * TODO: This filter does not shrink the results and has no impact to safe time.
+         * activate Test eu.tsystems.mms.tic.testframework.pageobjects.internal.ResponsiveClassFinderUnitTest.test_filterConfigure_yieldSameResults
+         */
+//        configuration.filterInputsBy(name -> name.endsWith(".class"));
+        return configuration;
     }
 
     private static class Caches {
@@ -115,10 +145,7 @@ final public class ClassFinder {
         if (prefix == null) {
             prefix = "";
         }
-
-        final Reflections reflections = new Reflections(TesterraListener.PROJECT_PACKAGE);
         final String baseClassName = baseClass.getSimpleName();
-
         PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();
 
         // at first, add the base page it self, only if not abstract

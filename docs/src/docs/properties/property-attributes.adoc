@@ -25,7 +25,6 @@
 :webdriver_timeouts_seconds_script:             webdriver.timeouts.seconds.script
 
 // pagefactory
-:project_package:                               tt.project.package
 :page_factory_loops:                            tt.page.factory.loops
 
 // guielement

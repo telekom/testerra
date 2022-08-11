@@ -23,13 +23,26 @@ package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckTimeout;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithPageOptions;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class PageOptionsTest extends AbstractTestSitesTest implements PageFactoryProvider, AssertProvider {
+
+    /**
+     * This beforeClass is needed to initialize the used page factory implementation if it's not done at this point.
+     *
+     * (Currently ResponsivePageFactory)
+     */
+    @BeforeClass
+    public void pageOptionsInitializer() {
+        WebDriver webDriver = getClassExclusiveWebDriver();
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, webDriver);
+    }
 
     @Test
     public void testPageOptionsTimeout() {
@@ -42,7 +55,8 @@ public class PageOptionsTest extends AbstractTestSitesTest implements PageFactor
             end = System.currentTimeMillis();
         }
 
-        ASSERT.assertBetween(end-start, 3000, 3500);
+        ASSERT.assertBetween(end - start, 3000, 3500);
+        log().info("Duration: {}ms", end - start);
     }
 
     @Test
@@ -56,6 +70,6 @@ public class PageOptionsTest extends AbstractTestSitesTest implements PageFactor
             end = System.currentTimeMillis();
         }
 
-        ASSERT.assertBetween(end-start, 3000, 3500);
+        ASSERT.assertBetween(end - start, 3000, 3500);
     }
 }

@@ -57,7 +57,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check whether method-column contains correct methods");
-        reportTestsPage.search(testMethod);
+        reportTestsPage = reportTestsPage.search(testMethod);
         reportTestsPage.assertMethodColumnContainsCorrectMethods(testMethod);
         reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
     }

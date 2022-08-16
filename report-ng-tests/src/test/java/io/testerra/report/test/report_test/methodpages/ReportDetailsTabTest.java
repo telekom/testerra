@@ -29,9 +29,10 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check whether the displayed test state corresponds to each method");
+        // TODO: use ReportMethodPage.class as Parameter to get explicit page back; assign returned page; do this on all calls of selectDropBoxElement in every class accordingly
         reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
+        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, status, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailPageAsserts_FailureAspectsCorrespondsToCorrectStatus(status.title);
     }
@@ -59,6 +60,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusFailed")
     public void testT03_failedTestsContainCorrespondingFailureAspect(String method) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        // TODO: tie correct failure aspect to provided data, to avoid checking whole array each execution
         String[] expectedFailureAspects = {"AssertCollector.fail", "PageNotFoundException", "Assert.fail"};
 
         TestStep.begin("Navigate to dashboard page.");
@@ -77,6 +79,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusExpectedFailed")
     public void testT04_expectedFailedTestsContainCorrespondingFailureAspectAndFailsAnnotation(String method) {
         WebDriver driver = WebDriverManager.getWebDriver();
+        // TODO: tie correct failure aspect to provided data, to avoid checking whole array each execution
         String[] expectedFailureAspects = {"AssertCollector.fail", "PageNotFoundException", "Assert.fail"};
 
         TestStep.begin("Navigate to dashboard page.");

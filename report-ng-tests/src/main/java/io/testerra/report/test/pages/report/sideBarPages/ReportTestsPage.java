@@ -35,7 +35,6 @@ import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ReportTestsPage extends AbstractReportPage {
@@ -48,8 +47,25 @@ public class ReportTestsPage extends AbstractReportPage {
     private final GuiElement testSearchInput = pageContent.getSubElement(By.xpath(".//input[contains(@class, 'mdc-text-field__input')]"));
     @Check
     private final GuiElement configurationMethodsSwitch = pageContent.getSubElement(By.xpath("//button[@role='switch']"));
+
+    private final String tableRowsLocator = "//tbody//tr";
+    private final GuiElement tableRows = pageContent.getSubElement(By.xpath(tableRowsLocator));
     private final GuiElement tableHead = pageContent.getSubElement(By.xpath(".//thead"));
-    private final GuiElement tableRows = pageContent.getSubElement(By.xpath("//tbody//tr"));
+
+    public enum TestsTableEntries {
+        STATUS(0), CLASS(1), INDEX(2), METHOD(3);
+
+        private final int value;
+
+        TestsTableEntries(final int value) {
+            this.value = value;
+        }
+
+        public int index() {
+            return this.value;
+        }
+    }
+
 
     public ReportTestsPage(WebDriver driver) {
         super(driver);
@@ -63,8 +79,31 @@ public class ReportTestsPage extends AbstractReportPage {
         return column;
     }
 
-    private List<GuiElement> getHeadRow() {
-        return tableHead.getSubElement(By.xpath("//tr//th")).getList();
+
+    public List<GuiElement> getColumnWithoutHead(TestsTableEntries tableEntry) {
+        return getColumnWithoutHead(tableEntry.index());
+    }
+
+    private GuiElement getHeaderRow(TestsTableEntries tableEntry) {
+
+        String headerRowLocator = ".//tr";
+
+        switch (tableEntry) {
+            case STATUS:
+                headerRowLocator = "//th[contains(text(),'Status')]";
+                break;
+            case CLASS:
+                headerRowLocator = "//th[contains(text(),'Class')]";
+                break;
+            case INDEX:
+                headerRowLocator = "//th[contains(text(),'#')]";
+                break;
+            case METHOD:
+                headerRowLocator = "//th[contains(text(),'Method')]";
+                break;
+        }
+
+        return tableHead.getSubElement(By.xpath(headerRowLocator));
     }
 
     public void assertPageIsShown() {
@@ -73,9 +112,7 @@ public class ReportTestsPage extends AbstractReportPage {
 
 
     public void assertMethodColumnContainsCorrectMethods(String filter) {
-        //TODO: add readable method for getting part of column in row with enums: parameter to method for switching index to use
-        // (--> ?)
-        getColumnWithoutHead(3)
+        getColumnWithoutHead(TestsTableEntries.METHOD)
                 .stream()
                 .map(GuiElement::getText)
                 .forEach(i -> Assert.assertTrue(i.contains(filter),
@@ -83,7 +120,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertClassColumnContainsCorrectClasses(String expectedClass) {
-        getColumnWithoutHead(1)
+        getColumnWithoutHead(TestsTableEntries.CLASS)
                 .stream()
                 .map(GuiElement::getText)
                 .forEach(i -> Assert.assertEquals(i, expectedClass, String.format(
@@ -92,13 +129,13 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void assertClassColumnHeadlineContainsCorrectText() {
         // counts amount of different displayed classes
-        int amountOfDifferentClasses = getColumnWithoutHead(1)
+        int amountOfDifferentClasses = getColumnWithoutHead(TestsTableEntries.CLASS)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeadRow().get(1).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntries.CLASS).getText();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Class (%s)", amountOfDifferentClasses), "Headline should contain correct number!");
@@ -106,13 +143,13 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void assertStatusColumnHeadlineContainsCorrectText() {
         // counts amount of different displayed classes
-        int amountOfDifferentStates = getColumnWithoutHead(0)
+        int amountOfDifferentStates = getColumnWithoutHead(TestsTableEntries.STATUS)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeadRow().get(0).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntries.STATUS).getText();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Status (%s)", amountOfDifferentStates), "Headline should contain correct number!");
@@ -120,9 +157,9 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void assertMethodeColumnHeadlineContainsCorrectText() {
         // counts amount of different displayed classes
-        int amountOfDifferentMethods = getColumnWithoutHead(3).size();
+        int amountOfDifferentMethods = getColumnWithoutHead(TestsTableEntries.METHOD).size();
         //get table head of class column
-        String tableHeadClassColumn = getHeadRow().get(3).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntries.METHOD).getText();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Method (%s)", amountOfDifferentMethods),
@@ -130,7 +167,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertTestMethodIndicDoesNotAppearTwice() {
-        int amountOfDifferentIndices = getColumnWithoutHead(2)
+        int amountOfDifferentIndices = getColumnWithoutHead(TestsTableEntries.INDEX)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toSet())
@@ -139,7 +176,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertCorrectTestStatus(Status status) {
-        getColumnWithoutHead(0)
+        getColumnWithoutHead(TestsTableEntries.STATUS)
                 .stream()
                 .map(GuiElement::getText)
                 .forEach(i -> assertMethodStatusContainsText(status.title, i));
@@ -154,9 +191,8 @@ public class ReportTestsPage extends AbstractReportPage {
         }
     }
 
-
     public void assertConfigurationMethodsAreDisplayed() {
-        int amountOfDisplayedConfigurationMethods = (int) getColumnWithoutHead(3)
+        long amountOfDisplayedConfigurationMethods = getColumnWithoutHead(TestsTableEntries.METHOD)
                 .stream()
                 .map(GuiElement::getText)
                 .filter(i -> i.contains("Configuration"))
@@ -164,33 +200,32 @@ public class ReportTestsPage extends AbstractReportPage {
         Assert.assertTrue(amountOfDisplayedConfigurationMethods > 0, "Configuration methods should be listed and contain the corresponding tag!");
     }
 
+    /**
+     * navigate to TestsPage via methodNameLink link in the table depending on given status and methodName
+     * @param methodName
+     * @param status
+     * @param pageType
+     * @return
+     */
+    public ReportMethodPage navigateToMethodReport(final String methodName, final Status status, final ReportMethodPageType pageType) {
 
-    public ReportMethodPage navigateToMethodReport(String methodName, ReportMethodPageType pageType) {
-        Optional<GuiElement> optionalLink = getColumnWithoutHead(3).stream().filter(i -> i.getText().contains(methodName)).findFirst();
-        if (optionalLink.isPresent()) {
-            optionalLink.get().getSubElement(By.xpath("//a")).click();
-        } else {
-            Assert.fail(String.format("Method %s not displayed!", methodName));
-        }
+        final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
+        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        methodNameLink.click();
+
         ReportMethodPage reportMethodPage = PageFactory.create(ReportMethodPage.class, getWebDriver());
         reportMethodPage.setActivePage(pageType);
         return reportMethodPage;
     }
 
-    public List<String[]> getTable() {
-        // TODO: use map with talking key names for better usability and readability
-        // (--> how? separation in rows should still remain?)
-        List<String[]> table = new ArrayList<>();
-        for (GuiElement row : tableRows.getList()) {
-            List<GuiElement> columns = row.getSubElement(By.xpath("//td")).getList();
-            String[] stringRow = new String[4];
-            stringRow[0] = columns.get(0).getText();
-            stringRow[1] = columns.get(1).getText();
-            stringRow[2] = columns.get(2).getText();
-            stringRow[3] = columns.get(3).getSubElement(By.xpath("//a")).getText();
-            table.add(stringRow);
-        }
-        return table;
+    public ReportMethodPage navigateToMethodReport(String methodName, ReportMethodPageType pageType) {
+
+        GuiElement subElement = tableRows.getSubElement(By.xpath(".//td//a[text()= '" + methodName + "']"));
+        subElement.click();
+
+        ReportMethodPage reportMethodPage = PageFactory.create(ReportMethodPage.class, getWebDriver());
+        reportMethodPage.setActivePage(pageType);
+        return reportMethodPage;
     }
 
     public ReportTestsPage clickConfigurationMethodsSwitch() {
@@ -207,7 +242,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public boolean methodGotFailureAspect(int methodIndex) {
-        return getColumnWithoutHead(3).get(methodIndex).getSubElement(By.xpath("//div")).getNumberOfFoundElements() > 1;
+        return getColumnWithoutHead(TestsTableEntries.METHOD).get(methodIndex).getSubElement(By.xpath("//div")).getNumberOfFoundElements() > 1;
     }
 
     public ReportTestsPage search(String query) {
@@ -216,7 +251,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public int getAmountOfEntries() {
-        return getColumnWithoutHead(0).size();
+        return getColumnWithoutHead(TestsTableEntries.STATUS).size();
     }
 
     public GuiElement getTestClassSelect() {
@@ -224,12 +259,15 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertCorrectTestStates(Status status1, Status status2) {
-        List<String> statesAsStrings = getColumnWithoutHead(0)
+        List<String> statesAsStrings = getColumnWithoutHead(TestsTableEntries.STATUS)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toList());
+
         Assert.assertTrue(statesAsStrings.contains(status1.title), "Status column should contain " + status1.title + "!");
-        if (status2 == null) return;
-        Assert.assertTrue(statesAsStrings.contains(status2.title), "Status column should contain " + status2.title + "!");
+
+        if (status2 != null) {
+            Assert.assertTrue(statesAsStrings.contains(status2.title), "Status column should contain " + status2.title + "!");
+        }
     }
 }

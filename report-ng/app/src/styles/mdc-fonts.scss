@@ -21,30 +21,30 @@
 
 // Local hosting of MDC fonts
 
-@mixin font-face($font-name, $file, $file-format, $font-weight) {
-    $filepath: 'assets/' + $file + '.' + $file-format;
+@mixin font-face($font-name, $file, $format, $font-weight) {
+    $filepath: 'assets/' + $file;
 
     @font-face {
         font-family: '#{$font-name}';
         font-style: normal;
         font-weight: $font-weight;
-        src: url($filepath) format($file-format);
+        src: url($filepath) format($format);
     }
 }
 
 // Roboto
 // https://fonts.google.com/specimen/Roboto?query=roboto
-// woff2 files taken from https://fonts.googleapis.com/css?family=Roboto:300,400,500
+// TTF files taken from https://fonts.google.com/specimen/Roboto/about?query=roboto
 $font-standard: 'Roboto';
-@include font-face($font-standard, 'Roboto-Light', 'woff2', 300);
-@include font-face($font-standard, 'Roboto-Regular', 'woff2', 400);
-@include font-face($font-standard, 'Roboto-Medium', 'woff2', 500);
+@include font-face($font-standard, 'Roboto-Light.ttf', 'truetype', 300);
+@include font-face($font-standard, 'Roboto-Regular.ttf', 'truetype', 400);
+@include font-face($font-standard, 'Roboto-Medium.ttf', 'truetype', 500);
 
 // Material icons
 // https://developers.google.com/fonts/docs/material_icons#getting_icons
 // woff2 file taken from https://fonts.googleapis.com/icon?family=Material+Icons
 $font-icons:    'Material Icons';
-@include font-face($font-icons, 'MaterialIcons-Regular', 'woff2', 400);
+@include font-face($font-icons, 'MaterialIcons-Regular.woff2', 'woff2', 400);
 
 .material-icons {
     font-family: $font-icons;

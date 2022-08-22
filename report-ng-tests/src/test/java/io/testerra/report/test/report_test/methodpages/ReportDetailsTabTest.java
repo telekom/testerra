@@ -5,9 +5,8 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
-import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
+import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.TestData;
@@ -29,12 +28,11 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check whether the displayed test state corresponds to each method");
-        // TODO: use ReportMethodPage.class as Parameter to get explicit page back; assign returned page; do this on all calls of selectDropBoxElement in every class accordingly
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, status, ReportMethodPageType.DETAILS);
-        reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
-        reportMethodPage.detailPageAsserts_FailureAspectsCorrespondsToCorrectStatus(status.title);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method, status);
+        reportDetailsTab.assertPageIsValid();
+        reportDetailsTab.assertFailureAspectsCorrespondsToCorrectStatus(status.title);
     }
 
     @Test
@@ -50,18 +48,17 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(methodName, ReportMethodPageType.DETAILS);
-        reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
-        reportMethodPage.detailsPageAssertsTestMethodContainsCorrectFailureAspect(expectedFailureAspect);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        reportDetailsTab.assertTestMethodContainsCorrectFailureAspect(expectedFailureAspect);
     }
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusFailed")
-    public void testT03_failedTestsContainCorrespondingFailureAspect(String method) {
+    public void testT03_failedTestsContainCorrespondingFailureAspect(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
-        // TODO: tie correct failure aspect to provided data, to avoid checking whole array each execution
-        String[] expectedFailureAspects = {"AssertCollector.fail", "PageNotFoundException", "Assert.fail"};
+        String method = data.getMethod();
+        String expectedFailureAspect = data.getFailureAspect();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
@@ -70,17 +67,16 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED.title);
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
-        reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
-        reportMethodPage.detailsPageAssertsTestMethodContainsCorrectFailureAspect(expectedFailureAspects);
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED.title);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
+        reportDetailsTab.assertTestMethodContainsCorrectFailureAspect(expectedFailureAspect);
     }
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusExpectedFailed")
-    public void testT04_expectedFailedTestsContainCorrespondingFailureAspectAndFailsAnnotation(String method) {
+    public void testT04_expectedFailedTestsContainCorrespondingFailureAspectAndFailsAnnotation(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
-        // TODO: tie correct failure aspect to provided data, to avoid checking whole array each execution
-        String[] expectedFailureAspects = {"AssertCollector.fail", "PageNotFoundException", "Assert.fail"};
+        String method = data.getMethod();
+        String expectedFailureAspect = data.getFailureAspect();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
@@ -89,35 +85,15 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED_EXPECTED.title);
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED_EXPECTED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
-        reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
-        reportMethodPage.detailsPageAssertsTestMethodContainsCorrectFailureAspect(expectedFailureAspects);
-        reportMethodPage.assertTestMethodeReportContainsFailsAnnotation();
-    }
-
-    @Test
-    public void testT05_repairedTestsArePassedButContainFailsAnnotation() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String repairedTest = "test_expectedFailedPassed";
-
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
-
-        TestStep.begin("Navigate to tests page.");
-        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-
-        TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.REPAIRED.title);
-
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(repairedTest, ReportMethodPageType.STEPS);
-        reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
-        reportMethodPage.assertTestMethodeReportContainsFailsAnnotation();
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
+        reportDetailsTab.assertTestMethodContainsCorrectFailureAspect(expectedFailureAspect);
+        reportDetailsTab.assertTestMethodeReportContainsFailsAnnotation();
     }
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusSkipped")
-    public void testT06_skippedTestsContainCorrectFailureAspects(String method) {
+    public void testT05_skippedTestsContainCorrectFailureAspects(String method) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -127,11 +103,10 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.SKIPPED.title);
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.SKIPPED.title);
 
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
-        reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
-        reportMethodPage.detailsPageAssertSkippedTestContainsCorrespondingFailureAspect();
+        ReportDetailsTab reportMethodPage = reportTestsPage.navigateToDetailsTab(method);
+        reportMethodPage.assertSkippedTestContainsCorrespondingFailureAspect();
     }
 
 }

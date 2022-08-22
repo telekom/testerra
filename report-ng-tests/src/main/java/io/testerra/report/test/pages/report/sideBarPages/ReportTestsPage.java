@@ -26,9 +26,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
+import io.testerra.report.test.pages.report.methodReport.ReportDependenciesTab;
+import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
+import io.testerra.report.test.pages.report.methodReport.ReportSessionsTab;
+import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -50,6 +52,8 @@ public class ReportTestsPage extends AbstractReportPage {
 
     private final String tableRowsLocator = "//tbody//tr";
     private final GuiElement tableRows = pageContent.getSubElement(By.xpath(tableRowsLocator));
+
+    private final String methodLinkLocator = "//tbody//tr//td//a[text()='%s']";
     private final GuiElement tableHead = pageContent.getSubElement(By.xpath(".//thead"));
 
     public enum TestsTableEntries {
@@ -200,32 +204,80 @@ public class ReportTestsPage extends AbstractReportPage {
         Assert.assertTrue(amountOfDisplayedConfigurationMethods > 0, "Configuration methods should be listed and contain the corresponding tag!");
     }
 
-    /**
-     * navigate to TestsPage via methodNameLink link in the table depending on given status and methodName
-     * @param methodName
-     * @param status
-     * @param pageType
-     * @return
-     */
-    public ReportMethodPage navigateToMethodReport(final String methodName, final Status status, final ReportMethodPageType pageType) {
+    public ReportStepsTab navigateToStepsTab(final String methodName, final Status status) {
 
         final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
         final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
         methodNameLink.click();
 
-        ReportMethodPage reportMethodPage = PageFactory.create(ReportMethodPage.class, getWebDriver());
-        reportMethodPage.setActivePage(pageType);
-        return reportMethodPage;
+        return PageFactory.create(ReportStepsTab.class, getWebDriver());
     }
 
-    public ReportMethodPage navigateToMethodReport(String methodName, ReportMethodPageType pageType) {
+    public ReportSessionsTab navigateToSessionsTab(final String methodName, final Status status) {
 
-        GuiElement subElement = tableRows.getSubElement(By.xpath(".//td//a[text()= '" + methodName + "']"));
+        final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
+        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        methodNameLink.click();
+
+        return PageFactory.create(ReportSessionsTab.class, getWebDriver());
+    }
+
+    public ReportDetailsTab navigateToDetailsTab(final String methodName, final Status status) {
+
+        final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
+        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        methodNameLink.click();
+
+        return PageFactory.create(ReportDetailsTab.class, getWebDriver());
+    }
+
+    public ReportDependenciesTab navigateToDependenciesTab(final String methodName, final Status status) {
+
+        final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
+        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        methodNameLink.click();
+
+        return PageFactory.create(ReportDependenciesTab.class, getWebDriver());
+    }
+
+    public ReportStepsTab navigateToStepsTab(String methodName) {
+
+        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
+        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
+        //element.click();
 
-        ReportMethodPage reportMethodPage = PageFactory.create(ReportMethodPage.class, getWebDriver());
-        reportMethodPage.setActivePage(pageType);
-        return reportMethodPage;
+        return PageFactory.create(ReportStepsTab.class, getWebDriver());
+    }
+
+    public ReportSessionsTab navigateToSessionsTab(String methodName) {
+
+        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
+        subElement.click();
+        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
+        //element.click();
+
+        return PageFactory.create(ReportSessionsTab.class, getWebDriver());
+    }
+
+    public ReportDetailsTab navigateToDetailsTab(String methodName) {
+
+        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
+        subElement.click();
+        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
+        //element.click();
+
+        return PageFactory.create(ReportDetailsTab.class, getWebDriver());
+    }
+
+    public ReportDependenciesTab navigateToDependenciesTab(String methodName) {
+
+        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
+        subElement.click();
+        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
+        //element.click();
+
+        return PageFactory.create(ReportDependenciesTab.class, getWebDriver());
     }
 
     public ReportTestsPage clickConfigurationMethodsSwitch() {

@@ -4,9 +4,8 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
-import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.report.methodReport.ReportMethodPage;
+import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportSessionsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
@@ -28,7 +27,8 @@ public class ReportSessionsTabTest extends AbstractReportTest {
 
         TestStep.begin("Navigate to method sessions page and check for correct content");
         reportTestsPage.clickConfigurationMethodsSwitch();
-        ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(preTestWithSessionTab, ReportMethodPageType.DETAILS);
-        reportMethodPage.navigateBetweenTabs(ReportMethodPageType.SESSIONS, ReportSessionsTab.class);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(preTestWithSessionTab);
+        ReportSessionsTab reportSessionsTab = reportDetailsTab.navigateToSessionsTab();
+        reportSessionsTab.assertPageIsShown();
     }
 }

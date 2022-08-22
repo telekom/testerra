@@ -2,7 +2,6 @@ package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import io.testerra.report.test.pages.ReportMethodPageType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -23,18 +22,7 @@ public class ReportSessionsTab extends AbstractReportMethodPage {
     @Check
     private final GuiElement capabilities = sessionCard.getSubElement(By.xpath("/div[contains(@class,'capabilities-view')]"));
 
-    private final ReportMethodPageType reportMethodPageType = ReportMethodPageType.SESSIONS;
-
     public ReportSessionsTab(WebDriver driver) {
         super(driver);
-    }
-
-    @Override
-    public void assertPageIsValid() {
-    }
-
-    @Override
-    public ReportMethodPageType getCurrentPageType() {
-        return reportMethodPageType;
     }
 }

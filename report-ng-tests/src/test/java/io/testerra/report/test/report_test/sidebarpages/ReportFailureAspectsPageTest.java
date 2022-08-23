@@ -43,7 +43,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when type is selected");
-        reportFailureAspectsPage.selectDropBoxElement(reportFailureAspectsPage.getTestTypeSelect(), failureAspectType);
+        reportFailureAspectsPage = reportFailureAspectsPage.selectDropBoxElement(reportFailureAspectsPage.getTestTypeSelect(), failureAspectType);
         reportFailureAspectsPage.assertFailureAspectTypeIsFilteredCorrectly(failureAspectType);
     }
 

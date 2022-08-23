@@ -27,7 +27,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
 
         TestStep.begin("Check whether the logLevel-select works correctly");
-        reportLogsPage.selectDropBoxElement(reportLogsPage.getTestLogLevelSelect(), logLevel.getTitle());
+        reportLogsPage = reportLogsPage.selectDropBoxElement(reportLogsPage.getTestLogLevelSelect(), logLevel.getTitle());
         reportLogsPage.assertLogReportContainsCorrectLogLevel(logLevel);
     }
 

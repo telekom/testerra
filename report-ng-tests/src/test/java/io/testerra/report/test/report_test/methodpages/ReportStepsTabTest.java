@@ -27,7 +27,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
+        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
 
         ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
         reportStepsTab.assertSeveralTestStepsAreListed();

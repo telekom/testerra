@@ -1,7 +1,6 @@
 package io.testerra.report.test.pages.utils;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
-import io.testerra.report.test.pages.ReportMethodPageType;
 
 public class TestData {
 
@@ -10,7 +9,6 @@ public class TestData {
     private Status status1;
     private Status status2;
     private String failureAspect;
-    private ReportMethodPageType reportMethodPageType;
 
     public TestData(String method, String methodClass, Status status, String failureAspect) {
         this.method = method;
@@ -23,13 +21,6 @@ public class TestData {
         this.method = method;
         this.methodClass = methodClass;
         this.status1 = status;
-    }
-
-    public TestData(String method, String methodClass, Status status, ReportMethodPageType reportMethodPageType) {
-        this.method = method;
-        this.methodClass = methodClass;
-        this.status1 = status;
-        this.reportMethodPageType = reportMethodPageType;
     }
 
     public TestData(String failureAspect, Status status1, Status status2) {
@@ -86,7 +77,4 @@ public class TestData {
         return String.format("%s, %s, %s, %s, %s", method, methodClass, status1Title, status2Title, failureAspect);
     }
 
-    public ReportMethodPageType getReportMethodPageType() {
-        return reportMethodPageType;
-    }
 }

@@ -43,31 +43,29 @@ public class ReportLogsPage extends AbstractReportPage {
 
     public void assertMarkedLogLinesContainText(String expectedText) {
         Actions a = new Actions(getWebDriver());
-        for(int x = 0; x < 5; x++) {
-            List<GuiElement> markedLineParts = testLogReportLines.getSubElement(By.xpath("//span//mark")).getList();
+        boolean logLineFound = false;
+
+        for (int x = 0; x < 5; x++) {
+            final List<GuiElement> markedLineParts = testLogReportLines.getSubElement(By.xpath("//span//mark")).getList();
+            // TODO: any, but method implicates all log lines, what's the goal?
             if (markedLineParts
                     .stream()
                     .map(GuiElement::getText).anyMatch(i -> i.contains(expectedText))){
-                return;
+                logLineFound = true;
+                break;
             }
             a.sendKeys(Keys.PAGE_DOWN).build().perform();
         }
-        Assert.fail(String.format("There should be parts highlighted corresponding to the current filter.\n[Filter: %s]", expectedText));
+        Assert.assertTrue(logLineFound, String.format("There should be parts highlighted corresponding to the current filter.\n[Filter: %s]", expectedText));
     }
 
-
     public ReportLogsPage search(String s) {
+        testSearchbarInput.clear();
         testSearchbarInput.type(s.trim());
         return PageFactory.create(ReportLogsPage.class, getWebDriver());
     }
 
-    public ReportLogsPage clearSearch() {
-        testSearchbarInput.clear();
-        return PageFactory.create(ReportLogsPage.class, getWebDriver());
+    public ReportLogsPage selectLogLevel(LogLevel logLevel) {
+        return selectDropBoxElement(this.testLogLevelSelect, logLevel.getTitle(), ReportLogsPage.class);
     }
-
-    public GuiElement getTestLogLevelSelect() {
-        return this.testLogLevelSelect;
-    }
-
 }

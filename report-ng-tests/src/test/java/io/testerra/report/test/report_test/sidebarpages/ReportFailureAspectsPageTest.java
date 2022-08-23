@@ -1,6 +1,5 @@
 package io.testerra.report.test.report_test.sidebarpages;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -9,12 +8,11 @@ import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
+import io.testerra.report.test.pages.utils.FailureAspectType;
 import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.Optional;
 
 public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
@@ -33,7 +31,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderForFailureAspectsTypes")
-    public void testT02_checkTypeFilter(String failureAspectType) {
+    public void testT02_checkTypeFilter(final FailureAspectType failureAspectType) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
@@ -43,7 +41,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when type is selected");
-        reportFailureAspectsPage.selectDropBoxElement(reportFailureAspectsPage.getTestTypeSelect(), failureAspectType);
+        reportFailureAspectsPage = reportFailureAspectsPage.selectFailureAspect(failureAspectType);
         reportFailureAspectsPage.assertFailureAspectTypeIsFilteredCorrectly(failureAspectType);
     }
 
@@ -73,10 +71,11 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when 'show expected failed' button is enabled!");
-        int amountOfAspectsButtonEnabled = reportFailureAspectsPage.getColumns(2).size();
+        int amountOfAspectsButtonEnabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsTableEntry.STATUS).size();
+        // TODO: why assert?
         reportFailureAspectsPage.assertShowExpectedFailedButtonIsDisabled();
         reportFailureAspectsPage = reportFailureAspectsPage.clickShowExpectedFailedButton();
-        int amountOfAspectsButtonDisabled = reportFailureAspectsPage.getColumns(2).size();
+        int amountOfAspectsButtonDisabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsTableEntry.STATUS).size();
         Assert.assertTrue(amountOfAspectsButtonDisabled < amountOfAspectsButtonEnabled,
                 "There should be more aspects listed, when expected fails button is enabled!");
     }
@@ -94,6 +93,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
+        // TODO: verify methodname?
         TestStep.begin("Check every status for failure aspect links to tests-page with content");
         ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, state1);
         reportTestsPage.clickConfigurationMethodsSwitch();
@@ -106,6 +106,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportTestsPage.assertCorrectTestStatus(state2);
     }
 
+    // TODO: more sophisticated DataProvider like List of Status, instead of null values for missing second status
     @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
     public void testT06_checkNavigationWithFailureAspect(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
@@ -120,9 +121,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check every failure aspect link for correct directing");
-        Optional<GuiElement> failureAspectLink = reportFailureAspectsPage.getColumns(1).stream().filter(i -> i.getText().contains(failureAspect)).findFirst();
-        Assert.assertTrue(failureAspectLink.isPresent(), "Provided failure Aspect should be contained in failure-aspects-page");
-        ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickFailureAspectLink(failureAspectLink.get());
+        ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickFailureAspectLink(failureAspect);
         reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
         reportTestsPage.assertCorrectTestStates(state1, state2);
     }

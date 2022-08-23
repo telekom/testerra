@@ -43,6 +43,7 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPag
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
+import io.testerra.report.test.pages.utils.FailureAspectType;
 import io.testerra.report.test.pages.utils.LogLevel;
 import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
@@ -139,8 +140,8 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     @DataProvider
     public Object[][] dataProviderForFailureAspectsTypes() {
         return new Object[][]{
-                {"Major"},
-                {"Minor"}
+                { FailureAspectType.MAJOR },
+                { FailureAspectType.MINOR }
         };
     }
 
@@ -283,11 +284,11 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     @DataProvider
     public Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
-                {new TestData("AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED)},
+//                {new TestData("AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED)},
                 {new TestData("AssertionError: failed1", Status.FAILED, Status.FAILED_EXPECTED)},
-                {new TestData("AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED)},
-                {new TestData("PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED)},
-                {new TestData("AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED)}
+//                {new TestData("AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED)},
+//                {new TestData("PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED)},
+//                {new TestData("AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED)}
         };
     }
 

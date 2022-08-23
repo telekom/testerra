@@ -27,7 +27,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
 
         TestStep.begin("Check whether the logLevel-select works correctly");
-        reportLogsPage.selectDropBoxElement(reportLogsPage.getTestLogLevelSelect(), logLevel.getTitle());
+        reportLogsPage = reportLogsPage.selectLogLevel(logLevel);
         reportLogsPage.assertLogReportContainsCorrectLogLevel(logLevel);
     }
 
@@ -67,17 +67,14 @@ public class ReportLogsPageTest extends AbstractReportTest {
         TestStep.begin("Check methode name is contained in log report");
         reportLogsPage = reportLogsPage.search(methodeName);
         reportLogsPage.assertMarkedLogLinesContainText(methodeName);
-        reportLogsPage = reportLogsPage.clearSearch();
 
         TestStep.begin("Check methode class is contained in log report");
         reportLogsPage =reportLogsPage.search(methodeClass);
         reportLogsPage.assertMarkedLogLinesContainText(methodeClass);
-        reportLogsPage = reportLogsPage.clearSearch();
 
         TestStep.begin("Check methode name is contained in log report");
         reportLogsPage =reportLogsPage.search(methodStatus.title);
         reportLogsPage.assertMarkedLogLinesContainText(methodStatus.title);
-        reportLogsPage.clearSearch();
     }
 
 }

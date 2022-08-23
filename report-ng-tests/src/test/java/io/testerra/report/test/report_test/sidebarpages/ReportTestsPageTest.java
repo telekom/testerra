@@ -25,7 +25,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check whether the tests page table is correct for " + status.title + " state");
-        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
+        reportTestsPage = reportTestsPage.selectTestStatus(status);
         reportTestsPage.assertCorrectTestStatus(status);
         reportTestsPage.assertStatusColumnHeadlineContainsCorrectText();
     }
@@ -41,7 +41,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check whether class-column contains correct classes");
-        reportTestsPage = reportTestsPage.selectDropBoxElement(reportTestsPage.getTestClassSelect(), className);
+        reportTestsPage = reportTestsPage.selectClassName(className);
         reportTestsPage.assertClassColumnContainsCorrectClasses(className);
         reportTestsPage.assertClassColumnHeadlineContainsCorrectText();
     }

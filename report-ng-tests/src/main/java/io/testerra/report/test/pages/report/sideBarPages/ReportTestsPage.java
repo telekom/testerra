@@ -52,12 +52,12 @@ public class ReportTestsPage extends AbstractReportPage {
     private final GuiElement tableRows = pageContent.getSubElement(By.xpath(tableRowsLocator));
     private final GuiElement tableHead = pageContent.getSubElement(By.xpath(".//thead"));
 
-    public enum TestsTableEntries {
+    public enum TestsTableEntry {
         STATUS(0), CLASS(1), INDEX(2), METHOD(3);
 
         private final int value;
 
-        TestsTableEntries(final int value) {
+        TestsTableEntry(final int value) {
             this.value = value;
         }
 
@@ -80,11 +80,11 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
 
-    public List<GuiElement> getColumnWithoutHead(TestsTableEntries tableEntry) {
+    public List<GuiElement> getColumnWithoutHead(TestsTableEntry tableEntry) {
         return getColumnWithoutHead(tableEntry.index());
     }
 
-    private GuiElement getHeaderRow(TestsTableEntries tableEntry) {
+    private GuiElement getHeaderRow(TestsTableEntry tableEntry) {
 
         String headerRowLocator = ".//tr";
 
@@ -112,7 +112,7 @@ public class ReportTestsPage extends AbstractReportPage {
 
 
     public void assertMethodColumnContainsCorrectMethods(String filter) {
-        getColumnWithoutHead(TestsTableEntries.METHOD)
+        getColumnWithoutHead(TestsTableEntry.METHOD)
                 .stream()
                 .map(GuiElement::getText)
                 .forEach(i -> Assert.assertTrue(i.contains(filter),
@@ -120,7 +120,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertClassColumnContainsCorrectClasses(String expectedClass) {
-        getColumnWithoutHead(TestsTableEntries.CLASS)
+        getColumnWithoutHead(TestsTableEntry.CLASS)
                 .stream()
                 .map(GuiElement::getText)
                 .forEach(i -> Assert.assertEquals(i, expectedClass, String.format(
@@ -129,13 +129,13 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void assertClassColumnHeadlineContainsCorrectText() {
         // counts amount of different displayed classes
-        int amountOfDifferentClasses = getColumnWithoutHead(TestsTableEntries.CLASS)
+        int amountOfDifferentClasses = getColumnWithoutHead(TestsTableEntry.CLASS)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntries.CLASS).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.CLASS).getText();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Class (%s)", amountOfDifferentClasses), "Headline should contain correct number!");
@@ -143,13 +143,13 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void assertStatusColumnHeadlineContainsCorrectText() {
         // counts amount of different displayed classes
-        int amountOfDifferentStates = getColumnWithoutHead(TestsTableEntries.STATUS)
+        int amountOfDifferentStates = getColumnWithoutHead(TestsTableEntry.STATUS)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntries.STATUS).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.STATUS).getText();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Status (%s)", amountOfDifferentStates), "Headline should contain correct number!");
@@ -157,9 +157,9 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void assertMethodeColumnHeadlineContainsCorrectText() {
         // counts amount of different displayed classes
-        int amountOfDifferentMethods = getColumnWithoutHead(TestsTableEntries.METHOD).size();
+        int amountOfDifferentMethods = getColumnWithoutHead(TestsTableEntry.METHOD).size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntries.METHOD).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.METHOD).getText();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Method (%s)", amountOfDifferentMethods),
@@ -167,7 +167,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertTestMethodIndicDoesNotAppearTwice() {
-        int amountOfDifferentIndices = getColumnWithoutHead(TestsTableEntries.INDEX)
+        int amountOfDifferentIndices = getColumnWithoutHead(TestsTableEntry.INDEX)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toSet())
@@ -176,7 +176,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertCorrectTestStatus(Status status) {
-        getColumnWithoutHead(TestsTableEntries.STATUS)
+        getColumnWithoutHead(TestsTableEntry.STATUS)
                 .stream()
                 .map(GuiElement::getText)
                 .forEach(i -> assertMethodStatusContainsText(status.title, i));
@@ -192,7 +192,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public void assertConfigurationMethodsAreDisplayed() {
-        long amountOfDisplayedConfigurationMethods = getColumnWithoutHead(TestsTableEntries.METHOD)
+        long amountOfDisplayedConfigurationMethods = getColumnWithoutHead(TestsTableEntry.METHOD)
                 .stream()
                 .map(GuiElement::getText)
                 .filter(i -> i.contains("Configuration"))
@@ -233,16 +233,8 @@ public class ReportTestsPage extends AbstractReportPage {
         return PageFactory.create(ReportTestsPage.class, getWebDriver());
     }
 
-    public GuiElement getTestStatusSelect() {
-        return this.testStatusSelect;
-    }
-
     public int getAmountOfTableRows() {
         return tableRows.getNumberOfFoundElements();
-    }
-
-    public boolean methodGotFailureAspect(int methodIndex) {
-        return getColumnWithoutHead(TestsTableEntries.METHOD).get(methodIndex).getSubElement(By.xpath("//div")).getNumberOfFoundElements() > 1;
     }
 
     public ReportTestsPage search(String query) {
@@ -251,15 +243,12 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public int getAmountOfEntries() {
-        return getColumnWithoutHead(TestsTableEntries.STATUS).size();
+        return getColumnWithoutHead(TestsTableEntry.STATUS).size();
     }
 
-    public GuiElement getTestClassSelect() {
-        return this.testClassSelect;
-    }
-
+    // TODO: generic approach with parameter List to check several status --> no check for null needed
     public void assertCorrectTestStates(Status status1, Status status2) {
-        List<String> statesAsStrings = getColumnWithoutHead(TestsTableEntries.STATUS)
+        List<String> statesAsStrings = getColumnWithoutHead(TestsTableEntry.STATUS)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toList());
@@ -269,5 +258,13 @@ public class ReportTestsPage extends AbstractReportPage {
         if (status2 != null) {
             Assert.assertTrue(statesAsStrings.contains(status2.title), "Status column should contain " + status2.title + "!");
         }
+    }
+
+    public ReportTestsPage selectTestStatus(Status status) {
+        return selectDropBoxElement(this.testStatusSelect, status.title, ReportTestsPage.class);
+    }
+
+    public ReportTestsPage selectClassName(String label) {
+        return selectDropBoxElement(this.testClassSelect, label, ReportTestsPage.class);
     }
 }

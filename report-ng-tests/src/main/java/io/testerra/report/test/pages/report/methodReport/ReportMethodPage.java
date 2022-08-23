@@ -74,6 +74,7 @@ public class ReportMethodPage extends AbstractReportPage {
         ((ReportDetailsTab) currentPage).detailPageAssertsFailureAspectsCorrespondsToCorrectStatus(expectedStatusTitle);
     }
 
+    // TODO: do we need ...?
     public void detailsPageAssertsTestMethodContainsCorrectFailureAspect(String... correctFailureAspects) {
         if (getCurrentPageType() != ReportMethodPageType.DETAILS) {
             Assert.fail("Details tab should be selected");

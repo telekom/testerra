@@ -35,8 +35,6 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     public void assertPageIsValid() {
         expandStacktrace();
         assertStacktraceIsDisplayed();
-        // assertContainsCodeLines();
-        // assertFailLureLineIsMarked();
     }
 
     public void detailPageAssertsFailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
@@ -47,6 +45,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         failureAspectColoredPart.asserts(String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.getAttribute("class"), expectedStatusTitleFormatted)).assertAttributeContains("class", expectedStatusTitleFormatted);
     }
 
+    // TODO: Do we need ...?
     public void detailsPageAssertsTestMethodContainsCorrectFailureAspect(String... correctFailureAspects) {
         String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
         GuiElement failureAspectCodeLine = testOriginCard.getSubElement(By.xpath(failureAspectCodeLineXPath));
@@ -54,6 +53,9 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         for (String failureAspect : correctFailureAspects.clone()) {
             if (failureAspectCodeLineAsString.contains(failureAspect)) {
                 //return implies assert is correct
+                // TODO: first match means method exit, other values of array not checked,
+                //  what's the goal here?
+                //  boolean better at all: isFound is initially false; if first match= set isFound true, break loop, assert boolean
                 return;
             }
         }
@@ -69,6 +71,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     private boolean skippedTestContainsSkipException() {
         String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
         GuiElement failureAspectCodeLine = testOriginCard.getSubElement(By.xpath(failureAspectCodeLineXPath));
+        // TODO: why isDisplayed? if needed: better with ternary: return isDisplayed? getText : false
         if (failureAspectCodeLine.isDisplayed()) return failureAspectCodeLine.getText().contains("SkipException");
         return false;
 

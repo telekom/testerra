@@ -5,6 +5,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
+import io.testerra.report.test.pages.utils.FailureAspectType;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -28,6 +30,21 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     @Check
     private final GuiElement failureAspectsTable = pageContent.getSubElement(By.xpath("//tbody[@ref='content']"));
 
+
+    public enum FailureAspectsTableEntry {
+        RANK(0), FAILURE_ASPECT(1), STATUS(2);
+
+        private final int value;
+
+        FailureAspectsTableEntry(final int value) {
+            this.value = value;
+        }
+
+        public int index() {
+            return this.value;
+        }
+    }
+
     /**
      * Constructor for existing sessions.
      *
@@ -37,7 +54,11 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         super(driver);
     }
 
-    public List<GuiElement> getColumns(int column) {
+    public List<GuiElement> getColumns(final FailureAspectsTableEntry entry) {
+        return getColumns(entry.index());
+    }
+
+    private List<GuiElement> getColumns(int column) {
         List<GuiElement> returnList = new ArrayList<>();
         for (GuiElement tableRows : failureAspectsTable.getSubElement(By.xpath("//tr")).getList()) {
             List<GuiElement> tableColumns = tableRows.getSubElement(By.xpath("//td")).getList();
@@ -50,31 +71,39 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         return failureAspectsTable.getSubElement(By.xpath("//tr")).getList().get(row).getSubElement(By.xpath("//td")).getList();
     }
 
-    public boolean getFailedStateExistence() {
-        List<GuiElement> tableRows = failureAspectsTable.getList();
+    /**
+     * check existence of at least one failed state in each row, return as soon as the first row didn't have a failed state
+     * @return boolean
+     */
+    public boolean getContainsFailedStateExistenceInEachRow() {
+        final List<GuiElement> tableRows = failureAspectsTable.getSubElement(By.xpath("./tr")).getList();
         boolean statusContainsFailed = false;
-        for (GuiElement row : tableRows) {
+
+        for (final GuiElement row : tableRows) {
             statusContainsFailed = false;
-            for (GuiElement status : row.getSubElement(By.xpath("(//td)[3]/div")).getList()) {
-                if (status.getText().contains(Status.FAILED.title)) {
-                    if (status.getText().split(" ").length > 2)
-                        continue;    //skips expected fails
+
+            final List<GuiElement> statusEntriesInTable = row.getSubElement(By.xpath(".//td[3]/div")).getList();
+            for (final GuiElement statusColumn : statusEntriesInTable) {
+                final String foundStatusInTable = statusColumn.getText();
+                if (!foundStatusInTable.contains(Status.FAILED_EXPECTED.title) && foundStatusInTable.contains(Status.FAILED.title)) {
                     statusContainsFailed = true;
                 }
             }
+            // reached end of all found status in row: quit loop of row, if no FAILED was found
+            if (!statusContainsFailed) break;
         }
         return statusContainsFailed;
     }
 
     public List<String> getOrderListOfTopFailureAspects() {
-        return getColumns(1)
+        return getColumns(FailureAspectsTableEntry.FAILURE_ASPECT)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toList());
     }
 
     public void assertRankColumnDescends() {
-        final List<GuiElement> columns = getColumns(0);
+        final List<GuiElement> columns = getColumns(FailureAspectsTableEntry.RANK);
         int expectedRankNumber = 1;
 
         for (GuiElement column : columns) {
@@ -84,7 +113,7 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public void assertFailureAspectsColumnContainsCorrectAspects(String filter) {
-        getColumns(1)
+        getColumns(FailureAspectsTableEntry.FAILURE_ASPECT)
                 .stream()
                 .map(GuiElement::getText)
                 .map(String::toUpperCase)
@@ -93,22 +122,17 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public void assertStatusColumnContainsMajorStates() {
-        Assert.assertTrue(getFailedStateExistence(), "There should be failed states in every row!");
+        Assert.assertTrue(getContainsFailedStateExistenceInEachRow(), "There should be failed states in every row!");
     }
 
     public void assertStatusColumnContainsMinorStates() {
-        Assert.assertFalse(getFailedStateExistence(), "There should not be any failed states in a row!");
+        Assert.assertFalse(getContainsFailedStateExistenceInEachRow(), "There should not be any failed states in a row!");
     }
 
     public ReportFailureAspectsPage search(String s) {
+        testInputSearch.clear();
         testInputSearch.type(s);
         return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
-    }
-
-    public ReportFailureAspectsPage clearSearch() {
-        testInputSearch.clear();
-        return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
-
     }
 
     public void assertShowExpectedFailedButtonIsDisabled() {
@@ -121,31 +145,41 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public ReportTestsPage clickStateLink(String observedFailureAspect, Status expectedState) {
-        for (int i = 0; i < getColumns(0).size(); i++) {
-            if (getRows(i).get(1).getText().equals(observedFailureAspect)) {
-                getRows(i).get(2).getSubElement(By.xpath(String.format("//a[contains(text(), '%s')]", expectedState.title))).click();
-                return PageFactory.create(ReportTestsPage.class, getWebDriver());
-            }
-        }
-        return null;
-    }
+        // failureAspect can contain apostrophes
+        final GuiElement failureAspectInRow = failureAspectsTable.getSubElement(
+                By.xpath(".//tr[.//td[contains(., \"" + observedFailureAspect + "\")]]"));
 
-    public ReportTestsPage clickFailureAspectLink(GuiElement failureAspectLink) {
-        failureAspectLink.getSubElement(By.xpath("//a")).click();
+        final int columnIndexStatus = FailureAspectsTableEntry.STATUS.value + 1;
+        final GuiElement statusInRow = failureAspectInRow.getSubElement(By.xpath(".//td[" + columnIndexStatus + "]//a[contains(., '" + expectedState.title + "')]"));
+
+        statusInRow.click();
         return PageFactory.create(ReportTestsPage.class, getWebDriver());
     }
 
-    public GuiElement getTestTypeSelect() {
-        return this.testTypeSelect;
+    public ReportTestsPage clickFailureAspectLink(final String failureAspect) {
+        // failureAspect can contain apostrophes
+        final int columnIndexAspect = FailureAspectsTableEntry.FAILURE_ASPECT.value + 1;
+        GuiElement subElement = failureAspectsTable.getSubElement(By.xpath(".//tr//td[" + columnIndexAspect + "]//a[contains(., \"" + failureAspect + "\")]"));
+        subElement.click();
+
+        return PageFactory.create(ReportTestsPage.class, getWebDriver());
     }
 
-    public void assertFailureAspectTypeIsFilteredCorrectly(String failureAspectType) {
-        if (failureAspectType.equals("Major")) {
-            assertStatusColumnContainsMajorStates();
-        } else if (failureAspectType.equals("Minor")) {
-            assertStatusColumnContainsMinorStates();
-        } else {
-            Assert.fail("Invalid method call! " + failureAspectType + " is not a failure aspect type!");
+    public void assertFailureAspectTypeIsFilteredCorrectly(FailureAspectType failureAspectType) {
+        switch (failureAspectType) {
+            case MAJOR:
+                assertStatusColumnContainsMajorStates();
+                break;
+            case MINOR:
+                assertStatusColumnContainsMinorStates();
+                break;
+            default:
+                Assert.fail("Invalid method call! " + failureAspectType + " is not a failure aspect type!");
+                break;
         }
+    }
+
+    public ReportFailureAspectsPage selectFailureAspect(FailureAspectType failureAspectType) {
+        return selectDropBoxElement(this.testTypeSelect, failureAspectType.value(), ReportFailureAspectsPage.class);
     }
 }

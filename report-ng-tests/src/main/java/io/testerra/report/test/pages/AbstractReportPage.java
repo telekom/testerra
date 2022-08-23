@@ -24,11 +24,9 @@ package io.testerra.report.test.pages;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
-
-import java.util.Optional;
 
 public abstract class AbstractReportPage extends ReportSideBar {
 
@@ -44,18 +42,22 @@ public abstract class AbstractReportPage extends ReportSideBar {
         super(driver);
     }
 
-    // for any reason, the following line should work, but does not:
-    // specificDropBox.getSubElement(By.xpath("mdc-list-item[contains(text(), '<label>')]")).click();
-    // following method is replaces the call above
-    // TODO: use contains(., '<label>'): mdc-list-items has sub span, hence text() is not working
-    public <T extends AbstractReportPage> T selectDropBoxElement(GuiElement dropbox, String label) {
+    /**
+     * generic method selecting Element in a drop down list via provided label String
+     * @param dropbox
+     * @param label
+     * @param clazz
+     * @param <T>
+     * @return clazz
+     */
+    protected <T extends AbstractReportPage> T selectDropBoxElement(GuiElement dropbox, String label, Class<T> clazz) {
+        // open dropbox
         dropbox.click();
-        Optional<GuiElement> optionalDropBoxSelection = dropbox.getSubElement(By.xpath("//mdc-list-item")).getList()
-                .stream()
-                .filter(i -> i.getText().contains(label))
-                .findFirst();
-        Assert.assertTrue(optionalDropBoxSelection.isPresent());
-        optionalDropBoxSelection.get().click();
-        return (T) PageFactory.create(this.getClass(), getWebDriver());
+
+        // select element
+        final GuiElement statusItem = dropbox.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), '" + label + "')]]"));
+        statusItem.click();
+
+        return PageFactory.create(clazz, getWebDriver());
     }
 }

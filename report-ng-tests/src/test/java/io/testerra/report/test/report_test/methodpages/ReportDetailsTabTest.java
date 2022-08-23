@@ -29,9 +29,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check whether the displayed test state corresponds to each method");
-        // TODO: use ReportMethodPage.class as Parameter to get explicit page back; assign returned page; do this on all calls of selectDropBoxElement in every class accordingly
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
-
+        reportTestsPage = reportTestsPage.selectTestStatus(status);
         ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, status, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailPageAsserts_FailureAspectsCorrespondsToCorrectStatus(status.title);
@@ -50,7 +48,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Select passed status and check target tab for non-failure-aspects methods");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.PASSED.title);
+        reportTestsPage = reportTestsPage.selectTestStatus(Status.PASSED);
 
         ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(methodName, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
@@ -70,7 +68,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED.title);
+        reportTestsPage = reportTestsPage.selectTestStatus(Status.FAILED);
         ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
         reportMethodPage.detailsPageAssertsTestMethodContainsCorrectFailureAspect(expectedFailureAspects);
@@ -89,7 +87,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.FAILED_EXPECTED.title);
+        reportTestsPage = reportTestsPage.selectTestStatus(Status.FAILED_EXPECTED);
 
         ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);
@@ -109,7 +107,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.REPAIRED.title);
+        reportTestsPage = reportTestsPage.selectTestStatus(Status.REPAIRED);
 
         ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(repairedTest, ReportMethodPageType.STEPS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.STEPS);
@@ -127,7 +125,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Check for each failed test method whether it contains a valid failure aspect");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), Status.SKIPPED.title);
+        reportTestsPage = reportTestsPage.selectTestStatus(Status.SKIPPED);
 
         ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, ReportMethodPageType.DETAILS);
         reportMethodPage.assertPageIsValid(ReportMethodPageType.DETAILS);

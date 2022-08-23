@@ -93,7 +93,6 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         TestStep.begin("Check whether clicking on barchart bars navigates to tests page with correct filter.");
         reportDashBoardPage = reportDashBoardPage.clickNumberChartPart(status);
         ReportTestsPage reportTestsPage = reportDashBoardPage.navigateToFilteredTestPageByClickingBarChartBar();
-        reportTestsPage.assertPageIsShown();
         reportTestsPage.assertCorrectTestStatus(status);
     }
 
@@ -166,7 +165,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
         TestStep.begin("Check Major failure aspects link works correct");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMajorFailureAspectsLink();
-        final boolean hasFailedState = reportFailureAspectsPage.getFailedStateExistence();
+        final boolean hasFailedState = reportFailureAspectsPage.getContainsFailedStateExistenceInEachRow();
         Assert.assertTrue(hasFailedState, "FailureAspectsPage contains State 'Failed'");
     }
 
@@ -182,7 +181,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
         TestStep.begin("Check Minor failure aspects link works correct");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMinorFailureAspectsLink();
-        final boolean hasFailedState = reportFailureAspectsPage.getFailedStateExistence();
+        final boolean hasFailedState = reportFailureAspectsPage.getContainsFailedStateExistenceInEachRow();
         Assert.assertFalse(hasFailedState, "FailureAspectsPage contains State 'Failed'");
 
     }
@@ -198,10 +197,11 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
 
         TestStep.begin("Check order of listed failure aspects is correct");
-        List<String> topFailureAspectsReportDashboardPage = reportDashBoardPage.getOrderListOfTopFailureAspects();
+        final List<String> topFailureAspectsOnReportDashboardPage = reportDashBoardPage.getOrderListOfTopFailureAspects();
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
-        List<String> topFailureAspectsReportFailureAspectsPage = reportFailureAspectsPage.getOrderListOfTopFailureAspects();
-        Assert.assertEquals(topFailureAspectsReportDashboardPage, topFailureAspectsReportFailureAspectsPage.subList(0, 3));
+
+        final List<String> topFailureAspectsOnReportFailureAspectsPage = reportFailureAspectsPage.getOrderListOfTopFailureAspects();
+        Assert.assertEquals(topFailureAspectsOnReportDashboardPage, topFailureAspectsOnReportFailureAspectsPage.subList(0, 3), "Shown Top failure aspects on 'ReportDashBoardPage' and 'FailureAspectsPage' are the same");
     }
 
 

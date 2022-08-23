@@ -32,7 +32,6 @@ public class ReportThreadsPage extends AbstractReportPage {
 
     public ReportThreadsPage selectMethod(String method) {
         GuiElement methodAsGuiElement = testMethodDropDownList.getSubElement(By.xpath(String.format("//mdc-list-item[.//span[text()='%s']]", method)));
-        methodAsGuiElement.waits().waitForIsDisplayed();
         methodAsGuiElement.click();
         return PageFactory.create(ReportThreadsPage.class, getWebDriver());
     }
@@ -40,8 +39,7 @@ public class ReportThreadsPage extends AbstractReportPage {
     public void assertMethodBoxIsSelected(String method) {
         GuiElement subElement = testThreadReport.getSubElement(
                 By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"));
-        subElement.asserts().assertIsDisplayed();
-        subElement.asserts().assertAttributeContains("class", "vis-selected");
+        subElement.asserts("method box is selected").assertAttributeContains("class", "vis-selected");
     }
 
     public ReportThreadsPage clickSearchBar(){

@@ -35,7 +35,7 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         TestStep.begin("Navigate to method detail page and check for correct content");
-        reportTestsPage.selectDropBoxElement(reportTestsPage.getTestStatusSelect(), status.title);
+        reportTestsPage = reportTestsPage.selectTestStatus(status);
         ReportMethodPage reportMethodPage = reportTestsPage.navigateToMethodReport(method, reportMethodPageType);
         reportMethodPage.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportMethodPage.clickThreadLink();

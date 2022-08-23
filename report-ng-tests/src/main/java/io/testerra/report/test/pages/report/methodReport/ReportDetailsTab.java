@@ -3,7 +3,6 @@ package io.testerra.report.test.pages.report.methodReport;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import io.testerra.report.test.pages.ReportMethodPageType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -11,8 +10,6 @@ import org.testng.Assert;
 import java.util.Locale;
 
 public class ReportDetailsTab extends AbstractReportMethodPage {
-
-    public final ReportMethodPageType reportMethodPageType = ReportMethodPageType.DETAILS;
     @Check
     private final GuiElement pageContent = new GuiElement(getWebDriver(), By.xpath("//router-view[@class='au-target']//mdc-layout-grid"));
     @Check
@@ -26,18 +23,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         super(driver);
     }
 
-    @Override
-    public ReportMethodPageType getCurrentPageType() {
-        return reportMethodPageType;
-    }
-
-    @Override
-    public void assertPageIsValid() {
-        expandStacktrace();
-        assertStacktraceIsDisplayed();
-    }
-
-    public void detailPageAssertsFailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
+    public void assertFailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
         String expectedStatusTitleFormatted = expectedStatusTitle.toLowerCase();
         if (expectedStatusTitleFormatted.equals(Status.FAILED_EXPECTED.title.toLowerCase(Locale.ROOT)))
             expectedStatusTitleFormatted = "failed-expected";
@@ -45,24 +31,15 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         failureAspectColoredPart.asserts(String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.getAttribute("class"), expectedStatusTitleFormatted)).assertAttributeContains("class", expectedStatusTitleFormatted);
     }
 
-    // TODO: Do we need ...?
-    public void detailsPageAssertsTestMethodContainsCorrectFailureAspect(String... correctFailureAspects) {
+    public void assertTestMethodContainsCorrectFailureAspect(String correctFailureAspect) {
         String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
         GuiElement failureAspectCodeLine = testOriginCard.getSubElement(By.xpath(failureAspectCodeLineXPath));
         String failureAspectCodeLineAsString = failureAspectCodeLine.getText();
-        for (String failureAspect : correctFailureAspects.clone()) {
-            if (failureAspectCodeLineAsString.contains(failureAspect)) {
-                //return implies assert is correct
-                // TODO: first match means method exit, other values of array not checked,
-                //  what's the goal here?
-                //  boolean better at all: isFound is initially false; if first match= set isFound true, break loop, assert boolean
-                return;
-            }
-        }
-        Assert.fail("One given failure aspect should match the code-line in origin-card!");
+        Assert.assertTrue(failureAspectCodeLineAsString.contains(correctFailureAspect),
+                "Given failure aspect should match the code-line in origin-card!");
     }
 
-    public void detailsPageAssertSkippedTestContainsCorrespondingFailureAspect() {
+    public void assertSkippedTestContainsCorrespondingFailureAspect() {
         boolean skippedTestContainsCorrespondingFailureAspect = skippedTestDependsOnFailedMethod() || skippedTestContainsSkipException() || skippedTestFailsInBeforeMethod() || skippedTestFailsInDataProvider();
         //at least one condition should be true
         Assert.assertTrue(skippedTestContainsCorrespondingFailureAspect, "One skipped condition should correspond to skipped test!");
@@ -93,6 +70,13 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         String failureAspect = testFailureAspect.getText().split("\n")[1];
         String expectedContainedText = "depends on not successfully finished methods";
         return failureAspect.contains(expectedContainedText);
+    }
+
+    public void assertPageIsValid(){
+        expandStacktrace();
+        assertStacktraceIsDisplayed();
+        assertContainsCodeLines();
+        assertFailLureLineIsMarked();
     }
 
     private void expandStacktrace() {

@@ -4,7 +4,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
@@ -29,10 +28,9 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     private final GuiElement testClassText = testMethodCard.getSubElement(By.xpath("//li[.//span[contains(text(), 'Class')]]//a"));
     @Check
     private final GuiElement testThreadLink = testMethodCard.getSubElement(By.xpath("//li[.//span[contains(text(), 'Thread')]]//a"));
-    private final GuiElement testDetailsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Details')]]"));
+    @Check
     private final GuiElement testStepsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
     private final GuiElement testSessionsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Sessions')]]"));
-    private final GuiElement testDependenciesTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Dependencies')]]"));
 
 
     /**
@@ -42,6 +40,16 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
      */
     public AbstractReportMethodPage(WebDriver driver) {
         super(driver);
+    }
+
+    public ReportStepsTab navigateToStepsTab() {
+        testStepsTab.click();
+        return PageFactory.create(ReportStepsTab.class, getWebDriver());
+    }
+
+    public ReportSessionsTab navigateToSessionsTab() {
+        testSessionsTab.click();
+        return PageFactory.create(ReportSessionsTab.class, getWebDriver());
     }
 
     private void assertMethodNamesAreCorrect(String methodName) {
@@ -71,26 +79,6 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
         GuiElement durationGuiElement = testDurationCard.getSubElement(By.xpath("//div[contains(@class,'card-content')]"));
         return RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.LINE_BREAK, durationGuiElement.getText());
     }
-
-    public GuiElement getTestDetailsTab() {
-        return testDetailsTab;
-    }
-
-    public GuiElement getTestStepsTab() {
-        return testStepsTab;
-    }
-
-    public GuiElement getTestSessionsTab() {
-        return testSessionsTab;
-    }
-
-    public GuiElement getTestDependenciesTab() {
-        return testDependenciesTab;
-    }
-
-    public abstract ReportMethodPageType getCurrentPageType();
-
-    protected abstract void assertPageIsValid();
 
     public void assertTestMethodeReportContainsFailsAnnotation() {
         GuiElement failsAnnotation = testMethodCard.getSubElement(By.xpath("//*[contains(@class,'status-failed-expected')]"));

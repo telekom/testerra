@@ -1,5 +1,8 @@
 package io.testerra.report.test.pages;
 
 public enum ReportMethodPageType {
-    DETAILS, STEPS, SESSIONS, DEPENDENCIES
+    DETAILS,
+    STEPS,
+    SESSIONS,
+    DEPENDENCIES
 }

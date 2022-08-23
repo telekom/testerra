@@ -36,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportMethodPageType;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
@@ -157,19 +156,19 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     @DataProvider
     public Object[][] dataProviderForPreTestMethodsWithStatusFailed() {
         return new Object[][]{
-                {"testAssertCollector"},
-                {"test_failedPageNotFound"},
-                {"test_Failed"},
-                {"test_Failed_WithScreenShot"}
+                {new TestData("testAssertCollector", "AssertCollector.fail")},
+                {new TestData("test_failedPageNotFound", "PageNotFoundException")},
+                {new TestData("test_Failed", "Assert.fail")},
+                {new TestData("test_Failed_WithScreenShot", "Assert.fail")}
         };
     }
 
     @DataProvider
     public Object[][] dataProviderForPreTestMethodsWithStatusExpectedFailed() {
         return new Object[][]{
-                {"test_expectedFailedAssertCollector"},
-                {"test_expectedFailedPageNotFound"},
-                {"test_expectedFailed"}
+                {new TestData("test_expectedFailedAssertCollector", "AssertCollector.fail")},
+                {new TestData("test_expectedFailedPageNotFound", "PageNotFoundException")},
+                {new TestData("test_expectedFailed", "Assert.fail")}
         };
     }
 
@@ -244,22 +243,28 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     }
 
     @DataProvider
-    public static Object[][] dataProviderForPreTestMethods_Classes_States_Types() {
+    public static Object[][] dataProviderForPreTestMethods_Classes_States_ForStepsType() {
         return new Object[][]{
                 //passed
-                {new TestData("test_Passed", "GeneratePassedStatusInTesterraReportTest", Status.PASSED, ReportMethodPageType.STEPS)},
+                {new TestData("test_Passed", "GeneratePassedStatusInTesterraReportTest", Status.PASSED)},
                 // recovered
-                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RECOVERED, ReportMethodPageType.STEPS)},
+                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RECOVERED)},
                 // repaired
-                {new TestData("test_expectedFailedPassed", "GenerateExpectedFailedStatusInTesterraReportTest", Status.REPAIRED, ReportMethodPageType.STEPS)},
+                {new TestData("test_expectedFailedPassed", "GenerateExpectedFailedStatusInTesterraReportTest", Status.REPAIRED)}
+        };
+    }
+
+    @DataProvider
+    public static Object[][] dataProviderForPreTestMethods_Classes_States_ForDetailsType() {
+        return new Object[][]{
                 // skipped
-                {new TestData("test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", Status.SKIPPED, ReportMethodPageType.DETAILS)},
+                {new TestData("test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", Status.SKIPPED)},
                 // Failed
-                {new TestData("testAssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED, ReportMethodPageType.DETAILS)},
+                {new TestData("testAssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED)},
                 // expected Failed
-                {new TestData("test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", Status.FAILED_EXPECTED, ReportMethodPageType.DETAILS)},
+                {new TestData("test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", Status.FAILED_EXPECTED)},
                 // retried
-                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RETRIED, ReportMethodPageType.DETAILS)}
+                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RETRIED)}
         };
     }
 

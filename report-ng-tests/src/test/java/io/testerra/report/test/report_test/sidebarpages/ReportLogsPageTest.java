@@ -72,12 +72,45 @@ public class ReportLogsPageTest extends AbstractReportTest {
         reportLogsPage.assertMarkedLogLinesContainText(methodeName);
 
         TestStep.begin("Check methode class is contained in log report");
-        reportLogsPage =reportLogsPage.search(methodeClass);
+        reportLogsPage = reportLogsPage.search(methodeClass);
         reportLogsPage.assertMarkedLogLinesContainText(methodeClass);
 
         TestStep.begin("Check methode name is contained in log report");
-        reportLogsPage =reportLogsPage.search(methodStatus.title);
+        reportLogsPage = reportLogsPage.search(methodStatus.title);
         reportLogsPage.assertMarkedLogLinesContainText(methodStatus.title);
+    }
+
+    @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
+    public void testT04_filterForMethodContentWithLogLevel(TestData data) {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        String methodeName = data.getMethod();
+        String methodeClass = data.getMethodClass();
+        Status methodStatus = data.getStatus1();
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+
+        TestStep.begin("Navigate to logs page.");
+        ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
+
+        for (LogLevel logLevel : LogLevel.values()) {
+
+            TestStep.begin("Check whether the logLevel-select works correctly");
+            reportLogsPage = reportLogsPage.selectLogLevel(logLevel);
+            reportLogsPage.assertLogReportContainsCorrectLogLevel(logLevel);
+
+            TestStep.begin("Check methode name is contained in log report");
+            reportLogsPage = reportLogsPage.search(methodeName);
+            reportLogsPage.assertMarkedLogLinesContainText(methodeName);
+
+            TestStep.begin("Check methode class is contained in log report");
+            reportLogsPage = reportLogsPage.search(methodeClass);
+            reportLogsPage.assertMarkedLogLinesContainText(methodeClass);
+
+            TestStep.begin("Check methode name is contained in log report");
+            reportLogsPage = reportLogsPage.search(methodStatus.title);
+            reportLogsPage.assertMarkedLogLinesContainText(methodStatus.title);
+        }
     }
 
 }

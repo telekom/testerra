@@ -289,11 +289,11 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     @DataProvider
     public Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
-//                {new TestData("AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED)},
+                {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
                 {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-//                {new TestData("AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED)},
-//                {new TestData("PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED)},
-//                {new TestData("AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED)}
+                {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData("PageNotFoundException: Test page not reached.", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})}
         };
     }
 

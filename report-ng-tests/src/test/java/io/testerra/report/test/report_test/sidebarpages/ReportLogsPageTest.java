@@ -47,7 +47,10 @@ public class ReportLogsPageTest extends AbstractReportTest {
         // -> filter does not work when there are leading or trailing spaces
         // -> filter does not work when there are brackets in the filter request
         // (-> filter is only applied on the right side of the logReport behind the "-"- sign in each line)
-        // TODO: search constraints: bug or feature?
+
+        //TODO: search constraints: bug or feature?
+        // --> set issue on github (as bug)
+
         // reportLogsPage.assertLogReportIsCorrectWhenSearchingForDifferentLogLines();
     }
 

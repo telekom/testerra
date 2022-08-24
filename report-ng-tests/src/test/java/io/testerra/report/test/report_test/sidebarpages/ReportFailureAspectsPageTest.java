@@ -14,6 +14,8 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test
@@ -84,8 +86,8 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
     public void testT05_checkStatesRedirectCorrectForFailureAspectsWithDifferentStates(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
         String failureAspect = data.getFailureAspect();
-        Status state1 = data.getStatus1();
-        Status state2 = data.getStatus2();
+        Status status1 = data.getStates().get(0);
+        Status status2 = data.getStates().get(1);
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
@@ -95,24 +97,22 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
         // TODO: verify methodname?
         TestStep.begin("Check every status for failure aspect links to tests-page with content");
-        ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, state1);
+        ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, status1);
         reportTestsPage.clickConfigurationMethodsSwitch();
-        reportTestsPage.assertCorrectTestStatus(state1);
+        reportTestsPage.assertCorrectTestStatus(status1);
 
         reportFailureAspectsPage = reportTestsPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
-        reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, state2);
+        reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, status2);
         reportTestsPage.clickConfigurationMethodsSwitch();
-        reportTestsPage.assertCorrectTestStatus(state2);
+        reportTestsPage.assertCorrectTestStatus(status2);
     }
 
-    // TODO: more sophisticated DataProvider like List of Status, instead of null values for missing second status
     @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
     public void testT06_checkNavigationWithFailureAspect(TestData data) {
         WebDriver driver = WebDriverManager.getWebDriver();
         String failureAspect = data.getFailureAspect();
-        Status state1 = data.getStatus1();
-        Status state2 = data.getStatus2();
+        List<Status> statusList = data.getStates();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
@@ -123,7 +123,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Check every failure aspect link for correct directing");
         ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickFailureAspectLink(failureAspect);
         reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
-        reportTestsPage.assertCorrectTestStates(state1, state2);
+        reportTestsPage.assertCorrectTestStates(statusList);
     }
 
 }

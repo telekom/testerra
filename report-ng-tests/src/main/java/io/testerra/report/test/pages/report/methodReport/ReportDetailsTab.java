@@ -48,7 +48,6 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     private boolean skippedTestContainsSkipException() {
         String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
         GuiElement failureAspectCodeLine = testOriginCard.getSubElement(By.xpath(failureAspectCodeLineXPath));
-        // TODO: why isDisplayed? if needed: better with ternary: return isDisplayed? getText : false
         if (failureAspectCodeLine.isDisplayed()) return failureAspectCodeLine.getText().contains("SkipException");
         return false;
 

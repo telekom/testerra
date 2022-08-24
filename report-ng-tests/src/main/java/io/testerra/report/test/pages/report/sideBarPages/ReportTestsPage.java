@@ -244,8 +244,6 @@ public class ReportTestsPage extends AbstractReportPage {
 
         GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
-        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
-        //element.click();
 
         return PageFactory.create(ReportStepsTab.class, getWebDriver());
     }
@@ -254,8 +252,6 @@ public class ReportTestsPage extends AbstractReportPage {
 
         GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
-        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
-        //element.click();
 
         return PageFactory.create(ReportSessionsTab.class, getWebDriver());
     }
@@ -264,8 +260,6 @@ public class ReportTestsPage extends AbstractReportPage {
 
         GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
-        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
-        //element.click();
 
         return PageFactory.create(ReportDetailsTab.class, getWebDriver());
     }
@@ -274,8 +268,6 @@ public class ReportTestsPage extends AbstractReportPage {
 
         GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
-        //GuiElement element = new GuiElement(getWebDriver(), By.xpath("//tbody//tr//td//a[text()='"+methodName+"']"));
-        //element.click();
 
         return PageFactory.create(ReportDependenciesTab.class, getWebDriver());
     }
@@ -298,17 +290,14 @@ public class ReportTestsPage extends AbstractReportPage {
         return getColumnWithoutHead(TestsTableEntry.STATUS).size();
     }
 
-    // TODO: generic approach with parameter List to check several status --> no check for null needed
-    public void assertCorrectTestStates(Status status1, Status status2) {
+    public void assertCorrectTestStates(List<Status> statusList) {
         List<String> statesAsStrings = getColumnWithoutHead(TestsTableEntry.STATUS)
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toList());
 
-        Assert.assertTrue(statesAsStrings.contains(status1.title), "Status column should contain " + status1.title + "!");
-
-        if (status2 != null) {
-            Assert.assertTrue(statesAsStrings.contains(status2.title), "Status column should contain " + status2.title + "!");
+        for (Status status : statusList) {
+            Assert.assertTrue(statesAsStrings.contains(status.title), "Status column should contain " + status.title + "!");
         }
     }
 

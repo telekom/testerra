@@ -2,31 +2,37 @@ package io.testerra.report.test.pages.utils;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TestData {
 
     private String method;
     private String methodClass;
-    private Status status1;
-    private Status status2;
+
+    private Status status;
+
+    private Status[] states;
     private String failureAspect;
 
     public TestData(String method, String methodClass, Status status, String failureAspect) {
         this.method = method;
         this.methodClass = methodClass;
-        this.status1 = status;
+        this.status = status;
         this.failureAspect = failureAspect;
     }
 
     public TestData(String method, String methodClass, Status status) {
         this.method = method;
         this.methodClass = methodClass;
-        this.status1 = status;
+        this.status = status;
     }
 
-    public TestData(String failureAspect, Status status1, Status status2) {
+    public TestData(String failureAspect, Status[] states) {
         this.failureAspect = failureAspect;
-        this.status1 = status1;
-        this.status2 = status2;
+        this.states = states;
     }
 
     public TestData(String method, String failureAspect) {
@@ -36,7 +42,7 @@ public class TestData {
 
     public TestData(String method, Status status) {
         this.method = method;
-        this.status1 = status;
+        this.status = status;
     }
 
     public String getMethod() {
@@ -48,11 +54,11 @@ public class TestData {
     }
 
     public Status getStatus1() {
-        return status1;
+        return status;
     }
 
-    public Status getStatus2() {
-        return status2;
+    public List<Status> getStates() {
+        return Arrays.stream(states).collect(Collectors.toList());
     }
 
     public String getFailureAspect() {
@@ -60,21 +66,21 @@ public class TestData {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String status1Title;
-        if (status1 == null){
+        if (status == null) {
             status1Title = "null";
         } else {
-            status1Title = status1.title;
+            status1Title = status.title;
         }
-        String status2Title;
-        if (status2 == null){
-            status2Title = "null";
+        String statesTitle;
+        if (states == null) {
+            statesTitle = "null";
         } else {
-            status2Title = status2.title;
+            statesTitle = Arrays.toString(states);
         }
 
-        return String.format("%s, %s, %s, %s, %s", method, methodClass, status1Title, status2Title, failureAspect);
+        return String.format("%s, %s, %s, %s, %s", method, methodClass, status1Title, statesTitle, failureAspect);
     }
 
 }

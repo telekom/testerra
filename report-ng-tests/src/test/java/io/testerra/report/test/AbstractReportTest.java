@@ -271,18 +271,18 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     @DataProvider
     public static Object[][] dataProviderForFailureAspectsWithCorrespondingStates() {
         return new Object[][]{
-                {new TestData("AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED)},
-                {new TestData("AssertionError: failed1", Status.FAILED, Status.FAILED_EXPECTED)},
-                {new TestData("AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED)},
-                {new TestData("PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED)},
-                {new TestData("AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED)},
-                {new TestData("AssertionError: 'Failed' on reached Page.", Status.FAILED, null)},
-                {new TestData("AssertionError: minor fail", Status.PASSED, null)},
-                {new TestData("SkipException: Test Skipped.", Status.SKIPPED, null)},
-                {new TestData("RuntimeException: Error in DataProvider.", Status.SKIPPED, null)},
-                {new TestData(/*[...]*/"depends on not successfully finished methods", Status.SKIPPED, null)},
-                {new TestData("AssertionError: test_FailedToPassedHistoryWithRetry", Status.RETRIED, null)},
-                {new TestData("AssertionError: No Oil.", Status.FAILED_EXPECTED, null)}
+                {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
+                {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData("PageNotFoundException: Test page not reached.", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})},
+                {new TestData("AssertionError: 'Failed' on reached Page.", new Status[]{Status.FAILED})},
+                {new TestData("AssertionError: minor fail", new Status[]{Status.PASSED})},
+                {new TestData("SkipException: Test Skipped.", new Status[]{Status.SKIPPED})},
+                {new TestData("RuntimeException: Error in DataProvider.", new Status[]{Status.SKIPPED})},
+                {new TestData(/*[...]*/"depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
+                {new TestData("AssertionError: test_FailedToPassedHistoryWithRetry", new Status[]{Status.RETRIED})},
+                {new TestData("AssertionError: No Oil.", new Status[]{Status.FAILED_EXPECTED})}
         };
     }
 
@@ -290,7 +290,7 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     public Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
 //                {new TestData("AssertionError: Creating TestStatus 'Failed'", Status.FAILED, Status.FAILED)},
-                {new TestData("AssertionError: failed1", Status.FAILED, Status.FAILED_EXPECTED)},
+                {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
 //                {new TestData("AssertionError: failed2", Status.FAILED, Status.FAILED_EXPECTED)},
 //                {new TestData("PageNotFoundException: Test page not reached.", Status.FAILED, Status.FAILED_EXPECTED)},
 //                {new TestData("AssertionError: Error in @BeforeMethod", Status.SKIPPED, Status.FAILED)}

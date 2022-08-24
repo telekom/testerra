@@ -15,7 +15,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     @Check
     protected final GuiElement testMethodCard = pageContent.getSubElement(By.xpath("(//mdc-card)[1]"));
     //TODO: mandatory?
-    //protected final GuiElement testLastScreenshot = pageContent.getSubElement(By.xpath("//mdc-card[contains(text(),'Last Screenshot')]"));
+    // protected final GuiElement testLastScreenshot = pageContent.getSubElement(By.xpath("//mdc-card[contains(text(),'Last Screenshot')]"));
     @Check
     protected final GuiElement testDurationCard = pageContent.getSubElement(By.xpath("//test-duration-card"));
     @Check

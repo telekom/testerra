@@ -11,8 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
-import java.util.List;
-
 public class ReportLogsPage extends AbstractReportPage {
 
     @Check
@@ -43,20 +41,23 @@ public class ReportLogsPage extends AbstractReportPage {
 
     public void assertMarkedLogLinesContainText(String expectedText) {
         Actions a = new Actions(getWebDriver());
-        boolean logLineFound = false;
+        boolean allLogLinesMarkedAsExpected = true;
 
-        for (int x = 0; x < 5; x++) {
-            final List<GuiElement> markedLineParts = testLogReportLines.getSubElement(By.xpath("//span//mark")).getList();
-            // TODO: any, but method implicates all log lines, what's the goal?
-            if (markedLineParts
-                    .stream()
-                    .map(GuiElement::getText).anyMatch(i -> i.contains(expectedText))){
-                logLineFound = true;
-                break;
+        for (int x = 0; x < 5; x++) { //5 scrolls are enough to reach page bottom and cover all log lines
+            final GuiElement markedLineParts = testLogReportLines.getSubElement(By.xpath("//span//mark"));
+            if (markedLineParts.isDisplayed()) {
+                if (!markedLineParts.getList()
+                        .stream()
+                        .map(GuiElement::getText)
+                        .map(String::toUpperCase)
+                        .allMatch(i -> i.contains(expectedText.toUpperCase()))) {
+                    allLogLinesMarkedAsExpected = false;
+                    break;
+                }
             }
             a.sendKeys(Keys.PAGE_DOWN).build().perform();
         }
-        Assert.assertTrue(logLineFound, String.format("There should be parts highlighted corresponding to the current filter.\n[Filter: %s]", expectedText));
+        Assert.assertTrue(allLogLinesMarkedAsExpected, String.format("There should be parts highlighted corresponding to the current filter.\n[Filter: %s]", expectedText));
     }
 
     public ReportLogsPage search(String s) {

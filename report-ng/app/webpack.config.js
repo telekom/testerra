@@ -141,6 +141,16 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                         loader: 'file-loader'
                     },
                 },
+                /**
+                 * Import font files from source with url-loader
+                 * @see https://stackoverflow.com/questions/68922912/reacterror-you-may-need-an-appropriate-loader-to-handle-this-file-type
+                 */
+                {
+                    test: /\.(woff|woff2|ttf|eot)$/,
+                    use: {
+                        loader: 'url-loader'
+                    },
+                },
                 {
                     test: /\.css$/,
                     issuer: /\.ts?$/i,

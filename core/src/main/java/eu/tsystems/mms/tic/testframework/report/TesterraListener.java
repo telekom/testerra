@@ -61,8 +61,8 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
-import org.testng.internal.InvokedMethod;
 import org.testng.internal.TestResult;
+import org.testng.internal.invokers.InvokedMethod;
 import org.testng.xml.XmlSuite;
 
 import java.util.Date;

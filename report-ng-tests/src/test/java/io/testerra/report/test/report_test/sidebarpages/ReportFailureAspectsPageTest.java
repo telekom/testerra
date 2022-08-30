@@ -74,8 +74,6 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
         TestStep.begin("Check whether the table become adjusted correctly when 'show expected failed' button is enabled!");
         int amountOfAspectsButtonEnabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsTableEntry.STATUS).size();
-        // TODO: why assert?
-        reportFailureAspectsPage.assertShowExpectedFailedButtonIsDisabled();
         reportFailureAspectsPage = reportFailureAspectsPage.clickShowExpectedFailedButton();
         int amountOfAspectsButtonDisabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsTableEntry.STATUS).size();
         Assert.assertTrue(amountOfAspectsButtonDisabled < amountOfAspectsButtonEnabled,
@@ -95,7 +93,6 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
-        // TODO: verify methodname?
         TestStep.begin("Check every status for failure aspect links to tests-page with content");
         ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, status1);
         reportTestsPage.clickConfigurationMethodsSwitch();

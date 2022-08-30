@@ -29,10 +29,4 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         reportThreadsPage.assertMethodBoxIsSelected(method);
     }
 
-    @Test
-    public void testT02_() {
-        // TODO: assert for initially existing Threads, before filtering
-        //  (--> ??)
-    }
-
 }

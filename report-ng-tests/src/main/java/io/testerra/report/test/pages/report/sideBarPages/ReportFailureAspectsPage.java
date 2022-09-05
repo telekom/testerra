@@ -67,10 +67,6 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         return returnList;
     }
 
-    private List<GuiElement> getRows(int row) {
-        return failureAspectsTable.getSubElement(By.xpath("//tr")).getList().get(row).getSubElement(By.xpath("//td")).getList();
-    }
-
     /**
      * check existence of at least one failed state in each row, return as soon as the first row didn't have a failed state
      * @return boolean
@@ -133,10 +129,6 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         testInputSearch.clear();
         testInputSearch.type(s);
         return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
-    }
-
-    public void assertShowExpectedFailedButtonIsDisabled() {
-        Assert.assertEquals(testShowExpectedFailsButton.getAttribute("aria-checked"), "true", "Button should be enabled!");
     }
 
     public ReportFailureAspectsPage clickShowExpectedFailedButton() {

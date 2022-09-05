@@ -203,26 +203,6 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
     }
 
     @DataProvider
-    public Object[][] dataProviderForPreTestMethods() {
-        return new Object[][]{
-                //passed
-                {new TestData("test_Passed", "GeneratePassedStatusInTesterraReportTest", Status.PASSED, (String) null)},
-                // recovered
-                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RECOVERED, (String) null)},
-                // repaired
-                {new TestData("test_expectedFailedPassed", "GenerateExpectedFailedStatusInTesterraReportTest", Status.REPAIRED, (String) null)},
-                // skipped
-                {new TestData("test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", Status.SKIPPED, "SkipException: Test Skipped.")},
-                // Failed
-                {new TestData("testAssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED, "AssertionError: failed1\n AssertionError: failed2")},
-                // expected Failed
-                {new TestData("test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", Status.FAILED_EXPECTED, "AssertionError: failed1\n AssertionError: failed2")},
-                // retried
-                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RETRIED, "AssertionError: test_FailedToPassedHistoryWithRetry")}
-        };
-    }
-
-    @DataProvider
     public static Object[][] dataProviderForPreTestMethods_Classes_States() {
         return new Object[][]{
                 //passed
@@ -283,6 +263,15 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
                 {new TestData(/*[...]*/"depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
                 {new TestData("AssertionError: test_FailedToPassedHistoryWithRetry", new Status[]{Status.RETRIED})},
                 {new TestData("AssertionError: No Oil.", new Status[]{Status.FAILED_EXPECTED})}
+        };
+    }
+
+    @DataProvider
+    public static Object[][] dataProviderForFailureAspectsWithCorrespondingMethodNames() {
+        return new Object[][]{
+                {"AssertionError: 'Failed' on reached Page.", Status.FAILED, "test_Failed_WithScreenShot"},
+                {"RuntimeException: Error in DataProvider.", Status.SKIPPED, "test_Skipped_AfterErrorInDataProvider"},
+                {"AssertionError: minor fail", Status.SKIPPED, "test_Optional_Assert"}
         };
     }
 

@@ -79,10 +79,4 @@ public class ReportMethodPageTest extends AbstractReportTest {
         final boolean dateFormatIsCorrect = DateTimeUtils.verifyDateTimeString(testDuration);
         Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
     }
-
-    @Test
-    public void testT03_checkLastScreenShotCard() {
-        //TODO: should every method-report (for failed methods) contain a screenshot?
-    }
-
 }

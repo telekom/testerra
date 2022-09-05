@@ -17,7 +17,7 @@ test {
 
     def preTest = findProperty("pretest")
     if (preTest) {
-        s = ['src/test/resources/testng/ReportTestsUnderTest1.xml']
+        s = ['src/test/resources/testng/GenerateReport.xml']
         System.setProperty("tt.report.dir", "src/test/resources/reports/report-generated-status")
         System.setProperty("tt.report.name", "Generated Report for UI-Test")
 

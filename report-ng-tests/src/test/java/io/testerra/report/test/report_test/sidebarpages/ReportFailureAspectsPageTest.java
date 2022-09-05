@@ -123,4 +123,18 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportTestsPage.assertCorrectTestStates(statusList);
     }
 
+    @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingMethodNames")
+    public void testT07_checkNavigationWithTestState(final String failureAspect, final Status status, final String methodName) {
+        final WebDriver driver = WebDriverManager.getWebDriver();
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+
+        TestStep.begin("Navigate to failure aspects page.");
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
+
+        TestStep.begin("Check every status for failure aspect links to tests-page with content");
+        ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, status);
+        reportTestsPage.assertMethodColumnContainsCorrectMethods(methodName);
+    }
 }

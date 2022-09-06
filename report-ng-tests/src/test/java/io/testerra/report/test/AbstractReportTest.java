@@ -49,6 +49,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 
@@ -271,7 +272,7 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
         return new Object[][]{
                 {"AssertionError: 'Failed' on reached Page.", Status.FAILED, "test_Failed_WithScreenShot"},
                 {"RuntimeException: Error in DataProvider.", Status.SKIPPED, "test_Skipped_AfterErrorInDataProvider"},
-                {"AssertionError: minor fail", Status.SKIPPED, "test_Optional_Assert"}
+                {"AssertionError: minor fail", Status.PASSED, "test_Optional_Assert"}
         };
     }
 

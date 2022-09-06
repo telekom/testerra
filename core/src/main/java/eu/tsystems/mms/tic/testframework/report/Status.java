@@ -24,8 +24,14 @@ package eu.tsystems.mms.tic.testframework.report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 
 public enum Status {
+    // Regular test passed
+    PASSED("Passed"),
     // Regular test failed
     FAILED("Failed"),
+    // Regular test skipped
+    SKIPPED("Skipped"),
+    // Test has no status
+    NO_RUN("No run"),
     /**
      * Test {@link #FAILED} with {@link MethodContext#getFailsAnnotation()}
      */
@@ -33,13 +39,6 @@ public enum Status {
     /**
      * Test {@link #PASSED} with {@link MethodContext#getFailsAnnotation()}
      */
-    // Regular test skipped
-    SKIPPED("Skipped"),
-    // Regular test passed
-    PASSED("Passed"),
-    // Test has no status
-    NO_RUN("No run"),
-
     REPAIRED("Repaired"),
     /**
      * Test {@link #FAILED} with {@link MethodContext#getRetryCounter()} > 0
@@ -69,9 +68,5 @@ public enum Status {
 
     public boolean isStatisticallyRelevant() {
         return this != Status.RETRIED;
-    }
-
-    public String getTitleWithSpaceReplacement(){
-        return this.title.replace(" ", "x");
     }
 }

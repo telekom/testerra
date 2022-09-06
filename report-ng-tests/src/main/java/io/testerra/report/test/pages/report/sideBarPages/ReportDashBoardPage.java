@@ -136,7 +136,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     private GuiElement getPieChartPart(final Status status) {
         return testResultElement.getSubElement(
-                By.xpath(String.format(xPathToPieChartPart, status.getTitleWithSpaceReplacement())));
+                By.xpath(String.format(xPathToPieChartPart, getTitleWithSpaceReplacement(status))));
     }
 
     public ReportDashBoardPage clickNumberChartPart(Status status) {
@@ -191,7 +191,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
         //"data:realIndex" = "rel" - 1
         int index = Integer.parseInt(
                 testResultElement.getSubElement(
-                        By.xpath(String.format(xPathToPieChartPart, status.getTitleWithSpaceReplacement()))
+                        By.xpath(String.format(xPathToPieChartPart, getTitleWithSpaceReplacement(status)))
                 ).getAttribute("rel")) - 1;
         GuiElement pieChartPart = testResultElement.getSubElement(By.xpath("//*[@class='apexcharts-datalabels']")).getList().get(index);
         String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTests);
@@ -311,5 +311,9 @@ public class ReportDashBoardPage extends AbstractReportPage {
                 .stream()
                 .map(GuiElement::getText)
                 .collect(Collectors.toList());
+    }
+
+    private String getTitleWithSpaceReplacement(Status status){
+        return status.title.replace(" ", "x");
     }
 }

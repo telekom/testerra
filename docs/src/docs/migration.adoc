@@ -266,7 +266,7 @@ uiElement.expect().text()
 
 Custom failure messages
 ```java
-uiElement.expect().displayed(true, "Element is displayed");
+uiElement.expect().displayed().is(true, "Element is displayed");
 ```
 
 === Page assertions

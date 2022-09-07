@@ -36,7 +36,7 @@ import java.net.BindException;
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractTestSitesTest extends TesterraTest implements Loggable {
+public abstract class AbstractTestSitesTest extends AbstractTest implements Loggable {
 
     protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
 

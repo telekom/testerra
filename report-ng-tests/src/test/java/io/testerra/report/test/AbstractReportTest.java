@@ -23,7 +23,6 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
@@ -31,13 +30,10 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
@@ -46,21 +42,17 @@ import io.testerra.report.test.pages.utils.FailureAspectType;
 import io.testerra.report.test.pages.utils.LogLevel;
 import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.BindException;
 
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractReportTest extends TesterraTest implements Loggable {
+public abstract class AbstractReportTest extends AbstractTest implements Loggable {
 
     private final static File serverRootDir = FileUtils.getResourceFile("reports");
     private final static Server server = new Server(serverRootDir);
@@ -313,17 +305,6 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
         };
     }
 
-
-    @BeforeMethod(alwaysRun = true)
-    public void configureChromeOptions(Method method) {
-        WebDriverManager.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
-            @Override
-            public void configure(ChromeOptions options) {
-                options.addArguments("--disable-dev-shm-usage");
-            }
-        });
-    }
-
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         POConfig.setUiElementTimeoutInSeconds(3);
@@ -334,24 +315,8 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
         }
     }
 
-//    @BeforeMethod(alwaysRun = true)
-//    public void visitTestPage(Method method) {
-////        visitTestPage(getWebDriver());
-//        visitTestPage(WebDriverManager.getWebDriver());
-//    }
-
-    /**
-     * Open a custom Webdriver session with the default test page.
-     *
-     * @param driver {@link WebDriver} Current webDriver Instance
-     */
-    public synchronized void visitTestPage(WebDriver driver) {
-        visitTestPage(ReportDashBoardPage.class, driver, getReportDir());
-    }
-
-
-    public synchronized <T extends AbstractReportPage> T visitTestPage(final Class<T> reportPageClass, final WebDriver driver) {
-        return visitTestPage(reportPageClass, driver, PropertyManager.getProperty("file.path.content.root"));
+    public synchronized <T extends AbstractReportPage> T visitReportPage(final Class<T> reportPageClass, final WebDriver driver) {
+        return visitReportPage(reportPageClass, driver, PropertyManager.getProperty("file.path.content.root"));
     }
 
 
@@ -362,7 +327,7 @@ public abstract class AbstractReportTest extends TesterraTest implements Loggabl
      * @param driver          {@link WebDriver} Current Instance
      * @param directory       {@link TestPage} page to open
      */
-    public synchronized <T extends AbstractReportPage> T visitTestPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
+    public synchronized <T extends AbstractReportPage> T visitReportPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
         Assert.assertTrue(serverRootDir.exists(), String.format("Server root directory '%s' doesn't exists", serverRootDir));
 
         File reportDir = new File(serverRootDir, directory);

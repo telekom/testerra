@@ -45,7 +45,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -59,7 +59,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -74,7 +74,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -89,7 +89,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -110,7 +110,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         Status status2 = data.getStates().get(1);
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -134,7 +134,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         List<Status> statusList = data.getStates();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -150,7 +150,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitTestPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);

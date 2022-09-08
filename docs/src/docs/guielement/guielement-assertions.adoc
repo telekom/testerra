@@ -4,6 +4,8 @@ UiElements provide many kinds of assertion methods to verify your elements.
 
 If an assertion fails, it will make the whole test fail and abort. You can control that by using a <<Assertion handling, TestController>>
 
+== Default assertions
+
 [source,java]
 ----
 UiElement element = find(By.id("button"));
@@ -59,3 +61,32 @@ image1.expect().bounds().fromBottom().toBottomOf(image3).is(0);
 // Assertions are false
 image1.expect().bounds().fromBottom().toBottomOf(image2).is(0);
 ----
+
+== Custom assertion message
+
+Testerra generates a readable assertion message with name of UiElement, page and checked attribute.
+
+.Example of a page and a test method
+[source,java]
+----
+public class DragAndDropPage extends Page {
+    ...
+    private UiElement columnA = find(By.id("column-a"));
+
+    public TestableUiElement getColumnA() {
+        return this.columnA;
+    }
+}
+...
+public MyTest extends TesterraTest implements PageFactoryProvider {
+    @Test
+    public void myTest() {
+        DragAndDropPage page = PAGE_FACTORY.createPage(DragAndDropPage.class);
+        page.getColumnA().expect().displayed().is(false); <1>
+        page.getColumnB().expect().displayed().is(false, "Foo"); <2>
+    }
+}
+----
+
+<1> Error message: `UiElementAssertionError: Expected that DragAndDropPage -> columnB displayed is false`
+<2> Error message: `UiElementAssertionError: Expected that Foo is false`

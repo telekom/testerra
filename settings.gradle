@@ -9,7 +9,7 @@ include 'integration-tests'
 include 'docs'
 include 'bup'
 include 'report-model'
-include 'report-tests'
 include 'report-ng'
 include 'report-ng:app'
+include 'report-ng-tests'
 

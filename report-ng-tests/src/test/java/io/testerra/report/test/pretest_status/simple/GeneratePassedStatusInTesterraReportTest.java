@@ -24,9 +24,10 @@ package io.testerra.report.test.pretest_status.simple;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
+import io.testerra.report.test.AbstractTestSitesTest;
 import org.testng.annotations.Test;
 
-public class GeneratePassedStatusInTesterraReportTest extends TesterraTest {
+public class GeneratePassedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
     @Test
     public void test_Passed() {

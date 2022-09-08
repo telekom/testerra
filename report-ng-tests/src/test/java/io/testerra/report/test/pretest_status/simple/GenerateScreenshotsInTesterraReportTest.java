@@ -21,8 +21,6 @@
 
 package io.testerra.report.test.pretest_status.simple;
 
-import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager.getWebDriver;
-
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 
@@ -37,17 +35,17 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
 
     @Test
     public void test_Failed_WithScreenShot() {
-        WebDriver driver = getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
         Assert.fail("'Failed' on reached Page.");
     }
 
     @Test
     public void test_GenerateScreenshotManually() {
-        WebDriver driver = getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
 
-        final PageWithExistingElement pageWithExistingElement = PageFactory.create(PageWithExistingElement.class, driver);
-        pageWithExistingElement.takeScreenshot();
+        final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
+        pageWithExistingElement.screenshotToReport();
     }
 }

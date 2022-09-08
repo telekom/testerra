@@ -24,12 +24,13 @@ package io.testerra.report.test.pretest_status.simple;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
+import io.testerra.report.test.AbstractTestSitesTest;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class GenerateSkippedStatusInTesterraReportTest extends TesterraTest {
+public class GenerateSkippedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
     private final String SKIPPED_EXCEPTION_MESSAGE = String.format("Test %s.", Status.SKIPPED.title);
 

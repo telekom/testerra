@@ -23,15 +23,14 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
@@ -307,7 +306,6 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
-        POConfig.setUiElementTimeoutInSeconds(3);
         try {
             server.start(80);
         } catch (BindException e) {
@@ -341,7 +339,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     }
 
     protected String getReportDir() {
-        return PropertyManager.getProperty(TesterraProperties.REPORTDIR, "test-report");
+        return PropertyManager.getProperty(Report.Properties.BASE_DIR.toString(), "test-report");
     }
 
 

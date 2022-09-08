@@ -22,16 +22,15 @@
 package io.testerra.report.test.pretest_status.expected.failed;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
+import io.testerra.report.test.AbstractTestSitesTest;
+import io.testerra.report.test.pages.pretest.NonExistingPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GenerateExpectedFailedStatusInTesterraReportTest extends TesterraTest {
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
     final AtomicInteger counter = new AtomicInteger(0);
 
@@ -70,6 +69,6 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends TesterraTe
     @Test
     @Fails(description = "Page Not Found")
     public void test_expectedFailedPageNotFound() {
-        throw new PageNotFoundException("Test page not reached.");
+        PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());
     }
 }

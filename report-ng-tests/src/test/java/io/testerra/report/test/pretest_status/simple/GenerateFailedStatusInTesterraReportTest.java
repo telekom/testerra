@@ -21,14 +21,13 @@
 
 package io.testerra.report.test.pretest_status.simple;
 
-import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-
+import io.testerra.report.test.AbstractTestSitesTest;
+import io.testerra.report.test.pages.pretest.NonExistingPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GenerateFailedStatusInTesterraReportTest extends TesterraTest {
+public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
     @Test
     public void test_Failed() {
@@ -44,6 +43,6 @@ public class GenerateFailedStatusInTesterraReportTest extends TesterraTest {
 
     @Test
     public void test_failedPageNotFound() {
-        throw new PageNotFoundException("Test page not reached.");
+        PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());
     }
 }

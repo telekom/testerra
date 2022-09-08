@@ -23,11 +23,12 @@ package io.testerra.report.test.pretest_status.simple;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
+import io.testerra.report.test.AbstractTestSitesTest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class GenerateSkippedStatusViaBeforeMethodInTesterraReportTest extends TesterraTest {
+public class GenerateSkippedStatusViaBeforeMethodInTesterraReportTest extends AbstractTestSitesTest {
 
     @BeforeMethod()
     public void beforeMethodFailing() {

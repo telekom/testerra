@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -77,12 +78,27 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             prevTimeout = overrides.setTimeout(useTimeout);
         }
 
-        // Handling optional
+        /**
+         * It does not make sense to set both flags optional and collected!
+         *
+         * Because an optional assertion is always collected but without PageFactoryException
+         * the 'optional' is prioritised over 'collected'.
+         * In that case 'collected' will be ignored.
+         */
+
+        // Handling collected assertions
         Assertion previousAssertionImpl = null;
+        if (check.collected() && !check.optional()) {
+            CollectedAssertion assertionImpl = Testerra.getInjector().getInstance(CollectedAssertion.class);
+            previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
+        }
+
+        // Handling optional assertions
         if (check.optional()) {
             OptionalAssertion assertionImpl = Testerra.getInjector().getInstance(OptionalAssertion.class);
             previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
         }
+
 
         // Execute UiElement check
         switch (checkRule) {
@@ -108,7 +124,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
         if (prevTimeout >= 0) {
             overrides.setTimeout(prevTimeout);
         }
-        if (check.optional()) {
+        if (check.optional() || check.collected()) {
             overrides.setAssertionImpl(previousAssertionImpl);
         }
     }

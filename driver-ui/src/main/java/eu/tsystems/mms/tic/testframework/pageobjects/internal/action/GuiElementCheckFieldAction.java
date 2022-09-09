@@ -23,6 +23,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
@@ -57,8 +59,8 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             }
         }
 
+        // Handling custom timetouts
         int useTimeout;
-
         if (overrides.hasTimeout()) {
             useTimeout = overrides.getTimeoutInSeconds();
         } else {
@@ -70,13 +72,19 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
                 }
             }
         }
-
         int prevTimeout = -1;
-
         if (useTimeout >= 0) {
             prevTimeout = overrides.setTimeout(useTimeout);
         }
 
+        // Handling optional
+        Assertion previousAssertionImpl = null;
+        if (check.optional()) {
+            OptionalAssertion assertionImpl = Testerra.getInjector().getInstance(OptionalAssertion.class);
+            previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
+        }
+
+        // Execute UiElement check
         switch (checkRule) {
             case IS_PRESENT:
                 guiElement.expect().present(true);
@@ -99,6 +107,9 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
         if (prevTimeout >= 0) {
             overrides.setTimeout(prevTimeout);
+        }
+        if (check.optional()) {
+            overrides.setAssertionImpl(previousAssertionImpl);
         }
     }
 

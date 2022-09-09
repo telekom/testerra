@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExist
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullElement;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithOptionalElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.testng.annotations.Test;
@@ -80,6 +81,11 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
     @Test()
     public void testT09_checkCheckRule_IsNotPresent() {
         PAGE_FACTORY.createPage(PageWithCheckRuleIsNotPresent.class, getClassExclusiveWebDriver());
+    }
+
+    @Test
+    public void testT10_checkOptionalElement_IsNotPresent() {
+        PAGE_FACTORY.createPage(PageWithOptionalElement.class, getClassExclusiveWebDriver());
     }
 
 }

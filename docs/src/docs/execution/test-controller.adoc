@@ -5,7 +5,7 @@ The `TestControllerProvider` interface provides the `TestController` instance `C
 
 == Collected assertions
 
-Collecting assertion means, that a failing assertion will not abort the test method, but it will throw an exception at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
+Collecting assertion means, that a failing assertion will not abort the test method, but it will throw an assertion error at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
 
 [source,java]
 ----

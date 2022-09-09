@@ -58,6 +58,6 @@ public @interface Check {
     /**
      * Collect assertions
      */
-    boolean collected() default false;
+    boolean collect() default false;
 
 }

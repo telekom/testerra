@@ -28,10 +28,10 @@ import org.openqa.selenium.WebDriver;
 
 public class PageWithCollectedElement extends Page {
 
-    @Check(collected = true)
+    @Check(collect = true)
     private UiElement collectedElement1 = findById("NOT_EXISTING_WUWUWUWU_1");
 
-    @Check(collected = true)
+    @Check(collect = true)
     private UiElement collectedElement2 = findById("NOT_EXISTING_WUWUWUWU_2");
 
     /**

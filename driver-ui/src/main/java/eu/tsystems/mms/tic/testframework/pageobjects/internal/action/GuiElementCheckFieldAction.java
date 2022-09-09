@@ -79,7 +79,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
         }
 
         /**
-         * It does not make sense to set both flags optional and collected!
+         * It does not make sense to set both flags optional and collect!
          *
          * Because an optional assertion is always collected but without PageFactoryException
          * the 'optional' is prioritised over 'collected'.
@@ -88,7 +88,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
         // Handling collected assertions
         Assertion previousAssertionImpl = null;
-        if (check.collected() && !check.optional()) {
+        if (check.collect() && !check.optional()) {
             CollectedAssertion assertionImpl = Testerra.getInjector().getInstance(CollectedAssertion.class);
             previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
         }
@@ -124,7 +124,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
         if (prevTimeout >= 0) {
             overrides.setTimeout(prevTimeout);
         }
-        if (check.optional() || check.collected()) {
+        if (check.optional() || check.collect()) {
             overrides.setAssertionImpl(previousAssertionImpl);
         }
     }

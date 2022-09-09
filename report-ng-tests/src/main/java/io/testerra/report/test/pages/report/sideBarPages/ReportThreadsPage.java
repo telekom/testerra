@@ -24,10 +24,14 @@ package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import io.testerra.report.test.pages.AbstractReportPage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import io.testerra.report.test.pages.AbstractReportPage;
 
 public class ReportThreadsPage extends AbstractReportPage {
 
@@ -59,9 +63,11 @@ public class ReportThreadsPage extends AbstractReportPage {
     }
 
     public void assertMethodBoxIsSelected(String method) {
-        GuiElement subElement = testThreadReport.getSubElement(
-                By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"));
-        subElement.asserts("method box is selected").assertAttributeContains("class", "vis-selected");
+        // using Locate as multiple matches can occur, e.g. for retried tests
+        GuiElement subElement = testThreadReport.getSubElement(Locate.by(
+                By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"))
+                .filter(WebElement::isDisplayed));
+         subElement.asserts("method box is selected").assertAttributeContains("class", "vis-selected");
     }
 
     public ReportThreadsPage clickSearchBar(){

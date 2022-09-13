@@ -24,6 +24,7 @@ import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ObjectStorage} from "t-systems-aurelia-components/src/utils/object-storage";
+import "./lazy-video.scss"
 
 interface IVideoInfo {
     time:number;
@@ -55,6 +56,7 @@ export class LazyVideo {
                 this._videoElement.currentTime = videoInfo.time;
             }
         });
+        console.log("Video", this._videoElement.height);
     }
 
     detached() {

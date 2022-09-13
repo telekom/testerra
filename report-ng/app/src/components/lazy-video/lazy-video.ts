@@ -56,7 +56,6 @@ export class LazyVideo {
                 this._videoElement.currentTime = videoInfo.time;
             }
         });
-        console.log("Video", this._videoElement.height);
     }
 
     detached() {

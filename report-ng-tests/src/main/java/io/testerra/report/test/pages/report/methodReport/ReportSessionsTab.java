@@ -37,7 +37,7 @@ public class ReportSessionsTab extends AbstractReportMethodPage {
     private final GuiElement id = sessionCard.getSubElement(By.xpath("/ul//span[contains(text(),'ID')]"));
     @Check
     private final GuiElement userAgent = sessionCard.getSubElement(By.xpath("/ul//span[contains(text(),'User agent')]"));
-    @Check
+
     private final GuiElement node = sessionCard.getSubElement(By.xpath("/ul//span[contains(text(),'Node')]"));
     @Check
     private final GuiElement capabilityHeadline = sessionCard.getSubElement(By.xpath("/div[contains(text(),'Capabilities')]"));

@@ -24,12 +24,13 @@ package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 import io.testerra.report.test.pages.AbstractReportPage;
 
@@ -63,11 +64,13 @@ public class ReportThreadsPage extends AbstractReportPage {
     }
 
     public void assertMethodBoxIsSelected(String method) {
-        // using Locate as multiple matches can occur, e.g. for retried tests
-        GuiElement subElement = testThreadReport.getSubElement(Locate.by(
-                By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"))
-                .filter(WebElement::isDisplayed));
-         subElement.asserts("method box is selected").assertAttributeContains("class", "vis-selected");
+        GuiElement subElement = testThreadReport.getSubElement(
+                By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"));
+
+        // make list to avoid checking wrong entry, e.g. retried tests have multiple entries, which aren't distinguishable explicitly
+        final List<GuiElement> list = subElement.getList();
+        final boolean isSelected = list.stream().anyMatch(entry -> entry.getAttribute("class").contains("vis-selected"));
+        Assert.assertTrue(isSelected, String.format("Method '%s' is selected in Threads Overview", method));
     }
 
     public ReportThreadsPage clickSearchBar(){

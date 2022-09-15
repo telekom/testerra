@@ -501,7 +501,7 @@ public void test_TestSomething_fast() {
 ```
 
 [NOTE]
-.Setting timeouts using static `POConfig` is now `@deprecated`
+.Setting timeouts using static `POConfig` was removed!
 ====
 ```java
 POConfig.setThreadLocalUiElementTimeoutInSeconds(1);

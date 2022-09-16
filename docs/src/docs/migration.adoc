@@ -21,7 +21,7 @@ When implementing the `PageFactoryProvider` interface, you get an `PAGE_FACTORY`
 ```java
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 
-class MyTest extends TesterraTest implements PageFactoryProvider {
+class MyTest extends TesterraTest implements PageFactoryProvider, WebDriverManagerProvider {
 
     @Test
     public void test_MyPageTest() {

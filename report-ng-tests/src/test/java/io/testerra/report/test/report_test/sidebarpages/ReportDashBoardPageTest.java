@@ -163,14 +163,14 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderFailureCorridorBounds")
-    public void testT09_failureCorridorCorrectness(String failureCorridorType, int bound) {
+    public void testT09_failureCorridorCorrectness(String failureCorridorType, int bound, int currentValue) {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
         final ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
 
         TestStep.begin("Check displayed and compare failure corridor values to allowed bounds");
-        reportDashBoardPage.assertFailureCorridorIsDisplayed(failureCorridorType);
+        reportDashBoardPage.assertFailureCorridorValue(failureCorridorType, currentValue);
         reportDashBoardPage.assertFailureCorridorValuesAreCorrectClassified(failureCorridorType, bound);
     }
 

@@ -283,9 +283,12 @@ public class ReportDashBoardPage extends AbstractReportPage {
         }
     }
 
-    public void assertFailureCorridorIsDisplayed(String failureCorridorType) {
-        GuiElement failureCorridor = getFailureCorridorPart(failureCorridorType);
-        failureCorridor.asserts().assertIsDisplayed();
+    public void assertFailureCorridorValue(final String failureCorridorType, final int value) {
+        final GuiElement failureCorridor = getFailureCorridorPart(failureCorridorType);
+        final String text = failureCorridor.getText();
+
+        Assert.assertTrue(text.contains(String.valueOf(value)),
+                String.format("Failure Corridor '%s' has value '%s'", failureCorridor, value));
     }
 
     public void assertFailureCorridorValuesAreCorrectClassified(String failureCorridorType, int bound) {

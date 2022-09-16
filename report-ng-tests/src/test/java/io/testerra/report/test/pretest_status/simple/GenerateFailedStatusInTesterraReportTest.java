@@ -23,6 +23,7 @@ package io.testerra.report.test.pretest_status.simple;
 
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
 import org.testng.Assert;
@@ -31,6 +32,7 @@ import org.testng.annotations.Test;
 public class GenerateFailedStatusInTesterraReportTest extends TesterraTest {
 
     @Test
+    @FailureCorridor.Mid
     public void test_Failed() {
         Assert.fail("Creating TestStatus 'Failed'");
     }
@@ -43,6 +45,7 @@ public class GenerateFailedStatusInTesterraReportTest extends TesterraTest {
     }
 
     @Test
+    @FailureCorridor.Mid
     public void test_failedPageNotFound() {
         throw new PageNotFoundException("Test page not reached.");
     }

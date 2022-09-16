@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':integration-tests')
+
+    implementation driver_ui_desktop
+    testImplementation project(':report-ng')
+}
+
+test {
+    String[] s = [
+        'src/test/resources/testng/TestReport.xml',
+    ]
+
+
+    def preTest = findProperty("pretest")
+    if (preTest) {
+        s = ['src/test/resources/testng/GenerateReport.xml']
+        System.setProperty("tt.report.dir", "src/test/resources/reports/report-generated-status")
+        System.setProperty("tt.report.name", "Generated Report for UI-Test")
+
+    }
+
+    useTestNG() {
+        suites s
+//        configFailurePolicy "continue"
+    }
+    options {
+        systemProperties(System.getProperties())
+    }
+}
+
+
+
+task cleanReports {
+    doLast {
+        delete "test-report"
+        delete "target"
+        delete "logs"
+        for(int nr=0; nr < 10; ++nr) {
+            delete "report-testsundertest-0$nr"
+        }
+    }
+}
+
+publishing {
+    // Skipped
+}

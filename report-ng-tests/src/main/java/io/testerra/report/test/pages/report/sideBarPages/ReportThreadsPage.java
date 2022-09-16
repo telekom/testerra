@@ -25,9 +25,14 @@ package io.testerra.report.test.pages.report.sideBarPages;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import io.testerra.report.test.pages.AbstractReportPage;
+
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+import io.testerra.report.test.pages.AbstractReportPage;
 
 public class ReportThreadsPage extends AbstractReportPage {
 
@@ -61,7 +66,11 @@ public class ReportThreadsPage extends AbstractReportPage {
     public void assertMethodBoxIsSelected(String method) {
         GuiElement subElement = testThreadReport.getSubElement(
                 By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"));
-        subElement.asserts("method box is selected").assertAttributeContains("class", "vis-selected");
+
+        // make list to avoid checking wrong entry, e.g. retried tests have multiple entries, which aren't distinguishable explicitly
+        final List<GuiElement> list = subElement.getList();
+        final boolean isSelected = list.stream().anyMatch(entry -> entry.getAttribute("class").contains("vis-selected"));
+        Assert.assertTrue(isSelected, String.format("Method '%s' is selected in Threads Overview", method));
     }
 
     public ReportThreadsPage clickSearchBar(){

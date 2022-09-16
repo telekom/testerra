@@ -226,13 +226,14 @@ public class ReportDashBoardPage extends AbstractReportPage {
         for (GuiElement barType : barTypeList) {
             List<GuiElement> bars = barType.getSubElement(By.xpath("//*")).getList();
             for (GuiElement bar : bars) {
-                String valAsString = getBuggedAttributePerJavascriptExecutor(bar, "val", 1);
+                final String valAsString = getBuggedAttributePerJavascriptExecutor(bar, "val", 1);
                 Assert.assertNotNull(valAsString, "There should be a attribute 'val' with the expected length of 1!");
+
                 int amountOfLengthUnits = Integer.parseInt(valAsString);
                 double upperBound = (lengthUnit * amountOfLengthUnits) * (1 + threshold);
                 double lowerBound = (lengthUnit * amountOfLengthUnits) * (1 - threshold);
-                double actualBarLength = Double.parseDouble(Objects.requireNonNull(getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8)));
-                //System.out.printf("%f €? [%f, %f]%n", actualBarLength, lowerBound, upperBound);
+                final String barWidth = getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8);
+                double actualBarLength = Double.parseDouble(Objects.requireNonNull(barWidth));
                 Assert.assertTrue(lowerBound <= actualBarLength && actualBarLength <= upperBound,
                         String.format("BarWidth got too much deviation to excepted bounds! %f not in [%f, %f]", actualBarLength, lowerBound, upperBound));
             }
@@ -259,13 +260,23 @@ public class ReportDashBoardPage extends AbstractReportPage {
             WebElement element = guiElement.getWebElement();
             JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
             Object aa = executor.executeScript("var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;", element);
+
             String listOfAllAttributes = aa.toString();
             int attributeSubstringStart = listOfAllAttributes.indexOf(attribute);
             int lengthOfAttributeSequence = attribute.length() + expectedLengthOfValue + 1;
+
             String subStringOfOneAttribute = listOfAllAttributes.substring(attributeSubstringStart, attributeSubstringStart + lengthOfAttributeSequence);
+
             if (subStringOfOneAttribute.contains("=0,")) {
                 return "0";
             }
+            // parsed String might contain additional attributes besides the intended attribute
+            if (subStringOfOneAttribute.contains(",")) {
+                // cut off after ","
+                String[] split = subStringOfOneAttribute.split(",");
+                subStringOfOneAttribute = split[0];
+            }
+
             return subStringOfOneAttribute.split("=")[1];
         } catch (Exception e) {
             return "0";

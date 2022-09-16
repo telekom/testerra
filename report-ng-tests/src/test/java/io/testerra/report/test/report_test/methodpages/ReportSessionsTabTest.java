@@ -50,7 +50,6 @@ public class ReportSessionsTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to method sessions page and check for correct content");
         reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(preTestWithSessionTab);
-        ReportSessionsTab reportSessionsTab = reportDetailsTab.navigateToSessionsTab();
-        reportSessionsTab.assertPageIsShown();
+        reportDetailsTab.navigateToSessionsTab();
     }
 }

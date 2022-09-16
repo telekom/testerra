@@ -61,13 +61,14 @@ public class ReportStepsTab extends AbstractReportMethodPage {
         testSteps.getSubElement(By.xpath("//expandable-error-context")).getList().forEach(GuiElement::click);
         List<GuiElement> errorCodes = testSteps.getSubElement(
                 By.xpath("//*[contains(@class,'mdc-expandable__content-container')]//*[@class='code-view']")).getList();
-        for(GuiElement code : errorCodes){
+
+        for (GuiElement code : errorCodes){
             List<String> statements = code.getSubElement(By.xpath("//div[contains(@class,'line')]")).getList()
                     .stream()
                     .map(GuiElement::getText)
                     .collect(Collectors.toList());
-            System.out.println(statements.size());
-            statements.forEach(System.out::println);
+
+            log().info("Found {} statements", statements.size());
             Assert.assertTrue(statements.stream().anyMatch(i -> i.contains(expectedStatement)),
                     String.format("Failure Aspect code should contain expected Statement [%s].", expectedStatement));
         }

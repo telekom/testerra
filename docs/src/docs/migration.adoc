@@ -374,11 +374,11 @@ CONTROL.collectAssertions(() -> {
 });
 ```
 
-For custom assertions
+For custom assertions using `AssertProvider`
 ```java
 CONTROL.collectAssertions(() -> {
     String data = loadSomeData();
-    Assert.assertEquals(data, "Hello World", "some data");
+    ASSERT.assertEquals(data, "Hello World", "some data");
 });
 ```
 

@@ -1,12 +1,18 @@
-plugins {
-    id 'java'
-}
-
 dependencies {
     implementation project(':integration-tests')
 
     implementation driver_ui_desktop
     testImplementation project(':report-ng')
+}
+
+// Deactivate JAR publishing
+project.afterEvaluate {
+    println "Deactivate publishing for " + project.name
+    project.tasks.each { t ->
+        if (t.name.startsWith("publish")) {
+            t.enabled = false
+        }
+    }
 }
 
 test {

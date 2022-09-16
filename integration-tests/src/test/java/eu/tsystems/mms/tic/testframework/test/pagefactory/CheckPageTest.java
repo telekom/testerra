@@ -111,13 +111,12 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
     @Test(priority = 2)
     public void testT11a_checkCollectedElements_verifyResult() {
         IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
-        Optional<Stream<ErrorContext>> errorContextStream = ((ClassContext) instance.getCurrentMethodContext().get().getParentContext())
+        List<String> errorList = ((ClassContext) instance.getCurrentMethodContext().get().getParentContext())
                 .readMethodContexts()
-                .filter(context -> context.getName().equals("testT11_checkCollectedElements_IsNotPresent"))
-                .findFirst()
-                .map(MethodContext::readErrors);
-        Assert.assertTrue(errorContextStream.isPresent());
-        List<String> errorList = errorContextStream.get().map(context -> context.getThrowable().getMessage()).collect(Collectors.toList());
+                .filter(context -> "testT11_checkCollectedElements_IsNotPresent".equals(context.getName()))
+                .flatMap(MethodContext::readErrors)
+                .map(context -> context.getThrowable().getMessage())
+                .collect(Collectors.toList());
         Assert.assertEquals(errorList.size(), 2, "Method context should contains 2 errors.");
 
         Assert.assertTrue(errorList.contains("Expected that PageWithCollectedElement -> collectedElement1 displayed is true"));

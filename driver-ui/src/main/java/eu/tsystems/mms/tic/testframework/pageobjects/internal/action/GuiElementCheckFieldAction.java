@@ -60,7 +60,7 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             }
         }
 
-        // Handling custom timetouts
+        // Handling custom timeouts
         int useTimeout;
         if (overrides.hasTimeout()) {
             useTimeout = overrides.getTimeoutInSeconds();
@@ -78,27 +78,27 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             prevTimeout = overrides.setTimeout(useTimeout);
         }
 
-        /**
+        /*
          * It does not make sense to set both flags optional and collect!
          *
          * Because an optional assertion is always collected but without PageFactoryException
          * the 'optional' is prioritised over 'collected'.
          * In that case 'collected' will be ignored.
          */
-
-        // Handling collected assertions
-        Assertion previousAssertionImpl = null;
-        if (check.collect() && !check.optional()) {
-            CollectedAssertion assertionImpl = Testerra.getInjector().getInstance(CollectedAssertion.class);
-            previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
+        if (check.collect() && check.optional()) {
+            log().warn("{} -> {}: @Check 'collect' and 'optional' are used but 'collect' will be ignored."
+                    , this.declaringPage.getName(false), this.field.getName());
         }
 
-        // Handling optional assertions
+        // Handling optional and collected assertions
+        Assertion previousAssertionImpl = null;
         if (check.optional()) {
             OptionalAssertion assertionImpl = Testerra.getInjector().getInstance(OptionalAssertion.class);
             previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
+        } else if (check.collect()) {
+            CollectedAssertion assertionImpl = Testerra.getInjector().getInstance(CollectedAssertion.class);
+            previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
         }
-
 
         // Execute UiElement check
         switch (checkRule) {

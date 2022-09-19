@@ -20,23 +20,27 @@
  */
 
 import {autoinject, PLATFORM} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig, Router, RouterConfiguration, activationStrategy} from "aurelia-router";
+import {activationStrategy, NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
+import {data} from "../../services/report-model";
+import MethodType = data.MethodType;
+import {fail} from "assert";
 
 @autoinject()
 export class Method {
-    private _router:Router;
-    private _allScreenshotIds:string[];
-    private _lastScreenshotId:string;
-    private _methodDetails:MethodDetails;
-    private _loading:boolean = false;
-    private _routes:RouteConfig[];
+    private _router: Router;
+    private _allScreenshotIds: string[];
+    private _lastScreenshotId: string;
+    private _methodDetails: MethodDetails;
+    private _allMethodDetails: MethodDetails[] = [];
+    private _loading: boolean = false;
+    private _routes: RouteConfig[];
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _dialogService:MdcDialogService,
+        private _dialogService: MdcDialogService,
     ) {
     }
 
@@ -173,14 +177,44 @@ export class Method {
             });
 
             if (!routeConfig.hasChildRouter) {
-                const navOptions = {replace:true};
+                const navOptions = {replace: true};
                 const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
                 this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
             }
         });
+
+        // Get all method details
+        this._statistics.getExecutionStatistics().then(executionStatistic => {
+            executionStatistic.classStatistics.forEach(classStatistic => {
+                classStatistic.methodContexts
+                    .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
+                    .forEach(methodContext => this._allMethodDetails.push(new MethodDetails(methodContext, classStatistic)));
+            });
+            // Sort for run index
+            this._allMethodDetails = this._allMethodDetails.sort((a, b) => a.methodContext.methodRunIndex - b.methodContext.methodRunIndex);
+        });
     }
 
-    private _tabClicked(routeConfig:RouteConfig) {
+    private _getMethodDetailsFromCurrent(offset: number) {
+        // console.log(this._allMethodDetails.map(e => e.methodContext.methodRunIndex));
+        let failedMethods = this._allMethodDetails.filter(methodDetails => methodDetails.numDetails != 0);
+        // console.log(failedMethods.map(e => e.methodContext.methodRunIndex));
+        const index = failedMethods.findIndex(details => details.methodContext.contextValues === this._methodDetails.methodContext.contextValues);
+        // console.log("index", index);
+        // // console.log("all", this._allMethodDetails.length);
+        // // console.log("failed", failedMethods.length);
+        if ( ((index + offset) > (failedMethods.length - 1))
+            || (index + offset) < 0) {
+            return -1;
+        }
+        let methodDetails = failedMethods[index + offset];
+        // console.log(methodDetails);
+        return methodDetails;
+
+        // return -1;
+    }
+
+    private _tabClicked(routeConfig: RouteConfig) {
         this._router.navigateToRoute(routeConfig.name);
     }
 
@@ -192,10 +226,10 @@ export class Method {
         return activationStrategy.replace;
     }
 
-    private _showScreenshot(ev:CustomEvent) {
+    private _showScreenshot(ev: CustomEvent) {
         this._dialogService.open({
             viewModel: ScreenshotsDialog,
-            model: <IScreenshotsDialogParams> {
+            model: <IScreenshotsDialogParams>{
                 current: ev.detail,
                 screenshotIds: this._allScreenshotIds
             },

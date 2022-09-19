@@ -26,7 +26,6 @@ import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
-import {fail} from "assert";
 
 @autoinject()
 export class Method {
@@ -196,22 +195,12 @@ export class Method {
     }
 
     private _getMethodDetailsFromCurrent(offset: number) {
-        // console.log(this._allMethodDetails.map(e => e.methodContext.methodRunIndex));
         let failedMethods = this._allMethodDetails.filter(methodDetails => methodDetails.numDetails != 0);
-        // console.log(failedMethods.map(e => e.methodContext.methodRunIndex));
         const index = failedMethods.findIndex(details => details.methodContext.contextValues === this._methodDetails.methodContext.contextValues);
-        // console.log("index", index);
-        // // console.log("all", this._allMethodDetails.length);
-        // // console.log("failed", failedMethods.length);
-        if ( ((index + offset) > (failedMethods.length - 1))
-            || (index + offset) < 0) {
+        if (((index + offset) > (failedMethods.length - 1)) || (index + offset) < 0) {
             return -1;
         }
-        let methodDetails = failedMethods[index + offset];
-        // console.log(methodDetails);
-        return methodDetails;
-
-        // return -1;
+        return failedMethods[index + offset];
     }
 
     private _tabClicked(routeConfig: RouteConfig) {

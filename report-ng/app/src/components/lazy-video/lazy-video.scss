@@ -19,14 +19,14 @@
  * under the License.
  */
 
-@media screen and (min-width: 1024px) {
-    video { height: 300px; }
+@media screen and (min-width: 0px) {
+    video { height: 20em; }
 }
 
 @media screen and (min-width: 1280px) {
-    video { height: 400px; }
+    video { height: 30em; }
 }
 
 @media screen and (min-width: 1920px) {
-    video { height: 600px; }
+    video { height: 40em; }
 }

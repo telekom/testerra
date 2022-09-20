@@ -23,6 +23,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
@@ -57,8 +60,8 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             }
         }
 
+        // Handling custom timeouts
         int useTimeout;
-
         if (overrides.hasTimeout()) {
             useTimeout = overrides.getTimeoutInSeconds();
         } else {
@@ -70,13 +73,34 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
                 }
             }
         }
-
         int prevTimeout = -1;
-
         if (useTimeout >= 0) {
             prevTimeout = overrides.setTimeout(useTimeout);
         }
 
+        /*
+         * It does not make sense to set both flags optional and collect!
+         *
+         * Because an optional assertion is always collected but without PageFactoryException
+         * the 'optional' is prioritised over 'collected'.
+         * In that case 'collected' will be ignored.
+         */
+        if (check.collect() && check.optional()) {
+            log().warn("{} -> {}: @Check 'collect' and 'optional' are used but 'collect' will be ignored."
+                    , this.declaringPage.getName(false), this.field.getName());
+        }
+
+        // Handling optional and collected assertions
+        Assertion previousAssertionImpl = null;
+        if (check.optional()) {
+            OptionalAssertion assertionImpl = Testerra.getInjector().getInstance(OptionalAssertion.class);
+            previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
+        } else if (check.collect()) {
+            CollectedAssertion assertionImpl = Testerra.getInjector().getInstance(CollectedAssertion.class);
+            previousAssertionImpl = overrides.setAssertionImpl(assertionImpl);
+        }
+
+        // Execute UiElement check
         switch (checkRule) {
             case IS_PRESENT:
                 guiElement.expect().present(true);
@@ -99,6 +123,9 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
         if (prevTimeout >= 0) {
             overrides.setTimeout(prevTimeout);
+        }
+        if (check.optional() || check.collect()) {
+            overrides.setAssertionImpl(previousAssertionImpl);
         }
     }
 

@@ -44,13 +44,25 @@ Available CheckRules are
 The default is IS_DISPLAYED.
 
 With the `optional` attribute, the check only adds an optional assertion to the report.
-The test will not be interrupted at this position.
+The test will not be interrupted at this position. See <<#_optional_assertions, Optional assertions>> for more details.
 
 [source,java]
 ----
 @Check(optional = true)
 private UiElement uiElement;
 ----
+
+With the `collect` attribute you can collect all checks. The test will not be interrupted, but if failes at the end. See <<#_collected_assertions, Collected assertions>> for more details.
+
+
+[source,java]
+----
+@Check(collect = true)
+private UiElement uiElement;
+----
+
+NOTE: It does not make sense to set `optional` and `collect` at the same UiElement! +
+Because `optional` is also a kind of `collect`, the `collect` attribute will be ignored.
 
 You can also define a special error message with the `prioritizedErrorMessage` attribute.
 

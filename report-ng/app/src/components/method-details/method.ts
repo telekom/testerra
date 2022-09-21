@@ -33,9 +33,10 @@ export class Method {
     private _allScreenshotIds: string[];
     private _lastScreenshotId: string;
     private _methodDetails: MethodDetails;
-    private _allMethodDetails: MethodDetails[] = [];
     private _loading: boolean = false;
     private _routes: RouteConfig[];
+    private _prevMethod: MethodDetails;
+    private _nextMethod: MethodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -180,27 +181,33 @@ export class Method {
                 const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
                 this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
             }
-        });
 
-        // Get all method details
-        this._statistics.getExecutionStatistics().then(executionStatistic => {
-            executionStatistic.classStatistics.forEach(classStatistic => {
-                classStatistic.methodContexts
+            this._statistics.getExecutionStatistics().then(executionStatistics => {
+                const myRunIndex = this._methodDetails.methodContext.methodRunIndex;
+                /*
+                * Handling all methodContexts
+                * - filter for 'real' test methods (no setups)
+                * - sort for run index
+                * - create MethodDetails
+                * - filter for failed test methods
+                * - find the previous and the next failed test method to current.
+                 */
+                executionStatistics.classStatistics
+                    .flatMap(methodContext => methodContext.methodContexts)
                     .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
-                    .forEach(methodContext => this._allMethodDetails.push(new MethodDetails(methodContext, classStatistic)));
+                    .sort((a, b) => a.methodRunIndex - b.methodRunIndex)
+                    .map(methodContext => new MethodDetails(methodContext, this._methodDetails.classStatistics))
+                    .filter(methodDetails => methodDetails.numDetails != 0)
+                    .forEach(methodDetails => {
+                        if (methodDetails.methodContext.methodRunIndex < myRunIndex) {
+                            this._prevMethod = methodDetails;
+                        } else if (methodDetails.methodContext.methodRunIndex > myRunIndex && this._nextMethod === undefined) {
+                            this._nextMethod = methodDetails;
+                        }
+                    });
             });
-            // Sort for run index
-            this._allMethodDetails = this._allMethodDetails.sort((a, b) => a.methodContext.methodRunIndex - b.methodContext.methodRunIndex);
         });
-    }
 
-    private _getMethodDetailsFromCurrent(offset: number) {
-        let failedMethods = this._allMethodDetails.filter(methodDetails => methodDetails.numDetails != 0);
-        const index = failedMethods.findIndex(details => details.methodContext.contextValues === this._methodDetails.methodContext.contextValues);
-        if (((index + offset) > (failedMethods.length - 1)) || (index + offset) < 0) {
-            return -1;
-        }
-        return failedMethods[index + offset];
     }
 
     private _tabClicked(routeConfig: RouteConfig) {

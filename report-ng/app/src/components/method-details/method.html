@@ -110,15 +110,15 @@
                         <mdc-layout-grid>
                             <mdc-layout-grid-inner>
                                 <mdc-layout-grid-cell span="6">
-                                    <div if.bind="_getMethodDetailsFromCurrent(-1) !== -1">
+                                    <div if.bind="_prevMethod">
                                         <span class="secondary sr1">Previous failed method</span>
-                                        <a route-href="route: method; params.bind: {methodId: _getMethodDetailsFromCurrent(-1).methodContext.contextValues.id}" class="sr1">${_getMethodDetailsFromCurrent(-1).identifier}</a>
+                                        <a route-href="route: method; params.bind: {methodId: _prevMethod.methodContext.contextValues.id}" class="sr1">${_prevMethod.identifier}</a>
                                     </div>
                                 </mdc-layout-grid-cell>
                                 <mdc-layout-grid-cell span="6" class="right-aligned">
-                                    <div if.bind="_getMethodDetailsFromCurrent(1) !== -1">
+                                    <div if.bind="_nextMethod">
                                         <span class="secondary sl1 sr1"> Next failed method</span>
-                                        <a route-href="route: method; params.bind: {methodId: _getMethodDetailsFromCurrent(1).methodContext.contextValues.id}" class="sr1">${_getMethodDetailsFromCurrent(1).identifier}</a>
+                                        <a route-href="route: method; params.bind: {methodId: _nextMethod.methodContext.contextValues.id}" class="sr1">${_nextMethod.identifier}</a>
 <!--                                        <mdc-icon class="sl1">navigate_next</mdc-icon>-->
                                     </div>
                                 </mdc-layout-grid-cell>

@@ -111,6 +111,8 @@
                                      mdc-body2
                                      class="st1"
                                 ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span>${failureAspect.message|highlightText:_searchRegexp}</span></div>
+                                <div mdc-body2 if.bind="methodDetails.failsAnnotation.description"><span innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:_searchRegexp"></span></div>
+                                <div mdc-body2 if.bind="methodDetails.failsAnnotation.ticketString">Ticket: <a href="${methodDetails.failsAnnotation.ticketString}" innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchRegexp"></a></div>
                             </td>
                         </tr>
                     </tbody>

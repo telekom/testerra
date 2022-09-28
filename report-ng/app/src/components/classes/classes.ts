@@ -155,8 +155,6 @@ export class Classes extends AbstractViewModel {
                                 || methodDetails.failsAnnotation?.ticketString?.match(this._searchRegexp)
                             )
                         });
-
-
                     }
 
                     methodDetails.forEach(methodDetails => {

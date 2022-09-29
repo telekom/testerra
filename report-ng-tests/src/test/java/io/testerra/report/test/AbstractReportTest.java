@@ -56,7 +56,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     private final static File serverRootDir = FileUtils.getResourceFile("reports");
     private final static Server server = new Server(serverRootDir);
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForDifferentTestMethodForEachStatus() {
         return new Object[][]{
                 {"test_Passed"},
@@ -68,7 +68,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForTestStates() {
         return new Object[][]{
                 {Status.PASSED},
@@ -80,15 +80,17 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
                 {Status.RETRIED}};
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForDashBoardTestStates() {
-        return new Object[][]{{Status.PASSED},
+        return new Object[][]{
+                {Status.PASSED},
                 {Status.FAILED},
                 {Status.FAILED_EXPECTED},
-                {Status.SKIPPED}};
+                {Status.SKIPPED}
+        };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
                 {5, Status.FAILED},
@@ -98,7 +100,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForDifferentTestClasses() {
         return new Object[][]{
                 {"GeneratePassedStatusInTesterraReportTest"},
@@ -110,7 +112,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForFailureAspects() {
         return new Object[][]{
                 {"AssertionError"},
@@ -121,14 +123,14 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForLogLevel() {
         return new Object[][]{
                 {LogLevel.INFO}, {LogLevel.WARN}, {LogLevel.ERROR}
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForFailureAspectsTypes() {
         return new Object[][]{
                 { FailureAspectType.MAJOR },
@@ -136,7 +138,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForTestsWithoutFailureAspect() {
         return new Object[][]{
                 {"test_Passed"},
@@ -145,7 +147,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithStatusFailed() {
         return new Object[][]{
                 {new TestData("testAssertCollector", "AssertCollector.fail")},
@@ -155,7 +157,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithStatusExpectedFailed() {
         return new Object[][]{
                 {new TestData("test_expectedFailedAssertCollector", "AssertCollector.fail")},
@@ -164,7 +166,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithStatusSkipped() {
         return new Object[][]{
                 {"test_SkippedNoStatus"},
@@ -174,7 +176,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForNavigationBetweenDifferentPages() {
         return new Object[][]{
                 {ReportSidebarPageType.TESTS, ReportTestsPage.class},
@@ -184,17 +186,17 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderFailureCorridorBounds() {
         PropertyManager.loadProperties("report-ng-tests/src/test/resources/test.properties");
         return new Object[][]{
-                {"High", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.high")},
-                {"Mid", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.mid")},
-                {"Low", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.low")}
+                {"High", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.high"), 3},
+                {"Mid", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.mid"), 2},
+                {"Low", PropertyManager.getIntProperty("tt.failure.corridor.allowed.failed.tests.low"), 0}
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public static Object[][] dataProviderForPreTestMethods_Classes_States() {
         return new Object[][]{
                 //passed
@@ -214,7 +216,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public static Object[][] dataProviderForPreTestMethods_Classes_States_ForStepsType() {
         return new Object[][]{
                 //passed
@@ -226,7 +228,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public static Object[][] dataProviderForPreTestMethods_Classes_States_ForDetailsType() {
         return new Object[][]{
                 // skipped
@@ -240,7 +242,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public static Object[][] dataProviderForFailureAspectsWithCorrespondingStates() {
         return new Object[][]{
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
@@ -258,7 +260,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public static Object[][] dataProviderForFailureAspectsWithCorrespondingMethodNames() {
         return new Object[][]{
                 {"AssertionError: 'Failed' on reached Page.", Status.FAILED, "test_Failed_WithScreenShot"},
@@ -267,7 +269,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
@@ -279,7 +281,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     }
 
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithFailureAspects() {
         return new Object[][]{
                 {new TestData("test_SkippedNoStatus", "SkipException: Test Skipped.")},
@@ -290,7 +292,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     }
 
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithFailureAspect() {
         return new Object[][]{
                 // skipped
@@ -331,10 +333,9 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         File reportDir = new File(serverRootDir, directory);
         Assert.assertTrue(reportDir.exists(), String.format("Report directory '%s' doesn't exists", reportDir));
 
-        if (!driver.getCurrentUrl().contains(directory)) {
-            String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), directory);
-            driver.get(baseUrl);
-        }
+        final String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), directory);
+        driver.get(baseUrl);
+
         return PageFactory.create(reportPageClass, driver);
     }
 

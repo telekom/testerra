@@ -22,12 +22,21 @@ test {
 
 
     def preTest = findProperty("pretest")
+    def preTestExtended = findProperty("pretestExtended")
+
     if (preTest) {
         s = ['src/test/resources/testng/GenerateReport.xml']
         System.setProperty("tt.report.dir", "src/test/resources/reports/report-generated-status")
         System.setProperty("tt.report.name", "Generated Report for UI-Test")
-
     }
+
+    if (preTestExtended) {
+        s = ['src/test/resources/testng/GenerateExtendedReport.xml']
+        System.setProperty("tt.report.dir", "src/test/resources/reports/report-extended-status")
+        System.setProperty("tt.report.name", "Generated Report for Additional UI-Test")
+    }
+
+
 
     useTestNG() {
         suites s

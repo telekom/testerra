@@ -55,4 +55,9 @@ public @interface Check {
 
     String prioritizedErrorMessage() default "";
 
+    /**
+     * Collect assertions
+     */
+    boolean collect() default false;
+
 }

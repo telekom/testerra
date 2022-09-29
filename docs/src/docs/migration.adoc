@@ -21,7 +21,7 @@ When implementing the `PageFactoryProvider` interface, you get an `PAGE_FACTORY`
 ```java
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 
-class MyTest extends TesterraTest implements PageFactoryProvider {
+class MyTest extends TesterraTest implements PageFactoryProvider, WebDriverManagerProvider {
 
     @Test
     public void test_MyPageTest() {
@@ -266,7 +266,7 @@ uiElement.expect().text()
 
 Custom failure messages
 ```java
-uiElement.expect().displayed(true, "Element is displayed");
+uiElement.expect().displayed().is(true, "Element is displayed");
 ```
 
 === Page assertions
@@ -374,11 +374,11 @@ CONTROL.collectAssertions(() -> {
 });
 ```
 
-For custom assertions
+For custom assertions using `AssertProvider`
 ```java
 CONTROL.collectAssertions(() -> {
     String data = loadSomeData();
-    Assert.assertEquals(data, "Hello World", "some data");
+    ASSERT.assertEquals(data, "Hello World", "some data");
 });
 ```
 
@@ -501,7 +501,7 @@ public void test_TestSomething_fast() {
 ```
 
 [NOTE]
-.Setting timeouts using static `POConfig` is now `@deprecated`
+.Setting timeouts using static `POConfig` was removed!
 ====
 ```java
 POConfig.setThreadLocalUiElementTimeoutInSeconds(1);

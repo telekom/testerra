@@ -36,6 +36,17 @@ myRequest.setWindowSize(new Dimension(2560,1440));
 WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(myRequest);
 ----
 
+Via the `SessionContext` you can get the current configuration of a WebDriver session:
+
+[source,java]
+----
+Optional<SessionContext> sessionContext = WEB_DRIVER_MANAGER.getSessionContext(webDriver);
+// In case of a desktop browser you can cast to 'DesktopWebDriverRequest'
+// Be careful if you are using Appium Connector!
+DesktopWebDriverRequest webDriverRequest
+    = (DesktopWebDriverRequest) sessionContext.get().getWebDriverRequest();
+----
+
 == Configure with WebDriverManagerConfig (`@deprecated`)
 
 Since this `WebDriverManagerConfig` is actually a `DesktopWebDriverRequest`, you should prefer using that when creating a new WebDriver.

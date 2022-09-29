@@ -23,7 +23,6 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -133,8 +132,8 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     @DataProvider(parallel = true)
     public Object[][] dataProviderForFailureAspectsTypes() {
         return new Object[][]{
-                { FailureAspectType.MAJOR },
-                { FailureAspectType.MINOR }
+                {FailureAspectType.MAJOR},
+                {FailureAspectType.MINOR}
         };
     }
 
@@ -280,7 +279,6 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         };
     }
 
-
     @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithFailureAspects() {
         return new Object[][]{
@@ -290,7 +288,6 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
                 {new TestData("test_expectedFailedPageNotFound", "PageNotFoundException: Test page not reached.")},
         };
     }
-
 
     @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithFailureAspect() {
@@ -319,13 +316,12 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         return visitReportPage(reportPageClass, driver, PropertyManager.getProperty("file.path.content.root"));
     }
 
-
     /**
      * Open a custom Webdriver session with the default test page.
      *
      * @param reportPageClass report page that should be reached
-     * @param driver          {@link WebDriver} Current Instance
-     * @param directory       {@link TestPage} page to open
+     * @param driver {@link WebDriver} Current Instance
+     * @param directory {@link TestPage} page to open
      */
     public synchronized <T extends AbstractReportPage> T visitReportPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
         Assert.assertTrue(serverRootDir.exists(), String.format("Server root directory '%s' doesn't exists", serverRootDir));

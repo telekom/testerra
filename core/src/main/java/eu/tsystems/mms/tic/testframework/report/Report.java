@@ -36,7 +36,9 @@ public interface Report {
         NAME("name", "Test report"),
         @Deprecated
         ACTIVATE_SOURCES("activate.sources", true),
-        LIST_TESTS("list.tests", false)
+        LIST_TESTS("list.tests", false),
+        SOURCE_LINES_PREFETCH("source.lines.prefetch", 5),
+        SOURCE_LINES_CLASS_EXCEPTION("source.class.exceptions", ""),
         ;
         private final String property;
         private final Object defaultValue;

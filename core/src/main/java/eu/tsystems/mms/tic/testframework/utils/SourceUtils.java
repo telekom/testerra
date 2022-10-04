@@ -21,11 +21,12 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 public final class SourceUtils {
 
@@ -51,7 +53,8 @@ public final class SourceUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceUtils.class);
 
     private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
-    private static int linePrefetch = PropertyManager.getIntProperty(TesterraProperties.SOURCE_LINES_PREFETCH, 5);
+    private static int linePrefetch = DefaultReport.Properties.SOURCE_LINES_PREFETCH.asLong().intValue();
+    private static String classExceptions = Report.Properties.SOURCE_LINES_CLASS_EXCEPTION.asString();
     private static final boolean FIND_SOURCES = DefaultReport.Properties.ACTIVATE_SOURCES.asBool();
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
 
@@ -75,8 +78,12 @@ public final class SourceUtils {
      * Searches for a stack trace element which source can be resolved on the local file system
      */
     private static Optional<StackTraceElement> traceStackTraceElement(Throwable throwable, AtomicReference<File> atomicClassFile) {
-        Optional<StackTraceElement> optionalStackTraceElement = Arrays.stream(throwable.getStackTrace())
-                //.filter(stackTraceElement -> stackTraceElement.getClassName().startsWith(TesterraListener.DEFAULT_PACKAGE))
+        Stream<StackTraceElement> stream = Arrays.stream(throwable.getStackTrace());
+        if (StringUtils.isNotBlank(classExceptions)) {
+            stream = stream.filter(stackTraceElement -> !stackTraceElement.getClassName().contains(classExceptions));
+        }
+
+        Optional<StackTraceElement> optionalStackTraceElement = stream
                 // Filter for files that exists in the source path
                 .filter(stackTraceElement -> {
                     Optional<File> optionalClassFile = findClassFile(stackTraceElement.getClassName());
@@ -90,8 +97,8 @@ public final class SourceUtils {
          */
         if (
                 !optionalStackTraceElement.isPresent()
-                && throwable.getCause() != null
-                && throwable.getCause() != throwable
+                        && throwable.getCause() != null
+                        && throwable.getCause() != throwable
         ) {
             return traceStackTraceElement(throwable.getCause(), atomicClassFile);
         } else {
@@ -102,7 +109,7 @@ public final class SourceUtils {
     /**
      * Print part of source of *callerSubClass* if stacktrace contains a failure of *classWithFailure* in
      * *callerSubClass*.
-     *
+     * <p>
      * Only for internal use!
      *
      * @param throwable .

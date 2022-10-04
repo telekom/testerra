@@ -21,11 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.playground;
 
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class SimpleFailingTest extends TesterraTest {
+public class SimpleFailingTest extends AbstractTest {
 
     @Test(groups = "passed")
     public void testPassed() {
@@ -38,6 +37,16 @@ public class SimpleFailingTest extends TesterraTest {
 
     @Test(dependsOnMethods = "testFailing")
     public void testDependsOnFailed() {
+    }
+
+    @Test
+    public void testFailing2() {
+        doFail();
+    }
+
+    @Test
+    public void testFailingPage() {
+        doFailWithinAPage();
     }
 
 }

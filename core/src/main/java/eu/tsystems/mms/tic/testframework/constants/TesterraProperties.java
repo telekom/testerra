@@ -78,12 +78,9 @@ public final class TesterraProperties {
 
     /**
      * Module source root
+     * TODO: Move to Report.Properties
      */
     public static final String MODULE_SOURCE_ROOT = "tt.module.source.root";
-    /**
-     * tt.source.lines.prefetch
-     */
-    public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
 
     /*
      * Package the project is located in.

@@ -54,7 +54,7 @@ public final class SourceUtils {
 
     private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
     private static int linePrefetch = DefaultReport.Properties.SOURCE_LINES_PREFETCH.asLong().intValue();
-    private static String classExceptions = Report.Properties.SOURCE_LINES_CLASS_EXCEPTION.asString();
+    private static String classExclusions = Report.Properties.SOURCE_LINES_CLASS_EXCLUSIONS.asString();
     private static final boolean FIND_SOURCES = DefaultReport.Properties.ACTIVATE_SOURCES.asBool();
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
 
@@ -79,8 +79,8 @@ public final class SourceUtils {
      */
     private static Optional<StackTraceElement> traceStackTraceElement(Throwable throwable, AtomicReference<File> atomicClassFile) {
         Stream<StackTraceElement> stream = Arrays.stream(throwable.getStackTrace());
-        if (StringUtils.isNotBlank(classExceptions)) {
-            stream = stream.filter(stackTraceElement -> !stackTraceElement.getClassName().contains(classExceptions));
+        if (StringUtils.isNotBlank(classExclusions)) {
+            stream = stream.filter(stackTraceElement -> !stackTraceElement.getClassName().contains(classExclusions));
         }
 
         Optional<StackTraceElement> optionalStackTraceElement = stream

@@ -38,7 +38,7 @@ public interface Report {
         ACTIVATE_SOURCES("activate.sources", true),
         LIST_TESTS("list.tests", false),
         SOURCE_LINES_PREFETCH("source.lines.prefetch", 5),
-        SOURCE_LINES_CLASS_EXCEPTION("source.class.exceptions", ""),
+        SOURCE_LINES_CLASS_EXCLUSIONS("source.class.exclusions", ""),
         ;
         private final String property;
         private final Object defaultValue;

@@ -17,6 +17,6 @@ include::property-attributes.adoc[]
 | {source_utils_activate_sources} | true | If true, adds source information to report
 | {source_utils_root} | src | Root directory for searching source info.
 | {source_utils_line_prefetch} | 5 | Amount of lines taken into account before the actual error occurred (print lines between error line and error line minus {source_utils_line_prefetch})
-| {source_class_exceptions} | | Defines class names which will ignored for source code snippets of error details. |
+| {source_class_exclusions} | | Defines class names which will ignored for source code snippets of error details. |
 
 |===

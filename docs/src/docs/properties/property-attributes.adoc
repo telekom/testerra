@@ -106,7 +106,7 @@
 // source utils
 :source_utils_root:                             tt.module.source.root
 :source_utils_line_prefetch:                    tt.report.source.lines.prefetch
-:source_class_exclusions:                       tt.report.source.class.exclusions
+:source_exclusion_regex:                        tt.report.source.exclusion.regex
 :source_utils_activate_sources:                 tt.report.activate.sources
 
 // perf

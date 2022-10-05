@@ -38,7 +38,7 @@ public interface Report {
         ACTIVATE_SOURCES("activate.sources", true),
         LIST_TESTS("list.tests", false),
         SOURCE_LINES_PREFETCH("source.lines.prefetch", 5),
-        SOURCE_LINES_CLASS_EXCLUSIONS("source.class.exclusions", ""),
+        SOURCE_EXCLUSION("source.exclusion.regex", ""),
         ;
         private final String property;
         private final Object defaultValue;
@@ -50,7 +50,7 @@ public interface Report {
 
         @Override
         public String toString() {
-            return String.format("tt.report.%s",property);
+            return String.format("tt.report.%s", property);
         }
 
         @Override

@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
@@ -43,6 +42,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import java.util.stream.Stream;
 
 public final class SourceUtils {
@@ -53,9 +54,8 @@ public final class SourceUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceUtils.class);
 
     private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
-    private static int linePrefetch = DefaultReport.Properties.SOURCE_LINES_PREFETCH.asLong().intValue();
-    private static String classExclusions = Report.Properties.SOURCE_LINES_CLASS_EXCLUSIONS.asString();
-    private static final boolean FIND_SOURCES = DefaultReport.Properties.ACTIVATE_SOURCES.asBool();
+
+    private static final boolean FIND_SOURCES = Report.Properties.ACTIVATE_SOURCES.asBool();
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
 
     public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
@@ -78,9 +78,15 @@ public final class SourceUtils {
      * Searches for a stack trace element which source can be resolved on the local file system
      */
     private static Optional<StackTraceElement> traceStackTraceElement(Throwable throwable, AtomicReference<File> atomicClassFile) {
+        String exclusionRegex = Report.Properties.SOURCE_EXCLUSION.asString();
         Stream<StackTraceElement> stream = Arrays.stream(throwable.getStackTrace());
-        if (StringUtils.isNotBlank(classExclusions)) {
-            stream = stream.filter(stackTraceElement -> !stackTraceElement.getClassName().contains(classExclusions));
+        if (StringUtils.isNotBlank(exclusionRegex)) {
+            try {
+                Pattern pattern = Pattern.compile(exclusionRegex);
+                stream = stream.filter(stackTraceElement -> !pattern.matcher(stackTraceElement.getClassName()).find());
+            } catch (PatternSyntaxException e) {
+                LOGGER.warn("Cannot filter throwable for code snippet exclusions: {}", e.getMessage());
+            }
         }
 
         Optional<StackTraceElement> optionalStackTraceElement = stream
@@ -230,6 +236,7 @@ public final class SourceUtils {
 
     private static ScriptSource getSource(File file, String methodName, int lineNr) {
         ScriptSource scriptSource = new ScriptSource(file.getName(), methodName);
+        int linePrefetch = Report.Properties.SOURCE_LINES_PREFETCH.asLong().intValue();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));

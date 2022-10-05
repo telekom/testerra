@@ -20,7 +20,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
@@ -29,7 +28,6 @@ import java.util.Optional;
 public class ErrorContext {
     private transient Throwable throwable = null;
     private ScriptSource scriptSource;
-    private ScriptSource executionObjectSource;
     private boolean optional;
 
     public ErrorContext(Throwable throwable, boolean optional) {
@@ -53,17 +51,6 @@ public class ErrorContext {
             this.scriptSource = SourceUtils.findScriptSourceForThrowable(getThrowable());
         }
         return Optional.ofNullable(this.scriptSource);
-    }
-
-    /**
-     * The page object source triggering this assertion
-     */
-    @Deprecated
-    public Optional<ScriptSource> getExecutionObjectSource() {
-        if (this.executionObjectSource == null) {
-            this.executionObjectSource = TestEvidenceCollector.getSourceFor(getThrowable());
-        }
-        return Optional.ofNullable(this.executionObjectSource);
     }
 
     public Throwable getThrowable() {

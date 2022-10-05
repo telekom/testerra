@@ -23,11 +23,8 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import org.apache.commons.lang3.StringUtils;
-import org.reflections.Reflections;
-import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +32,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -56,7 +51,7 @@ public final class SourceUtils {
     private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
 
     private static final boolean FIND_SOURCES = Report.Properties.ACTIVATE_SOURCES.asBool();
-    private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
+//    private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
 
     public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
         if (!FIND_SOURCES) {
@@ -112,95 +107,95 @@ public final class SourceUtils {
         }
     }
 
-    /**
-     * Print part of source of *callerSubClass* if stacktrace contains a failure of *classWithFailure* in
-     * *callerSubClass*.
-     * <p>
-     * Only for internal use!
-     *
-     * @param throwable .
-     * @param classWithFailure .
-     * @param callerSubClass .
-     * @return .
-     */
-    public static ScriptSource findSourceForThrowable(Throwable throwable, Class classWithFailure, Class callerSubClass) {
-        if (!FIND_SOURCES) {
-            return null;
-        }
+//    /**
+//     * Print part of source of *callerSubClass* if stacktrace contains a failure of *classWithFailure* in
+//     * *callerSubClass*.
+//     * <p>
+//     * Only for internal use!
+//     *
+//     * @param throwable .
+//     * @param classWithFailure .
+//     * @param callerSubClass .
+//     * @return .
+//     */
+//    public static ScriptSource findSourceForThrowable(Throwable throwable, Class classWithFailure, Class callerSubClass) {
+//        if (!FIND_SOURCES) {
+//            return null;
+//        }
+//
+//        // is class in throwable??
+//        int causeNumberForClass = getCauseNumberForClass(throwable, classWithFailure, 0);
+//        if (causeNumberForClass == -1) {
+//            return null;
+//        }
+//
+//        // search for caller
+//        List<String> classNames;
+//        if (!cachedClassNames.containsKey(callerSubClass)) {
+//            classNames = findClassNamesForSubTypesOf(callerSubClass);
+//            cachedClassNames.put(callerSubClass, classNames);
+//        } else {
+//            classNames = cachedClassNames.get(callerSubClass);
+//            if (classNames.size() == 0) {
+//                classNames = findClassNamesForSubTypesOf(callerSubClass);
+//                cachedClassNames.remove(callerSubClass);
+//                cachedClassNames.put(callerSubClass, classNames);
+//            }
+//        }
+//
+//        if (classNames.size() == 0) {
+//            return null;
+//        }
+//
+//        return findCallerSubclassInThrowable(throwable, classNames, 0, causeNumberForClass);
+//    }
 
-        // is class in throwable??
-        int causeNumberForClass = getCauseNumberForClass(throwable, classWithFailure, 0);
-        if (causeNumberForClass == -1) {
-            return null;
-        }
+//    private static ScriptSource findCallerSubclassInThrowable(Throwable throwable, List classNames,
+//                                                              int causeCounter, int fromCauseNumber) {
+//        if (causeCounter >= fromCauseNumber) {
+//            StackTraceElement[] stackTrace = throwable.getStackTrace();
+//            for (StackTraceElement stackTraceElement : stackTrace) {
+//                String className = stackTraceElement.getClassName();
+//                if (classNames.contains(className)) {
+//                    return getSourceFrom(className, stackTraceElement.getFileName(),
+//                            stackTraceElement.getMethodName(), stackTraceElement.getLineNumber());
+//                }
+//            }
+//        }
+//        Throwable cause = throwable.getCause();
+//        causeCounter++;
+//        if (cause != null) {
+//            return findCallerSubclassInThrowable(cause, classNames, causeCounter, fromCauseNumber);
+//        }
+//
+//        return null;
+//    }
 
-        // search for caller
-        List<String> classNames;
-        if (!cachedClassNames.containsKey(callerSubClass)) {
-            classNames = findClassNamesForSubTypesOf(callerSubClass);
-            cachedClassNames.put(callerSubClass, classNames);
-        } else {
-            classNames = cachedClassNames.get(callerSubClass);
-            if (classNames.size() == 0) {
-                classNames = findClassNamesForSubTypesOf(callerSubClass);
-                cachedClassNames.remove(callerSubClass);
-                cachedClassNames.put(callerSubClass, classNames);
-            }
-        }
+//    private static int getCauseNumberForClass(Throwable throwable, Class clazz, int counter) {
+//        String classname = clazz.getName();
+//        StackTraceElement[] stackTrace = throwable.getStackTrace();
+//        for (StackTraceElement stackTraceElement : stackTrace) {
+//            if (stackTraceElement.getClassName().equals(classname)) {
+//                return counter;
+//            }
+//        }
+//        Throwable cause = throwable.getCause();
+//        if (cause != null) {
+//            counter++;
+//            return getCauseNumberForClass(cause, clazz, counter);
+//        }
+//        return -1;
+//    }
 
-        if (classNames.size() == 0) {
-            return null;
-        }
-
-        return findCallerSubclassInThrowable(throwable, classNames, 0, causeNumberForClass);
-    }
-
-    private static ScriptSource findCallerSubclassInThrowable(Throwable throwable, List classNames,
-                                                              int causeCounter, int fromCauseNumber) {
-        if (causeCounter >= fromCauseNumber) {
-            StackTraceElement[] stackTrace = throwable.getStackTrace();
-            for (StackTraceElement stackTraceElement : stackTrace) {
-                String className = stackTraceElement.getClassName();
-                if (classNames.contains(className)) {
-                    return getSourceFrom(className, stackTraceElement.getFileName(),
-                            stackTraceElement.getMethodName(), stackTraceElement.getLineNumber());
-                }
-            }
-        }
-        Throwable cause = throwable.getCause();
-        causeCounter++;
-        if (cause != null) {
-            return findCallerSubclassInThrowable(cause, classNames, causeCounter, fromCauseNumber);
-        }
-
-        return null;
-    }
-
-    private static int getCauseNumberForClass(Throwable throwable, Class clazz, int counter) {
-        String classname = clazz.getName();
-        StackTraceElement[] stackTrace = throwable.getStackTrace();
-        for (StackTraceElement stackTraceElement : stackTrace) {
-            if (stackTraceElement.getClassName().equals(classname)) {
-                return counter;
-            }
-        }
-        Throwable cause = throwable.getCause();
-        if (cause != null) {
-            counter++;
-            return getCauseNumberForClass(cause, clazz, counter);
-        }
-        return -1;
-    }
-
-    private static List<String> findClassNamesForSubTypesOf(Class clazz) {
-        final List<String> classnames = new ArrayList<String>();
-        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFAULT_PACKAGES));
-        Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
-        for (Class aClass : subTypesOf) {
-            classnames.add(aClass.getName());
-        }
-        return classnames;
-    }
+//    private static List<String> findClassNamesForSubTypesOf(Class clazz) {
+//        final List<String> classnames = new ArrayList<String>();
+//        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFAULT_PACKAGES));
+//        Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
+//        for (Class aClass : subTypesOf) {
+//            classnames.add(aClass.getName());
+//        }
+//        return classnames;
+//    }
 
     private static Optional<File> findClassFile(String className) {
         String filePath = className.replace(".", "/").concat(".java");
@@ -217,22 +212,22 @@ public final class SourceUtils {
         return Optional.empty();
     }
 
-    private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {
-        ScriptSource source = null;
-
-        Optional<File> optionalClassFile = findClassFile(className);
-        if (optionalClassFile.isPresent()) {
-            source = getSource(optionalClassFile.get(), methodName, lineNr);
-        }
-
-        if (source != null) {
-            LOGGER.debug("Found source:\n" + source);
-            return source;
-        } else {
-            LOGGER.debug("Did not find source for " + filename + " in " + sourceRoot);
-            return null;
-        }
-    }
+//    private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {
+//        ScriptSource source = null;
+//
+//        Optional<File> optionalClassFile = findClassFile(className);
+//        if (optionalClassFile.isPresent()) {
+//            source = getSource(optionalClassFile.get(), methodName, lineNr);
+//        }
+//
+//        if (source != null) {
+//            LOGGER.debug("Found source:\n" + source);
+//            return source;
+//        } else {
+//            LOGGER.debug("Did not find source for " + filename + " in " + sourceRoot);
+//            return null;
+//        }
+//    }
 
     private static ScriptSource getSource(File file, String methodName, int lineNr) {
         ScriptSource scriptSource = new ScriptSource(file.getName(), methodName);

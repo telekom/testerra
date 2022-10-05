@@ -18,16 +18,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.interop;
+package eu.tsystems.mms.tic.testframework.interop;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import java.util.LinkedList;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public final class TestEvidenceCollector {
 
@@ -35,7 +35,6 @@ public final class TestEvidenceCollector {
 
     private static final List<ScreenshotCollector> SCREENSHOT_COLLECTORS = new LinkedList<>();
     private static final List<VideoCollector> VIDEO_COLLECTORS = new LinkedList<>();
-    private static final List<SourceCollector> SOURCE_COLLECTORS = new LinkedList<>();
 
     public static void registerScreenshotCollector(ScreenshotCollector screenshotCollector) {
         LOGGER.debug("Register " + screenshotCollector);
@@ -48,11 +47,6 @@ public final class TestEvidenceCollector {
     public static void registerVideoCollector(VideoCollector videoCollector) {
         LOGGER.debug("Register " + videoCollector);
         VIDEO_COLLECTORS.add(videoCollector);
-    }
-
-    public static void registerSourceCollector(SourceCollector sourceCollector) {
-        LOGGER.debug("Register " + sourceCollector);
-        SOURCE_COLLECTORS.add(sourceCollector);
     }
 
     public static List<Screenshot> collectScreenshots() {
@@ -79,7 +73,7 @@ public final class TestEvidenceCollector {
      * Collecting videos cannot be done all the time, because the session need to be closed at the moment.
      * So every plugin like selenoid-connector, which provides Videos for Selenoid VNC sessions,
      * is currently responsible to collect videos on closing sessions.
-     *
+     * <p>
      * When you want to get the videos from a test execution, use the SessionContext.getVideo() method instead.
      */
     public static List<Video> collectVideos() {
@@ -103,19 +97,5 @@ public final class TestEvidenceCollector {
             LOGGER.warn("Collecting videos failed", t);
         }
         return videos;
-    }
-
-    public static ScriptSource getSourceFor(Throwable throwable) {
-        if (SOURCE_COLLECTORS.isEmpty()) {
-            return null;
-        }
-
-        for (SourceCollector sourceCollector : SOURCE_COLLECTORS) {
-            ScriptSource source = sourceCollector.getSourceFor(throwable);
-            if (source != null) {
-                return source;
-            }
-        }
-        return null;
     }
 }

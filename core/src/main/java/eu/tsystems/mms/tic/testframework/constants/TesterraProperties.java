@@ -76,12 +76,6 @@ public final class TesterraProperties {
      */
     public static final String ON_STATE_TESTFAILED_SKIP_SHUTDOWN = "tt.on.state.testfailed.skip.shutdown";
 
-    /**
-     * Module source root
-     * TODO: Move to Report.Properties
-     */
-    public static final String MODULE_SOURCE_ROOT = "tt.module.source.root";
-
     /*
      * Package the project is located in.
      */

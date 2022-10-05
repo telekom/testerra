@@ -104,7 +104,7 @@
 // :layoutcheck_assert_info_mode:                  tt.layoutcheck.assert.info.mode
 
 // source utils
-:source_utils_root:                             tt.module.source.root
+:source_utils_root:                             tt.report.source.root
 :source_utils_line_prefetch:                    tt.report.source.lines.prefetch
 :source_exclusion_regex:                        tt.report.source.exclusion.regex
 :source_utils_activate_sources:                 tt.report.activate.sources

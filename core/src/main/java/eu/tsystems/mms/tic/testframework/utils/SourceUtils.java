@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import org.apache.commons.lang3.StringUtils;
@@ -45,8 +44,6 @@ public final class SourceUtils {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceUtils.class);
-
-    private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
 
     private static final boolean FIND_SOURCES = Report.Properties.ACTIVATE_SOURCES.asBool();
 
@@ -105,6 +102,7 @@ public final class SourceUtils {
     }
 
     private static Optional<File> findClassFile(String className) {
+        String sourceRoot = Report.Properties.SOURCE_ROOT.asString();
         String filePath = className.replace(".", "/").concat(".java");
         File file = new File(sourceRoot + "/main/java/" + filePath);
         if (file.exists()) {

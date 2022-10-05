@@ -37,6 +37,7 @@ public interface Report {
         @Deprecated
         ACTIVATE_SOURCES("activate.sources", true),
         LIST_TESTS("list.tests", false),
+        SOURCE_ROOT("source.root", "src"),
         SOURCE_LINES_PREFETCH("source.lines.prefetch", 5),
         SOURCE_EXCLUSION("source.exclusion.regex", ""),
         ;

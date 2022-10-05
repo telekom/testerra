@@ -62,7 +62,9 @@ public final class MouseActions {
      *
      * @param drag {@link GuiElement} Element to drag
      * @param drop {@link GuiElement} Drop location
+     * @deprecated Please use {@link #dragAndDropJs(UiElement, UiElement)}.
      */
+    @Deprecated
     public static void dragAndDropJS(GuiElement drag, GuiElement drop) {
         final Point dragLocation = drag.getLocation();
         final Dimension dragSize = drag.getSize();
@@ -84,7 +86,7 @@ public final class MouseActions {
         dragAndDropOverFrames(driver, drag, drop, dragFromX, dragFromY, dragToX, dragToY);
     }
 
-    public void dragAndDropJs(UiElement drag, UiElement drop) {
+    public static void dragAndDropJs(UiElement drag, UiElement drop) {
         dragAndDropJS((GuiElement) drag, (GuiElement) drop);
     }
 

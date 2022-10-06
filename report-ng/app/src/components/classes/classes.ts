@@ -153,6 +153,7 @@ export class Classes extends AbstractViewModel {
                                 || methodDetails.failureAspects.find(failureAspect => failureAspect.identifier.match(this._searchRegexp))
                                 || methodDetails.failsAnnotation?.description?.match(this._searchRegexp)
                                 || methodDetails.failsAnnotation?.ticketString?.match(this._searchRegexp)
+                                || methodDetails.promptLogs.find(logMessage => logMessage.message.match(this._searchRegexp))
                             )
                         });
                     }

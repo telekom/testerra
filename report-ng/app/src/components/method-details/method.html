@@ -106,7 +106,7 @@
                         </ul>
                     </div>
                     <mdc-list-divider if.bind="_methodDetails.numDetails"></mdc-list-divider>
-                    <div class="mdc-typography--caption" if.bind="_methodDetails.numDetails">
+                    <div mdc-caption if.bind="_methodDetails.numDetails">
                         <mdc-layout-grid>
                             <mdc-layout-grid-inner>
                                 <mdc-layout-grid-cell span="6">
@@ -158,7 +158,7 @@
                             class.bind="(logMessage.type===1?'status-failed':(logMessage.type===2?'status-skipped':''))"
                             repeat.for="logMessage of _methodDetails.promptLogs"
                         >
-                            <span lass="two-lines" >
+                            <span class="two-lines" >
                                 <class-name-markup namespace.bind="logMessage.loggerName">:</class-name-markup>
                                 <span innerhtml.bind="logMessage.message|html"></span>
                             </span>

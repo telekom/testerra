@@ -1,0 +1,22 @@
+= Report customizing
+
+Some aspects of ReportNG can be customized. Have a look for the complete list of <<_report_properties, all properties>>.
+
+== Code snippet in method details
+
+In case of using helper methods for assert test aspects it could be useful to get the source code line of the _calling_ method, not the helper method itself.
+
+You can exclude packages or classes with a regex definition:
+
+.test.properties
+[source,properties]
+----
+# Exclude all packages or classes which names contain 'abstract' or 'foo', ignoring case sensitives
+tt.report.source.exclusion.regex=(?i:abstract|foo)
+----
+
+The following image shows the differences between default (left) and `tt.report.source.exclusion.regex=AbstractSourceCodeTests` (right).
+
+image::report-ng-source-code.png[align="center", alt="Exclusion of packages or classes for source code snippet"]
+
+NOTE: Setting this value as <<_test_local_properties, a local test property>> will be ignored because source code snippets are only collected at the end of the whole test.

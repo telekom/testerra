@@ -23,8 +23,7 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.utils.LogLevel;
 import org.openqa.selenium.By;
@@ -36,13 +35,13 @@ import org.testng.Assert;
 public class ReportLogsPage extends AbstractReportPage {
 
     @Check
-    private final GuiElement testLogLevelSelect = pageContent.getSubElement(By.xpath("//mdc-select[@label='Log level']"));
+    private final UiElement testLogLevelSelect = pageContent.find(By.xpath("//mdc-select[@label='Log level']"));
 
     @Check
-    private final GuiElement testSearchbarInput = pageContent.getSubElement(By.xpath("//label[@label='Search']//input"));
+    private final UiElement testSearchbarInput = pageContent.find(By.xpath("//label[@label='Search']//input"));
 
     @Check
-    private final GuiElement testLogReportLines = pageContent.getSubElement(By.xpath("//virtual-log-view"));
+    private final UiElement testLogReportLines = pageContent.find(By.xpath("//virtual-log-view//div[contains(@class,'code-view')]"));
 
     /**
      * Constructor for existing sessions.
@@ -54,10 +53,8 @@ public class ReportLogsPage extends AbstractReportPage {
     }
 
     public void assertLogReportContainsCorrectLogLevel(LogLevel logLevel) {
-        testLogReportLines.getList()
-                .stream()
-                .map(GuiElement::getText)
-                .forEach(i -> Assert.assertTrue(i.contains(logLevel.getTitle()),
+        testLogReportLines.find(By.xpath(".//div[contains(@class,'line')]")).list()
+                .forEach(uiElement -> uiElement.expect().text().contains(logLevel.getTitle()).is(true,
                         "Log report should contain only log statements with selected logLevel: " + logLevel.getTitle()));
     }
 
@@ -66,11 +63,11 @@ public class ReportLogsPage extends AbstractReportPage {
         boolean allLogLinesMarkedAsExpected = true;
 
         for (int x = 0; x < 5; x++) { //5 scrolls are enough to reach page bottom and cover all log lines
-            final GuiElement markedLineParts = testLogReportLines.getSubElement(By.xpath("//span//mark"));
-            if (markedLineParts.isDisplayed()) {
-                if (!markedLineParts.getList()
+            final UiElement markedLineParts = testLogReportLines.find(By.xpath("//span//mark"));
+            if (markedLineParts.list().size() > 0) {
+                if (!markedLineParts.list()
                         .stream()
-                        .map(GuiElement::getText)
+                        .map(uiElement -> uiElement.expect().text().getActual())
                         .map(String::toUpperCase)
                         .allMatch(i -> i.contains(expectedText.toUpperCase()))) {
                     allLogLinesMarkedAsExpected = false;
@@ -85,7 +82,7 @@ public class ReportLogsPage extends AbstractReportPage {
     public ReportLogsPage search(String s) {
         testSearchbarInput.clear();
         testSearchbarInput.type(s.trim());
-        return PageFactory.create(ReportLogsPage.class, getWebDriver());
+        return createPage(ReportLogsPage.class);
     }
 
     public ReportLogsPage selectLogLevel(LogLevel logLevel) {

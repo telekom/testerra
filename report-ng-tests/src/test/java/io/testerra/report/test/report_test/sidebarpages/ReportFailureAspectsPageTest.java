@@ -24,7 +24,6 @@ package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
@@ -38,11 +37,13 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
+
 public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test
     public void testT01_checkFailureAspectIndicesDescendingCorrectly() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
@@ -56,7 +57,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspectsTypes")
     public void testT02_checkTypeFilter(final FailureAspectType failureAspectType) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
@@ -71,7 +72,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspects")
     public void testT03_checkSearchFilter(String failureAspect) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
@@ -86,7 +87,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test
     public void testT04_checkShowExpectedFailedButton() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
@@ -104,7 +105,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "failureAspectsWithMultipleStatus")
     public void testT05_checkStatesRedirectCorrectForFailureAspectsWithDifferentStates(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String failureAspect = data.getFailureAspect();
         Status status1 = data.getStates().get(0);
         Status status2 = data.getStates().get(1);
@@ -129,7 +130,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
     public void testT06_checkNavigationWithFailureAspect(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String failureAspect = data.getFailureAspect();
         List<Status> statusList = data.getStates();
 
@@ -147,7 +148,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingMethodNames")
     public void testT07_checkNavigationWithTestState(final String failureAspect, final Status status, final String methodName) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);

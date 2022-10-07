@@ -22,15 +22,15 @@
 package io.testerra.report.test.pages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public abstract class ReportHeader extends Page {
 
     @Check
-    private final GuiElement title = new GuiElement(getWebDriver(), By.xpath("//mdc-top-app-bar-title"));
+    private final UiElement title = find(By.xpath("//mdc-top-app-bar-title"));
 
     public ReportHeader(WebDriver driver) {
         super(driver);

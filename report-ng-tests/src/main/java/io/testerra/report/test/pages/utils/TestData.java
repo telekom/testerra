@@ -24,7 +24,6 @@ package io.testerra.report.test.pages.utils;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

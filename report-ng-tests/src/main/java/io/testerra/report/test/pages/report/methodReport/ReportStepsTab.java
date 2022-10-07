@@ -23,7 +23,7 @@
 package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -35,7 +35,7 @@ public class ReportStepsTab extends AbstractReportMethodPage {
 
 
     @Check
-    private final GuiElement testSteps = tabPagesContent.getSubElement(By.xpath("//section[@class='step']"));
+    private final UiElement testSteps = tabPagesContent.find(By.xpath("//section[@class='step']"));
 
     /**
      * Constructor for existing sessions.
@@ -47,25 +47,26 @@ public class ReportStepsTab extends AbstractReportMethodPage {
     }
 
     public void assertSeveralTestStepsAreListed() {
-        int amountOfSections = testSteps.getNumberOfFoundElements();
+        int amountOfSections = testSteps.list().size();
         Assert.assertTrue(amountOfSections > 1, "There should be at least 2 sections: setup and teardown!");
     }
 
     public void assertsTestStepsContainFailureAspectMessage(String failureAspectMessage) {
-        GuiElement errorMessage = testSteps.getSubElement(By.xpath("//expandable-error-context//class-name-markup"));
-        errorMessage.asserts("Steps tab should contain an error message").assertIsDisplayed();
-        errorMessage.asserts("Error message on steps tab should contain correct failureAspect-message").assertText(failureAspectMessage);
+        UiElement errorMessage = testSteps.find(By.xpath("//expandable-error-context//class-name-markup"));
+
+        errorMessage.expect().displayed().is(true, "Steps tab should contain an error message");
+        errorMessage.expect().text().is(failureAspectMessage, "Error message on steps tab should contain correct failureAspect-message");
     }
 
-    public void assertEachFailureAspectContainsExpectedStatement(String expectedStatement){
-        testSteps.getSubElement(By.xpath("//expandable-error-context")).getList().forEach(GuiElement::click);
-        List<GuiElement> errorCodes = testSteps.getSubElement(
-                By.xpath("//*[contains(@class,'mdc-expandable__content-container')]//*[@class='code-view']")).getList();
+    public void assertEachFailureAspectContainsExpectedStatement(String expectedStatement) {
+        testSteps.find(By.xpath("//expandable-error-context")).list().forEach(UiElement::click);
+        List<UiElement> errorCodes = testSteps.find(
+                By.xpath("//*[contains(@class,'mdc-expandable__content-container')]//*[@class='code-view']")).list().stream().collect(Collectors.toList());
 
-        for (GuiElement code : errorCodes){
-            List<String> statements = code.getSubElement(By.xpath("//div[contains(@class,'line')]")).getList()
+        for (UiElement code : errorCodes) {
+            List<String> statements = code.find(By.xpath("//div[contains(@class,'line')]")).list()
                     .stream()
-                    .map(GuiElement::getText)
+                    .map(uiElement -> uiElement.expect().text().getActual())
                     .collect(Collectors.toList());
 
             log().info("Found {} statements", statements.size());

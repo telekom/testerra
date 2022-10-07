@@ -22,8 +22,7 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
@@ -42,19 +41,19 @@ import java.util.stream.Collectors;
 public class ReportTestsPage extends AbstractReportPage {
 
     @Check
-    private final GuiElement testStatusSelect = pageContent.getSubElement(By.xpath(".//mdc-select[@label = 'Status']"));
+    private final UiElement testStatusSelect = pageContent.find(By.xpath(".//mdc-select[@label = 'Status']"));
     @Check
-    private final GuiElement testClassSelect = pageContent.getSubElement(By.xpath(".//mdc-select[@label = 'Class']"));
+    private final UiElement testClassSelect = pageContent.find(By.xpath(".//mdc-select[@label = 'Class']"));
     @Check
-    private final GuiElement testSearchInput = pageContent.getSubElement(By.xpath(".//input[contains(@class, 'mdc-text-field__input')]"));
+    private final UiElement testSearchInput = pageContent.find(By.xpath(".//input[contains(@class, 'mdc-text-field__input')]"));
     @Check
-    private final GuiElement configurationMethodsSwitch = pageContent.getSubElement(By.xpath("//button[@role='switch']"));
+    private final UiElement configurationMethodsSwitch = pageContent.find(By.xpath("//button[@role='switch']"));
 
     private final String tableRowsLocator = "//tbody//tr";
-    private final GuiElement tableRows = pageContent.getSubElement(By.xpath(tableRowsLocator));
+    private final UiElement tableRows = pageContent.find(By.xpath(tableRowsLocator));
 
     private final String methodLinkLocator = "//tbody//tr//td//a[text()='%s']";
-    private final GuiElement tableHead = pageContent.getSubElement(By.xpath(".//thead"));
+    private final UiElement tableHead = pageContent.find(By.xpath(".//thead"));
 
     public enum TestsTableEntry {
         STATUS(0), CLASS(1), INDEX(2), METHOD(3);
@@ -75,20 +74,20 @@ public class ReportTestsPage extends AbstractReportPage {
         super(driver);
     }
 
-    public List<GuiElement> getColumnWithoutHead(int columnNumber) {
-        List<GuiElement> column = new ArrayList<>();
-        for (GuiElement row : tableRows.getList()) {
-            column.add(row.getSubElement(By.xpath("//td")).getList().get(columnNumber));
+    public List<UiElement> getColumnWithoutHead(int columnNumber) {
+        List<UiElement> column = new ArrayList<>();
+        for (UiElement row : tableRows.list().stream().collect(Collectors.toList())) {
+            column.add(row.find(By.xpath("//td")).list().stream().collect(Collectors.toList()).get(columnNumber));
         }
         return column;
     }
 
 
-    public List<GuiElement> getColumnWithoutHead(TestsTableEntry tableEntry) {
+    public List<UiElement> getColumnWithoutHead(TestsTableEntry tableEntry) {
         return getColumnWithoutHead(tableEntry.index());
     }
 
-    private GuiElement getHeaderRow(TestsTableEntry tableEntry) {
+    private UiElement getHeaderRow(TestsTableEntry tableEntry) {
 
         String headerRowLocator = ".//tr";
 
@@ -107,9 +106,11 @@ public class ReportTestsPage extends AbstractReportPage {
                 break;
         }
 
-        return tableHead.getSubElement(By.xpath(headerRowLocator));
+        return tableHead.find(By.xpath(headerRowLocator));
     }
 
+
+    //TODO:: FRAGE: fehler in Testerra? sollte 'Abstract Page' eine @Deprecated-methode aufrufen?
     public void assertPageIsShown() {
         verifyReportPage(ReportSidebarPageType.TESTS);
     }
@@ -117,17 +118,13 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public void assertMethodColumnContainsCorrectMethods(String filter) {
         getColumnWithoutHead(TestsTableEntry.METHOD)
-                .stream()
-                .map(GuiElement::getText)
-                .forEach(i -> Assert.assertTrue(i.contains(filter),
-                        String.format("Every found method [%s] should contain: %s", i, filter)));
+                .forEach(uiElement -> uiElement.expect().text().contains(filter).is(true,
+                        String.format("Every found method [%s] should contain: %s", uiElement.expect().text().getActual(), filter)));
     }
 
     public void assertClassColumnContainsCorrectClasses(String expectedClass) {
         getColumnWithoutHead(TestsTableEntry.CLASS)
-                .stream()
-                .map(GuiElement::getText)
-                .forEach(i -> Assert.assertEquals(i, expectedClass, String.format(
+                .forEach(uiElement -> uiElement.expect().text().is(expectedClass, String.format(
                         "Class-column should contain correct only entries with correct class! [%s]", expectedClass)));
     }
 
@@ -135,11 +132,11 @@ public class ReportTestsPage extends AbstractReportPage {
         // counts amount of different displayed classes
         int amountOfDifferentClasses = getColumnWithoutHead(TestsTableEntry.CLASS)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.CLASS).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.CLASS).expect().text().getActual();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Class (%s)", amountOfDifferentClasses), "Headline should contain correct number!");
@@ -149,11 +146,11 @@ public class ReportTestsPage extends AbstractReportPage {
         // counts amount of different displayed classes
         int amountOfDifferentStates = getColumnWithoutHead(TestsTableEntry.STATUS)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.STATUS).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.STATUS).expect().text().getActual();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Status (%s)", amountOfDifferentStates), "Headline should contain correct number!");
@@ -163,7 +160,7 @@ public class ReportTestsPage extends AbstractReportPage {
         // counts amount of different displayed classes
         int amountOfDifferentMethods = getColumnWithoutHead(TestsTableEntry.METHOD).size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.METHOD).getText();
+        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.METHOD).expect().text().getActual();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Method (%s)", amountOfDifferentMethods),
@@ -173,16 +170,16 @@ public class ReportTestsPage extends AbstractReportPage {
     public void assertTestMethodIndicDoesNotAppearTwice() {
         int amountOfDifferentIndices = getColumnWithoutHead(TestsTableEntry.INDEX)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toSet())
                 .size();
-        Assert.assertEquals(amountOfDifferentIndices, tableRows.getNumberOfFoundElements(), "Each row should contains a method with an different indices!");
+        Assert.assertEquals(amountOfDifferentIndices, tableRows.list().stream().count(), "Each row should contains a method with an different indices!");
     }
 
     public void assertCorrectTestStatus(Status status) {
         getColumnWithoutHead(TestsTableEntry.STATUS)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .forEach(i -> assertMethodStatusContainsText(status.title, i));
     }
 
@@ -198,7 +195,7 @@ public class ReportTestsPage extends AbstractReportPage {
     public void assertConfigurationMethodsAreDisplayed() {
         long amountOfDisplayedConfigurationMethods = getColumnWithoutHead(TestsTableEntry.METHOD)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .filter(i -> i.contains("Configuration"))
                 .count();
         Assert.assertTrue(amountOfDisplayedConfigurationMethods > 0, "Configuration methods should be listed and contain the corresponding tag!");
@@ -207,83 +204,83 @@ public class ReportTestsPage extends AbstractReportPage {
     public ReportStepsTab navigateToStepsTab(final String methodName, final Status status) {
 
         final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
-        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        final UiElement methodNameLink = find(By.xpath(methodNameLinkLocator));
         methodNameLink.click();
 
-        return PageFactory.create(ReportStepsTab.class, getWebDriver());
+        return createPage(ReportStepsTab.class);
     }
 
     public ReportSessionsTab navigateToSessionsTab(final String methodName, final Status status) {
 
         final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
-        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        final UiElement methodNameLink = find(By.xpath(methodNameLinkLocator));
         methodNameLink.click();
 
-        return PageFactory.create(ReportSessionsTab.class, getWebDriver());
+        return createPage(ReportSessionsTab.class);
     }
 
     public ReportDetailsTab navigateToDetailsTab(final String methodName, final Status status) {
 
         final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
-        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        final UiElement methodNameLink = find(By.xpath(methodNameLinkLocator));
         methodNameLink.click();
 
-        return PageFactory.create(ReportDetailsTab.class, getWebDriver());
+        return createPage(ReportDetailsTab.class);
     }
 
     public ReportDependenciesTab navigateToDependenciesTab(final String methodName, final Status status) {
 
         final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
-        final GuiElement methodNameLink = new GuiElement(getWebDriver(), By.xpath(methodNameLinkLocator));
+        final UiElement methodNameLink = find(By.xpath(methodNameLinkLocator));
         methodNameLink.click();
 
-        return PageFactory.create(ReportDependenciesTab.class, getWebDriver());
+        return createPage(ReportDependenciesTab.class);
     }
 
     public ReportStepsTab navigateToStepsTab(String methodName) {
 
-        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
+        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
 
-        return PageFactory.create(ReportStepsTab.class, getWebDriver());
+        return createPage(ReportStepsTab.class);
     }
 
     public ReportSessionsTab navigateToSessionsTab(String methodName) {
 
-        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
+        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
 
-        return PageFactory.create(ReportSessionsTab.class, getWebDriver());
+        return createPage(ReportSessionsTab.class);
     }
 
     public ReportDetailsTab navigateToDetailsTab(String methodName) {
 
-        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
+        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
 
-        return PageFactory.create(ReportDetailsTab.class, getWebDriver());
+        return createPage(ReportDetailsTab.class);
     }
 
     public ReportDependenciesTab navigateToDependenciesTab(String methodName) {
 
-        GuiElement subElement = pageContent.getSubElement(By.xpath(String.format(methodLinkLocator, methodName)));
+        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
         subElement.click();
 
-        return PageFactory.create(ReportDependenciesTab.class, getWebDriver());
+        return createPage(ReportDependenciesTab.class);
     }
 
     public ReportTestsPage clickConfigurationMethodsSwitch() {
         configurationMethodsSwitch.click();
-        return PageFactory.create(ReportTestsPage.class, getWebDriver());
+        return createPage(ReportTestsPage.class);
     }
 
     public int getAmountOfTableRows() {
-        return tableRows.getNumberOfFoundElements();
+        return (int) tableRows.list().stream().count();
     }
 
     public ReportTestsPage search(String query) {
         testSearchInput.type(query);
-        return PageFactory.create(ReportTestsPage.class, getWebDriver());
+        return createPage(ReportTestsPage.class);
     }
 
     public int getAmountOfEntries() {
@@ -293,7 +290,7 @@ public class ReportTestsPage extends AbstractReportPage {
     public void assertCorrectTestStates(List<Status> statusList) {
         List<String> statesAsStrings = getColumnWithoutHead(TestsTableEntry.STATUS)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toList());
 
         for (Status status : statusList) {

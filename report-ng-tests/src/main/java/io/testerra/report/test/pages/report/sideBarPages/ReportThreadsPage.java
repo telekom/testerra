@@ -23,25 +23,23 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-
-import java.util.List;
-
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import io.testerra.report.test.pages.AbstractReportPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-import io.testerra.report.test.pages.AbstractReportPage;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReportThreadsPage extends AbstractReportPage {
 
     @Check
-    private final GuiElement testMethodSearchbar = pageContent.getSubElement(By.xpath("//label[@label='Method']//input"));
+    private final UiElement testMethodSearchbar = pageContent.find(By.xpath("//label[@label='Method']//input"));
     @Check
-    private final GuiElement testMethodDropDownList = pageContent.getSubElement(By.xpath("//div[./label[@label='Method']]//mdc-lookup"));
+    private final UiElement testMethodDropDownList = pageContent.find(By.xpath("//div[./label[@label='Method']]//mdc-lookup"));
     @Check
-    private final GuiElement testThreadReport = pageContent.getSubElement(By.xpath("//div[@class='vis-foreground']"));
+    private final UiElement testThreadReport = pageContent.find(By.xpath("//div[@class='vis-foreground']"));
 
     /**
      * Constructor for existing sessions.
@@ -54,27 +52,28 @@ public class ReportThreadsPage extends AbstractReportPage {
 
     public ReportThreadsPage search(String filter) {
         testMethodSearchbar.type(filter);
-        return PageFactory.create(ReportThreadsPage.class, getWebDriver());
+        return createPage(ReportThreadsPage.class);
     }
 
     public ReportThreadsPage selectMethod(String method) {
-        GuiElement methodAsGuiElement = testMethodDropDownList.getSubElement(By.xpath(String.format("//mdc-list-item[.//span[text()='%s']]", method)));
+        UiElement methodAsGuiElement = testMethodDropDownList.find(By.xpath(String.format("//mdc-list-item[.//span[text()='%s']]", method)));
         methodAsGuiElement.click();
-        return PageFactory.create(ReportThreadsPage.class, getWebDriver());
+        return createPage(ReportThreadsPage.class);
     }
 
     public void assertMethodBoxIsSelected(String method) {
-        GuiElement subElement = testThreadReport.getSubElement(
+        UiElement subElement = testThreadReport.find(
                 By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"));
 
         // make list to avoid checking wrong entry, e.g. retried tests have multiple entries, which aren't distinguishable explicitly
-        final List<GuiElement> list = subElement.getList();
-        final boolean isSelected = list.stream().anyMatch(entry -> entry.getAttribute("class").contains("vis-selected"));
+        final List<UiElement> list = subElement.list().stream().collect(Collectors.toList());
+
+        final boolean isSelected = list.stream().anyMatch(entry -> entry.expect().attribute("class").getActual().contains("vis-selected"));
         Assert.assertTrue(isSelected, String.format("Method '%s' is selected in Threads Overview", method));
     }
 
     public ReportThreadsPage clickSearchBar(){
         testMethodSearchbar.click();
-        return PageFactory.create(ReportThreadsPage.class, getWebDriver());
+        return createPage(ReportThreadsPage.class);
     }
 }

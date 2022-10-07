@@ -22,10 +22,9 @@
 
 package io.testerra.report.test.report_test.methodpages;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
@@ -35,16 +34,18 @@ import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
+import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
+
 public class ReportDetailsTabTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithFailureAspect")
     public void testT01_checkFailureAspectContainsCorrectStatus(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String method = data.getMethod();
         Status status = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -59,12 +60,12 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
     @Test
     public void testT02_passedTestsWithFailureAspectsContainOptionalAssert() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "test_Optional_Assert";
         String expectedFailureAspect = "OptionalAssert";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -78,12 +79,12 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusFailed")
     public void testT03_failedTestsContainCorrespondingFailureAspect(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String method = data.getMethod();
         String expectedFailureAspect = data.getFailureAspect();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -96,12 +97,12 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusExpectedFailed")
     public void testT04_expectedFailedTestsContainCorrespondingFailureAspectAndFailsAnnotation(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String method = data.getMethod();
         String expectedFailureAspect = data.getFailureAspect();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -116,10 +117,10 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusSkipped")
     public void testT05_skippedTestsContainCorrectFailureAspects(String method) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);

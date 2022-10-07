@@ -23,12 +23,10 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.utils.FailureAspectType;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -41,16 +39,16 @@ import java.util.stream.Collectors;
 public class ReportFailureAspectsPage extends AbstractReportPage {
 
     @Check
-    private final GuiElement testTypeSelect = pageContent.getSubElement(By.xpath("//mdc-select[@label='Type']"));
+    private final UiElement testTypeSelect = pageContent.find(By.xpath("//mdc-select[@label='Type']"));
 
     @Check
-    private final GuiElement testInputSearch = pageContent.getSubElement(By.xpath("//label[@label='Search']//input"));
+    private final UiElement testInputSearch = pageContent.find(By.xpath("//label[@label='Search']//input"));
 
     @Check
-    private final GuiElement testShowExpectedFailsButton = pageContent.getSubElement(By.xpath("//button[@role='switch']"));
+    private final UiElement testShowExpectedFailsButton = pageContent.find(By.xpath("//button[@role='switch']"));
 
     @Check
-    private final GuiElement failureAspectsTable = pageContent.getSubElement(By.xpath("//tbody[@ref='content']"));
+    private final UiElement failureAspectsTable = pageContent.find(By.xpath("//tbody[@ref='content']"));
 
 
     public enum FailureAspectsTableEntry {
@@ -76,14 +74,14 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         super(driver);
     }
 
-    public List<GuiElement> getColumns(final FailureAspectsTableEntry entry) {
+    public List<UiElement> getColumns(final FailureAspectsTableEntry entry) {
         return getColumns(entry.index());
     }
 
-    private List<GuiElement> getColumns(int column) {
-        List<GuiElement> returnList = new ArrayList<>();
-        for (GuiElement tableRows : failureAspectsTable.getSubElement(By.xpath("//tr")).getList()) {
-            List<GuiElement> tableColumns = tableRows.getSubElement(By.xpath("//td")).getList();
+    private List<UiElement> getColumns(int column) {
+        List<UiElement> returnList = new ArrayList<>();
+        for (UiElement tableRows : failureAspectsTable.find(By.xpath("//tr")).list()) {
+            List<UiElement> tableColumns = tableRows.find(By.xpath("//td")).list().stream().collect(Collectors.toList());
             returnList.add(tableColumns.get(column));
         }
         return returnList;
@@ -91,18 +89,19 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
 
     /**
      * check existence of at least one failed state in each row, return as soon as the first row didn't have a failed state
+     *
      * @return boolean
      */
     public boolean getContainsFailedStateExistenceInEachRow() {
-        final List<GuiElement> tableRows = failureAspectsTable.getSubElement(By.xpath("./tr")).getList();
+        final List<UiElement> tableRows = failureAspectsTable.find(By.xpath("./tr")).list().stream().collect(Collectors.toList());
         boolean statusContainsFailed = false;
 
-        for (final GuiElement row : tableRows) {
+        for (final UiElement row : tableRows) {
             statusContainsFailed = false;
 
-            final List<GuiElement> statusEntriesInTable = row.getSubElement(By.xpath(".//td[3]/div")).getList();
-            for (final GuiElement statusColumn : statusEntriesInTable) {
-                final String foundStatusInTable = statusColumn.getText();
+            final List<UiElement> statusEntriesInTable = row.find(By.xpath(".//td[3]/div")).list().stream().collect(Collectors.toList());
+            for (final UiElement statusColumn : statusEntriesInTable) {
+                final String foundStatusInTable = statusColumn.expect().text().getActual();
                 if (!foundStatusInTable.contains(Status.FAILED_EXPECTED.title) && foundStatusInTable.contains(Status.FAILED.title)) {
                     statusContainsFailed = true;
                 }
@@ -116,16 +115,16 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     public List<String> getOrderListOfTopFailureAspects() {
         return getColumns(FailureAspectsTableEntry.FAILURE_ASPECT)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toList());
     }
 
     public void assertRankColumnDescends() {
-        final List<GuiElement> columns = getColumns(FailureAspectsTableEntry.RANK);
+        final List<UiElement> columns = getColumns(FailureAspectsTableEntry.RANK);
         int expectedRankNumber = 1;
 
-        for (GuiElement column : columns) {
-            Assert.assertEquals(Integer.parseInt(column.getText()), expectedRankNumber, "Rank column should descend and contain no duplicate!");
+        for (UiElement column : columns) {
+            Assert.assertEquals(Integer.parseInt(column.expect().text().getActual()), expectedRankNumber, "Rank column should descend and contain no duplicate!");
             expectedRankNumber++;
         }
     }
@@ -133,7 +132,7 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     public void assertFailureAspectsColumnContainsCorrectAspects(String filter) {
         getColumns(FailureAspectsTableEntry.FAILURE_ASPECT)
                 .stream()
-                .map(GuiElement::getText)
+                .map(uiElement -> uiElement.expect().text().getActual())
                 .map(String::toUpperCase)
                 .forEach(i -> Assert.assertTrue(i.contains(filter.toUpperCase(Locale.ROOT)),
                         String.format("All listed aspects should match the given filter.[Actual: %s] [Expected: %s]", i, filter)));
@@ -150,33 +149,33 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     public ReportFailureAspectsPage search(String s) {
         testInputSearch.clear();
         testInputSearch.type(s);
-        return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
+        return createPage(ReportFailureAspectsPage.class);
     }
 
     public ReportFailureAspectsPage clickShowExpectedFailedButton() {
         testShowExpectedFailsButton.click();
-        return PageFactory.create(ReportFailureAspectsPage.class, getWebDriver());
+        return createPage(ReportFailureAspectsPage.class);
     }
 
     public ReportTestsPage clickStateLink(String observedFailureAspect, Status expectedState) {
         // failureAspect can contain apostrophes
-        final GuiElement failureAspectInRow = failureAspectsTable.getSubElement(
+        final UiElement failureAspectInRow = failureAspectsTable.find(
                 By.xpath(".//tr[.//td[contains(., \"" + observedFailureAspect + "\")]]"));
 
         final int columnIndexStatus = FailureAspectsTableEntry.STATUS.value + 1;
-        final GuiElement statusInRow = failureAspectInRow.getSubElement(By.xpath(".//td[" + columnIndexStatus + "]//a[contains(., '" + expectedState.title + "')]"));
+        final UiElement statusInRow = failureAspectInRow.find(By.xpath(".//td[" + columnIndexStatus + "]//a[contains(., '" + expectedState.title + "')]"));
 
         statusInRow.click();
-        return PageFactory.create(ReportTestsPage.class, getWebDriver());
+        return createPage(ReportTestsPage.class);
     }
 
     public ReportTestsPage clickFailureAspectLink(final String failureAspect) {
         // failureAspect can contain apostrophes
         final int columnIndexAspect = FailureAspectsTableEntry.FAILURE_ASPECT.value + 1;
-        GuiElement subElement = failureAspectsTable.getSubElement(By.xpath(".//tr//td[" + columnIndexAspect + "]//a[contains(., \"" + failureAspect + "\")]"));
+        UiElement subElement = failureAspectsTable.find(By.xpath(".//tr//td[" + columnIndexAspect + "]//a[contains(., \"" + failureAspect + "\")]"));
         subElement.click();
 
-        return PageFactory.create(ReportTestsPage.class, getWebDriver());
+        return createPage(ReportTestsPage.class);
     }
 
     public void assertFailureAspectTypeIsFilteredCorrectly(FailureAspectType failureAspectType) {

@@ -22,16 +22,14 @@
 package io.testerra.report.test.pages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public abstract class AbstractReportPage extends ReportSideBar {
 
     @Check
-    protected final GuiElement pageContent = new GuiElement(getWebDriver(), By.tagName("mdc-layout-grid"));
+    protected final UiElement pageContent = find(By.tagName("mdc-layout-grid"));
 
     /**
      * Constructor for existing sessions.
@@ -44,20 +42,17 @@ public abstract class AbstractReportPage extends ReportSideBar {
 
     /**
      * generic method selecting Element in a drop down list via provided label String
-     * @param dropbox
-     * @param label
-     * @param clazz
-     * @param <T>
+     *
      * @return clazz
      */
-    protected <T extends AbstractReportPage> T selectDropBoxElement(GuiElement dropbox, String label, Class<T> clazz) {
+    protected <T extends AbstractReportPage> T selectDropBoxElement(UiElement dropbox, String label, Class<T> clazz) {
         // open dropbox
         dropbox.click();
 
         // select element
-        final GuiElement statusItem = dropbox.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), '" + label + "')]]"));
+        final UiElement statusItem = dropbox.find(By.xpath(".//mdc-list-item[.//span[contains(text(), '" + label + "')]]"));
         statusItem.click();
 
-        return PageFactory.create(clazz, getWebDriver());
+        return createPage(clazz);
     }
 }

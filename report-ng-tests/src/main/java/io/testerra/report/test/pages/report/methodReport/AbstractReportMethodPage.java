@@ -23,8 +23,7 @@
 package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import io.testerra.report.test.pages.utils.RegExUtils;
@@ -35,24 +34,24 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
 
     //TODO: better locator?
     @Check
-    protected final GuiElement testMethodCard = pageContent.getSubElement(By.xpath("(//mdc-card)[1]"));
+    protected final UiElement testMethodCard = pageContent.find(By.xpath("(//mdc-card)[1]"));
     //TODO: mandatory?
     // protected final GuiElement testLastScreenshot = pageContent.getSubElement(By.xpath("//mdc-card[contains(text(),'Last Screenshot')]"));
     @Check
-    protected final GuiElement testDurationCard = pageContent.getSubElement(By.xpath("//test-duration-card"));
+    protected final UiElement testDurationCard = pageContent.find(By.xpath("//test-duration-card"));
     @Check
-    protected final GuiElement testTabBar = pageContent.getSubElement(By.xpath("//mdc-tab-bar"));
+    protected final UiElement testTabBar = pageContent.find(By.xpath("//mdc-tab-bar"));
     @Check
-    protected final GuiElement tabPagesContent = new GuiElement(getWebDriver(), By.xpath("//router-view[./mdc-layout-grid]/router-view"));
+    protected final UiElement tabPagesContent = find(By.xpath("//router-view[./mdc-layout-grid]/router-view"));
     @Check
-    private final GuiElement testPrimeCardHeadline = testMethodCard.getSubElement(By.xpath("/div"));
+    private final UiElement testPrimeCardHeadline = testMethodCard.find(By.xpath("/div"));
     @Check
-    private final GuiElement testClassText = testMethodCard.getSubElement(By.xpath("//li[.//span[contains(text(), 'Class')]]//a"));
+    private final UiElement testClassText = testMethodCard.find(By.xpath("//li[.//span[contains(text(), 'Class')]]//a"));
     @Check
-    private final GuiElement testThreadLink = testMethodCard.getSubElement(By.xpath("//li[.//span[contains(text(), 'Thread')]]//a"));
+    private final UiElement testThreadLink = testMethodCard.find(By.xpath("//li[.//span[contains(text(), 'Thread')]]//a"));
     @Check
-    private final GuiElement testStepsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
-    private final GuiElement testSessionsTab = testTabBar.getSubElement(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Sessions')]]"));
+    private final UiElement testStepsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
+    private final UiElement testSessionsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Sessions')]]"));
 
 
     /**
@@ -66,24 +65,28 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
 
     public ReportStepsTab navigateToStepsTab() {
         testStepsTab.click();
-        return PageFactory.create(ReportStepsTab.class, getWebDriver());
+        return createPage(ReportStepsTab.class);
     }
 
     public ReportSessionsTab navigateToSessionsTab() {
         testSessionsTab.click();
-        return PageFactory.create(ReportSessionsTab.class, getWebDriver());
+        return createPage(ReportSessionsTab.class);
     }
 
     private void assertMethodNamesAreCorrect(String methodName) {
-        testPrimeCardHeadline.asserts("Displayed method name should match the corresponding link").assertTextContains(methodName);
+        // testPrimeCardHeadline.asserts("Displayed method name should match the corresponding link").assertTextContains(methodName);
+        testPrimeCardHeadline.expect().text().contains(methodName).is(true, "Displayed method name should match the corresponding link");
+
     }
 
     private void assertMethodStateIsCorrect(String statusName) {
-        testPrimeCardHeadline.asserts("Displayed status should match the corresponding link").assertTextContains(statusName);
+        //testPrimeCardHeadline.asserts("Displayed status should match the corresponding link").assertTextContains(statusName);
+        testPrimeCardHeadline.expect().text().contains(statusName).is(true, "Displayed status should match the corresponding link");
     }
 
     private void assertMethodClassesAreCorrect(String className) {
-        testClassText.asserts("Displayed class name should equal to given class name at test overview!").assertText(className);
+        //testClassText.asserts("Displayed class name should equal to given class name at test overview!").assertText(className);
+        testClassText.expect().text().is(className, "Displayed class name should equal to given class name at test overview!");
     }
 
     public void assertMethodOverviewContainsCorrectContent(String methodeClass, String status, String name) {
@@ -94,16 +97,17 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
 
     public ReportThreadsPage clickThreadLink() {
         testThreadLink.click();
-        return PageFactory.create(ReportThreadsPage.class, getWebDriver());
+        return createPage(ReportThreadsPage.class);
     }
 
     public String getTestDuration() {
-        GuiElement durationGuiElement = testDurationCard.getSubElement(By.xpath("//div[contains(@class,'card-content')]"));
-        return RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.LINE_BREAK, durationGuiElement.getText());
+        UiElement durationGuiElement = testDurationCard.find(By.xpath("//div[contains(@class,'card-content')]"));
+        return RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.LINE_BREAK, durationGuiElement.expect().text().getActual());
     }
 
     public void assertTestMethodeReportContainsFailsAnnotation() {
-        GuiElement failsAnnotation = testMethodCard.getSubElement(By.xpath("//*[contains(@class,'status-failed-expected')]"));
-        failsAnnotation.asserts("Test page should display @Failed annotation").assertIsDisplayed();
+        UiElement failsAnnotation = testMethodCard.find(By.xpath("//*[contains(@class,'status-failed-expected')]"));
+        //failsAnnotation.asserts("Test page should display @Failed annotation").assertIsDisplayed();
+        failsAnnotation.expect().displayed().is(true, "Test page should display @Failed annotation");
     }
 }

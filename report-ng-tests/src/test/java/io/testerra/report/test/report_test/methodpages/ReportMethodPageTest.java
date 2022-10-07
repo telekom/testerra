@@ -22,10 +22,9 @@
 
 package io.testerra.report.test.report_test.methodpages;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
@@ -39,18 +38,20 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
+
 public class ReportMethodPageTest extends AbstractReportTest {
 
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States_ForStepsType")
     public void testT01_methodOverviewIsCorrectForStepsType(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
         Status status = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -65,13 +66,13 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
     public void testT01_methodOverviewIsCorrectForDetailsType(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
         Status status = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -86,11 +87,11 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
     @Test
     public void testT02_checkDurationFormat() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String exampleMethod = "test_Passed";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to method page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);

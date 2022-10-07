@@ -22,10 +22,9 @@
 
 package io.testerra.report.test.report_test.sidebarpages;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
@@ -39,14 +38,16 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
+
 public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT01_showCorrectTestClassesWhenClickingOnPieChart(Status status) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertPieChartContainsTestState(status);
@@ -58,10 +59,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT02_showCorrectTestClassesWhenClickingOnNumbersChart(Status status) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
@@ -73,10 +74,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForNavigationBetweenDifferentPages")
     public void testT03_navigationTowardsDifferentPagesDashBoardPage(ReportSidebarPageType type, Class<AbstractReportPage> pageClass) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to '" + type.name() + "' page, check whether page was reached and navigate back to 'Dashboard' page.");
         reportDashBoardPage.gotoToReportPage(type, pageClass);
@@ -85,10 +86,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test
     public void testT04_reportDurationDisplayed() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check whether the start is displayed");
         reportDashBoardPage.assertStartTimeIsDisplayed();
@@ -104,10 +105,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT05_barChartLinksToFilteredTestsPage(Status status) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
@@ -120,11 +121,11 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test
     public void testT06_barChartLength() {
-        WebDriver driver = WebDriverManager.getWebDriver();
         final double threshold = 0.01;  //1% (random chosen value, but some threshold is needed when asserting with double)
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        final ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check barchart is shown and iterate through all bars to check correct length");
         reportDashBoardPage.assertBarChartIsDisplayed();
@@ -133,10 +134,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
     public void testT07_reportPercentages(int amount, Status status) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        final ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertPieChartContainsTestState(status);
@@ -147,10 +148,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT08_barChartFilterHovering(Status status) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
@@ -163,11 +164,11 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProvider = "dataProviderFailureCorridorBounds")
-    public void testT09_failureCorridorCorrectness(String failureCorridorType, int bound, int currentValue) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+    public void testT09_failureCorridorCorrectness(String failureCorridorType, long bound, int currentValue) {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        final ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check displayed and compare failure corridor values to allowed bounds");
         reportDashBoardPage.assertFailureCorridorValue(failureCorridorType, currentValue);
@@ -176,11 +177,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test
     public void testT10_topFailureAspectsMajorLink() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        final ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver,
-                PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check top failure aspects are displayed");
         reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
@@ -193,10 +193,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test
     public void testT11_topFailureAspectsMinorLink() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        final ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check top failure aspects are displayed");
         reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
@@ -210,10 +210,10 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
 
     @Test
     public void testT12_topFailureAspectsOrderedList() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        final ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Check top failure aspects are displayed");
         reportDashBoardPage.assertTopFailureAspectsAreDisplayed();

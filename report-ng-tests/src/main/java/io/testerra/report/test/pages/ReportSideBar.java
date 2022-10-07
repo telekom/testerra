@@ -22,29 +22,29 @@
 package io.testerra.report.test.pages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class ReportSideBar extends ReportHeader {
 
     @Check
-    private final GuiElement sideBar = new GuiElement(getWebDriver(), By.xpath("//mdc-drawer"));
+    private final UiElement sideBar = find(By.xpath("//mdc-drawer"));
     @Check
-    private final GuiElement sideBarDashBoard = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[(text() = 'Dashboard')]]"));
+    private final UiElement sideBarDashBoard = sideBar.find(By.xpath(".//mdc-list-item[.//span[(text() = 'Dashboard')]]"));
     @Check
-    private final GuiElement sideBarTests = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Tests')]]"));
+    private final UiElement sideBarTests = sideBar.find(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Tests')]]"));
     @Check
-    private final GuiElement sideBarFailureAspects = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Failure Aspects')]]"));
+    private final UiElement sideBarFailureAspects = sideBar.find(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Failure Aspects')]]"));
     @Check
-    private final GuiElement sideBarLogs = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Logs')]]"));
+    private final UiElement sideBarLogs = sideBar.find(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Logs')]]"));
     @Check
-    private final GuiElement sideBarThreads = sideBar.getSubElement(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Threads')]]"));
+    private final UiElement sideBarThreads = sideBar.find(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Threads')]]"));
 
     public ReportSideBar(WebDriver driver) {
         super(driver);
@@ -69,27 +69,24 @@ public abstract class ReportSideBar extends ReportHeader {
                 break;
         }
 
-        return PageFactory.create(reportPageClass, getWebDriver());
+        return createPage(reportPageClass);
     }
 
 
     public void verifyReportPage(final ReportSidebarPageType reportSidebarPageType) {
-        List<GuiElement> sideBarElements = sideBar.getSubElement(By.xpath("/mdc-drawer-content/mdc-list-item")).getList();
-        for (GuiElement sidebarElement : sideBarElements) {
-            if (Objects.equals(sidebarElement.getText().toUpperCase(), reportSidebarPageType.name())) {
-                sidebarElement.asserts().assertAttributeContains("class", "mdc-list-item--activated");
-            } else {
-                sidebarElement.asserts().assertAttributeContainsNot("class", "mdc-list-item--activated");
-            }
+        List<UiElement> sideBarElements = sideBar.find(By.xpath("/mdc-drawer-content/mdc-list-item")).list().stream().collect(Collectors.toList());
+        for (UiElement sidebarElement : sideBarElements) {
+            final boolean mdcListItemIsActivated = Objects.equals(sidebarElement.expect().text().getActual().toUpperCase(), reportSidebarPageType.name());
+            sidebarElement.expect().attribute("class").contains("mdc-list-item--activated").is(mdcListItemIsActivated);
         }
     }
 
-    public GuiElement getSideBarTests(){
+    public UiElement getSideBarTests() {
         return sideBarTests;
     }
 
     public int getAmountOfTests() {
-        final String testsTextOfSidebar = sideBarTests.getText();
+        final String testsTextOfSidebar = sideBarTests.expect().text().getActual();
         String regExpResultOfString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, testsTextOfSidebar);
         return Integer.parseInt(regExpResultOfString);
     }

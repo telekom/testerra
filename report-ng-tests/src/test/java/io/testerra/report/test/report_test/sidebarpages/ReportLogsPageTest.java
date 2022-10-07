@@ -23,10 +23,9 @@
 package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
@@ -36,14 +35,16 @@ import io.testerra.report.test.pages.utils.TestData;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
+import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
+
 public class ReportLogsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForLogLevel")
     public void testT01_checkLogLevelFilter(LogLevel logLevel) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
@@ -56,10 +57,10 @@ public class ReportLogsPageTest extends AbstractReportTest {
     @Test(enabled = false)
     @Fails(description = "filter does not work correct (issues with brackets, spaces and not even applied to whole log report)")
     public void testT02_filterForWholeLogLines() {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
@@ -68,7 +69,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         //fails because filter does not work correct
         // -> filter does not work when there are leading or trailing spaces
         // -> filter does not work when there are brackets in the filter request
-        // (-> filter is only applied on the right side of the logReport behind the "-"- sign in each line)
+        // (-> filter is only applied on the right side of the logReport behind the "-"- sign in each line
 
         //TODO: search constraints: bug or feature?
         // --> set issue on github (as bug)
@@ -78,13 +79,13 @@ public class ReportLogsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
     public void testT03_filterForMethodContent(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodeName = data.getMethod();
         String methodeClass = data.getMethodClass();
         Status methodStatus = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
@@ -104,13 +105,13 @@ public class ReportLogsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
     public void testT04_filterForMethodContentWithLogLevel(TestData data) {
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodeName = data.getMethod();
         String methodeClass = data.getMethodClass();
         Status methodStatus = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, PropertyManager.getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);

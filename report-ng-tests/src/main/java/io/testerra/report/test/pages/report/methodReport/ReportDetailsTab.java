@@ -23,7 +23,7 @@
 package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -33,13 +33,13 @@ import java.util.Locale;
 
 public class ReportDetailsTab extends AbstractReportMethodPage {
     @Check
-    private final GuiElement pageContent = new GuiElement(getWebDriver(), By.xpath("//router-view[@class='au-target']//mdc-layout-grid"));
+    private final UiElement pageContent = find(By.xpath("//router-view[@class='au-target']//mdc-layout-grid"));
     @Check
-    private final GuiElement testFailureAspect = pageContent.getSubElement(By.xpath("//mdc-card[./div[text()='Failure Aspect']]"));
+    private final UiElement testFailureAspect = pageContent.find(By.xpath("//mdc-card[./div[text()='Failure Aspect']]"));
     //TODO: mandatory?
-    private final GuiElement testOriginCard = pageContent.getSubElement(By.xpath("//mdc-card[./div[contains(text(), 'Origin')]]"));
+    private final UiElement testOriginCard = pageContent.find(By.xpath("//mdc-card[./div[contains(text(), 'Origin')]]"));
     @Check
-    private final GuiElement testStacktraceCard = pageContent.getSubElement(By.xpath("//mdc-card[./div[contains(text(), 'Stacktrace')]]"));
+    private final UiElement testStacktraceCard = pageContent.find(By.xpath("//mdc-card[./div[contains(text(), 'Stacktrace')]]"));
 
     public ReportDetailsTab(WebDriver driver) {
         super(driver);
@@ -49,14 +49,17 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         String expectedStatusTitleFormatted = expectedStatusTitle.toLowerCase();
         if (expectedStatusTitleFormatted.equals(Status.FAILED_EXPECTED.title.toLowerCase(Locale.ROOT)))
             expectedStatusTitleFormatted = "failed-expected";
-        GuiElement failureAspectColoredPart = testFailureAspect.getSubElement(By.xpath("//div[contains(@class, 'status')]"));
-        failureAspectColoredPart.asserts(String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.getAttribute("class"), expectedStatusTitleFormatted)).assertAttributeContains("class", expectedStatusTitleFormatted);
+        UiElement failureAspectColoredPart = testFailureAspect.find(By.xpath("//div[contains(@class, 'status')]"));
+        //failureAspectColoredPart.asserts(String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.getAttribute("class"), expectedStatusTitleFormatted)).assertAttributeContains("class", expectedStatusTitleFormatted);
+
+        failureAspectColoredPart.expect().attribute("class").contains(expectedStatusTitleFormatted).is(true,
+                String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.expect().attribute("class").getActual(), expectedStatusTitleFormatted));
     }
 
     public void assertTestMethodContainsCorrectFailureAspect(String correctFailureAspect) {
         String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
-        GuiElement failureAspectCodeLine = testOriginCard.getSubElement(By.xpath(failureAspectCodeLineXPath));
-        String failureAspectCodeLineAsString = failureAspectCodeLine.getText();
+        UiElement failureAspectCodeLine = testOriginCard.find(By.xpath(failureAspectCodeLineXPath));
+        String failureAspectCodeLineAsString = failureAspectCodeLine.expect().text().getActual();
         Assert.assertTrue(failureAspectCodeLineAsString.contains(correctFailureAspect),
                 "Given failure aspect should match the code-line in origin-card!");
     }
@@ -69,26 +72,26 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
 
     private boolean skippedTestContainsSkipException() {
         String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
-        GuiElement failureAspectCodeLine = testOriginCard.getSubElement(By.xpath(failureAspectCodeLineXPath));
-        if (failureAspectCodeLine.isDisplayed()) return failureAspectCodeLine.getText().contains("SkipException");
+        UiElement failureAspectCodeLine = testOriginCard.find(By.xpath(failureAspectCodeLineXPath));
+        if (failureAspectCodeLine.waitFor().displayed(true))
+            return failureAspectCodeLine.expect().text().getActual().contains("SkipException");
         return false;
-
     }
 
     private boolean skippedTestFailsInDataProvider() {
         //check whether code contains '@DataProvider'
-        GuiElement dataProviderCode = testOriginCard.getSubElement(By.xpath("//div[contains(@class,'line')]//span[contains(text(),'@DataProvider')]"));
-        return dataProviderCode.isDisplayed();
+        UiElement dataProviderCode = testOriginCard.find(By.xpath("//div[contains(@class,'line')]//span[contains(text(),'@DataProvider')]"));
+        return dataProviderCode.waitFor().displayed(true);
     }
 
     private boolean skippedTestFailsInBeforeMethod() {
         //check whether code contains '@BeforeMethod()'
-        GuiElement beforeMethodCode = testOriginCard.getSubElement(By.xpath("//div[contains(@class,'line')]//span[contains(text(),'@BeforeMethod()')]"));
-        return beforeMethodCode.isDisplayed();
+        UiElement beforeMethodCode = testOriginCard.find(By.xpath("//div[contains(@class,'line')]//span[contains(text(),'@BeforeMethod()')]"));
+        return beforeMethodCode.waitFor().displayed(true);
     }
 
     private boolean skippedTestDependsOnFailedMethod() {
-        String failureAspect = testFailureAspect.getText().split("\n")[1];
+        String failureAspect = testFailureAspect.expect().text().getActual().split("\n")[1];
         String expectedContainedText = "depends on not successfully finished methods";
         return failureAspect.contains(expectedContainedText);
     }
@@ -101,29 +104,29 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     }
 
     private void expandStacktrace() {
-        GuiElement expander = testStacktraceCard.getSubElement(By.xpath("//mdc-expandable"));
-        expander.asserts().assertIsDisplayed();
+        UiElement expander = testStacktraceCard.find(By.xpath("//mdc-expandable"));
+        expander.expect().displayed().is(true);
         expander.click();
     }
 
     private void assertStacktraceIsDisplayed() {
-        GuiElement stacktrace = testStacktraceCard.getSubElement(By.xpath("//mdc-expandable//div[@class='code-view']"));
-        stacktrace.asserts().assertIsDisplayed();
-        Assert.assertTrue(stacktrace.getNumberOfFoundElements() > 0, "There should be some line of stack trace displayed!");
+        UiElement stacktrace = testStacktraceCard.find(By.xpath("//mdc-expandable//div[@class='code-view']"));
+        stacktrace.expect().displayed().is(true);
+        Assert.assertTrue(stacktrace.list().size() > 0, "There should be some line of stack trace displayed!");
     }
 
     private void assertContainsCodeLines() {
-        GuiElement failureOrigin = testOriginCard.getSubElement(By.xpath("//div[@class='code-view']"));
-        failureOrigin.asserts().assertIsDisplayed();
-        Assert.assertTrue(failureOrigin.getNumberOfFoundElements() > 0, "There should be some line of code displayed!");
+        UiElement failureOrigin = testOriginCard.find(By.xpath("//div[@class='code-view']"));
+        failureOrigin.expect().displayed().is(true);
+        Assert.assertTrue(failureOrigin.list().size() > 0, "There should be some line of code displayed!");
     }
 
     private void assertFailLureLineIsMarked() {
-        GuiElement markedFailureCodeLine = testOriginCard.getSubElement(By.xpath("//div[@class='code-view']//div[contains(@class,'error')]"));
-        markedFailureCodeLine.asserts().assertIsDisplayed();
+        UiElement markedFailureCodeLine = testOriginCard.find(By.xpath("//div[@class='code-view']//div[contains(@class,'error')]"));
+        markedFailureCodeLine.expect().displayed().is(true);
     }
 
-    public String getFailureAspect() {
-        return testFailureAspect.getText().split("\n")[1];
+   public String getFailureAspect() {
+        return testFailureAspect.expect().text().getActual().split("\n")[1];
     }
 }

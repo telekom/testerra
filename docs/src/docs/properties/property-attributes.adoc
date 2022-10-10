@@ -40,7 +40,6 @@
 :list_tests:                                    tt.report.list.tests
 :runcfg:                                        tt.runcfg
 :screenshotter_active:                          tt.screenshotter.active
-:report_screenshots_preview:                    tt.screenshots.preview
 :screenshot_on_pageload:                        tt.screenshot.on.pageload
 :screencaster_active:                           tt.screencaster.active
 :screencaster_active_on_failed:                 tt.screencaster.active.on.failed

@@ -23,6 +23,7 @@ package io.testerra.report.test.pretest_status.expected.failed;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
 import org.testng.Assert;
@@ -70,5 +71,28 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
     @Fails(description = "Page Not Found")
     public void test_expectedFailedPageNotFound() {
         PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());
+    }
+
+    /**
+     * Testerra 2 Test
+     */
+
+    public boolean expectedFailIsValid(MethodContext methodContext) {
+        return true;
+    }
+
+    public boolean expectedFailIsNotValid(MethodContext methodContext) {
+        return false;
+    }
+    @Test
+    @Fails(validator = "expectedFailIsValid")
+    public void test_expectedFailedWithValidator_isValid(){
+        Assert.fail("Expected Fail - validator is true");
+    }
+
+    @Test
+    @Fails(validator = "expectedFailIsNotValid")
+    public void test_expectedFailedWithValidator_isNotValid(){
+        Assert.fail("Expected Fail - validator is false");
     }
 }

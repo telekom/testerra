@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Dummy Test Page</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+
+<div class="box" style="overflow:auto;">
+    <div id="unique_element_1">
+        <p id="hidden" hidden>hiddenElement</p>
+        <p id="not_hidden"> non-hidden Element</p>
+    </div>
+</div>
+
+<script language="javascript">
+
+    window.onload = function(){
+        setTimeout(function() {
+        let div = document.createElement('div');
+        div.classList.add('box');
+        let text = document.createTextNode('new text node');
+        div.appendChild(text);
+        document.body.appendChild(div)
+        }, 10_000);
+    };
+
+
+</script>
+
+</body>
+</html>

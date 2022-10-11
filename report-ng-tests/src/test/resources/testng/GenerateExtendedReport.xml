@@ -2,4 +2,19 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Report - Generate Additional Test Status for Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
 
+    <test name="Parallel">
+        <packages>
+            <package name="io.testerra.report.test.pretest_status.pageTests"/>
+            <package name="io.testerra.report.test.pretest_status.layoutTests"/>
+        </packages>
+        <classes>
+            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest">
+                <methods>
+                    <include name="test_expectedFailedWithValidator_isValid"/>
+                    <include name="test_expectedFailedWithValidator_isNotValid"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
 </suite>

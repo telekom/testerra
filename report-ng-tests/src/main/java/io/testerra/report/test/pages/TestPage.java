@@ -26,7 +26,11 @@ public enum TestPage {
             "Open again",
             new String[]{"Ope", "en agai", "ain"},
             "Button2",
-            "value");
+            "value"),
+
+    DUMMY_TEST_PAGE("Input/tt2_testDummyPage.html"),
+    DUMMY_TEST_PAGE_2("Input/tt2_testDummyPage_2.html");
+
 
     private final String path;
     private final String elementText;
@@ -51,6 +55,15 @@ public enum TestPage {
         this.attributeValue = attributeValue;
         this.attributeName = attributeName;
         this.attributeValuePart = attributeValue.substring(1, 4);
+    }
+
+    TestPage(String path) {
+        this.path = path;
+        this.elementText = null;
+        this.attributeName = null;
+        this.attributeValuePart = null;
+        this.elementTextArray = null;
+        this.attributeValue = null;
     }
 
     public String getPath() {

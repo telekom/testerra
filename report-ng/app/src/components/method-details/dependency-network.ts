@@ -22,10 +22,9 @@
 import {autoinject} from 'aurelia-framework';
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-import {DataSet, Network, DataSetNodes, DataSetEdges} from "vis-network";
+import {DataSet} from "vis-data/peer"
+import {Network, Edge, Node, Data} from "vis-network/peer";
 import "vis-network/styles/vis-network.css";
-import {data} from "../../services/report-model";
-import IMethodContext = data.IMethodContext;
 import {StatusConverter} from "../../services/status-converter";
 import {Options} from "vis-network/dist/types/network/Network";
 
@@ -109,11 +108,11 @@ export class DependencyNetwork {
             return;
         }
 
-        const nodes:DataSetNodes[] = [];
-        const edges:DataSetEdges[] = [];
+        const nodes:Node[] = [];
+        const edges:Edge[] = [];
 
         const addNode = (methodDetails:MethodDetails) => {
-            const node:DataSetNodes = {
+            const node:Node = {
                 id: methodDetails.methodContext.contextValues.id,
                 label: methodDetails.identifier,
                 physics: false,
@@ -198,7 +197,7 @@ export class DependencyNetwork {
             });
 
         // create a network
-        const data = {
+        const data: Data = {
             nodes: new DataSet(nodes),
             edges: new DataSet(edges),
         };

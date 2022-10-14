@@ -44,7 +44,7 @@
         "moment-duration-format": "^2.3.2",
         "pixelmatch": "^5.2.1",
         "protobufjs": "^6.11.3",
-        "t-systems-aurelia-components": "^1.0.5",
+        "t-systems-aurelia-components": "^1.0.21",
         "ts-replace-all": "^1.0.0",
         "vis-network": "^6.5.2",
         "vis-timeline": "^7.4.6"

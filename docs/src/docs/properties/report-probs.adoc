@@ -7,7 +7,6 @@ include::property-attributes.adoc[]
 | {reportname} | na. | Names the report (e.g. the project where Testerra is used)
 | {runcfg} | na. | Set a run configuration to use different variations (test sets) of a test scope within a build task.
 | {screenshotter_active} | true | If true, screenshots are fetched and added to the report.
-| {report_screenshots_preview} | true | If true a screenshots preview is added to the test methods in the report
 | {screenshot_on_pageload} | false | If true, screenshot after page is loaded will be taken
 | {screencaster_active} | true | If true, all screencasts are fetchted and added to the report depending on the enabled test method states by {screencaster_active_on_failed} and {screencaster_active_on_success}.
 | {screencaster_active_on_failed} | true | If true, all screencasts for failed tests are fetched and added to the report.

@@ -22,7 +22,7 @@
 import {Aurelia} from 'aurelia-framework';
 import {PLATFORM} from 'aurelia-pal';
 import {Config} from "./services/config-dev";
-import {DateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/date-format-value-converter";
+import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter"
 import {ObjectStorage} from "t-systems-aurelia-components/src/utils/object-storage";
 
 export function configure(aurelia: Aurelia) {
@@ -65,16 +65,17 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('components/alert/alert.html'),
             PLATFORM.moduleName('components/lazy-image/lazy-image'),
             PLATFORM.moduleName('components/lazy-video/lazy-video'),
-            PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/date-format-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/object-values-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/duration-format-value-converter'),
+            PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter'),
             PLATFORM.moduleName('value-converters/json-value-converter'),
             PLATFORM.moduleName('value-converters/status-icon-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-class-value-converter'),
             PLATFORM.moduleName('value-converters/html-value-converter'),
             PLATFORM.moduleName('value-converters/log-level-value-converter'),
+            PLATFORM.moduleName('value-converters/html-escape-value-converter'),
             /**
              * This is super important to dialogs
              * https://discourse.aurelia.io/t/solved-error-cannot-determine-default-view-strategy-for-object/3589/2
@@ -88,7 +89,12 @@ export function configure(aurelia: Aurelia) {
     }
 
     // Setup defaults
-    DateFormatValueConverter.setDefaultFormat("ddd MMM D HH:mm:ss ZZ YYYY");
+    const formatter = aurelia.container.get(IntlDateFormatValueConverter);
+    formatter.setLocale('en-GB');
+    formatter.setOptions('default', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+    formatter.setOptions('long', { dateStyle: 'full', timeStyle: 'long' });
+    formatter.setOptions( 'log', {hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3, hour12: false})
+    formatter.setOptions('step', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
 
     const objectStorage = aurelia.container.get(ObjectStorage);
     objectStorage.setStorage(localStorage);

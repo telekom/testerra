@@ -54,7 +54,7 @@
         "@types/node": "^13.13.30",
         "@types/webpack": "^5.28.0",
         "aurelia-loader-nodejs": "^1.1.0",
-        "aurelia-pal-nodejs": "^2.0.0",
+        "aurelia-pal-nodejs": "^3.0.0-rc.1",
         "aurelia-webpack-plugin": "^5.0.3",
         "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^9.0.1",

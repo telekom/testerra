@@ -87,12 +87,12 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
     @Test
     @Fails(validator = "expectedFailIsValid")
     public void test_expectedFailedWithValidator_isValid(){
-        Assert.fail("Expected Fail - validator is true");
+        Assert.fail("Expected Fail - validator is: " + expectedFailIsValid(null));
     }
 
     @Test
     @Fails(validator = "expectedFailIsNotValid")
     public void test_expectedFailedWithValidator_isNotValid(){
-        Assert.fail("Expected Fail - validator is false");
+        Assert.fail("Expected Fail - validator is: " + expectedFailIsNotValid(null));
     }
 }

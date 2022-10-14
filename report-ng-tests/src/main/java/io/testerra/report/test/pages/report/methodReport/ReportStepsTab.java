@@ -24,6 +24,7 @@ package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -75,4 +76,11 @@ public class ReportStepsTab extends AbstractReportMethodPage {
         }
     }
 
+    public void assertDurationIsValid(int lowerBound, int upperBound) {
+        String duration = getTestDuration();
+        String secondsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, duration);
+        System.out.println(secondsString);
+        int seconds = Integer.parseInt(secondsString.trim());
+        Assert.assertTrue(lowerBound <= seconds && seconds < upperBound, "Run duration should be in valid interval");
+    }
 }

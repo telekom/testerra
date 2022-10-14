@@ -5,6 +5,7 @@
         <packages>
             <package name="io.testerra.report.test.report_test.methodpages"/>
             <package name="io.testerra.report.test.report_test.sidebarpages"/>
+            <package name="io.testerra.report.test.report_test.TT2_extensions"></package>
         </packages>
     </test>
 </suite>

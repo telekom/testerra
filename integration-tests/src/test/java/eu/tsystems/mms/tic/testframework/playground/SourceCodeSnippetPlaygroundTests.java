@@ -5,14 +5,16 @@ import eu.tsystems.mms.tic.testframework.test.utils.AbstractSourceCodeTests;
 import org.testng.annotations.Test;
 
 /**
- * Created on 2022-10-07
+ * These tests need the following property:
+ * tt.report.source.exclusion.regex=<nothing>
+ *
+ * TODO: Migrate these tests to ReportNG tests
  *
  * @author mgn
  */
 public class SourceCodeSnippetPlaygroundTests extends AbstractSourceCodeTests {
 
-    // These tests need the following property:
-    // tt.report.source.exclusion.regex=<nothing>
+
     @Test(expectedExceptions = AssertionError.class)
     public void T05_default_source_code_exclusion_pretest() {
         this.doSimpleFail();

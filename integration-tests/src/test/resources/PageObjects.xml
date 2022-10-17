@@ -1,14 +1,33 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Page Objects" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="true">
     <test name="Page Objects" parallel="methods">
-        <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.page"/>
-        </packages>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.test.page.AssertTextPageTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.CheckPageTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.page.DefaultElementLabelProviderTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.page.PageTests">
+                <methods>
+                    <exclude name="test_Page_title_length_fails_collected"/>
+                </methods>
+            </class>
+        </classes>
     </test>
+
     <test name="Page Factory" parallel="classes">
-        <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.pagefactory"/>
+        <packages>            
             <package name="eu.tsystems.mms.tic.testframework.pageobjects.internal"></package>
         </packages>
+
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.PageCommonTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.PageFactoryPrefixedTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.PageFactoryTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.PageOptionsTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.CheckPageTest">
+                <methods>
+                    <exclude name="testT11_checkCollectedElements_IsNotPresent"/>
+                </methods>
+            </class>
+        </classes>
     </test>
 </suite>

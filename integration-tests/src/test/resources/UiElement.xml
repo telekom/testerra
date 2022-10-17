@@ -8,7 +8,11 @@
             </run>
         </groups>
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementCommonTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementCommonTests">
+                <methods>
+                    <exclude name="testT06_collected_assert"/>
+                </methods>
+            </class>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementLayoutTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementListTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementActionTests"/>

@@ -39,10 +39,13 @@ import org.slf4j.LoggerFactory;
  * @author rnhb
  */
 public abstract class AbstractGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, LocatorFactoryProvider {
-
     @Deprecated
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
-    protected static final DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+    protected final DesktopWebDriverUtils desktopWebDriverUtils;
+
+    protected AbstractGuiElementTest(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        this.desktopWebDriverUtils = desktopWebDriverUtils;
+    }
 
     /**
      * abstract methods to get specific GuiElement (e.g. FrameAwareInternalGuiElementDecorator) in a specific state

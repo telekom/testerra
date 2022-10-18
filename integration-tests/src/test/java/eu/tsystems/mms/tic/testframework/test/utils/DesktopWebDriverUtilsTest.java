@@ -22,26 +22,33 @@
 
 package eu.tsystems.mms.tic.testframework.test.utils;
 
+import com.google.inject.Inject;
+import eu.tsystems.mms.tic.testframework.ioc.DriverUi_Desktop;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
+@Guice(modules = DriverUi_Desktop.class)
 public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
+    @Inject
+    public DesktopWebDriverUtilsTest(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        super(desktopWebDriverUtils);
+    }
 
     /**
      * Test the clickJS method of DesktopWebDriverUtils
      */
     @Test
     public void testT01_DesktopWebDriverUtils_clickJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         GuiElement element = getClickableElement();
         GuiElement out = getLoggerTableElement();
 
         element.mouseOver();
-        utils.clickJS(element);
+        super.desktopWebDriverUtils.clickJS(element);
         out.asserts().assertTextContains("Form 16 submit");
     }
 
@@ -50,10 +57,9 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT02_DesktopWebDriverUtils_doubleClickJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         final GuiElement element = getSelectableElement();
 
-        utils.doubleClickJS(element);
+        super.desktopWebDriverUtils.doubleClickJS(element);
         getLoggerTableElement().asserts().assertTextContains("Input 3 Double clicked");
     }
 
@@ -62,10 +68,9 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT03_DesktopWebDriverUtils_rightClickJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         GuiElement element = getClickableElement();
 
-        utils.rightClickJS(element);    // How can we assert a right click?
+        super.desktopWebDriverUtils.rightClickJS(element);    // How can we assert a right click?
     }
 
     /**
@@ -73,11 +78,10 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT04_DesktopWebDriverUtils_mouseOverJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         GuiElement element = getTextBoxElement();
         GuiElement out = getLoggerTableElement();
 
-        utils.mouseOverJS(element);
+        super.desktopWebDriverUtils.mouseOverJS(element);
         out.asserts().assertTextContains("Input 5 Mouse over");
     }
 
@@ -86,12 +90,11 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT05_DesktopWebDriverUtils_clickAbsolute() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         GuiElement element = getClickableElement();
         GuiElement out = getLoggerTableElement();
 
         element.mouseOver();
-        utils.clickAbsolute(element);
+        super.desktopWebDriverUtils.clickAbsolute(element);
         out.asserts().assertTextContains("Form 16 submit");
     }
 
@@ -100,11 +103,10 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT06_DesktopWebDriverUtils_mouseOverAbsolute2Axis() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         GuiElement element = getTextBoxElement();
         GuiElement out = getLoggerTableElement();
 
-        utils.mouseOverAbsolute2Axis(element);      // How can we assert this special mouse over?
+        super.desktopWebDriverUtils.mouseOverAbsolute2Axis(element);      // How can we assert this special mouse over?
     }
 
     public GuiElement getGuiElementBy(Locator locator) {

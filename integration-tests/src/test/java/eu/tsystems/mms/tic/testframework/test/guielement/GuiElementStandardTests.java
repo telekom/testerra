@@ -22,13 +22,19 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
+import com.google.inject.Inject;
+import eu.tsystems.mms.tic.testframework.ioc.DriverUi_Desktop;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
+import org.testng.annotations.Guice;
 
-/**
- *
- */
+@Guice(modules = DriverUi_Desktop.class)
 public class GuiElementStandardTests extends AbstractGuiElementNonFunctionalAssertionTest {
+    @Inject
+    public GuiElementStandardTests(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        super(desktopWebDriverUtils);
+    }
 
     @Override
     @Deprecated

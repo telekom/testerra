@@ -22,13 +22,22 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement.variations;
 
+import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
+import eu.tsystems.mms.tic.testframework.ioc.DriverUi_Desktop;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementNonFunctionalAssertionTest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Guice;
 
+@Guice(modules = DriverUi_Desktop.class)
 public class ExtensiveLoggingGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
+    @Inject
+    public ExtensiveLoggingGuiElementTest(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        super(desktopWebDriverUtils);
+    }
 
     @Override
     public GuiElement getGuiElementBy(Locator locator) {

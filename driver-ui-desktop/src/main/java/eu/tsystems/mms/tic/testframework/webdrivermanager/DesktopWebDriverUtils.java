@@ -21,16 +21,17 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 
 public final class DesktopWebDriverUtils implements Loggable {
+    final JSUtils utils;
 
-    JSUtils utils = new JSUtils();
-
-    public DesktopWebDriverUtils() {
-
+    @Inject
+    public DesktopWebDriverUtils(final JSUtils jsUtils) {
+        this.utils = jsUtils;
     }
 
     public void clickAbsolute(UiElement guiElement) {

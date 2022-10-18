@@ -23,10 +23,14 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLayoutsTest {
+    public AbstractGuiElementWaiterTest(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        super(desktopWebDriverUtils);
+    }
 
     private void pre_hideText(boolean hide) {
         getTimeOutInput().type("1");

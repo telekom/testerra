@@ -22,15 +22,24 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement.variations;
 
+import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
+import eu.tsystems.mms.tic.testframework.ioc.DriverUi_Desktop;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementNonFunctionalAssertionTest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
+@Guice(modules = DriverUi_Desktop.class)
 public class FrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
+    @Inject
+    public FrameAwareGuiElementTest(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        super(desktopWebDriverUtils);
+    }
 
     /**
      * Test if FrameAwareElement in deepest hierarchy is present via AllFrameLogic

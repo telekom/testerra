@@ -24,14 +24,18 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public abstract class AbstractGuiElementNonFunctionalAssertionTest extends AbstractGuiElementWaiterTest {
+    public AbstractGuiElementNonFunctionalAssertionTest(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        super(desktopWebDriverUtils);
+    }
 
     @Test
-    public void testT1_GuiElement_NonFunctionalAssertLayout() throws Exception {
+    public void testT1_GuiElement_NonFunctionalAssertLayout() {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         e1.isDisplayed();
         GuiElement e2 = getGuiElementBy(By.id("11"));

@@ -22,7 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
@@ -44,6 +43,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest implements AssertProvider {
+
+    public AbstractGuiElementStandardFunctionsTest(final DesktopWebDriverUtils desktopWebDriverUtils) {
+        super(desktopWebDriverUtils);
+    }
 
     /**
      * Test if GuiElement.asserts().assertContainsText works for one string that is contained
@@ -521,15 +524,14 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         GuiElement out = getLoggerTableElement();
 
         element.mouseOver();
-        desktopWebDriverUtils.clickJS(element);
+        super.desktopWebDriverUtils.clickJS(element);
         out.asserts().assertContainsText("Form 16 submit");
     }
 
     @Test
     public void test_DesktopWebDriverUtils_clickJS() {
         GuiElement element = getClickableElement();
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.clickJS(element);
+        super.desktopWebDriverUtils.clickJS(element);
         GuiElement out = getLoggerTableElement();
         out.asserts().assertContainsText("Form 16 submit");
     }
@@ -543,7 +545,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         GuiElement out = getLoggerTableElement();
 
         element.mouseOver();
-        desktopWebDriverUtils.clickAbsolute(element);
+        super.desktopWebDriverUtils.clickAbsolute(element);
         out.asserts().assertContainsText("Form 16 submit");
     }
 
@@ -553,9 +555,8 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     @Test
     public void testT48_GuiElement_mouseOverAbsolute2Axis() {
         GuiElement element = getTextBoxElement();
-        GuiElement out = getLoggerTableElement();
 
-        desktopWebDriverUtils.mouseOverAbsolute2Axis(element);
+        super.desktopWebDriverUtils.mouseOverAbsolute2Axis(element);
     }
 
     /**
@@ -566,7 +567,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         GuiElement element = getTextBoxElement();
         GuiElement out = getLoggerTableElement();
 
-        desktopWebDriverUtils.mouseOverJS(element);
+        super.desktopWebDriverUtils.mouseOverJS(element);
         out.asserts().assertContainsText("Input 5 Mouse over");
     }
 
@@ -912,7 +913,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     @Test
     public void testT97_GuiElement_rightClickJS() {
         GuiElement element = getClickableElement();
-        desktopWebDriverUtils.rightClickJS(element);
+        super.desktopWebDriverUtils.rightClickJS(element);
     }
 
     @Test

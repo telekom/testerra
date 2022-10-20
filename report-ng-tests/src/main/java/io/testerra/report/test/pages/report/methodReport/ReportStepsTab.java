@@ -83,4 +83,17 @@ public class ReportStepsTab extends AbstractReportMethodPage {
         int seconds = Integer.parseInt(secondsString.trim());
         Assert.assertTrue(lowerBound <= seconds && seconds < upperBound, "Run duration should be in valid interval");
     }
+
+    public void assertCertainTestStepsAreListed(String[] certainTestSteps) {
+        UiElement timeline = find(By.xpath("//div[@class='timeline']"));
+        List<String> testStepTexts = timeline.find(By.xpath("//section/div")).list()
+                .stream()
+                .map(uiElement -> uiElement.waitFor().text().getActual())
+                .collect(Collectors.toList());
+
+        for (String step : certainTestSteps) {
+            boolean actualStepsContainCertainStep = testStepTexts.stream().anyMatch(testStepString -> testStepString.contains(step));
+            Assert.assertTrue(actualStepsContainCertainStep, "Steps-Tab should contain step:" + step + "!");
+        }
+    }
 }

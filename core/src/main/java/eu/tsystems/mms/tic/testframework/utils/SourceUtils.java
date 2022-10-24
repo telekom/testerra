@@ -21,11 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -42,6 +41,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import java.util.stream.Stream;
 
 public final class SourceUtils {
 
@@ -50,9 +52,7 @@ public final class SourceUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceUtils.class);
 
-    private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
-    private static int linePrefetch = PropertyManager.getIntProperty(TesterraProperties.SOURCE_LINES_PREFETCH, 5);
-    private static final boolean FIND_SOURCES = DefaultReport.Properties.ACTIVATE_SOURCES.asBool();
+    private static final boolean FIND_SOURCES = Report.Properties.ACTIVATE_SOURCES.asBool();
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
 
     public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
@@ -75,8 +75,18 @@ public final class SourceUtils {
      * Searches for a stack trace element which source can be resolved on the local file system
      */
     private static Optional<StackTraceElement> traceStackTraceElement(Throwable throwable, AtomicReference<File> atomicClassFile) {
-        Optional<StackTraceElement> optionalStackTraceElement = Arrays.stream(throwable.getStackTrace())
-                //.filter(stackTraceElement -> stackTraceElement.getClassName().startsWith(TesterraListener.DEFAULT_PACKAGE))
+        String exclusionRegex = Report.Properties.SOURCE_EXCLUSION.asString();
+        Stream<StackTraceElement> stream = Arrays.stream(throwable.getStackTrace());
+        if (StringUtils.isNotBlank(exclusionRegex)) {
+            try {
+                Pattern pattern = Pattern.compile(exclusionRegex);
+                stream = stream.filter(stackTraceElement -> !pattern.matcher(stackTraceElement.getClassName()).find());
+            } catch (PatternSyntaxException e) {
+                LOGGER.warn("Cannot filter throwable for code snippet exclusions: {}", e.getMessage());
+            }
+        }
+
+        Optional<StackTraceElement> optionalStackTraceElement = stream
                 // Filter for files that exists in the source path
                 .filter(stackTraceElement -> {
                     Optional<File> optionalClassFile = findClassFile(stackTraceElement.getClassName());
@@ -90,8 +100,8 @@ public final class SourceUtils {
          */
         if (
                 !optionalStackTraceElement.isPresent()
-                && throwable.getCause() != null
-                && throwable.getCause() != throwable
+                        && throwable.getCause() != null
+                        && throwable.getCause() != throwable
         ) {
             return traceStackTraceElement(throwable.getCause(), atomicClassFile);
         } else {
@@ -102,7 +112,7 @@ public final class SourceUtils {
     /**
      * Print part of source of *callerSubClass* if stacktrace contains a failure of *classWithFailure* in
      * *callerSubClass*.
-     *
+     * <p>
      * Only for internal use!
      *
      * @param throwable .
@@ -190,6 +200,7 @@ public final class SourceUtils {
     }
 
     private static Optional<File> findClassFile(String className) {
+        String sourceRoot = Report.Properties.SOURCE_ROOT.asString();
         String filePath = className.replace(".", "/").concat(".java");
         File file = new File(sourceRoot + "/main/java/" + filePath);
         if (file.exists()) {
@@ -206,6 +217,7 @@ public final class SourceUtils {
 
     private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {
         ScriptSource source = null;
+        String sourceRoot = Report.Properties.SOURCE_ROOT.asString();
 
         Optional<File> optionalClassFile = findClassFile(className);
         if (optionalClassFile.isPresent()) {
@@ -223,6 +235,7 @@ public final class SourceUtils {
 
     private static ScriptSource getSource(File file, String methodName, int lineNr) {
         ScriptSource scriptSource = new ScriptSource(file.getName(), methodName);
+        int linePrefetch = Report.Properties.SOURCE_LINES_PREFETCH.asLong().intValue();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));

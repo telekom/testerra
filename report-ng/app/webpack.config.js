@@ -51,9 +51,9 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
         output: {
             path: outDir,
             publicPath: baseUrl,
-            filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
-            sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
-            chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
+            filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
+            sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[fullhash].bundle.map',
+            chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
         },
         optimization: {
             runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
@@ -191,8 +191,8 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                 }
             }),
             new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
-                filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[hash].bundle.css',
-                chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
+                filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[fullhash].bundle.css',
+                chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[fullhash].chunk.css'
             }),
             /**
              * Optimized moment

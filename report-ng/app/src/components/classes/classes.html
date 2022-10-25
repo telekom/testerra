@@ -101,16 +101,53 @@
                             </td>
                             <td>${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable" mdc-body1>
+
+                                <!-- Method name -->
                                 <div class="vcenter">
                                     <mdc-icon class="sr1">read_more</mdc-icon>
                                     <a route-href="route: method; params.bind: {methodId: methodDetails.methodContext.contextValues.id}"
                                        innerhtml.bind="methodDetails.identifier|highlightText:_searchRegexp"
                                     ></a><method-tags class="sl1" details.bind="methodDetails"></method-tags>
                                 </div>
+
+                                <!-- Failure aspect -->
                                 <div repeat.for="failureAspect of methodDetails.failureAspects"
                                      mdc-body2
                                      class="st1"
-                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span>${failureAspect.message|highlightText:_searchRegexp}</span></div>
+                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml.bind="failureAspect.message|htmlEscape|highlightText:_searchRegexp"></span></div>
+
+                                <!-- List of @Fails details -->
+                                <div class="flex vcenter"
+                                     if.bind="methodDetails.failsAnnotation.description || methodDetails.failsAnnotation.ticketString"
+                                >
+                                    <mdc-icon class="colored-icon status-${methodDetails.methodContext.resultStatus|statusClass}">highlight_off</mdc-icon>
+                                    <ul class="mdc-list mdc-list--dense"  mdc-caption>
+                                        <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.description&&7!= methodDetails.methodContext.resultStatus">
+                                            <span innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:_searchRegexp"></span>
+                                        </li>
+                                        <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.ticketString&&7!= methodDetails.methodContext.resultStatus">
+                                            Ticket:&nbsp;<a href="${methodDetails.failsAnnotation.ticketString}" innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchRegexp"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- List of prompted messages -->
+                                <div class="flex vcenter"
+                                     if.bind="methodDetails.promptLogs.length > 0"
+                                >
+                                    <mdc-icon>speaker_notes</mdc-icon>
+                                    <ul class="mdc-list mdc-list--dense"  mdc-caption>
+                                        <li class="mdc-custom-list-item" repeat.for="logMessage of methodDetails.promptLogs">
+                                            <span innerhtml.bind="logMessage.message|html|highlightText:_searchRegexp"></span>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <div mdc-body2 repeat.for="logMessage of methodDetails.promptLogs">
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                     </tbody>

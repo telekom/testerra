@@ -30,10 +30,10 @@
         <mdc-list-divider></mdc-list-divider>
         <ul class="mdc-list mdc-list--dense timings" mdc-caption>
             <li class="mdc-custom-list-item">
-                <span class="secondary time-column sr1">Started</span><span title="${_startTooltip}">${start | dateFormat:"ddd MMM D HH:mm:ss"}</span>
+                <span class="secondary time-column sr1">Started</span><span class="sl1" title="${start|dateFormat: 'long'}">${start | dateFormat}</span>
             </li>
             <li class="mdc-custom-list-item">
-                <span class="secondary time-column sr1">Ended</span><span title="${_endTooltip}">${end | dateFormat:"ddd MMM D HH:mm:ss"}</span>
+                <span class="secondary time-column sr1">Ended</span><span class="sl1" title="${end|dateFormat: 'long'}">${end | dateFormat}</span>
 <!--                <div if.bind="_hasEnded"><span class="secondary time-column">Ended</span> ${end | dateFormat}</div>-->
 <!--                <span else class="secondary">Running...</span>-->
             </li>

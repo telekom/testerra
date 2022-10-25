@@ -33,8 +33,7 @@ public class AbstractSourceCodeTests extends AbstractTestSitesTest implements Te
         List<ScriptSource> scriptSources = this.findMethodContexts(testMethodName)
                 .flatMap(MethodContext::readErrors)
                 .map(ErrorContext::getScriptSource)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .filter(scriptSource -> scriptSource.getFileName().equals(fileName))
                 .collect(Collectors.toList());
         ASSERT.assertEquals(scriptSources.size(), 1, "Error context should contains script sources of " + fileName);

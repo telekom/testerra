@@ -42,8 +42,8 @@ Include the following dependency in your project.
 Gradle:
 ```groovy
 dependencies {
-    implementation 'io.testerra:driver-ui-desktop:2.0'
-    implementation 'io.testerra:report-ng:2.0'
+    implementation 'io.testerra:driver-ui-desktop:2.1'
+    implementation 'io.testerra:report-ng:2.1'
 }
 ```
 
@@ -53,12 +53,12 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2.0</version>
+        <version>2.1</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.0</version>
+        <version>2.1</version>
     </dependency>
 </dependencies>
 ```
@@ -87,7 +87,7 @@ public class MyTest extends TesterraTest implements UiElementFinderFactoryProvid
 
 * Check out our comprehensive [Testerra 2 documentation](https://docs.testerra.io/testerra/2-latest/index.html)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
-* Some more Testerra features can be found [here][testerra-demo].
+* Some more features can be found [in the Testerra demo project][testerra-demo].
 
 ## Extras
 

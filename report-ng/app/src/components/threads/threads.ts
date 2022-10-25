@@ -119,6 +119,7 @@ export class Threads extends AbstractViewModel {
 
         const style = new Map <string,string>();
         style.set("PASSED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED) + "; color: #fff;");
+        style.set("REPAIRED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED) + "; color: #fff;");
         style.set("PASSED_RETRY", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY) + "; color: #fff;");
         style.set("SKIPPED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED) + "; color: #fff;");
         style.set("FAILED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED) + "; color: #fff;");

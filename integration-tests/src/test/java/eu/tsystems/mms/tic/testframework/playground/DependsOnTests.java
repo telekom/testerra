@@ -66,4 +66,16 @@ public class DependsOnTests extends AbstractWebDriverTest {
     public void testCaseThree() {
         Assert.assertTrue(true);
     }
+
+    @Test(groups = "passed")
+    public void testPassed() {
+    }
+
+    @Test(groups = "passed")
+    public void testPassed2() {
+    }
+
+    @Test(dependsOnMethods = {"testPassed", "testPassed2"})
+    public void testDependsOnPassed() {
+    }
 }

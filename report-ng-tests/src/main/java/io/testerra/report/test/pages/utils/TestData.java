@@ -37,12 +37,19 @@ public class TestData {
 
     private Status[] states;
     private String failureAspect;
+    private String[] failureAspects;
 
     public TestData(String method, String methodClass, Status status, String failureAspect) {
         this.method = method;
         this.methodClass = methodClass;
         this.status = status;
         this.failureAspect = failureAspect;
+    }
+
+    public TestData(String methode, String clazz, String... failureAspects){
+        this.method = methode;
+        this.methodClass = clazz;
+        this.failureAspects = failureAspects.clone();
     }
 
     public TestData(String method, String methodClass, Status status) {
@@ -104,4 +111,7 @@ public class TestData {
         return String.format("%s, %s, %s, %s, %s", method, methodClass, status1Title, statesTitle, failureAspect);
     }
 
+    public String[] getFailureAspects() {
+        return this.failureAspects;
+    }
 }

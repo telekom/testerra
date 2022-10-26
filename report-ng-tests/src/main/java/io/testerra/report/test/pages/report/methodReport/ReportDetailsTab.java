@@ -25,11 +25,14 @@ package io.testerra.report.test.pages.report.methodReport;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class ReportDetailsTab extends AbstractReportMethodPage {
     @Check
@@ -126,7 +129,44 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         markedFailureCodeLine.expect().displayed().is(true);
     }
 
-   public String getFailureAspect() {
+    public String getFailureAspect() {
         return testFailureAspect.expect().text().getActual().split("\n")[1];
+    }
+
+    public void assertStacktraceContainsExpectedFailureAspects(String[] expectedFailureAspects) {
+        UiElement stackTraceCard = find(By.xpath("//mdc-card[./div[contains(text(),'Stacktrace')]]"));
+        List<String> actualFailureAspects = stackTraceCard.find(By.xpath("//mdc-expandable/div[@ref='header']")).list()
+                .stream()
+                .map(uiElement -> uiElement.waitFor().text().getActual())
+                .collect(Collectors.toList());
+
+
+        for (String failureAspect : expectedFailureAspects) {
+            Assert.assertTrue(actualFailureAspects.stream().anyMatch(actualFailureAspect -> actualFailureAspect.contains(failureAspect)),
+                    "Actual failure aspects should match the expected ones");
+        }
+    }
+
+    public void assertDurationIsNotValid(int lowerBound, int upperBound) {
+        String duration = getTestDuration();
+        String secondsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, duration);
+        System.out.println(secondsString);
+        int seconds = Integer.parseInt(secondsString.trim());
+        Assert.assertTrue(lowerBound > seconds || seconds >= upperBound, "Run duration should not be in valid interval");
+    }
+
+    public void assertFailureAspectCardContainsImageComparison() {
+        String[] expectedImageTitles = new String[]{
+                "Actual",
+                "Difference",
+                "Expected"
+        };
+        UiElement comparison = testFailureAspect.find(By.xpath("//layout-comparison"));
+
+        for (String title : expectedImageTitles) {
+            String xpath = String.format("//mdc-card/img[@title='%s']", title);
+            comparison.find(By.xpath(xpath)).expect().displayed().is(true,
+                    String.format("There should be an image comparison, that contains the %s image", title));
+        }
     }
 }

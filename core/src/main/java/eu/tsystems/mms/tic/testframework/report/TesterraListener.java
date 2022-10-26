@@ -73,7 +73,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Testerra listener based on TestNG for whole test execution.
  *
- * @author mrgi, mibu, pele, sepr
+ * @author mrgi, mibu, pele, sepr, mgn
  */
 public class TesterraListener implements
         IInvokedMethodListener,
@@ -484,6 +484,9 @@ public class TesterraListener implements
             } else {
                 methodContext.addError(exception);
             }
+            // A crashed dataprovider method as a kind of setup occurs a skipped status at the test method
+            methodContext.setStatus(Status.SKIPPED);
+            testResult.setStatus(ITestResult.SKIP);
             pAfterInvocation(invokedMethod, testResult, testContext);
 
             dataProviderSemaphore.put(testNGMethod, true);

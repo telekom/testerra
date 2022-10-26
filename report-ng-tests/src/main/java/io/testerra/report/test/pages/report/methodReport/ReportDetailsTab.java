@@ -150,7 +150,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     public void assertDurationIsNotValid(int lowerBound, int upperBound) {
         String duration = getTestDuration();
         String secondsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, duration);
-        System.out.println(secondsString);
+
         int seconds = Integer.parseInt(secondsString.trim());
         Assert.assertTrue(lowerBound > seconds || seconds >= upperBound, "Run duration should not be in valid interval");
     }

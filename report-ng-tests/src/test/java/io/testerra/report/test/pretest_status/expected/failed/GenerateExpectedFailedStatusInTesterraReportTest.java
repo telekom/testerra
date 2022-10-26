@@ -84,6 +84,7 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
     public boolean expectedFailIsNotValid(MethodContext methodContext) {
         return false;
     }
+
     @Test
     @Fails(validator = "expectedFailIsValid")
     public void test_expectedFailedWithValidator_isValid(){

@@ -23,7 +23,12 @@
 
     <test name="Expected Status Creator">
         <classes>
-            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest"/>
+            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest">
+                <methods>
+                    <exclude name="test_expectedFailedWithValidator_isValid"/>
+                    <exclude name="test_expectedFailedWithValidator_isNotValid"/>
+                </methods>
+            </class>
         </classes>
     </test>
 

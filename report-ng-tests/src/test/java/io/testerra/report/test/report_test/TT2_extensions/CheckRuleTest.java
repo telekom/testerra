@@ -31,7 +31,6 @@ public class CheckRuleTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProvider_methods")
     public void testT01_checkRuleErrorsAreCorrectReported(String method) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String className = "GenerateFailedCheckTestsTTReportTest";
         String[] failureAspects = new String[]{
                 "PageFactoryException",
@@ -39,7 +38,7 @@ public class CheckRuleTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
@@ -50,7 +49,6 @@ public class CheckRuleTest extends AbstractReportTest {
 
     @Test
     public void testT02_prioritizedErrorMessage_isDisplayedCorrect() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String className = "GenerateFailedCheckTestsTTReportTest";
         String methodName = "preTest03_prioritizedErrorMessageCheck";
         String[] failureAspects = new String[]{
@@ -58,7 +56,7 @@ public class CheckRuleTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
@@ -69,14 +67,13 @@ public class CheckRuleTest extends AbstractReportTest {
 
     @Test
     public void testT03_timeoutCheckPassed_DurationIsValid() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "preTest03_timeoutCheck_passed";
         String className = "GeneratePassedCheckTestsTTReportTest";
         int validDurationThreshold_lowerBound = 10;         // pageDelay
         int validDurationThreshold_upperBound = 20;         // timeout time
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(methodName);
@@ -87,14 +84,13 @@ public class CheckRuleTest extends AbstractReportTest {
 
     @Test
     public void testT04_timeoutCheckFailed_DurationIsNotValid() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "preTest04_timeoutCheck";
         String className = "GenerateFailedCheckTestsTTReportTest";
         int validDurationThreshold_lowerBound = 10;         // pageDelay
         int validDurationThreshold_upperBound = 20;         // timeout time
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
@@ -107,7 +103,6 @@ public class CheckRuleTest extends AbstractReportTest {
     //TODO: failing -> frage: sollten nicht alle failure-aspects die collected wurden auch angezeigt werden?
     @Test
     public void testT05_collectCheckDisplaysFailureAspectsCorrect() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "preTest01_collectCheck";
         String className = "GenerateFailedCheckTestsTTReportTest";
         String[] failureAspects = new String[]{
@@ -116,7 +111,7 @@ public class CheckRuleTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
@@ -127,7 +122,6 @@ public class CheckRuleTest extends AbstractReportTest {
 
     @Test
     public void testT06_optionalCheckPassesWithFailureAspect() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "preTest02_optionalCheck_passed";
         String className = "GeneratePassedCheckTestsTTReportTest";
         Status status = Status.PASSED;
@@ -136,7 +130,7 @@ public class CheckRuleTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);

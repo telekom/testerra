@@ -54,7 +54,6 @@ public class ReportStepsTab extends AbstractReportMethodPage {
 
     public void assertsTestStepsContainFailureAspectMessage(String failureAspectMessage) {
         UiElement errorMessage = testSteps.find(By.xpath("//expandable-error-context//class-name-markup"));
-
         errorMessage.expect().displayed().is(true, "Steps tab should contain an error message");
         errorMessage.expect().text().is(failureAspectMessage, "Error message on steps tab should contain correct failureAspect-message");
     }
@@ -79,7 +78,7 @@ public class ReportStepsTab extends AbstractReportMethodPage {
     public void assertDurationIsValid(int lowerBound, int upperBound) {
         String duration = getTestDuration();
         String secondsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, duration);
-        System.out.println(secondsString);
+
         int seconds = Integer.parseInt(secondsString.trim());
         Assert.assertTrue(lowerBound <= seconds && seconds < upperBound, "Run duration should be in valid interval");
     }

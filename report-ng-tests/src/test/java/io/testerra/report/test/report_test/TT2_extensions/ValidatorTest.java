@@ -17,7 +17,6 @@ public class ValidatorTest extends AbstractReportTest {
 
     @Test
     public void testT01_checkTrueValidatorCausesExpectedFail() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "test_expectedFailedWithValidator_isValid";
         String className = "GenerateExpectedFailedStatusInTesterraReportTest";
         String[] failureAspects = new String[]{
@@ -25,7 +24,7 @@ public class ValidatorTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
@@ -40,7 +39,6 @@ public class ValidatorTest extends AbstractReportTest {
 
     @Test
     public void testT02_checkFalseValidatorCausesFail() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "test_expectedFailedWithValidator_isNotValid";
         String className = "GenerateExpectedFailedStatusInTesterraReportTest";
         String[] failureAspects = new String[]{
@@ -48,7 +46,7 @@ public class ValidatorTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);

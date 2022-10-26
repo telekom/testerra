@@ -26,12 +26,13 @@ import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.pretest.NonExistingPage;
+import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
@@ -48,6 +49,7 @@ import java.io.File;
 import java.net.BindException;
 
 import static eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider.PAGE_FACTORY;
+import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
 /**
  * Abstract test class for tests based on static test site resources
@@ -94,10 +96,10 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
-                {4, Status.FAILED},
-                {2, Status.FAILED_EXPECTED},
+                {5, Status.FAILED},
+                {3, Status.FAILED_EXPECTED},
                 {4, Status.SKIPPED},
-                {7, Status.PASSED}
+                {5, Status.PASSED}
         };
     }
 
@@ -117,7 +119,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     public Object[][] dataProviderForFailureAspects() {
         return new Object[][]{
                 {"AssertionError"},
-                //TODO: {"PageNotFoundException"}, -> seems to be removed?
+                {"PageFactoryException"},
                 {"SkipException"},
                 {"RuntimeException"},
                 {"Throwable"}
@@ -152,7 +154,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     public Object[][] dataProviderForPreTestMethodsWithStatusFailed() {
         return new Object[][]{
                 {new TestData("testAssertCollector", "AssertCollector.fail")},
-                //TODO {new TestData("test_failedPageNotFound", "PageNotFoundException")}, --> test_failedPageNotFound is passed?? adjust pretest?
+                {new TestData("test_failedPageNotFound", "PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());")},
                 {new TestData("test_Failed", "Assert.fail")},
                 {new TestData("test_Failed_WithScreenShot", "Assert.fail")}
         };
@@ -162,7 +164,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     public Object[][] dataProviderForPreTestMethodsWithStatusExpectedFailed() {
         return new Object[][]{
                 {new TestData("test_expectedFailedAssertCollector", "AssertCollector.fail")},
-                //TODO:  {new TestData("test_expectedFailedPageNotFound", "PageNotFoundException")}, --> test_expectedFailedPageNotFound is repaired? adjust pretest?
+                {new TestData("test_expectedFailedPageNotFound", "PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());")},
                 {new TestData("test_expectedFailed", "Assert.fail")}
         };
     }
@@ -192,7 +194,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         new DefaultPropertyManager().loadProperties("report-ng-tests/src/test/resources/test.properties");
         return new Object[][]{
                 {"High", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.high"), 3},
-                {"Mid", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.mid"), 1},
+                {"Mid", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.mid"), 2},
                 {"Low", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.low"), 0}
         };
     }
@@ -249,7 +251,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
                 {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
                 {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-                //TODO: {new TestData("PageNotFoundException: Test page not reached.", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},--> PageNotFoundException does not exist
+                {new TestData(String.format("PageFactoryException: Could not create instance of %s",NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
                 {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})},
                 {new TestData("AssertionError: 'Failed' on reached Page.", new Status[]{Status.FAILED})},
                 {new TestData("AssertionError: minor fail", new Status[]{Status.PASSED})},
@@ -276,7 +278,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
                 {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
                 {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-                //TODO: {new TestData("PageNotFoundException: Test page not reached.", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})}, --> PageNotFoundException: Test page not reached. does not exist
+                {new TestData(String.format("PageFactoryException: Could not create instance of %s",NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
                 {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})}
         };
     }
@@ -286,8 +288,8 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         return new Object[][]{
                 {new TestData("test_SkippedNoStatus", "SkipException: Test Skipped.")},
                 {new TestData("test_Optional_Assert", "AssertionError: minor fail")},
-                //TODO {new TestData("test_failedPageNotFound", "PageNotFoundException: Test page not reached.")}, --> test_failedPageNotFound is now passed? adjust pretest?
-                // {new TestData("test_expectedFailedPageNotFound", "PageNotFoundException: Test page not reached.")},
+                {new TestData("test_failedPageNotFound", String.format("PageFactoryException: Could not create instance of %s on \"\" (data:,)", NonExistingPage.class.getSimpleName()))},
+                {new TestData("test_expectedFailedPageNotFound", String.format("PageFactoryException: Could not create instance of %s on \"\" (data:,)", NonExistingPage.class.getSimpleName()))},
         };
     }
 
@@ -314,7 +316,17 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
         }
     }
 
-    public synchronized <T extends AbstractReportPage> T visitReportPage(final Class<T> reportPageClass, final WebDriver driver) {
+    public synchronized ReportDashBoardPage gotoDashBoardOnGeneralReport() {
+        return visitPageOnGeneralReport(ReportDashBoardPage.class);
+    }
+
+    public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport() {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        return visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+    }
+
+    public synchronized <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass) {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         return visitReportPage(reportPageClass, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
     }
 

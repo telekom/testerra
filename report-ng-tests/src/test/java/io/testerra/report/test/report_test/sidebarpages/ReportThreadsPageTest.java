@@ -37,10 +37,8 @@ public class ReportThreadsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
     public void testT01_checkSearchForMethodsSelectionWorksCorrectly(String method) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to threads page.");
         ReportThreadsPage reportThreadsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.THREADS, ReportThreadsPage.class);

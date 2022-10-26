@@ -41,10 +41,8 @@ public class ReportLogsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForLogLevel")
     public void testT01_checkLogLevelFilter(LogLevel logLevel) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
@@ -57,10 +55,8 @@ public class ReportLogsPageTest extends AbstractReportTest {
     @Test(enabled = false)
     @Fails(description = "filter does not work correct (issues with brackets, spaces and not even applied to whole log report)")
     public void testT02_filterForWholeLogLines() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
@@ -79,13 +75,12 @@ public class ReportLogsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
     public void testT03_filterForMethodContent(TestData data) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodeName = data.getMethod();
         String methodeClass = data.getMethodClass();
         Status methodStatus = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
@@ -105,13 +100,12 @@ public class ReportLogsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
     public void testT04_filterForMethodContentWithLogLevel(TestData data) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodeName = data.getMethod();
         String methodeClass = data.getMethodClass();
         Status methodStatus = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to logs page.");
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);

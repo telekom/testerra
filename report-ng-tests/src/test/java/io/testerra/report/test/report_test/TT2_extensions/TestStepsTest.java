@@ -17,7 +17,6 @@ public class TestStepsTest extends AbstractReportTest {
 
     @Test
     public void testT01_checkStepsTabContainsCertainTestSteps() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "layoutTest01_layoutTestFailing";
         String className = "GenerateLayoutTestsTTReportTest";
         String[] certainTestSteps = new String[]{
@@ -27,7 +26,7 @@ public class TestStepsTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = super.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);

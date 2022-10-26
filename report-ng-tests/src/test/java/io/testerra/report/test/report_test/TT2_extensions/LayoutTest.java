@@ -17,7 +17,6 @@ public class LayoutTest extends AbstractReportTest {
 
     @Test
     public void testT01_checkFailedLayoutTestReport() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "layoutTest01_layoutTestFailing";
         String className = "GenerateLayoutTestsTTReportTest";
         String[] failureAspects = new String[]{
@@ -27,7 +26,7 @@ public class LayoutTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
@@ -41,7 +40,6 @@ public class LayoutTest extends AbstractReportTest {
 
     @Test
     public void testT02_checkLayoutTestPassesWithMinor() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "layoutTest03_layoutTestPassingWithMinor";
         String className = "GenerateLayoutTestsTTReportTest";
         String[] failureAspects = new String[]{
@@ -51,7 +49,7 @@ public class LayoutTest extends AbstractReportTest {
         };
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);

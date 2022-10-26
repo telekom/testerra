@@ -73,7 +73,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Testerra listener based on TestNG for whole test execution.
  *
- * @author mrgi, mibu, pele, sepr, mgn
  */
 public class TesterraListener implements
         IInvokedMethodListener,

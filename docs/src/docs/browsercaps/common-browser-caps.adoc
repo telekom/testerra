@@ -32,9 +32,9 @@ Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverR
 ----
 DesktopWebDriverRequest request = new DesktopWebDriverRequest();
 DesiredCapabilities caps = request.getDesiredCapabilities();
-myRequest.getDesiredCapabilities().put(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 // Start your session with the DesktopWebDriverRequest object
-WebDriver driver = WebDriverManager.getWebDriver(request);
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
 ----
 
 [NOTE]

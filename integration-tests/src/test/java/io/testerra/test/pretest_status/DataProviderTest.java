@@ -87,8 +87,11 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
         });
     }
 
+    /**
+     * This tests uses a default dataprovider with 2 elements.
+     * Failed assertion are collected
+     */
     @Test(dataProvider = "dataProviderSimple")
-//    @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void testT06_DataProviderWithCollectedAssertions(String dp) {
         CONTROL.collectAssertions(() -> {
             ASSERT.assertEquals(dp, "passed");

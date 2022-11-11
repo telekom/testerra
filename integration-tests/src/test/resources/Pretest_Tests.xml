@@ -12,6 +12,7 @@
                     <include name="test_takeScreenshot_fails"/>
                     <include name="test_takeScreenshotOnExclusiveSession_fails"/>
                     <include name="test_takeScreenshotViaCollectedAssertion_fails"/>
+                    <include name="test_collectedAssertionScreenshotIsPresentInMethodContext"/>
                 </methods>
             </class>
 

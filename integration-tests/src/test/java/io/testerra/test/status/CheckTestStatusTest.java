@@ -56,7 +56,9 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"test_invalidExpectedFailed_withClass", Status.FAILED},
                 {"testT04_DataProviderWithFailedTests", Status.FAILED},
                 {"testT04_DataProviderWithFailedTests", Status.PASSED},
-                {"testT05_DataProviderWithFailedTestsOptional", Status.PASSED}
+                {"testT05_DataProviderWithFailedTestsOptional", Status.PASSED},
+                {"testT06_DataProviderWithCollectedAssertions", Status.PASSED},
+                {"testT06_DataProviderWithCollectedAssertions", Status.FAILED}
         };
     }
 

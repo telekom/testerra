@@ -36,7 +36,10 @@ public interface Report {
         NAME("name", "Test report"),
         @Deprecated
         ACTIVATE_SOURCES("activate.sources", true),
-        LIST_TESTS("list.tests", false)
+        LIST_TESTS("list.tests", false),
+        SOURCE_ROOT("source.root", "src"),
+        SOURCE_LINES_PREFETCH("source.lines.prefetch", 5),
+        SOURCE_EXCLUSION("source.exclusion.regex", ""),
         ;
         private final String property;
         private final Object defaultValue;
@@ -48,7 +51,7 @@ public interface Report {
 
         @Override
         public String toString() {
-            return String.format("tt.report.%s",property);
+            return String.format("tt.report.%s", property);
         }
 
         @Override

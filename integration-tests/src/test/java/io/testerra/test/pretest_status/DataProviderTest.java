@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
 public class DataProviderTest extends TesterraTest implements AssertProvider {
@@ -84,6 +83,18 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
     @Test(dataProvider = "dataProviderSimple")
     public void testT05_DataProviderWithFailedTestsOptional(String dp) {
         CONTROL.optionalAssertions(() -> {
+            ASSERT.assertEquals(dp, "passed");
+        });
+    }
+
+    /**
+     * This tests uses a default dataprovider with 2 elements.
+     * Failed assertion are collected
+     */
+    @Test(dataProvider = "dataProviderSimple")
+    public void testT06_DataProviderWithCollectedAssertions(String dp) {
+        CONTROL.collectAssertions(() -> {
+            ASSERT.assertEquals(dp, "passed");
             ASSERT.assertEquals(dp, "passed");
         });
     }

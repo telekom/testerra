@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2022, Martin Großmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -18,12 +18,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.interop;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+import {autoinject} from "aurelia-framework";
+import 'ts-replace-all'
 
-public interface SourceCollector extends Collector {
+@autoinject()
+export class HtmlEscapeValueConverter {
 
-    ScriptSource getSourceFor(Throwable throwable);
-
+    toView(value?: string) {
+        if (!value) {
+            return value;
+        }
+        return value
+            .replaceAll('&','&amp;')
+            .replaceAll('<', '&lt')
+            .replaceAll('>', '&gt;');
+    }
 }

@@ -64,7 +64,7 @@
         "html-loader": "^0.5.5",
         "html-webpack-plugin": "^5.5.0",
         "mini-css-extract-plugin": "^2.6.1",
-        "minimatch": "^3.0.4",
+        "minimatch": "^3.0.5",
         "promise-polyfill": "^8.2.0",
         "sass": "^1.29.0",
         "sass-loader": "^10.1.0",

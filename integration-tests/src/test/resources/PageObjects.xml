@@ -3,7 +3,12 @@
     <test name="Page Objects" parallel="methods">
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.test.page.AssertTextPageTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.CheckPageTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.CheckPageTest">
+                <methods>
+                    <exclude name="testT11_checkCollectedElements_IsNotPresent"/>
+                    <exclude name="testT11a_checkCollectedElements_verifyResult"/>
+                </methods>
+            </class>
             <class name="eu.tsystems.mms.tic.testframework.test.page.DefaultElementLabelProviderTest"/>
             <class name="eu.tsystems.mms.tic.testframework.test.page.PageTests">
                 <methods>

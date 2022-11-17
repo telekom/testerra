@@ -9,11 +9,8 @@
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.test.reporting.ScreenshotsTest">
                 <methods>
-                    <include name="test_takeScreenshot_fails"/>
-                    <include name="test_takeScreenshotOnExclusiveSession_fails"/>
-                    <include name="test_takeScreenshotViaCollectedAssertion_fails"/>
-                    <include name="test_collectedAssertionScreenshotIsPresentInMethodContext"/>
-                    <include name="test_exclusiveSessionScreenshotPresentInMethodContext"/>
+                    <exclude name="test_DOMSource"/>
+                    <exclude name="testT01_takeScreenshotTwice"/>
                 </methods>
             </class>
 

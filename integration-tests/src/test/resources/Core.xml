@@ -19,11 +19,8 @@
             <class name="eu.tsystems.mms.tic.testframework.test.reporting.FailsAnnotationFilterTest"/>
             <class name="eu.tsystems.mms.tic.testframework.test.reporting.ScreenshotsTest">
                 <methods>
-                    <exclude name="test_takeScreenshot_fails"/>
-                    <exclude name="test_takeScreenshotOnExclusiveSession_fails"/>
-                    <exclude name="test_takeScreenshotViaCollectedAssertion_fails"/>
-                    <exclude name="test_collectedAssertionScreenshotIsPresentInMethodContext"/>
-                    <exclude name="test_exclusiveSessionScreenshotPresentInMethodContext"/>
+                    <include name="test_DOMSource"/>
+                    <include name="testT01_takeScreenshotTwice"/>
                 </methods>
             </class>
         </classes>

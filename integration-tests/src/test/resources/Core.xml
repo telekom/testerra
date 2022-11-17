@@ -23,6 +23,7 @@
                     <exclude name="test_takeScreenshotOnExclusiveSession_fails"/>
                     <exclude name="test_takeScreenshotViaCollectedAssertion_fails"/>
                     <exclude name="test_collectedAssertionScreenshotIsPresentInMethodContext"/>
+                    <exclude name="test_exclusiveSessionScreenshotPresentInMethodContext"/>
                 </methods>
             </class>
         </classes>

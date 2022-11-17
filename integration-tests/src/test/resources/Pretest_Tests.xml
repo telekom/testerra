@@ -23,6 +23,7 @@
             <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.CheckPageTest">
                 <methods>
                     <include name="testT11_checkCollectedElements_IsNotPresent"/>
+                    <include name="testT11a_checkCollectedElements_verifyResult"/>
                 </methods>
             </class>
 

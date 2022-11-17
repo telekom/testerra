@@ -23,6 +23,12 @@
                     <include name="testT01_takeScreenshotTwice"/>
                 </methods>
             </class>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.CheckPageTest">
+                <methods>
+                    <exclude name="testT11_checkCollectedElements_IsNotPresent"/>
+                    <exclude name="testT11a_checkCollectedElements_verifyResult"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

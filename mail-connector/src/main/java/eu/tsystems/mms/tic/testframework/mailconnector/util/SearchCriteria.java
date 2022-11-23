@@ -21,9 +21,9 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import javax.mail.search.AndTerm;
-import javax.mail.search.OrTerm;
-import javax.mail.search.SearchTerm;
+import jakarta.mail.search.AndTerm;
+import jakarta.mail.search.OrTerm;
+import jakarta.mail.search.SearchTerm;
 
 /**
  * @deprecated Use implementations of {@link SearchTerm} and combine them with {@link AndTerm} or {@link OrTerm} instead.

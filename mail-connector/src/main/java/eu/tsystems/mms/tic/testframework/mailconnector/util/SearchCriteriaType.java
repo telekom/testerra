@@ -21,12 +21,12 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import javax.mail.search.FromTerm;
-import javax.mail.search.MessageIDTerm;
-import javax.mail.search.RecipientTerm;
-import javax.mail.search.SearchTerm;
-import javax.mail.search.SentDateTerm;
-import javax.mail.search.SubjectTerm;
+import jakarta.mail.search.FromTerm;
+import jakarta.mail.search.MessageIDTerm;
+import jakarta.mail.search.RecipientTerm;
+import jakarta.mail.search.SearchTerm;
+import jakarta.mail.search.SentDateTerm;
+import jakarta.mail.search.SubjectTerm;
 
 /**
  * Enum for criteria to search mails for.

@@ -25,12 +25,13 @@ import com.sun.mail.util.MailSSLSocketFactory;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
+import jakarta.mail.Authenticator;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 import java.util.function.Consumer;
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
 
 /**
  * abstract class to handle mail connector
@@ -90,8 +91,8 @@ public abstract class AbstractMailConnector implements Loggable {
     }
 
     protected Session createDefaultSession(Properties mailProperties, String protocol) {
-        mailProperties.put("mail."+protocol+".host", getServer());
-        mailProperties.put("mail."+protocol+".port", getPort());
+        mailProperties.put("mail." + protocol + ".host", getServer());
+        mailProperties.put("mail." + protocol + ".port", getPort());
 
         try {
             MailSSLSocketFactory sf = new MailSSLSocketFactory();
@@ -99,7 +100,7 @@ public abstract class AbstractMailConnector implements Loggable {
             if (certUtils.isTrustAllHosts()) {
                 log().warn("Trusting all hosts");
                 sf.setTrustAllHosts(true);
-                mailProperties.put("mail."+protocol+".ssl.trust", "*");
+                mailProperties.put("mail." + protocol + ".ssl.trust", "*");
             } else {
                 String[] hostsToTrust = certUtils.getTrustedHosts();
                 if (hostsToTrust != null) {
@@ -109,7 +110,7 @@ public abstract class AbstractMailConnector implements Loggable {
                     sf.setTrustedHosts(hostsToTrust);
                 }
             }
-            mailProperties.put("mail."+protocol+".ssl.socketFactory", sf);
+            mailProperties.put("mail." + protocol + ".ssl.socketFactory", sf);
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Error opening session", e);
         }

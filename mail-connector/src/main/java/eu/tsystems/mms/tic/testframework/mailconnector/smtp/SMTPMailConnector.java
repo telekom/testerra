@@ -27,17 +27,17 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
 import java.io.File;
 import java.util.Properties;
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.mail.Message;
-import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+
+import jakarta.activation.DataHandler;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import net.iharder.Base64;
 
 /**
@@ -235,14 +235,14 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
         try {
 
             message.setFrom(new InternetAddress(from));
-            message.setRecipient(RecipientType.TO, new InternetAddress(receiver));
+            message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiver));
 
             if (ccReceiver != null) {
-                message.setRecipient(RecipientType.CC, new InternetAddress(ccReceiver));
+                message.setRecipient(MimeMessage.RecipientType.CC, new InternetAddress(ccReceiver));
             }
 
             if (bcc != null) {
-                message.setRecipient(RecipientType.BCC, new InternetAddress(bcc));
+                message.setRecipient(MimeMessage.RecipientType.BCC, new InternetAddress(bcc));
             }
 
             final String virusPattern = "X5O!P%@AP[4\\PZX54" + "(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";

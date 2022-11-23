@@ -38,6 +38,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.Properties;
 import jakarta.mail.Address;
@@ -47,7 +48,6 @@ import jakarta.mail.Session;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
-import net.iharder.Base64;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.cms.AttributeTable;
 import org.bouncycastle.asn1.cms.IssuerAndSerialNumber;
@@ -101,7 +101,7 @@ public final class MailUtils {
      * @return The encoded String.
      */
     private static String pEncodeBase64(final String password) {
-        String encode = Base64.encodeBytes(password.getBytes());
+        String encode = Base64.getEncoder().encodeToString(password.getBytes());
         encode = encode.replaceAll("\n", "").replaceAll("\r", "");
         return encode;
     }

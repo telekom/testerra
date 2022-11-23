@@ -4,10 +4,10 @@ dependencies {
     api "com.sun.mail:jakarta.mail:${mailVersion}"
     api "jakarta.mail:jakarta.mail-api:${mailVersion}"
     api 'org.bouncycastle:bcjmail-jdk18on:1.72'
-    api 'net.iharder:base64:2.3.9'
     compileOnly core
 
     testImplementation core
+    testImplementation report
     testImplementation 'com.icegreen:greenmail:2.0.0-alpha-2'
 }
 

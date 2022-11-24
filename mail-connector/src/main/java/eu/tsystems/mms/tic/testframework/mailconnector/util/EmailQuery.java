@@ -22,9 +22,10 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import jakarta.mail.search.AndTerm;
+import jakarta.mail.search.SearchTerm;
+
 import java.util.List;
-import javax.mail.search.AndTerm;
-import javax.mail.search.SearchTerm;
 
 /**
  * EMail query object
@@ -40,7 +41,7 @@ public class EmailQuery {
     private static final String MAX_READ_TRIES_PROPERTY = "MAX_READ_TRIES";
 
     private int retryCount = Integer.parseInt(PropertyManager.getProperty(MAX_READ_TRIES_PROPERTY, "20"));
-    private long pauseMs = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, "10"))*1000;
+    private long pauseMs = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, "10")) * 1000;
     private SearchTerm searchTerm;
     private String folderName;
 
@@ -75,7 +76,7 @@ public class EmailQuery {
         return withAllOfSearchTerms(searchTerms.toArray(new SearchTerm[]{}));
     }
 
-    public EmailQuery withAllOfSearchTerms(SearchTerm...searchTerms) {
+    public EmailQuery withAllOfSearchTerms(SearchTerm... searchTerms) {
         this.searchTerm = new AndTerm(searchTerms);
         return this;
     }

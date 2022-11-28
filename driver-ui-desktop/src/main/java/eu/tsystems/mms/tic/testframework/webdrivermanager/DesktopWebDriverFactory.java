@@ -52,9 +52,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -65,7 +65,6 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -325,24 +324,30 @@ public class DesktopWebDriverFactory implements
     private WebDriver startNewWebDriverSession(DesktopWebDriverRequest request, SessionContext sessionContext) {
 
         final Class<? extends RemoteWebDriver> driverClass;
+        final Class<? extends AbstractDriverOptions> optionClass;
         final String browser = request.getBrowser();
 
         switch (browser) {
             case Browsers.firefox:
                 driverClass = FirefoxDriver.class;
+                optionClass = FirefoxOptions.class;
                 break;
             case Browsers.ie:
                 driverClass = InternetExplorerDriver.class;
+                optionClass = InternetExplorerOptions.class;
                 break;
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 driverClass = ChromeDriver.class;
+                optionClass = ChromeOptions.class;
                 break;
             case Browsers.safari:
                 driverClass = SafariDriver.class;
+                optionClass = SafariOptions.class;
                 break;
             case Browsers.edge:
                 driverClass = EdgeDriver.class;
+                optionClass = EdgeOptions.class;
                 break;
             default:
                 throw new SystemException("Browser not supported: " + browser);
@@ -362,8 +367,14 @@ public class DesktopWebDriverFactory implements
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
-                Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);
-                webDriver = constructor.newInstance(requestCapabilities);
+
+                // Starting local webdriver needs caps as browser options
+                Constructor<? extends AbstractDriverOptions> optionClassConstructor = optionClass.getConstructor();
+                AbstractDriverOptions abstractDriverOptions = optionClassConstructor.newInstance();
+                abstractDriverOptions.merge(requestCapabilities);
+
+                Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(abstractDriverOptions.getClass());
+                webDriver = constructor.newInstance(abstractDriverOptions);
             }
         } catch (Exception e) {
             WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);

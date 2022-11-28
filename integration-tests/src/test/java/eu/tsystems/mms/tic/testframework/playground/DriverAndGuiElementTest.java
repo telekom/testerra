@@ -19,33 +19,28 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.playground;
+package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
-import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Map;
+
 public class DriverAndGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider {
 
     @Test
-    public void testUiElement() throws Exception {
+    public void testUiElement()  {
         WebDriver driver = getWebDriver();
 
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(driver);
@@ -59,8 +54,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
     public void testTapCapabilities() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
-        request.setWebDriverMode(WebDriverMode.local);
-        request.setBrowser(Browsers.phantomjs);
+        request.setBrowser(Browsers.chrome);
 
         /*
         create caps
@@ -80,8 +74,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
     public void testFailing() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
-        request.setWebDriverMode(WebDriverMode.local);
-        request.setBrowser(Browsers.phantomjs);
+        request.setBrowser(Browsers.chrome);
 
         WEB_DRIVER_MANAGER.getWebDriver(request);
         Assert.assertTrue(false);

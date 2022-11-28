@@ -77,12 +77,19 @@ public class DefaultCapabilityUtils {
         if (chromeOptionsObject != null) {
             final Map chromeOptions = (Map) chromeOptionsObject;
             if (chromeOptions.containsKey("extensions")) {
-                chromeOptions.put("extensions", shortAllStringsInLists(chromeOptions.get("extensions")));
+//                chromeOptions.put("extensions", shortAllStringsInLists(chromeOptions.get("extensions")));
+                List<String> extensions = shortAllStringsInLists(chromeOptions.get("extensions"));
+                if (extensions.size() > 0) {
+                    chromeOptions.put("extensions", extensions);
+                }
             }
         }
 
         if (extensionsObject != null) {
-            capabilityMap.put("extensions", shortAllStringsInLists(extensionsObject));
+            List<String> extensions = shortAllStringsInLists(extensionsObject);
+            if (extensions.size() > 0) {
+                capabilityMap.put("extensions", shortAllStringsInLists(extensionsObject));
+            }
         }
 
         return capabilityMap;

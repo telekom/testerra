@@ -9,7 +9,7 @@ dependencies {
     // ResponsiveClassFinder tests
     implementation 'org.reflections:reflections:0.9.12'
 
-    api 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
+    api 'org.eclipse.jetty:jetty-server:9.4.3.v20170317'
 }
 
 // Deactivate JAR publishing

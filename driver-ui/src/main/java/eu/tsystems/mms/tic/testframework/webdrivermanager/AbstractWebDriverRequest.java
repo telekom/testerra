@@ -22,12 +22,13 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class AbstractWebDriverRequest implements WebDriverRequest {
 
@@ -59,11 +60,13 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
     }
 
     public String getBrowserVersion() {
-        return getDesiredCapabilities().getVersion();
+        return getDesiredCapabilities().getBrowserVersion();
     }
 
     public void setBrowserVersion(String browserVersion) {
-        this.getDesiredCapabilities().setVersion(browserVersion);
+        if (StringUtils.isNotBlank(browserVersion)) {
+            this.getDesiredCapabilities().setVersion(browserVersion);
+        }
     }
 
     public String getSessionKey() {

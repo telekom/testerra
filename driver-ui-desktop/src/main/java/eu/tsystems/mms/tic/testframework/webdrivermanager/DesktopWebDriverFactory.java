@@ -63,10 +63,10 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DesktopWebDriverFactory implements
         WebDriverFactory,
@@ -261,12 +261,12 @@ public class DesktopWebDriverFactory implements
             int pageLoadTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD.asLong().intValue();
             int scriptTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT.asLong().intValue();
             try {
-                eventFiringWebDriver.manage().timeouts().pageLoadTimeout(pageLoadTimeout, TimeUnit.SECONDS);
+                eventFiringWebDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
             } catch (Exception e) {
                 log().error("Could not set Page Load Timeout", e);
             }
             try {
-                eventFiringWebDriver.manage().timeouts().setScriptTimeout(scriptTimeout, TimeUnit.SECONDS);
+                eventFiringWebDriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(scriptTimeout));
             } catch (Exception e) {
                 log().error("Could not set Script Timeout", e);
             }

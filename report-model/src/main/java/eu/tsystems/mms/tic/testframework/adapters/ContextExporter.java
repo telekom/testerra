@@ -27,13 +27,13 @@ import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
-import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
@@ -61,6 +61,9 @@ import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -71,8 +74,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Level;
 
 public class ContextExporter implements Loggable {
     private final Injector injector = Testerra.getInjector();
@@ -86,7 +87,6 @@ public class ContextExporter implements Loggable {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
         ContextValues.Builder contextValuesBuilder = buildContextValues(methodContext);
-
 
         methodContext.getTestNgResult().ifPresent(iTestResult -> {
             String testName = methodContext.getName();
@@ -288,20 +288,20 @@ public class ContextExporter implements Loggable {
                 Optional<File.Builder> optional = Optional.ofNullable(builders[0]);
                 optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) {
-                eu.tsystems.mms.tic.testframework.report.model.context.LogMessage logEvent = (eu.tsystems.mms.tic.testframework.report.model.context.LogMessage)entry;
+                eu.tsystems.mms.tic.testframework.report.model.context.LogMessage logEvent = (eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) entry;
                 Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
                 optional.ifPresent(entryBuilder::setLogMessage);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
-                eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext)entry;
+                eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) entry;
                 Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
                 optional.ifPresent(entryBuilder::setErrorContext);
             }
 
             if (
                     entryBuilder.hasErrorContext()
-                    || entryBuilder.hasLogMessage()
-                    || entryBuilder.hasClickPathEvent()
-                    || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
+                            || entryBuilder.hasLogMessage()
+                            || entryBuilder.hasClickPathEvent()
+                            || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
             ) {
                 actionBuilder.addEntries(entryBuilder);
             }
@@ -356,7 +356,7 @@ public class ContextExporter implements Loggable {
     /**
      * Maps and applies a value if not null
      */
-    protected<T, M, R> void map(T value, Function<T, M> map, Function<M, R> function) {
+    protected <T, M, R> void map(T value, Function<T, M> map, Function<M, R> function) {
         if (value != null) {
             M m = map.apply(value);
             function.apply(m);
@@ -512,15 +512,6 @@ public class ContextExporter implements Loggable {
 
         sessionContext.getActualBrowserName().ifPresent(builder::setBrowserName);
         sessionContext.getActualBrowserVersion().ifPresent(builder::setBrowserVersion);
-
-        try {
-            sessionContext.getWebDriverRequest().getCapabilities();
-        } catch (Exception e) {
-            List<eu.tsystems.mms.tic.testframework.report.model.context.MethodContext> collect = sessionContext.readMethodContexts().collect(Collectors.toList());
-            log().info(e.getMessage());
-            collect.forEach(context -> log().info(context.getName()));
-        }
-
         builder.setCapabilities(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()));
         sessionContext.getWebDriverRequest().getServerUrl().ifPresent(url -> builder.setServerUrl(url.toString()));
         sessionContext.getNodeInfo().ifPresent(nodeInfo -> builder.setNodeUrl(nodeInfo.toString()));

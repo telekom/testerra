@@ -132,7 +132,11 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
 
     @Override
     public Map<String, Object> getCapabilities() {
-        return getBrowserOptions().asMap();
+        if (getBrowserOptions() != null) {
+            return getBrowserOptions().asMap();
+        } else {
+            return Map.of();
+        }
     }
 
     public void setSessionKey(String sessionKey) {

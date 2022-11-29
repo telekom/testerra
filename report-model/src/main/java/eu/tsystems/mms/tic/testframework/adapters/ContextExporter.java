@@ -512,6 +512,15 @@ public class ContextExporter implements Loggable {
 
         sessionContext.getActualBrowserName().ifPresent(builder::setBrowserName);
         sessionContext.getActualBrowserVersion().ifPresent(builder::setBrowserVersion);
+
+        try {
+            sessionContext.getWebDriverRequest().getCapabilities();
+        } catch (Exception e) {
+            List<eu.tsystems.mms.tic.testframework.report.model.context.MethodContext> collect = sessionContext.readMethodContexts().collect(Collectors.toList());
+            log().info(e.getMessage());
+            collect.forEach(context -> log().info(context.getName()));
+        }
+
         builder.setCapabilities(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()));
         sessionContext.getWebDriverRequest().getServerUrl().ifPresent(url -> builder.setServerUrl(url.toString()));
         sessionContext.getNodeInfo().ifPresent(nodeInfo -> builder.setNodeUrl(nodeInfo.toString()));

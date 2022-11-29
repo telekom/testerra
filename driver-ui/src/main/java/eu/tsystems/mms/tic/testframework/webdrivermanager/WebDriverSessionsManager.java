@@ -466,6 +466,7 @@ public final class WebDriverSessionsManager {
     }
 
     private static void logRequest(WebDriverRequest request, SessionContext sessionContext) {
+
         Map<String, Object> cleanedCapsMap = new DefaultCapabilityUtils().clean(request.getCapabilities());
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()

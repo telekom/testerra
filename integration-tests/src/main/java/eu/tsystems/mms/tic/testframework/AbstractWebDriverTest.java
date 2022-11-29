@@ -43,15 +43,6 @@ import java.lang.reflect.Method;
  */
 public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer, WebDriverManagerProvider, Loggable {
 
-    //    static {
-    //        WebDriverManager.config().closeWindowsAfterTestMethod = false;
-    //    }
-    //
-    //    @AfterTest(alwaysRun = true)
-    //    public void resetWDCloseWindowsMode() {
-    //        WebDriverManager.config().closeWindowsAfterTestMethod = true;
-    //    }
-
     private String exclusiveSessionId;
 
     @AfterSuite(alwaysRun = true)

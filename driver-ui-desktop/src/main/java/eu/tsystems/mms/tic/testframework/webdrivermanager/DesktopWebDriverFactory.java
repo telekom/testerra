@@ -177,13 +177,16 @@ public class DesktopWebDriverFactory implements
         }
 
         DesiredCapabilities desiredCapabilities = finalRequest.getDesiredCapabilities();
-        if (userAgentCapabilities != null) {
-            desiredCapabilities.merge(userAgentCapabilities);
-        }
         finalRequest.getPlatformName().ifPresent(s -> {
             desiredCapabilities.setCapability(CapabilityType.PLATFORM, s);
             desiredCapabilities.setCapability(CapabilityType.PLATFORM_NAME, s);
         });
+
+        if (userAgentCapabilities != null) {
+            finalRequest.setBrowserOptions(userAgentCapabilities);
+            userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
+//            desiredCapabilities.merge(userAgentCapabilities);
+        }
         return finalRequest;
     }
 
@@ -354,7 +357,7 @@ public class DesktopWebDriverFactory implements
         }
 
         // Finalize capabilities
-        final DesiredCapabilities requestCapabilities = request.getDesiredCapabilities();
+//        final DesiredCapabilities requestCapabilities = request.getDesiredCapabilities();
         RemoteWebDriver webDriver;
         try {
             if (request.getServerUrl().isPresent()) {
@@ -362,19 +365,22 @@ public class DesktopWebDriverFactory implements
                 // TODO: Reduced timeouts of Selenium 3, needed in Selenium 4?
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl);
-                webDriver = new RemoteWebDriver(seleniumUrl, requestCapabilities);
+                webDriver = new RemoteWebDriver(seleniumUrl, request.getBrowserOptions());
                 webDriver.setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
 
                 // Starting local webdriver needs caps as browser options
-                Constructor<? extends AbstractDriverOptions> optionClassConstructor = optionClass.getConstructor();
-                AbstractDriverOptions abstractDriverOptions = optionClassConstructor.newInstance();
-                abstractDriverOptions.merge(requestCapabilities);
-
-                Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(abstractDriverOptions.getClass());
-                webDriver = constructor.newInstance(abstractDriverOptions);
+//                Constructor<? extends AbstractDriverOptions> optionClassConstructor = optionClass.getConstructor();
+//                AbstractDriverOptions abstractDriverOptions = optionClassConstructor.newInstance();
+//                abstractDriverOptions.merge(requestCapabilities);
+                if (optionClass == request.getBrowserOptions().getClass()) {
+                    Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(optionClass);
+                    webDriver = constructor.newInstance(request.getBrowserOptions());
+                } else {
+                    throw new SystemException("Browser options cannot use for new session: \nRequired " + optionClass.getName() + ",\nProvided: " + request.getBrowserOptions().getClass().getName());
+                }
             }
         } catch (Exception e) {
             WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);

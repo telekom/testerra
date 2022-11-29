@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -35,6 +36,8 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
     private String sessionKey = DEFAULT_SESSION_KEY;
     private URL serverUrl;
     private DesiredCapabilities desiredCapabilities;
+
+    private Capabilities capabilities;
     private boolean shutdownAfterTest = false;
     private boolean shutdownAfterTestFailed = false;
     private boolean shutdownAfterExecution = true;
@@ -129,7 +132,7 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
 
     @Override
     public Map<String, Object> getCapabilities() {
-        return getDesiredCapabilities().asMap();
+        return getBrowserOptions().asMap();
     }
 
     public void setSessionKey(String sessionKey) {
@@ -157,6 +160,14 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
             clone.desiredCapabilities.merge(this.desiredCapabilities);
         }
         return clone;
+    }
+
+    public Capabilities getBrowserOptions() {
+        return capabilities;
+    }
+
+    public void setBrowserOptions(Capabilities capabilities) {
+        this.capabilities = capabilities;
     }
 
     public void setPlatformName(String platformName) {

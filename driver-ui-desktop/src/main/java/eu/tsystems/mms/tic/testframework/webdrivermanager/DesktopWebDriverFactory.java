@@ -364,7 +364,11 @@ public class DesktopWebDriverFactory implements
                 // TODO: Reduced timeouts of Selenium 3, needed in Selenium 4?
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl);
-                webDriver = new RemoteWebDriver(seleniumUrl, request.getBrowserOptions());
+                Capabilities browserOptions = request.getBrowserOptions();
+                if (browserOptions == null) {
+                    throw new SystemException("Cannot start browser session with empty browser options");
+                }
+                webDriver = new RemoteWebDriver(seleniumUrl, browserOptions);
                 webDriver.setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {

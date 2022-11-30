@@ -375,9 +375,6 @@ public class DesktopWebDriverFactory implements
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
 
                 // Starting local webdriver needs caps as browser options
-//                Constructor<? extends AbstractDriverOptions> optionClassConstructor = optionClass.getConstructor();
-//                AbstractDriverOptions abstractDriverOptions = optionClassConstructor.newInstance();
-//                abstractDriverOptions.merge(requestCapabilities);
                 if (optionClass == request.getBrowserOptions().getClass()) {
                     Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(optionClass);
                     webDriver = constructor.newInstance(request.getBrowserOptions());

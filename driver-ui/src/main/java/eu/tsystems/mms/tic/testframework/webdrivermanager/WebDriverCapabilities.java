@@ -23,6 +23,8 @@
 
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import java.util.function.Consumer;
+
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
@@ -93,13 +95,15 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
     @Override
     public void accept(WebDriverRequest webDriverRequest) {
         if (webDriverRequest instanceof AbstractWebDriverRequest) {
-            DesiredCapabilities desiredCapabilities = ((AbstractWebDriverRequest) webDriverRequest).getDesiredCapabilities();
-            desiredCapabilities.merge(new DesiredCapabilities(GLOBALCAPABILITIES));
+            Capabilities browserOptions = ((AbstractWebDriverRequest) webDriverRequest).getBrowserOptions();
+            // 'merge' method of browser options always creates a new instance
+            Capabilities newOptions = browserOptions.merge(new DesiredCapabilities(GLOBALCAPABILITIES));
 
             CertUtils certUtils = CertUtils.getInstance();
             if (certUtils.isTrustAllHosts() || certUtils.getTrustedHosts().length > 0) {
-                desiredCapabilities.setAcceptInsecureCerts(true);
+                newOptions = newOptions.merge(new DesiredCapabilities(Map.of(CapabilityType.ACCEPT_INSECURE_CERTS,true)));
             }
+            ((AbstractWebDriverRequest) webDriverRequest).setBrowserOptions(newOptions);
         }
     }
 }

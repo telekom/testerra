@@ -145,8 +145,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
     @Test
     public void testT04_ManageGlobalCapabilities() {
-
-        WebDriverManager.setGlobalExtraCapability("foo", "bar");
+        WEB_DRIVER_MANAGER.setGlobalCapability("foo", "bar");
 
         Map<String, Object> globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
         Assert.assertTrue(globalExtraCapabilities.containsKey("foo"));
@@ -154,7 +153,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
         WebDriver driver = WebDriverManager.getWebDriver();
 
-        WebDriverManager.removeGlobalExtraCapability("foo");
+        WEB_DRIVER_MANAGER.removeGlobalCapability("foo");
         globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
         Assert.assertFalse(globalExtraCapabilities.containsKey("foo"));
     }

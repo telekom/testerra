@@ -400,12 +400,11 @@ public final class WebDriverSessionsManager {
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
             WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 
-             /*
-            create session context and link to method context
-             */
+            // Catch all existing browser caps and add them to specific browser options
             final WebDriverRequest finalWebDriverRequest = webDriverFactory.prepareWebDriverRequest(webDriverRequest);
             webDriverRequestConfigurators.forEach(handler -> handler.accept(finalWebDriverRequest));
 
+            // Create session context and link to method context
             SessionContext sessionContext = new SessionContext(finalWebDriverRequest);
             executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
                 methodContext.addSessionContext(sessionContext);

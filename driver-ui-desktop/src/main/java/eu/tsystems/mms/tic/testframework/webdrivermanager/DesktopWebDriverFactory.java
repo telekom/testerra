@@ -183,9 +183,8 @@ public class DesktopWebDriverFactory implements
         });
 
         if (userAgentCapabilities != null) {
+            userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
             finalRequest.setBrowserOptions(userAgentCapabilities);
-            userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
-//            desiredCapabilities.merge(userAgentCapabilities);
         }
         return finalRequest;
     }

@@ -21,11 +21,14 @@
 
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -55,11 +58,11 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
     }
 
     @Test
-    public void testT03_EndPointCapabilities() throws Exception {
+    public void testT03_EndPointCapabilities_WebDriverRequest() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
 
-        DesiredCapabilities caps = new DesiredCapabilities();
+        DesiredCapabilities caps = request.getDesiredCapabilities();
         caps.setCapability("enableVideo", true);
         caps.setCapability("enableVNC", true);
 
@@ -68,7 +71,39 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
         Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
 
-        Assert.assertEquals(sessionCapabilities.get("tap:projectId"), caps.getCapability("tap:projectId"), "EndPoint Capability is set");
+        Assert.assertEquals(sessionCapabilities.get("enableVideo"), caps.getCapability("enableVideo"), "EndPoint Capability via WebDriverRequest is set");
+        Assert.assertEquals(sessionCapabilities.get("enableVNC"), caps.getCapability("enableVNC"), "EndPoint Capability via WebDriverRequest is set");
+    }
+
+    @Test
+    public void testT04_EndPointCapabilities_Global() {
+        WEB_DRIVER_MANAGER.setGlobalCapability("t04Global", "yes");
+
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        WEB_DRIVER_MANAGER.removeGlobalCapability("t04Global");
+
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
+
+        Assert.assertEquals(sessionCapabilities.get("t04Global"), "yes", "EndPoint Capability is set");
+    }
+
+    @Test
+    public void test05_EndPointCapabilities_UserAgent() {
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
+            @Override
+            public void configure(ChromeOptions options) {
+                options.setCapability("t05UserAgent", "yesyes");
+            }
+        });
+
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
+
+        Assert.assertEquals(sessionCapabilities.get("t05UserAgent"), "yesyes", "EndPoint Capability is set");
     }
 
 }

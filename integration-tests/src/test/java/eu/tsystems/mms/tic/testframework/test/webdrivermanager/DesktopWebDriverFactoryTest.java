@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -91,12 +90,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
 
     @Test
     public void test05_EndPointCapabilities_UserAgent() {
-        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
-            @Override
-            public void configure(ChromeOptions options) {
-                options.setCapability("t05UserAgent", "yesyes");
-            }
-        });
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless,
+                (ChromeConfig) options -> options.setCapability("t05UserAgent", "yesyes"));
 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 

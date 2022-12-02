@@ -77,7 +77,6 @@ public class DefaultCapabilityUtils {
         if (chromeOptionsObject != null) {
             final Map chromeOptions = (Map) chromeOptionsObject;
             if (chromeOptions.containsKey("extensions")) {
-//                chromeOptions.put("extensions", shortAllStringsInLists(chromeOptions.get("extensions")));
                 List<String> extensions = shortAllStringsInLists(chromeOptions.get("extensions"));
                 if (extensions.size() > 0) {
                     chromeOptions.put("extensions", extensions);

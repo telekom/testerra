@@ -39,6 +39,13 @@ import java.time.Duration;
  */
 class HttpClientFactory implements HttpClient.Factory {
 
+    /** TODO: Delete or re-implement
+     * This class was used to set a custom timeout for sending commands to browser sessions. Selenium 3 has a default of 120 minutes. This was reduced to 2 minutes.
+     *
+     * For using in Selenium 4 this class has to re-implement because Selenium 4 uses HttpClient of Java 11.
+     *
+     */
+
     private final Duration factoryConnectionTimeout = Duration.ofSeconds(120); // Kill, when connect does not succeed in this timeout
     private final Duration factoryReadTimeout = factoryConnectionTimeout; // Kill hanging / stuck selenium commands after this timeout.
 

@@ -22,20 +22,17 @@ dependencies {
     api 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>
 
-    // <PageFactory>
-//    implementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
-    // </PageFactory>
-
-//    implementation 'com.sun.jersey:jersey-client:1.19.3'
-//    implementation 'commons-codec:commons-codec:1.13'
     implementation 'commons-collections:commons-collections:3.2.2'
     implementation 'org.reflections:reflections:0.9.12'
 
     // <BrowserInformation>
     //implementation 'nl.basjes.parse.useragent:yauaa:4.5'
+    // 1.5.3
     implementation group: 'com.github.ua-parser', name: 'uap-java', version: '1.4.3'
     // </BrowserInformation>
 
+    // Selenium 4.6 comes with 'io.netty:netty-transport-native-epoll:4.1.84.Final'
+    // -> Dependency error Could not find netty-transport-native-epoll-4.1.84.Final-linux-x86_64.jar (io.netty:netty-transport-native-epoll:4.1.84.Final).
     api 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 }
 

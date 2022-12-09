@@ -25,20 +25,20 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
+import jakarta.activation.DataHandler;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+
 import java.io.File;
+import java.util.Base64;
 import java.util.Properties;
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.mail.Message;
-import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import net.iharder.Base64;
 
 /**
  * MailConnector using the SMTP Protocol. Creates a session with values from mailconnection.properties.
@@ -78,6 +78,7 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
 
     /**
      * Open a new SMTP Session and save in session object.
+     *
      * @see {https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/smtp/package-summary.html}
      */
     @Override
@@ -91,7 +92,7 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
         }
 
         mailprops.setProperty("mail.transport.protocol", protocol);
-        mailprops.put("mail."+protocol+".auth", "true");
+        mailprops.put("mail." + protocol + ".auth", "true");
 
         setSession(createDefaultSession(mailprops, protocol));
     }
@@ -167,7 +168,7 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
      * Add MimeBodyParts to a message. Can only called once, otherwise message text can not saved.
      *
      * @param attachments An array containing the MimeBodyParts.
-     * @param message     The message to add the attachments.
+     * @param message The message to add the attachments.
      * @return The message with the attached MimeBodyParts.
      */
     public MimeMessage addAttachmentsToMessage(final MimeBodyPart[] attachments, final Message message) {
@@ -178,7 +179,7 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
      * Add MimeBodyParts to a message. Can only called once, otherwise message text can not saved.
      *
      * @param attachments An array containing the MimeBodyParts.
-     * @param message     The message to add the attachments.
+     * @param message The message to add the attachments.
      * @return The message with the attached MimeBodyParts.
      */
     private MimeMessage pAddAttachmentsToMessage(final MimeBodyPart[] attachments, final Message message) {
@@ -205,12 +206,12 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
     /**
      * Send a virus mail.
      *
-     * @param from       The from address.
-     * @param receiver   The to address.
+     * @param from The from address.
+     * @param receiver The to address.
      * @param ccReceiver The cc address. Can be null.
-     * @param bcc        The bcc address. Can be null.
+     * @param bcc The bcc address. Can be null.
      * @return A MimeMessage containing a virus signature.
-     * @throws SystemException  thrown if virus Mail can't generated.
+     * @throws SystemException thrown if virus Mail can't generated.
      * @throws RuntimeException thrown if address parameters were wrong.
      */
     public MimeMessage generateVirusMail(final String from, final String receiver,
@@ -221,12 +222,12 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
     /**
      * Send a virus mail.
      *
-     * @param from       The from address.
-     * @param receiver   The to address.
+     * @param from The from address.
+     * @param receiver The to address.
      * @param ccReceiver The cc address. Can be null.
-     * @param bcc        The bcc address. Can be null.
+     * @param bcc The bcc address. Can be null.
      * @return A MimeMessage containing a virus signature.
-     * @throws SystemException  thrown if virus Mail can't generated.
+     * @throws SystemException thrown if virus Mail can't generated.
      * @throws RuntimeException thrown if address parameters were wrong.
      */
     private MimeMessage pGenerateVirusMail(final String from, final String receiver,
@@ -235,14 +236,14 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
         try {
 
             message.setFrom(new InternetAddress(from));
-            message.setRecipient(RecipientType.TO, new InternetAddress(receiver));
+            message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiver));
 
             if (ccReceiver != null) {
-                message.setRecipient(RecipientType.CC, new InternetAddress(ccReceiver));
+                message.setRecipient(MimeMessage.RecipientType.CC, new InternetAddress(ccReceiver));
             }
 
             if (bcc != null) {
-                message.setRecipient(RecipientType.BCC, new InternetAddress(bcc));
+                message.setRecipient(MimeMessage.RecipientType.BCC, new InternetAddress(bcc));
             }
 
             final String virusPattern = "X5O!P%@AP[4\\PZX54" + "(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
@@ -256,7 +257,7 @@ public class SMTPMailConnector extends AbstractMailConnector implements Loggable
 
             multiPart.addBodyPart(bp1);
 
-            final byte[] encoded = Base64.encodeBytes(virusPattern.getBytes()).getBytes();
+            final byte[] encoded = Base64.getEncoder().encode(virusPattern.getBytes());
             final MimeBodyPart bp2 = new MimeBodyPart();
             bp2.setFileName("virus.exe");
             bp2.setContent(encoded, "application/octet-stream");

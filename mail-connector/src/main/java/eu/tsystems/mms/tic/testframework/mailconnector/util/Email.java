@@ -22,6 +22,12 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import jakarta.mail.Address;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.internet.MimeMessage;
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.IllegalCharsetNameException;
@@ -31,11 +37,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.mail.Address;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeMessage;
-import org.apache.commons.io.IOUtils;
 
 /**
  * E-Mail Objekt, das alle Inhalte eines javax.mail.Message-Objekts ausliest.
@@ -237,7 +238,6 @@ public class Email implements Loggable {
      * get charset for encoding from Mail, use UTF-8 as default
      *
      * @param encoding
-     *
      * @return
      */
     private String getCharSetForEncoding(String encoding) {
@@ -276,7 +276,6 @@ public class Email implements Loggable {
      * Gets the content of the given attachment
      *
      * @param fileName Name of attachment
-     *
      * @return content of attachment
      */
     public String getAttachmentsContent(String fileName) {

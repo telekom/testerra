@@ -73,14 +73,6 @@ public class UiElementCommonTests extends AbstractExclusiveTestSitesTest<WebTest
     }
 
     @Test
-    @Fails()
-    public void testT06_collected_assert() {
-        CONTROL.collectAssertions(() -> {
-            CONTROL.withTimeout(1, this::performFails);
-        });
-    }
-
-    @Test
     public void testT07_UiElement_screenshot() {
         WebTestPage page = getPage();
         ImageAssertion screenshot = page.notVisibleElement().expect().screenshot();

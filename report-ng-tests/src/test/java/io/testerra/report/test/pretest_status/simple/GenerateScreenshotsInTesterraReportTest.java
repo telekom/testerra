@@ -21,8 +21,9 @@
 
 package io.testerra.report.test.pretest_status.simple;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -31,7 +32,7 @@ import org.testng.annotations.Test;
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
 
-public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTest {
+public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTest implements AssertProvider {
 
     @Test
     public void test_Failed_WithScreenShot() {
@@ -47,5 +48,24 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
 
         final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
         pageWithExistingElement.screenshotToReport();
+    }
+
+    @Test()
+    @Fails()
+    public void test_takeScreenshotOnExclusiveSession_fails() {
+        WebDriver driver = getExclusiveWebDriver();
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
+        Assert.fail("'Failed' on reached Page.");
+    }
+
+    @Test()
+    @Fails()
+    public void test_takeScreenshotViaCollectedAssertion_fails() {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
+
+        CONTROL.collectAssertions(() -> {
+            ASSERT.assertTrue(false, "assertion passed");
+        });
     }
 }

@@ -35,8 +35,6 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     //TODO: better locator?
     @Check
     protected final UiElement testMethodCard = pageContent.find(By.xpath("(//mdc-card)[1]"));
-    //TODO: mandatory?
-    // protected final GuiElement testLastScreenshot = pageContent.getSubElement(By.xpath("//mdc-card[contains(text(),'Last Screenshot')]"));
     @Check
     protected final UiElement testDurationCard = pageContent.find(By.xpath("//test-duration-card"));
     @Check
@@ -53,6 +51,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     private final UiElement testStepsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
     private final UiElement testSessionsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Sessions')]]"));
 
+    protected final UiElement testLastScreenshot = pageContent.find(By.xpath("//mdc-card[contains(.,'Last Screenshot')]//img"));
 
     /**
      * Constructor for existing sessions.
@@ -109,5 +108,9 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
         UiElement failsAnnotation = testMethodCard.find(By.xpath("//*[contains(@class,'status-failed-expected')]"));
         //failsAnnotation.asserts("Test page should display @Failed annotation").assertIsDisplayed();
         failsAnnotation.expect().displayed().is(true, "Test page should display @Failed annotation");
+    }
+
+    public void assertScreenshotIsDisplayed() {
+        testLastScreenshot.expect().displayed().is(true, "Screenshot is displayed.");
     }
 }

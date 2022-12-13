@@ -14,6 +14,12 @@
                     <include name="test_expectedFailedWithValidator_isNotValid"/>
                 </methods>
             </class>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
+                <methods>
+                    <include name="test_takeScreenshotOnExclusiveSession_fails"/>
+                    <include name="test_takeScreenshotViaCollectedAssertion_fails"/>
+                </methods>
+            </class>
         </classes>
     </test>
 

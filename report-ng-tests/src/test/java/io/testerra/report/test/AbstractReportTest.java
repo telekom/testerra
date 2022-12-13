@@ -170,6 +170,14 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     }
 
     @DataProvider(parallel = true)
+    public static Object[][] dataProviderForPreTestMethodsWithScreenshot() {
+        return new Object[][]{
+                {"test_takeScreenshotOnExclusiveSession_fails"},
+                {"test_takeScreenshotViaCollectedAssertion_fails"}
+        };
+    }
+
+    @DataProvider(parallel = true)
     public Object[][] dataProviderForPreTestMethodsWithStatusSkipped() {
         return new Object[][]{
                 {"test_SkippedNoStatus"},

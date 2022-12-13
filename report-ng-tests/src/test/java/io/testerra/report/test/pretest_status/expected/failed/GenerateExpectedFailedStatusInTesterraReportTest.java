@@ -22,16 +22,18 @@
 package io.testerra.report.test.pretest_status.expected.failed;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import io.testerra.report.test.AbstractTestSitesTest;
-import io.testerra.report.test.pages.pretest.NonExistingPage;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTestSitesTest {
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.testerra.report.test.AbstractTestSitesTest;
+import io.testerra.report.test.pages.pretest.NonExistingPage;
+
+public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTestSitesTest implements AssertProvider {
 
     final AtomicInteger counter = new AtomicInteger(0);
 
@@ -62,9 +64,11 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
     @Test
     @Fails(description = "collected assert failing")
     public void test_expectedFailedAssertCollector() {
-        AssertCollector.fail("failed1");
-        AssertCollector.fail("failed2");
-        AssertCollector.assertTrue(true, "passed1");
+        CONTROL.collectAssertions(() -> {
+                    ASSERT.fail("failed1");
+                    ASSERT.fail("failed2");
+                    ASSERT.assertTrue(true, "passed1");
+        });
     }
 
     @Test

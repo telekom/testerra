@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import io.testerra.report.test.pages.TestPage;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeTest;
 
 import java.net.BindException;
@@ -39,6 +40,7 @@ import java.net.BindException;
 public abstract class AbstractTestSitesTest extends AbstractTest implements WebDriverManagerProvider, PageFactoryProvider, Loggable {
 
     protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
+    private String exclusiveSessionId;
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
@@ -49,16 +51,32 @@ public abstract class AbstractTestSitesTest extends AbstractTest implements WebD
         }
     }
 
+    @AfterClass
+    public void closeExclusiveWebDriverSession() {
+        if (exclusiveSessionId != null) {
+            WEB_DRIVER_MANAGER.shutdownSession(this.exclusiveSessionId);
+            exclusiveSessionId = null;
+        }
+    }
+
     /**
      * Open a custom Webdriver session with the default test page.
      *
      * @param driver {@link WebDriver} Current Instance
      * @param testPage {@link TestPage} page to open
      */
-    public synchronized void visitTestPage(final WebDriver driver, final TestPage testPage) {
+    protected synchronized void visitTestPage(final WebDriver driver, final TestPage testPage) {
         if (!driver.getCurrentUrl().contains(testPage.getPath())) {
             String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), testPage.getPath());
             driver.get(baseUrl);
         }
+    }
+
+    protected WebDriver getExclusiveWebDriver() {
+        if (exclusiveSessionId == null) {
+            WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+            exclusiveSessionId = WEB_DRIVER_MANAGER.makeExclusive(webDriver);
+        }
+        return WEB_DRIVER_MANAGER.getWebDriver(exclusiveSessionId);
     }
 }

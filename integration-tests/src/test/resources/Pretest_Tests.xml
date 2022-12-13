@@ -7,29 +7,9 @@
 
     <test name="Expected Failed">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.test.reporting.ScreenshotsTest">
-                <methods>
-                    <exclude name="test_DOMSource"/>
-                    <exclude name="testT01_takeScreenshotTwice"/>
-                </methods>
-            </class>
-
             <class name="eu.tsystems.mms.tic.testframework.test.page.PageTests">
                 <methods>
                     <include name="test_Page_title_length_fails_collected"/>
-                </methods>
-            </class>
-
-            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.CheckPageTest">
-                <methods>
-                    <include name="testT11_checkCollectedElements_IsNotPresent"/>
-                    <include name="testT11a_checkCollectedElements_verifyResult"/>
-                </methods>
-            </class>
-
-            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementCommonTests">
-                <methods>
-                    <include name="testT06_collected_assert"/>
                 </methods>
             </class>
         </classes>

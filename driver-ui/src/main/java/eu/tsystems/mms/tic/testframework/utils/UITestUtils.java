@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TakesScreenshot;
@@ -332,8 +333,9 @@ public class UITestUtils implements WebDriverManagerProvider {
 
         // Find all sessions of current method context and create screenshots
         Stream<Screenshot> screenshotStream = methodContext.get().readSessionContexts()
-                .map(SessionContext::getSessionKey)
-                .map(WEB_DRIVER_MANAGER::getWebDriver)
+                .map(WebDriverSessionsManager::getWebDriver)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .map(UITestUtils::pTakeAllScreenshotsForSession)
                 .flatMap(Collection::stream);
 

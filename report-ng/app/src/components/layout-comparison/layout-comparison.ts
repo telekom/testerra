@@ -49,8 +49,8 @@ export interface ILayoutComparisonContext {
 export class LayoutComparison {
     @bindable({defaultBindingMode:bindingMode.toView}) context:ILayoutComparisonContext;
     private _images:ICompareImages;
-    private _actualImageElement:HTMLImageElement;
-    private _expectedImageElement:HTMLImageElement;
+    // private _actualImageElement:HTMLImageElement;
+    // private _expectedImageElement:HTMLImageElement;
 
     constructor(
         private _dialogService: MdcDialogService,
@@ -77,7 +77,8 @@ export class LayoutComparison {
                 title: "Actual"
             },
             diff: {
-                src: "",
+                // src: "",
+                src: this._config.correctRelativePath(this.context.distanceScreenshotPath),
                 title: "Difference"
             },
             expected: {
@@ -86,33 +87,36 @@ export class LayoutComparison {
             }
         }
 
-        const allImagesLoaded = Promise.all([this._loadImage(this._actualImageElement), this._loadImage(this._expectedImageElement)]);
-        allImagesLoaded.then(() => {
-            const canvas: HTMLCanvasElement = document.createElement("canvas");
-            const maxWidth = Math.max(this._actualImageElement.naturalWidth, this._expectedImageElement.naturalWidth);
-            const maxHeight = Math.max(this._actualImageElement.naturalHeight, this._expectedImageElement.naturalHeight);
-
-            //get Image data of actual screenshot via canvas
-            canvas.width = maxWidth;
-            canvas.height = maxHeight;
-            let canvasContext = canvas.getContext("2d");
-            canvasContext.drawImage(this._actualImageElement, 0, 0);
-            const imgData1 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
-
-            //get Image data of expected screenshot via canvas
-            canvasContext = canvas.getContext("2d");
-            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-            canvasContext.drawImage(this._expectedImageElement, 0, 0);
-            const imgData2 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
-            const diff = canvasContext.createImageData(maxWidth, maxHeight);
-
+        // Calculate diff image based on actual and expected
+        // const allImagesLoaded = Promise.all([this._loadImage(this._actualImageElement), this._loadImage(this._expectedImageElement)]);
+        // allImagesLoaded.then(() => {
+        //     const canvas: HTMLCanvasElement = document.createElement("canvas");
+        //     const maxWidth = Math.max(this._actualImageElement.naturalWidth, this._expectedImageElement.naturalWidth);
+        //     const maxHeight = Math.max(this._actualImageElement.naturalHeight, this._expectedImageElement.naturalHeight);
+        //
+        //     //get Image data of actual screenshot via canvas
+        //     canvas.width = maxWidth;
+        //     canvas.height = maxHeight;
+        //     let canvasContext = canvas.getContext("2d");
+        //     canvasContext.drawImage(this._actualImageElement, 0, 0);
+        //     const imgData1 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
+        //
+        //     //get Image data of expected screenshot via canvas
+        //     canvasContext = canvas.getContext("2d");
+        //     canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        //     canvasContext.drawImage(this._expectedImageElement, 0, 0);
+        //     const imgData2 = canvasContext.getImageData(0, 0, maxWidth, maxHeight);
+        //
+        //     const diff = canvasContext.createImageData(maxWidth, maxHeight);
             // @ts-ignore
-            pixelmatch(imgData1.data, imgData2.data, diff.data, maxWidth, maxHeight, {threshold: 0.2, includeAA: true, alpha: 0.9, diffColor:[246, 168, 33]});
+            // pixelmatch(imgData1.data, imgData2.data, diff.data, maxWidth, maxHeight, {threshold: 0.2, includeAA: true, alpha: 0.9, diffColor:[246, 168, 33]});
 
-            canvasContext = canvas.getContext("2d");
-            canvasContext.putImageData(diff, 0, 0);
-            this._images.diff.src = canvas.toDataURL();
-        });
+            // canvasContext = canvas.getContext("2d");
+
+
+            // canvasContext.putImageData(diff, 0, 0);
+            // this._images.diff.src = canvas.toDataURL();
+        // });
     }
 
     private _imageClicked(image:IImage) {

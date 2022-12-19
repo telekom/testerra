@@ -31,6 +31,14 @@ import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -44,13 +52,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.imageio.ImageIO;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for handling layout checking screenshots.
@@ -94,7 +95,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         /**
          * minimumSimilarMovementErrorsForDisplacementCorrection
          */
-        INTERNAL_PARAMETER_3("internal.parameter.3",  0.51d),
+        INTERNAL_PARAMETER_3("internal.parameter.3", 0.51d),
         /**
          * distanceBetweenMultipleMatchesToProduceWarning
          */
@@ -269,7 +270,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         } else {
             Integer newCount = runCount.get(targetImageName) + 1;
             runCount.put(targetImageName, newCount);
-            runCountModifier = String.format("-%03d",newCount);
+            runCountModifier = String.format("-%03d", newCount);
         }
 
         step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();
@@ -286,7 +287,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
 
             step.actualFileName = actualImagesDir.resolve(
-                String.format(Properties.ACTUAL_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
+                    String.format(Properties.ACTUAL_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
 
             try {
@@ -299,7 +300,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
             // create distance file name
             step.distanceFileName = distanceImagesDir.resolve(
-                String.format(Properties.DISTANCE_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
+                    String.format(Properties.DISTANCE_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
         }
 
@@ -494,7 +495,16 @@ public final class LayoutCheck implements PropertyManagerProvider {
         }
 
         // calculate and return the percentage number of pixels in error
-        return ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+        double result = ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+        LOGGER.debug("Raw results of pixel check: \n" +
+                        "Dimension actual image: {}\n" +
+                        "Dimension expected image: {}\n" +
+                        "Number of total pixel: {}\n" +
+                        "Number of ignored pixel: {}\n" +
+                        "Number of pixel in errors: {}\n" +
+                        "Result of matching: {}"
+                , actualImageDimension, expectedImageDimension, totalPixels, noOfIgnoredPixels, pixelsInError, result);
+        return result;
     }
 
     public static boolean doRGBsMatch(int expectedRgb, int actualImageRGB) {
@@ -563,12 +573,12 @@ public final class LayoutCheck implements PropertyManagerProvider {
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image
-        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(),  Report.FileMode.COPY);
+        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.FileMode.COPY);
         context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
 
-        File annotatedReferenceFile =step.annotatedReferenceFileName.toFile();
+        File annotatedReferenceFile = step.annotatedReferenceFileName.toFile();
         if (annotatedReferenceFile.exists()) {
             context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceFile, Report.FileMode.MOVE);
         }

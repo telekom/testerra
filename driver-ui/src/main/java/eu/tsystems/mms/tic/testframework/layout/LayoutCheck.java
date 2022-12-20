@@ -83,23 +83,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
         INTRA_GROUPING_THRESHOLD("intra.grouping.threshold", 5),
         MINIMUM_MARKED_PIXELS("minimum.marked.pixels", 12),
         MAXIMUM_MARKED_PIXELS_RATIO("maximum.marked.pixels.ratio", 0.04d),
-        MATCHING_ALGORITHM("matching.algorithm", "opencvtemplatematcher"),
-        /**
-         * minimalDistanceBetweenMatches
-         */
-        INTERNAL_PARAMETER_1("internal.parameter.1", 5),
-        /**
-         * minimalSizeDifferenceOfSubImages
-         */
-        INTERNAL_PARAMETER_2("internal.parameter.2", 10),
-        /**
-         * minimumSimilarMovementErrorsForDisplacementCorrection
-         */
-        INTERNAL_PARAMETER_3("internal.parameter.3", 0.51d),
-        /**
-         * distanceBetweenMultipleMatchesToProduceWarning
-         */
-        INTERNAL_PARAMETER_4("internal.parameter.4", 14),
         IGNORE_AMBIGUOUS_MOVEMENT("ignore.ambiguous.movement", null),
         IGNORE_MOVEMENT("ignore.movement", null),
         IGNORE_GROUP_MOVEMENT("ignore.group.movement", false),

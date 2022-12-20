@@ -45,8 +45,6 @@ The comparison is generally carried out over the entire reference image. In this
 
 The property `{layoutcheck_pixel_rgb_deviation_percent}` controls, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
 
-To validate the layout, you can check the whole page or a single <<UiElements,UiElement>>.
-
 == Check the whole page
 
 [source, java]

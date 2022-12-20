@@ -40,7 +40,7 @@ public class LayoutCheckImageTest extends AbstractTestSitesTest implements Locat
     }
 
     /**
-     * Uses the property tt.layoutcheck.pixel.rgb.deviation.percent=3 to verify a photo with some RGP deviations
+     * Uses the property tt.layoutcheck.pixel.rgb.deviation.percent=3.5 to verify a photo with some RGP deviations
      */
     @Test
     public void testT01_CheckImageLayout() {

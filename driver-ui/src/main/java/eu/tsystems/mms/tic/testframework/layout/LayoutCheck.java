@@ -75,7 +75,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
         USE_AREA_COLOR("use.area.color", false),
-        PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0),
+        PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0.0),
 
         // Properties for the layout comparator working with
         MATCH_THRESHOLD("match.threshold", 0.95d),
@@ -170,7 +170,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     private static final double NO_DISTANCE = 0;
-    private static final int RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asLong().intValue();
+    private static final double RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asDouble();
     private static final double RGB_MAX_DEVIATION = 255;
 
     private static final HashMap<String, Integer> runCount = new HashMap<>();
@@ -507,20 +507,23 @@ public final class LayoutCheck implements PropertyManagerProvider {
         return result;
     }
 
-    public static boolean doRGBsMatch(int expectedRgb, int actualImageRGB) {
+    private static boolean doRGBsMatch(int expectedRgb, int actualImageRGB) {
         if (expectedRgb == actualImageRGB) {
             return true;
         }
 
-        if (RGB_DEVIATION_PERCENT > 0) {
+        if (RGB_DEVIATION_PERCENT > 0.0) {
             Color expectedColor = new Color(expectedRgb);
             Color actualColor = new Color(actualImageRGB);
 
-            int percentR = (int) (100 * (Math.abs(expectedColor.getRed() - actualColor.getRed())) / RGB_MAX_DEVIATION);
-            int percentG = (int) (100 * (Math.abs(expectedColor.getGreen() - actualColor.getGreen())) / RGB_MAX_DEVIATION);
-            int percentB = (int) (100 * (Math.abs(expectedColor.getBlue() - actualColor.getBlue())) / RGB_MAX_DEVIATION);
-
-//            LOGGER.info("RGB deviation percent: " + percentR + "/" + percentG + "/" + percentB);
+            double percentR = 100 * (Math.abs(expectedColor.getRed() - actualColor.getRed())) / RGB_MAX_DEVIATION;
+            double percentG = 100 * (Math.abs(expectedColor.getGreen() - actualColor.getGreen())) / RGB_MAX_DEVIATION;
+            double percentB = 100 * (Math.abs(expectedColor.getBlue() - actualColor.getBlue())) / RGB_MAX_DEVIATION;
+//            LOGGER.debug("Current RGB deviation:\n" +
+//                    "Red: {}%\n" +
+//                    "Blue: {}%\n" +
+//                    "Green: {}%\n",
+//                    percentR, percentB, percentG);
             if (percentR <= RGB_DEVIATION_PERCENT && percentG <= RGB_DEVIATION_PERCENT && percentB <= RGB_DEVIATION_PERCENT) {
                 return true;
             }

@@ -29,11 +29,13 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.FileAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
+
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Default implementation of {@link ImageAssertion}
+ *
  * @author Mike Reiche
  */
 public class DefaultImageAssertion extends AbstractPropertyAssertion<File> implements ImageAssertion {
@@ -55,14 +57,14 @@ public class DefaultImageAssertion extends AbstractPropertyAssertion<File> imple
 
             @Override
             public String createSubject() {
-                return "pixel distance to image="+Format.param(referenceImageName);
+                return "pixel distance to image=" + Format.param(referenceImageName);
             }
 
             @Override
             public void failedFinally(AbstractPropertyAssertion assertion) {
                 LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
                 atomicMatchStep.get();
-                if (matchStep!=null && !matchStep.takeReferenceOnly) {
+                if (matchStep != null && !matchStep.takeReferenceOnly) {
                     LayoutCheck.toReport(matchStep);
                 }
             }

@@ -26,11 +26,18 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -44,13 +51,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.imageio.ImageIO;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for handling layout checking screenshots.
@@ -94,7 +94,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         /**
          * minimumSimilarMovementErrorsForDisplacementCorrection
          */
-        INTERNAL_PARAMETER_3("internal.parameter.3",  0.51d),
+        INTERNAL_PARAMETER_3("internal.parameter.3", 0.51d),
         /**
          * distanceBetweenMultipleMatchesToProduceWarning
          */
@@ -139,16 +139,12 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     public static class MatchStep {
-        public Mode mode;
         Path referenceFileName;
-        Path annotatedReferenceFileName;
         Path actualFileName;
         Path distanceFileName;
-        Path annotationDataFileName;
         String consecutiveTargetImageName;
         public boolean takeReferenceOnly;
         public double distance = NO_DISTANCE;
-        public LayoutComparator layoutComparator;
     }
 
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
@@ -165,7 +161,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * @author sepr
      */
     public enum Mode {
-        PIXEL, ANNOTATED
+        PIXEL
     }
 
     private static final double NO_DISTANCE = 0;
@@ -189,55 +185,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     /**
-     * Matches annotations and returns
-     */
-    public static MatchStep matchAnnotations(
-            final TakesScreenshot takesScreenshot,
-            final String targetImageName
-    ) {
-        final File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
-        return matchAnnotations(screenshot, targetImageName);
-    }
-
-    public static MatchStep matchAnnotations(
-            final File screenshot,
-            final String targetImageName
-    ) {
-        MatchStep step = prepare(screenshot, targetImageName);
-        step.mode = Mode.ANNOTATED;
-        if (!step.takeReferenceOnly) {
-            matchAnnotations(step);
-        }
-        return step;
-    }
-
-    private static void matchAnnotations(MatchStep matchStep) {
-        // read images
-        String referenceAbsoluteFileName = matchStep.referenceFileName.toAbsolutePath().toString();
-        String annotatedAbsoluteFileName = matchStep.annotatedReferenceFileName.toAbsolutePath().toString();
-        String actualAbsoluteFileName = matchStep.actualFileName.toAbsolutePath().toString();
-        String distanceAbsoluteFileName = matchStep.distanceFileName.toAbsolutePath().toString();
-        String annotationDataAbsoluteFileName = matchStep.annotationDataFileName.toAbsolutePath().toString();
-
-        // create distance image to given reference
-        LayoutComparator layoutComparator = new LayoutComparator();
-        matchStep.layoutComparator = layoutComparator;
-        try {
-            layoutComparator.compareImages(
-                    referenceAbsoluteFileName,
-                    annotatedAbsoluteFileName,
-                    actualAbsoluteFileName,
-                    distanceAbsoluteFileName,
-                    annotationDataAbsoluteFileName
-            );
-        } catch (Exception e) {
-            throw new LayoutCheckException(matchStep, e);
-        }
-
-        matchStep.distance = layoutComparator.getErrorRelation();
-    }
-
-    /**
      * Takes reference screenshots and prepares file paths for discrete matching modes
      */
     private static MatchStep prepare(
@@ -254,14 +201,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
                 PROPERTY_MANAGER.getProperty(Properties.REFERENCE_NAMETEMPLATE, "Reference%s.png"),
                 targetImageName
         ));
-        step.annotationDataFileName = referenceImagesDir.resolve(String.format(
-                PROPERTY_MANAGER.getProperty(Properties.ANNOTATIONDATA_NAMETEMPLATE, "Reference%s_data.json"),
-                targetImageName
-        ));
-        step.annotatedReferenceFileName = referenceImagesDir.resolve(String.format(
-                PROPERTY_MANAGER.getProperty(Properties.ANNOTATED_NAMETEMPLATE, "ReferenceAnnotated%s.png"),
-                targetImageName
-        ));
 
         String runCountModifier = "";
         if (!runCount.containsKey(targetImageName)) {
@@ -269,7 +208,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         } else {
             Integer newCount = runCount.get(targetImageName) + 1;
             runCount.put(targetImageName, newCount);
-            runCountModifier = String.format("-%03d",newCount);
+            runCountModifier = String.format("-%03d", newCount);
         }
 
         step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();
@@ -286,7 +225,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
 
             step.actualFileName = actualImagesDir.resolve(
-                String.format(Properties.ACTUAL_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
+                    String.format(Properties.ACTUAL_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
 
             try {
@@ -299,7 +238,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
             // create distance file name
             step.distanceFileName = distanceImagesDir.resolve(
-                String.format(Properties.DISTANCE_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
+                    String.format(Properties.DISTANCE_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
         }
 
@@ -316,7 +255,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
     public static MatchStep matchPixels(final File screenshot, final String targetImageName) {
         final MatchStep step = prepare(screenshot, targetImageName);
-        step.mode = Mode.PIXEL;
         if (!step.takeReferenceOnly) {
             matchPixels(step);
         }
@@ -404,18 +342,12 @@ public final class LayoutCheck implements PropertyManagerProvider {
             );
         }
 
+        // TODO remove markedRectangles
         List<Rectangle> markedRectangles = null;
-        boolean useExplicitRectangles = Properties.USE_AREA_COLOR.asBool();
-        if (!useIgnoreColor && useExplicitRectangles) {
-            AnnotationReader annotationReader = new AnnotationReader();
-            markedRectangles = annotationReader.readAnnotationDimensions(expectedImage);
-            if (markedRectangles == null) {
-                LOGGER.warn("No marked areas were found. This could be intentional.");
-            }
-        }
 
+        // PIXEL mode: markedRectangles always null
         if (markedRectangles == null) {
-            markedRectangles = new ArrayList<Rectangle>();
+            markedRectangles = new ArrayList<>();
             Rectangle rectangle = new Rectangle(0, 0, distanceImageSize.width, distanceImageSize.height);
             markedRectangles.add(rectangle);
         } else {
@@ -519,7 +451,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     /**
-     * Calculates the sizes thats result from the maximum sizes of both pictures.
+     * Calculates the sizes that result from the maximum sizes of both pictures.
      *
      * @param expectedImage The expected image
      * @param actualImage The actual image
@@ -559,19 +491,13 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
-        context.mode = step.mode.name();
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image
-        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(),  Report.FileMode.COPY);
+        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.FileMode.COPY);
         context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
-
-        File annotatedReferenceFile =step.annotatedReferenceFileName.toFile();
-        if (annotatedReferenceFile.exists()) {
-            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceFile, Report.FileMode.MOVE);
-        }
 
         ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
             methodContext.addCustomContext(context);

@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
@@ -129,6 +129,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
         Path actualFileName;
         Path distanceFileName;
         Path annotationDataFileName;
+        Dimension referenceFileDimension;
+        Dimension actualFileDimension;
         String consecutiveTargetImageName;
         public boolean takeReferenceOnly;
         public double distance = NO_DISTANCE;
@@ -323,6 +325,9 @@ public final class LayoutCheck implements PropertyManagerProvider {
             final BufferedImage referenceImage = ImageIO.read(refFile);
             final BufferedImage actualImage = ImageIO.read(actualFile);
 
+            matchStep.referenceFileDimension = new Dimension(referenceImage.getWidth(), referenceImage.getHeight());
+            matchStep.actualFileDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
+
             final boolean useIgnoreColor = Properties.USE_IGNORE_COLOR.asBool();
 
             // create distance image to given reference
@@ -332,6 +337,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
                     matchStep.distanceFileName,
                     useIgnoreColor
             );
+
         } catch (Exception e) {
             throw new LayoutCheckException(matchStep, e);
         }
@@ -375,18 +381,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
         Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
-
-        if (!actualImageDimension.equals(expectedImageDimension)) {
-            NonFunctionalAssert.fail(
-                    String.format(
-                            "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
-                            actualImageDimension.width,
-                            actualImageDimension.height,
-                            expectedImageDimension.width,
-                            expectedImageDimension.height
-                    )
-            );
-        }
 
         List<Rectangle> markedRectangles = null;
         boolean useExplicitRectangles = Properties.USE_AREA_COLOR.asBool();
@@ -552,10 +546,22 @@ public final class LayoutCheck implements PropertyManagerProvider {
         final Path referenceScreenshotPath = step.referenceFileName;
         final Path actualScreenshotPath = step.actualFileName;
         final Path distanceScreenshotPath = step.distanceFileName;
-
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
         context.mode = step.mode.name();
+
+        if (!step.actualFileDimension.equals(step.referenceFileDimension)) {
+            OptionalAssert.fail(
+                    String.format(
+                            "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
+                            step.actualFileDimension.width,
+                            step.actualFileDimension.height,
+                            step.referenceFileDimension.width,
+                            step.referenceFileDimension.height
+                    )
+            );
+        }
+
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image

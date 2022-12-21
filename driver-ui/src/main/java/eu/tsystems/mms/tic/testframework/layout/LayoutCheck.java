@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,9 +47,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Utility class for handling layout checking screenshots.
@@ -73,50 +70,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         DISTANCE_PATH("distance.path", "src/test/resources/screenreferences/distance"),
         ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
-        USE_AREA_COLOR("use.area.color", false),
         PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0),
-
-        // Properties for the layout comparator working with
-        MATCH_THRESHOLD("match.threshold", 0.95d),
-        DISPLACEMENT_THRESHOLD("displacement.threshold", 5),
-        INTRA_GROUPING_THRESHOLD("intra.grouping.threshold", 5),
-        MINIMUM_MARKED_PIXELS("minimum.marked.pixels", 12),
-        MAXIMUM_MARKED_PIXELS_RATIO("maximum.marked.pixels.ratio", 0.04d),
-        MATCHING_ALGORITHM("matching.algorithm", "opencvtemplatematcher"),
-        /**
-         * minimalDistanceBetweenMatches
-         */
-        INTERNAL_PARAMETER_1("internal.parameter.1", 5),
-        /**
-         * minimalSizeDifferenceOfSubImages
-         */
-        INTERNAL_PARAMETER_2("internal.parameter.2", 10),
-        /**
-         * minimumSimilarMovementErrorsForDisplacementCorrection
-         */
-        INTERNAL_PARAMETER_3("internal.parameter.3", 0.51d),
-        /**
-         * distanceBetweenMultipleMatchesToProduceWarning
-         */
-        INTERNAL_PARAMETER_4("internal.parameter.4", 14),
-        IGNORE_AMBIGUOUS_MOVEMENT("ignore.ambiguous.movement", null),
-        IGNORE_MOVEMENT("ignore.movement", null),
-        IGNORE_GROUP_MOVEMENT("ignore.group.movement", false),
-        IGNORE_MISSING_ELEMENTS("ignore.missing.elements", null),
-        IGNORE_AMBIGUOUS_MATCH("ignore.ambiguous.match", null),
-
-        /**
-         * If below 1, the value is regarded as percent threshold for erroneous pixels / all edge and text pixel. If 1 or
-         * greater, it is regarded as absolute error pixel count.
-         */
-        //LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD("text.error.detector.error.threshold", null),
-        LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH("text.error.detector.minimal.line.length", 25),
-        LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH("text.error.detector.minimal.edge.strength", 5),
-
-        MIN_MATCH_DISTANCE("tt.layoutcheck.min.match.distance", 5),
-        MIN_SIZE_DIFFERENCE_SUB_IMAGES("tt.layoutcheck.min.size.difference.sub.images", 10),
-        MIN_SIMULAR_MOVEMENT_ERRORS("tt.layoutcheck.min.similar.movement.errors", 0.51d),
-        DISTANCE_MULTIPLE_MATCHES("tt.layoutcheck.distance.multiple.matches", 15),
 
         ;
         private final String property;
@@ -342,70 +296,68 @@ public final class LayoutCheck implements PropertyManagerProvider {
             );
         }
 
-        // TODO remove markedRectangles
-        List<Rectangle> markedRectangles = null;
-
-        // PIXEL mode: markedRectangles always null
-        if (markedRectangles == null) {
-            markedRectangles = new ArrayList<>();
-            Rectangle rectangle = new Rectangle(0, 0, distanceImageSize.width, distanceImageSize.height);
-            markedRectangles.add(rectangle);
-        } else {
-            for (int currentY = 0; currentY < distanceImage.getHeight(); currentY++) {
-                for (int currentX = 0; currentX < distanceImage.getWidth(); currentX++) {
-                    boolean pixelIsInsideExpectedImage = isPixelInImageBounds(expectedImage, currentX, currentY);
-                    if (pixelIsInsideExpectedImage) {
-                        int rgb = expectedImage.getRGB(currentX, currentY);
-                        Color color = new Color(rgb);
-                        color = color.darker().darker();
-                        distanceImage.setRGB(currentX, currentY, color.getRGB());
-                    } else {
-                        distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
-                    }
-                }
-            }
-        }
+//        // TODO remove markedRectangles
+//        List<Rectangle> markedRectangles = null;
+//
+//        // PIXEL mode: markedRectangles always null
+//        if (markedRectangles == null) {
+//            markedRectangles = new ArrayList<>();
+//            Rectangle rectangle = new Rectangle(0, 0, distanceImageSize.width, distanceImageSize.height);
+//            markedRectangles.add(rectangle);
+//        } else {
+//            for (int currentY = 0; currentY < distanceImage.getHeight(); currentY++) {
+//                for (int currentX = 0; currentX < distanceImage.getWidth(); currentX++) {
+//                    boolean pixelIsInsideExpectedImage = isPixelInImageBounds(expectedImage, currentX, currentY);
+//                    if (pixelIsInsideExpectedImage) {
+//                        int rgb = expectedImage.getRGB(currentX, currentY);
+//                        Color color = new Color(rgb);
+//                        color = color.darker().darker();
+//                        distanceImage.setRGB(currentX, currentY, color.getRGB());
+//                    } else {
+//                        distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
+//                    }
+//                }
+//            }
+//        }
 
         int ignoreColor = getColorOfPixel(expectedImage, 0, 0);
 
-        for (Rectangle rectangle : markedRectangles) {
-            for (int currentY = rectangle.y; currentY < rectangle.y + rectangle.height; currentY++) {
-                for (int currentX = rectangle.x; currentX < rectangle.x + rectangle.width; currentX++) {
-                    boolean pixelIsInsideExpectedImage = isPixelInImageBounds(expectedImage, currentX, currentY);
-                    boolean pixelIsInsideActualImage = isPixelInImageBounds(actualImage, currentX, currentY);
+        for (int currentY = 0; currentY < distanceImageSize.height; currentY++) {
+            for (int currentX = 0; currentX < distanceImageSize.width; currentX++) {
+                boolean pixelIsInsideExpectedImage = isPixelInImageBounds(expectedImage, currentX, currentY);
+                boolean pixelIsInsideActualImage = isPixelInImageBounds(actualImage, currentX, currentY);
 
-                    if (pixelIsInsideExpectedImage) {
-                        // draw every pixel that is available in the expected image
-                        distanceImage.setRGB(currentX, currentY,
-                                expectedImage.getRGB(currentX, currentY));
+                if (pixelIsInsideExpectedImage) {
+                    // draw every pixel that is available in the expected image
+                    distanceImage.setRGB(currentX, currentY,
+                            expectedImage.getRGB(currentX, currentY));
+                }
+
+                if (pixelIsInsideExpectedImage && pixelIsInsideActualImage) {
+                    // if the pixel color at x,y is not equal and the pixel is not marked as 'to ignore'
+                    int expectedRgb = expectedImage.getRGB(currentX, currentY);
+                    int actualImageRGB = actualImage.getRGB(currentX, currentY);
+
+                    boolean ignoredPixel = useIgnoreColor && expectedRgb == ignoreColor;
+
+                    //
+
+                    if (!ignoredPixel) {
+                        boolean match = doRGBsMatch(expectedRgb, actualImageRGB);
+                        if (!match) {
+                            // mark the current pixel as error by painting it red
+                            distanceImage.setRGB(currentX, currentY, Color.RED.getRGB());
+                            pixelsInError++;
+                        }
                     }
 
-                    if (pixelIsInsideExpectedImage && pixelIsInsideActualImage) {
-                        // if the pixel color at x,y is not equal and the pixel is not marked as 'to ignore'
-                        int expectedRgb = expectedImage.getRGB(currentX, currentY);
-                        int actualImageRGB = actualImage.getRGB(currentX, currentY);
-
-                        boolean ignoredPixel = useIgnoreColor && expectedRgb == ignoreColor;
-
-                        //
-
-                        if (!ignoredPixel) {
-                            boolean match = doRGBsMatch(expectedRgb, actualImageRGB);
-                            if (!match) {
-                                // mark the current pixel as error by painting it red
-                                distanceImage.setRGB(currentX, currentY, Color.RED.getRGB());
-                                pixelsInError++;
-                            }
-                        }
-
-                        // count the ignored pixels for calculating
-                        if (useIgnoreColor && expectedRgb == ignoreColor) {
-                            noOfIgnoredPixels++;
-                        }
-                    } else {
-                        // this pixel is not inside one or the other image - mark it, but not as error
-                        distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
+                    // count the ignored pixels for calculating
+                    if (useIgnoreColor && expectedRgb == ignoreColor) {
+                        noOfIgnoredPixels++;
                     }
+                } else {
+                    // this pixel is not inside one or the other image - mark it, but not as error
+                    distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
                 }
             }
         }
@@ -420,10 +372,10 @@ public final class LayoutCheck implements PropertyManagerProvider {
                     ioe);
         }
 
-        int totalPixels = 0;
-        for (Rectangle rectangleToCompare : markedRectangles) {
-            totalPixels += rectangleToCompare.height * rectangleToCompare.width;
-        }
+        int totalPixels = distanceImageSize.width * distanceImageSize.height;
+//        for (Rectangle rectangleToCompare : markedRectangles) {
+//            totalPixels += rectangleToCompare.height * rectangleToCompare.width;
+//        }
 
         // calculate and return the percentage number of pixels in error
         return ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;

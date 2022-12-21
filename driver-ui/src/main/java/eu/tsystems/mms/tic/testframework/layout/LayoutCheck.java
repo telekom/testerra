@@ -103,19 +103,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
 
-    /**
-     * Hide Default constructor.
-     */
     private LayoutCheck() {
-    }
-
-    /**
-     * LayoutCheck Mode options
-     *
-     * @author sepr
-     */
-    public enum Mode {
-        PIXEL
     }
 
     private static final double NO_DISTANCE = 0;

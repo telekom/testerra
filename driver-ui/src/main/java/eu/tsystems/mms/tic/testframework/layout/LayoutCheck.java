@@ -327,9 +327,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
                     int actualImageRGB = actualImage.getRGB(currentX, currentY);
 
                     boolean ignoredPixel = useIgnoreColor && expectedRgb == ignoreColor;
-
-                    //
-
                     if (!ignoredPixel) {
                         boolean match = doRGBsMatch(expectedRgb, actualImageRGB);
                         if (!match) {

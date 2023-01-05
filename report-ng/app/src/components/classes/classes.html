@@ -85,21 +85,36 @@
 
                     <thead>
                         <th class="status-column centered-text">Status (${_uniqueStatuses})</th>
-                        <th>Class (${_uniqueClasses})</th>
-                        <th class="run-index-column">#</th>
-                        <th>Method (${_filteredMethodDetails.length})</th>
-<!--                        <th>Failure Aspect (${_uniqueFailureAspects})</th>-->
-                    </thead>
-                    <tbody>
+                        <th class="mdc-data-table__header-cell" click.delegate="_sortByRun()">
+                            <div class="mdc-data-table__header-cell-wrapper" >
+                                <div class="mdc-data-table__header-cell-label" >Run index</div>
+                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+                            </div>
+                        </th>
+                        <th class="mdc-data-table__header-cell" click.delegate="_sortByClass()">
+                            <div class="mdc-data-table__header-cell-wrapper">
+                                <div class="mdc-data-table__header-cell-label">Class (${_uniqueClasses})</div>
+                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+                            </div>
+                        </th>
+                        <th class="mdc-data-table__header-cell" click.delegate="_sortByMethod()">
+                            <div class="mdc-data-table__header-cell-wrapper">
+                                <div class="mdc-data-table__header-cell-label">Method (${_filteredMethodDetails.length})</div>
+                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+                            </div>
+                        </th>
+                        <!--                        <th>Failure Aspect (${_uniqueFailureAspects})</th>-->
+                        </thead>
+                        <tbody>
                         <tr repeat.for="methodDetails of _filteredMethodDetails">
                             <td class="p1 centered-text">
                                 <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus|statusName}</a>
                             </td>
+                            <td class="run-index-cell">${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"
                                 >${methodDetails.classStatistics.classIdentifier}</a>
                             </td>
-                            <td>${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable" mdc-body1>
 
                                 <!-- Method name -->

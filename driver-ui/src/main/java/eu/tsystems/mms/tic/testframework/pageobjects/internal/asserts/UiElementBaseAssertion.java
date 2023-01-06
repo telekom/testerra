@@ -40,7 +40,35 @@ public interface UiElementBaseAssertion extends ScreenshotAssertion {
     default boolean displayed(boolean expected) {
         return displayed().is(expected);
     }
+
+    /**
+     * @Deprecated please use {@link #partiallyVisible(boolean)}, {@link #fullyVisible(boolean)} instead
+     */
+    @Deprecated
     BinaryAssertion<Boolean> visible(boolean fullyVisible);
+
+    BinaryAssertion<Boolean> partiallyVisible();
+
+    /**
+     * Check if an element is partially displayed within the viewport
+     * @param expected
+     * @return
+     */
+    default boolean partiallyVisible(boolean expected) {
+        return partiallyVisible().is(expected);
+    }
+
+    BinaryAssertion<Boolean> fullyVisible();
+
+    /**
+     * Check if an element is fully displayed within the viewport
+     * @param expected
+     * @return
+     */
+    default boolean fullyVisible(boolean expected) {
+        return fullyVisible().is(expected);
+    }
+
     StringAssertion<String> tagName();
     RectAssertion bounds();
 }

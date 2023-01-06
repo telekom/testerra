@@ -211,6 +211,16 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     @Override
+    public BinaryAssertion<Boolean> partiallyVisible() {
+        return visible(false);
+    }
+
+    @Override
+    public BinaryAssertion<Boolean> fullyVisible() {
+        return visible(true);
+    }
+
+    @Override
     public BinaryAssertion<Boolean> displayed() {
         return propertyAssertionFactory.createWithConfig(DefaultBinaryAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<Boolean>() {
             @Override

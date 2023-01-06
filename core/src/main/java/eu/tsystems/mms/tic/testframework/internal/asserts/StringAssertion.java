@@ -31,6 +31,9 @@ import java.util.stream.Collectors;
  * @author Mike Reiche
  */
 public interface StringAssertion<T> extends QuantityAssertion<T> {
+
+    StringAssertion<T> withIgnoreCase();
+
     BinaryAssertion <Boolean> contains(String expected);
     BinaryAssertion <Boolean> startsWith(String expected);
     BinaryAssertion <Boolean> endsWith(String expected);

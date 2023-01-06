@@ -19,10 +19,9 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
+package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
@@ -43,14 +42,18 @@ public class WebTestPage extends BasePage {
     protected final GuiElement openAgainLink = new GuiElement(getWebDriver(), By.id("11"));
 
     private final GuiElement input1 = new GuiElement(this.getWebDriver(), By.id("1"));
-    /** A button on the page. */
+    /**
+     * A button on the page.
+     */
     @Check(optional = true)
     private final GuiElement button1 = new GuiElement(this.getWebDriver(), By.id("4"));
 
     @Check
     private final InputForm inputForm = createComponent(InputForm.class, find(By.className("box")));
 
-    /** The output text field. */
+    /**
+     * The output text field.
+     */
     @Check
     private final GuiElement textOutputField = new GuiElement(this.getWebDriver(), By.id("99"));
 
@@ -67,6 +70,7 @@ public class WebTestPage extends BasePage {
     public UiElement getOpenAgainLink() {
         return openAgainLink;
     }
+
     /**
      * Test if button works as aspected.
      */
@@ -93,7 +97,6 @@ public class WebTestPage extends BasePage {
 
     /**
      * Click on not existing element
-     *
      */
     public void gotoHell() {
         GuiElement guiElement = new GuiElement(this.getWebDriver(), By.xpath("id('surely_not_existing')"));
@@ -102,7 +105,6 @@ public class WebTestPage extends BasePage {
 
     /**
      * Proof whether non existing element is present
-     *
      */
     public void nonfunctionalAssert() {
         GuiElement guiElement = new GuiElement(this.getWebDriver(), By.xpath("id('surely_not_existing')"));
@@ -131,5 +133,9 @@ public class WebTestPage extends BasePage {
 
     public TestableUiElement notUniqueElement() {
         return find(LOCATE.by(By.tagName("div")).unique());
+    }
+
+    public TestableUiElement smallTextElement() {
+        return find(By.cssSelector(".text.small"));
     }
 }

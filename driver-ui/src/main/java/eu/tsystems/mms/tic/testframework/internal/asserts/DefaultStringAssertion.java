@@ -35,8 +35,16 @@ import java.util.stream.Collectors;
  */
 public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
 
+    private boolean ignoreCase = false;
+
     public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
+    }
+
+    @Override
+    public StringAssertion<T> withIgnoreCase() {
+        this.ignoreCase = true;
+        return this;
     }
 
     @Override
@@ -44,7 +52,11 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().contains(expected);
+                if (ignoreCase) {
+                    return provider.getActual().toString().toLowerCase().contains(expected.toLowerCase());
+                } else {
+                    return provider.getActual().toString().contains(expected);
+                }
             }
 
             @Override
@@ -59,7 +71,11 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().startsWith(expected);
+                if (ignoreCase) {
+                    return provider.getActual().toString().toLowerCase().startsWith(expected.toLowerCase());
+                } else {
+                    return provider.getActual().toString().startsWith(expected);
+                }
             }
 
             @Override
@@ -74,7 +90,11 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().endsWith(expected);
+                if (ignoreCase) {
+                    return provider.getActual().toString().toLowerCase().endsWith(expected.toLowerCase());
+                } else {
+                    return provider.getActual().toString().endsWith(expected);
+                }
             }
 
             @Override

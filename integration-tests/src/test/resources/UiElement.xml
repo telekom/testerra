@@ -16,6 +16,7 @@
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementPresentTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementVisibilityTests"/>
             <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementWaiterTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.UiElementExpectTextTests"/>
         </classes>
     </test>
 </suite>

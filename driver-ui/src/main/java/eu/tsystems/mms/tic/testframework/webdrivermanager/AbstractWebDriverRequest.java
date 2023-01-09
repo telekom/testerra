@@ -22,14 +22,19 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class AbstractWebDriverRequest implements WebDriverRequest {
+public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
 
     private String sessionKey = DEFAULT_SESSION_KEY;
     private URL serverUrl;
@@ -38,7 +43,6 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
     private boolean shutdownAfterTestFailed = false;
     private boolean shutdownAfterExecution = true;
     private String browserName;
-    private String platformName;
 
     public AbstractWebDriverRequest() {
         setShutdownAfterTest(PropertyManager.getBooleanProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, true));
@@ -157,13 +161,21 @@ public class AbstractWebDriverRequest implements WebDriverRequest {
     }
 
     public void setPlatformName(String platformName) {
-        if (StringUtils.isNotBlank(platformName)) {
-            this.platformName = platformName;
+        try {
+            if (StringUtils.isNotBlank(platformName)) {
+                final Platform platform = Platform.fromString(platformName);
+                this.getDesiredCapabilities().setCapability(CapabilityType.PLATFORM_NAME, platform);
+            }
+        } catch (WebDriverException e) {
+            log().warn("Trying to set invalid platform '{}' was ignored.", platformName);
         }
     }
 
     public Optional<String> getPlatformName() {
-        return Optional.ofNullable(this.platformName);
+        if (this.getDesiredCapabilities().getPlatform() != null) {
+            return Optional.ofNullable(this.getDesiredCapabilities().getPlatform().toString());
+        }
+        return Optional.empty();
     }
 
 }

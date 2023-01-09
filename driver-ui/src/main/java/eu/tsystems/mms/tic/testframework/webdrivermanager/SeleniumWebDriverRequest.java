@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 
-public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implements Loggable, Serializable {
+public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implements Serializable {
 
     private URL baseUrl = null;
 

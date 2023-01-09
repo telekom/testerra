@@ -173,11 +173,15 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
 
     @Override
     public void assertVisible(boolean complete) {
-        this.uiElementAssertion.visible(complete).is(true);
+        if(complete) {
+            this.uiElementAssertion.fullyVisible(true);
+        }else{
+            this.uiElementAssertion.partiallyVisible(true);
+        }
     }
 
     @Override
     public void assertNotVisible() {
-        this.uiElementAssertion.visible(false).is(false);
+        this.uiElementAssertion.partiallyVisible(false);
     }
 }

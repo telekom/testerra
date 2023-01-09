@@ -30,6 +30,12 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import MethodType = data.MethodType;
 import "./classes.scss"
 
+enum SortBy {
+    Class = "CLASS",
+    Method = "METHOD",
+    RunIndex = "RUNINDEX",
+}
+
 @autoinject()
 export class Classes extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
@@ -41,7 +47,7 @@ export class Classes extends AbstractViewModel {
     private _uniqueStatuses = 0;
     private _uniqueClasses = 0;
     private _loading = false;
-    private _sortBy = "class";
+    private _sortBy = SortBy.Class;
 
     constructor(
         private _dataLoader: DataLoader,
@@ -168,13 +174,13 @@ export class Classes extends AbstractViewModel {
                 });
 
             switch (this._sortBy) {
-                case "method" :
+                case SortBy.Method :
                     this._filteredMethodDetails = this._filteredMethodDetails.sort((a,b) => a.identifier.localeCompare(b.identifier));
                     break;
-                case "run" :  // Sort by run index
+                case SortBy.RunIndex :  // Sort by run index
                     this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex-b.methodContext.methodRunIndex);
                     break;
-                case "class" :
+                case SortBy.Class :
                 default:
                     // Sort by class and method name
                     this._filteredMethodDetails = this._filteredMethodDetails.sort(
@@ -201,18 +207,18 @@ export class Classes extends AbstractViewModel {
         }
     }
 
-    private _sortByRun() {
-        this._sortBy = "run";
+    private _sortByRunIndex() {
+        this._sortBy = SortBy.RunIndex;
         this._filterOnce();
     }
 
     private _sortByClass() {
-        this._sortBy = "class";
+        this._sortBy = SortBy.Class;
         this._filterOnce();
     }
 
     private _sortByMethod() {
-        this._sortBy = "method";
+        this._sortBy = SortBy.Method;
         this._filterOnce();
     }
 

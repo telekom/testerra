@@ -21,18 +21,21 @@
 
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.util.Map;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class DesktopWebDriverFactoryTest extends TesterraTest {
+import java.util.Map;
+
+public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriverManagerProvider {
 
     @Test
     public void testT01_BaseURL() throws Exception {
@@ -41,7 +44,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest {
         //request.webDriverMode = WebDriverMode.local;
         //request.browser = Browsers.phantomjs;
 
-        WebDriver driver = WebDriverManager.getWebDriver(request);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("google"), "Current URL contains google - actual: " + currentUrl);
     }
@@ -52,7 +55,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest {
         //request.webDriverMode = WebDriverMode.local;
         //request.browser = Browsers.phantomjs;
 
-        WebDriver driver = WebDriverManager.getWebDriver(request);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
         // Empty baseUrl of Chrome
         Assert.assertTrue(currentUrl.contains("data"), "Current URL is invalid - actual: " + currentUrl);
@@ -73,11 +76,22 @@ public class DesktopWebDriverFactoryTest extends TesterraTest {
         caps.setCapability("enableVNC", true);
 
         // start session
-        WebDriver driver = WebDriverManager.getWebDriver(request);
-        SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(driver).get();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
         Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
 
         Assert.assertEquals(sessionCapabilities.get("tap:projectId"), caps.getCapability("tap:projectId"), "EndPoint Capability is set");
+    }
+
+    @Test
+    public void testT04_PlatformCaps() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setPlatformName(Platform.LINUX.toString());
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
+
+        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(driver).get().getWebDriverRequest();
+
+        Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.LINUX);
     }
 
 }

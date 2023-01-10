@@ -1,0 +1,60 @@
+= User agent configuration
+
+The user agent configuration is most precise, because it provides explicit browser options based on the Selenium driver.
+
+[source, java]
+----
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
+
+WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+    options.addPreference("intl.accept_languages", "de-DE");
+});
+----
+
+NOTE: Have a look into <<Browser specific knowledge>> for specific browser options.
+
+= Request capabilities
+
+Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`. It's used to specify a single WebDriver session.
+
+.Set capabilities to a DesktopWebDriverRequest object
+[source,java]
+----
+DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+DesiredCapabilities caps = request.getDesiredCapabilities();
+caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+// Start your session with the DesktopWebDriverRequest object
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+----
+
+[NOTE]
+=====
+Have a look into <<Browser specific knowledge>> for specific browser options. +
+Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
+=====
+
+= Global capabilities
+
+You can customize your browser session by setting capabilities for every browser type.
+
+Be in mind that not every browser could handle all types of capabilities.
+
+[source,java]
+----
+WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+WEB_DRIVER_MANAGER.removeGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS);
+----
+
+[IMPORTANT]
+====
+Do NOT set browser capabilities with WebDriverManager. This will added to the capabilities to all browser types!
+
+[source, java]
+----
+FirefoxOptions options = new FirefoxOptions();
+options.addPreference("intl.accept_languages", "de-DE");
+// This cannot be merged correctly!
+WEB_DRIVER_MANAGER.setGlobalCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
+----
+
+====

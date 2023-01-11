@@ -32,6 +32,7 @@ export class HtmlEscapeValueConverter {
         return value
             .replaceAll('&','&amp;')
             .replaceAll('<', '&lt')
-            .replaceAll('>', '&gt;');
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;');
     }
 }

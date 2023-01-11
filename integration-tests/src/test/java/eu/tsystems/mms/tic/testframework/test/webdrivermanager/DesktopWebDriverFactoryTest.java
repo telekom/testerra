@@ -107,7 +107,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
     }
 
     @Test
-    public void testT04_PlatformCaps() {
+    public void testT06_PlatformCaps() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setPlatformName(Platform.LINUX.toString());
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);

@@ -63,7 +63,6 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -385,7 +384,7 @@ public class DesktopWebDriverFactory implements
 
     @Override
     public List<String> getSupportedBrowsers() {
-        return Arrays.asList(
+        return List.of(
                 Browsers.safari,
                 Browsers.ie,
                 Browsers.chrome,

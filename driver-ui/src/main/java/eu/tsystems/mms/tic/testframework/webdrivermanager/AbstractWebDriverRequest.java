@@ -22,8 +22,12 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -185,8 +189,8 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
     }
 
     public Optional<String> getPlatformName() {
-        if (this.getDesiredCapabilities().getPlatform() != null) {
-            return Optional.ofNullable(this.getDesiredCapabilities().getPlatform().toString());
+        if (this.getDesiredCapabilities().getPlatformName() != null) {
+            return Optional.ofNullable(this.getDesiredCapabilities().getPlatformName().toString());
         }
         return Optional.empty();
     }

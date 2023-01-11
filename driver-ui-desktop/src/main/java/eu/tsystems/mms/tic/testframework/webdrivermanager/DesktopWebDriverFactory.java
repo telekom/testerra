@@ -53,7 +53,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.AbstractDriverOptions;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -177,14 +176,8 @@ public class DesktopWebDriverFactory implements
         }
 
         DesiredCapabilities desiredCapabilities = finalRequest.getDesiredCapabilities();
-        finalRequest.getPlatformName().ifPresent(s -> {
-            desiredCapabilities.setCapability(CapabilityType.PLATFORM, s);
-            desiredCapabilities.setCapability(CapabilityType.PLATFORM_NAME, s);
-        });
-
         if (userAgentCapabilities != null) {
-            userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
-            finalRequest.setBrowserOptions(userAgentCapabilities);
+            desiredCapabilities.merge(userAgentCapabilities);
         }
         return finalRequest;
     }

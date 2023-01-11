@@ -6,7 +6,7 @@ include::property-attributes.adoc[]
 | Property | default | Description
 
 | {browser_setting} | na.
-a| Define the user agent configuration like `browser[:version[:platform]]` (example: `firefox:65:windows`). Overrides {browser}, {browser_version} and {browser_platform} (recommended).
+a| Define the user agent configuration like `browser[:version[:platform]]` (example: `firefox:65:windows`). Overrides `{browser}`, `{browser_version}` and `{browser_platform}` (recommended).
 
 The following types of browsers are supported:
 

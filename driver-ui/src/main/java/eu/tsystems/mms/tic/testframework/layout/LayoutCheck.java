@@ -48,14 +48,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
-import javax.imageio.ImageIO;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for handling layout checking screenshots.
@@ -288,7 +280,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
 
         if (!actualImageDimension.equals(expectedImageDimension)) {
-            NonFunctionalAssert.fail(
+            OptionalAssert.fail(
                     String.format(
                             "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
                             actualImageDimension.width,
@@ -298,30 +290,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
                     )
             );
         }
-
-//        // TODO remove markedRectangles
-//        List<Rectangle> markedRectangles = null;
-//
-//        // PIXEL mode: markedRectangles always null
-//        if (markedRectangles == null) {
-//            markedRectangles = new ArrayList<>();
-//            Rectangle rectangle = new Rectangle(0, 0, distanceImageSize.width, distanceImageSize.height);
-//            markedRectangles.add(rectangle);
-//        } else {
-//            for (int currentY = 0; currentY < distanceImage.getHeight(); currentY++) {
-//                for (int currentX = 0; currentX < distanceImage.getWidth(); currentX++) {
-//                    boolean pixelIsInsideExpectedImage = isPixelInImageBounds(expectedImage, currentX, currentY);
-//                    if (pixelIsInsideExpectedImage) {
-//                        int rgb = expectedImage.getRGB(currentX, currentY);
-//                        Color color = new Color(rgb);
-//                        color = color.darker().darker();
-//                        distanceImage.setRGB(currentX, currentY, color.getRGB());
-//                    } else {
-//                        distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
-//                    }
-//                }
-//            }
-//        }
 
         int ignoreColor = getColorOfPixel(expectedImage, 0, 0);
 
@@ -373,9 +341,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
         }
 
         int totalPixels = distanceImageSize.width * distanceImageSize.height;
-//        for (Rectangle rectangleToCompare : markedRectangles) {
-//            totalPixels += rectangleToCompare.height * rectangleToCompare.width;
-//        }
 
         // calculate and return the percentage number of pixels in error
         double result = ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
@@ -454,7 +419,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
         final Path distanceScreenshotPath = step.distanceFileName;
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
-        context.mode = step.mode.name();
 
         if (!step.actualFileDimension.equals(step.referenceFileDimension)) {
             OptionalAssert.fail(
@@ -475,11 +439,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
         context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
-
-        File annotatedReferenceFile = step.annotatedReferenceFileName.toFile();
-        if (annotatedReferenceFile.exists()) {
-            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceFile, Report.FileMode.MOVE);
-        }
 
         ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
             methodContext.addCustomContext(context);

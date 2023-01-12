@@ -181,7 +181,7 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
         try {
             if (StringUtils.isNotBlank(platformName)) {
                 final Platform platform = Platform.fromString(platformName);
-                this.getDesiredCapabilities().setCapability(CapabilityType.PLATFORM_NAME, platform);
+                this.getDesiredCapabilities().setPlatform(platform);
             }
         } catch (WebDriverException e) {
             log().warn("Trying to set invalid platform '{}' was ignored.", platformName);

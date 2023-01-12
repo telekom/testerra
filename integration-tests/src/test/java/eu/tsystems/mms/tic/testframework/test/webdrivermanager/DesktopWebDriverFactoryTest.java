@@ -25,8 +25,6 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -109,12 +107,11 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
     @Test
     public void testT06_PlatformCaps() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setPlatformName(Platform.LINUX.toString());
+        request.setPlatformName(Platform.ANY.toString());
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(driver).get().getWebDriverRequest();
 
-        Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.LINUX);
+        Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.ANY);
     }
-
 }

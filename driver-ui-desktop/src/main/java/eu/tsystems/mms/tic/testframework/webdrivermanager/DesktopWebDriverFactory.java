@@ -174,9 +174,9 @@ public class DesktopWebDriverFactory implements
                 break;
         }
 
-        DesiredCapabilities desiredCapabilities = finalRequest.getDesiredCapabilities();
         if (userAgentCapabilities != null) {
-            desiredCapabilities.merge(userAgentCapabilities);
+            userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
+            finalRequest.setBrowserOptions(userAgentCapabilities);
         }
         return finalRequest;
     }

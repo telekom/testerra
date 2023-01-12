@@ -20,6 +20,7 @@ ext {
     core = project(':core')
     report = project(':report-ng')
 
+//    seleniumVersion = '4.7.2'
     seleniumVersion = '4.6.0'
 //    guavaVersion = "28.1-jre"
     guavaVersion = "31.1-jre"

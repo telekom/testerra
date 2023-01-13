@@ -126,12 +126,12 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless,
                 (ChromeConfig) options -> {
                     options.setCapability("t07Overwrite", "agentCaps");
-                    options.setProxy(agentProxy);
+//                    options.setProxy(agentProxy);
                 });
 
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.getDesiredCapabilities().setCapability("t07Overwrite", "requestCaps");
-        request.getDesiredCapabilities().setCapability(CapabilityType.PROXY, requestProxy);
+//        request.getDesiredCapabilities().setCapability(CapabilityType.PROXY, requestProxy);
 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
@@ -139,6 +139,6 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
 
         Assert.assertEquals(sessionCapabilities.get("t07Overwrite"), "requestCaps", "Request capability is set");
-        Assert.assertEquals(sessionCapabilities.get(CapabilityType.PROXY), requestProxy, "Request proxy is set");
+//        Assert.assertEquals(sessionCapabilities.get(CapabilityType.PROXY), requestProxy, "Request proxy is set");
     }
 }

@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.Platform;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -113,5 +114,31 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(driver).get().getWebDriverRequest();
 
         Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.ANY);
+    }
+
+    @Test
+    public void testT07_OverwriteCaps() {
+        Proxy agentProxy = new Proxy();
+        agentProxy.setHttpProxy("my.agent.proxy:8080");
+        Proxy requestProxy = new Proxy();
+        requestProxy.setHttpProxy("my.request.proxy:8080");
+
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless,
+                (ChromeConfig) options -> {
+                    options.setCapability("t07Overwrite", "agentCaps");
+                    options.setProxy(agentProxy);
+                });
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.getDesiredCapabilities().setCapability("t07Overwrite", "requestCaps");
+        request.getDesiredCapabilities().setCapability(CapabilityType.PROXY, requestProxy);
+
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
+
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
+
+        Assert.assertEquals(sessionCapabilities.get("t07Overwrite"), "requestCaps", "Request capability is set");
+        Assert.assertEquals(sessionCapabilities.get(CapabilityType.PROXY), requestProxy, "Request proxy is set");
     }
 }

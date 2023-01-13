@@ -1,0 +1,25 @@
+= Overview
+
+Testerra provides an advanced reporting of the test results with the `Report-NG` module.
+A report generated with `Report-NG` consists of these different views:
+
+* Dashboard - a general overview of the test run
+* Tests - a detailed list of the individual tests
+* Failure Aspects - a summary of the different types of failures
+* Logs - a panel that contains detailed logging information
+* Threads - a graphical view of the thread activities during the parallel test execution
+
+image::report-ng-01.png[align="center", alt="Report-NG Dashboard"]
+
+The report is generated after the test execution and can be viewed with this html file:
+[source]
+----
+test-report/report-ng/index.html
+----
+
+
+[IMPORTANT]
+====
+Unfortunately, because the report is a highly dynamic application based on java script, the security settings of most browsers do not allow to directly view the report in your local folder. In this case you can use one of the simple http servers from https://gist.github.com/willurd/5720255[this list] to serve the files and to access the report.
+
+====

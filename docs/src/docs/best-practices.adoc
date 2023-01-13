@@ -2,6 +2,7 @@
 
 This section contains several articles for best practices for the usage and implementation of tests with Testerra.
 
+include::best-practices/webdriver-manager-bp.adoc[leveloffset=+1]
 include::best-practices/browser-specific-knowledge.adoc[leveloffset=+1]
 include::best-practices/html-elements.adoc[leveloffset=+1]
 include::best-practices/multiple-profiles.adoc[leveloffset=+1]

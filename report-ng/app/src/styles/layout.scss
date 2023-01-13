@@ -63,6 +63,10 @@
     padding: 1em;
 }
 
+.pb1 {
+    padding-bottom: 1em;
+}
+
 .pl1 {
     padding-left: 1em;
 }
@@ -143,4 +147,9 @@
 .wrapable {
     white-space: normal;
     line-break: anywhere;
+}
+
+.upper-rounded {
+    border-top-left-radius: inherit ;
+    border-top-right-radius: inherit ;
 }

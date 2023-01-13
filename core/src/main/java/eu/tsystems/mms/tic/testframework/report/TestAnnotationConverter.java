@@ -32,7 +32,7 @@ public class TestAnnotationConverter implements AnnotationConverter<Test> {
     @Override
     public Map<String, Object> toMap(Test annotation) {
         Map<String, Object> map = new HashMap<>();
-        if (!StringUtils.isBlank(annotation.description())) {
+        if (StringUtils.isNotBlank(annotation.description())) {
             map.put("description", annotation.description());
         }
         return map;

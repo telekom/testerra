@@ -35,32 +35,7 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.security.Security;
-import java.util.Date;
-import java.util.stream.Stream;
-import javax.mail.Address;
-import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Part;
-import javax.mail.Session;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.search.AndTerm;
-import javax.mail.search.ComparisonTerm;
-import javax.mail.search.FromTerm;
-import javax.mail.search.RecipientTerm;
-import javax.mail.search.SearchTerm;
-import javax.mail.search.SentDateTerm;
-import javax.mail.search.SubjectTerm;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -68,6 +43,32 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import jakarta.mail.Address;
+import jakarta.mail.Message.RecipientType;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.Part;
+import jakarta.mail.Session;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.search.AndTerm;
+import jakarta.mail.search.ComparisonTerm;
+import jakarta.mail.search.FromTerm;
+import jakarta.mail.search.RecipientTerm;
+import jakarta.mail.search.SearchTerm;
+import jakarta.mail.search.SentDateTerm;
+import jakarta.mail.search.SubjectTerm;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.security.Security;
+import java.util.Date;
+import java.util.stream.Stream;
 
 /**
  * Integration Tests for TesterraMailConnector.
@@ -472,7 +473,7 @@ public class MailConnectorTest extends TesterraTest {
     public void testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient() throws Exception {
 
         final String subject = "testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient"
-                + StringUtils.getRandomStringWithLength(5);
+                + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(new SearchTerm [] {
                         new SubjectTerm(subject),
@@ -492,7 +493,7 @@ public class MailConnectorTest extends TesterraTest {
     public void testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient() throws Exception {
 
         final String subject = "testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient"
-                + StringUtils.getRandomStringWithLength(5);
+                + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),
@@ -510,7 +511,7 @@ public class MailConnectorTest extends TesterraTest {
     public void testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender() throws Exception {
 
         final String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender"
-                + StringUtils.getRandomStringWithLength(5);
+                + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),

@@ -1,0 +1,23 @@
+= Layout Checks
+
+In case you are using <<#_layout_check, Layout Checks>> `Report-NG` provides special features to analyze failed layout tests.
+
+== Comparison by Image Size
+
+When a layout test failed because there is a difference of the image size 
+between the actual screenshot and the reference image,
+`Report-NG` will add a failure aspect to the test details panel:
+
+image::report-ng-14.png[align="center", alt="Wrong Image Size Failure Aspect"]
+
+== Comparison by Pixel Distance
+
+When a layout test failed because the percentage of the pixels that are different is too high (pixel distance) `Report-NG` will also add a failure aspect to the test details panel:
+
+image::report-ng-15.png[align="center", alt="High Pixel Distance Size Failure Aspect"]
+
+Furthermore, `Report-NG` provides a special dialog to compare the actual screenshot and the 
+reference image to actually identify the mismatching pixels. It can be opened by clicking one of the three thumbnail images. The pixel comparison dialog provides a diamond shaped slider to change the size of the left and right part of the pixel comparison area. You can also select what is displayed on the left and right part, the actual screenshot, the reference image or the pixel difference:
+
+image::report-ng-16.png[align="center", alt="Pixel Comparison Dialog"]
+

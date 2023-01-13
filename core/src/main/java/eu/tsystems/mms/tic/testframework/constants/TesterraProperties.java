@@ -76,15 +76,6 @@ public final class TesterraProperties {
      */
     public static final String ON_STATE_TESTFAILED_SKIP_SHUTDOWN = "tt.on.state.testfailed.skip.shutdown";
 
-    /**
-     * Module source root
-     */
-    public static final String MODULE_SOURCE_ROOT = "tt.module.source.root";
-    /**
-     * tt.source.lines.prefetch
-     */
-    public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
-
     /*
      * Package the project is located in.
      */

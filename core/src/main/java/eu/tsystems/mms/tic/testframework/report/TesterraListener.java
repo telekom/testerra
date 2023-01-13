@@ -23,9 +23,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
@@ -34,23 +32,18 @@ import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.logging.MethodContextLogAppender;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
-import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
+import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
+import org.testng.IConfigurationListener;
 import org.testng.IConfigureCallBack;
 import org.testng.IDataProviderListener;
 import org.testng.IHookCallBack;
@@ -68,14 +61,17 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
-import org.testng.internal.InvokedMethod;
 import org.testng.internal.TestResult;
+import org.testng.internal.invokers.InvokedMethod;
 import org.testng.xml.XmlSuite;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * Listener for JUnit and TestNg, collects test informations for testreport.
- *
- * @author mrgi, mibu, pele, sepr
+ * Testerra listener based on TestNG for whole test execution.
  */
 public class TesterraListener implements
         IInvokedMethodListener,
@@ -86,14 +82,15 @@ public class TesterraListener implements
         ITestListener,
         ISuiteListener,
         Loggable,
-        IDataProviderListener
+        IDataProviderListener,
+        IConfigurationListener
 {
     /**
-     * Default package namespace for project tests
+     * Default package namespace used in ClassFinder and for initializing of modules.
+     *
+     * Additional modules have to use
      */
-    public final static String DEFAULT_PACKAGE = "eu.tsystems.mms.tic";
-    @Deprecated
-    public static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE, DEFAULT_PACKAGE);
+    public static final String[] DEFAULT_PACKAGES = {"eu.tsystems.mms.tic", "io.testerra"};
 
     /**
      * Skip test methods control.
@@ -426,6 +423,12 @@ public class TesterraListener implements
     }
 
     @Override
+    public void onConfigurationSkip(ITestResult testResult) {
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+        methodContext.setStatus(Status.SKIPPED);
+    }
+
+    @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
 
     }
@@ -479,6 +482,9 @@ public class TesterraListener implements
             } else {
                 methodContext.addError(exception);
             }
+            // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
+            methodContext.setStatus(Status.SKIPPED);
+            testResult.setStatus(ITestResult.SKIP);
             pAfterInvocation(invokedMethod, testResult, testContext);
 
             dataProviderSemaphore.put(testNGMethod, true);

@@ -6,6 +6,9 @@ dependencies {
     implementation 'org.xmlunit:xmlunit-core:2.5.0'
     // </XML
 
+    // ResponsiveClassFinder tests
+    implementation 'org.reflections:reflections:0.9.12'
+
     api 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
 }
 
@@ -21,6 +24,7 @@ project.afterEvaluate {
 }
 
 test {
+
     String[] s = [
             'src/test/resources/Integration.xml',
     ]

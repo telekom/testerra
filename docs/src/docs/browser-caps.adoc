@@ -8,6 +8,5 @@ You can customize your WebDriver session by setting capabilities in the followin
 
 When creating a new WebDriver, these capabilities get merged together in this exact order.
 
-include::browsercaps/global-caps.adoc[leveloffset=+1]
-include::browsercaps/local-caps.adoc[leveloffset=+1]
+include::browsercaps/common-browser-caps.adoc[leveloffset=+1]
 include::browsercaps/proxy-setup.adoc[leveloffset=+1]

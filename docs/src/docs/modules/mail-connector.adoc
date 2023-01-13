@@ -2,9 +2,9 @@
 
 The module mail-connector allows you to send and receive/read emails as well as solve mail surrounding tasks like encoding or encrypting.
 
-== Project setup
+The Mail connector uses https://github.com/jakartaee/mail-api[Jakarta Mail 2].
 
-Latest release image:https://img.shields.io/maven-central/v/io.testerra/mail-connector?label=Testerra%20Mail%20Connector[Maven Central]
+== Project setup
 
 .Gradle
 [source,gradle,role="primary",subs="attributes+"]
@@ -25,6 +25,7 @@ compile 'io.testerra:mail-connector:{revnumber}'
     </dependency>
 </dependencies>
 ----
+
 === Configuration Parameters
 All MailConnector classes need parameters to connect to the corresponding server. These are set within the `mailconnection.properties` file or by system properties. The following parameters must be set.
 
@@ -60,8 +61,30 @@ MAX_READ_TRIES=20
 If you want to use an SSL-encrypted connection, you  need to set `SMTP_SSL_ENABLED` / `POP3_SSL_ENABLED` to true. The ports must then be adjusted according to the server.
 The actual connection to the mail server is implicitly opened within each `MailConnector` class.
 
+== Common notes
+
+Please note that Jakarta Mail 2 changed some packages. If you update to the latest Mail connector you have to change your imports:
+
+
+[source, java]
+----
+// Jakarta Mail 1.6.x
+import javax.mail.Message;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.search.AndTerm;
+import javax.mail.search.SearchTerm;
+...
+
+// Jakarta Mail 2.x
+import jakarta.mail.Message;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.search.AndTerm;
+import jakarta.mail.search.SearchTerm;
+...
+----
+
 == POP3MailConnector
-The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`. Specific mails can be extracted with serverside filtering by matching given criteria expressed with SearchTerm (see https://javaee.github.io/javaee-spec/javadocs/javax/mail/search/package-summary.html[JavaMail API])
+The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`. Specific mails can be extracted with serverside filtering by matching given criteria expressed with SearchTerm (see https://javadoc.io/doc/com.sun.mail/jakarta.mail/latest/jakarta.mail/module-summary.html[Jakarta Mail API])
 
 .Reading and Deleting Mails
 [source,java]
@@ -194,9 +217,9 @@ connector.configureSessionProperties(properties -> {
 
 See the original documentation for more information:
 
-* IMAP: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/imap/package-summary.html
-* SMTP: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/smtp/package-summary.html
-* POP3: https://eclipse-ee4j.github.io/mail/docs/api/com/sun/mail/pop3/package-summary.html
+* IMAP: https://javadoc.io/static/com.sun.mail/jakarta.mail/2.0.1/jakarta.mail/com/sun/mail/imap/package-summary.html
+* SMTP: https://javadoc.io/static/com.sun.mail/jakarta.mail/2.0.1/jakarta.mail/com/sun/mail/smtp/package-summary.html
+* POP3: https://javadoc.io/static/com.sun.mail/jakarta.mail/2.0.1/jakarta.mail/com/sun/mail/pop3/package-summary.html
 
 == Debugging the MailConnector
 

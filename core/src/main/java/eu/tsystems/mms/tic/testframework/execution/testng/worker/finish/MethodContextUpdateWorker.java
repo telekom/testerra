@@ -51,9 +51,14 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
         ITestResult testResult = event.getTestResult();
 
         // Handle assertions and exceptions in dataprovider methods
-        if (testResult.getMethod().isDataDriven() && methodContext.readErrors().findFirst().isPresent()) {
-            testResult.setStatus(ITestResult.SKIP);
-            methodContext.setStatus(Status.SKIPPED);
+        if (testResult.getMethod().isDataDriven()
+                && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
+
+            // Note: The status SKIPPED is set by TesterraListener.onDataProviderFailure(..)
+            if (methodContext.getStatus() != Status.SKIPPED) {
+                testResult.setStatus(ITestResult.FAILURE);
+                methodContext.setStatus(Status.FAILED);
+            }
             StringBuilder sb = new StringBuilder();
             sb.append("The following assertions failed in dataprovider method ");
             sb.append(testResult.getMethod().getDataProviderMethod().getMethod().getName());

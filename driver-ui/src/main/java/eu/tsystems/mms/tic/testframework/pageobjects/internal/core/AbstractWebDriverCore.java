@@ -199,7 +199,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
      * Finds the {@link WebElement} from a list of web elements
      * according to it's selector index in {@link GuiElementData#getIndex()}.
      * Also prepares shadow roots by {@link GuiElementData#isShadowRoot()}
-     * and wraps its around an {@link WebElementProxy}.
      * More information see {@link WebElementRetainer#findWebElement(Consumer)}
      */
     @Override

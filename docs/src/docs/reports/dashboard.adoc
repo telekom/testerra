@@ -1,0 +1,22 @@
+= Dashboard View
+
+The dashboard view gives an overview of the last test execution. It shows the total number of executed tests and of passed, skipped or failed tests.
+
+image::report-ng-05.png[align="center", alt="Dashboard"]
+
+On the Breakdown panel is a pie chart that shows the proportions, displayed with different colors according to the test status.
+
+Test status colors:
+[cols="2,^1,4",options="header"]
+|===
+| Color | Test Status | Description
+| Green | Passed | The test was passed.
+| Yellow | Skipped | The test was not executed, because a test it depends on failed.
+| Red | Failed | The test failed.
+| Dark Red | Expected Fail | The test failed, as expected e.g. because of a known bug or problem.
+|===
+
+Check out the <<#Fails, @Fails>> Annotation to see how to mark a test as expected to fail.
+
+Right beside the Breakdown pie chart you find another panel with the Top 3 failure types (aspects).
+There are two more panels below, one displaying detailed information about test execution duration, start and end times and another panel with a list of test classes that reports how many tests did pass, fail or were skipped in the individual test classes.

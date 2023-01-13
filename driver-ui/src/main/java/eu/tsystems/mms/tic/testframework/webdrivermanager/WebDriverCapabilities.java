@@ -38,16 +38,6 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
      */
     protected static final Map<String, Object> GLOBALCAPABILITIES = new HashMap<>();
     protected static final Logger LOGGER = LoggerFactory.getLogger(WebDriverCapabilities.class);
-//
-//    protected static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
-//        if (value == null) {
-//            return;
-//        }
-//        if (StringUtils.isStringEmpty("" + value)) {
-//            return;
-//        }
-//        caps.setCapability(key, value);
-//    }
 
     /**
      * Adds a capability.

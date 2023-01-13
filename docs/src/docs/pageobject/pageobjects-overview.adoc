@@ -38,12 +38,10 @@ The annotation `Check` marks the UiElements as mandatory for the page. Testerra 
 public class SearchPage extends Page {
 
     @Check
-    private final UiElement searchButton =
-            find(By.name("searchButton"));
+    private final UiElement searchButton = find(By.name("searchButton"));
 
     @Check
-    private final UiElement inputField =
-            find(By.name("inputField"));
+    private final UiElement inputField = find(By.name("inputField"));
 
     // constructor
     public SearchPage(WebDriver driver) {
@@ -67,7 +65,6 @@ public class TestClass extends TesterraTest implements PageFactoryProvider {
 
     @Test
     public void myTest() {
-        WebDriver driver = WebDriverManager.getWebDriver();
         HomePage homePage = PAGE_FACTORY.createPage(HomePage.class);
         SearchPage searchPage = homePage.openSearch();
         ResultPage resultPage = searchPage.search("search text");

@@ -5,7 +5,7 @@ The `TestControllerProvider` interface provides the `TestController` instance `C
 
 == Collected assertions
 
-Collecting assertion means, that a failing assertion will not abort the test method, but it will throw an exception at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
+Collecting assertion means, that a failing assertion will not abort the test method, but it will throw an assertion error at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
 
 [source,java]
 ----
@@ -15,6 +15,11 @@ CONTROL.collectAssertions(() -> {
     ASSERT.assertEquals("hello", "world");
 });
 ----
+
+IMPORTANT: Assertions can only be collected by using <<_regular_assertions>> or `expect()`/`assertThat()` of UiElements. +
+`CONTROL.collectAssertions(...)` does not work with `org.testng.Assert`.
+
+See <<#_collected_assertions_2, here>> how collected assertions are presented in Report-NG.
 
 == Optional assertions
 
@@ -28,6 +33,11 @@ CONTROL.optionalAssertions(() -> {
     ASSERT.assertEquals("hello", "world");
 });
 ----
+
+IMPORTANT: Assertions can only be optional by using <<_regular_assertions>> or `expect()`/`assertThat()` of UiElements. +
+`CONTROL.optionalAssertions(...)` does not work with `org.testng.Assert`.
+
+See <<#_optional_assertions_2, here>> how optional assertions are presented in Report-NG.
 
 == Change internal timeout
 

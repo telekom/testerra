@@ -21,9 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.utils.xmlutils;
 
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -130,7 +130,7 @@ public class JDom extends AbstractXMLUtils {
         LOGGER.debug("Element: " + element);
         Element nElement = new Element(newElement, element.getNamespace());
         LOGGER.debug(String.format("Add node '%s' to parent node '%s'.", newElement, elementName));
-        if (!StringUtils.isStringEmpty(newElementValue)) {
+        if (StringUtils.isNotBlank(newElementValue)) {
             nElement.setText(newElementValue);
             LOGGER.debug(String.format("Set new value '%s' to the new node '%s'.", newElementValue, newElement));
 

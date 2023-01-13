@@ -38,13 +38,4 @@ Which results in a log message similar to
 
 The markers `MCID` and `SCID` are referencing to the current MethodContext respectively SessionContext ID.
 
-== Prompt messages
-
-Very important messages can be prompted using:
-
-[source,java]
-----
-log().warn("Important message", Loggable::prompt);
-----
-
-That tells the Report to display these messages in a different way (optional).
+NOTE: Important messages can be prompted to the Report. See <<Priority Messages, here>> for more details.

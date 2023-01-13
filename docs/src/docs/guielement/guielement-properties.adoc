@@ -1,6 +1,29 @@
-= Access the WebElement
+= Properties
 
-UiElement provides all Selenium methods when retrieving the `WebElement`.
+== Use the `getActual()`
+
+The values of most properties of a UiElement can be returned by the `getActual()` method.
+
+.The given HTML snippet
+[source,html]
+----
+<a href="newpage.html" class="foolink" style="font-size: 20px;">My link</a>
+----
+
+[source,java]
+----
+UiElement element = find(By.xpath("//a"));
+
+String text = element.waitFor().text().getActual();             // returns "My link"
+String href = element.waitFor().attribute("href").getActual();  // returns "newpage.html"
+String tag = element.waitFor().tagName().getActual();           // returns "a"
+String classes = element.waitFor().classes().getActual();       // returns "foolink"
+String css = element.waitFor().css("font-size").getActual();    // returns "20px"
+----
+
+== Access the WebElement
+
+UiElement provides all Selenium methods when retrieving the `WebElement`. You have access to some more properties.
 
 .The given HTML snippet
 [source,html]
@@ -8,18 +31,21 @@ UiElement provides all Selenium methods when retrieving the `WebElement`.
 <a href="newpage.html" style="font-size: 20px;">My link</a>
 ----
 
-.Standard attributes
 [source,java]
 ----
 UiElement element = find(By.xpath("//a"));
 
 element.findWebElement(webElement -> {
-    String text = webElement.getText();                   // returns "My link"
-    String attr = webElement.getAttribute("href");        // returns "newpage.html"
-    String name = webElement.getTagName();                // returns "a"
-    Point point = webElement.getLocation();               // returns the top left corner of the element
-    Dimension dim = webElement.getSize();                 // returns width and heigth of the element
-    Rectangle rect = webElement.getRect();                // returns rectangle with location and size
-    String value = webElement.getCssValue("font-size");   // returns "20px"
+    Point point = webElement.getLocation();     // returns the top left corner of the element
+    Dimension dim = webElement.getSize();       // returns width and heigth of the element
+    Rectangle rect = webElement.getRect();      // returns rectangle with location and size
 });
 ----
+
+[IMPORTANT]
+====
+Testerra's UiElement does not support a public method like `element.getWebElement()` as `GuiElement` did this. Testerra wants to save you from a Selenium `StaleElementReferenceException`.
+
+We absolutely do not recommend to create you own Selenium WebElement by +
+`driver.findElement(By...)`. You fall back to plain Selenium and lose the Testerra error handling.
+====

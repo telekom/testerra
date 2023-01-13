@@ -2,7 +2,48 @@
 
 UiElements provide many kinds of assertion methods to verify your elements.
 
-If an assertion fails, it will make the whole test fail and abort. You can control that by using a <<Assertion handling, TestController>>
+If an assertion fails, it will make the whole test fail and abort. You can control that by using a <<Test controlling, TestController>>
+
+== UiElement checks
+
+Checks are assertions which verify the condition of an UiElement.
+
+Checks if the element is present in the DOM
+[source,java]
+----
+element.expect().present(boolean);
+----
+
+Checks if the element is present in the Viewport,
+if it is visible by it's `display` and `visibility` style properties and if it's `width` and `height` are both greater than 0.
+[source,java]
+----
+element.expect().displayed(boolean);
+----
+
+Checks if the element is displayed and if it's partially or fully visible
+in the scroll area of the viewport.
+
+[source,java]
+----
+element.expect().visible(boolean fullyVisible).is(boolean);
+----
+
+NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need to test the perceptually visibility to the human eye, you should consider to implement an image based <<Layout Check>>.
+
+Some more WebElement checks
+
+[source,java]
+----
+// The following methods are calling the standard webelement method
+element.expect().enabled(boolean);
+element.expect().selected(boolean);
+
+// Tries to find out if an element could be selected.
+element.expect().selectable(boolean);
+----
+
+== Assertions of UiElement attributes
 
 [source,java]
 ----
@@ -59,3 +100,32 @@ image1.expect().bounds().fromBottom().toBottomOf(image3).is(0);
 // Assertions are false
 image1.expect().bounds().fromBottom().toBottomOf(image2).is(0);
 ----
+
+== Custom assertion message
+
+Testerra generates a readable assertion message with name of UiElement, page and checked attribute.
+
+.Example of a page and a test method
+[source,java]
+----
+public class DragAndDropPage extends Page {
+    ...
+    private UiElement columnA = find(By.id("column-a"));
+
+    public TestableUiElement getColumnA() {
+        return this.columnA;
+    }
+}
+...
+public MyTest extends TesterraTest implements PageFactoryProvider {
+    @Test
+    public void myTest() {
+        DragAndDropPage page = PAGE_FACTORY.createPage(DragAndDropPage.class);
+        page.getColumnA().expect().displayed().is(false); <1>
+        page.getColumnB().expect().displayed().is(false, "Foo"); <2>
+    }
+}
+----
+
+<1> Error message: `UiElementAssertionError: Expected that DragAndDropPage -> columnB displayed is false`
+<2> Error message: `UiElementAssertionError: Expected that Foo is false`

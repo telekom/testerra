@@ -21,15 +21,33 @@
  */
 package eu.tsystems.mms.tic.testframework.playground;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class SimpleFailingTest extends TesterraTest {
+public class SimpleFailingTest extends TesterraTest implements Loggable {
+
+    @Test(groups = "passed")
+    public void testPassed() {
+    }
 
     @Test
     public void testFailing() {
-        Assert.assertEquals(1,2);
+        Assert.fail("This test should fail");
+    }
+
+    @Test(dependsOnMethods = "testFailing")
+    public void testDependsOnFailed() {
+    }
+
+    @Test()
+    @Fails(ticketString = "https://this.is.my.ticket.com/string/1234", description = "This could failed.")
+    public void test_validExpectedFailed_withAll() {
+        log().info("Simple info message", Loggable.prompt);
+        log().warn("Simple warn message", Loggable.prompt);
+        Assert.fail("This is a <a href=\"#\">HTML message</a>.");
     }
 
 }

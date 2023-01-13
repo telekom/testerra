@@ -9,3 +9,5 @@ Testerra is based on Selenium but makes it much easier to create your automation
 
 The framework is developed by our Test Automation Experts at T-Systems MMS in Dresden (link:https://test-and-integration.t-systems-mms.com[Website]). In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
 ****
+
+NOTE: This manual belongs to Testerra {revnumber}. For older versions check out this <<Previous Testerra versions, table>>.

@@ -22,10 +22,13 @@
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.DefaultExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
@@ -45,6 +48,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Tests for WebDriverManager
@@ -54,12 +58,14 @@ import java.util.regex.Pattern;
  *
  * @author Eric Kubenka
  */
-public class WebDriverManagerTest extends TesterraTest implements PropertyManagerProvider {
+public class WebDriverManagerTest extends TesterraTest implements WebDriverManagerProvider, PropertyManagerProvider {
+
+    private IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
     @Test
     public void testT01_isJavaScriptActivated() {
 
-        final WebDriver webDriver = WebDriverManager.getWebDriver();
+        final WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
         final boolean javaScriptActivated = WebDriverManager.isJavaScriptActivated(webDriver);
 
         Assert.assertTrue(javaScriptActivated, "JavaScript activated by default.");
@@ -87,31 +93,54 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         final WebDriver driver = new ChromeDriver(chromeOptions);
 
         // assert that webdrivermanager does not know about this session.
-        Assert.assertFalse(WebDriverManager.hasSessionsActiveInThisThread(), "WebDriver Session active in this thread.");
-
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0, "No WebDriver sessions should active in this thread.");
+        Assert.assertTrue(executionContextController.getCurrentSessionContext().isEmpty(), "The current session context should empty");
         // introduce it.
         WebDriverManager.introduceWebDriver(driver);
 
         // assert that webdrivermanager does know about the session.
-        Assert.assertTrue(WebDriverManager.hasSessionsActiveInThisThread(), "WebDriver Session active in this thread.");
+        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 1, "One WebDriver session should active in this thread.");
+        Assert.assertTrue(executionContextController.getCurrentSessionContext().isPresent(), "There should exist a current session context.");
     }
 
     @Test
     public void testT03_MakeSessionExclusive() {
-        WebDriver exclusiveDriver = WebDriverManager.getWebDriver();
-        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 1);
+        WebDriver exclusiveDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        Assert.assertTrue(executionContextController.getCurrentSessionContext().isPresent(), "There should exist a current session context.");
 
-        String sessionId = WebDriverManager.makeSessionExclusive(exclusiveDriver);
+        String sessionId = WEB_DRIVER_MANAGER.makeExclusive(exclusiveDriver);
 
-        Assert.assertEquals(WebDriverSessionsManager.getWebDriversFromCurrentThread().count(), 0);
+        Assert.assertTrue(executionContextController.getCurrentSessionContext().isEmpty(), "The current session context should be empty.");
 
         Assert.assertNotNull(WebDriverSessionsManager.getSessionContext(exclusiveDriver).get());
 
-        WebDriver driver2 = WebDriverManager.getWebDriver("Session2");
-        WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver("Session2");
+        WebDriver exclusiveDriverActual = WEB_DRIVER_MANAGER.getWebDriver(sessionId);
 
         Assert.assertEquals(exclusiveDriver, exclusiveDriverActual, "Got the same WebDriver!");
-        WebDriverManager.shutdownExclusiveSession(sessionId);
+        WEB_DRIVER_MANAGER.shutdownSession(sessionId);
+    }
+
+    private String t03aSessionId = "";
+
+    @Test
+    public void testT03a_SessionExclusivePrepareTest() {
+        WebDriver exclusiveDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        t03aSessionId = WEB_DRIVER_MANAGER.makeExclusive(exclusiveDriver);
+    }
+
+    @Test(dependsOnMethods = "testT03a_SessionExclusivePrepareTest")
+    public void testT03b_SessionExclusiveCheckLinkedSession() {
+        Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 0, "No session should link to current method context");
+
+        WEB_DRIVER_MANAGER.getWebDriver(t03aSessionId);
+
+        Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 1, "One session should link to current method context");
+        if (this.readSessionContextFromMethodContext()
+                .map(SessionContext::getSessionKey)
+                .noneMatch(t03aSessionId::equals)) {
+            Assert.fail("Exclusive session not found in current method context");
+        }
     }
 
     @Test
@@ -189,7 +218,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         Dimension expected = new Dimension(1024, 768);
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setWindowSize(expected);
-        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         Dimension size = webDriver.manage().window().getSize();
         Assert.assertEquals(size.getWidth(), expected.getWidth());
         Assert.assertEquals(size.getHeight(), expected.getHeight());
@@ -198,7 +227,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
     @Test
     public void testT08_invalidWindowSize() {
         PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, "katze");
-        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
+        String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE);
         Assert.assertEquals(property, "katze");
 
         assertNewWebDriverWindowSize(this.getDefaultDimension());
@@ -237,11 +266,11 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         Assert.assertEquals(windowSize.getWidth(), expected.getWidth());
         Assert.assertEquals(windowSize.getHeight(), expected.getHeight());
 
-        WebDriver webDriver = WebDriverManager.getWebDriver(request);
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         Dimension size = webDriver.manage().window().getSize();
         Assert.assertEquals(size.getWidth(), expected.getWidth());
         Assert.assertEquals(size.getHeight(), expected.getHeight());
-        WebDriverManager.shutdown();
+        WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
     }
 
     @Test
@@ -252,7 +281,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
 
-        WebDriverManager.getWebDriver(request);
+        WEB_DRIVER_MANAGER.getWebDriver(request);
 
         Assert.assertTrue(request.getDesiredCapabilities().acceptInsecureCerts());
     }
@@ -264,7 +293,7 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
 
         Assert.assertNotEquals(defaultLocale, sessionLocale);
 
-        WebDriver webDriver = WebDriverManager.getWebDriver();
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
         Assert.assertTrue(WebDriverManager.setSessionLocale(webDriver, sessionLocale));
 
         Assert.assertEquals(WebDriverManager.getSessionLocale(webDriver).orElse(null), sessionLocale);
@@ -278,29 +307,33 @@ public class WebDriverManagerTest extends TesterraTest implements PropertyManage
         DesktopWebDriverRequest desktopWebDriverRequest = new DesktopWebDriverRequest();
         desktopWebDriverRequest.setShutdownAfterTest(false);
         desktopWebDriverRequest.setSessionKey(sessionKey);
-        WebDriverManager.getWebDriver(desktopWebDriverRequest);
+        WEB_DRIVER_MANAGER.getWebDriver(desktopWebDriverRequest);
         new DefaultExecutionContextController().getCurrentSessionContext().ifPresent(sessionContext -> reusedSessionId = sessionContext.getRemoteSessionId().get());
     }
 
     @Test(dependsOnMethods = "testT12_ReuseSession1")
     public void testT13_ResuseSession2() {
         DefaultExecutionContextController executionContextController = new DefaultExecutionContextController();
-        WebDriverManager.getWebDriver(sessionKey);
+        WEB_DRIVER_MANAGER.getWebDriver(sessionKey);
 
         Assert.assertEquals(this.reusedSessionId, executionContextController.getCurrentSessionContext().get().getRemoteSessionId().get());
-        Optional<SessionContext> foundSessionContext = executionContextController.getCurrentMethodContext().get().readSessionContexts().filter(
+        Optional<SessionContext> foundSessionContext = this.readSessionContextFromMethodContext().filter(
                 sessionContext -> sessionContext.getSessionKey().equals(sessionKey)).findFirst();
         Assert.assertTrue(foundSessionContext.isPresent(), "Method context should contain the reused session context");
         Assert.assertEquals(reusedSessionId, foundSessionContext.get().getRemoteSessionId().get(),
                 "Session ID of session context should the same of session context of method `testT12_ReuseSession1`");
 
         // Second access to 'reuse' session has no impact on methodContext
-        WebDriverManager.getWebDriver(sessionKey);
+        WEB_DRIVER_MANAGER.getWebDriver(sessionKey);
 
         // Create a second session 'default'
-        WebDriverManager.getWebDriver();
-        Assert.assertEquals(executionContextController.getCurrentMethodContext().get().readSessionContexts().count(), 2, "Current method context should 2 sessions.");
+        WEB_DRIVER_MANAGER.getWebDriver();
+        Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 2, "Current method context should have 2 sessions.");
 
-        WebDriverManager.shutdown();
+        WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
+    }
+
+    private Stream<SessionContext> readSessionContextFromMethodContext() {
+        return executionContextController.getCurrentMethodContext().get().readSessionContexts();
     }
 }

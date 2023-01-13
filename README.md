@@ -33,14 +33,18 @@ You may see Testerra as an open source test automation library for web frontend 
 
 Testerra is developed by our Test Automation Experts at T-Systems MMS in Dresden. In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
 
+**This is the branch of Testerra 2. For Testerra 1 go to https://github.com/telekom/testerra/tree/testerra1** 
+
 ## Setup
 
-Include the following dependency in your project. Please replace `2-SNAPSHOT` with the latest version.
+Include the following dependency in your project.
 
 Gradle:
 ```groovy
-compile 'io.testerra:driver-ui-desktop:2-SNAPSHOT'
-compile 'io.testerra:report-ng:2-SNAPSHOT'
+dependencies {
+    implementation 'io.testerra:driver-ui-desktop:2.2'
+    implementation 'io.testerra:report-ng:2.2'
+}
 ```
 
 Maven:
@@ -49,15 +53,17 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>2.2</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>2.2</version>
     </dependency>
 </dependencies>
 ```
+
+Testerra requires **JDK11** or later.
 
 ### Using Testerra functionality
 
@@ -71,16 +77,17 @@ public class MyTest extends TesterraTest implements UiElementFinderFactoryProvid
         UiElementFinder finder = UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
         
         finder.find(By.name("q"))
-                .type("Hallo World")
-                .expect().value().endsWith("Hallo").is(false);
+                .type("Hello World")
+                .expect().value().endsWith("Hello").is(false);
     }
 }
 ````
 
 ## Documentation
 
-* Check out our comprehensive [Testerra documentation](http://docs.testerra.io/testerra/2.0-RC-6/)!
+* Check out our comprehensive [Testerra 2 documentation](https://docs.testerra.io/testerra/2-latest/index.html)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
+* Some more features can be found [in the Testerra demo project][testerra-demo].
 
 ## Extras
 
@@ -149,19 +156,21 @@ The following channels are available for discussions, feedback, and support requ
 
 ### Testerra extensions
 
-| Repository          | Description                                                           |
-| ------------------- | --------------------------------------------------------------------- |
-| [testerra-skeleton] | Testerra Skeleton Project |
-| [testerra-selenoid-connector] | Testerra Selenoid Connector |
-| [testerra-hpqc-connector] | Testerra HPQC Connector |
-| [testerra-teamcity-connector] | Testerra TeamCity Connector |
-| [testerra-cucumber-connector] | Testerra Cucumber Connector |
-| [testerra-xray-connector] | Testerra Xray Connector |
-| [testerra-appium-connector] | Testerra Appium Connector |
+| Repository                        | Description                     |
+|-----------------------------------|---------------------------------|
+| [testerra-skeleton]               | Testerra Skeleton Project       |
+| [testerra-demo]                   | Testerra demo projects          |
+| [testerra-selenoid-connector]     | Testerra Selenoid Connector     |
+| [testerra-hpqc-connector]         | Testerra HPQC Connector         |
+| [testerra-teamcity-connector]     | Testerra TeamCity Connector     |
+| [testerra-cucumber-connector]     | Testerra Cucumber Connector     |
+| [testerra-xray-connector]         | Testerra Xray Connector         |
+| [testerra-appium-connector]       | Testerra Appium Connector       |
 | [testerra-azure-devops-connector] | Testerra Azure DevOps Connector |
 
 [testerra]: https://github.com/telekom/testerra
 [testerra-skeleton]: https://github.com/telekom/testerra-skeleton
+[testerra-demo]: https://github.com/T-Systems-MMS/testerra-demo
 [testerra-selenoid-connector]: https://github.com/telekom/testerra-selenoid-connector
 [testerra-hpqc-connector]: https://github.com/telekom/testerra-hpqc-connector
 [testerra-teamcity-connector]: https://github.com/telekom/testerra-teamcity-connector

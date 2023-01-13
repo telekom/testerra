@@ -25,7 +25,6 @@
 :webdriver_timeouts_seconds_script:             webdriver.timeouts.seconds.script
 
 // pagefactory
-:project_package:                               tt.project.package
 :page_factory_loops:                            tt.page.factory.loops
 
 // guielement
@@ -41,7 +40,6 @@
 :list_tests:                                    tt.report.list.tests
 :runcfg:                                        tt.runcfg
 :screenshotter_active:                          tt.screenshotter.active
-:report_screenshots_preview:                    tt.screenshots.preview
 :screenshot_on_pageload:                        tt.screenshot.on.pageload
 :screencaster_active:                           tt.screencaster.active
 :screencaster_active_on_failed:                 tt.screencaster.active.on.failed
@@ -105,8 +103,9 @@
 // :layoutcheck_assert_info_mode:                  tt.layoutcheck.assert.info.mode
 
 // source utils
-:source_utils_root:                             tt.module.source.root
-:source_utils_line_prefetch:                    tt.source.lines.prefetch
+:source_utils_root:                             tt.report.source.root
+:source_utils_line_prefetch:                    tt.report.source.lines.prefetch
+:source_exclusion_regex:                        tt.report.source.exclusion.regex
 :source_utils_activate_sources:                 tt.report.activate.sources
 
 // perf

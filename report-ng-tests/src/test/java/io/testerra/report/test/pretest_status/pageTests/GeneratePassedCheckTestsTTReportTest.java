@@ -1,5 +1,6 @@
 package io.testerra.report.test.pretest_status.pageTests;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
 import io.testerra.report.test.pages.pretest.CheckPages.OptionalCheckPage;
@@ -62,5 +63,19 @@ public class GeneratePassedCheckTestsTTReportTest extends AbstractTestSitesTest 
         visitTestPage(driver, testPage);
 
         PAGE_FACTORY.createPage(CheckRule_IS_NOT_PRESENT_CheckPage.class);
+    }
+
+    @Test
+    public void preTest08_priorityMessagesTest(){
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        visitTestPage(driver, testPage);
+
+        log().info("It's gonna be ok.", Loggable.prompt);
+
+        // some test activities ...
+        log().warn("Warn me!", Loggable.prompt);
+
+        // some test activities ...
+        log().error("Tell me more!", Loggable.prompt);
     }
 }

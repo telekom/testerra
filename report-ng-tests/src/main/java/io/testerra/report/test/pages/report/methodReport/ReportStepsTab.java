@@ -96,4 +96,21 @@ public class ReportStepsTab extends AbstractReportMethodPage {
             Assert.assertTrue(actualStepsContainCertainStep, "Steps-Tab should contain step:" + step + "!");
         }
     }
+
+    public void assertPriorityMessages(String[] priorityMessages) {
+        UiElement priorityMessagesElement = find(By.xpath("//mdc-card[./div[text()='Priority messages']]"));
+        for(String message : priorityMessages){
+            UiElement priorityMessageElement = priorityMessagesElement.find(By.xpath(String.format("//*[text()='%s']", message)));
+            priorityMessageElement.expect().displayed();
+        }
+
+    }
+
+    public void assertStatesOfPriorityMessages(String[] states) {
+        UiElement priorityMessagesElement = find(By.xpath("//mdc-card[./div[text()='Priority messages']]"));
+        for(String status : states){
+            UiElement priorityMessageElement = priorityMessagesElement.find(By.xpath(String.format("//*[contains(@class,'%s')]", status)));
+            priorityMessageElement.expect().displayed();
+        }
+    }
 }

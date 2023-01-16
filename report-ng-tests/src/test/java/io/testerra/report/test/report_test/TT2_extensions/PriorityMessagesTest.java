@@ -13,27 +13,31 @@ import org.testng.annotations.Test;
 
 import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
-public class TestStepsTest extends AbstractReportTest {
+public class PriorityMessagesTest extends AbstractReportTest {
 
     @Test
-    public void testT01_checkStepsTabContainsCertainTestSteps() {
+    public void testT01_checkPriorityMessages(){
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        String methodName = "layoutTest01_layoutTestFailing";
-        String className = "GenerateLayoutTestsTTReportTest";
-        String[] certainTestSteps = new String[]{
-                "get web driver",
-                "visit test page",
-                "create page object and take screenshot"
+        String methodName = "preTest08_priorityMessagesTest";
+        String className = "GeneratePassedCheckTestsTTReportTest";
+        String[] priorityMessages = new String[]{
+                "GeneratePassedCheckTestsTTReportTest: It's gonna be ok.",
+                "GeneratePassedCheckTestsTTReportTest: Warn me!",
+                "GeneratePassedCheckTestsTTReportTest: Tell me more!"
+        };
+        String[] states= new String[]{
+                "status-skipped",
+                "status-failed"
         };
 
         TestStep.begin("Navigate to steps page");
         ReportDashBoardPage reportDashBoardPage = super.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
-        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
-        ReportStepsTab reportStepsTab = reportDetailsTab.navigateToStepsTab();
+        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(methodName);
 
-        TestStep.begin("Check for test steps");
-        reportStepsTab.assertCertainTestStepsAreListed(certainTestSteps);
+        reportStepsTab.assertPriorityMessages(priorityMessages);
+        reportStepsTab.assertStatesOfPriorityMessages(states);
     }
+
 }

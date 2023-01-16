@@ -22,28 +22,25 @@
 
 package io.testerra.report.test.report_test.methodpages;
 
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+
+import org.testng.annotations.Test;
+
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportSessionsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Test;
-
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
 public class ReportSessionsTabTest extends AbstractReportTest {
 
     @Test
     public void testT01_checkDisplayedSessionGotContent() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String preTestWithSessionTab = "test_Failed_WithScreenShot";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);

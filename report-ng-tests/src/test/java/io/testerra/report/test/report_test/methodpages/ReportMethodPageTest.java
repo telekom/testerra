@@ -45,13 +45,12 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States_ForStepsType")
     public void testT01_methodOverviewIsCorrectForStepsType(TestData data) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
         Status status = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -66,13 +65,12 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
     public void testT01_methodOverviewIsCorrectForDetailsType(TestData data) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
         Status status = data.getStatus1();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -87,11 +85,10 @@ public class ReportMethodPageTest extends AbstractReportTest {
 
     @Test
     public void testT02_checkDurationFormat() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String exampleMethod = "test_Passed";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to method page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -102,4 +99,43 @@ public class ReportMethodPageTest extends AbstractReportTest {
         final boolean dateFormatIsCorrect = DateTimeUtils.verifyDateTimeString(testDuration);
         Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
     }
+
+    @Test(dataProvider = "dataProviderForPreTestMethodsWithScreenshot")
+    public void testT03_checkScreenshot(final String methodName) {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
+
+        TestStep.begin("Navigate to method page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+
+        reportDetailsTab.assertScreenshotIsDisplayed();
+    }
+
+    @Test
+    public void testT04_checkScreenshotManuallyCreated() {
+        final String methodName = "test_GenerateScreenshotManually";
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+
+        TestStep.begin("Navigate to method page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(methodName);
+
+        reportStepsTab.assertScreenshotIsDisplayed();
+    }
+
+    @Test
+    public void testT05_checkScreenshotFailedTest() {
+        final String methodName = "test_Failed_WithScreenShot";
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+
+        TestStep.begin("Navigate to method page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+
+        reportDetailsTab.assertScreenshotIsDisplayed();
+    }
+
 }

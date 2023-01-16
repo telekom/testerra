@@ -47,20 +47,21 @@ export class VirtualLogView extends AbstractLogView {
                 const foundInStackTrace = logMessage.stackTrace
                     .flatMap(stackTrace => stackTrace.stackTraceElements)
                     .filter(line => line.match(this.searchRegexp));
+                const foundInLoggerName = logMessage.loggerName.match(this.searchRegexp);
 
                 if (foundInStackTrace.length>0) {
                     this.open(logMessage);
                 }
 
-                return foundInMessage || foundInStackTrace.length>0;
+                return foundInMessage || foundInStackTrace.length>0 || foundInLoggerName;
             });
 
             if (foundLogMessage) {
                 this._lastFoundIndex = this.logMessages.indexOf(foundLogMessage);
-                console.log("found at index", this._lastFoundIndex);
+                // console.log("found at index", this._lastFoundIndex);
                 const scrollY = this._initialScrollOffset + (firstItem.clientHeight * this._lastFoundIndex);
-                console.log(this._initialScrollOffset);
-                console.log("scroll to ", this._initialScrollOffset, " + found index", this._lastFoundIndex, " * ", firstItem.clientHeight);
+                // console.log(this._initialScrollOffset);
+                // console.log("scroll to ", this._initialScrollOffset, " + found index", this._lastFoundIndex, " * ", firstItem.clientHeight);
                 const options = {top: scrollY};
 
                 window.setTimeout(() => {
@@ -80,7 +81,7 @@ export class VirtualLogView extends AbstractLogView {
     }
 
     resetSearch() {
-        console.log("reset search");
+        // console.log("reset search");
         this._lastFoundIndex = -1;
     }
 }

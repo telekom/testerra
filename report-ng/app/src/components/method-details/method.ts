@@ -20,23 +20,27 @@
  */
 
 import {autoinject, PLATFORM} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig, Router, RouterConfiguration, activationStrategy} from "aurelia-router";
+import {activationStrategy, NavigationInstruction, RouteConfig, Router, RouterConfiguration} from "aurelia-router";
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
+import {data} from "../../services/report-model";
+import MethodType = data.MethodType;
 
 @autoinject()
 export class Method {
-    private _router:Router;
-    private _allScreenshotIds:string[];
-    private _lastScreenshotId:string;
-    private _methodDetails:MethodDetails;
-    private _loading:boolean = false;
-    private _routes:RouteConfig[];
+    private _router: Router;
+    private _allScreenshotIds: string[];
+    private _lastScreenshotId: string;
+    private _methodDetails: MethodDetails;
+    private _loading: boolean = false;
+    private _routes: RouteConfig[];
+    private _prevMethod: MethodDetails;
+    private _nextMethod: MethodDetails;
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _dialogService:MdcDialogService,
+        private _dialogService: MdcDialogService,
     ) {
     }
 
@@ -173,14 +177,40 @@ export class Method {
             });
 
             if (!routeConfig.hasChildRouter) {
-                const navOptions = {replace:true};
+                const navOptions = {replace: true};
                 const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
                 this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
             }
+
+            this._statistics.getExecutionStatistics().then(executionStatistics => {
+                const myRunIndex = this._methodDetails.methodContext.methodRunIndex;
+                /*
+                * Handling all methodContexts
+                * - filter for 'real' test methods (no setups)
+                * - sort for run index
+                * - create MethodDetails
+                * - filter for failed test methods
+                * - find the previous and the next failed test method to current.
+                 */
+                executionStatistics.classStatistics
+                    .flatMap(methodContext => methodContext.methodContexts)
+                    .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
+                    .sort((a, b) => a.methodRunIndex - b.methodRunIndex)
+                    .map(methodContext => new MethodDetails(methodContext, this._methodDetails.classStatistics))
+                    .filter(methodDetails => methodDetails.numDetails != 0)
+                    .forEach(methodDetails => {
+                        if (methodDetails.methodContext.methodRunIndex < myRunIndex) {
+                            this._prevMethod = methodDetails;
+                        } else if (methodDetails.methodContext.methodRunIndex > myRunIndex && this._nextMethod === undefined) {
+                            this._nextMethod = methodDetails;
+                        }
+                    });
+            });
         });
+
     }
 
-    private _tabClicked(routeConfig:RouteConfig) {
+    private _tabClicked(routeConfig: RouteConfig) {
         this._router.navigateToRoute(routeConfig.name);
     }
 
@@ -192,10 +222,10 @@ export class Method {
         return activationStrategy.replace;
     }
 
-    private _showScreenshot(ev:CustomEvent) {
+    private _showScreenshot(ev: CustomEvent) {
         this._dialogService.open({
             viewModel: ScreenshotsDialog,
-            model: <IScreenshotsDialogParams> {
+            model: <IScreenshotsDialogParams>{
                 current: ev.detail,
                 screenshotIds: this._allScreenshotIds
             },

@@ -102,27 +102,6 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
         PAGE_FACTORY.createPage(PageWithOptionalElement.class, getClassExclusiveWebDriver());
     }
 
-    @Test(priority = 1)
-    @Fails(description = "The test itself passes, but collected assertions will always fail")
-    public void testT11_checkCollectedElements_IsNotPresent() {
-        PAGE_FACTORY.createPage(PageWithCollectedElement.class, getClassExclusiveWebDriver());
-    }
-
-    @Test(priority = 2)
-    public void testT11a_checkCollectedElements_verifyResult() {
-        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
-        List<String> errorList = ((ClassContext) instance.getCurrentMethodContext().get().getParentContext())
-                .readMethodContexts()
-                .filter(context -> "testT11_checkCollectedElements_IsNotPresent".equals(context.getName()))
-                .flatMap(MethodContext::readErrors)
-                .map(context -> context.getThrowable().getMessage())
-                .collect(Collectors.toList());
-        Assert.assertEquals(errorList.size(), 2, "Method context should contains 2 errors.");
-
-        Assert.assertTrue(errorList.contains("Expected that PageWithCollectedElement -> collectedElement1 displayed is true"));
-        Assert.assertTrue(errorList.contains("Expected that PageWithCollectedElement -> collectedElement2 displayed is true"));
-    }
-
     @Test
     public void testT12_checkCollectedAndOptionalElements_IsNotPresent() {
         // The used page is bad practice, but possible:

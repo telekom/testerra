@@ -23,7 +23,6 @@
 package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.utils.RegExUtils;
@@ -151,6 +150,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     public void assertDurationIsNotValid(int lowerBound, int upperBound) {
         String duration = getTestDuration();
         String secondsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, duration);
+        System.out.println(secondsString);
         int seconds = Integer.parseInt(secondsString.trim());
         Assert.assertFalse(lowerBound <= seconds || seconds <= upperBound, "Run duration should not be in valid interval");
     }

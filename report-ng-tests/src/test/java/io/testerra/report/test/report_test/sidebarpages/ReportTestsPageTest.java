@@ -39,10 +39,8 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForTestStates")
     public void testT01_filterForTestStates(Status status) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -55,10 +53,8 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDifferentTestClasses")
     public void testT02_filterForClasses(String className) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -71,10 +67,8 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
     public void testT03_SearchForTestMethods(String testMethod) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -87,10 +81,8 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspects")
     public void testT04_SearchForFailureAspect(String failureAspect) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -103,10 +95,8 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
     @Test
     public void testT05_showConfigurationMethods() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);

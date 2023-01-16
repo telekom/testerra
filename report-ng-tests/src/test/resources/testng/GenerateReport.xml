@@ -23,13 +23,23 @@
 
     <test name="Expected Status Creator">
         <classes>
-            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest"/>
+            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest">
+                <methods>
+                    <exclude name="test_expectedFailedWithValidator_isValid"/>
+                    <exclude name="test_expectedFailedWithValidator_isNotValid"/>
+                </methods>
+            </class>
         </classes>
     </test>
 
     <test name="Screenshot Creator">
         <classes>
-            <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest"/>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
+                <methods>
+                    <include name="test_Failed_WithScreenShot"/>
+                    <include name="test_GenerateScreenshotManually"/>
+                </methods>
+            </class>
         </classes>
     </test>
 

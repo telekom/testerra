@@ -43,10 +43,8 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test
     public void testT01_checkFailureAspectIndicesDescendingCorrectly() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -57,10 +55,8 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspectsTypes")
     public void testT02_checkTypeFilter(final FailureAspectType failureAspectType) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -72,10 +68,8 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspects")
     public void testT03_checkSearchFilter(String failureAspect) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -87,10 +81,8 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test
     public void testT04_checkShowExpectedFailedButton() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -105,13 +97,12 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "failureAspectsWithMultipleStatus")
     public void testT05_checkStatesRedirectCorrectForFailureAspectsWithDifferentStates(TestData data) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String failureAspect = data.getFailureAspect();
         Status status1 = data.getStates().get(0);
         Status status2 = data.getStates().get(1);
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -130,12 +121,11 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
     public void testT06_checkNavigationWithFailureAspect(TestData data) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String failureAspect = data.getFailureAspect();
         List<Status> statusList = data.getStates();
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
@@ -148,10 +138,8 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
     @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingMethodNames")
     public void testT07_checkNavigationWithTestState(final String failureAspect, final Status status, final String methodName) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.visitReportPage(ReportDashBoardPage.class, driver);
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
 
         TestStep.begin("Navigate to failure aspects page.");
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);

@@ -1,5 +1,6 @@
 package io.testerra.report.test.pages.pretest;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
@@ -11,6 +12,7 @@ import org.openqa.selenium.WebDriver;
  * @author mgn
  */
 public class NonExistingPage extends Page {
+    @Check
     private UiElement nonExisting = find(By.id("foo"));
 
     public NonExistingPage(WebDriver webDriver) {

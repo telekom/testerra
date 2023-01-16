@@ -22,3 +22,4 @@ gradlew
 /integration-tests/pretest-status/
 /integration-tests/report-pretest/
 /integration-tests/chromedriver.exe
+/report-ng/app/static/assets/model/

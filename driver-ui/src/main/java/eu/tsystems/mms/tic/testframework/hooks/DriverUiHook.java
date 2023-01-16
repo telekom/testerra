@@ -47,7 +47,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinderFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
-import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.testing.UiElementOverrides;
@@ -115,7 +114,6 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
         RetryAnalyzer.registerAdditionalRetryAnalyzer(new WebDriverRetryAnalyzer());
         // Screenshots and Videos
         TestEvidenceCollector.registerScreenshotCollector(new ScreenshotGrabber());
-        TestEvidenceCollector.registerSourceCollector(new SourceGrabber());
 
         // start WatchDog for hanging sessions
         boolean watchdogEnabled = PropertyManager.getBooleanProperty(TesterraProperties.WATCHDOG_ENABLE, false);

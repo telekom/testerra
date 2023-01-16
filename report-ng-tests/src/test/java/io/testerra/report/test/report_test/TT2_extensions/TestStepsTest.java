@@ -26,7 +26,7 @@ public class TestStepsTest extends AbstractReportTest {
                 "create page object and take screenshot"
         };
 
-        TestStep.begin("Navigate to steps page");
+        TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = super.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);

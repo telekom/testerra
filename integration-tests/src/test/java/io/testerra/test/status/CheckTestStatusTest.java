@@ -56,7 +56,9 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"test_invalidExpectedFailed_withClass", Status.FAILED},
                 {"testT04_DataProviderWithFailedTests", Status.FAILED},
                 {"testT04_DataProviderWithFailedTests", Status.PASSED},
-                {"testT05_DataProviderWithFailedTestsOptional", Status.PASSED}
+                {"testT05_DataProviderWithFailedTestsOptional", Status.PASSED},
+                {"testT06_DataProviderWithCollectedAssertions", Status.PASSED},
+                {"testT06_DataProviderWithCollectedAssertions", Status.FAILED}
         };
     }
 
@@ -95,16 +97,16 @@ public class CheckTestStatusTest extends TesterraTest {
     @DataProvider
     public static Object[][] provideFinalTestResult() {
         return new Object[][]{
-                {"*** Stats: SuiteContexts:  2", "SuiteContext"},
-                {"*** Stats: TestContexts:   2", "TestContext"},
-                {"*** Stats: ClassContexts:  5", "ClassContext"},
-                {"*** Stats: MethodContexts: 47", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 44 (34 relevant)", "Test methods"},
-                {"*** Stats: Failed: 8", "Failed tests"},
+                {"*** Stats: SuiteContexts:  3", "SuiteContext"},
+                {"*** Stats: TestContexts:   3", "TestContext"},
+                {"*** Stats: ClassContexts:  9", "ClassContext"},
+                {"*** Stats: MethodContexts: 74", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 56 (46 relevant)", "Test methods"},
+                {"*** Stats: Failed: 9", "Failed tests"},
                 {"*** Stats: Retried: 10", "Retried tests"},
-                {"*** Stats: Expected Failed: 6", "Expected failed tests"},
+                {"*** Stats: Expected Failed: 12", "Expected failed tests"},
                 {"*** Stats: Skipped: 5", "Skipped tests"},
-                {"*** Stats: Passed: 15 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
+                {"*** Stats: Passed: 20 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
         };
     }
 

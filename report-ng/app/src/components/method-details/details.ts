@@ -84,7 +84,9 @@ export class Details {
     }
 
     private _copyStackTraceToClipboard(stackTrace: IStackTraceCause[]) {
-        const msg = stackTrace.flatMap(cause => cause.stackTraceElements).join("\n");
+        const msg = stackTrace
+            .flatMap(cause => cause.className + ": " + cause.message + "\n    " + cause.stackTraceElements.join("\n    "))
+            .join("\n");
 
         const clipboard = new Clipboard();
         clipboard.writeText(msg).then(() => {

@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -70,7 +70,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         DISTANCE_PATH("distance.path", "src/test/resources/screenreferences/distance"),
         ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
-        PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0),
+        PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0.0),
 
         ;
         private final String property;
@@ -96,6 +96,9 @@ public final class LayoutCheck implements PropertyManagerProvider {
         Path referenceFileName;
         Path actualFileName;
         Path distanceFileName;
+        Path annotationDataFileName;
+        Dimension referenceFileDimension;
+        Dimension actualFileDimension;
         String consecutiveTargetImageName;
         public boolean takeReferenceOnly;
         public double distance = NO_DISTANCE;
@@ -107,7 +110,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     private static final double NO_DISTANCE = 0;
-    private static final int RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asLong().intValue();
+    private static final double RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asDouble();
     private static final double RGB_MAX_DEVIATION = 255;
 
     private static final HashMap<String, Integer> runCount = new HashMap<>();
@@ -219,6 +222,9 @@ public final class LayoutCheck implements PropertyManagerProvider {
             final BufferedImage referenceImage = ImageIO.read(refFile);
             final BufferedImage actualImage = ImageIO.read(actualFile);
 
+            matchStep.referenceFileDimension = new Dimension(referenceImage.getWidth(), referenceImage.getHeight());
+            matchStep.actualFileDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
+
             final boolean useIgnoreColor = Properties.USE_IGNORE_COLOR.asBool();
 
             // create distance image to given reference
@@ -228,6 +234,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
                     matchStep.distanceFileName,
                     useIgnoreColor
             );
+
         } catch (Exception e) {
             throw new LayoutCheckException(matchStep, e);
         }
@@ -273,7 +280,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
 
         if (!actualImageDimension.equals(expectedImageDimension)) {
-            NonFunctionalAssert.fail(
+            OptionalAssert.fail(
                     String.format(
                             "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
                             actualImageDimension.width,
@@ -283,30 +290,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
                     )
             );
         }
-
-//        // TODO remove markedRectangles
-//        List<Rectangle> markedRectangles = null;
-//
-//        // PIXEL mode: markedRectangles always null
-//        if (markedRectangles == null) {
-//            markedRectangles = new ArrayList<>();
-//            Rectangle rectangle = new Rectangle(0, 0, distanceImageSize.width, distanceImageSize.height);
-//            markedRectangles.add(rectangle);
-//        } else {
-//            for (int currentY = 0; currentY < distanceImage.getHeight(); currentY++) {
-//                for (int currentX = 0; currentX < distanceImage.getWidth(); currentX++) {
-//                    boolean pixelIsInsideExpectedImage = isPixelInImageBounds(expectedImage, currentX, currentY);
-//                    if (pixelIsInsideExpectedImage) {
-//                        int rgb = expectedImage.getRGB(currentX, currentY);
-//                        Color color = new Color(rgb);
-//                        color = color.darker().darker();
-//                        distanceImage.setRGB(currentX, currentY, color.getRGB());
-//                    } else {
-//                        distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
-//                    }
-//                }
-//            }
-//        }
 
         int ignoreColor = getColorOfPixel(expectedImage, 0, 0);
 
@@ -358,28 +341,37 @@ public final class LayoutCheck implements PropertyManagerProvider {
         }
 
         int totalPixels = distanceImageSize.width * distanceImageSize.height;
-//        for (Rectangle rectangleToCompare : markedRectangles) {
-//            totalPixels += rectangleToCompare.height * rectangleToCompare.width;
-//        }
 
         // calculate and return the percentage number of pixels in error
-        return ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+        double result = ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+        LOGGER.debug("Raw results of pixel check: \n" +
+                        "Dimension actual image: {}\n" +
+                        "Dimension expected image: {}\n" +
+                        "Number of total pixel: {}\n" +
+                        "Number of ignored pixel: {}\n" +
+                        "Number of pixel in errors: {}\n" +
+                        "Result of matching: {}"
+                , actualImageDimension, expectedImageDimension, totalPixels, noOfIgnoredPixels, pixelsInError, result);
+        return result;
     }
 
-    public static boolean doRGBsMatch(int expectedRgb, int actualImageRGB) {
+    private static boolean doRGBsMatch(int expectedRgb, int actualImageRGB) {
         if (expectedRgb == actualImageRGB) {
             return true;
         }
 
-        if (RGB_DEVIATION_PERCENT > 0) {
+        if (RGB_DEVIATION_PERCENT > 0.0) {
             Color expectedColor = new Color(expectedRgb);
             Color actualColor = new Color(actualImageRGB);
 
-            int percentR = (int) (100 * (Math.abs(expectedColor.getRed() - actualColor.getRed())) / RGB_MAX_DEVIATION);
-            int percentG = (int) (100 * (Math.abs(expectedColor.getGreen() - actualColor.getGreen())) / RGB_MAX_DEVIATION);
-            int percentB = (int) (100 * (Math.abs(expectedColor.getBlue() - actualColor.getBlue())) / RGB_MAX_DEVIATION);
-
-//            LOGGER.info("RGB deviation percent: " + percentR + "/" + percentG + "/" + percentB);
+            double percentR = 100 * (Math.abs(expectedColor.getRed() - actualColor.getRed())) / RGB_MAX_DEVIATION;
+            double percentG = 100 * (Math.abs(expectedColor.getGreen() - actualColor.getGreen())) / RGB_MAX_DEVIATION;
+            double percentB = 100 * (Math.abs(expectedColor.getBlue() - actualColor.getBlue())) / RGB_MAX_DEVIATION;
+//            LOGGER.debug("Current RGB deviation:\n" +
+//                    "Red: {}%\n" +
+//                    "Blue: {}%\n" +
+//                    "Green: {}%\n",
+//                    percentR, percentB, percentG);
             if (percentR <= RGB_DEVIATION_PERCENT && percentG <= RGB_DEVIATION_PERCENT && percentB <= RGB_DEVIATION_PERCENT) {
                 return true;
             }
@@ -425,9 +417,21 @@ public final class LayoutCheck implements PropertyManagerProvider {
         final Path referenceScreenshotPath = step.referenceFileName;
         final Path actualScreenshotPath = step.actualFileName;
         final Path distanceScreenshotPath = step.distanceFileName;
-
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
+
+        if (!step.actualFileDimension.equals(step.referenceFileDimension)) {
+            OptionalAssert.fail(
+                    String.format(
+                            "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
+                            step.actualFileDimension.width,
+                            step.actualFileDimension.height,
+                            step.referenceFileDimension.width,
+                            step.referenceFileDimension.height
+                    )
+            );
+        }
+
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image

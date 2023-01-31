@@ -80,7 +80,7 @@ public final class WebDriverUtils {
         String finalMainWindowHandle = executionUtils.getFailsafe(mainWebDriver::getWindowHandle).orElse("");
 
         return mainWebDriver.getWindowHandles().stream()
-                .filter(windowHandle -> !windowHandle.equals(finalMainWindowHandle))
+//                .filter(windowHandle -> !windowHandle.equals(finalMainWindowHandle))
                 .map(windowHandle -> mainWebDriver.switchTo().window(windowHandle))
                 .anyMatch(webDriver -> {
                     boolean valid = predicate.test(webDriver);

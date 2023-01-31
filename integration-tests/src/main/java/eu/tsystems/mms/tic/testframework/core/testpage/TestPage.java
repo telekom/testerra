@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.testpage;
+package eu.tsystems.mms.tic.testframework.core.testpage;
 
 public enum TestPage {
     INPUT_TEST_PAGE("Input/input.html",
@@ -34,8 +34,8 @@ public enum TestPage {
     LAYOUT("Layout/index.html", INPUT_TEST_PAGE),
     LAYOUT_IMAGE("LayoutImage/index.html", INPUT_TEST_PAGE),
     LIST("GuiElementList/index.html", INPUT_TEST_PAGE),
-    SHADOW_ROOT("GuiElementShadowRoot/shadow_root.html", INPUT_TEST_PAGE)
-    ;
+    SHADOW_ROOT("GuiElementShadowRoot/shadow_root.html"),
+    SWITCH_WINDOW("Multiwindow/index.html");
 
     private String path;
     private String elementText;
@@ -44,13 +44,19 @@ public enum TestPage {
     private String attributeValuePart;
     private String attributeName;
 
+    TestPage(String path) {
+        this.path = path;
+    }
+
     TestPage(String path, TestPage parentPage) {
         this.path = path;
-        this.elementText = parentPage.elementText;
-        this.elementTextArray = parentPage.elementTextArray;
-        this.attributeValue = parentPage.attributeValue;
-        this.attributeName = parentPage.attributeName;
-        this.attributeValuePart = attributeValue.substring(1, 4);
+        if (parentPage != null) {
+            this.elementText = parentPage.elementText;
+            this.elementTextArray = parentPage.elementTextArray;
+            this.attributeValue = parentPage.attributeValue;
+            this.attributeName = parentPage.attributeName;
+            this.attributeValuePart = attributeValue.substring(1, 4);
+        }
     }
 
     TestPage(String path, String elementText, String[] elementTextArray, String attributeValue, String attributeName) {

@@ -12,6 +12,7 @@
                 <methods>
                     <include name="test_expectedFailedWithValidator_isValid"/>
                     <include name="test_expectedFailedWithValidator_isNotValid"/>
+                    <include name="test_expectedFailedWithTicketString"/>
                 </methods>
             </class>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">

@@ -169,4 +169,9 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
                     String.format("There should be an image comparison, that contains the %s image", title));
         }
     }
+
+    public void assertFailsAnnotationMessage(String expectedTicketString) {
+        UiElement failsAnnotationSegment = find(By.xpath("//div[./span[contains(text(),'@Fails')]]"));
+        failsAnnotationSegment.expect().text().contains(expectedTicketString).is(true);
+    }
 }

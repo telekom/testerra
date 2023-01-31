@@ -30,10 +30,10 @@ public enum TestPage {
     FRAME_TEST_PAGE("FrameSimple/frame.html", INPUT_TEST_PAGE),
     DRAG_AND_DROP("DragAndDrop/index.html", INPUT_TEST_PAGE),
     DRAG_AND_DROP_OVER_FRAMES("DragAndDropFrame/index.html", INPUT_TEST_PAGE),
-    MULTISELECT("Multiselect/index.html", INPUT_TEST_PAGE),
-    LAYOUT("Layout/index.html", INPUT_TEST_PAGE),
-    LAYOUT_IMAGE("LayoutImage/index.html", INPUT_TEST_PAGE),
-    LIST("GuiElementList/index.html", INPUT_TEST_PAGE),
+    MULTISELECT("Multiselect/index.html"),
+    LAYOUT("Layout/index.html"),
+    LAYOUT_IMAGE("LayoutImage/index.html"),
+    LIST("GuiElementList/index.html"),
     SHADOW_ROOT("GuiElementShadowRoot/shadow_root.html"),
     SWITCH_WINDOW("Multiwindow/index.html");
 

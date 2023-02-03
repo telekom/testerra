@@ -43,10 +43,6 @@ The directory for reference image may result in `src/test/resources/layout-refer
 
 The comparison is generally carried out over the entire reference image. In this case, it is a prerequisite that the reference screenshot and the screenshot created during the test runtime have the same resolution (height and width are identical).
 
-The property `{layoutcheck_pixel_rgb_deviation_percent}` controls, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
-
-To validate the layout, you can check the whole page or a single <<UiElements,UiElement>>.
-
 == Check the whole page
 
 [source, java]
@@ -70,6 +66,18 @@ float pixelDistanceToleranceThresholdPercent = 10.0;
 
 uiElement.expect().screenshot().pixelDistance("HeaderComponent").isLowerThan(pixelDistanceToleranceThresholdPercent);
 ----
+
+== Check images with RGB deviation
+
+The property `{layoutcheck_pixel_rgb_deviation_percent}` controls, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
+
+Especially for photo checks it should be helpful in case of different kinds of image formats and compression algorithms.
+
+[cols="1a,1a",options="header"]
+|===
+| `{layoutcheck_pixel_rgb_deviation_percent}=0.0` | `{layoutcheck_pixel_rgb_deviation_percent}=2.0`
+| image::layoutcheck_rgb_deviation01.png[alt="Screenshot of the report visualization of a layout check"] | image::layoutcheck_rgb_deviation02.png[alt="Screenshot of the report visualization of a layout check"]
+|===
 
 == Take reference screenshots on first run
 

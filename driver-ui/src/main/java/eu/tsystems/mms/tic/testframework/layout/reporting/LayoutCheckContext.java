@@ -22,9 +22,9 @@
 package eu.tsystems.mms.tic.testframework.layout.reporting;
 
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +35,6 @@ public class LayoutCheckContext implements CustomContext {
     public Screenshot expectedScreenshot;
     public Screenshot actualScreenshot;
     public Screenshot distanceScreenshot;
-    public Screenshot annotatedScreenshot;
 
     @Override
     public Map<String, Object> exportToReport(Report report) {

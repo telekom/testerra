@@ -21,7 +21,7 @@ public class PriorityMessagesTest extends AbstractReportTest {
         String methodName = "preTest08_priorityMessagesTest";
         String className = "GeneratePassedCheckTestsTTReportTest";
         String[] priorityMessages = new String[]{
-                "GeneratePassedCheckTestsTTReportTest: It's gonna be ok.",
+                "GeneratePassedCheckTestsTTReportTest: It is gonna be ok.",
                 "GeneratePassedCheckTestsTTReportTest: Warn me!",
                 "GeneratePassedCheckTestsTTReportTest: Tell me more!"
         };
@@ -38,6 +38,47 @@ public class PriorityMessagesTest extends AbstractReportTest {
 
         reportStepsTab.assertPriorityMessages(priorityMessages);
         reportStepsTab.assertStatesOfPriorityMessages(states);
+    }
+
+
+    @Test
+    public void testT02_checkGlobalPriorityMessages(){
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        String methodName = "preTest08_priorityMessagesTest";
+        String className = "GeneratePassedCheckTestsTTReportTest";
+        String[] priorityMessages = new String[]{
+                "GeneratePassedCheckTestsTTReportTest: It is gonna be ok.",
+                "GeneratePassedCheckTestsTTReportTest: Warn me!",
+                "GeneratePassedCheckTestsTTReportTest: Tell me more!"
+        };
+        String[] states= new String[]{
+                "status-skipped",
+                "status-failed"
+        };
+
+        TestStep.begin("Navigate to steps page");
+        ReportDashBoardPage reportDashBoardPage = super.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+
+        reportDashBoardPage.assertPriorityMessages(priorityMessages);
+        reportDashBoardPage.assertStatesOfPriorityMessages(states);
+    }
+
+    @Test
+    public void testT03_checkPriorityMessagesOnTestsPage(){
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        String methodName = "preTest08_priorityMessagesTest";
+        String[] priorityMessages = new String[]{
+                "It is gonna be ok.",
+                "Warn me!",
+                "Tell me more!"
+        };
+
+        TestStep.begin("Navigate to tests page");
+        ReportDashBoardPage reportDashBoardPage = super.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+
+        TestStep.begin("Check priority message-preview for test");
+        reportTestsPage.checkPriorityMessagesPreviewForTest(methodName, priorityMessages);
     }
 
 }

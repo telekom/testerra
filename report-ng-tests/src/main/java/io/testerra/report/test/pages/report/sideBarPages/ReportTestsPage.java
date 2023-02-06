@@ -36,6 +36,7 @@ import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ReportTestsPage extends AbstractReportPage {
@@ -54,6 +55,28 @@ public class ReportTestsPage extends AbstractReportPage {
 
     private final String methodLinkLocator = "//tbody//tr//td//a[text()='%s']";
     private final UiElement tableHead = pageContent.find(By.xpath(".//thead"));
+
+    public void checkPriorityMessagesPreviewForTest(String methodName, String[] priorityMessages) {
+        Optional<UiElement> methodSegment = getColumnWithoutHead(TestsTableEntry.METHOD)
+                .stream()
+                .filter(i -> i.expect().text().getActual().contains(methodName))
+                .findFirst();
+        Assert.assertTrue(methodSegment.isPresent(), "Should find table-entry with corresponding method name");
+        for (String message : priorityMessages) {
+            UiElement priorityMessageElement = methodSegment.get().find(By.xpath(String.format("//*[text()='%s']", message)));
+            priorityMessageElement.expect().displayed().is(true);
+        }
+    }
+
+    public void assertTicketString(String methodName, String expectedTicketString) {
+        Optional<UiElement> methodSegment = getColumnWithoutHead(TestsTableEntry.METHOD)
+                .stream()
+                .filter(i -> i.expect().text().getActual().contains(methodName))
+                .findFirst();
+        Assert.assertTrue(methodSegment.isPresent(), "Should find table-entry with corresponding method name");
+        UiElement priorityMessageElement = methodSegment.get().find(By.xpath(String.format("//*[text()='%s']", expectedTicketString)));
+        priorityMessageElement.expect().displayed().is(true);
+    }
 
     public enum TestsTableEntry {
         STATUS(0), CLASS(1), INDEX(2), METHOD(3);

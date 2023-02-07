@@ -25,6 +25,7 @@ package io.testerra.report.test.pages.report.methodReport;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
@@ -185,5 +186,19 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         UiElement previousFailedMethod = find(By.xpath("//div[./span[text()='Next failed method']]"));
         previousFailedMethod.find(By.xpath("//a")).click();
 
+    }
+
+    public void openLastScreenshot() {
+        UiElement lastScreenshot = find(By.xpath("//lazy-image//img"));
+        lastScreenshot.click();
+        TimerUtils.sleep(3000);
+    }
+
+    public void swipeToNextScreenshot() {
+        String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
+        UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
+        nextScreenshot.click();
+        String newPageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
+        Assert.assertNotEquals(pageSource, newPageSource, "Page sources should differ, since screenshots should differ!");
     }
 }

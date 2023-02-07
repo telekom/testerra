@@ -23,6 +23,7 @@ package io.testerra.report.test.pretest_status.simple;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 
 import org.openqa.selenium.WebDriver;
@@ -67,5 +68,31 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         CONTROL.collectAssertions(() -> {
             ASSERT.assertTrue(false, "assertion passed");
         });
+    }
+
+    @Test
+    public void test_takeExclusiveSessionScreenshotWithMultipleActiveSessions(){
+        WebDriver driver1 = WEB_DRIVER_MANAGER.getWebDriver("session1");
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver("session2");
+        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
+        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE);
+
+        WEB_DRIVER_MANAGER.makeExclusive(driver1);
+
+        final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver1);
+        pageWithExistingElement.screenshotToReport();
+    }
+
+    @Test
+    public void test_takeScreenshotWithMultipleActiveSessions(){
+        WebDriver driver1 = WEB_DRIVER_MANAGER.getWebDriver("session1");
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver("session2");
+        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
+        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE);
+
+        WEB_DRIVER_MANAGER.makeExclusive(driver1);
+
+        final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver2);
+        pageWithExistingElement.screenshotToReport();
     }
 }

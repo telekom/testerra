@@ -19,6 +19,8 @@
                 <methods>
                     <include name="test_takeScreenshotOnExclusiveSession_fails"/>
                     <include name="test_takeScreenshotViaCollectedAssertion_fails"/>
+                    <include name="test_takeExclusiveSessionScreenshotWithMultipleActiveSessions"/>
+                    <include name="test_takeScreenshotWithMultipleActiveSessions"/>
                 </methods>
             </class>
         </classes>

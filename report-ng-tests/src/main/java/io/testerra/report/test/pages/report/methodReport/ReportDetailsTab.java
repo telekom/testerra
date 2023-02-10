@@ -25,6 +25,8 @@ package io.testerra.report.test.pages.report.methodReport;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,13 +38,13 @@ import java.util.stream.Collectors;
 
 public class ReportDetailsTab extends AbstractReportMethodPage {
     @Check
-    private final UiElement pageContent = find(By.xpath("//router-view[@class='au-target']//mdc-layout-grid"));
+    private final UiElement pageContent = find(By.xpath("//router-view[contains(@class,'au-target')]"));
     @Check
-    private final UiElement testFailureAspect = pageContent.find(By.xpath("//mdc-card[./div[text()='Failure Aspect']]"));
+    private final UiElement testFailureAspect = pageContent.find(By.xpath("//div[contains(@class,'p1') and contains(@class,'status')]"));
     //TODO: mandatory?
-    private final UiElement testOriginCard = pageContent.find(By.xpath("//mdc-card[./div[contains(text(), 'Origin')]]"));
+    private final UiElement testOriginCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Origin')]]"));
     @Check
-    private final UiElement testStacktraceCard = pageContent.find(By.xpath("//mdc-card[./div[contains(text(), 'Stacktrace')]]"));
+    private final UiElement testStacktraceCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Stacktrace')]]"));
 
     public ReportDetailsTab(WebDriver driver) {
         super(driver);
@@ -173,5 +175,30 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     public void assertFailsAnnotationMessage(String expectedTicketString) {
         UiElement failsAnnotationSegment = find(By.xpath("//div[./span[contains(text(),'@Fails')]]"));
         failsAnnotationSegment.expect().text().contains(expectedTicketString).is(true);
+    }
+
+    public void navigateToPreviousFailedMethod() {
+        UiElement previousFailedMethod = find(By.xpath("//div[./span[text()='Previous failed method']]"));
+        previousFailedMethod.find(By.xpath("//a")).click();
+    }
+
+    public void navigateToNextFailedMethod() {
+        UiElement previousFailedMethod = find(By.xpath("//div[./span[text()='Next failed method']]"));
+        previousFailedMethod.find(By.xpath("//a")).click();
+
+    }
+
+    public void openLastScreenshot() {
+        UiElement lastScreenshot = find(By.xpath("//lazy-image//img"));
+        lastScreenshot.click();
+        TimerUtils.sleep(3000);
+    }
+
+    public void swipeToNextScreenshot() {
+        String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
+        UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
+        nextScreenshot.click();
+        String newPageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
+        Assert.assertNotEquals(pageSource, newPageSource, "Page sources should differ, since screenshots should differ!");
     }
 }

@@ -5,7 +5,6 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
-import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import org.openqa.selenium.WebDriver;
@@ -30,6 +29,19 @@ public class TicketStringsTest extends AbstractReportTest {
 
         reportDetailsTab.assertTestMethodeReportContainsFailsAnnotation();
         reportDetailsTab.assertFailsAnnotationMessage(expectedTicketString);
+    }
+
+    @Test
+    public void testT02_checkFailsTicketStringOnTestsPage() {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        String methodName = "test_expectedFailedWithTicketString";
+        String expectedTicketString = "placeholder ticket string";
+
+        TestStep.begin("Navigate to steps page");
+        ReportDashBoardPage reportDashBoardPage = super.visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+
+        reportTestsPage.assertTicketString(methodName, expectedTicketString);
     }
 
 }

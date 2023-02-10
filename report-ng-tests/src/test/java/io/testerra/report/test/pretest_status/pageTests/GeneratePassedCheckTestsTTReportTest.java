@@ -70,7 +70,7 @@ public class GeneratePassedCheckTestsTTReportTest extends AbstractTestSitesTest 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
 
-        log().info("It's gonna be ok.", Loggable.prompt);
+        log().info("It is gonna be ok.", Loggable.prompt);
 
         // some test activities ...
         log().warn("Warn me!", Loggable.prompt);
@@ -78,4 +78,17 @@ public class GeneratePassedCheckTestsTTReportTest extends AbstractTestSitesTest 
         // some test activities ...
         log().error("Tell me more!", Loggable.prompt);
     }
+
+    @Test
+    public void preTest09_priorityMessagesGlobalContentTest() {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        visitTestPage(driver, testPage);
+
+        new Thread(() -> log().info("It is gonna be ok.", Loggable.prompt)).start();
+
+        new Thread(() -> log().warn("Warn me!", Loggable.prompt)).start();
+
+        new Thread(() -> log().error("Tell me more!", Loggable.prompt)).start();
+    }
+
 }

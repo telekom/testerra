@@ -239,7 +239,7 @@ public class TestDataProvider {
     }
 
     @DataProvider(parallel = true)
-    public Object[][] failureAspectsWithMultipleStatus() {
+    public static Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
                 {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},

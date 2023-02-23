@@ -22,22 +22,21 @@
 
 package io.testerra.report.test.report_test.sidebarpages;
 
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import io.testerra.report.test.AbstractReportTest;
-import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
-import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
-import org.openqa.selenium.WebDriver;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
+import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
+import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
+import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 
 public class ReportTestsPageTest extends AbstractReportTest {
 
-    @Test(dataProvider = "dataProviderForTestStates")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForTestStates")
     public void testT01_filterForTestStates(Status status) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -51,7 +50,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         reportTestsPage.assertStatusColumnHeadlineContainsCorrectText();
     }
 
-    @Test(dataProvider = "dataProviderForDifferentTestClasses")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestClasses")
     public void testT02_filterForClasses(String className) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -65,7 +64,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         reportTestsPage.assertClassColumnHeadlineContainsCorrectText();
     }
 
-    @Test(dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
     public void testT03_SearchForTestMethods(String testMethod) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -79,7 +78,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
         reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
     }
 
-    @Test(dataProvider = "dataProviderForFailureAspects")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForFailureAspects")
     public void testT04_SearchForFailureAspect(String failureAspect) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();

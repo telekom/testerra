@@ -44,6 +44,7 @@ public class PriorityMessagesTest extends AbstractReportTest {
     @Test
     public void testT02_checkGlobalPriorityMessages(){
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+//        TODO: not needed or incomplete test?
         String methodName = "preTest08_priorityMessagesTest";
         String className = "GeneratePassedCheckTestsTTReportTest";
         String[] priorityMessages = new String[]{

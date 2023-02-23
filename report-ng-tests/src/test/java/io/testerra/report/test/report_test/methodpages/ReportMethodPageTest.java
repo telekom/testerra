@@ -22,10 +22,14 @@
 
 package io.testerra.report.test.report_test.methodpages;
 
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
@@ -34,16 +38,11 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import io.testerra.report.test.pages.utils.DateTimeUtils;
 import io.testerra.report.test.pages.utils.TestData;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
 public class ReportMethodPageTest extends AbstractReportTest {
 
 
-    @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States_ForStepsType")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForStepsType")
     public void testT01_methodOverviewIsCorrectForStepsType(TestData data) {
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
@@ -63,7 +62,7 @@ public class ReportMethodPageTest extends AbstractReportTest {
         reportThreadsPage.assertMethodBoxIsSelected(method);
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
     public void testT01_methodOverviewIsCorrectForDetailsType(TestData data) {
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
@@ -100,7 +99,7 @@ public class ReportMethodPageTest extends AbstractReportTest {
         Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethodsWithScreenshot")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethodsWithScreenshot")
     public void testT03_checkScreenshot(final String methodName) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();

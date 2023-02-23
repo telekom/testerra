@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Report - Generate Additional Test Status for Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
 
-    <test name="Parallel">
+    <test name="Parallel" parallel="methods">
         <packages>
             <package name="io.testerra.report.test.pretest_status.pageTests"/>
             <package name="io.testerra.report.test.pretest_status.layoutTests"/>
@@ -15,15 +15,24 @@
                     <include name="test_expectedFailedWithTicketString"/>
                 </methods>
             </class>
+        </classes>
+    </test>
+
+    <test name="Sequential">
+        <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
                 <methods>
                     <include name="test_takeScreenshotOnExclusiveSession_fails"/>
                     <include name="test_takeScreenshotViaCollectedAssertion_fails"/>
-                    <include name="test_takeExclusiveSessionScreenshotWithMultipleActiveSessions"/>
-                    <include name="test_takeScreenshotWithMultipleActiveSessions"/>
+                    <include name="test_takeScreenshotWithMultipleExclusiveSessions"/>
+<!--                    <include name="test_takeExclusiveSessionScreenshotWithMultipleActiveSessions"/>-->
+                    <include name="test_takeScreenshotOnErrorWithMultipleActiveSessionsError"/>
+<!--                    <include name="test_takeScreenshotsWithMultipleActiveSessions"/>-->
+                    <include name="test_takeScreenshotOnErrorWithMultipleExclusiveSessions"/>
                 </methods>
             </class>
         </classes>
+
     </test>
 
 </suite>

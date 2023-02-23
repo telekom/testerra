@@ -2,26 +2,26 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Report - Generate Test Status for Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
 
-    <test name="Passed Status Creator">
+    <test name="Passed Status Creator" parallel="methods">
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GeneratePassedStatusInTesterraReportTest"/>
         </classes>
     </test>
 
-    <test name="Failed Status Creator">
+    <test name="Failed Status Creator" parallel="methods">
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest"/>
         </classes>
     </test>
 
-    <test name="Skipped Status Creator">
+    <test name="Skipped Status Creator" parallel="methods">
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest"/>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusViaBeforeMethodInTesterraReportTest"/>
         </classes>
     </test>
 
-    <test name="Expected Status Creator">
+    <test name="Expected Status Creator" parallel="methods">
         <classes>
             <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest">
                 <methods>
@@ -32,7 +32,7 @@
         </classes>
     </test>
 
-    <test name="Screenshot Creator">
+    <test name="Screenshot Creator" parallel="methods">
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
                 <methods>

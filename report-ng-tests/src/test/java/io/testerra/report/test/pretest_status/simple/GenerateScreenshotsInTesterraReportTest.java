@@ -23,38 +23,25 @@ package io.testerra.report.test.pretest_status.simple;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
+import io.testerra.report.test.pages.pretest.CheckPages.OptionalCheckPage;
 
 public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTest implements AssertProvider {
+
+    private String exclusiveSessionId2;
 
     @Test
     public void test_Failed_WithScreenShot() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
-        Assert.fail("'Failed' on reached Page.");
-    }
-
-    @Test
-    public void test_GenerateScreenshotManually() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
-
-        final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
-        pageWithExistingElement.screenshotToReport();
-    }
-
-    @Test()
-    @Fails()
-    public void test_takeScreenshotOnExclusiveSession_fails() {
-        WebDriver driver = getExclusiveWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
         Assert.fail("'Failed' on reached Page.");
     }
@@ -70,29 +57,94 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         });
     }
 
+//     one screenshot manually shot on normal session
     @Test
-    public void test_takeExclusiveSessionScreenshotWithMultipleActiveSessions(){
-        WebDriver driver1 = WEB_DRIVER_MANAGER.getWebDriver("session1");
-        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver("session2");
-        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
-        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE);
+    public void test_GenerateScreenshotManually() {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
 
-        WEB_DRIVER_MANAGER.makeExclusive(driver1);
-
-        final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver1);
+        final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
         pageWithExistingElement.screenshotToReport();
     }
 
+//     one screenshot on error on exclusive session
+    @Test()
+    @Fails()
+    public void test_takeScreenshotOnExclusiveSession_fails() {
+        WebDriver driver = getExclusiveWebDriver();
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
+        Assert.fail("'Failed' on reached Page.");
+    }
+
+//    two screenshots success on different session types
     @Test
-    public void test_takeScreenshotWithMultipleActiveSessions(){
-        WebDriver driver1 = WEB_DRIVER_MANAGER.getWebDriver("session1");
-        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver("session2");
+    public void test_takeScreenshotsWithMultipleActiveSessions(){
+        WebDriver driver1 = getExclusiveWebDriver();
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
+
         visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
-        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE);
+        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE_2);
 
-        WEB_DRIVER_MANAGER.makeExclusive(driver1);
+        UITestUtils.takeScreenshots();
+    }
 
-        final PageWithExistingElement pageWithExistingElement = PAGE_FACTORY.createPage(PageWithExistingElement.class, driver2);
+//    two screenshot on success exclusive sessions only
+    @Test
+    public void test_takeScreenshotWithMultipleExclusiveSessions(){
+        WebDriver driver1 = getExclusiveWebDriver();
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
+        exclusiveSessionId2 = WEB_DRIVER_MANAGER.makeExclusive(driver2);
+
+        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
+        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE_2);
+
+        UITestUtils.takeScreenshots();
+    }
+
+//    one screenshot manually shot on exclusive session shown
+//    additional screenshots actually in temp dir, but with absolute path to user temp in report, thus not shown
+    @Test
+    public void test_takeExclusiveSessionScreenshotWithMultipleActiveSessions(){
+        WebDriver driver1 = getExclusiveWebDriver();
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
+
+        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
+        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE_2);
+
+        final OptionalCheckPage pageWithExistingElement = PAGE_FACTORY.createPage(OptionalCheckPage.class, driver1);
         pageWithExistingElement.screenshotToReport();
+    }
+
+// two screenshots on error different session types
+    @Test
+    public void test_takeScreenshotOnErrorWithMultipleActiveSessionsError(){
+        WebDriver driver1 = getExclusiveWebDriver();
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
+
+        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
+        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE_2);
+
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, driver2);
+    }
+
+//    two screenshot on error exclusive sessions only
+    @Test
+    public void test_takeScreenshotOnErrorWithMultipleExclusiveSessions(){
+        WebDriver driver1 = getExclusiveWebDriver();
+        WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
+        exclusiveSessionId2 = WEB_DRIVER_MANAGER.makeExclusive(driver2);
+
+        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
+        visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE_2);
+
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, driver2);
+    }
+
+    @AfterMethod
+    public void closeExclusiveSessionOfTestClass() {
+        if (exclusiveSessionId2 != null) {
+            WEB_DRIVER_MANAGER.shutdownSession(this.exclusiveSessionId2);
+            exclusiveSessionId2 = null;
+        }
     }
 }

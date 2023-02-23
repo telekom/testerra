@@ -24,11 +24,14 @@ package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 public abstract class AbstractReportMethodPage extends AbstractReportPage {
 
@@ -112,5 +115,25 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
 
     public void assertScreenshotIsDisplayed() {
         testLastScreenshot.expect().displayed().is(true, "Screenshot is displayed.");
+    }
+
+    public void openLastScreenshot() {
+        UiElement lastScreenshot = find(By.xpath("//lazy-image//img"));
+        lastScreenshot.click();
+        TimerUtils.sleep(3000);
+    }
+
+    public void swipeToNextScreenshot() {
+        String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
+        UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
+        nextScreenshot.click();
+        String newPageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
+        Assert.assertNotEquals(pageSource, newPageSource, "Page sources should differ, since screenshots should differ!");
+    }
+
+    public void assertSingleScreenshot() {
+        String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
+        UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
+        nextScreenshot.assertThat().displayed(false);
     }
 }

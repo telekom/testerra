@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
@@ -37,7 +38,7 @@ import io.testerra.report.test.pages.utils.TestData;
 
 public class ReportStepsTabTest extends AbstractReportTest {
 
-    @Test(dataProvider = "dataProviderForTestsWithoutFailureAspect")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForTestsWithoutFailureAspect")
     public void testT01_passedTestsWithoutFailureAspectsLinkToStepsTab(String method) {
 
         TestStep.begin("Navigate to dashboard page.");
@@ -54,7 +55,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         reportStepsTab.assertThat().displayed();
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethodsWithFailureAspects")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethodsWithFailureAspects")
     public void testT02_checkTestStepsContainFailureAspectMessage(TestData data) {
         String method = data.getMethod();
         String failureAspect = data.getFailureAspect();

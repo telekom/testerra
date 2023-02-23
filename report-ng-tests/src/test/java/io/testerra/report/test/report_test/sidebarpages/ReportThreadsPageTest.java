@@ -22,20 +22,19 @@
 
 package io.testerra.report.test.report_test.sidebarpages;
 
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+
+import org.testng.annotations.Test;
+
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Test;
-
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
 public class ReportThreadsPageTest extends AbstractReportTest {
 
-    @Test(dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
     public void testT01_checkSearchForMethodsSelectionWorksCorrectly(String method) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();

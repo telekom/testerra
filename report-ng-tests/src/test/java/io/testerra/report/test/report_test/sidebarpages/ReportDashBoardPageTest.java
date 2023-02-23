@@ -22,19 +22,16 @@
 
 package io.testerra.report.test.report_test.sidebarpages;
 
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
-
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 
 import java.util.List;
 
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
@@ -44,7 +41,7 @@ import io.testerra.report.test.pages.utils.DateTimeUtils;
 
 public class ReportDashBoardPageTest extends AbstractReportTest {
 
-    @Test(dataProvider = "dataProviderForDashBoardTestStates")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT01_showCorrectTestClassesWhenClickingOnPieChart(Status status) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -57,7 +54,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
     }
 
-    @Test(dataProvider = "dataProviderForDashBoardTestStates")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT02_showCorrectTestClassesWhenClickingOnNumbersChart(Status status) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -70,7 +67,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
     }
 
-    @Test(dataProvider = "dataProviderForNavigationBetweenDifferentPages")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForNavigationBetweenDifferentPages")
     public void testT03_navigationTowardsDifferentPagesDashBoardPage(ReportSidebarPageType type, Class<AbstractReportPage> pageClass) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();

@@ -23,23 +23,22 @@
 package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+
+import org.testng.annotations.Test;
+
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import io.testerra.report.test.pages.utils.LogLevel;
 import io.testerra.report.test.pages.utils.TestData;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Test;
-
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
 public class ReportLogsPageTest extends AbstractReportTest {
 
-    @Test(dataProvider = "dataProviderForLogLevel")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForLogLevel")
     public void testT01_checkLogLevelFilter(LogLevel logLevel) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -73,7 +72,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         // reportLogsPage.assertLogReportIsCorrectWhenSearchingForDifferentLogLines();
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States")
     public void testT03_filterForMethodContent(TestData data) {
         String methodeName = data.getMethod();
         String methodeClass = data.getMethodClass();
@@ -98,7 +97,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         reportLogsPage.assertMarkedLogLinesContainText(methodStatus.title);
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethods_Classes_States")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States")
     public void testT04_filterForMethodContentWithLogLevel(TestData data) {
         String methodeName = data.getMethod();
         String methodeClass = data.getMethodClass();

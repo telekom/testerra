@@ -187,18 +187,4 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         previousFailedMethod.find(By.xpath("//a")).click();
 
     }
-
-    public void openLastScreenshot() {
-        UiElement lastScreenshot = find(By.xpath("//lazy-image//img"));
-        lastScreenshot.click();
-        TimerUtils.sleep(3000);
-    }
-
-    public void swipeToNextScreenshot() {
-        String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
-        UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
-        nextScreenshot.click();
-        String newPageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
-        Assert.assertNotEquals(pageSource, newPageSource, "Page sources should differ, since screenshots should differ!");
-    }
 }

@@ -68,6 +68,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement minorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Minor')]"));
     private final UiElement topFailuresLink = testTopFailureAspectsElement.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
 
+    private final UiElement priorityMessagesElement = find(By.xpath("//mdc-card[./div[text()='Priority messages']]"));
+
     private final String xPathToPieChartPart = "//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']";
 
     public ReportDashBoardPage(WebDriver driver) {
@@ -322,7 +324,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     public void assertTopFailureAspectsAreDisplayed() {
-        //testTopFailureAspectsElement.asserts().assertIsDisplayed();
         testTopFailureAspectsElement.expect().displayed().is(true);
     }
 
@@ -348,20 +349,18 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
 
-    public void assertPriorityMessages(String[] priorityMessages) {
-        UiElement priorityMessagesElement = find(By.xpath("//mdc-card[./div[text()='Priority messages']]"));
-        for(String message : priorityMessages){
-            UiElement priorityMessageElement = priorityMessagesElement.find(By.xpath(String.format("//*[contains(text(),'%s')]", message)));
-            priorityMessageElement.expect().displayed();
-        }
-
+    public void assertPriorityMessages(final String[] priorityMessages) {
+        assertPriorityInfo(priorityMessages);
     }
 
-    public void assertStatesOfPriorityMessages(String[] states) {
-        UiElement priorityMessagesElement = find(By.xpath("//mdc-card[./div[text()='Priority messages']]"));
-        for(String status : states){
-            UiElement priorityMessageElement = priorityMessagesElement.find(By.xpath(String.format("//*[contains(@class,'%s')]", status)));
-            priorityMessageElement.expect().displayed();
+    public void assertStatesOfPriorityMessages(final String[] states) {
+        assertPriorityInfo(states);
+    }
+
+    private void assertPriorityInfo(final String[] infos) {
+        for (final String info : infos){
+            final UiElement priorityMessageElement = priorityMessagesElement.find(By.xpath(String.format("//*[contains(@class,'%s')]", info)));
+            priorityMessageElement.assertThat().displayed();
         }
     }
 }

@@ -25,6 +25,7 @@ package io.testerra.report.test.report_test.sidebarpages;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
@@ -53,7 +54,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportFailureAspectsPage.assertRankColumnDescends();
     }
 
-    @Test(dataProvider = "dataProviderForFailureAspectsTypes")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForFailureAspectsTypes")
     public void testT02_checkTypeFilter(final FailureAspectType failureAspectType) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -66,7 +67,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportFailureAspectsPage.assertFailureAspectTypeIsFilteredCorrectly(failureAspectType);
     }
 
-    @Test(dataProvider = "dataProviderForFailureAspects")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForFailureAspects")
     public void testT03_checkSearchFilter(String failureAspect) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
@@ -95,7 +96,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
                 "There should be more aspects listed, when expected fails button is enabled!");
     }
 
-    @Test(dataProvider = "failureAspectsWithMultipleStatus")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "failureAspectsWithMultipleStatus")
     public void testT05_checkStatesRedirectCorrectForFailureAspectsWithDifferentStates(TestData data) {
         String failureAspect = data.getFailureAspect();
         Status status1 = data.getStates().get(0);
@@ -119,7 +120,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportTestsPage.assertCorrectTestStatus(status2);
     }
 
-    @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForFailureAspectsWithCorrespondingStates")
     public void testT06_checkNavigationWithFailureAspect(TestData data) {
         String failureAspect = data.getFailureAspect();
         List<Status> statusList = data.getStates();
@@ -136,7 +137,7 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         reportTestsPage.assertCorrectTestStates(statusList);
     }
 
-    @Test(dataProvider = "dataProviderForFailureAspectsWithCorrespondingMethodNames")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForFailureAspectsWithCorrespondingMethodNames")
     public void testT07_checkNavigationWithTestState(final String failureAspect, final Status status, final String methodName) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();

@@ -22,23 +22,22 @@
 
 package io.testerra.report.test.report_test.methodpages;
 
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+
+import org.testng.annotations.Test;
+
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.TestData;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.Test;
-
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
 public class ReportDetailsTabTest extends AbstractReportTest {
 
-    @Test(dataProvider = "dataProviderForPreTestMethodsWithFailureAspect")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethodsWithFailureAspect")
     public void testT01_checkFailureAspectContainsCorrectStatus(TestData data) {
         String method = data.getMethod();
         Status status = data.getStatus1();
@@ -75,7 +74,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         reportDetailsTab.assertTestMethodContainsCorrectFailureAspect(expectedFailureAspect);
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusFailed")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethodsWithStatusFailed")
     public void testT03_failedTestsContainCorrespondingFailureAspect(TestData data) {
         String method = data.getMethod();
         String expectedFailureAspect = data.getFailureAspect();
@@ -92,7 +91,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         reportDetailsTab.assertTestMethodContainsCorrectFailureAspect(expectedFailureAspect);
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusExpectedFailed")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethodsWithStatusExpectedFailed")
     public void testT04_expectedFailedTestsContainCorrespondingFailureAspectAndFailsAnnotation(TestData data) {
         String method = data.getMethod();
         String expectedFailureAspect = data.getFailureAspect();
@@ -111,7 +110,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         reportDetailsTab.assertTestMethodeReportContainsFailsAnnotation();
     }
 
-    @Test(dataProvider = "dataProviderForPreTestMethodsWithStatusSkipped")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethodsWithStatusSkipped")
     public void testT05_skippedTestsContainCorrectFailureAspects(String method) {
 
         TestStep.begin("Navigate to dashboard page.");

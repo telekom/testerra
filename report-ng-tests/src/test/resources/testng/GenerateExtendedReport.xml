@@ -15,6 +15,11 @@
                     <include name="test_expectedFailedWithTicketString"/>
                 </methods>
             </class>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest">
+                <methods>
+                    <include name="test_failedWithInterceptedClick"/>
+                </methods>
+            </class>
         </classes>
     </test>
 
@@ -25,9 +30,9 @@
                     <include name="test_takeScreenshotOnExclusiveSession_fails"/>
                     <include name="test_takeScreenshotViaCollectedAssertion_fails"/>
                     <include name="test_takeScreenshotWithMultipleExclusiveSessions"/>
-<!--                    <include name="test_takeExclusiveSessionScreenshotWithMultipleActiveSessions"/>-->
+                    <include name="test_takeExclusiveSessionScreenshotWithMultipleActiveSessions"/>
                     <include name="test_takeScreenshotOnErrorWithMultipleActiveSessionsError"/>
-<!--                    <include name="test_takeScreenshotsWithMultipleActiveSessions"/>-->
+                    <include name="test_takeScreenshotsWithMultipleActiveSessions"/>
                     <include name="test_takeScreenshotOnErrorWithMultipleExclusiveSessions"/>
                 </methods>
             </class>

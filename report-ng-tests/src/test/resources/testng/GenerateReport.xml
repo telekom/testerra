@@ -10,7 +10,11 @@
 
     <test name="Failed Status Creator" parallel="methods">
         <classes>
-            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest"/>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest">
+                <methods>
+                    <exclude name="test_failedWithInterceptedClick"/>
+                </methods>
+            </class>
         </classes>
     </test>
 

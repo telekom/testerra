@@ -22,19 +22,20 @@
 
 package io.testerra.report.test.pages.report.methodReport;
 
+import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
-import io.testerra.report.test.pages.utils.RegExUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+import io.testerra.report.test.pages.utils.RegExUtils;
 
 public class ReportDetailsTab extends AbstractReportMethodPage {
     @Check
@@ -50,15 +51,17 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         super(driver);
     }
 
-    public void assertFailureAspectsCorrespondsToCorrectStatus(String expectedStatusTitle) {
+    public void assertFailureAspectsCorrespondsToCorrectStatus(final String expectedStatusTitle) {
         String expectedStatusTitleFormatted = expectedStatusTitle.toLowerCase();
+
         if (expectedStatusTitleFormatted.equals(Status.FAILED_EXPECTED.title.toLowerCase(Locale.ROOT)))
             expectedStatusTitleFormatted = "failed-expected";
-        UiElement failureAspectColoredPart = testFailureAspect.find(By.xpath("//div[contains(@class, 'status')]"));
-        //failureAspectColoredPart.asserts(String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.getAttribute("class"), expectedStatusTitleFormatted)).assertAttributeContains("class", expectedStatusTitleFormatted);
 
-        failureAspectColoredPart.expect().attribute("class").contains(expectedStatusTitleFormatted).is(true,
-                String.format("Failure Aspect status [%s] should correspond to method state [%s]", failureAspectColoredPart.expect().attribute("class").getActual(), expectedStatusTitleFormatted));
+        final StringAssertion<String> attributeClass = testFailureAspect.expect().attribute("class");
+        attributeClass.contains(expectedStatusTitleFormatted).is(true,
+                String.format("Failure Aspect status [%s] should correspond to method state [%s]",
+                        attributeClass.getActual(),
+                        expectedStatusTitleFormatted));
     }
 
     public void assertTestMethodContainsCorrectFailureAspect(String correctFailureAspect) {
@@ -132,12 +135,11 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     }
 
     public String getFailureAspect() {
-        return testFailureAspect.expect().text().getActual().split("\n")[1];
+        return testFailureAspect.waitFor().text().getActual();
     }
 
-    public void assertStacktraceContainsExpectedFailureAspects(String[] expectedFailureAspects) {
-        UiElement stackTraceCard = find(By.xpath("//mdc-card[./div[contains(text(),'Stacktrace')]]"));
-        List<String> actualFailureAspects = stackTraceCard.find(By.xpath("//mdc-expandable/div[@ref='header']")).list()
+    public void assertStacktraceContainsExpectedFailureAspects(String... expectedFailureAspects) {
+        final List<String> actualFailureAspects = testStacktraceCard.find(By.xpath("//mdc-expandable/div[@ref='header']")).list()
                 .stream()
                 .map(uiElement -> uiElement.waitFor().text().getActual())
                 .collect(Collectors.toList());
@@ -152,7 +154,6 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     public void assertDurationIsNotValid(int lowerBound, int upperBound) {
         String duration = getTestDuration();
         String secondsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, duration);
-        System.out.println(secondsString);
         int seconds = Integer.parseInt(secondsString.trim());
         Assert.assertFalse(lowerBound <= seconds || seconds <= upperBound, "Run duration should not be in valid interval");
     }

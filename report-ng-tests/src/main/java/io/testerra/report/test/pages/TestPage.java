@@ -29,7 +29,8 @@ public enum TestPage {
             "value"),
 
     DUMMY_TEST_PAGE("Input/tt2_testDummyPage.html"),
-    DUMMY_TEST_PAGE_2("Input/tt2_testDummyPage_2.html");
+    DUMMY_TEST_PAGE_2("Input/tt2_testDummyPage_2.html"),
+    OVERLAY_INTERCEPTION_PAGE("Input/tt2_testOverlayInterception.html");
 
 
     private final String path;

@@ -23,8 +23,14 @@ package io.testerra.report.test.pretest_status.simple;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+
 import io.testerra.report.test.AbstractTestSitesTest;
+import io.testerra.report.test.pages.TestPage;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
+import io.testerra.report.test.pages.pretest.OverlayInterceptionPage;
+
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -47,5 +53,18 @@ public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesT
     @FailureCorridor.Mid
     public void test_failedPageNotFound() {
         PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());
+    }
+
+    @Test
+    public void test_failedWithInterceptedClick() {
+        TestStep.begin("get web driver");
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        TestStep.begin("visit test page");
+        visitTestPage(driver, TestPage.OVERLAY_INTERCEPTION_PAGE);
+        final OverlayInterceptionPage overlayInterceptionPage = PAGE_FACTORY.createPage(OverlayInterceptionPage.class);
+
+        TestStep.begin("click on headline");
+        overlayInterceptionPage.clickButton();
     }
 }

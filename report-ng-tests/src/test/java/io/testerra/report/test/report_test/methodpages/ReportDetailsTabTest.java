@@ -25,6 +25,7 @@ package io.testerra.report.test.report_test.methodpages;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractReportTest;
@@ -126,4 +127,29 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         reportMethodPage.assertSkippedTestContainsCorrespondingFailureAspect();
     }
 
+    @Test
+    public void testT06_failedTestWithHtmlInFailureAspect() {
+        final String method = "test_failedWithInterceptedClick";
+        final String expectedFailureAspect = "ElementClickInterceptedException: element click intercepted: Element <button id=\"btn\">...</button> "
+                + "is not clickable at point (107, 98). Other element would receive the click: <div class=\"overlay\"></div>";
+
+        TestStep.begin("navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
+
+        TestStep.begin("navigate to tests page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+
+        TestStep.begin("verify html text is not rendered");
+        reportTestsPage = reportTestsPage.selectTestStatus(Status.FAILED);
+        final ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
+
+        final String failureAspect = reportDetailsTab.getFailureAspect();
+        Assert.assertEquals(failureAspect, expectedFailureAspect, "html shown as text in failure aspect");
+
+        TestStep.begin("verify status of failure aspect");
+        reportDetailsTab.assertFailureAspectsCorrespondsToCorrectStatus(Status.FAILED.title);
+
+        TestStep.begin("verify stack trace");
+        reportDetailsTab.assertStacktraceContainsExpectedFailureAspects(expectedFailureAspect);
+    }
 }

@@ -1,9 +1,6 @@
 package io.testerra.report.test.report_test.TT2_extensions;
 
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-
-import org.testng.annotations.Test;
-
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
@@ -11,6 +8,7 @@ import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
+import org.testng.annotations.Test;
 
 public class ExclusiveSessionsTest extends AbstractReportTest {
 

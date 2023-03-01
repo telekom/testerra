@@ -4,7 +4,6 @@ import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
@@ -44,9 +43,6 @@ public class PriorityMessagesTest extends AbstractReportTest {
     @Test
     public void testT02_checkGlobalPriorityMessages(){
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-//        TODO: not needed or incomplete test?
-        String methodName = "preTest08_priorityMessagesTest";
-        String className = "GeneratePassedCheckTestsTTReportTest";
         String[] priorityMessages = new String[]{
                 "GeneratePassedCheckTestsTTReportTest: It is gonna be ok.",
                 "GeneratePassedCheckTestsTTReportTest: Warn me!",

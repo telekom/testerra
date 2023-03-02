@@ -54,24 +54,12 @@ public interface UiElementBaseAssertion extends ScreenshotAssertion {
 
     BinaryAssertion<Boolean> visiblePartial();
 
-    /**
-     * Check if an element is partially displayed within the viewport
-     *
-     * @param expected
-     * @return
-     */
     default boolean visiblePartial(boolean expected) {
         return visiblePartial().is(expected);
     }
 
     BinaryAssertion<Boolean> visibleFull();
 
-    /**
-     * Check if an element is fully displayed within the viewport
-     *
-     * @param expected
-     * @return
-     */
     default boolean visibleFull(boolean expected) {
         return visibleFull().is(expected);
     }

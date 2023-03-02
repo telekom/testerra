@@ -69,8 +69,8 @@ public class UiElementVisibilityTests extends AbstractExclusiveTestSitesTest<Web
         WebTestPage page = getPage();
         page.notVisibleElement().expect().attribute(Attribute.STYLE).contains("hidden").is(true);
         page.notVisibleElement().expect().attribute("style").contains("hidden").is(true);
-        page.notVisibleElement().expect().fullyVisible().is(false);
-        page.notVisibleElement().expect().partiallyVisible().is(false);
+        page.notVisibleElement().expect().visibleFull().is(false);
+        page.notVisibleElement().expect().visiblePartial().is(false);
         page.notDisplayedElement().expect().css("display").is("none");
         page.notDisplayedElement().expect().hasClasses("mumu").is(false);
     }
@@ -78,7 +78,7 @@ public class UiElementVisibilityTests extends AbstractExclusiveTestSitesTest<Web
     @Test(expectedExceptions = AssertionError.class)
     public void testT05_UiElement_visible_false_fails() {
         WebTestPage page = getPage();
-        page.notVisibleElement().expect().fullyVisible().is(true);
+        page.notVisibleElement().expect().visibleFull().is(true);
     }
 
     @Test()

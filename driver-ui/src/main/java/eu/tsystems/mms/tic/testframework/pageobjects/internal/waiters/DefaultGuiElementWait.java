@@ -92,9 +92,9 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     private boolean pWaitForVisibleStatus(final boolean visible, final boolean complete) {
         if (complete) {
-            return uiElement.waitFor().fullyVisible(visible);
+            return uiElement.waitFor().visibleFull(visible);
         } else {
-            return uiElement.waitFor().partiallyVisible(visible);
+            return uiElement.waitFor().visiblePartial(visible);
         }
     }
 

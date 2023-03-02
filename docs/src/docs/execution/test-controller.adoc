@@ -105,7 +105,7 @@ CONTROL.retryFor(int seconds, () -> {
     CONTROL.withTimeout(int seconds, () -> {
         button.click();
         uiElement.scrollIntoView();
-        uiElement.expect().partiallyVisible(boolean);
+        uiElement.expect().visiblePartial(boolean);
     }
 );
 ----

@@ -141,12 +141,8 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     public void assertStacktraceContainsExpectedFailureAspects(String... expectedFailureAspects) {
         final List<String> actualFailureAspects = testStacktraceCard.list()
                 .stream()
-                //.map(uiElement -> uiElement.find(By.xpath("/mdc-expandable/div[@ref='header']")))
                 .map(uiElement -> uiElement.waitFor().text().getActual())
                 .collect(Collectors.toList());
-
-        System.out.println(actualFailureAspects);
-
 
         for (String failureAspect : expectedFailureAspects) {
             Assert.assertTrue(actualFailureAspects.stream().anyMatch(actualFailureAspect -> actualFailureAspect.contains(failureAspect)),

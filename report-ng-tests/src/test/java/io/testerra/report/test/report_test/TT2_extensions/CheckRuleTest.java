@@ -95,8 +95,6 @@ public class CheckRuleTest extends AbstractReportTest {
         reportDetailsTab.assertDurationIsNotValid(validDurationThreshold_lowerBound);
     }
 
-
-    //TODO: failing -> frage: sollten nicht alle failure-aspects die collected wurden auch angezeigt werden?
     @Test
     public void testT05_collectCheckDisplaysFailureAspectsCorrect() {
         String methodName = "preTest01_collectCheck";

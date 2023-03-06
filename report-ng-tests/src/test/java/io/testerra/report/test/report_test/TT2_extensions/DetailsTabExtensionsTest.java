@@ -12,8 +12,8 @@ public class DetailsTabExtensionsTest extends AbstractReportTest{
 
     @Test
     public void testT01_navigateToPreviousAndNextFailedMethods(){
-        String methodName = "test_expectedFailedWithValidator_isNotValid";
-        String className = "GenerateExpectedFailedStatusInTesterraReportTest";
+        String methodName = "preTest01_collectCheck";
+        String className = "GenerateFailedCheckTestsTTReportTest";
 
         TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();

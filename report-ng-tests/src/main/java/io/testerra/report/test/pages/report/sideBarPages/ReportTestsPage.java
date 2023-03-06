@@ -132,9 +132,7 @@ public class ReportTestsPage extends AbstractReportPage {
         return tableHead.find(By.xpath(headerRowLocator));
     }
 
-
-    //TODO:: FRAGE: fehler in Testerra? sollte 'Abstract Page' eine @Deprecated-methode aufrufen?
-    public void assertPageIsShown() {
+    public void pageLoaded() {
         verifyReportPage(ReportSidebarPageType.TESTS);
     }
 

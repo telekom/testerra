@@ -77,7 +77,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     //TODO: fehler in Testerra? 'AbstractPage' ruft @Deprecated-methode auf?
-    public void assertPageIsShown() {
+    public void pageLoaded() {
         verifyReportPage(ReportSidebarPageType.DASHBOARD);
     }
 

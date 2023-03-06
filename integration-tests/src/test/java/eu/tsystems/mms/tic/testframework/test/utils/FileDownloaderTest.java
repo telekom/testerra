@@ -118,7 +118,13 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
     }
 
-    @Test
+    /**
+     * Test disabled, because no online service with header information content-disposition was found as an alternative to the existing one.
+     * Implementation with a dedicated local eu.tsystems.mms.tic.testframework.core.Server manipulating header information to set content-disposition persistently
+     * with an additional handler needs to be investigated
+     * @throws IOException
+     */
+    @Test(enabled = false)
     public void test04_readFileNameFromResponseHeader() throws IOException {
         FileDownloader downloader = new FileDownloader();
         DefaultConnectionConfigurator connectionConfigurator = createConnectionConfigurator();

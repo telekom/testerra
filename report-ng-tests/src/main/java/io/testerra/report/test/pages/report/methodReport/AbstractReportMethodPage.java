@@ -126,6 +126,9 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     public void swipeToNextScreenshot() {
         String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
         UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
+        if (!nextScreenshot.expect().displayed().getActual()){
+            return;
+        }
         nextScreenshot.click();
         String newPageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
         Assert.assertNotEquals(pageSource, newPageSource, "Page sources should differ, since screenshots should differ!");

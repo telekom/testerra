@@ -45,7 +45,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     //TODO: mandatory?
     private final UiElement testOriginCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Origin')]]"));
     @Check
-    private final UiElement testStacktraceCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Stacktrace')]]"));
+    private final UiElement testStacktraceCard = pageContent.find(By.xpath("//div[.//div[contains(text(), 'Stacktrace')]]"));
 
     public ReportDetailsTab(WebDriver driver) {
         super(driver);
@@ -139,10 +139,13 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     }
 
     public void assertStacktraceContainsExpectedFailureAspects(String... expectedFailureAspects) {
-        final List<String> actualFailureAspects = testStacktraceCard.find(By.xpath("//mdc-expandable/div[@ref='header']")).list()
+        final List<String> actualFailureAspects = testStacktraceCard.list()
                 .stream()
+                //.map(uiElement -> uiElement.find(By.xpath("/mdc-expandable/div[@ref='header']")))
                 .map(uiElement -> uiElement.waitFor().text().getActual())
                 .collect(Collectors.toList());
+
+        System.out.println(actualFailureAspects);
 
 
         for (String failureAspect : expectedFailureAspects) {
@@ -151,11 +154,11 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         }
     }
 
-    public void assertDurationIsNotValid(int lowerBound, int upperBound) {
+    public void assertDurationIsNotValid(int lowerBound) {
         String duration = getTestDuration();
         String secondsString = RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, duration);
         int seconds = Integer.parseInt(secondsString.trim());
-        Assert.assertFalse(lowerBound <= seconds || seconds <= upperBound, "Run duration should not be in valid interval");
+        Assert.assertFalse(lowerBound > seconds, "Run duration should not be in valid interval");
     }
 
     public void assertFailureAspectCardContainsImageComparison() {

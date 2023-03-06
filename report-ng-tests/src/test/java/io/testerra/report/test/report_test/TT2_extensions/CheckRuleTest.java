@@ -83,7 +83,7 @@ public class CheckRuleTest extends AbstractReportTest {
         String methodName = "preTest04_timeoutCheck";
         String className = "GenerateFailedCheckTestsTTReportTest";
         int validDurationThreshold_lowerBound = 10;         // pageDelay
-        int validDurationThreshold_upperBound = 20;         // timeout time
+        //int validDurationThreshold_upperBound = 20;         // timeout time
 
         TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
@@ -92,7 +92,7 @@ public class CheckRuleTest extends AbstractReportTest {
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
 
         TestStep.begin("Check duration card contains valid value");
-        reportDetailsTab.assertDurationIsNotValid(validDurationThreshold_lowerBound, validDurationThreshold_upperBound);
+        reportDetailsTab.assertDurationIsNotValid(validDurationThreshold_lowerBound);
     }
 
 

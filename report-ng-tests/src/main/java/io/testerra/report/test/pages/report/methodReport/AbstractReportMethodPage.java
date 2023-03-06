@@ -117,26 +117,9 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
         testLastScreenshot.expect().displayed().is(true, "Screenshot is displayed.");
     }
 
-    public void openLastScreenshot() {
+    public LastScreenshotOverlay openLastScreenshot() {
         UiElement lastScreenshot = find(By.xpath("//lazy-image//img"));
         lastScreenshot.click();
-        TimerUtils.sleep(3000);
-    }
-
-    public void swipeToNextScreenshot() {
-        String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
-        UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
-        if (!nextScreenshot.expect().displayed().getActual()){
-            return;
-        }
-        nextScreenshot.click();
-        String newPageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
-        Assert.assertNotEquals(pageSource, newPageSource, "Page sources should differ, since screenshots should differ!");
-    }
-
-    public void assertSingleScreenshot() {
-        String pageSource = find(By.xpath("//li[./span[text()='PageSource']]/a")).expect().text().getActual();
-        UiElement nextScreenshot = find(By.xpath("//button[@icon='keyboard_arrow_right']"));
-        nextScreenshot.assertThat().displayed(false);
+        return createPage(LastScreenshotOverlay.class);
     }
 }

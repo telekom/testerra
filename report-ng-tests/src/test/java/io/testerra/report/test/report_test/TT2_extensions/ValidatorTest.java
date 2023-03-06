@@ -2,27 +2,23 @@ package io.testerra.report.test.report_test.TT2_extensions;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+
+import org.testng.annotations.Test;
+
 import io.testerra.report.test.AbstractReportTest;
+import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
-import org.testng.annotations.Test;
 
 public class ValidatorTest extends AbstractReportTest {
 
-//    TODO: consolidate test logic into dedicated method, use Dataprovider to write only one test?
-
-    // answer for TODO: I think data-provider is not suitable here, because tests do actually check different behavior?
-
-    @Test
-    public void testT01_checkTrueValidatorCausesExpectedFail() {
-        String methodName = "test_expectedFailedWithValidator_isValid";
-        String className = "GenerateExpectedFailedStatusInTesterraReportTest";
-        String[] failureAspects = new String[]{
-                "AssertionError: Expected Fail - validator is: " + true,
-        };
-
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderValidatorTest")
+    public void testT01_checkTrueValidatorCausesCorrectStatus(final String methodName,
+                                                              final String className,
+                                                              final String[] failureAspects,
+                                                              final Status status) {
         TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -32,30 +28,8 @@ public class ValidatorTest extends AbstractReportTest {
         TestStep.begin("Check details tab contains correct failure aspects");
         reportDetailsTab.assertStacktraceContainsExpectedFailureAspects(failureAspects);
 
-        TestStep.begin("Check test is expected failed");
-        reportDetailsTab.assertMethodOverviewContainsCorrectContent(className, Status.FAILED_EXPECTED.title, methodName);
-        reportDetailsTab.assertTestMethodeReportContainsFailsAnnotation();
-    }
-
-    @Test
-    public void testT02_checkFalseValidatorCausesFail() {
-        String methodName = "test_expectedFailedWithValidator_isNotValid";
-        String className = "GenerateExpectedFailedStatusInTesterraReportTest";
-        String[] failureAspects = new String[]{
-                "AssertionError: Expected Fail - validator is: " + false,
-        };
-
-        TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
-        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
-        reportTestsPage.selectClassName(className);
-        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
-
-        TestStep.begin("Check details tab contains correct failure aspects");
-        reportDetailsTab.assertStacktraceContainsExpectedFailureAspects(failureAspects);
-
-        TestStep.begin("Check test is expected failed");
-        reportDetailsTab.assertMethodOverviewContainsCorrectContent(className, Status.FAILED.title, methodName);
+        TestStep.begin(String.format("Check test has status '%s'", status));
+        reportDetailsTab.assertMethodOverviewContainsCorrectContent(className, status.title, methodName);
         reportDetailsTab.assertTestMethodeReportContainsFailsAnnotation();
     }
 }

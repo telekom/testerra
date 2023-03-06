@@ -76,7 +76,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
         super(driver);
     }
 
-    //TODO: fehler in Testerra? 'AbstractPage' ruft @Deprecated-methode auf?
     public void pageLoaded() {
         verifyReportPage(ReportSidebarPageType.DASHBOARD);
     }

@@ -297,4 +297,16 @@ public class TestDataProvider {
                 {"test_takeScreenshotViaCollectedAssertion_fails", "GenerateScreenshotsInTesterraReportTest"},
         };
     }
+
+    @DataProvider(parallel = true)
+    public static Object[][] dataProviderValidatorTest() {
+        return new Object[][]{
+                // Failed Expected
+                {"test_expectedFailedWithValidator_isValid", "GenerateExpectedFailedStatusInTesterraReportTest", new String[]{
+                "AssertionError: Expected Fail - validator is: " + true}, Status.FAILED_EXPECTED},
+                // Failed
+                {"test_expectedFailedWithValidator_isNotValid", "GenerateExpectedFailedStatusInTesterraReportTest", new String[]{
+                        "AssertionError: Expected Fail - validator is: " + false}, Status.FAILED},
+        };
+    }
 }

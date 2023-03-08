@@ -38,8 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -244,8 +243,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Returns the color of a pixel at a certain position of the image
      *
      * @param image with a certain colored pixel
-     * @param x Position of the pixel
-     * @param y Position of the pixel
+     * @param x     Position of the pixel
+     * @param y     Position of the pixel
      * @return color code of the pixel
      */
     private static int getColorOfPixel(BufferedImage image, int x, int y) {
@@ -256,8 +255,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Creates an image showing the differences of the given images and calculates the difference between the images in
      * percent.
      *
-     * @param expectedImage The expected image
-     * @param actualImage The actual image
+     * @param expectedImage  The expected image
+     * @param actualImage    The actual image
      * @param resultFilename Filename to the save the image containing the differences
      * @return Percents of pixels that are different
      */
@@ -271,7 +270,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         int pixelsInError = 0;
         int noOfIgnoredPixels = 0;
         // calculate the size of the distance image and create an empty image
-        final Dimension distanceImageSize = calculateMaxImageSize(expectedImage, actualImage);
+        final Dimension distanceImageSize = calculateMinImageSize(expectedImage, actualImage);
         final BufferedImage distanceImage = new BufferedImage(
                 distanceImageSize.width, distanceImageSize.height,
                 expectedImage.getType());
@@ -317,10 +316,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
                             distanceImage.setRGB(currentX, currentY, Color.RED.getRGB());
                             pixelsInError++;
                         }
-                    }
-
-                    // count the ignored pixels for calculating
-                    if (useIgnoreColor && expectedRgb == ignoreColor) {
+                    } else {
+                        // count the ignored pixels for calculating
                         noOfIgnoredPixels++;
                     }
                 } else {
@@ -380,19 +377,19 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     /**
-     * Calculates the sizes that result from the maximum sizes of both pictures.
+     * Calculates the sizes that result from the minimum sizes of both pictures.
      *
      * @param expectedImage The expected image
-     * @param actualImage The actual image
-     * @return Calculated maximum size of the images
+     * @param actualImage   The actual image
+     * @return Calculated minimum size of the images
      */
-    private static Dimension calculateMaxImageSize(
+    private static Dimension calculateMinImageSize(
             final BufferedImage expectedImage,
             final BufferedImage actualImage
     ) {
         return new Dimension(
-                Math.max(expectedImage.getWidth(), actualImage.getWidth()),
-                Math.max(expectedImage.getHeight(), actualImage.getHeight())
+                Math.min(expectedImage.getWidth(), actualImage.getWidth()),
+                Math.min(expectedImage.getHeight(), actualImage.getHeight())
         );
     }
 
@@ -400,8 +397,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Determines whether a pixel is within the bounds of an image.
      *
      * @param image The image
-     * @param x X-coordinate of the pixel
-     * @param y Y-coordinate of the pixel
+     * @param x     X-coordinate of the pixel
+     * @param y     Y-coordinate of the pixel
      * @return true, if the pixel is within the images bounds, otherwise false
      */
     private static boolean isPixelInImageBounds(

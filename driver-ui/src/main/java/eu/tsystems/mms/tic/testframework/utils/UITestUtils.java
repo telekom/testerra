@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TakesScreenshot;
@@ -119,28 +120,83 @@ public class UITestUtils implements WebDriverManagerProvider {
         /*
         window and focus infos
          */
-        String window = "";
+        String window = "#1/1";
         String windowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElse("");
-        Set<String> windowHandles = webDriver.getWindowHandles();
-        if (windowHandles.size() < 2) {
-            window = "#1/1";
-        } else {
-            String[] handleStrings = windowHandles.toArray(new String[0]);
-            for (int i = 0; i < handleStrings.length; i++) {
-                if (handleStrings[i].equals(windowHandle)) {
-                    window = "#" + (i + 1) + "/" + handleStrings.length;
+        if (StringUtils.isNotBlank(windowHandle)) {
+            Set<String> windowHandles = webDriver.getWindowHandles();
+            if (windowHandles.size() > 2) {
+
+                String[] handleStrings = windowHandles.toArray(new String[0]);
+                for (int i = 0; i < handleStrings.length; i++) {
+                    if (handleStrings[i].equals(windowHandle)) {
+                        window = "#" + (i + 1) + "/" + handleStrings.length;
+                    }
                 }
             }
+            metaData.put(Screenshot.MetaData.WINDOW, window);
         }
-        metaData.put(Screenshot.MetaData.WINDOW, window);
+    }
+
+    /**
+     * Make screenshots from all open Webdriver instances of the current method context and add them to report.
+     * <p>
+     * If no method context found, the returned list will be empty.
+     *
+     * @return ScreenshotPaths.
+     */
+    public static List<Screenshot> takeScreenshots() {
+        return takeScreenshots(true);
+    }
+
+    /**
+     * Make screenshots from all open Webdriver instances of the current method context.
+     * <p>
+     * If no method context found, the returned list will be empty.
+     *
+     * @param publishToReport True for publish directly into report.
+     * @return ScreenshotPaths.
+     */
+    public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
+        Optional<MethodContext> methodContext = executionContextController.getCurrentMethodContext();
+
+        if (methodContext.isEmpty()) {
+            LOGGER.warn("Please use this method only in test or setup methods. Otherwise no screenshots are created.");
+            return Collections.emptyList();
+        }
+
+        if (methodContext.get().readSessionContexts().count() == 0) {
+            LOGGER.warn("Could not create screenshots: No sessions found in current test context.");
+            return Collections.emptyList();
+        }
+
+        // Find all sessions of current method context and create screenshots
+        Stream<Screenshot> screenshotStream = methodContext.get().readSessionContexts()
+                .map(WebDriverSessionsManager::getWebDriver)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(UITestUtils::pTakeAllScreenshotsForSession)
+                .flatMap(Collection::stream);
+
+        if (publishToReport) {
+            screenshotStream = screenshotStream.peek(screenshot -> {
+                methodContext.get().addScreenshot(screenshot);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            });
+        }
+
+        final var result = screenshotStream.collect(Collectors.toList());
+        if (result.isEmpty()) {
+            LOGGER.warn("Could not create screenshots of existing sessions.");
+        }
+        return result;
     }
 
     private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
         Screenshot screenshot = new Screenshot();
         takeScreenshot(eventFiringWebDriver, screenshot);
 
-        String windowHandle = eventFiringWebDriver.getWindowHandle();
-        if (originalWindowHandle != null) {
+        if (StringUtils.isNotBlank(originalWindowHandle)) {
+            String windowHandle = eventFiringWebDriver.getWindowHandle();
             if (windowHandle.equals(originalWindowHandle)) {
                 screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "true");
             } else {
@@ -150,7 +206,7 @@ public class UITestUtils implements WebDriverManagerProvider {
         return screenshot;
     }
 
-    private static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
+    public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
         WebDriver driver;
         if (eventFiringWebDriver instanceof EventFiringWebDriver) {
             driver = ((EventFiringWebDriver) eventFiringWebDriver).getWrappedDriver();
@@ -218,7 +274,7 @@ public class UITestUtils implements WebDriverManagerProvider {
 
     private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
         final List<Screenshot> screenshots = new LinkedList<>();
-        executionUtils.getFailsafe(webDriver::getWindowHandles).ifPresent(windowHandles -> {
+        executionUtils.getFailsafe(webDriver::getWindowHandles).ifPresentOrElse(windowHandles -> {
             String originalWindowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElseGet(() -> windowHandles.stream().findFirst().orElse(""));
 
             if (windowHandles.size() > 1) {
@@ -229,6 +285,13 @@ public class UITestUtils implements WebDriverManagerProvider {
                 switchToWindow(webDriver, originalWindowHandle);
             } else {
                 takeScreenshotToList(screenshots, webDriver, originalWindowHandle, originalWindowHandle);
+            }
+        }, () -> {
+            try {
+                Screenshot screenshot = takeScreenshot(webDriver, "");
+                screenshots.add(screenshot);
+            } catch (Throwable t) {
+                LOGGER.error("Unable to take screenshot", t);
             }
         });
         return screenshots;
@@ -259,57 +322,5 @@ public class UITestUtils implements WebDriverManagerProvider {
         }
     }
 
-    /**
-     * Make screenshots from all open Webdriver instances of the current method context and add them to report.
-     * <p>
-     * If no method context found, the returned list will be empty.
-     *
-     * @return ScreenshotPaths.
-     */
-    public static List<Screenshot> takeScreenshots() {
-        return takeScreenshots(true);
-    }
 
-    /**
-     * Make screenshots from all open Webdriver instances of the current method context.
-     * <p>
-     * If no method context found, the returned list will be empty.
-     *
-     * @param publishToReport True for publish directly into report.
-     * @return ScreenshotPaths.
-     */
-    public static List<Screenshot> takeScreenshots(final boolean publishToReport) {
-        Optional<MethodContext> methodContext = executionContextController.getCurrentMethodContext();
-
-        if (methodContext.isEmpty()) {
-            LOGGER.warn("Please use this method only in test or setup methods. Otherwise no screenshots are created.");
-            return Collections.emptyList();
-        }
-
-        if (methodContext.get().readSessionContexts().count() == 0) {
-            LOGGER.warn("Could not create screenshots: No sessions found in current test context.");
-            return Collections.emptyList();
-        }
-
-        // Find all sessions of current method context and create screenshots
-        Stream<Screenshot> screenshotStream = methodContext.get().readSessionContexts()
-                .map(WebDriverSessionsManager::getWebDriver)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(UITestUtils::pTakeAllScreenshotsForSession)
-                .flatMap(Collection::stream);
-
-        if (publishToReport) {
-            screenshotStream = screenshotStream.peek(screenshot -> {
-                methodContext.get().addScreenshot(screenshot);
-                report.addScreenshot(screenshot, Report.FileMode.MOVE);
-            });
-        }
-
-        final var result = screenshotStream.collect(Collectors.toList());
-        if (result.isEmpty()) {
-            LOGGER.warn("Could not create screenshots of existing sessions.");
-        }
-        return result;
-    }
 }

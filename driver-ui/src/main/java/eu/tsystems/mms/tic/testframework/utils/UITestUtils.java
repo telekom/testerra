@@ -87,7 +87,8 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     public static Screenshot takeScreenshot(final WebDriver driver, boolean intoReport) {
-        Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle());
+        String handle = executionUtils.getFailsafe(driver::getWindowHandle).orElse("");
+        Screenshot screenshot = takeScreenshot(driver, handle);
 
         if (intoReport) {
             IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
@@ -288,6 +289,7 @@ public class UITestUtils implements WebDriverManagerProvider {
             }
         }, () -> {
             try {
+                // Some drivers like AppiumDriver for native apps has no window handles
                 Screenshot screenshot = takeScreenshot(webDriver, "");
                 screenshots.add(screenshot);
             } catch (Throwable t) {

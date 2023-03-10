@@ -28,19 +28,43 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 
 /**
  * Contains basic GuiElement features which every GuiElement needs to have.
+ *
  * @author Mike Reiche
  */
 public interface UiElementBaseAssertion extends ScreenshotAssertion {
     QuantityAssertion<Integer> foundElements();
+
     BinaryAssertion<Boolean> present();
+
     default boolean present(boolean expected) {
         return present().is(expected);
     }
+
     BinaryAssertion<Boolean> displayed();
+
     default boolean displayed(boolean expected) {
         return displayed().is(expected);
     }
+
+    /**
+     * @Deprecated please use {@link #visiblePartial(boolean)}, {@link #visibleFull(boolean)} instead
+     */
+    @Deprecated
     BinaryAssertion<Boolean> visible(boolean fullyVisible);
+
+    BinaryAssertion<Boolean> visiblePartial();
+
+    default boolean visiblePartial(boolean expected) {
+        return visiblePartial().is(expected);
+    }
+
+    BinaryAssertion<Boolean> visibleFull();
+
+    default boolean visibleFull(boolean expected) {
+        return visibleFull().is(expected);
+    }
+
     StringAssertion<String> tagName();
+
     RectAssertion bounds();
 }

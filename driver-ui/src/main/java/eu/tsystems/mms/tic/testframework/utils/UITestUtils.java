@@ -38,13 +38,9 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.sikuli.api.ScreenLocation;
-import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -54,7 +50,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -192,23 +187,6 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     /**
-     * Utility to store a Screenshot at the specified location.
-     *
-     * @param image BufferedImage
-     * @param targetFile filePath with fileName
-     */
-    private static void saveBufferedImage(BufferedImage image, File targetFile) {
-        try {
-            ImageIO.write(image, "png", targetFile);
-        } catch (final FileNotFoundException ex) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(
-                    ("Screenshot file could not be written to file system: " + ex.toString()));
-        } catch (final IOException ioe) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(ioe.toString());
-        }
-    }
-
-    /**
      * Save page source to file.
      *
      * @param pageSource page source.
@@ -225,24 +203,6 @@ public class UITestUtils implements WebDriverManagerProvider {
                     ("PageSource file could not be written to file system: " + ex.toString()));
         } catch (final IOException ioe) {
             LoggerFactory.getLogger(UITestUtils.class).warn(ioe.toString());
-        }
-    }
-
-    public static void takeScreenshot(ScreenRegion screenRegion) {
-        if (screenRegion != null) {
-            LOGGER.info("Taking screenshot from desktop");
-            final ScreenLocation upperLeftCorner = screenRegion.getUpperLeftCorner();
-            final ScreenLocation lowerRightCorner = screenRegion.getLowerRightCorner();
-            final BufferedImage screenshotImage = screenRegion.getScreen()
-                    .getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
-
-            final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
-            Screenshot screenshot = new Screenshot(filename);
-            Report report = Testerra.getInjector().getInstance(Report.class);
-            saveBufferedImage(screenshotImage, screenshot.getScreenshotFile());
-            report.addScreenshot(screenshot, Report.FileMode.MOVE);
-        } else {
-            LOGGER.error("Could not take native screenshot, screen region is missing");
         }
     }
 

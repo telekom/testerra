@@ -155,7 +155,7 @@ public class UITestUtils implements WebDriverManagerProvider {
         return screenshot;
     }
 
-    public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
+    private static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
         WebDriver driver;
         if (eventFiringWebDriver instanceof EventFiringWebDriver) {
             driver = ((EventFiringWebDriver) eventFiringWebDriver).getWrappedDriver();

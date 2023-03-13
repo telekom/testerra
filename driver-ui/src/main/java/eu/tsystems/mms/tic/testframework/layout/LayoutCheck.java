@@ -244,8 +244,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Returns the color of a pixel at a certain position of the image
      *
      * @param image with a certain colored pixel
-     * @param x     Position of the pixel
-     * @param y     Position of the pixel
+     * @param x Position of the pixel
+     * @param y Position of the pixel
      * @return color code of the pixel
      */
     private static int getColorOfPixel(BufferedImage image, int x, int y) {
@@ -256,8 +256,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Creates an image showing the differences of the given images and calculates the difference between the images in
      * percent.
      *
-     * @param expectedImage  The expected image
-     * @param actualImage    The actual image
+     * @param expectedImage The expected image
+     * @param actualImage The actual image
      * @param resultFilename Filename to the save the image containing the differences
      * @return Percents of pixels that are different
      */
@@ -398,8 +398,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Determines whether a pixel is within the bounds of an image.
      *
      * @param image The image
-     * @param x     X-coordinate of the pixel
-     * @param y     Y-coordinate of the pixel
+     * @param x X-coordinate of the pixel
+     * @param y Y-coordinate of the pixel
      * @return true, if the pixel is within the images bounds, otherwise false
      */
     private static boolean isPixelInImageBounds(

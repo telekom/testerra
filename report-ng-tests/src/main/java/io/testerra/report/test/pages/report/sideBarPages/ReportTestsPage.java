@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.methodReport.AbstractReportMethodPage;
 import io.testerra.report.test.pages.report.methodReport.ReportDependenciesTab;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportSessionsTab;
@@ -259,6 +260,13 @@ public class ReportTestsPage extends AbstractReportPage {
         methodNameLink.click();
 
         return createPage(ReportDependenciesTab.class);
+    }
+
+    public <T extends AbstractReportMethodPage> T navigateToMethodDetails(final Class<T> reportPageClass, String methodName) {
+        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
+        subElement.click();
+
+        return createPage(reportPageClass);
     }
 
     public ReportStepsTab navigateToStepsTab(String methodName) {

@@ -33,7 +33,8 @@ import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
-import io.testerra.report.test.pages.pretest.CheckPages.OptionalCheckPage;
+import io.testerra.report.test.pages.pretest.CheckPages.checkRuleCheckPages.CheckRule_IS_DISPLAYED_CheckPage;
+import io.testerra.report.test.pages.pretest.UniversalPage;
 
 public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTest implements AssertProvider {
 
@@ -102,16 +103,16 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
     }
 
 //    one screenshot manually shot on exclusive session shown
-//    additional screenshots actually in temp dir, but with absolute path to user temp in report, thus not shown
     @Test
     public void test_takeExclusiveSessionScreenshotWithMultipleActiveSessions(){
         WebDriver driver1 = getExclusiveWebDriver();
         WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
 
-        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
         visitTestPage(driver2, TestPage.DUMMY_TEST_PAGE_2);
+        PAGE_FACTORY.createPage(UniversalPage.class, driver2);
 
-        final OptionalCheckPage pageWithExistingElement = PAGE_FACTORY.createPage(OptionalCheckPage.class, driver1);
+        visitTestPage(driver1, TestPage.DUMMY_TEST_PAGE);
+        final CheckRule_IS_DISPLAYED_CheckPage pageWithExistingElement = PAGE_FACTORY.createPage(CheckRule_IS_DISPLAYED_CheckPage.class, driver1);
         pageWithExistingElement.screenshotToReport();
     }
 

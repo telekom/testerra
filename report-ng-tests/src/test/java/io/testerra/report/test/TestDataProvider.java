@@ -7,6 +7,8 @@ import org.testng.annotations.DataProvider;
 
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
+import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
+import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportLogsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
@@ -275,27 +277,21 @@ public class TestDataProvider {
     }
 
     @DataProvider(parallel = true)
-    public static Object[][] dataProviderMultipleScreenShotsTestFailed() {
-        return new Object[][]{
-            {"test_takeExclusiveSessionScreenshotWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest"},
-            {"test_takeScreenshotOnErrorWithMultipleActiveSessionsError", "GenerateScreenshotsInTesterraReportTest"},
-            {"test_takeScreenshotOnErrorWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest"}
-        };
-    }
-
-    @DataProvider(parallel = true)
-    public static Object[][] dataProviderScreenShotTestPassed() {
+    public static Object[][] dataProviderMultipleScreenShotTests() {
         return new Object[][] {
-                { "test_takeScreenshotsWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest" },
-                { "test_takeScreenshotWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest" },
+                {"test_takeScreenshotOnErrorWithMultipleActiveSessionsError", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class },
+                {"test_takeScreenshotOnErrorWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
+                { "test_takeScreenshotsWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class },
+                { "test_takeScreenshotWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
         };
     }
 
     @DataProvider(parallel = true)
-    public static Object[][] dataProviderSingleScreenShotTestFailed() {
+    public static Object[][] dataProviderSingleScreenShotTests() {
         return new Object[][]{
-                {"test_takeScreenshotOnExclusiveSession_fails", "GenerateScreenshotsInTesterraReportTest"},
-                {"test_takeScreenshotViaCollectedAssertion_fails", "GenerateScreenshotsInTesterraReportTest"},
+                {"test_takeScreenshotOnExclusiveSession_fails", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
+                {"test_takeScreenshotViaCollectedAssertion_fails", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
+                {"test_takeExclusiveSessionScreenshotWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
         };
     }
 

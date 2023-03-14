@@ -46,12 +46,6 @@ public class TestData {
         this.failureAspect = failureAspect;
     }
 
-    public TestData(String methode, String clazz, String... failureAspects){
-        this.method = methode;
-        this.methodClass = clazz;
-        this.failureAspects = failureAspects.clone();
-    }
-
     public TestData(String method, String methodClass, Status status) {
         this.method = method;
         this.methodClass = methodClass;
@@ -63,9 +57,9 @@ public class TestData {
         this.states = states;
     }
 
-    public TestData(String method, String failureAspect) {
+    public TestData(String method, String... failureAspects) {
         this.method = method;
-        this.failureAspect = failureAspect;
+        this.failureAspects = failureAspects.clone();
     }
 
     public TestData(String method, Status status) {

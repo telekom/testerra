@@ -45,7 +45,9 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     //TODO: mandatory?
     private final UiElement testOriginCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Origin')]]"));
     @Check
-    private final UiElement testStacktraceCard = pageContent.find(By.xpath("//div[.//div[contains(text(), 'Stacktrace')]]"));
+    private final UiElement testStacktraceCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Stacktrace')]]"));
+
+    private final String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
 
     public ReportDetailsTab(WebDriver driver) {
         super(driver);
@@ -64,12 +66,19 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
                         expectedStatusTitleFormatted));
     }
 
-    public void assertTestMethodContainsCorrectFailureAspect(String correctFailureAspect) {
-        String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
-        UiElement failureAspectCodeLine = testOriginCard.find(By.xpath(failureAspectCodeLineXPath));
-        String failureAspectCodeLineAsString = failureAspectCodeLine.expect().text().getActual();
-        Assert.assertTrue(failureAspectCodeLineAsString.contains(correctFailureAspect),
-                "Given failure aspect should match the code-line in origin-card!");
+    public void assertTestMethodContainsCorrectFailureAspect(final String... expectedFailureAspects) {
+        final List<String> actualFailureAspects = testOriginCard.list()
+                .stream()
+                .map(uiElement -> uiElement.find(By.xpath(failureAspectCodeLineXPath)))
+                .map(uiElement -> uiElement.waitFor().text().getActual())
+                .collect(Collectors.toList());
+
+        for (String failureAspect : expectedFailureAspects) {
+            final String assertMessage = String.format("Given failure aspect '%s' should match the code-line in origin-card!", failureAspect);
+
+            Assert.assertTrue(actualFailureAspects.stream().anyMatch(actualFailureAspect -> actualFailureAspect.contains(failureAspect)),
+                    assertMessage);
+        }
     }
 
     public void assertSkippedTestContainsCorrespondingFailureAspect() {
@@ -79,7 +88,6 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     }
 
     private boolean skippedTestContainsSkipException() {
-        String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
         UiElement failureAspectCodeLine = testOriginCard.find(By.xpath(failureAspectCodeLineXPath));
         if (failureAspectCodeLine.waitFor().displayed(true))
             return failureAspectCodeLine.expect().text().getActual().contains("SkipException");
@@ -99,7 +107,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     }
 
     private boolean skippedTestDependsOnFailedMethod() {
-        String failureAspect = testFailureAspect.expect().text().getActual().split("\n")[1];
+        String failureAspect = testFailureAspect.expect().text().getActual();
         String expectedContainedText = "depends on not successfully finished methods";
         return failureAspect.contains(expectedContainedText);
     }

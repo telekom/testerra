@@ -27,13 +27,8 @@
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
                 <methods>
-                    <include name="test_takeScreenshotOnExclusiveSession_fails"/>
-                    <include name="test_takeScreenshotViaCollectedAssertion_fails"/>
-                    <include name="test_takeScreenshotWithMultipleExclusiveSessions"/>
-                    <include name="test_takeExclusiveSessionScreenshotWithMultipleActiveSessions"/>
-                    <include name="test_takeScreenshotOnErrorWithMultipleActiveSessionsError"/>
-                    <include name="test_takeScreenshotsWithMultipleActiveSessions"/>
-                    <include name="test_takeScreenshotOnErrorWithMultipleExclusiveSessions"/>
+                    <exclude name="test_Failed_WithScreenShot"/>
+                    <exclude name="test_GenerateScreenshotManually"/>
                 </methods>
             </class>
         </classes>

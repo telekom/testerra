@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 public class ExclusiveSessionsTest extends AbstractReportTest {
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderMultipleScreenShotsTestFailed")
-    public void test_multipleScreenshots(final String methodName, final String className){
+    public void test_multipleScreenshotsFailed(final String methodName, final String className){
         TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);

@@ -79,7 +79,7 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public enum TestsTableEntry {
-        STATUS(0), CLASS(1), INDEX(2), METHOD(3);
+        STATUS(0), INDEX(1), CLASS(2), METHOD(3);
 
         private final int value;
 
@@ -116,16 +116,16 @@ public class ReportTestsPage extends AbstractReportPage {
 
         switch (tableEntry) {
             case STATUS:
-                headerRowLocator = "//th[contains(text(),'Status')]";
+                headerRowLocator = "//th//div[contains(text(),'Status')]";
                 break;
             case CLASS:
-                headerRowLocator = "//th[contains(text(),'Class')]";
+                headerRowLocator = "//th//div[contains(text(),'Class')]";
                 break;
             case INDEX:
-                headerRowLocator = "//th[contains(text(),'#')]";
+                headerRowLocator = "//th//div[contains(text(),'#')]";
                 break;
             case METHOD:
-                headerRowLocator = "//th[contains(text(),'Method')]";
+                headerRowLocator = "//th//div[contains(text(),'Method')]";
                 break;
         }
 
@@ -157,7 +157,8 @@ public class ReportTestsPage extends AbstractReportPage {
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.CLASS).expect().text().getActual();
+        final UiElement headerRowClass = getHeaderRow(TestsTableEntry.CLASS);
+        String tableHeadClassColumn = headerRowClass.expect().text().getActual();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Class (%s)", amountOfDifferentClasses), "Headline should contain correct number!");
@@ -171,7 +172,8 @@ public class ReportTestsPage extends AbstractReportPage {
                 .collect(Collectors.toSet())
                 .size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.STATUS).expect().text().getActual();
+        final UiElement headerRowStatus = getHeaderRow(TestsTableEntry.STATUS);
+        String tableHeadClassColumn = headerRowStatus.expect().text().getActual();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Status (%s)", amountOfDifferentStates), "Headline should contain correct number!");
@@ -181,7 +183,8 @@ public class ReportTestsPage extends AbstractReportPage {
         // counts amount of different displayed classes
         int amountOfDifferentMethods = getColumnWithoutHead(TestsTableEntry.METHOD).size();
         //get table head of class column
-        String tableHeadClassColumn = getHeaderRow(TestsTableEntry.METHOD).expect().text().getActual();
+        final UiElement headerRowMethod = getHeaderRow(TestsTableEntry.METHOD);
+        String tableHeadClassColumn = headerRowMethod.expect().text().getActual();
 
         //compare
         Assert.assertEquals(tableHeadClassColumn, String.format("Method (%s)", amountOfDifferentMethods),

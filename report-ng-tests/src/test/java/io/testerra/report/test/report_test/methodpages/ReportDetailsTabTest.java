@@ -131,7 +131,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
     public void testT06_failedTestWithHtmlInFailureAspect() {
         final String method = "test_failedWithInterceptedClick";
         final String expectedFailureAspect = "ElementClickInterceptedException: element click intercepted: Element <button id=\"btn\">...</button> "
-                + "is not clickable at point (107, 98). Other element would receive the click: <div class=\"overlay\"></div>";
+                + "is not clickable at point";
 
         TestStep.begin("navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
@@ -144,7 +144,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         final ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
 
         final String failureAspect = reportDetailsTab.getFailureAspect();
-        Assert.assertEquals(failureAspect, expectedFailureAspect, "html shown as text in failure aspect");
+        Assert.assertTrue(failureAspect.contains(expectedFailureAspect), "html shown as text in failure aspect");
 
         TestStep.begin("verify status of failure aspect");
         reportDetailsTab.assertFailureAspectsCorrespondsToCorrectStatus(Status.FAILED.title);

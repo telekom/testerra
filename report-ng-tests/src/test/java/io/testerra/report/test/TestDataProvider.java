@@ -38,7 +38,8 @@ public class TestDataProvider {
                 {Status.FAILED},
                 {Status.REPAIRED},
                 {Status.RECOVERED},
-                {Status.RETRIED}};
+                {Status.RETRIED}
+        };
     }
 
     @DataProvider(parallel = true)

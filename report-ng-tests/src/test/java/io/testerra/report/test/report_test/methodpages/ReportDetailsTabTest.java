@@ -77,8 +77,8 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethodsWithStatusFailed")
     public void testT03_failedTestsContainCorrespondingFailureAspect(TestData data) {
-        String method = data.getMethod();
-        String expectedFailureAspect = data.getFailureAspect();
+        final String method = data.getMethod();
+        final String [] expectedFailureAspect = data.getFailureAspects();
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();

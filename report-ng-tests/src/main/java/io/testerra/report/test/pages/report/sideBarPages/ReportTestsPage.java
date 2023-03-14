@@ -116,7 +116,7 @@ public class ReportTestsPage extends AbstractReportPage {
 
         switch (tableEntry) {
             case STATUS:
-                headerRowLocator = "//th//div[contains(text(),'Status')]";
+                headerRowLocator = "//th[contains(text(),'Status')]";
                 break;
             case CLASS:
                 headerRowLocator = "//th//div[contains(text(),'Class')]";

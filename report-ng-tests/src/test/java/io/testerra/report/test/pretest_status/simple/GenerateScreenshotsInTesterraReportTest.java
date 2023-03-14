@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractTestSitesTest;
@@ -140,7 +140,7 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         PAGE_FACTORY.createPage(PageWithExistingElement.class, driver2);
     }
 
-    @AfterMethod
+    @AfterClass
     public void closeExclusiveSessionOfTestClass() {
         if (exclusiveSessionId2 != null) {
             WEB_DRIVER_MANAGER.shutdownSession(this.exclusiveSessionId2);

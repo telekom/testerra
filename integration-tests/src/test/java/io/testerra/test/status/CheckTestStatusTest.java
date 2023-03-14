@@ -99,14 +99,14 @@ public class CheckTestStatusTest extends TesterraTest {
         return new Object[][]{
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
-                {"*** Stats: ClassContexts:  9", "ClassContext"},
-                {"*** Stats: MethodContexts: 74", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 56 (46 relevant)", "Test methods"},
+                {"*** Stats: ClassContexts:  6", "ClassContext"},
+                {"*** Stats: MethodContexts: 53", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 47 (37 relevant)", "Test methods"},
                 {"*** Stats: Failed: 9", "Failed tests"},
                 {"*** Stats: Retried: 10", "Retried tests"},
-                {"*** Stats: Expected Failed: 12", "Expected failed tests"},
+                {"*** Stats: Expected Failed: 7", "Expected failed tests"},
                 {"*** Stats: Skipped: 5", "Skipped tests"},
-                {"*** Stats: Passed: 20 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
+                {"*** Stats: Passed: 16 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
         };
     }
 

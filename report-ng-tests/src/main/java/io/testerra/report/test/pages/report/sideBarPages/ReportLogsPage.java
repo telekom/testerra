@@ -24,6 +24,8 @@ package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementList;
+
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.utils.LogLevel;
 import org.openqa.selenium.By;
@@ -79,9 +81,23 @@ public class ReportLogsPage extends AbstractReportPage {
         Assert.assertTrue(allLogLinesMarkedAsExpected, String.format("There should be parts highlighted corresponding to the current filter.\n[Filter: %s]", expectedText));
     }
 
+    public void assertMarkedLogLinesContainTextNoScroll(String expectedText) {
+        final UiElement markedLineParts = testLogReportLines.find(By.xpath("//span//mark"));
+        final UiElementList<UiElement> list = markedLineParts.list();
+
+        boolean allLogLinesMarkedAsExpected = list
+                .stream()
+                .map(uiElement -> uiElement.expect().text().getActual())
+                .map(String::toUpperCase)
+                .allMatch(i -> i.contains(expectedText.toUpperCase()));
+
+        Assert.assertTrue(allLogLinesMarkedAsExpected, String.format("There should be parts highlighted corresponding to the current filter.\n[Filter: %s]", expectedText));
+    }
+
     public ReportLogsPage search(String s) {
         testSearchbarInput.clear();
         testSearchbarInput.type(s.trim());
+        testSearchbarInput.sendKeys(Keys.ENTER);
         return createPage(ReportLogsPage.class);
     }
 

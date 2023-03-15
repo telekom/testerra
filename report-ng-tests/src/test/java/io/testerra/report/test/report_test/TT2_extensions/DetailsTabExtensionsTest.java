@@ -12,8 +12,8 @@ public class DetailsTabExtensionsTest extends AbstractReportTest{
 
     @Test
     public void testT01_navigateToPreviousAndNextFailedMethods(){
-        String methodName = "preTest01_collectCheck";
-        String className = "GenerateFailedCheckTestsTTReportTest";
+        String methodName = "test_failedWithInterceptedClick";
+        String className = "GenerateFailedStatusInTesterraReportTest";
 
         TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
@@ -22,15 +22,15 @@ public class DetailsTabExtensionsTest extends AbstractReportTest{
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
 
         TestStep.begin("Navigate to previous failed method");
-        reportDetailsTab.navigateToPreviousFailedMethod();
+        reportDetailsTab = reportDetailsTab.navigateToPreviousFailedMethod();
         reportDetailsTab.assertPageIsValid();
 
         TestStep.begin("Navigate to starting failed method");
-        reportDetailsTab.navigateToNextFailedMethod();
+        reportDetailsTab = reportDetailsTab.navigateToNextFailedMethod();
         reportDetailsTab.assertPageIsValid();
 
         TestStep.begin("Navigate to next failed method");
-        reportDetailsTab.navigateToNextFailedMethod();
+        reportDetailsTab = reportDetailsTab.navigateToNextFailedMethod();
         reportDetailsTab.assertPageIsValid();
     }
 

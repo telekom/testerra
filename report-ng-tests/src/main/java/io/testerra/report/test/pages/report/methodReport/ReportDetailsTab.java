@@ -185,14 +185,17 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         failsAnnotationSegment.expect().text().contains(expectedTicketString).is(true);
     }
 
-    public void navigateToPreviousFailedMethod() {
+    public ReportDetailsTab navigateToPreviousFailedMethod() {
         UiElement previousFailedMethod = find(By.xpath("//div[./span[text()='Previous failed method']]"));
         previousFailedMethod.find(By.xpath("//a")).click();
+
+        return createPage(ReportDetailsTab.class);
     }
 
-    public void navigateToNextFailedMethod() {
+    public ReportDetailsTab navigateToNextFailedMethod() {
         UiElement previousFailedMethod = find(By.xpath("//div[./span[text()='Next failed method']]"));
         previousFailedMethod.find(By.xpath("//a")).click();
 
+        return createPage(ReportDetailsTab.class);
     }
 }

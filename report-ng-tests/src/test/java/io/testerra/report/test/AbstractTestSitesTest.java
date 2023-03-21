@@ -24,6 +24,7 @@ package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -37,7 +38,7 @@ import java.net.BindException;
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractTestSitesTest extends AbstractTest implements WebDriverManagerProvider, PageFactoryProvider, Loggable {
+public abstract class AbstractTestSitesTest extends AbstractTest implements WebDriverManagerProvider, PageFactoryProvider, AssertProvider, Loggable {
 
     protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
     private String exclusiveSessionId;

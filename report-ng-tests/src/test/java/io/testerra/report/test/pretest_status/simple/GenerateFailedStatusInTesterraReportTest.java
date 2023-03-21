@@ -21,15 +21,12 @@
 
 package io.testerra.report.test.pretest_status.simple;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
 import io.testerra.report.test.pages.pretest.OverlayInterceptionPage;
-
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -44,9 +41,12 @@ public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesT
 
     @Test
     public void testAssertCollector() {
-        AssertCollector.fail("failed1");
-        AssertCollector.fail("failed2");
-        AssertCollector.assertTrue(true, "passed1");
+        CONTROL.optionalAssertions(() -> {
+            ASSERT.fail("failed1");
+            ASSERT.fail("failed2");
+            ASSERT.assertTrue(true, "passed1");
+        });
+
     }
 
     @Test

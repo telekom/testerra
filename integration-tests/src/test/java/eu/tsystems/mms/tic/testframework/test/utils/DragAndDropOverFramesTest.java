@@ -55,7 +55,6 @@ public class DragAndDropOverFramesTest extends AbstractTestSitesTest {
     }
 
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT2_DragAndDropOverFrames() {
         final GuiElement[] guiElements = beforeDragAndDropFrames();
         GuiElement sourceGuiElement = guiElements[0];

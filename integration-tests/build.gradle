@@ -18,7 +18,6 @@ project.afterEvaluate {
     project.tasks.each { t ->
         if (t.name.startsWith("publish")) {
             t.enabled = false
-//            println "Task " + t.name + " - " + t.enabled
         }
     }
 }

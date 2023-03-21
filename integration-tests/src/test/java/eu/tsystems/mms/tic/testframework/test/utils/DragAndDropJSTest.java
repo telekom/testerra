@@ -52,7 +52,6 @@ public class DragAndDropJSTest extends AbstractTestSitesTest {
     }
 
     @Test
-    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT01_DragAndDrop() {
         final GuiElement[] guiElements = beforeDragAndDropSimple();
 

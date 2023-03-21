@@ -34,6 +34,7 @@ public enum TestPage {
     LAYOUT("Layout/index.html", INPUT_TEST_PAGE),
     LAYOUT_IMAGE("LayoutImage/index.html", INPUT_TEST_PAGE),
     LIST("GuiElementList/index.html", INPUT_TEST_PAGE),
+    IMG("Img/logo", INPUT_TEST_PAGE),
     SHADOW_ROOT("GuiElementShadowRoot/shadow_root.html", INPUT_TEST_PAGE)
     ;
 

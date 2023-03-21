@@ -21,8 +21,3 @@ UI-Test of formerly generated Testerra Report
 ```shell script
 gradle test
 ````
-
-Or run all
-```shell
-./generate-report.sh
-```

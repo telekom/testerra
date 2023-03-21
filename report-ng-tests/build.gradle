@@ -36,8 +36,6 @@ test {
         System.setProperty("tt.report.name", "Generated Report for Additional UI-Test")
     }
 
-
-
     useTestNG() {
         suites s
 //        configFailurePolicy "continue"
@@ -46,8 +44,6 @@ test {
         systemProperties(System.getProperties())
     }
 }
-
-
 
 task cleanReports {
     doLast {
@@ -58,8 +54,4 @@ task cleanReports {
             delete "report-testsundertest-0$nr"
         }
     }
-}
-
-publishing {
-    // Skipped
 }

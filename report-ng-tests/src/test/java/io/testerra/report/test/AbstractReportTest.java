@@ -51,7 +51,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Loggabl
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         try {
-            server.start(80);
+            server.start(8081);
         } catch (BindException e) {
             log().warn("Use already running WebServer: " + e.getMessage());
         }

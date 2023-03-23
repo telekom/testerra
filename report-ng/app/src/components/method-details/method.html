@@ -72,7 +72,11 @@
                                 <span class="secondary sr1">Class</span>
                                 <a class="two-lines"
                                    route-href="route: tests; params.bind: {class: _methodDetails.classStatistics.classIdentifier}"
-                                >${_methodDetails.classStatistics.classIdentifier}</a>
+                                >${_methodDetails.classStatistics.classIdentifier|className:1}</a>
+                            </li>
+                            <li class="mdc-custom-list-item">
+                                <span class="secondary sr1">Package</span>
+                                <a class="two-lines">${_methodDetails.classStatistics.classIdentifier|className:2}</a>
                             </li>
                             <li class="mdc-custom-list-item">
                                 <span class="secondary sr1">Test Context</span>

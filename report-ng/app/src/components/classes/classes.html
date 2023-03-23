@@ -51,7 +51,7 @@
                         <mdc-list-item>(All)</mdc-list-item>
                         <mdc-list-item value.bind="classStatistic.classIdentifier"
                                        repeat.for="classStatistic of _executionStatistics.classStatistics"
-                        >${classStatistic.classIdentifier}</mdc-list-item>
+                        >${classStatistic.classIdentifier|className:1}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
@@ -113,7 +113,7 @@
                             <td class="run-index-cell">${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"
-                                >${methodDetails.classStatistics.classIdentifier}</a>
+                                >${methodDetails.classStatistics.classIdentifier|className:1}</a>
                             </td>
                             <td class="p1 wrapable" mdc-body1>
 

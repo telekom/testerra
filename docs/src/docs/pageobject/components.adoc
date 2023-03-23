@@ -45,8 +45,8 @@ The second parameter is the *root element* of your component (here the `div` ele
 ----
 public class MyPage extends Page {
 
-    @Check
     MyComponent component = createComponent(MyComponent.class, find(By.id("container")));
+
 }
 ----
 

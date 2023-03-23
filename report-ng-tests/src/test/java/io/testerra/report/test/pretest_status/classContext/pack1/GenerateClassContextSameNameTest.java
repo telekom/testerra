@@ -11,7 +11,9 @@ import org.testng.annotations.Test;
  */
 @TestClassContext(name = "ClassContextSameClassPack1")
 public class GenerateClassContextSameNameTest extends AbstractTestSitesTest {
+
     @Test
     public void testTestMethodInSameClassesPack1() {
     }
+
 }

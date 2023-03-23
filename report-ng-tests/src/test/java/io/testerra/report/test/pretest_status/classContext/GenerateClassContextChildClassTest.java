@@ -13,7 +13,6 @@ public class GenerateClassContextChildClassTest extends GenerateClassContextPare
 
     @Test
     public void testTestMethodInChildClasses() {
-
     }
 
 }

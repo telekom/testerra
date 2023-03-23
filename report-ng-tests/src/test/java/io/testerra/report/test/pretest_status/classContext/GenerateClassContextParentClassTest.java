@@ -14,7 +14,6 @@ public class GenerateClassContextParentClassTest extends AbstractTestSitesTest {
 
     @Test
     public void testTestMethodInParentClasses() {
-
     }
 
 }

@@ -14,7 +14,6 @@ public class GenerateClassContextDifferentNames1Test extends AbstractTestSitesTe
 
     @Test
     public void testTestMethodInDifferentClasses1() {
-
     }
 
 }

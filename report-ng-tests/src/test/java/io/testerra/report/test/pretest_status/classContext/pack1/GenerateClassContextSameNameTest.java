@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
  *
  * @author mgn
  */
-//@TestClassContext(name = "ClassContextSameClassPack1")
+@TestClassContext(name = "ClassContextSameClassPack1")
 public class GenerateClassContextSameNameTest extends AbstractTestSitesTest {
     @Test
     public void testTestMethodInSameClassesPack1() {

@@ -29,6 +29,8 @@ export class ClassNameValueConverter {
             case ClassName.package:
                 if (value.lastIndexOf('.') > 0) {
                     return value.substr(0, value.lastIndexOf('.'));
+                } else {
+                    return '';
                 }
             case ClassName.simpleName:
                 if (value.lastIndexOf('.') > 0) {

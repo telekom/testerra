@@ -6,7 +6,6 @@
         <packages>
             <package name="io.testerra.report.test.pretest_status.pageTests"/>
             <package name="io.testerra.report.test.pretest_status.layoutTests"/>
-            <package name="io.testerra.report.test.pretest_status.classContext"/>
         </packages>
         <classes>
             <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest">
@@ -22,6 +21,12 @@
                 </methods>
             </class>
         </classes>
+    </test>
+
+    <test name="Parallel2" parallel="methods">
+        <packages>
+            <package name="io.testerra.report.test.pretest_status.classContext.*"/>
+        </packages>
     </test>
 
     <test name="Sequential">

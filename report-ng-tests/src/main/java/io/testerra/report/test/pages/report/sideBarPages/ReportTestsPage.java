@@ -93,19 +93,15 @@ public class ReportTestsPage extends AbstractReportPage {
         }
     }
 
-
     public ReportTestsPage(WebDriver driver) {
         super(driver);
     }
 
-    public List<UiElement> getColumnWithoutHead(int columnNumber) {
+    private List<UiElement> getColumnWithoutHead(final int columnNumber) {
         List<UiElement> column = new ArrayList<>();
-        for (UiElement row : tableRows.list().stream().collect(Collectors.toList())) {
-            column.add(row.find(By.xpath("//td")).list().stream().collect(Collectors.toList()).get(columnNumber));
-        }
+        tableRows.list().forEach(row -> column.add(row.find(By.xpath("//td[" + (columnNumber + 1) + "]"))));
         return column;
     }
-
 
     public List<UiElement> getColumnWithoutHead(TestsTableEntry tableEntry) {
         return getColumnWithoutHead(tableEntry.index());
@@ -137,11 +133,17 @@ public class ReportTestsPage extends AbstractReportPage {
         verifyReportPage(ReportSidebarPageType.TESTS);
     }
 
-
-    public void assertMethodColumnContainsCorrectMethods(String filter) {
+    public void assertMethodColumnMatchesFilter(String filter) {
         getColumnWithoutHead(TestsTableEntry.METHOD)
                 .forEach(uiElement -> uiElement.expect().text().contains(filter).is(true,
                         String.format("Every found method [%s] should contain: %s", uiElement.expect().text().getActual(), filter)));
+    }
+
+    public void assertMethodColumnContainsCorrectMethods(List<String> methodNames) {
+        getColumnWithoutHead(TestsTableEntry.METHOD).forEach(uiElement -> {
+            String methodFromTable = uiElement.find(By.tagName("a")).waitFor().text().getActual();
+            Assert.assertTrue(methodNames.contains(methodFromTable), String.format("Testmethod %s should not shown with the given filter.", methodFromTable));
+        });
     }
 
     public void assertClassColumnContainsCorrectClasses(String expectedClass) {

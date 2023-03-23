@@ -32,13 +32,10 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPag
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.FailureAspectType;
 import io.testerra.report.test.pages.utils.TestData;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
-
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
 
 public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
@@ -147,6 +144,6 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
 
         TestStep.begin("Check every status for failure aspect links to tests-page with content");
         ReportTestsPage reportTestsPage = reportFailureAspectsPage.clickStateLink(failureAspect, status);
-        reportTestsPage.assertMethodColumnContainsCorrectMethods(methodName);
+        reportTestsPage.assertMethodColumnMatchesFilter(methodName);
     }
 }

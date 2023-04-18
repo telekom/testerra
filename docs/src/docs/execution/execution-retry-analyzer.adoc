@@ -67,7 +67,8 @@ public class InstantiationExceptionRetryAnalyzer implements AdditionalRetryAnaly
     final String message = "failed instantiation";
 
     @Override
-    public Optional<Throwable> analyzeThrowable(Throwable throwable, String tMessage) {
+    public Optional<Throwable> analyzeThrowable(Throwable throwable) {
+        String tMessage = throwable.getMessage();
         if (throwable instanceof InstantiationException) {
             if (tMessage != null) {
                 final String tMessageLC = tMessage.toLowerCase();

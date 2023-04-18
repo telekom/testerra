@@ -30,17 +30,24 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import MethodType = data.MethodType;
 import "./classes.scss"
 
+enum SortBy {
+    Class = "CLASS",
+    Method = "METHOD",
+    RunIndex = "RUNINDEX",
+}
+
 @autoinject()
 export class Classes extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _selectedStatus:data.ResultStatusType;
-    private _availableStatuses:data.ResultStatusType[]|number[];
-    private _filteredMethodDetails:MethodDetails[];
-    private _showConfigurationMethods:boolean = null;
-    private _searchRegexp:RegExp;
+    private _selectedStatus: data.ResultStatusType;
+    private _availableStatuses: data.ResultStatusType[] | number[];
+    private _filteredMethodDetails: MethodDetails[];
+    private _showConfigurationMethods: boolean = null;
+    private _searchRegexp: RegExp;
     private _uniqueStatuses = 0;
     private _uniqueClasses = 0;
     private _loading = false;
+    private _sortBy = SortBy.Class;
 
     constructor(
         private _dataLoader: DataLoader,
@@ -105,10 +112,10 @@ export class Classes extends AbstractViewModel {
             //         }
             //     });
 
-            let relevantFailureAspect:FailureAspectStatistics;
+            let relevantFailureAspect: FailureAspectStatistics;
             let filterByFailureAspect = false;
             if (this.queryParams.failureAspect > 0) {
-                relevantFailureAspect = executionStatistics.uniqueFailureAspects[this.queryParams.failureAspect-1];
+                relevantFailureAspect = executionStatistics.uniqueFailureAspects[this.queryParams.failureAspect - 1];
                 filterByFailureAspect = true;
             }
             this._executionStatistics = executionStatistics;
@@ -166,12 +173,20 @@ export class Classes extends AbstractViewModel {
 
                 });
 
-
-
-            // Sort by method name
-            //this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.contextValues.name.localeCompare(b.methodContext.contextValues.name));
-            // Sort by run index
-            this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex-b.methodContext.methodRunIndex);
+            switch (this._sortBy) {
+                case SortBy.Method :
+                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a,b) => a.identifier.localeCompare(b.identifier));
+                    break;
+                case SortBy.RunIndex :  // Sort by run index
+                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex-b.methodContext.methodRunIndex);
+                    break;
+                case SortBy.Class :
+                default:
+                    // Sort by class and method name
+                    this._filteredMethodDetails = this._filteredMethodDetails.sort(
+                        (a, b) => a.classStatistics.classIdentifier === b.classStatistics.classIdentifier ?
+                            a.identifier.localeCompare(b.identifier) : a.classStatistics.classIdentifier.localeCompare(b.classStatistics.classIdentifier));
+            }
 
             this._uniqueClasses = Object.keys(uniqueClasses).length;
             this._uniqueStatuses = Object.keys(uniqueStatuses).length;
@@ -190,6 +205,21 @@ export class Classes extends AbstractViewModel {
         if (!this._loading) {
             this._filter();
         }
+    }
+
+    private _sortByRunIndex() {
+        this._sortBy = SortBy.RunIndex;
+        this._filterOnce();
+    }
+
+    private _sortByClass() {
+        this._sortBy = SortBy.Class;
+        this._filterOnce();
+    }
+
+    private _sortByMethod() {
+        this._sortBy = SortBy.Method;
+        this._filterOnce();
     }
 
     private _statusChanged() {

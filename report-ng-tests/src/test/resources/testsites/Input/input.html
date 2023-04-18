@@ -1,0 +1,296 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Input test</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+
+    <script language="javascript">
+        <!--
+        function showConfirm() {
+            var answer = confirm("Confirm");
+
+            if (answer) {
+                log("Ok clicked");
+            } else {
+                log("Cancel clicked");
+            }
+        }
+
+        function showAlert() {
+            alert("Alert");
+            log("Alert shown");
+        }
+
+        function showPrompt() {
+            var answer = prompt("Prompt");
+            log("Prompt shown");
+            log(answer + " answered");
+        }
+
+        function openPopUp() {
+            window.open("List.html", "List");
+            log("Pop up opened");
+        }
+
+        function log(message) {
+            document.getElementById(99).innerHTML = message + "<br>" + document.getElementById(99).innerHTML;
+            return false;
+        }
+
+        function ButtonClicked() {
+            out = document.getElementById(1).value;
+            log(out);
+        }
+
+        function showClickPosition(ev) {
+            var pos = [];
+            var rect = ev.target.getBoundingClientRect();
+
+            if (ev.offsetY < rect.height / 3) {
+                pos.push("top");
+            } else if (ev.offsetY > rect.height / 3 * 2) {
+                pos.push("bottom");
+            } else {
+                pos.push("center");
+            }
+
+            if (ev.offsetX < rect.width / 3) {
+                pos.push("left");
+            } else if (ev.offsetX > rect.width / 3 * 2) {
+                pos.push("right");
+            } else {
+                pos.push("center");
+            }
+
+            document.getElementById("clickPosition").innerText = pos.join(" ");
+        }
+
+
+        function show_elementsTimeOut() {
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(show_elements, timeOut);
+        }
+
+        function hide_elementsTimeOut() {
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(hide_elements, timeOut);
+        }
+
+        // Elemente einblenden
+        // Mit show_elements() können einzelne oder mehrere Elemente
+        // via show_elements('ElementIDone','ElementIDtwo','ElementIDthree')
+        // eingeblendet werden.
+        function show_elements() {
+            document.getElementById("switch").style.display = 'block';
+        }
+
+
+        // Elemente ausblenden
+        // Mit show_elements() können einzelne oder mehrere Elemente
+        // via hide_elements('ElementIDone','ElementIDtwo','ElementIDthree')
+        // ausgeblendet werden.
+        function hide_elements() {
+            document.getElementById("switch").style.display = 'none';
+        }
+
+        function change_elementsTimeOut() {
+
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(change_elements, timeOut);
+        }
+
+        function change_elements() {
+
+            var textElement = document.getElementById("switch");
+
+            textElement.innerHTML = "Dieser Text wurde per Javascript geändert";
+        }
+
+        function insert_elementsTimeOut() {
+
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(insert_elements, timeOut);
+        }
+
+        function insert_elements() {
+
+            var einzufuegendesObjekt = document.createElement("p");
+            einzufuegendesObjekt.id = "dynText";
+            einzufuegendesObjekt.innerHTML = "Dieser Text wurde per Javascript hinzugefügt";
+            var vorhandenesObjekt = document.getElementById("switch");
+
+            document.getElementById("waiterDIV").insertBefore(einzufuegendesObjekt, vorhandenesObjekt);
+        }
+
+
+        function enableRDButton_TimeOut() {
+
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(enableRDButton, timeOut);
+        }
+
+        function enableRDButton() {
+
+            document.getElementById("enabledSwitchRDButton").disabled = false;
+
+        }
+
+        function disableRDButton_TimeOut() {
+
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(disableRDButton, timeOut);
+        }
+
+        function disableRDButton() {
+
+            document.getElementById("enabledSwitchRDButton").disabled = true;
+
+        }
+
+        function addAttributeToRDButton_TimeOut() {
+
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(addAttribute, timeOut);
+        }
+
+        function addAttribute() {
+
+            document.getElementById("enabledSwitchRDButton").setAttribute('someAttribute', 'someValue');
+
+        }
+
+        function selectRDButton_TimeOut() {
+
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(selectRDButton, timeOut);
+
+        }
+
+        function selectRDButton() {
+
+            document.getElementById("enabledSwitchRDButton").checked = true;
+
+        }
+
+        function deselectRDButton_TimeOut() {
+
+            timeOut = document.getElementById("inputMillis").value;
+            setTimeout(deselectRDButton, timeOut);
+
+        }
+
+        function deselectRDButton() {
+
+            document.getElementById("enabledSwitchRDButton").checked = false;
+
+        }
+
+        -->
+    </script>
+
+</head>
+<body style="margin:8px">
+<h1>Input test</h1>
+<hr>
+<div class="box">
+    <input id="1" maxlength="20" type="text" onfocus="log('Input 1 Focus')"
+           onkeydown="log('Input 1 Key down')"
+           onkeypress="log('Input 1 Key press')" onkeyup="log('Input 1 Key up')"> <br>
+    <input id="2" type="file"> <br>
+    <input id="3" type="checkbox" ondblclick="log('Input 3 Double clicked')"> <br>
+    <input id="4" type="button" value="Button1" onclick="ButtonClicked()"> <br>
+    <input id="5" type="text" maxlength="5" onmousedown="log('Input 5 Mouse down')"
+           onmousemove="log('Input 5 Mouse move')"
+           onmouseout="log('Input 5 Mouse out')"
+           onmouseover="log('Input 5 Mouse over')"
+           onmouseup="log('Input 5 Mouse up')"> <br>
+    <input id="6" type="button" value="Button2"> <br>
+    <input id="7" name="radioBtn" type="radio" DISABLED> <br>
+    <input id="8" type="file"> <br>
+    <input id="9" type="checkbox"> <br>
+    <input id="10" type="radio" name=""> <br>
+</div>
+
+<div class="box" style="text-align:center;">
+    <a href="input.html#" id="11" onclick="log('Open again clicked')">Open again</a> <br>
+    <a href="#" id="12" onclick="showConfirm()">Show confirm</a> <br>
+    <a href="#" id="13" onclick="openPopUp()">Open pop up</a> <br>
+    <a href="#" id="14" onclick="showAlert()">Show alert</a> <br>
+    <a href="#" id="15" onclick="showPrompt()">Show prompt</a> <br>
+    <form onsubmit="log('Form 16 submit');return false" id="16"><input type="submit" value="Submit"/></form>
+</div>
+
+<div class="box" style="overflow:auto;">
+    <p id="99">&nbsp;</p>
+    <table id="100"></table>
+</div>
+
+<div class="box" style="overflow:auto;">
+    <p id="hidden" hidden>hiddenElement</p>
+    <p>multiple</p>
+    <select name="extras_multiple" size="3" multiple>
+        <option id="cheese_multiple" name="Cheese">Cheese</option>
+        <option id="salami_multiple" name="Salami">Salami</option>
+        <option id="mushrooms_multiple" name="Mushrooms">Mushrooms</option>
+        <option id="paprica_multiple" name="Paprica">Paprica</option>
+        <option id="ham_multiple" name="Ham">Ham</option>
+    </select>
+    <p>no multiple</p>
+    <select name="extras_no_multiple" size="3">
+        <option id="cheese_no_multiple" name="Cheese">Cheese</option>
+        <option id="salami_no_multiple" name="Salami">Salami</option>
+        <option id="mushrooms_no_multiple" name="Mushrooms">Mushrooms</option>
+        <option id="paprica_no_multiple" name="Paprica">Paprica</option>
+        <option id="ham_no_multiple" name="Ham">Ham</option>
+    </select>
+</div>
+
+<div id="waiterDIV" class="box" style="overflow:auto;">
+    <p>TimeOut bezieht sich auf alle Schaltflächen in diesem DIV</p>
+    <label for="inputMillis"> TimeOut in Millis (0-inf) </label>
+    <input type="text" id="inputMillis" name="timeOutMillis"/>
+    <button id="showText" type="button" onClick="show_elementsTimeOut()">Textelement mit Verz&ouml;gerung anzeigen</button>
+    <button id="hideText" type="button" onClick="hide_elementsTimeOut()">Textelement mit Verz&ouml;gerung verbergen</button>
+    <button id="changeText" type="button" onClick="change_elementsTimeOut()">Textelement mit Verz&ouml;gerung ändern</button>
+    <button id="insertText" type="button" onClick="insert_elementsTimeOut()">Textelement mit Verz&ouml;gerung zur DOM hinzufügen
+    </button>
+    <p id="switch">Eine tote Katze. Gut das du nachgeguckt hast.</p>
+    <button id="enableRdButton" type="button" onClick="enableRDButton_TimeOut()">Enable Radio Button mit Verz&ouml;gerung</button>
+    <button id="disableRDButton" type="button" onClick="disableRDButton_TimeOut()">Disable Radio Button mit Verz&ouml;gerung
+    </button>
+    <button id="addAttributeToRDButton" type="button" onClick="addAttributeToRDButton_TimeOut()">Attribute mit Verz&ouml;gerung
+        hinzufügen
+    </button>
+    <button id="SelectRDButton" type="button" onClick="selectRDButton_TimeOut()">Select Radio Button mit Verz&ouml;gerung</button>
+    <button id="DeselectRDButton" type="button" onClick="deselectRDButton_TimeOut()">Deselect Radio Button mit Verz&ouml;gerung
+    </button>
+    <input id="enabledSwitchRDButton" name="radioBtn" type="radio" DISABLED> <br>
+</div>
+
+<div class="box">
+    <button onclick="showClickPosition(event)">Please touch me</button>
+    <div id="clickPosition"></div>
+</div>
+
+<div>
+    <button data-qa="action/toggleClass" class="btn" onclick="this.classList.toggle('active')">Toggle class</button>
+</div>
+
+<div id="notDisplayedElement" style="display: none">
+    Im not displayed
+</div>
+
+<div id="notVisibleElement" style="visibility: hidden">
+    Im not visible
+</div>
+
+<div>
+    <a data-qa="action/pageChangeAnchor" href="form.html">Goto Form</a>
+</div>
+
+<div class="box className">
+	<p>This is it.</p>
+</div>
+
+</body>
+</html>

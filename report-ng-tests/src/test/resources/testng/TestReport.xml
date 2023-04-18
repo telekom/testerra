@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Test Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="15" data-provider-thread-count="15">
+    <test name="Parallel" parallel="methods">
+        <packages>
+            <package name="io.testerra.report.test.report_test.methodpages"/>
+            <package name="io.testerra.report.test.report_test.sidebarpages"/>
+            <package name="io.testerra.report.test.report_test.TT2_extensions"/>
+        </packages>
+    </test>
+</suite>

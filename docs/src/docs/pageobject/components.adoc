@@ -4,7 +4,21 @@ You can improve your PageObjects by using components. Components are like they a
 
 In Testerra, components are hybrids of both UiElements and PageObjects. They can contain more UiElements and even Components, but they don't provide features restricted to Pages or UiElements and their finder API is restricted to its root container element by default.
 
-You can create a component like
+== Create a component
+
+The following HTML snippet is given:
+
+[source,html]
+----
+..
+<div id="container">
+    <input type="text" id="mytext">
+    <button id="button">Send</button>
+</div>
+..
+----
+
+The component should contain all elements of the `div` element.
 
 [source,java]
 ----
@@ -13,7 +27,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 public class MyComponent extends AbstractComponent<MyComponent> {
 
     @Check
-    UiElement button = find(By.tagName("button"));
+    UiElement input = find(By.id("mytext"));
+    @Check
+    UiElement button = find(By.id("button"));
 
     public MyComponent(UiElement rootElement) {
         super(rootElement);
@@ -23,14 +39,23 @@ public class MyComponent extends AbstractComponent<MyComponent> {
 
 To instantiate components, use the `createComponent()` method the same way as you create pages.
 
+The second parameter is the *root element* of your component (here the `div` element).
+
 [source,java]
 ----
 public class MyPage extends Page {
 
     @Check
-    MyComponent component = createComponent(MyComponent.class, find(By.className("container")));
+    MyComponent component = createComponent(MyComponent.class, find(By.id("container")));
 }
 ----
+
+[IMPORTANT]
+====
+All UiElements of your component are always sub elements of the root element!
+
+The button element of the example is found like `find(By.id("container").find(By.id("button")`.
+====
 
 == Component lists
 

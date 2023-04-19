@@ -29,6 +29,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,21 +70,27 @@ public class DefaultCapabilityUtils implements Loggable {
      * Some caps like Extensions strings are very long, so therefore we will cut them off
      */
     private void shortMapValues(Map<String, Object> map2Short) {
+        // Exception list of keys which should not shorten
+        List<String> exceptionList = List.of(
+                "path"  // Absolute path for Firefox extension files
+        );
+
         try {
             for (Map.Entry<String, Object> entry : map2Short.entrySet()) {
                 Object value = entry.getValue();
+                String key = entry.getKey();
                 if (value instanceof Map) {
                     Map<String, Object> subMap = (Map<String, Object>) value;
                     shortMapValues(subMap);
                 } else {
                     String stringValue = String.valueOf(value);
-                    if (stringValue.length() > 40) {
+                    if (stringValue.length() > 40 && !exceptionList.contains(key)) {
                         entry.setValue(stringValue.substring(0, 40) + "...");
                     }
                 }
             }
         } catch (Exception e) {
-            log().warn("Cannot clean map: ", e);
+            log().debug("Cannot clean map: ", e);
         }
 
     }

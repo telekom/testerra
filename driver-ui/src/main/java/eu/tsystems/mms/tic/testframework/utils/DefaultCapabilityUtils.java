@@ -21,15 +21,16 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * This is a simple helper to modify log messages of {@link Capabilities} to short long values or do other opertations
@@ -39,10 +40,10 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Eric Kubenka
  */
-public class DefaultCapabilityUtils {
+public class DefaultCapabilityUtils implements Loggable {
 
     /**
-     * Clean the given {@link Capabilities} and return a {@link Map}
+     * Clean the given {@link Capabilities} from very long values and return a {@link Map}
      *
      * @param capabilities {@link Capabilities}
      * @return Map
@@ -52,57 +53,52 @@ public class DefaultCapabilityUtils {
     }
 
     public Map<String, Object> clean(Map<String, Object> capabilityMap) {
-
-        // 1. make map modifiable.
-        Map<String, Object> mutableCapabilityMap = new TreeMap<>(capabilityMap);
+        // 1. clone and make map modifiable.
+        // For deep cloning it is needed convert it to JSON and back because Firefox options also contain some immutable map objects
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(capabilityMap);
+        Map<String, Object> clonedMap = (Map<String, Object>) gson.fromJson(json, Map.class);
 
         // 2. do all the operations
-        mutableCapabilityMap = shortChromeExtensionStrings(mutableCapabilityMap);
+        shortMapValues(clonedMap);
 
         // 3. make the map unmodifiable again.
-        return Collections.unmodifiableMap(mutableCapabilityMap);
+        return Collections.unmodifiableMap(clonedMap);
     }
 
     /**
-     * Extensions strings are very long, so therefore we will cut them off
-     *
-     * @param capabilityMap {@link Map}
-     * @return Map
+     * Some caps like Extensions strings are very long, so therefore we will cut them off
      */
-    private Map<String, Object> shortChromeExtensionStrings(Map<String, Object> capabilityMap) {
+    private void shortMapValues(Map<String, Object> map2Short) {
+        // Exception list of keys which should not shorten
+        List<String> exceptionList = List.of(
+                "path"  // Absolute path for Firefox extension files
+        );
 
-        final Object chromeOptionsObject = capabilityMap.get(ChromeOptions.CAPABILITY);
-        final Object extensionsObject = capabilityMap.get("extensions");
-
-        if (chromeOptionsObject != null) {
-            final Map chromeOptions = (Map) chromeOptionsObject;
-            if (chromeOptions.containsKey("extensions")) {
-                List<String> extensions = shortAllStringsInLists(chromeOptions.get("extensions"));
-                if (extensions.size() > 0) {
-                    chromeOptions.put("extensions", extensions);
+        try {
+            for (Map.Entry<String, Object> entry : map2Short.entrySet()) {
+                Object value = entry.getValue();
+                String key = entry.getKey();
+                if (value instanceof Map) {
+                    Map<String, Object> subMap = (Map<String, Object>) value;
+                    shortMapValues(subMap);
+                } else {
+                    String stringValue = String.valueOf(value);
+                    if (stringValue.length() > 40 && !exceptionList.contains(key)) {
+                        entry.setValue(stringValue.substring(0, 40) + "...");
+                    }
                 }
             }
+        } catch (Exception e) {
+            log().debug("Cannot clean map: ", e);
         }
 
-        if (extensionsObject != null) {
-            List<String> extensions = shortAllStringsInLists(extensionsObject);
-            if (extensions.size() > 0) {
-                capabilityMap.put("extensions", shortAllStringsInLists(extensionsObject));
-            }
-        }
-
-        return capabilityMap;
-    }
-
-    private List<String> shortAllStringsInLists(final Object stringListObject) {
-        final List<String> extList = new ArrayList<>();
-        ((List<String>) stringListObject).forEach(e -> extList.add(e.substring(0, 10) + "..."));
-        return extList;
     }
 
     /**
      * Sets a capability value if the existing value doesn't match the same type,
      * is an empty string or doesn't exist.
+     *
      * @param capabilities
      * @param capabilityName
      * @param capability
@@ -110,7 +106,7 @@ public class DefaultCapabilityUtils {
      */
     public <T> void putIfAbsent(DesiredCapabilities capabilities, String capabilityName, T capability) {
         Object existingCapability = capabilities.getCapability(capabilityName);
-        if (!capability.getClass().isInstance(existingCapability) || (existingCapability instanceof String && StringUtils.isBlank((String)existingCapability))) {
+        if (!capability.getClass().isInstance(existingCapability) || (existingCapability instanceof String && StringUtils.isBlank((String) existingCapability))) {
             capabilities.setCapability(capabilityName, capability);
         }
     }

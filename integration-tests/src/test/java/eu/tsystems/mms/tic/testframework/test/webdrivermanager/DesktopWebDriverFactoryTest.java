@@ -104,7 +104,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.LINUX);
     }
 
-    @Test
+    // TODO: Selenium 3 cannot merge correctly caps. Issue is fixed in Selenium 4 (https://github.com/telekom/testerra/issues/285)
+    @Test(enabled = false)
     public void testT05_ChromeExtensions() throws MalformedURLException {
 
         File chromeExtensionFile = new File(
@@ -118,7 +119,6 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(chromeExtensionFile);
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-//        request.setBaseUrl("chrome://extensions-internals/");
         request.getDesiredCapabilities().merge(options);
 
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);

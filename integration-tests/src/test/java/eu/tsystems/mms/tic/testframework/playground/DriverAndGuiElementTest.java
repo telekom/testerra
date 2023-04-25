@@ -105,11 +105,15 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
         File chromeExtensionFile = new File(Objects.requireNonNull(
                 Thread.currentThread().getContextClassLoader()
                         .getResource("testfiles/Simple_Translate_2.8.1.0.crx")).getFile());
+
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {
             options.addExtensions(chromeExtensionFile);
         });
 
-        File firefoxExtensionFile = new File(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/simple_translate-2.8.1.xpi")).getFile());
+
+//        File firefoxExtensionFile = new File(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/simple_translate-2.8.1.xpi")).getFile());
+        File firefoxExtensionFile = new File(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/i_dont_care_about_cookies-3.4.6.xpi")).getFile());
+
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
             FirefoxProfile profile = new FirefoxProfile();
             profile.addExtension(firefoxExtensionFile);

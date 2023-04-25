@@ -151,9 +151,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
 //        Assert.assertEquals(sessionCapabilities.get(CapabilityType.PROXY), requestProxy, "Request proxy is set");
     }
 
-    // TODO: Selenium 3 cannot merge correctly caps. Issue is fixed in Selenium 4 (https://github.com/telekom/testerra/issues/285)
-    @Test(enabled = false)
-    public void testT05_ChromeExtensions() throws MalformedURLException {
+    @Test
+    public void testT08_ChromeExtensions() throws MalformedURLException {
 
         File chromeExtensionFile = new File(
                 Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/Simple_Translate_2.8.1.0.crx")).getFile());

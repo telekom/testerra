@@ -402,6 +402,7 @@ public final class WebDriverSessionsManager {
 
             // Catch all existing browser caps and add them to specific browser options
             final WebDriverRequest finalWebDriverRequest = webDriverFactory.prepareWebDriverRequest(webDriverRequest);
+            // Update webDriverRequest with caps of external or global defined request configurators
             webDriverRequestConfigurators.forEach(handler -> handler.accept(finalWebDriverRequest));
 
             // Create session context and link to method context

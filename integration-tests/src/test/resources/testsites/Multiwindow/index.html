@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Window 1</title>
+    <script>
+        function openWindow() {
+            setTimeout(function () {
+                window.open('window2.html', '_blank');
+            }, 3000)
+        }
+    </script>
 </head>
 <body>
 <h1>Window 1</h1>
@@ -10,6 +17,7 @@
     <ul>
         <li><a id="link1" href="window2.html" target="_blank">Go to window 2</a></li>
         <li><a id="link2" href="window3.html" target="_blank">Go to window 3</a></li>
+        <li><a id="link3" href="#" onclick="openWindow()">Go to window 2 with delay</a></li>
     </ul>
 </section>
 </body>

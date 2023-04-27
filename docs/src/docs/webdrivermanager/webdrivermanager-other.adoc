@@ -6,7 +6,7 @@
 [source,java]
 ----
 WebDriver driver = WebDriverManager.getWebDriver();
-Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionContext(driver);
+Optional<SessionContext> sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver);
 ----
 
 == Switching windows
@@ -15,7 +15,7 @@ Sometimes you will come across testing websites with multiple windows, such as p
 
 [source,java]
 ----
-// Switch to a window by matching title
+// Switch to a window by matching title with 'equals()'
 WEB_DRIVER_MANAGER.switchToWindowTitle(WebDriver webDriver, String windowTitle);
 
 // Switch to a given window handle

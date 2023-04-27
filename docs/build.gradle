@@ -53,7 +53,7 @@ asciidoctor {
             toclevels: 2,
             sectnums: '',
             sectanchors: '',
-            Author: 'The Testerra Team of T-Systems MMS',
+            Author: 'The Testerra Team of Telekom MMS',
             revnumber: "${version}",
             nofooter: true,
             'source-highlighter': 'highlightjs',

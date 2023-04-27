@@ -34,6 +34,7 @@ public enum TestPage {
     LAYOUT("Layout/index.html"),
     LAYOUT_IMAGE("LayoutImage/index.html"),
     LIST("GuiElementList/index.html"),
+    IMG("Img/logo", INPUT_TEST_PAGE),
     SHADOW_ROOT("GuiElementShadowRoot/shadow_root.html"),
     SWITCH_WINDOW("Multiwindow/index.html");
 

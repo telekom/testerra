@@ -48,4 +48,10 @@ public class LayoutCheckImageTest extends AbstractTestSitesTest implements Locat
         uiElement.expect().screenshot().pixelDistance("TestImage").isLowerThan(1.0);
     }
 
+    @Test
+    public void testT02_CheckImageLayoutDifferentSizes() {
+        UiElement uiElement = getUIElementQa("testimage");
+        uiElement.expect().screenshot().pixelDistance("TestImageDifferentSize").isLowerThan(1.0);
+    }
+
 }

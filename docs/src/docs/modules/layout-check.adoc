@@ -12,15 +12,22 @@ Although, manual inspection can never be pixel-accurate. An inspection of perhap
 
 At this point an automatic comparison of reference screenshots can help. This test is to be seen in addition to the functional tests, but cannot replace them. In a test case, it would also be conceivable to combine the check of function and layout.
 
-== Description
+== How it works
 
 A layout test with the Testerra utilities is actually a comparison between a reference and the actual state. This is done via the screenshot functionality of Selenium, in which both screenshots (reference and actual) are compared pixel by pixel from top to bottom. In this comparison, a third image is created in which differences (ReferencePixel != ActualPixel) are marked in red.
+
+image::layoutcheck_comparison.png[alt="Visualization of a layout check",width=920,height=233]
+
+In case that one image has a different size than the other Testerra reports this as an <<#_optional_assertions, Optional assertion>>. Testerra considers only the common pixels of both images as 100%. Pixels that are outside of one or the other image are not included in the error calculation. In the comparison, those Pixels are marked in blue.
+
+image::layoutcheck_diffsize_comparison.png[alt="Visualization of a layout check with different sized images",width=920,height=233]
+
 
 === Prerequisites
 The following prerequisites must be met
 
 . Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
-** Size of browser window: Define fixed size to exclude different sizes of the images at different VM resolutions
+** Size of browser window: Define fixed size to exclude different sizes of the images at different screen resolutions
 ** Screen resolution and scaling: Make sure you have the same screen resolution and scaling on each presentation device.
 
 == Configuration

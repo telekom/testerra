@@ -271,7 +271,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         int pixelsInError = 0;
         int noOfIgnoredPixels = 0;
         // calculate the size of the distance image and create an empty image
-        final Dimension distanceImageSize = calculateMaxImageSize(expectedImage, actualImage);
+        final Dimension distanceImageSize = calculateMinImageSize(expectedImage, actualImage);
         final BufferedImage distanceImage = new BufferedImage(
                 distanceImageSize.width, distanceImageSize.height,
                 expectedImage.getType());
@@ -317,10 +317,8 @@ public final class LayoutCheck implements PropertyManagerProvider {
                             distanceImage.setRGB(currentX, currentY, Color.RED.getRGB());
                             pixelsInError++;
                         }
-                    }
-
-                    // count the ignored pixels for calculating
-                    if (useIgnoreColor && expectedRgb == ignoreColor) {
+                    } else {
+                        // count the ignored pixels for calculating
                         noOfIgnoredPixels++;
                     }
                 } else {
@@ -380,19 +378,19 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     /**
-     * Calculates the sizes that result from the maximum sizes of both pictures.
+     * Calculates the sizes that result from the minimum sizes of both pictures.
      *
      * @param expectedImage The expected image
-     * @param actualImage The actual image
-     * @return Calculated maximum size of the images
+     * @param actualImage   The actual image
+     * @return Calculated minimum size of the images
      */
-    private static Dimension calculateMaxImageSize(
+    private static Dimension calculateMinImageSize(
             final BufferedImage expectedImage,
             final BufferedImage actualImage
     ) {
         return new Dimension(
-                Math.max(expectedImage.getWidth(), actualImage.getWidth()),
-                Math.max(expectedImage.getHeight(), actualImage.getHeight())
+                Math.min(expectedImage.getWidth(), actualImage.getWidth()),
+                Math.min(expectedImage.getHeight(), actualImage.getHeight())
         );
     }
 

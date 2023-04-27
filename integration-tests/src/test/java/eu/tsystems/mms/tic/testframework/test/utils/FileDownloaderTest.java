@@ -23,13 +23,16 @@
 package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
 import eu.tsystems.mms.tic.testframework.utils.DefaultConnectionConfigurator;
 import eu.tsystems.mms.tic.testframework.utils.FileDownloader;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -44,6 +47,11 @@ import org.testng.annotations.Test;
  * @author erku
  */
 public class FileDownloaderTest extends AbstractTestSitesTest {
+
+    @Override
+    protected TestPage getTestPage() {
+        return TestPage.IMG;
+    }
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(Method method) {
@@ -110,7 +118,13 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
     }
 
-    @Test
+    /**
+     * Test disabled, because no online service with header information content-disposition was found as an alternative to the existing one.
+     * Implementation with a dedicated local eu.tsystems.mms.tic.testframework.core.Server manipulating header information to set content-disposition persistently
+     * with an additional handler needs to be investigated
+     * @throws IOException
+     */
+    @Test(enabled = false)
     public void test04_readFileNameFromResponseHeader() throws IOException {
         FileDownloader downloader = new FileDownloader();
         DefaultConnectionConfigurator connectionConfigurator = createConnectionConfigurator();
@@ -122,8 +136,12 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
 
     @Test
     public void test05_readFileFromUrl() throws IOException {
-        FileDownloader downloader = new FileDownloader();
-        File file = downloader.download("https://httpbin.org/image/png");
-        Assert.assertEquals(file.getName(), "png");
+
+        final String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
+
+        final FileDownloader downloader = new FileDownloader();
+        final File file = downloader.download(baseUrl);
+
+        Assert.assertEquals(file.getName(), "logo");
     }
 }

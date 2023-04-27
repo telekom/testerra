@@ -41,7 +41,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -106,7 +105,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
 
     // TODO: Selenium 3 cannot merge correctly caps. Issue is fixed in Selenium 4 (https://github.com/telekom/testerra/issues/285)
     @Test(enabled = false)
-    public void testT05_ChromeExtensions() throws MalformedURLException {
+    public void testT05_ChromeExtensions() {
 
         File chromeExtensionFile = new File(
                 Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/Simple_Translate_2.8.1.0.crx")).getFile());
@@ -114,7 +113,6 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {
             options.setAcceptInsecureCerts(true);
         });
-
 
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(chromeExtensionFile);

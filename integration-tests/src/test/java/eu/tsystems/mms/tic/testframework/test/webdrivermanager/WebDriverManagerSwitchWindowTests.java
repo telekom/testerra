@@ -9,6 +9,7 @@ import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -80,7 +81,8 @@ public class WebDriverManagerSwitchWindowTests extends AbstractTestSitesTest imp
         final String handle1 = webDriver.getWindowHandle();
         link3.click();
 
-        CONTROL.waitFor(6, () -> WEB_DRIVER_MANAGER.switchToWindowTitle(webDriver, "Window 2"));
+        int secondsForRetry = 6;
+        CONTROL.retryFor(secondsForRetry, () -> WEB_DRIVER_MANAGER.switchToWindowTitle(webDriver, "Window 2"));
         header2.assertThat().present(true);
         ASSERT.assertNotEquals(webDriver.getWindowHandle(), handle1);
     }
@@ -93,9 +95,10 @@ public class WebDriverManagerSwitchWindowTests extends AbstractTestSitesTest imp
         final String handle1 = webDriver.getWindowHandle();
         link3.click();
 
-        CONTROL.waitFor(6, () -> {
+        int secondsForRetry = 6;
+        CONTROL.retryFor(secondsForRetry, () -> {
             boolean result = WEB_DRIVER_MANAGER.switchToWindow(webDriver, driver -> driver.getTitle().contains("Window 2"));
-            ASSERT.assertTrue(result);
+            Assert.assertTrue(result);
         });
         header2.assertThat().present(true);
         ASSERT.assertNotEquals(webDriver.getWindowHandle(), handle1);

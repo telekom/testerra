@@ -70,3 +70,33 @@ rows.list().forEach(row -> {
     row.getNameColumn().text().contains("Hello").is(true);
 });
 ----
+
+== Break out from components
+
+Some website components have no unique root element because some elements were added dynamically to the end of the DOM at runtime.
+
+In that case your UiElements are no subelements of your component's root element. You can access outside elements as follows:
+
+[source,java]
+----
+
+public class MyComponent extends AbstractComponent<MyComponent>
+        implements UiElementFinderFactoryProvider {
+
+    // This element is a subelement from component's root element
+    private UiElement input = find(By.id("mytext"));
+
+    // This element can be outside
+    private UiElement button = getGlobalFinder().find(By.id("button"));
+
+    public MyComponent(UiElement rootElement) {
+        super(rootElement);
+    }
+
+    private UiElementFinder getGlobalFinder() {
+        return UI_ELEMENT_FINDER_FACTORY.create(this.getWebDriver());
+    }
+
+}
+
+----

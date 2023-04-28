@@ -79,7 +79,6 @@ In that case your UiElements are no subelements of your component's root element
 
 [source,java]
 ----
-
 public class MyComponent extends AbstractComponent<MyComponent>
         implements UiElementFinderFactoryProvider {
 
@@ -98,5 +97,4 @@ public class MyComponent extends AbstractComponent<MyComponent>
     }
 
 }
-
 ----

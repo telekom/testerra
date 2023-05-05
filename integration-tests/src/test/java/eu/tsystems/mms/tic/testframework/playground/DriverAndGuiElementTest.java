@@ -24,12 +24,10 @@ package eu.tsystems.mms.tic.testframework.playground;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
@@ -114,7 +112,6 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {
             options.addExtensions(chromeExtensionFile);
         });
-
 
 //        File firefoxExtensionFile = new File(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/simple_translate-2.8.1.xpi")).getFile());
         File firefoxExtensionFile = new File(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/i_dont_care_about_cookies-3.4.6.xpi")).getFile());

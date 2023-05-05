@@ -23,12 +23,17 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -43,7 +48,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.Objects;
 
-public class DriverAndGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider {
+public class DriverAndGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, PageFactoryProvider {
 
     @Test
     public void testUiElement() throws Exception {
@@ -121,5 +126,14 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
         });
 
         WebDriver driver = getWebDriver();
+    }
+
+    @Test
+    public void testT02_checkNotExistingElement() {
+        WebDriver webDriver = this.getWebDriver();
+
+//        PAGE_FACTORY.createPage(PageWithNotExistingElement.class);
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, webDriver);
+        UITestUtils.takeScreenshot(webDriver, true);
     }
 }

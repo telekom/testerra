@@ -41,12 +41,11 @@ public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesT
 
     @Test
     public void testAssertCollector() {
-        CONTROL.optionalAssertions(() -> {
+        CONTROL.collectAssertions(() -> {
             ASSERT.fail("failed1");
             ASSERT.fail("failed2");
             ASSERT.assertTrue(true, "passed1");
         });
-
     }
 
     @Test

@@ -28,9 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.AbstractReportMethodPage;
-import io.testerra.report.test.pages.report.methodReport.ReportDependenciesTab;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
-import io.testerra.report.test.pages.report.methodReport.ReportSessionsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -238,15 +236,6 @@ public class ReportTestsPage extends AbstractReportPage {
         return createPage(ReportStepsTab.class);
     }
 
-    public ReportSessionsTab navigateToSessionsTab(final String methodName, final Status status) {
-
-        final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
-        final UiElement methodNameLink = find(By.xpath(methodNameLinkLocator));
-        methodNameLink.click();
-
-        return createPage(ReportSessionsTab.class);
-    }
-
     public ReportDetailsTab navigateToDetailsTab(final String methodName, final Status status) {
 
         final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
@@ -254,15 +243,6 @@ public class ReportTestsPage extends AbstractReportPage {
         methodNameLink.click();
 
         return createPage(ReportDetailsTab.class);
-    }
-
-    public ReportDependenciesTab navigateToDependenciesTab(final String methodName, final Status status) {
-
-        final String methodNameLinkLocator = tableRowsLocator.concat("[.//a[text()= '" + status.title + "']]//a[text()= '" + methodName + "']");
-        final UiElement methodNameLink = find(By.xpath(methodNameLinkLocator));
-        methodNameLink.click();
-
-        return createPage(ReportDependenciesTab.class);
     }
 
     public <T extends AbstractReportMethodPage> T navigateToMethodDetails(final Class<T> reportPageClass, String methodName) {

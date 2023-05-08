@@ -69,7 +69,7 @@ public class ReportLogsPage extends AbstractReportPage {
             if (markedLineParts.list().size() > 0) {
                 if (!markedLineParts.list()
                         .stream()
-                        .map(uiElement -> uiElement.expect().text().getActual())
+                        .map(uiElement -> uiElement.waitFor().text().getActual())
                         .map(String::toUpperCase)
                         .allMatch(i -> i.contains(expectedText.toUpperCase()))) {
                     allLogLinesMarkedAsExpected = false;
@@ -87,7 +87,7 @@ public class ReportLogsPage extends AbstractReportPage {
 
         boolean allLogLinesMarkedAsExpected = list
                 .stream()
-                .map(uiElement -> uiElement.expect().text().getActual())
+                .map(uiElement -> uiElement.waitFor().text().getActual())
                 .map(String::toUpperCase)
                 .allMatch(i -> i.contains(expectedText.toUpperCase()));
 

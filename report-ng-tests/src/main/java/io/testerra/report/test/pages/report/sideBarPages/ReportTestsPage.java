@@ -22,6 +22,7 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
@@ -54,7 +55,7 @@ public class ReportTestsPage extends AbstractReportPage {
     private final String tableRowsLocator = "//tbody//tr";
     private final UiElement tableRows = pageContent.find(By.xpath(tableRowsLocator));
 
-    private final String methodLinkLocator = "//tbody//tr//td//a[text()='%s']";
+    PreparedLocator preparedMethodLinkLocator = LOCATE.prepare("//a[contains(@route-href, 'method') and text()='%s']");
     private final UiElement tableHead = pageContent.find(By.xpath(".//thead"));
 
     public void checkPriorityMessagesPreviewForTest(String methodName, String[] priorityMessages) {
@@ -265,42 +266,24 @@ public class ReportTestsPage extends AbstractReportPage {
     }
 
     public <T extends AbstractReportMethodPage> T navigateToMethodDetails(final Class<T> reportPageClass, String methodName) {
-        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
+        UiElement subElement = pageContent.find(this.preparedMethodLinkLocator.with(methodName));
         subElement.click();
 
         return createPage(reportPageClass);
     }
 
     public ReportStepsTab navigateToStepsTab(String methodName) {
-
-        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
+        UiElement subElement = pageContent.find(this.preparedMethodLinkLocator.with(methodName));
         subElement.click();
 
         return createPage(ReportStepsTab.class);
     }
 
-    public ReportSessionsTab navigateToSessionsTab(String methodName) {
-
-        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
-        subElement.click();
-
-        return createPage(ReportSessionsTab.class);
-    }
-
     public ReportDetailsTab navigateToDetailsTab(String methodName) {
-
-        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
+        UiElement subElement = pageContent.find(this.preparedMethodLinkLocator.with(methodName));
         subElement.click();
 
         return createPage(ReportDetailsTab.class);
-    }
-
-    public ReportDependenciesTab navigateToDependenciesTab(String methodName) {
-
-        UiElement subElement = pageContent.find(By.xpath(String.format(methodLinkLocator, methodName)));
-        subElement.click();
-
-        return createPage(ReportDependenciesTab.class);
     }
 
     public ReportTestsPage clickConfigurationMethodsSwitch() {

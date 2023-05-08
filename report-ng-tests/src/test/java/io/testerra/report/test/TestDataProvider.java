@@ -111,10 +111,10 @@ public class TestDataProvider {
         };
     }
 
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public static Object[][] dataProviderForPreTestMethodsWithStatusFailed() {
         return new Object[][]{
-                {new TestData("testAssertCollector", "AssertCollector.fail", "AssertCollector.fail")},
+                {new TestData("testAssertCollector", "ASSERT.fail(\"failed1\")", "ASSERT.fail(\"failed2\")")},
                 {new TestData("test_failedPageNotFound", "PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());")},
                 {new TestData("test_Failed", "Assert.fail")},
                 {new TestData("test_Failed_WithScreenShot", "Assert.fail")}

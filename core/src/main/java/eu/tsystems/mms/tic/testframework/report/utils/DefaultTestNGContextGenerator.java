@@ -29,7 +29,8 @@ public class DefaultTestNGContextGenerator implements TestNGContextNameGenerator
 
     @Override
     public String getClassContextName(ITestResult testResult) {
-        return testResult.getTestClass().getRealClass().getSimpleName();
+//        return testResult.getTestClass().getRealClass().getSimpleName();
+        return testResult.getTestClass().getRealClass().getName();
     }
 
     @Override

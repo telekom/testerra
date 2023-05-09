@@ -29,6 +29,7 @@ import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import MethodType = data.MethodType;
 import "./classes.scss"
+import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
 
 enum SortBy {
     Class = "CLASS",
@@ -53,6 +54,7 @@ export class Classes extends AbstractViewModel {
         private _dataLoader: DataLoader,
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _classNameValueConverter: ClassNameValueConverter,
     ) {
         super();
     }
@@ -129,7 +131,11 @@ export class Classes extends AbstractViewModel {
                     return classStatistics;
                 })
                 .filter(classStatistic => {
-                    return !this.queryParams.class || this.queryParams.class == classStatistic.classIdentifier
+                    return !this.queryParams.class
+                        || (
+                            this.queryParams.class == this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.simpleName)
+                            || this.queryParams.class == classStatistic.classIdentifier
+                            );
                 })
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;

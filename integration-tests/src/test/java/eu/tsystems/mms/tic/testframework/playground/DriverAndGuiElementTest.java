@@ -19,30 +19,34 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.playground;
+package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
-import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class DriverAndGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider {
+import java.io.File;
+import java.util.Map;
+import java.util.Objects;
+
+public class DriverAndGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, PageFactoryProvider {
 
     @Test
     public void testUiElement() throws Exception {
@@ -85,5 +89,48 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
 
         WEB_DRIVER_MANAGER.getWebDriver(request);
         Assert.assertTrue(false);
+    }
+
+    @Test
+    public void testsimpleUiElement() {
+        WebDriver driver = getWebDriver();
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(driver);
+        UiElement element = uiElementFinder.find(By.id("1"));
+        element.waitFor().attribute("href").getActual();
+        element.waitFor().tagName().getActual();
+        element.waitFor().classes().getActual();
+    }
+
+    @Test
+    public void testFirefoxExtension() throws Exception {
+
+        File chromeExtensionFile = new File(Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader()
+                        .getResource("testfiles/Simple_Translate_2.8.1.0.crx")).getFile());
+
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {
+            options.addExtensions(chromeExtensionFile);
+        });
+
+//        File firefoxExtensionFile = new File(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/simple_translate-2.8.1.xpi")).getFile());
+        File firefoxExtensionFile = new File(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/i_dont_care_about_cookies-3.4.6.xpi")).getFile());
+
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+            FirefoxProfile profile = new FirefoxProfile();
+            profile.addExtension(firefoxExtensionFile);
+            options.setProfile(profile);
+        });
+
+        WebDriver driver = getWebDriver();
+    }
+
+    @Test
+    public void testT02_checkNotExistingElement() {
+        WebDriver webDriver = this.getWebDriver();
+
+//        PAGE_FACTORY.createPage(PageWithNotExistingElement.class);
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, webDriver);
+        UITestUtils.takeScreenshot(webDriver, true);
     }
 }

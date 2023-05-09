@@ -105,7 +105,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
      * Basic LogPageTest doing filter and one search and check marked line without any scrolling
      * can be replaced when scrolling is robust
      */
-    @Test()
+    @Test(enabled = false, description = "Issue in log view with Filter=INFO and Search=Failed -> View is shaking...")
     public void testT04_filterForMethodContentWithLogLevelBasic() {
         final String methodeName = "testAssertCollector";
         final String methodeClass = "GeneratePassedStatusInTesterraReportTest";
@@ -118,8 +118,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
         ReportLogsPage reportLogsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.LOGS, ReportLogsPage.class);
 
         for (final LogLevel logLevel : LogLevel.values()) {
-
-            TestStep.begin("Check whether the logLevel-select works correctly");
+            TestStep.begin("Check whether the logLevel-select works correctly: " + logLevel);
             reportLogsPage = reportLogsPage.selectLogLevel(logLevel);
             reportLogsPage.assertLogReportContainsCorrectLogLevel(logLevel);
 

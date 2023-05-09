@@ -23,6 +23,12 @@
         </classes>
     </test>
 
+    <test name="Parallel2" parallel="methods">
+        <packages>
+            <package name="io.testerra.report.test.pretest_status.classContext.*"/>
+        </packages>
+    </test>
+
     <test name="Sequential">
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">

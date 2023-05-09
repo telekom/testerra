@@ -74,7 +74,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Check whether method-column contains correct methods");
         reportTestsPage = reportTestsPage.search(testMethod);
-        reportTestsPage.assertMethodColumnContainsCorrectMethods(testMethod);
+        reportTestsPage.assertMethodColumnMatchesFilter(testMethod);
         reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
     }
 
@@ -88,7 +88,7 @@ public class ReportTestsPageTest extends AbstractReportTest {
 
         TestStep.begin("Check whether method-column contains methods with correct failure aspects");
         reportTestsPage = reportTestsPage.search(failureAspect);
-        reportTestsPage.assertMethodColumnContainsCorrectMethods(failureAspect);
+        reportTestsPage.assertMethodColumnMatchesFilter(failureAspect);
         reportTestsPage.assertMethodeColumnHeadlineContainsCorrectText();
     }
 

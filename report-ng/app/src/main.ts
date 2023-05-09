@@ -69,7 +69,7 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/duration-format-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter'),
-            PLATFORM.moduleName('t-systems-aurelia-components/src/components/echart/echart'),
+            // PLATFORM.moduleName('t-systems-aurelia-components/src/components/echart/echart'),
             PLATFORM.moduleName('value-converters/json-value-converter'),
             PLATFORM.moduleName('value-converters/status-icon-name-value-converter'),
             PLATFORM.moduleName('value-converters/status-name-value-converter'),

@@ -134,13 +134,21 @@ export class App {
                 nav: true,
                 title: 'Threads - Apex'
             },
+            // {
+            //     route: 'threads3',
+            //     name: 'threads3',
+            //     moduleId: PLATFORM.moduleName('components/threads3/threads3'),
+            //     nav: true,
+            //     title: 'Threads - ECharts'
+            // },
             {
-                route: 'threads3',
-                name: 'threads3',
-                moduleId: PLATFORM.moduleName('components/threads3/threads3'),
+                route: 'threads4',
+                name: 'threads4',
+                moduleId: PLATFORM.moduleName('components/threads4/threads4'),
                 nav: true,
                 title: 'Threads - ECharts'
-            },
+            }
+            ,
             // {
             //     route: 'timings',
             //     name: 'Timings',

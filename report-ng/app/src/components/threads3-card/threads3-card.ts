@@ -1,11 +1,10 @@
-// import * as echarts from "echarts/core";
-// import {EChartsOption} from "echarts";
 import './myChart.scss';
+import {EChartsOption} from "echarts";
 
 export class Threads3Card {
-    // private _options: EChartsOption;
-    private _options:object;
-    // private _chart: echarts.ECharts;
+    private _options: EChartsOption;
+    // private _options:object;
+    private _chart: echarts.ECharts;
 
     constructor(
     ) {

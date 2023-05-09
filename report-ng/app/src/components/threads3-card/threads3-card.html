@@ -20,16 +20,12 @@
   -->
 
 <template>
+    <require from="../echart/echart"></require>
     <mdc-card>
-        <div mdc-subtitle2 class="card-headline">Threads overview</div>
+        <div mdc-subtitle2 class="card-headline">Threads overview (EC)</div>
         <mdc-list-divider></mdc-list-divider>
         <div class="chart">
-            <echart options.bind="_options" chart.bind="_chart" class="pl1 pr1" style="display:block">
-            </echart>
+            <echart options.bind="_options" chart.bind="_chart" class="pl1 pr1 echart"></echart>
         </div>
     </mdc-card>
 </template>
-
-<!--<template>
-    <div ref="_container" class.bind="class"></div>
-</template>-->

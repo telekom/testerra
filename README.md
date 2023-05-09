@@ -58,7 +58,7 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.2</version>
+        <version>2.3</version>
     </dependency>
 </dependencies>
 ```

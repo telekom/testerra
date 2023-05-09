@@ -37,7 +37,8 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                 // https://github.com/aurelia/binding/issues/702
                 // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
                 // out-of-date dependencies on 3rd party aurelia plugins
-                'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding')
+                'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding'),
+                'tslib': path.resolve(__dirname, 'node_modules/tslib')
             }
         },
         entry: {
@@ -178,7 +179,10 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             ]
         },
         plugins: [
-            ...when(!tests, new DuplicatePackageCheckerPlugin()),
+            ...when(!tests, new DuplicatePackageCheckerPlugin({
+                    verbose: true
+                }
+            )),
             new AureliaPlugin(),
             ...when(production,  new webpack.NormalModuleReplacementPlugin(/config-dev/gi, (resource) => {
                 resource.request = resource.request.replace(/config-dev/, 'config-prod');

@@ -25,7 +25,7 @@ import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import "./threads4.scss"
-import * as echarts from "echarts/core";
+import * as echarts from 'echarts';
 import {ECBasicOption} from "echarts/types/dist/shared";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 

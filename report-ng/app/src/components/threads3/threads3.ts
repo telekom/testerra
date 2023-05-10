@@ -26,9 +26,9 @@ import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import "./threads3.scss"
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-import {EChartsOption} from "echarts";
 // import echarts from "echarts/types/dist/shared";
 import * as echarts from "echarts";
+import {EChartsOption} from "echarts";
 
 
 @autoinject()
@@ -62,8 +62,8 @@ export class Threads3 extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             // TODO: Add logic to prepare timeline
-            this._createOptions();
-            // this._prepareTimeline();
+            // this._createOptions();
+            this._prepareTimeline();
             this._loading = false;
         });
     };
@@ -95,12 +95,12 @@ export class Threads3 extends AbstractViewModel {
         const startTime = +new Date();
         const categories = ['categoryA', 'categoryB', 'categoryC'];
         const types = [
-            { name: 'JS Heap', color: '#7b9ce1' },
-            { name: 'Documents', color: '#bd6d6c' },
-            { name: 'Nodes', color: '#75d874' },
-            { name: 'Listeners', color: '#e0bc78' },
-            { name: 'GPU Memory', color: '#dc77dc' },
-            { name: 'GPU', color: '#72b362' }
+            {name: 'JS Heap', color: '#7b9ce1'},
+            {name: 'Documents', color: '#bd6d6c'},
+            {name: 'Nodes', color: '#75d874'},
+            {name: 'Listeners', color: '#e0bc78'},
+            {name: 'GPU Memory', color: '#dc77dc'},
+            {name: 'GPU', color: '#72b362'}
         ];
 
         // Generate mock data
@@ -163,13 +163,35 @@ export class Threads3 extends AbstractViewModel {
             series: [
                 {
                     type: 'custom',
-                    // TODO!! ???
-                    // renderItem: {
-                    //     renderItem: function (param, api) => {
-                    //         return this.renderItem(params, api);
-                    //     }
-                    //
-                    // },
+                    renderItem: function (params, api) {
+                        // return this.getRenderItem(params, api);
+                        const categoryIndex = api.value(0);
+                        const start = api.coord([api.value(1), categoryIndex]);
+                        const end = api.coord([api.value(2), categoryIndex]);
+                        const height = api.size([0, 1])[1] * 0.6;
+                        const rectShape = echarts.graphic.clipRectByRect(
+                            {
+                                x: start[0],
+                                y: start[1] - height / 2,
+                                width: end[0] - start[0],
+                                height: height
+                            },
+                            {
+                                x: params.coordSys["x"],
+                                y: params.coordSys["y"],
+                                width: params.coordSys["width"],
+                                height: params.coordSys["height"]
+                            }
+                        );
+                        return (
+                            rectShape && {
+                                type: 'rect',
+                                transition: ['shape'],
+                                shape: rectShape,
+                                style: api.style()
+                            }
+                        );
+                    },
                     itemStyle: {
                         opacity: 0.8
                     },
@@ -183,7 +205,7 @@ export class Threads3 extends AbstractViewModel {
         };
     }
 
-    private renderItem(params, api) : any {
+    getRenderItem(params, api): any {
         const categoryIndex = api.value(0);
         const start = api.coord([api.value(1), categoryIndex]);
         const end = api.coord([api.value(2), categoryIndex]);
@@ -196,10 +218,10 @@ export class Threads3 extends AbstractViewModel {
                 height: height
             },
             {
-                x: params.coordSys.x,
-                y: params.coordSys.y,
-                width: params.coordSys.width,
-                height: params.coordSys.height
+                x: params.coordSys["x"],
+                y: params.coordSys["y"],
+                width: params.coordSys["width"],
+                height: params.coordSys["height"]
             }
         );
         return (

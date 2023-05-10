@@ -67,6 +67,30 @@ export class Threads3 extends AbstractViewModel {
         });
     };
 
+    zoom() {
+        this._chart.dispatchAction({
+            type: 'dataZoom',
+            id: 'threadZoom',
+            start: 10,  // Percent from
+            end:20,     // Percent to
+            // startValue: 10000,
+            // endValue: 20000
+        });
+    }
+
+    resetZoom() {
+        console.log("Data", this._options);
+        // console.log("End", this._options.series[0].data.endValue);
+        this._chart.dispatchAction({
+            type: 'dataZoom',
+            id: 'threadZoom',
+            start: 0,
+            end:100
+            // startValue:0,
+            // endValue: undefined
+        });
+    }
+
     /**
      * Build Thread timeline according https://echarts.apache.org/examples/en/editor.html?c=custom-profile
      */
@@ -126,6 +150,7 @@ export class Threads3 extends AbstractViewModel {
                     labelFormatter: ''
                 },
                 {
+                    id: 'threadZoom',
                     type: 'inside',
                     filterMode: 'weakFilter'
                 }

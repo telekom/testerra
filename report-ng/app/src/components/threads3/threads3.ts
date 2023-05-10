@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -25,7 +25,10 @@ import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import "./threads3.scss"
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
+import {EChartsOption} from "echarts";
+// import echarts from "echarts/types/dist/shared";
+import * as echarts from "echarts";
 
 
 @autoinject()
@@ -34,15 +37,20 @@ export class Threads3 extends AbstractViewModel {
     private _filter: IFilter;
     private _loading = true;
 
+    private _options: EChartsOption;
+    private _chart: echarts.ECharts;
+
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _router: Router
     ) {
         super();
     }
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
+        this._router = navInstruction.router;
         if (this.queryParams.status) {
             this._filter = {
                 status: this._statusConverter.getStatusForClass(this.queryParams.status)
@@ -53,8 +61,156 @@ export class Threads3 extends AbstractViewModel {
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
+            // TODO: Add logic to prepare timeline
+            this._createOptions();
+            // this._prepareTimeline();
             this._loading = false;
         });
     };
+
+    /**
+     * Build Thread timeline according https://echarts.apache.org/examples/en/editor.html?c=custom-profile
+     */
+    private _createOptions() {
+        this._options = {
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    data: [150, 230, 224, 218, 135, 147, 260],
+                    type: 'line'
+                }
+            ]
+        };
+    }
+
+    private _prepareTimeline() {
+        const data = [];
+        const dataCount = 10;
+        const startTime = +new Date();
+        const categories = ['categoryA', 'categoryB', 'categoryC'];
+        const types = [
+            { name: 'JS Heap', color: '#7b9ce1' },
+            { name: 'Documents', color: '#bd6d6c' },
+            { name: 'Nodes', color: '#75d874' },
+            { name: 'Listeners', color: '#e0bc78' },
+            { name: 'GPU Memory', color: '#dc77dc' },
+            { name: 'GPU', color: '#72b362' }
+        ];
+
+        // Generate mock data
+        categories.forEach(function (category, index) {
+            let baseTime = startTime;
+            for (var i = 0; i < dataCount; i++) {
+                const typeItem = types[Math.round(Math.random() * (types.length - 1))];
+                const duration = Math.round(Math.random() * 10000);
+                data.push({
+                    name: typeItem.name,
+                    value: [index, baseTime, (baseTime += duration), duration],
+                    itemStyle: {
+                        normal: {
+                            color: typeItem.color
+                        }
+                    }
+                });
+                baseTime += Math.round(Math.random() * 2000);
+            }
+        });
+
+        this._options = {
+            tooltip: {
+                formatter: function (params) {
+                    return params.marker + params.name + ': ' + params.value[3] + ' ms';
+                }
+            },
+            title: {
+                text: 'Profile',
+                left: 'center'
+            },
+            dataZoom: [
+                {
+                    type: 'slider',
+                    filterMode: 'weakFilter',
+                    showDataShadow: false,
+                    top: 400,
+                    labelFormatter: ''
+                },
+                {
+                    type: 'inside',
+                    filterMode: 'weakFilter'
+                }
+            ],
+            grid: {
+                height: 300
+            },
+            xAxis: {
+                min: startTime,
+                scale: true,
+                axisLabel: {
+                    formatter: function (val) {
+                        return Math.max(0, val - startTime) + ' ms';
+                    }
+                }
+            },
+            yAxis: {
+                data: categories
+            },
+            series: [
+                {
+                    type: 'custom',
+                    // TODO!! ???
+                    // renderItem: {
+                    //     renderItem: function (param, api) => {
+                    //         return this.renderItem(params, api);
+                    //     }
+                    //
+                    // },
+                    itemStyle: {
+                        opacity: 0.8
+                    },
+                    encode: {
+                        x: [1, 2],
+                        y: 0
+                    },
+                    data: data
+                }
+            ]
+        };
+    }
+
+    private renderItem(params, api) : any {
+        const categoryIndex = api.value(0);
+        const start = api.coord([api.value(1), categoryIndex]);
+        const end = api.coord([api.value(2), categoryIndex]);
+        const height = api.size([0, 1])[1] * 0.6;
+        const rectShape = echarts.graphic.clipRectByRect(
+            {
+                x: start[0],
+                y: start[1] - height / 2,
+                width: end[0] - start[0],
+                height: height
+            },
+            {
+                x: params.coordSys.x,
+                y: params.coordSys.y,
+                width: params.coordSys.width,
+                height: params.coordSys.height
+            }
+        );
+        return (
+            rectShape && {
+                type: 'rect',
+                transition: ['shape'],
+                shape: rectShape,
+                style: api.style()
+            }
+        );
+    }
+
 }
 

@@ -20,12 +20,14 @@
   -->
 
 <template>
-    <require from="../threads3-card/threads3-card"></require>
+    <require from="../echart/echart"></require>
     <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="12">
-                <threads3-card filter.bind="_filter" execution-statistics.bind="_executionStatistics"></threads3-card>
+                <mdc-card>
+                    <echart options.bind="_options" chart.bind="_chart" class="pl1 pr1 echart"></echart>
+                </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

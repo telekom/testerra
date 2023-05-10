@@ -62,7 +62,6 @@ export class Threads3 extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             // TODO: Add logic to prepare timeline
-            // this._createOptions();
             this._prepareTimeline();
             this._loading = false;
         });
@@ -71,29 +70,13 @@ export class Threads3 extends AbstractViewModel {
     /**
      * Build Thread timeline according https://echarts.apache.org/examples/en/editor.html?c=custom-profile
      */
-    private _createOptions() {
-        this._options = {
-            xAxis: {
-                type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    data: [150, 230, 224, 218, 135, 147, 260],
-                    type: 'line'
-                }
-            ]
-        };
-    }
-
     private _prepareTimeline() {
         const data = [];
         const dataCount = 10;
         const startTime = +new Date();
+        // TODO: Test threads
         const categories = ['categoryA', 'categoryB', 'categoryC'];
+        // TODO: Passed, Failed, Skipped, Expected failed
         const types = [
             {name: 'JS Heap', color: '#7b9ce1'},
             {name: 'Documents', color: '#bd6d6c'},
@@ -103,6 +86,7 @@ export class Threads3 extends AbstractViewModel {
             {name: 'GPU', color: '#72b362'}
         ];
 
+        // TODO: Add method contexts to every thread
         // Generate mock data
         categories.forEach(function (category, index) {
             let baseTime = startTime;
@@ -128,15 +112,16 @@ export class Threads3 extends AbstractViewModel {
                     return params.marker + params.name + ': ' + params.value[3] + ' ms';
                 }
             },
-            title: {
-                text: 'Profile',
-                left: 'center'
-            },
+            // title: {
+            //     text: 'Profile',
+            //     left: 'center'
+            // },
             dataZoom: [
                 {
                     type: 'slider',
                     filterMode: 'weakFilter',
                     showDataShadow: false,
+                    // TODO Based of grid height + 100 px
                     top: 400,
                     labelFormatter: ''
                 },
@@ -146,6 +131,7 @@ export class Threads3 extends AbstractViewModel {
                 }
             ],
             grid: {
+                // TODO: Custom height according number of threads
                 height: 300
             },
             xAxis: {
@@ -163,12 +149,15 @@ export class Threads3 extends AbstractViewModel {
             series: [
                 {
                     type: 'custom',
-                    renderItem: function (params, api) {
-                        // return this.getRenderItem(params, api);
+                    renderItem: function (params: echarts.CustomSeriesRenderItemParams, api: echarts.CustomSeriesRenderItemAPI) {
+                        // return this.getRenderItem(params, api); -> does not work
                         const categoryIndex = api.value(0);
+                        // TODO: (Start, end) -> (start time, end time)
                         const start = api.coord([api.value(1), categoryIndex]);
                         const end = api.coord([api.value(2), categoryIndex]);
+                        // TODO: 0.6: Minimized height to get space between threads
                         const height = api.size([0, 1])[1] * 0.6;
+
                         const rectShape = echarts.graphic.clipRectByRect(
                             {
                                 x: start[0],

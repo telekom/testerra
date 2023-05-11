@@ -86,15 +86,25 @@ public class MyComponent extends AbstractComponent<MyComponent>
     private UiElement input = find(By.id("mytext"));
 
     // This element can be outside
-    private UiElement button = getGlobalFinder().find(By.id("button"));
+    private UiElement button = this.getExternalElement(By.id("button"));
 
     public MyComponent(UiElement rootElement) {
         super(rootElement);
     }
 
-    private UiElementFinder getGlobalFinder() {
-        return UI_ELEMENT_FINDER_FACTORY.create(this.getWebDriver());
+    private UiElement getExternalElement(By by) {
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(this.getWebDriver());
+        UiElement uiElement = uiElementFinder.find(by);
+        if (uiElement instanceof NameableChild) {
+            ((NameableChild<?>) uiElement).setParent(this);
+        }
+        return uiElement;
     }
 
 }
 ----
+
+[NOTE]
+====
+Setting the parent of the outside UiElement is optional, but in case of Assertion errors the error message is well formatted like `Expected that <Page> -> <Component> -> <Element> ...`
+====

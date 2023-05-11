@@ -1,4 +1,4 @@
-package io.testerra.report.test.report_test.TT2_extensions;
+package io.testerra.report.test.report_test.common;
 
 import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;

@@ -107,7 +107,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
      */
     @Test()
     public void testT04_filterForMethodContentWithLogLevelBasic() {
-        final String methodeName = "testAssertCollector";
+        final String methodeName = "test_AssertCollector";
         final String methodeClass = "GeneratePassedStatusInTesterraReportTest";
         final Status methodStatus = Status.FAILED;
 

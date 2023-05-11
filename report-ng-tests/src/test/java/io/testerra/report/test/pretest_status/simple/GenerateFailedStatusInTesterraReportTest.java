@@ -43,7 +43,7 @@ public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesT
     }
 
     @Test
-    public void testAssertCollector() {
+    public void test_AssertCollector() {
         AssertCollector.fail("failed1");
         AssertCollector.fail("failed2");
         AssertCollector.assertTrue(true, "passed1");

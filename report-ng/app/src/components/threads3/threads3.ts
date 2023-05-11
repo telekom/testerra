@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {autoinject} from "aurelia-framework";
+import {autoinject, observable} from "aurelia-framework";
 import {IFilter, StatusConverter} from "services/status-converter";
 import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics} from "services/statistic-models";
@@ -38,6 +38,7 @@ export class Threads3 extends AbstractViewModel {
     private _loading = true;
 
     private _options: EChartsOption;
+    @observable()
     private _chart: echarts.ECharts;
 
     constructor(
@@ -63,29 +64,34 @@ export class Threads3 extends AbstractViewModel {
             this._executionStatistics = executionStatistics;
             // TODO: Add logic to prepare timeline
             this._prepareTimeline();
+
             this._loading = false;
         });
     };
+
+    private _chartChanged() {
+        this._chart.on('click', event => this._handleClickEvent(event));
+    }
 
     zoom() {
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
             start: 10,  // Percent from
-            end:20,     // Percent to
+            end: 20,     // Percent to
             // startValue: 10000,
             // endValue: 20000
         });
     }
 
     resetZoom() {
-        console.log("Data", this._options);
+        // console.log("Data", this._options);
         // console.log("End", this._options.series[0].data.endValue);
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
             start: 0,
-            end:100
+            end: 100
             // startValue:0,
             // endValue: undefined
         });
@@ -133,6 +139,9 @@ export class Threads3 extends AbstractViewModel {
         this._options = {
             tooltip: {
                 formatter: function (params) {
+                    // console.log(params);
+                    // params.value[1]: from date
+                    // params.value[2]: to date
                     return params.marker + params.name + ': ' + params.value[3] + ' ms';
                 }
             },
@@ -217,6 +226,11 @@ export class Threads3 extends AbstractViewModel {
                 }
             ]
         };
+    }
+
+    private _handleClickEvent(event: echarts.ECElementEvent) {
+        // TODO: Route to method details
+        console.log("clicked", event);
     }
 
     getRenderItem(params, api): any {

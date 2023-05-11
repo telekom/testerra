@@ -40,14 +40,14 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
 
     private String exclusiveSessionId2;
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     public void test_Failed_WithScreenShot() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
         Assert.fail("'Failed' on reached Page.");
     }
 
-    @Test()
+    @Test
     @Fails()
     public void test_takeScreenshotViaCollectedAssertion_fails() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
@@ -59,7 +59,7 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
     }
 
 //     one screenshot manually shot on normal session
-    @Test
+    @Test(groups = {Groups.BASIC})
     public void test_GenerateScreenshotManually() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);

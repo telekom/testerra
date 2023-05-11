@@ -38,13 +38,13 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
     final AtomicInteger counter = new AtomicInteger(0);
 
 //    repaired
-    @Test
+    @Test(groups = {Groups.BASIC})
     @Fails(description = "not failing anymore")
     public void test_expectedFailedPassed() {
     }
 
 //    recovered
-    @Test()
+    @Test(groups = {Groups.BASIC})
     public void test_PassedAfterRetry() {
         this.counter.incrementAndGet();
         if (counter.get() == 1) {
@@ -55,13 +55,13 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
     }
 
 //    expected failed
-    @Test
+    @Test(groups = {Groups.BASIC})
     @Fails(description = "failing expected")
     public void test_expectedFailed() {
         Assert.fail("No Oil.");
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     @Fails(description = "collected assert failing")
     public void test_expectedFailedAssertCollector() {
         CONTROL.collectAssertions(() -> {
@@ -71,7 +71,7 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
         });
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     @Fails(description = "Page Not Found")
     public void test_expectedFailedPageNotFound() {
         PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());
@@ -89,19 +89,19 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
         return false;
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     @Fails(validator = "expectedFailIsValid")
     public void test_expectedFailedWithValidator_isValid(){
         Assert.fail("Expected Fail - validator is: " + expectedFailIsValid(null));
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     @Fails(validator = "expectedFailIsNotValid")
     public void test_expectedFailedWithValidator_isNotValid(){
         Assert.fail("Expected Fail - validator is: " + expectedFailIsNotValid(null));
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     @Fails(ticketString = "placeholder ticket string")
     public void test_expectedFailedWithTicketString(){
         Assert.fail("Expected fail with ticket string");

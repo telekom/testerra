@@ -51,7 +51,7 @@ public abstract class AbstractTestSitesTest extends AbstractTest implements WebD
         }
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void closeExclusiveWebDriverSession() {
         if (exclusiveSessionId != null) {
             WEB_DRIVER_MANAGER.shutdownSession(this.exclusiveSessionId);
@@ -78,5 +78,10 @@ public abstract class AbstractTestSitesTest extends AbstractTest implements WebD
             exclusiveSessionId = WEB_DRIVER_MANAGER.makeExclusive(webDriver);
         }
         return WEB_DRIVER_MANAGER.getWebDriver(exclusiveSessionId);
+    }
+
+    public static class Groups {
+        public static final String BASIC = "basic";
+        public static final String EXT = "extended";
     }
 }

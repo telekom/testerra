@@ -24,38 +24,36 @@ package io.testerra.report.test.pretest_status.simple;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
 import io.testerra.report.test.pages.pretest.OverlayInterceptionPage;
-
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     @FailureCorridor.Mid
     public void test_Failed() {
         Assert.fail("Creating TestStatus 'Failed'");
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     public void test_AssertCollector() {
         AssertCollector.fail("failed1");
         AssertCollector.fail("failed2");
         AssertCollector.assertTrue(true, "passed1");
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     @FailureCorridor.Mid
     public void test_failedPageNotFound() {
         PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void test_failedWithInterceptedClick() {
         TestStep.begin("get web driver");
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();

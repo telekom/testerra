@@ -101,7 +101,7 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
         Assert.fail("Expected Fail - validator is: " + expectedFailIsNotValid(null));
     }
 
-    @Test(groups = {Groups.BASIC})
+    @Test(groups = {Groups.BASIC, Groups.EXT})
     @Fails(ticketString = "placeholder ticket string")
     public void test_expectedFailedWithTicketString(){
         Assert.fail("Expected fail with ticket string");

@@ -3,27 +3,27 @@
 <suite name="Report - Generate Additional Test Status for Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
 
     <test name="Parallel" parallel="methods">
+        <groups>
+            <run>
+                <include name="extended"/>
+            </run>
+        </groups>
         <packages>
             <package name="io.testerra.report.test.pretest_status.pageTests"/>
             <package name="io.testerra.report.test.pretest_status.layoutTests"/>
         </packages>
         <classes>
-            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest">
-                <methods>
-                    <include name="test_expectedFailedWithValidator_isValid"/>
-                    <include name="test_expectedFailedWithValidator_isNotValid"/>
-                    <include name="test_expectedFailedWithTicketString"/>
-                </methods>
-            </class>
-            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest">
-                <methods>
-                    <include name="test_failedWithInterceptedClick"/>
-                </methods>
-            </class>
+            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest"/>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest"/>
         </classes>
     </test>
 
     <test name="Sequential">
+        <groups>
+            <run>
+                <include name="extended"/>
+            </run>
+        </groups>
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
                 <methods>

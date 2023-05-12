@@ -83,5 +83,7 @@ public abstract class AbstractTestSitesTest extends AbstractTest implements WebD
     public static class Groups {
         public static final String BASIC = "basic";
         public static final String EXT = "extended";
+        public static final String EXT2 = "extended2";
+        public static final String EXT3 = "extended2";
     }
 }

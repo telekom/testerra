@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import org.testng.ITestResult;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
@@ -97,11 +98,13 @@ public class MethodRelations {
             // dependsOnGroups
             for (String dependsOnGroup : test.dependsOnGroups()) {
                 methodContext.getClassContext().readMethodContexts()
+                        .filter(MethodContext::isTestMethod)
                         .filter(context -> !context.getClassContext().getName().concat(context.getName()).equals(methodContext.getClassContext().getName().concat(methodContext.getName())))
                         .filter(context -> {
-                            Optional<Test> internalTest = context.getAnnotation(Test.class);
-                            if (internalTest.isPresent()) {
-                                String[] groups = internalTest.get().groups();
+                            Optional<ITestResult> testNgResult = methodContext.getTestNgResult();
+//                            Optional<Test> internalTest = context.getAnnotation(Test.class);
+                            if (testNgResult.isPresent()) {
+                                String[] groups = testNgResult.get().getMethod().getGroupsDependedUpon();
                                 return Arrays.asList(groups).contains(dependsOnGroup);
                             }
                             return false;

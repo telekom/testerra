@@ -179,7 +179,7 @@ export class DependencyNetwork {
                         from: this._methodDetails.methodContext.contextValues.id,
                         to: otherMethodDetails.methodContext.contextValues.id,
                         arrows: {
-                            to: {
+                            from: {
                                 enabled: true,
                                 type: "vee",
                                 scaleFactor: 0.7

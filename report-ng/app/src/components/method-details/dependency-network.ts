@@ -195,8 +195,8 @@ export class DependencyNetwork {
                 }
             });
 
-        console.log("Nodes", nodes);
-        console.log("Edges", edges);
+        // console.log("Nodes", nodes);
+        // console.log("Edges", edges);
 
         // create a network
         const data: Data = {

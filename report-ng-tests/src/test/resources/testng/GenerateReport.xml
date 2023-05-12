@@ -3,22 +3,33 @@
 <suite name="Report - Generate Test Status for Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
 
     <test name="Passed Status Creator" parallel="methods">
+        <groups>
+            <run>
+                <include name="basic"/>
+            </run>
+        </groups>
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GeneratePassedStatusInTesterraReportTest"/>
         </classes>
     </test>
 
     <test name="Failed Status Creator" parallel="methods">
+        <groups>
+            <run>
+                <include name="basic"/>
+            </run>
+        </groups>
         <classes>
-            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest">
-                <methods>
-                    <exclude name="test_failedWithInterceptedClick"/>
-                </methods>
-            </class>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest"/>
         </classes>
     </test>
 
     <test name="Skipped Status Creator" parallel="methods">
+        <groups>
+            <run>
+                <include name="basic"/>
+            </run>
+        </groups>
         <classes>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest"/>
             <class name="io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusViaBeforeMethodInTesterraReportTest"/>
@@ -26,24 +37,24 @@
     </test>
 
     <test name="Expected Status Creator" parallel="methods">
+        <groups>
+            <run>
+                <include name="basic"/>
+            </run>
+        </groups>
         <classes>
-            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest">
-                <methods>
-                    <exclude name="test_expectedFailedWithValidator_isValid"/>
-                    <exclude name="test_expectedFailedWithValidator_isNotValid"/>
-                </methods>
-            </class>
+            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest"/>
         </classes>
     </test>
 
     <test name="Screenshot Creator" parallel="methods">
+        <groups>
+            <run>
+                <include name="basic"/>
+            </run>
+        </groups>
         <classes>
-            <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
-                <methods>
-                    <include name="test_Failed_WithScreenShot"/>
-                    <include name="test_GenerateScreenshotManually"/>
-                </methods>
-            </class>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest"/>
         </classes>
     </test>
 

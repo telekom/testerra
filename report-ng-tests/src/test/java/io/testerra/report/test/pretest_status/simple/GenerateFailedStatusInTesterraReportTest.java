@@ -33,14 +33,14 @@ import org.testng.annotations.Test;
 
 public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     @FailureCorridor.Mid
     public void test_Failed() {
         Assert.fail("Creating TestStatus 'Failed'");
     }
 
-    @Test
-    public void testAssertCollector() {
+    @Test(groups = {Groups.BASIC})
+    public void test_AssertCollector() {
         CONTROL.collectAssertions(() -> {
             ASSERT.fail("failed1");
             ASSERT.fail("failed2");
@@ -48,13 +48,13 @@ public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesT
         });
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     @FailureCorridor.Mid
     public void test_failedPageNotFound() {
         PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void test_failedWithInterceptedClick() {
         TestStep.begin("get web driver");
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();

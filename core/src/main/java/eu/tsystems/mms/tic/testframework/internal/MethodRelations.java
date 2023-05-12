@@ -30,6 +30,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -81,11 +82,9 @@ public class MethodRelations {
 
     private static void checkForDependencies(Method method, MethodContext methodContext) {
         if (method.isAnnotationPresent(Test.class)) {
-            /*
-            dependsOnMethods
-             */
             Test test = method.getAnnotation(Test.class);
-            // TODO: dependsOnGroups is not checked at the moment and it's also missing in dependency graph
+
+            // dependsOnMethods
             String[] dependsOnMethods = test.dependsOnMethods();
             for (String dependsOnMethod : dependsOnMethods) {
                 // In case of retried dependsOn methods the correct dependsOn-context was not retried
@@ -93,6 +92,21 @@ public class MethodRelations {
                         .filter(context -> context.getName().equals(dependsOnMethod) && context.getRetryCounter() == 0)
                         .findFirst();
                 foundContext.ifPresent(methodContext::addDependsOnMethod);
+            }
+
+            // dependsOnGroups
+            for(String dependsOnGroup : test.dependsOnGroups()) {
+                methodContext.getClassContext().readMethodContexts()
+                        .filter(context -> !context.getClassContext().getName().concat(context.getName()).equals(methodContext.getClassContext().getName().concat(methodContext.getName())))
+                        .filter(context -> {
+                            Optional<Test> internalTest = context.getAnnotation(Test.class);
+                            if (internalTest.isPresent()) {
+                                String[] groups = internalTest.get().groups();
+                                return Arrays.asList(groups).contains(dependsOnGroup);
+                            }
+                            return false;
+                        })
+                        .forEach(methodContext::addDependsOnMethod);
             }
         }
     }

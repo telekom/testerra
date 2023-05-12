@@ -95,7 +95,7 @@ public class MethodRelations {
             }
 
             // dependsOnGroups
-            for(String dependsOnGroup : test.dependsOnGroups()) {
+            for (String dependsOnGroup : test.dependsOnGroups()) {
                 methodContext.getClassContext().readMethodContexts()
                         .filter(context -> !context.getClassContext().getName().concat(context.getName()).equals(methodContext.getClassContext().getName().concat(methodContext.getName())))
                         .filter(context -> {

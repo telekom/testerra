@@ -33,18 +33,19 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 
 /**
  * Testng Retry Analyzer.
@@ -218,11 +219,16 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         do {
 
             for (AdditionalRetryAnalyzer additionalRetryAnalyzer : ADDITIONAL_RETRY_ANALYZERS) {
-                Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable);
-                if (optionalRetryCause.isPresent()) {
-                    retryCause = optionalRetryCause.get();
-                    log().info(String.format("Found retry cause: \"%s\"", retryCause.getMessage()));
-                    break;
+                try {
+                    Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable);
+                    if (optionalRetryCause.isPresent()) {
+                        retryCause = optionalRetryCause.get();
+                        log().info(String.format("Found retry cause: \"%s\"", retryCause.getMessage()));
+                        break;
+                    }
+                } catch (Exception e) {
+                    log().warn("Exception while executing {}", additionalRetryAnalyzer.getClass(), e);
+
                 }
             }
 
@@ -283,6 +289,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     /**
      * Tells the RetryAnalyzer that a method has been passed
+     *
      * @param methodContext
      */
     public static void methodHasBeenPassed(MethodContext methodContext) {

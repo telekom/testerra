@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
  */
 public class DependencySetup3Tests extends AbstractTestSitesTest {
 
-    @BeforeMethod
+    @BeforeMethod(groups = {Groups.EXT3})
     public void beforeMethodForGroupTests() {
 
     }

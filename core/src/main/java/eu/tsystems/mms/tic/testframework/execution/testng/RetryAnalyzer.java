@@ -24,12 +24,11 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.common.IProperties;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -54,6 +53,30 @@ import java.util.stream.Stream;
  */
 public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
+    public enum Properties implements IProperties {
+        //Failed tests maximum number of retries.
+        FAILED_TESTS_MAX_RETRIES("tt.failed.tests.max.retries", 1),
+
+        // Failed tests condition: Throwable Class(~es, devided by ','.
+        FAILED_TESTS_IF_THROWABLE_CLASSES("tt.failed.tests.if.throwable.classes", ""),
+
+        // Failed tests condition. Throwable Message(~s, devided by ',').
+        FAILED_TESTS_IF_THROWABLE_MESSAGES("tt.failed.tests.if.throwable.messages", "");
+
+        private final String property;
+        private final Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public Object getDefault() {
+            return null;
+        }
+    }
+
     private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue<>();
 
     /**
@@ -74,7 +97,8 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
     private static final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
     static {
-        final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
+
+        final String classes = Properties.FAILED_TESTS_IF_THROWABLE_CLASSES.asString();
         if (classes != null) {
             String[] split = classes.split(",");
             for (String clazz : split) {
@@ -87,7 +111,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             }
         }
 
-        final String messages = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_MESSAGES);
+        final String messages = Properties.FAILED_TESTS_IF_THROWABLE_MESSAGES.asString();
         if (messages != null) {
             String[] split = messages.split(",");
             for (String message : split) {
@@ -104,7 +128,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
          * Announce the test status change
          */
         if (methodContext.isStatusOneOf(Status.RETRIED, Status.RECOVERED, Status.FAILED)) {
-            TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+            Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
         return retry;
     }
@@ -125,7 +149,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             annotatedRetries = optionalRetry.get().maxRetries();
         }
 
-        int defaultRetries = PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
+        int defaultRetries = Properties.FAILED_TESTS_MAX_RETRIES.asLong().intValue();
         int maxRetries = Math.max(defaultRetries, annotatedRetries);
 
         final String retryMessageString = "(" + (retryCounter + 1) + "/" + maxRetries + ")";

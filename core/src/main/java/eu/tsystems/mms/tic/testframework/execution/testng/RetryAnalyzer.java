@@ -79,25 +79,15 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue<>();
 
-    /**
-     * Classes list.
-     */
     private static final List<Class> CLASSES_LIST = new ArrayList<>();
 
-    /**
-     * Messages list.
-     */
     private static final List<String> MESSAGES_LIST = new ArrayList<>();
 
     private static final Queue<MethodContext> RETRIED_METHODS = new ConcurrentLinkedQueue<>();
 
-    /**
-     * The retry counter.
-     */
     private static final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
     static {
-
         final String classes = Properties.FAILED_TESTS_IF_THROWABLE_CLASSES.asString();
         if (classes != null) {
             String[] split = classes.split(",");

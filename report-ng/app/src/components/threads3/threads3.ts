@@ -46,6 +46,12 @@ export class Threads3 extends AbstractViewModel {
     @observable()
     private _chart: echarts.ECharts;
 
+    // Some values for presentation
+    // TODO Whats the best value?
+    private _gapFromBorderToStart = 1_000;      // To prevent that the beginning of the first test is located ON the y axis.
+    private _threadHeight = 80;                 // in pixel
+    private _sliderSpacingFromChart = 100;      // in pixel
+
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
@@ -67,10 +73,7 @@ export class Threads3 extends AbstractViewModel {
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            // this._executionStatistics = executionStatistics;
-            // TODO: Add logic to prepare timeline
             this._prepareTimeline(executionStatistics);
-
             this._loading = false;
         });
     };
@@ -126,7 +129,7 @@ export class Threads3 extends AbstractViewModel {
             startTimes.push(methodContext.contextValues.startTime);
         });
 
-        const chartStartTime = Math.min.apply(Math, startTimes) - 1_000;
+        const chartStartTime = Math.min.apply(Math, startTimes) - this._gapFromBorderToStart;
 
         const style = new Map<number, string>();
         style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
@@ -138,13 +141,11 @@ export class Threads3 extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
-        // TODO: Add method contexts to every thread
-        // Generate mock data
         threadCategories.forEach(function (methodContexts, threadName) {
             // let baseTime = startTime;
             // for (var i = 0; i < dataCount; i++) {
             methodContexts.forEach((context: MethodContext) => {
-                console.log(context);
+                // console.log(context);
                 const itemColor = style.get(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
 
@@ -169,7 +170,7 @@ export class Threads3 extends AbstractViewModel {
             // console.log(Math.min(methodContexts.map(context => context.contextValues.startTime)));
         });
 
-        console.log("data", data);
+        // console.log("data", data);
 
         this._options = {
             tooltip: {
@@ -177,6 +178,7 @@ export class Threads3 extends AbstractViewModel {
                     // console.log(params);
                     // params.value[1]: from date
                     // params.value[2]: to date
+                    // TODO Extend information here, eg. runindex?
                     return params.marker + params.name + ': ' + params.value[3] + ' ms';
                 }
             },
@@ -189,8 +191,7 @@ export class Threads3 extends AbstractViewModel {
                     type: 'slider',
                     filterMode: 'weakFilter',
                     showDataShadow: false,
-                    // TODO Based of grid height + 100 px
-                    top: 700,
+                    top: threadCategories.size * this._threadHeight + this._sliderSpacingFromChart,
                     labelFormatter: ''
                 },
                 {
@@ -200,8 +201,7 @@ export class Threads3 extends AbstractViewModel {
                 }
             ],
             grid: {
-                // TODO: Custom height according number of threads
-                height: 600
+                height: threadCategories.size * this._threadHeight
             },
             xAxis: {
                 min: chartStartTime,
@@ -212,6 +212,7 @@ export class Threads3 extends AbstractViewModel {
                 //     }
                 // }
                 axisLabel: {
+                    // TODO Convert to real date strings
                     formatter: function (val) {
                         return val;
                         // return moment(Number(val));

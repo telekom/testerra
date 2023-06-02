@@ -26,13 +26,20 @@
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="12">
                 <!-- TODO: Custom height according thread count -->
-                <mdc-card style="height: 900px;">
-                    <div>
-                        <button mdc-button raised click.delegate="zoom()" class="m1">Zoom</button>
-                        <button mdc-button raised click.delegate="resetZoom()" class="m1">Reset zoom</button>
-                    </div>
+                <mdc-card >
+                    <mdc-card-actions>
+                        <mdc-card-action-buttons>
+                            <button mdc-button click.delegate="zoom()" class="m1">Zoom</button>
+                            <button mdc-button click.delegate="resetZoom()" class="m1">Reset zoom</button>
+                        </mdc-card-action-buttons>
+                    </mdc-card-actions>
+<!--                    <div>-->
+<!--                        -->
+<!--                    </div>-->
                     <mdc-list-divider></mdc-list-divider>
-                    <echart options.bind="_options" chart.bind="_chart" class="pl1 pr1 echart"></echart>
+                    <mdc-card-primary-action style="height: 400px;">
+                        <echart options.bind="_options" chart.bind="_chart" class="pl1 pr1 echart"></echart>
+                    </mdc-card-primary-action>
                 </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

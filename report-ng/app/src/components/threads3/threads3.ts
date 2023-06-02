@@ -29,11 +29,16 @@ import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 // import echarts from "echarts/types/dist/shared";
 import * as echarts from "echarts";
 import {EChartsOption} from "echarts";
+import {data} from "../../services/report-model";
+import ResultStatusType = data.ResultStatusType;
+import MethodContext = data.MethodContext;
+import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+import moment from "moment";
 
 
 @autoinject()
 export class Threads3 extends AbstractViewModel {
-    private _executionStatistics: ExecutionStatistics;
+
     private _filter: IFilter;
     private _loading = true;
 
@@ -44,6 +49,7 @@ export class Threads3 extends AbstractViewModel {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _dateTimeConverter: IntlDateFormatValueConverter,
         private _router: Router
     ) {
         super();
@@ -61,9 +67,9 @@ export class Threads3 extends AbstractViewModel {
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._executionStatistics = executionStatistics;
+            // this._executionStatistics = executionStatistics;
             // TODO: Add logic to prepare timeline
-            this._prepareTimeline();
+            this._prepareTimeline(executionStatistics);
 
             this._loading = false;
         });
@@ -73,6 +79,7 @@ export class Threads3 extends AbstractViewModel {
         this._chart.on('click', event => this._handleClickEvent(event));
     }
 
+    // TODO: Zoom into method with name 'x'
     zoom() {
         this._chart.dispatchAction({
             type: 'dataZoom',
@@ -97,44 +104,72 @@ export class Threads3 extends AbstractViewModel {
         });
     }
 
+    private getColor() {
+        return "foo";
+    }
+
     /**
      * Build Thread timeline according https://echarts.apache.org/examples/en/editor.html?c=custom-profile
      */
-    private _prepareTimeline() {
+    private _prepareTimeline(executionStatistics: ExecutionStatistics) {
         const data = [];
-        const dataCount = 10;
-        const startTime = +new Date();
-        // TODO: Test threads
-        const categories = ['categoryA', 'categoryB', 'categoryC'];
-        // TODO: Passed, Failed, Skipped, Expected failed
-        const types = [
-            {name: 'JS Heap', color: '#7b9ce1'},
-            {name: 'Documents', color: '#bd6d6c'},
-            {name: 'Nodes', color: '#75d874'},
-            {name: 'Listeners', color: '#e0bc78'},
-            {name: 'GPU Memory', color: '#dc77dc'},
-            {name: 'GPU', color: '#72b362'}
-        ];
+        // const dataCount = 10;
+        // const startTime = +new Date();
+        let startTimes : number[] = [];
+
+        const threadCategories = new Map();
+        Object.values(executionStatistics.executionAggregate.methodContexts).forEach(methodContext => {
+            if (!threadCategories.has(methodContext.threadName)) {
+                threadCategories.set(methodContext.threadName, []);
+            }
+            threadCategories.get(methodContext.threadName).push(methodContext);
+            startTimes.push(methodContext.contextValues.startTime);
+        });
+
+        const chartStartTime = Math.min.apply(Math, startTimes) - 1_000;
+
+        const style = new Map<number, string>();
+        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
         // TODO: Add method contexts to every thread
         // Generate mock data
-        categories.forEach(function (category, index) {
-            let baseTime = startTime;
-            for (var i = 0; i < dataCount; i++) {
-                const typeItem = types[Math.round(Math.random() * (types.length - 1))];
-                const duration = Math.round(Math.random() * 10000);
+        threadCategories.forEach(function (methodContexts, threadName) {
+            // let baseTime = startTime;
+            // for (var i = 0; i < dataCount; i++) {
+            methodContexts.forEach((context: MethodContext) => {
+                console.log(context);
+                const itemColor = style.get(context.resultStatus);
+                const duration = context.contextValues.endTime - context.contextValues.startTime;
+
                 data.push({
-                    name: typeItem.name,
-                    value: [index, baseTime, (baseTime += duration), duration],
+                    name: context.contextValues.name,
+                    // value: [threadName, baseTime, (baseTime += duration), duration],
+                    value: [
+                        threadName,
+                        context.contextValues.startTime,
+                        context.contextValues.endTime,
+                        duration
+                    ],
                     itemStyle: {
                         normal: {
-                            color: typeItem.color
+                            color: itemColor
                         }
                     }
                 });
-                baseTime += Math.round(Math.random() * 2000);
-            }
+                // baseTime += Math.round(Math.random() * 2000);
+            });
+            // const minValue = Math.min(methodContexts.map(context => context.contextValues.startTime));
+            // console.log(Math.min(methodContexts.map(context => context.contextValues.startTime)));
         });
+
+        console.log("data", data);
 
         this._options = {
             tooltip: {
@@ -155,7 +190,7 @@ export class Threads3 extends AbstractViewModel {
                     filterMode: 'weakFilter',
                     showDataShadow: false,
                     // TODO Based of grid height + 100 px
-                    top: 400,
+                    top: 700,
                     labelFormatter: ''
                 },
                 {
@@ -166,19 +201,25 @@ export class Threads3 extends AbstractViewModel {
             ],
             grid: {
                 // TODO: Custom height according number of threads
-                height: 300
+                height: 600
             },
             xAxis: {
-                min: startTime,
+                min: chartStartTime,
                 scale: true,
+                // axisLabel: {
+                //     formatter: function (val) {
+                //         return Math.max(0, val - startTime) + ' ms';
+                //     }
+                // }
                 axisLabel: {
                     formatter: function (val) {
-                        return Math.max(0, val - startTime) + ' ms';
+                        return val;
+                        // return moment(Number(val));
                     }
                 }
             },
             yAxis: {
-                data: categories
+                data: Array.from(threadCategories.keys())
             },
             series: [
                 {

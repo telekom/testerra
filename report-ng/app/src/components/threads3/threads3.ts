@@ -24,6 +24,7 @@ import {IFilter, StatusConverter} from "services/status-converter";
 import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
+import {Container} from "aurelia-dependency-injection";
 import "./threads3.scss"
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 // import echarts from "echarts/types/dist/shared";
@@ -33,7 +34,7 @@ import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 import MethodContext = data.MethodContext;
 import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
-import moment from "moment";
+
 
 
 @autoinject()
@@ -46,16 +47,18 @@ export class Threads3 extends AbstractViewModel {
     @observable()
     private _chart: echarts.ECharts;
 
+    private _dateFormatter : IntlDateFormatValueConverter;
+
     // Some values for presentation
     // TODO Whats the best value?
     private _gapFromBorderToStart = 1_000;      // To prevent that the beginning of the first test is located ON the y axis.
     private _threadHeight = 80;                 // in pixel
     private _sliderSpacingFromChart = 100;      // in pixel
+    private _cardHeight = 400;
 
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _dateTimeConverter: IntlDateFormatValueConverter,
         private _router: Router
     ) {
         super();
@@ -73,6 +76,7 @@ export class Threads3 extends AbstractViewModel {
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._initDateFormatter();
             this._prepareTimeline(executionStatistics);
             this._loading = false;
         });
@@ -107,12 +111,18 @@ export class Threads3 extends AbstractViewModel {
         });
     }
 
-    private getColor() {
-        return "foo";
+    private _initDateFormatter() {
+        const container = new Container();
+        this._dateFormatter = container.get(IntlDateFormatValueConverter);
+        this._dateFormatter.setLocale('en-GB');
+        this._dateFormatter.setOptions('date', { year: 'numeric', month: 'short', day: 'numeric' });
+        this._dateFormatter.setOptions('time', { hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: '2', hour12: false });
+        this._dateFormatter.setOptions('step', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
     }
 
     /**
      * Build Thread timeline according https://echarts.apache.org/examples/en/editor.html?c=custom-profile
+     * and https://echarts.apache.org/en/option.html#series-custom
      */
     private _prepareTimeline(executionStatistics: ExecutionStatistics) {
         const data = [];
@@ -121,6 +131,10 @@ export class Threads3 extends AbstractViewModel {
         let startTimes : number[] = [];
 
         const threadCategories = new Map();
+        // const classContexts = Object.values(executionStatistics.executionAggregate.classContexts);
+        // classContexts.filter(context => context.)
+        // classContexts.find(context => context.c)
+
         Object.values(executionStatistics.executionAggregate.methodContexts).forEach(methodContext => {
             if (!threadCategories.has(methodContext.threadName)) {
                 threadCategories.set(methodContext.threadName, []);
@@ -145,7 +159,8 @@ export class Threads3 extends AbstractViewModel {
             // let baseTime = startTime;
             // for (var i = 0; i < dataCount; i++) {
             methodContexts.forEach((context: MethodContext) => {
-                // console.log(context);
+                console.log(context);
+
                 const itemColor = style.get(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
 
@@ -156,7 +171,9 @@ export class Threads3 extends AbstractViewModel {
                         threadName,
                         context.contextValues.startTime,
                         context.contextValues.endTime,
-                        duration
+                        context.contextValues.name,
+                        duration,
+                        context.methodRunIndex
                     ],
                     itemStyle: {
                         normal: {
@@ -164,34 +181,32 @@ export class Threads3 extends AbstractViewModel {
                         }
                     }
                 });
-                // baseTime += Math.round(Math.random() * 2000);
             });
-            // const minValue = Math.min(methodContexts.map(context => context.contextValues.startTime));
-            // console.log(Math.min(methodContexts.map(context => context.contextValues.startTime)));
         });
 
         // console.log("data", data);
 
+        // Some calculations for chard presentation
+        const gridHeight = threadCategories.size * this._threadHeight;
+        const sliderFromTop = gridHeight + this._sliderSpacingFromChart
+        const dateFormatter = this._dateFormatter;
+        this._cardHeight = gridHeight + 100;
+
         this._options = {
             tooltip: {
                 formatter: function (params) {
-                    // console.log(params);
-                    // params.value[1]: from date
-                    // params.value[2]: to date
-                    // TODO Extend information here, eg. runindex?
-                    return params.marker + params.name + ': ' + params.value[3] + ' ms';
+                    // console.log("params", params);
+                    return params.marker + params.name
+                        + '<br>Duration: ' + params.value[4] + ' ms'
+                        + '<br>Run index: ' + params.value[5];
                 }
             },
-            // title: {
-            //     text: 'Profile',
-            //     left: 'center'
-            // },
             dataZoom: [
                 {
                     type: 'slider',
                     filterMode: 'weakFilter',
                     showDataShadow: false,
-                    top: threadCategories.size * this._threadHeight + this._sliderSpacingFromChart,
+                    // top: sliderFromTop,
                     labelFormatter: ''
                 },
                 {
@@ -201,21 +216,21 @@ export class Threads3 extends AbstractViewModel {
                 }
             ],
             grid: {
-                height: threadCategories.size * this._threadHeight
+                // height: gridHeight,
+                height: 'auto',
+                top: 30,
+                bottom: 100,
+                // TODO dynamic left value according longest thread name? -> default 100
+                left: 180
             },
             xAxis: {
                 min: chartStartTime,
                 scale: true,
-                // axisLabel: {
-                //     formatter: function (val) {
-                //         return Math.max(0, val - startTime) + ' ms';
-                //     }
-                // }
                 axisLabel: {
-                    // TODO Convert to real date strings
+                    interval: 2,
+                    // TODO Add date to labels
                     formatter: function (val) {
-                        return val;
-                        // return moment(Number(val));
+                        return dateFormatter.toView(Number(val), 'time');
                     }
                 }
             },
@@ -246,7 +261,7 @@ export class Threads3 extends AbstractViewModel {
                                 y: params.coordSys["y"],
                                 width: params.coordSys["width"],
                                 height: params.coordSys["height"]
-                            }
+                            },
                         );
                         return (
                             rectShape && {
@@ -262,9 +277,15 @@ export class Threads3 extends AbstractViewModel {
                     },
                     encode: {
                         x: [1, 2],
-                        y: 0
+                        y: 0,
+                        label: 3    // Index in value array
                     },
-                    data: data
+                    data: data,
+                    label: {
+                        // TODO label text overflows to other shapes
+                        // show: true,
+                        position: 'insideLeft'
+                    }
                 }
             ]
         };

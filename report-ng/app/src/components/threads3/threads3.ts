@@ -117,7 +117,7 @@ export class Threads3 extends AbstractViewModel {
         this._dateFormatter.setLocale('en-GB');
         this._dateFormatter.setOptions('date', { year: 'numeric', month: 'short', day: 'numeric' });
         this._dateFormatter.setOptions('time', { hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: '2', hour12: false });
-        this._dateFormatter.setOptions('step', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+        this._dateFormatter.setOptions('full', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
     }
 
     /**
@@ -197,6 +197,9 @@ export class Threads3 extends AbstractViewModel {
                 formatter: function (params) {
                     // console.log("params", params);
                     return params.marker + params.name
+                        + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
+                        + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
+                        // TODO use duration value converter
                         + '<br>Duration: ' + params.value[4] + ' ms'
                         + '<br>Run index: ' + params.value[5];
                 }

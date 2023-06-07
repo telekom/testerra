@@ -174,6 +174,7 @@ public class DesktopWebDriverFactory implements
                 break;
         }
 
+        // Any additional defined desired capabilities are merged into browser options
         if (userAgentCapabilities != null) {
             userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
             finalRequest.setBrowserOptions(userAgentCapabilities);

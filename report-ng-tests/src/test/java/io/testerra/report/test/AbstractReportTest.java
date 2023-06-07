@@ -25,7 +25,6 @@ package io.testerra.report.test;
 import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
@@ -37,13 +36,10 @@ import org.testng.annotations.BeforeTest;
 import java.io.File;
 import java.net.BindException;
 
-import static eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider.PAGE_FACTORY;
-import static eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider.WEB_DRIVER_MANAGER;
-
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractReportTest extends AbstractTest implements Loggable {
+public abstract class AbstractReportTest extends AbstractTest {
 
     private final static File serverRootDir = FileUtils.getResourceFile("reports");
     private final static Server server = new Server(serverRootDir);

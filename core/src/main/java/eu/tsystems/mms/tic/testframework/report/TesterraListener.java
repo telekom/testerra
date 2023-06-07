@@ -418,7 +418,7 @@ public class TesterraListener implements
         if (!testResult.wasRetried() && !dataProviderSemaphore.containsKey(testResult.getMethod())) {
             MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
             methodContext.setStatus(Status.SKIPPED);
-            TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+            Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
     }
 

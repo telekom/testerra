@@ -22,7 +22,25 @@ WEB_DRIVER_MANAGER.switchToWindowTitle(WebDriver webDriver, String windowTitle);
 WEB_DRIVER_MANAGER.switchToWindowHandle(WebDriver webDriver, String windowHandle);
 
 // Switch to a window by a custom condition
-boolean switched = WEB_DRIVER_MANAGER.switchToWindow(WebDriver webDriver, webDriver -> webDriver.getCurrentUrl().contains("login"));
+boolean switched = WEB_DRIVER_MANAGER
+        .switchToWindow(WebDriver webDriver, webDriver -> webDriver.getCurrentUrl().contains("login"));
 
 Assert.assertTrue(switched, "Login window not found");
+----
+
+You can also handle a delayed switch of a window by using `CONTROL`.
+
+[source,java]
+----
+int secondsForRetry = 6;
+CONTROL.retryFor(secondsForRetry, () -> {
+    WEB_DRIVER_MANAGER.switchToWindowTitle(webDriver, "MyWindowTitle");
+});
+
+// Using a predicate you have to check the result of switching
+CONTROL.retryFor(secondsForRetry, () -> {
+    boolean result = WEB_DRIVER_MANAGER
+            .switchToWindow(webDriver, driver -> driver.getTitle().contains("MyWindowTitle"));
+    Assert.assertTrue(result);
+});
 ----

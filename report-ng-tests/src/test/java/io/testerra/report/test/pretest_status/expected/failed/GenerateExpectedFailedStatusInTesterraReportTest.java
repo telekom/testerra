@@ -22,28 +22,26 @@
 package io.testerra.report.test.pretest_status.expected.failed;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
+import io.testerra.report.test.AbstractTestSitesTest;
+import io.testerra.report.test.pages.pretest.NonExistingPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.testerra.report.test.AbstractTestSitesTest;
-import io.testerra.report.test.pages.pretest.NonExistingPage;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTestSitesTest implements AssertProvider {
+public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
     final AtomicInteger counter = new AtomicInteger(0);
 
-//    repaired
+    // repaired
     @Test
     @Fails(description = "not failing anymore")
     public void test_expectedFailedPassed() {
     }
 
-//    recovered
+    // recovered
     @Test()
     public void test_PassedAfterRetry() {
         this.counter.incrementAndGet();
@@ -54,7 +52,7 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
         }
     }
 
-//    expected failed
+    // expected failed
     @Test
     @Fails(description = "failing expected")
     public void test_expectedFailed() {
@@ -65,9 +63,9 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
     @Fails(description = "collected assert failing")
     public void test_expectedFailedAssertCollector() {
         CONTROL.collectAssertions(() -> {
-                    ASSERT.fail("failed1");
-                    ASSERT.fail("failed2");
-                    ASSERT.assertTrue(true, "passed1");
+            ASSERT.fail("failed1");
+            ASSERT.fail("failed2");
+            ASSERT.assertTrue(true, "passed1");
         });
     }
 
@@ -91,19 +89,19 @@ public class GenerateExpectedFailedStatusInTesterraReportTest extends AbstractTe
 
     @Test
     @Fails(validator = "expectedFailIsValid")
-    public void test_expectedFailedWithValidator_isValid(){
+    public void test_expectedFailedWithValidator_isValid() {
         Assert.fail("Expected Fail - validator is: " + expectedFailIsValid(null));
     }
 
     @Test
     @Fails(validator = "expectedFailIsNotValid")
-    public void test_expectedFailedWithValidator_isNotValid(){
+    public void test_expectedFailedWithValidator_isNotValid() {
         Assert.fail("Expected Fail - validator is: " + expectedFailIsNotValid(null));
     }
 
     @Test
     @Fails(ticketString = "placeholder ticket string")
-    public void test_expectedFailedWithTicketString(){
+    public void test_expectedFailedWithTicketString() {
         Assert.fail("Expected fail with ticket string");
     }
 }

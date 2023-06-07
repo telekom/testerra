@@ -110,6 +110,8 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
                 .collect(Collectors.joining("|"));
         final Pattern wordsPattern = Pattern.compile(wordsList, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
+        final String wordsListWithoutRegex = String.join("|", words);
+
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -121,7 +123,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
             @Override
             public String createSubject() {
-                return "has words " + Format.param(wordsList);
+                return "has words " + Format.param(wordsListWithoutRegex);
             }
         });
     }

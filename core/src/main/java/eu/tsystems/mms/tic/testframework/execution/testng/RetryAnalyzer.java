@@ -76,6 +76,10 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         public Object getDefault() {
             return defaultValue;
         }
+
+        public String toString() {
+            return property;
+        }
     }
 
     private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue<>();

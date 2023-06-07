@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -73,7 +74,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
         @Override
         public Object getDefault() {
-            return null;
+            return defaultValue;
         }
     }
 
@@ -89,7 +90,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     static {
         final String classes = Properties.FAILED_TESTS_IF_THROWABLE_CLASSES.asString();
-        if (classes != null) {
+        if (StringUtils.isNotBlank(classes)) {
             String[] split = classes.split(",");
             for (String clazz : split) {
                 try {
@@ -102,7 +103,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         }
 
         final String messages = Properties.FAILED_TESTS_IF_THROWABLE_MESSAGES.asString();
-        if (messages != null) {
+        if (StringUtils.isNotBlank(messages)) {
             String[] split = messages.split(",");
             for (String message : split) {
                 MESSAGES_LIST.add(message.trim());

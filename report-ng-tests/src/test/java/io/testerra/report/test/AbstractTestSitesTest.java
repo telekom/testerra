@@ -22,7 +22,7 @@
 
 package io.testerra.report.test;
 
-import eu.tsystems.mms.tic.testframework.core.server.Server;
+import eu.tsystems.mms.tic.testframework.core.server.StaticServer;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
@@ -40,13 +40,13 @@ import java.net.BindException;
  */
 public abstract class AbstractTestSitesTest extends AbstractTest implements WebDriverManagerProvider, PageFactoryProvider, AssertProvider, Loggable {
 
-    protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
+    protected static StaticServer staticServer = new StaticServer(FileUtils.getResourceFile("testsites"));
     private String exclusiveSessionId;
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         try {
-            server.start(80);
+            staticServer.start(80);
         } catch (BindException e) {
             log().warn("Use already running WebServer: " + e.getMessage());
         }
@@ -68,7 +68,7 @@ public abstract class AbstractTestSitesTest extends AbstractTest implements WebD
      */
     protected synchronized void visitTestPage(final WebDriver driver, final TestPage testPage) {
         if (!driver.getCurrentUrl().contains(testPage.getPath())) {
-            String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), testPage.getPath());
+            String baseUrl = String.format("http://localhost:%d/%s", staticServer.getPort(), testPage.getPath());
             driver.get(baseUrl);
         }
     }

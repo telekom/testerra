@@ -87,8 +87,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         Assert.assertEquals(sessionCapabilities.get("enableVNC"), selenoidCaps.get("enableVNC"), "EndPoint Capability via WebDriverRequest is set");
     }
 
-    // TODO Global caps!! -> needs to be independent from other tests
-    @Test
+    // Global caps! -> needs to be independent of other tests
+    @Test(groups = "SEQUENTIAL_SINGLE")
     public void testT04_EndPointCapabilities_Global() {
         Map<String, Object> customCaps = new HashMap<>();
         customCaps.put("t04Global", "yes");
@@ -104,8 +104,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         Assert.assertEquals(sessionCapabilities.get("t04Global"), "yes", "EndPoint Capability is set");
     }
 
-    // TODO Global caps!! -> needs to be independent from other tests
-    @Test
+    // Global caps! -> needs to be independent of other tests
+    @Test(groups = "SEQUENTIAL_SINGLE")
     public void test05_EndPointCapabilities_UserAgent() {
         Map<String, Object> customCaps = new HashMap<>();
         customCaps.put("t05UserAgent", "yesyes");
@@ -132,8 +132,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.WINDOWS);
     }
 
-    // TODO Global caps!! -> needs to be independent from other tests
-    @Test
+    // Global caps!! -> needs to be independent of other tests
+    @Test(groups = "SEQUENTIAL_SINGLE")
     public void testT07_OverwriteCaps() {
         Map<String, Object> customCaps = new HashMap<>();
         customCaps.put("t07Overwrite", "agentCaps");
@@ -156,7 +156,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         Assert.assertEquals(sessionCapabilities.get("t07Overwrite"), "requestCaps", "Request capability is set");
     }
 
-    // TODO Does not work  in Chrome Headless
+    // TODO Does not work in Chrome Headless
     @Test(enabled = false)
     public void testT08_ChromeExtensions() {
 

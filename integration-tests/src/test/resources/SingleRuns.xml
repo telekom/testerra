@@ -1,11 +1,11 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Testerra Core Features" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
 
-    <test name="Core" parallel="methods">
+    <!-- These tests needs to be run independent of any other test -->
+    <test name="SingleRuns" parallel="none">
         <groups>
             <run>
-                <exclude name="SEQUENTIAL"/>
-                <exclude name="SEQUENTIAL_SINGLE"/>
+                <include name="SEQUENTIAL_SINGLE"/>
             </run>
         </groups>
         <packages>

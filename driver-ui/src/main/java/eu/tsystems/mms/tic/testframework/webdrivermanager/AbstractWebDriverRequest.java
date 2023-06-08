@@ -20,6 +20,7 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -27,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -156,15 +156,17 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
     /**
      * Cloning of DesiredCapabilites with SerializationUtils occurs org.apache.commons.lang3.SerializationException: IOException while reading or closing cloned object data
      * -> We have to backup the current caps and clone WebDriverRequest without caps. After cloning the original caps are added again.
-     * -> Caps can cloned via merge() method.
+     * -> merge()-Method does not clone capability values like Maps (e.g. goog:chromeOptions) -> used Gson
+     * <p>
+     * ->
      *
      * @return
      */
     public AbstractWebDriverRequest clone() throws CloneNotSupportedException {
         AbstractWebDriverRequest clone = (AbstractWebDriverRequest) super.clone();
         if (this.desiredCapabilities != null) {
-            clone.desiredCapabilities = new DesiredCapabilities();
-            clone.desiredCapabilities.merge(this.desiredCapabilities);
+            Gson gson = new Gson();
+            clone.desiredCapabilities = gson.fromJson(gson.toJson(this.desiredCapabilities), DesiredCapabilities.class);
         }
         return clone;
     }

@@ -41,6 +41,7 @@ public class SessionContext extends AbstractContext {
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         try {
+            // Store a clone of current WebDriverRequest to prevent changes and keep the real request settings for every session
             setWebDriverRequest(webDriverRequest.clone());
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);

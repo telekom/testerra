@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import org.apache.commons.io.FileUtils;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -330,8 +330,12 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
         try {
             // Write image to given file
-            resultFilename.toFile().getParentFile().mkdirs();
-            ImageIO.write(distanceImage, "PNG", resultFilename.toAbsolutePath().toFile());
+            File tempDistanceImage = new FileUtils().createTempFileName(resultFilename.getFileName().toString());
+            ImageIO.write(distanceImage, "PNG", tempDistanceImage);
+            if (resultFilename.toFile().exists()) {
+                resultFilename.toFile().delete();
+            }
+            FileUtils.moveFile(tempDistanceImage, resultFilename.toFile());
         } catch (IOException ioe) {
             LOGGER.error(
                     String.format("An error occurred while trying to persist image to '%s'.", resultFilename),
@@ -381,7 +385,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Calculates the sizes that result from the minimum sizes of both pictures.
      *
      * @param expectedImage The expected image
-     * @param actualImage   The actual image
+     * @param actualImage The actual image
      * @return Calculated minimum size of the images
      */
     private static Dimension calculateMinImageSize(

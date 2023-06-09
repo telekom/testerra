@@ -38,6 +38,10 @@ test {
         s = ['src/test/resources/Pretest_Tests.xml']
     }
 
+    def pg = findProperty("pg")
+    if (pg) {
+        s = ['src/test/resources/Smoke.xml']
+    }
 
     useTestNG() {
         suites s

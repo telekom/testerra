@@ -276,21 +276,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
                 distanceImageSize.width, distanceImageSize.height,
                 expectedImage.getType());
 
-        Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
-        Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
-
-        if (!actualImageDimension.equals(expectedImageDimension)) {
-            OptionalAssert.fail(
-                    String.format(
-                            "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
-                            actualImageDimension.width,
-                            actualImageDimension.height,
-                            expectedImageDimension.width,
-                            expectedImageDimension.height
-                    )
-            );
-        }
-
         int ignoreColor = getColorOfPixel(expectedImage, 0, 0);
 
         for (int currentY = 0; currentY < distanceImageSize.height; currentY++) {
@@ -346,6 +331,10 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
         // calculate and return the percentage number of pixels in error
         double result = ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+
+        // Just for debug log
+        Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
+        Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
         LOGGER.debug("Raw results of pixel check: \n" +
                         "Dimension actual image: {}\n" +
                         "Dimension expected image: {}\n" +

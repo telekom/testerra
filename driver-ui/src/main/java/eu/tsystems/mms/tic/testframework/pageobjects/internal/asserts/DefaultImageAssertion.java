@@ -61,6 +61,14 @@ public class DefaultImageAssertion extends AbstractPropertyAssertion<File> imple
             }
 
             @Override
+            public void passed(AbstractPropertyAssertion assertion) {
+                LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
+                if (matchStep != null && !matchStep.takeReferenceOnly) {
+                    LayoutCheck.toReport(matchStep, true);
+                }
+            }
+
+            @Override
             public void failedFinally(AbstractPropertyAssertion assertion) {
                 LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
                 atomicMatchStep.get();

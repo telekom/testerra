@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -408,6 +408,10 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     }
 
     public static void toReport(final MatchStep step) {
+        LayoutCheck.toReport(step, false);
+    }
+
+    public static void toReport(final MatchStep step, final boolean isPassed) {
         if (step == null) {
             LOGGER.warn("Cannot add layout check to report.");
             return;
@@ -418,6 +422,18 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         final Path distanceScreenshotPath = step.distanceFileName;
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
+        IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
+
+        executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
+            if (step.distance > 0.0 && isPassed && methodContext.readErrors().count() == 0) {
+                OptionalAssert.fail(
+                        String.format("The current layout check is passed, but there is still a difference of %s ",
+                                // For readable report the distance get scale of 2
+                                new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue()
+                        )
+                );
+            }
+        });
 
         if (!step.actualFileDimension.equals(step.referenceFileDimension)) {
             OptionalAssert.fail(
@@ -431,7 +447,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             );
         }
 
-        // For readable report
+        // For readable report the distance get scale of 2
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image
         context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.FileMode.COPY);
@@ -439,7 +455,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
 
-        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+        executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
             methodContext.addCustomContext(context);
         });
     }

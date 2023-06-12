@@ -315,6 +315,10 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
         try {
             // Write image to given file
+            // Note:
+            //      The distance image needs to be created first in a temp dir and moved then to the destination dir
+            //      Cause: Executing a 'gradle test' with option '-p <project-dir>' causes a mismatch of working directory. It is still the project root dir,
+            //      but the subdirectory is needed. 'org.apache.commons.io.FileUtil.FileUtils' can handle this, but not 'ImageIO'.
             File tempDistanceImage = new FileUtils().createTempFileName(resultFilename.getFileName().toString());
             ImageIO.write(distanceImage, "PNG", tempDistanceImage);
             if (resultFilename.toFile().exists()) {

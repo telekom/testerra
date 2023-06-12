@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -54,7 +54,7 @@ import java.util.HashMap;
  *
  * @author mibu
  */
-public final class LayoutCheck implements PropertyManagerProvider {
+public final class LayoutCheck implements PropertyManagerProvider, AssertProvider {
 
     public enum Properties implements IProperties {
         MODE("mode", "pixel"),
@@ -408,6 +408,10 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     public static void toReport(final MatchStep step) {
+        if (step == null) {
+            LOGGER.warn("Cannot add layout check to report.");
+            return;
+        }
         final String name = step.consecutiveTargetImageName;
         final Path referenceScreenshotPath = step.referenceFileName;
         final Path actualScreenshotPath = step.actualFileName;
@@ -441,21 +445,24 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
-        LayoutCheck.MatchStep matchStep;
-        final String assertMessage = String.format("Expected that pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
+        LayoutCheck.MatchStep matchStep = null;
+        final String assertMessage = String.format("pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
         try {
-            //PropertyManager.setPriorityResolvers(Stream.of(new WebDriverPropertyResolver(webDriver)));
             matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
-            //PropertyManager.clearPriorityResolvers();
+            // Check for 2 decimals of % value is enough --> Readable assertion message
+            ASSERT.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
+            // In case of optional or collected assertions
             if (!matchStep.takeReferenceOnly) {
                 LayoutCheck.toReport(matchStep);
             }
-            // Check for 2 decimals of % value is enough --> Readable assertion message
-            AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
         } catch (LayoutCheckException e) {
             matchStep = e.getMatchStep();
             LayoutCheck.toReport(matchStep);
             throw e;
+        } catch (Throwable t) {
+            // Needed for assertion errors
+            LayoutCheck.toReport(matchStep);
+            throw t;
         }
     }
 }

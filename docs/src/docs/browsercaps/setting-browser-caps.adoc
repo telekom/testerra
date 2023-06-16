@@ -2,16 +2,21 @@
 
 The user agent configuration is most precise, because it provides explicit browser options based on the Selenium driver.
 
+The setting applies to all created sessions for a browser type (_global_).
+
 [source, java]
 ----
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 
 WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
     options.addPreference("intl.accept_languages", "de-DE");
+    options.setCapability("myKey", value);
 });
 ----
 
 NOTE: Have a look into <<Browser specific knowledge>> for specific browser options.
+
+NOTE: Since Selenium 4 the `DesiredCapabilties` are replaced by browser options (https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4).
 
 = Request capabilities
 
@@ -33,7 +38,9 @@ Have a look into <<Browser specific knowledge>> for specific browser options. +
 Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
 =====
 
-= Global capabilities
+= Global capabilities with `WEB_DRIVER_MANAGER` (`@deprecated`)
+
+NOTE: This feature is deprecated, please use <<User agent configuration>>
 
 You can customize your browser session by setting capabilities for every browser type.
 

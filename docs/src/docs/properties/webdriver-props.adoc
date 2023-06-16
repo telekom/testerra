@@ -15,8 +15,6 @@ The following types of browsers are supported:
 * ie
 * edge
 * safari
-* phantomjs
-* htmlunit
 * chromeHeadless
 
 | {browser} | na.

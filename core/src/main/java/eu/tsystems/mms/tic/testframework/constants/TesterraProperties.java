@@ -23,6 +23,8 @@ package eu.tsystems.mms.tic.testframework.constants;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra.Properties;
 
+import java.util.function.Predicate;
+
 /**
  * Class holding keys of all properties.
  *
@@ -49,7 +51,10 @@ public final class TesterraProperties {
 
     /**
      * WDM: Timeout / Duration Setting for Window Switching
+     *
+     * @deprecated Use {@link IWebDriverManager#switchToWindow(Predicate)} and {@link CONTROL#waitFor(int, Predicate)} instead
      */
+    @Deprecated
     public static final String WEBDRIVER_WINDOW_SWITCH_MAX_DURATION = "tt.wdm.timeouts.seconds.window.switch.duration";
 
     /**

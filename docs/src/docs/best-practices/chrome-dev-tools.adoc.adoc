@@ -1,0 +1,44 @@
+= Access to Chrome dev tools
+
+NOTE: Only Chrome browser supports access to development tools.
+
+== Emulate geo location
+
+Examples are based on https://www.selenium.dev/documentation/webdriver/bidirectional/chrome_devtools/.
+
+.Local webdriver
+[source,java]
+----
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+
+ChromeDriver chromeDriver = WEB_DRIVER_MANAGER
+        .unwrapWebDriver(webDriver, ChromeDriver.class).get();
+
+DevTools devTools = chromeDriver.getDevTools();
+devTools.createSession();
+devTools.send(Emulation.setGeolocationOverride(
+        Optional.of(52.52084),
+        Optional.of(13.40943),
+        Optional.of(1)));
+webDriver.get("https://my-location.org/");
+----
+
+.Remote webdriver (e.g. of a grid)
+[source,java]
+----
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+
+RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER
+        .unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+webDriver = new Augmenter().augment(remoteWebDriver);
+
+DevTools devTools = ((HasDevTools) webDriver).getDevTools();
+devTools.createSession();
+
+devTools.send(Emulation.setGeolocationOverride(
+        Optional.of(52.52084),
+        Optional.of(13.40943),
+        Optional.of(1)));
+
+webDriver.get("https://my-location.org/");
+----

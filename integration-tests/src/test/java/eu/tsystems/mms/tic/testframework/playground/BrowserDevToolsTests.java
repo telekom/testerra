@@ -2,7 +2,10 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
+import org.openqa.selenium.By;
 import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
@@ -41,50 +44,62 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
      * - Issue with Selenoid: https://github.com/aerokube/selenoid/issues/1063
      */
 
+    private Optional<Number> latitude = Optional.of(52.52084);
+    private Optional<Number> longitude = Optional.of(13.40943);
+
     @Test
     public void testT01_GeoLocation_localDriver() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
         ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
 
         DevTools devTools = chromeDriver.getDevTools();
         devTools.createSession();
-        devTools.send(Emulation.setGeolocationOverride(Optional.of(52.5043),
-                Optional.of(13.4501),
+        devTools.send(Emulation.setGeolocationOverride(
+                latitude,
+                longitude,
                 Optional.of(1)));
         webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
+        uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
+
     }
 
     @Test
     public void testT02_GeoLocation_remoteDriver() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);
-//        request.setBrowser(Browsers.firefox);
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
+        RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
         webDriver = new Augmenter().augment(remoteWebDriver);
 
         DevTools devTools = ((HasDevTools) webDriver).getDevTools();
         devTools.createSession();
 
-        devTools.send(Emulation.setGeolocationOverride(Optional.of(52.5043),
-                Optional.of(13.4501),
+        devTools.send(Emulation.setGeolocationOverride(
+                latitude,
+                longitude,
                 Optional.of(1)));
 
         webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
+        uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
     }
 
     @Test
     public void testT04_BasicAuth_remoteDriver() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);
-        request.setBrowserVersion("106");
+//        request.setBrowserVersion("106");
 //        request.getDesiredCapabilities().setCapability("se:cdp", "http://");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         WebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
         AtomicReference<DevTools> devToolsAtomicReference = new AtomicReference<>();
 
@@ -108,5 +123,7 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
         ((HasAuthentication) remoteWebDriver).register(UsernameAndPassword.of("admin", "admin"));
 
         remoteWebDriver.get("https://the-internet.herokuapp.com/basic_auth");
+        uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
+
     }
 }

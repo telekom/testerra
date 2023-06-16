@@ -10,7 +10,6 @@ import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 
 WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
     options.addPreference("intl.accept_languages", "de-DE");
-    options.setCapability("myKey", value);
 });
 ----
 
@@ -37,6 +36,20 @@ WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
 Have a look into <<Browser specific knowledge>> for specific browser options. +
 Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
 =====
+
+= Custom capabilties
+
+Non-standard capabilties need a vendor prefix and can be set as follows:
+
+[source,java]
+----
+Map<String, Object> customCaps = new HashMap<>();
+customCaps.put("foo", "bar");
+
+WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+    options.setCapability("custom:caps", customCaps);
+});
+----
 
 = Global capabilities with `WEB_DRIVER_MANAGER` (`@deprecated`)
 

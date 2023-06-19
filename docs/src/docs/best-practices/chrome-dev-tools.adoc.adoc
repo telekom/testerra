@@ -1,6 +1,10 @@
 = Access to Chrome dev tools
 
-NOTE: Only Chrome browser supports access to development tools.
+[NOTE]
+====
+* The following examples are working with Selenium 4 server. If you are using another grid like Selenoid the usage could be different.
+* Only Chrome browser supports access to development tools.
+====
 
 == Emulate geo location
 

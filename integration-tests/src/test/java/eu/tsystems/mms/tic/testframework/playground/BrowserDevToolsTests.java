@@ -91,6 +91,25 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
     }
 
     @Test
+    public void testT03_GeoLocation_generic() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chrome);
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        DevTools devTools = WEB_DRIVER_MANAGER.accessDevTools().getRawDevTools(webDriver);
+
+        devTools.send(Emulation.setGeolocationOverride(
+                latitude,
+                longitude,
+                Optional.of(1)));
+
+        webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
+        uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
+    }
+
+    @Test
     public void testT04_BasicAuth_remoteDriver() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);

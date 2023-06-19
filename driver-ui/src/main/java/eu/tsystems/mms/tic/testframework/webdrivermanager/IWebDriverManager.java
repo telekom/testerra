@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
@@ -44,7 +45,9 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
  * Replacement for static {@link WebDriverManager}
  * @todo Rename to {@link WebDriverManager}
  */
-public interface IWebDriverManager extends WebDriverRetainer, Loggable {
+public interface IWebDriverManager extends
+        WebDriverRetainer,
+        Loggable {
 
     enum Properties implements IProperties {
         BROWSER("tt.browser", ""),
@@ -260,5 +263,9 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
      */
     default Optional<Locale> getSessionLocale(WebDriver webDriver) {
         return WebDriverManager.getSessionLocale(webDriver);
+    }
+
+    default BrowserDevTools accessDevTools() {
+        return Testerra.getInjector().getInstance(BrowserDevTools.class);
     }
 }

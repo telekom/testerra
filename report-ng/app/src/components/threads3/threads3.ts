@@ -297,8 +297,8 @@ export class Threads3 extends AbstractViewModel {
                         // TODO label text overflows to other shapes
                         show: true,
                         position: 'insideLeft',
-                        overflow: 'truncate'
-                        // textBorderWidth: 0,
+                        overflow: 'truncate' // doesn't do much
+                        // textBorderWidth: 0
                     },
                     labelLayout: {
                         hideOverlap: true // only hides labels, that would overlap with others

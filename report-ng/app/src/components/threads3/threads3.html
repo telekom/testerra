@@ -32,6 +32,17 @@
                             <button mdc-button click.delegate="zoom()" class="m1">Zoom</button>
                             <button mdc-button click.delegate="resetZoom()" class="m1">Reset zoom</button>
                         </mdc-card-action-buttons>
+                        <mdc-card-action-textfield>
+                            <!-- TODO: Add search functionality -->
+                            <mdc-text-field label="Method"
+                                            outlined
+                                            ref="_methodNameInput"
+                                            class="w100"
+                                            value.bind="_inputValue"
+                                            input.delegate="selectionChanged()"
+                            ></mdc-text-field>
+                            <mdc-text-field-helper-line></mdc-text-field-helper-line>
+                        </mdc-card-action-textfield>
                     </mdc-card-actions>
 <!--                    <div>-->
 <!--                        -->

@@ -51,7 +51,7 @@ WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options 
 });
 ----
 
-= Global capabilities with `WEB_DRIVER_MANAGER` (`@deprecated`)
+= Global capabilities with `WEB_DRIVER_MANAGER` (*@deprecated*)
 
 NOTE: This feature is deprecated, please use <<User agent configuration>>
 

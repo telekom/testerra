@@ -3,7 +3,6 @@ package eu.tsystems.mms.tic.testframework.playground;
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.HasAuthentication;
@@ -38,8 +37,8 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
      * <p>
      * Example
      * - java -Dwebdriver.chrome.driver=driver\chromedriver.exe  -jar selenium4\selenium-server-4.7.2.jar standalone --port 4444 --host localhost
-     *
-     *
+     * <p>
+     * <p>
      * Known issues:
      * - Issue with Selenoid: https://github.com/aerokube/selenoid/issues/1063
      */
@@ -96,24 +95,22 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);
 //        request.setBrowserVersion("106");
-//        request.getDesiredCapabilities().setCapability("se:cdp", "http://");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+
         WebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
         AtomicReference<DevTools> devToolsAtomicReference = new AtomicReference<>();
 
         remoteWebDriver = new Augmenter()
-                .addDriverAugmentation("chrome",
+                .addDriverAugmentation(
+                        "chrome",
                         HasAuthentication.class,
                         (caps, exec) -> (whenThisMatches, useTheseCredentials) -> {
-
-                            devToolsAtomicReference.get()
-                                    .createSessionIfThereIsNotOne();
+                            devToolsAtomicReference.get().createSessionIfThereIsNotOne();
                             devToolsAtomicReference.get().getDomains()
                                     .network()
                                     .addAuthHandler(whenThisMatches, useTheseCredentials);
-
                         })
                 .augment(remoteWebDriver);
 
@@ -122,7 +119,7 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
         devToolsAtomicReference.set(devTools);
         ((HasAuthentication) remoteWebDriver).register(UsernameAndPassword.of("admin", "admin"));
 
-        remoteWebDriver.get("https://the-internet.herokuapp.com/basic_auth");
+        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
 
     }

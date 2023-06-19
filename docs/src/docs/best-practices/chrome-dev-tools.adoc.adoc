@@ -20,7 +20,8 @@ devTools.send(Emulation.setGeolocationOverride(
         Optional.of(52.52084),
         Optional.of(13.40943),
         Optional.of(1)));
-webDriver.get("https://my-location.org/");
+
+webDriver.get("https://my-location.org/");      // page gets the new geo location information
 ----
 
 .Remote webdriver (e.g. of a grid)
@@ -41,4 +42,34 @@ devTools.send(Emulation.setGeolocationOverride(
         Optional.of(1)));
 
 webDriver.get("https://my-location.org/");
+----
+
+== Basic authentication
+
+[source,java]
+----
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+WebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+
+AtomicReference<DevTools> devToolsAtomicReference = new AtomicReference<>();
+
+remoteWebDriver = new Augmenter()
+        .addDriverAugmentation(
+                "chrome",
+                HasAuthentication.class,
+                (caps, exec) -> (whenThisMatches, useTheseCredentials) -> {
+                    devToolsAtomicReference.get().createSessionIfThereIsNotOne();
+                    devToolsAtomicReference.get().getDomains()
+                            .network()
+                            .addAuthHandler(whenThisMatches, useTheseCredentials);
+                })
+        .augment(remoteWebDriver);
+
+DevTools devTools = ((HasDevTools) remoteWebDriver).getDevTools();
+devTools.createSession();
+devToolsAtomicReference.set(devTools);
+
+// Set credentials and call the page with 'basic authentication' protection
+((HasAuthentication) remoteWebDriver).register(UsernameAndPassword.of("admin", "admin"));
+webDriver.get("https://the-internet.herokuapp.com/basic_auth");
 ----

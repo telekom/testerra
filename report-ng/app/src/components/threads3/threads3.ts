@@ -173,7 +173,8 @@ export class Threads3 extends AbstractViewModel {
                         context.contextValues.endTime,
                         context.contextValues.name,
                         duration,
-                        context.methodRunIndex
+                        context.methodRunIndex,
+                        context.contextValues.id
                     ],
                     itemStyle: {
                         normal: {
@@ -191,6 +192,15 @@ export class Threads3 extends AbstractViewModel {
         const sliderFromTop = gridHeight + this._sliderSpacingFromChart
         const dateFormatter = this._dateFormatter;
         this._cardHeight = gridHeight + 100;
+
+        // Set gridLeftValue dynamically to longest thread name
+        const longestThreadName = Array.from(threadCategories.keys()).reduce(
+            function (a, b) {
+                return a.length > b.length ? a : b;
+            }
+        );
+        let gridLeftValue= longestThreadName.length * 6.5; // Calculate the value for grid:left
+        gridLeftValue = gridLeftValue > 100 ? gridLeftValue : 100; // Set to default of 100, if lower
 
         this._options = {
             tooltip: {
@@ -223,8 +233,7 @@ export class Threads3 extends AbstractViewModel {
                 height: 'auto',
                 top: 30,
                 bottom: 100,
-                // TODO dynamic left value according longest thread name? -> default 100
-                left: 180
+                left: gridLeftValue
             },
             xAxis: {
                 min: chartStartTime,
@@ -286,8 +295,13 @@ export class Threads3 extends AbstractViewModel {
                     data: data,
                     label: {
                         // TODO label text overflows to other shapes
-                        // show: true,
-                        position: 'insideLeft'
+                        show: true,
+                        position: 'insideLeft',
+                        overflow: 'truncate'
+                        // textBorderWidth: 0,
+                    },
+                    labelLayout: {
+                        hideOverlap: true // only hides labels, that would overlap with others
                     }
                 }
             ]
@@ -295,8 +309,7 @@ export class Threads3 extends AbstractViewModel {
     }
 
     private _handleClickEvent(event: echarts.ECElementEvent) {
-        // TODO: Route to method details
-        console.log("clicked", event);
+        this._router.navigateToRoute('method', {methodId: event.value[6]})
     }
 
     getRenderItem(params, api): any {

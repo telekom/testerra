@@ -18,9 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.BrowserDevTools;
+import org.openqa.selenium.Credentials;
+import org.openqa.selenium.HasAuthentication;
+import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
@@ -30,6 +35,8 @@ import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * Created on 2023-06-19
@@ -47,11 +54,10 @@ public class SeleniumDevTools implements BrowserDevTools, Loggable {
             throw new RuntimeException("The current browser does not support DevTools");
         }
         try {
-            WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
             DevTools devTools = null;
             final String message = "Creating DevTools instance of ";
             // Check if current session is a local or remote session
-            if (webDriverRequest.getServerUrl().isPresent()) {
+            if (isRemoteDriver(webDriver)) {
                 log().info("{}remote driver session.", message);
                 RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
                 webDriver = new Augmenter().augment(remoteWebDriver);
@@ -79,5 +85,37 @@ public class SeleniumDevTools implements BrowserDevTools, Loggable {
                 Optional.of(longitude),
                 Optional.of(accuracy)));
     }
+
+    @Override
+    public void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials) {
+        if (!isSupported(webDriver)) {
+            throw new RuntimeException("The current browser does not support DevTools");
+        }
+        if (isRemoteDriver(webDriver)) {
+            WebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+            AtomicReference<DevTools> devToolsAtomicReference = new AtomicReference<>();
+            remoteWebDriver = new Augmenter()
+                    .addDriverAugmentation(
+                            "chrome",
+                            HasAuthentication.class,
+                            (caps, exec) -> (whenThisMatches, useTheseCredentials) -> {
+                                devToolsAtomicReference.get().createSessionIfThereIsNotOne();
+                                devToolsAtomicReference.get().getDomains()
+                                        .network()
+                                        .addAuthHandler(whenThisMatches, useTheseCredentials);
+                            })
+                    .augment(remoteWebDriver);
+            DevTools devTools = ((HasDevTools) remoteWebDriver).getDevTools();
+            devTools.createSession();
+            devToolsAtomicReference.set(devTools);
+            ((HasAuthentication) remoteWebDriver).register(credentials);
+        } else {
+            // TODO Implement me
+        }
+
+
+
+    }
+
 
 }

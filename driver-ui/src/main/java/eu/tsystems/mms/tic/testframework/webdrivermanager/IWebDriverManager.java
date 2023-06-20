@@ -22,27 +22,24 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 /**
  * Replacement for static {@link WebDriverManager}
+ *
  * @todo Rename to {@link WebDriverManager}
  */
 public interface IWebDriverManager extends
@@ -140,7 +137,7 @@ public interface IWebDriverManager extends
         return WebDriverSessionsManager.getWebDriver(sessionContext);
     }
 
-    default Optional<String>getRequestedBrowser(WebDriver webDriver) {
+    default Optional<String> getRequestedBrowser(WebDriver webDriver) {
         return WebDriverSessionsManager.getRequestedBrowser(webDriver);
     }
 
@@ -164,7 +161,6 @@ public interface IWebDriverManager extends
     default Stream<EventFiringWebDriver> readWebDrivers() {
         return WebDriverSessionsManager.readWebDrivers();
     }
-
 
     default IWebDriverManager setUserAgentConfig(String browser, UserAgentConfig configurator) {
         WebDriverManager.setUserAgentConfig(browser, configurator);
@@ -230,6 +226,7 @@ public interface IWebDriverManager extends
     default void setGlobalCapability(String key, Object value) {
         WebDriverManager.setGlobalExtraCapability(key, value);
     }
+
     default void removeGlobalCapability(String key) {
         WebDriverManager.removeGlobalExtraCapability(key);
     }
@@ -241,7 +238,7 @@ public interface IWebDriverManager extends
     default <WEBDRIVER> Optional<WEBDRIVER> unwrapWebDriver(WebDriver webDriver, Class<WEBDRIVER> targetWebDriverClass) {
         WebDriver lowestWebDriver = WebDriverUtils.getLowestWebDriver(webDriver);
         if (targetWebDriverClass.isInstance(lowestWebDriver)) {
-            return Optional.of((WEBDRIVER)lowestWebDriver);
+            return Optional.of((WEBDRIVER) lowestWebDriver);
         } else {
             return Optional.empty();
         }
@@ -249,6 +246,7 @@ public interface IWebDriverManager extends
 
     /**
      * Sets the locale for a specified session
+     *
      * @param webDriver
      * @param locale
      * @return TRUE if locale has been set
@@ -259,13 +257,10 @@ public interface IWebDriverManager extends
 
     /**
      * Returns the session locale
+     *
      * @param webDriver
      */
     default Optional<Locale> getSessionLocale(WebDriver webDriver) {
         return WebDriverManager.getSessionLocale(webDriver);
-    }
-
-    default BrowserDevTools accessDevTools() {
-        return Testerra.getInjector().getInstance(BrowserDevTools.class);
     }
 }

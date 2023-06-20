@@ -22,10 +22,12 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import org.openqa.selenium.Credentials;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.devtools.DevTools;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Created on 2023-06-19
@@ -34,9 +36,11 @@ import java.util.Optional;
  */
 public interface BrowserDevTools extends WebDriverManagerProvider {
 
-    DevTools getRawDevTools(WebDriver driver);
+    DevTools getRawDevTools(WebDriver webDriver);
 
-    void setGeoLocation(WebDriver driver, double latitude, double longitude, int accuracy);
+    void setGeoLocation(WebDriver webDriver, double latitude, double longitude, int accuracy);
+
+    void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials);
 
     default boolean isSupported(WebDriver driver) {
         Optional<String> requestedBrowser = WEB_DRIVER_MANAGER.getRequestedBrowser(driver);
@@ -44,6 +48,11 @@ public interface BrowserDevTools extends WebDriverManagerProvider {
                 .map(Optional::get)
                 .map(browser -> browser.toLowerCase().contains(Browsers.chrome))
                 .orElse(false);
+    }
+
+    default boolean isRemoteDriver(WebDriver webDriver) {
+        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
+        return webDriverRequest.getServerUrl().isPresent();
     }
 
 }

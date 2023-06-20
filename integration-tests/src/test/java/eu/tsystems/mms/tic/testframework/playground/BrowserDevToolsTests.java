@@ -3,6 +3,7 @@ package eu.tsystems.mms.tic.testframework.playground;
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.testing.BrowserDevToolsProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.HasAuthentication;
@@ -24,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author mgn
  */
-public class BrowserDevToolsTests extends AbstractWebDriverTest {
+public class BrowserDevToolsTests extends AbstractWebDriverTest implements BrowserDevToolsProvider {
 
     /**
      * See here for examples:
@@ -97,12 +98,13 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
-        DevTools devTools = WEB_DRIVER_MANAGER.accessDevTools().getRawDevTools(webDriver);
-
-        devTools.send(Emulation.setGeolocationOverride(
-                latitude,
-                longitude,
-                Optional.of(1)));
+//        DevTools devTools = BROWSER_DEV_TOOLS.getRawDevTools(webDriver);
+//
+//        devTools.send(Emulation.setGeolocationOverride(
+//                latitude,
+//                longitude,
+//                Optional.of(1)));
+        BROWSER_DEV_TOOLS.setGeoLocation(webDriver, latitude.get().doubleValue(), longitude.get().doubleValue(), 1);
 
         webDriver.get("https://my-location.org/");
         uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
@@ -142,4 +144,20 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest {
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
 
     }
+
+    @Test
+    public void testT05_BasicAuth_DevTools() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chrome);
+//        request.setBrowserVersion("106");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        BROWSER_DEV_TOOLS.setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"));
+
+        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
+        uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
+
+    }
+
 }

@@ -23,9 +23,10 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import org.apache.commons.lang3.SerializationUtils;
+import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -153,22 +154,6 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
         return desiredCapabilities;
     }
 
-    /**
-     * Cloning of DesiredCapabilites with SerializationUtils occurs org.apache.commons.lang3.SerializationException: IOException while reading or closing cloned object data
-     * -> We have to backup the current caps and clone WebDriverRequest without caps. After cloning the original caps are added again.
-     * -> merge()-Method does not clone capability values like Maps (e.g. goog:chromeOptions, no deep copy) -> used org.apache.commons.lang3.SerializationUtils
-     */
-    public AbstractWebDriverRequest clone() throws CloneNotSupportedException {
-        AbstractWebDriverRequest clone = (AbstractWebDriverRequest) super.clone();
-        if (this.desiredCapabilities != null) {
-            clone.desiredCapabilities = SerializationUtils.clone(this.desiredCapabilities);
-        }
-        if (this.capabilities != null) {
-            clone.setBrowserOptions(SerializationUtils.clone(this.capabilities));
-        }
-        return clone;
-    }
-
     public Capabilities getBrowserOptions() {
         return capabilities;
     }
@@ -195,4 +180,25 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
         return Optional.empty();
     }
 
+    /**
+     * Cloning of DesiredCapabilites with SerializationUtils occurs org.apache.commons.lang3.SerializationException: IOException while reading or closing cloned object data
+     * -> We have to backup the current caps and clone WebDriverRequest without caps. After cloning the original caps are added again.
+     * -> org.apache.commons.lang3.SerializationUtils cannot used because not all objects are serializable (e.g. Proxy)
+     * -> merge()-Method does not clone capability values like Maps (e.g. goog:chromeOptions, no deep copy)
+     * --> used Gson lib
+     */
+    public AbstractWebDriverRequest clone() throws CloneNotSupportedException {
+        AbstractWebDriverRequest clone = (AbstractWebDriverRequest) super.clone();
+
+        DefaultCapabilityUtils capabilityUtils = new DefaultCapabilityUtils();
+        if (this.desiredCapabilities != null) {
+            Map<String, Object> clonedCaps = capabilityUtils.clone(this.desiredCapabilities.asMap());
+            clone.desiredCapabilities = new DesiredCapabilities(clonedCaps);
+        }
+        if (this.capabilities != null) {
+            Map<String, Object> clonedCaps = capabilityUtils.clone(this.capabilities.asMap());
+            clone.setBrowserOptions(new MutableCapabilities(clonedCaps));
+        }
+        return clone;
+    }
 }

@@ -21,11 +21,9 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.BrowserDevTools;
 import org.openqa.selenium.Credentials;
 import org.openqa.selenium.HasAuthentication;
-import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
@@ -112,7 +110,6 @@ public class SeleniumDevTools implements BrowserDevTools, Loggable {
         } else {
             // TODO Implement me
         }
-
 
 
     }

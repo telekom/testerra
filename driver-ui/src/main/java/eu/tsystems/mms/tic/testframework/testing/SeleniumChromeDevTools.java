@@ -21,7 +21,9 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.BrowserDevTools;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.Credentials;
 import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.WebDriver;
@@ -32,8 +34,11 @@ import org.openqa.selenium.devtools.v112.emulation.Emulation;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -41,7 +46,7 @@ import java.util.function.Supplier;
  *
  * @author mgn
  */
-public class SeleniumDevTools implements BrowserDevTools, Loggable {
+public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
 
     /**
      * Create a Chrome DevTools session
@@ -108,7 +113,16 @@ public class SeleniumDevTools implements BrowserDevTools, Loggable {
             devToolsAtomicReference.set(devTools);
             ((HasAuthentication) remoteWebDriver).register(credentials);
         } else {
-            // TODO Implement me
+            DesktopWebDriverRequest webDriverRequest = (DesktopWebDriverRequest) WEB_DRIVER_MANAGER.getSessionContext(webDriver)
+                    .map(SessionContext::getWebDriverRequest)
+                    .orElse(null);
+            if (webDriverRequest == null) {
+                throw new RuntimeException("Cannot get WebdriverRequest from SessionContext");
+            }
+            String baseUrlHost = webDriverRequest.getBaseUrl().map(URL::getHost).orElse("");
+            Predicate<URI> uriPredicate = uri -> uri.getHost().contains(baseUrlHost);
+            ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
+            ((HasAuthentication) chromeDriver).register(uriPredicate, credentials);
         }
 
 

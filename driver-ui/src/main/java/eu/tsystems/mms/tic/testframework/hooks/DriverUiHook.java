@@ -53,10 +53,10 @@ import eu.tsystems.mms.tic.testframework.testing.UiElementOverrides;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.BrowserDevTools;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
-import eu.tsystems.mms.tic.testframework.testing.SeleniumDevTools;
+import eu.tsystems.mms.tic.testframework.testing.SeleniumChromeDevTools;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
@@ -77,7 +77,7 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
 
         // Instances
         bind(BrowserInformation.class).to(UapBrowserInformation.class);
-        bind(BrowserDevTools.class).to(SeleniumDevTools.class);
+        bind(ChromeDevTools.class).to(SeleniumChromeDevTools.class);
     }
 
     @Override

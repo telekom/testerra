@@ -23,14 +23,13 @@ package eu.tsystems.mms.tic.testframework.playground;
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.testing.BrowserDevToolsProvider;
+import eu.tsystems.mms.tic.testframework.testing.ChromeDevToolsProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.v112.emulation.Emulation;
@@ -48,7 +47,7 @@ import java.util.function.Predicate;
  *
  * @author mgn
  */
-public class BrowserDevToolsTests extends AbstractWebDriverTest implements BrowserDevToolsProvider {
+public class ChromeDevToolsTests extends AbstractWebDriverTest implements ChromeDevToolsProvider {
 
     /**
      * See here for examples:
@@ -127,7 +126,7 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest implements Brows
 //                latitude,
 //                longitude,
 //                Optional.of(1)));
-        BROWSER_DEV_TOOLS.setGeoLocation(webDriver, latitude.get().doubleValue(), longitude.get().doubleValue(), 1);
+        CHROME_DEV_TOOLS.setGeoLocation(webDriver, latitude.get().doubleValue(), longitude.get().doubleValue(), 1);
 
         webDriver.get("https://my-location.org/");
         uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
@@ -176,7 +175,7 @@ public class BrowserDevToolsTests extends AbstractWebDriverTest implements Brows
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
-        BROWSER_DEV_TOOLS.setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"));
+        CHROME_DEV_TOOLS.setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"));
 
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");

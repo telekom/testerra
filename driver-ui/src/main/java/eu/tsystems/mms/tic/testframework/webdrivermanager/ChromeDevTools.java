@@ -34,7 +34,7 @@ import java.util.function.Supplier;
  *
  * @author mgn
  */
-public interface BrowserDevTools extends WebDriverManagerProvider {
+public interface ChromeDevTools extends WebDriverManagerProvider {
 
     DevTools getRawDevTools(WebDriver webDriver);
 

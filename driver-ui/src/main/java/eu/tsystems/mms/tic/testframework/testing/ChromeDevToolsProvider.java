@@ -21,13 +21,13 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.BrowserDevTools;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
 
 /**
- * Provides a {@link BrowserDevTools}
+ * Provides a {@link ChromeDevTools}
  *
  * @author mgn
  */
-public interface BrowserDevToolsProvider {
-    BrowserDevTools BROWSER_DEV_TOOLS = Testerra.getInjector().getInstance(BrowserDevTools.class);
+public interface ChromeDevToolsProvider {
+    ChromeDevTools CHROME_DEV_TOOLS = Testerra.getInjector().getInstance(ChromeDevTools.class);
 }

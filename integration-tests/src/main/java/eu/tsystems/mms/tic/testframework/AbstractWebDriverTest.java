@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
@@ -42,7 +43,12 @@ import java.lang.reflect.Method;
 /**
  * Abstract test class for tests using a WebDriver
  */
-public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer, WebDriverManagerProvider, Loggable, UiElementFinderFactoryProvider {
+public abstract class AbstractWebDriverTest extends TesterraTest implements
+        WebDriverRetainer,
+        WebDriverManagerProvider,
+        Loggable,
+        UiElementFinderFactoryProvider,
+        AssertProvider {
 
     private String exclusiveSessionId;
 

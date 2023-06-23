@@ -33,13 +33,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.v112.emulation.Emulation;
+import org.openqa.selenium.devtools.v114.log.Log;
+import org.openqa.selenium.devtools.v114.log.model.LogEntry;
+import org.openqa.selenium.devtools.v85.runtime.Runtime;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -184,7 +192,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
 
     /**
      * The following example uses the BiDi implementation of Chrome to add basic authentication information
-     *
+     * <p>
      * Works only with local ChromeDriver, RemoteWebDriver is not supported
      */
     @Test
@@ -196,11 +204,56 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
         Predicate<URI> uriPredicate = uri -> uri.getHost().contains("the-internet.herokuapp.com");
 
-         ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
+        ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
         ((HasAuthentication) chromeDriver).register(uriPredicate, UsernameAndPassword.of("admin", "admin"));
 
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
+    }
+
+    @Test
+    public void testT07_LogListener() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        DevTools rawDevTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+
+        rawDevTools.send(Runtime.enable());
+        rawDevTools.send(Log.enable());
+        rawDevTools.addListener(Log.entryAdded(),
+                entry -> {
+                    log().info("{} - {}: {}", entry.getTimestamp(), entry.getLevel().toString().toUpperCase(), entry.getText());
+                    System.out.println(entry.getText());
+                });
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.id("consoleLog")).click();
+        uiElementFinder.find(By.id("consoleError")).click();
+
+    }
+
+
+    @Test
+    public void testT08_LogListenerBrokenImages() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+//        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+
+        devTools.send(Log.enable());
+
+        List<LogEntry> logEntries = new ArrayList<>();
+        Consumer<LogEntry> addedLog = logEntries::add;
+
+        // Consumer is running in another thread... Asserts do not have impact to main thread
+        devTools.addListener(Log.entryAdded(), addedLog);
+        webDriver.get("http://the-internet.herokuapp.com/broken_images");
+
+        for (LogEntry logEntry : logEntries) {
+            System.out.println(String.format("LOG_ENTRY: %s %s %s - %s (%s)", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getSource(), logEntry.getText(), logEntry.getUrl()));
+            log().info("LOG_ENTRY: {} {} {} - {} ({})", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getSource(), logEntry.getText(), logEntry.getUrl());
+            ASSERT.assertFalse(logEntry.getText().contains("404"));
+        }
     }
 
 }

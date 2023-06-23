@@ -230,12 +230,18 @@ export class FailureAspectStatistics extends Statistics {
             this.message = this.errorContext.description;
         } else if (this.relevantCause) {
             // Cut the identifier message to first occurrence of line-break
-            const breakPos = this.relevantCause.message?.indexOf("\n");
-            if (breakPos >= 0) {
-                this.message = this.relevantCause.message.substring(0, breakPos);
-            } else {
-                this.message = this.relevantCause.message;
-            }
+
+            // Note: In specific cases, this caused the loss of valuable information
+            // about the occurring error, which then could not be seen in the report.
+            // const breakPos = this.relevantCause.message?.indexOf("\n");
+            // if (breakPos >= 0) {
+            //     this.message = this.relevantCause.message.substring(0, breakPos);
+            // } else {
+            //     this.message = this.relevantCause.message;
+            // }
+
+            // Replace all occurring line-breaks with a space-character
+            this.message = this.relevantCause.message.replaceAll('\n', ' ');
             this.message = this.message.trim();
             this.identifier = this.relevantCause.className + this.message;
         }

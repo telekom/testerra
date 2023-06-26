@@ -48,6 +48,7 @@ export class Threads3 extends AbstractViewModel {
     private _chart: echarts.ECharts;
 
     private _dateFormatter : IntlDateFormatValueConverter;
+    // private _durationFormatter: DurationFormatValueConverter;
 
     // Some values for presentation
     // TODO Whats the best value?
@@ -76,6 +77,7 @@ export class Threads3 extends AbstractViewModel {
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            // this._initDurationFormatter();
             this._initDateFormatter();
             this._prepareTimeline(executionStatistics);
             this._loading = false;
@@ -110,6 +112,12 @@ export class Threads3 extends AbstractViewModel {
             // endValue: undefined
         });
     }
+
+    // private _initDurationFormatter() {
+    //     const container = new Container();
+    //     this._durationFormatter = container.get(DurationFormatValueConverter);
+    //     this._durationFormatter.setDefaultFormat("m[min] s[s] ms[ms]");
+    // }
 
     private _initDateFormatter() {
         const container = new Container();
@@ -191,6 +199,7 @@ export class Threads3 extends AbstractViewModel {
         const gridHeight = threadCategories.size * this._threadHeight;
         const sliderFromTop = gridHeight + this._sliderSpacingFromChart
         const dateFormatter = this._dateFormatter;
+        // const durationFormatter = this._durationFormatter;
         this._cardHeight = gridHeight + 100;
 
         // Set gridLeftValue dynamically to longest thread name
@@ -210,6 +219,7 @@ export class Threads3 extends AbstractViewModel {
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
                         // TODO use duration value converter
+                        // + '<br>Duration: ' + durationFormatter.toView(params.value[4])
                         + '<br>Duration: ' + params.value[4] + ' ms'
                         + '<br>Run index: ' + params.value[5];
                 }

@@ -240,9 +240,8 @@ export class Threads3 extends AbstractViewModel {
                 scale: true,
                 axisLabel: {
                     interval: 2,
-                    // TODO Add date to labels
                     formatter: function (val) {
-                        return dateFormatter.toView(Number(val), 'time');
+                        return dateFormatter.toView(Number(val), 'time') + '\n\n' + dateFormatter.toView(Number(val), 'date');
                     }
                 }
             },

@@ -80,8 +80,7 @@ export class Threads2Card {
         const yLabelsMaxWidth = 400;
         const dataAvailable = yLabels.length > 0;
 
-        // const height: string = yLabels.length * 20 + 67.65 + 'px';
-        const height: string = 150 + 'px';
+        const height: string = (150 + yLabels.length * 16 ) + 'px';
 
         this._apexTimelineOptions = {
             series: [{

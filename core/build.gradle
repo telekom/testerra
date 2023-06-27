@@ -21,17 +21,9 @@ dependencies {
 
     api "com.google.guava:guava:${guavaVersion}"
 
-    // <XML>
-    // These dependencies are exposed by XMLUtils.java
+    // <XLSTestDataReader>
     implementation 'org.apache.poi:poi-ooxml:3.17'
-    api 'org.jsoup:jsoup:1.7.2'
-    api 'org.jdom:jdom2:2.0.6'
-    api "javax.xml.bind:jaxb-api:2.3.0"
-    api "com.sun.xml.bind:jaxb-core:2.3.0"
-    api "com.sun.xml.bind:jaxb-impl:2.3.0"
-    api "javax.activation:activation:1.1"
-    api "xerces:xercesImpl:2.8.0"
-    // </XML
+    // </XLSTestDataReader>
 
     // <CSVTestDataReader>
     implementation 'com.opencsv:opencsv:3.9'

@@ -1,59 +1,28 @@
-= Global capabilities
+= Common browser capabilities
 
-You can customize your browser session by setting capabilities for every browser type before
-the WebDriver has been initialized.
+include::../properties/property-attributes.adoc[]
 
-[source,java]
-----
-WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-WEB_DRIVER_MANAGER.removeGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS);
-----
+The following table shows the most used browser capabilities and how they can set.
 
-[IMPORTANT]
-====
-Do NOT set browser capabilities with WebDriverManager like:
+[cols="1,1a,1a,1a"]
+|===
+|Capability | Selenium type | test.properties | DesktopWebDriverRequest
 
-[source, java]
-----
-FirefoxOptions options = new FirefoxOptions();
-options.addPreference("intl.accept_languages", "de-DE");
-// This cannot be merged correctly!
-WEB_DRIVER_MANAGER.setGlobalCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
-----
+| Browser type
+| `CapabilityType.BROWSER_NAME`
+| `{browser_setting}`, `{browser}`
+| `setBrowser(String)`
 
-====
+| Browser version
+| `CapabilityType.BROWSER_VERSION`
+| `{browser_setting}`, `{browser_version}`
+| `setBrowserVersion(String)`
 
-= Request capabilities
+| Platform
+| `CapabilityType.PLATFORM_NAME` *
+| `{browser_setting}`, `{browser_platform}`
+| `setPlatformName(String)`
 
-Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`.
+|===
 
-.Set capabilities to a DesktopWebDriverRequest object
-[source,java]
-----
-DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-DesiredCapabilities caps = request.getDesiredCapabilities();
-caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-// Start your session with the DesktopWebDriverRequest object
-WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-----
-
-[NOTE]
-=====
-Have a look into <<Browser specific knowledge>> for specific browser options. +
-Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
-=====
-
-= User agent configuration
-
-The user agent configuration is most precise, because it provides explicit browser options based on the Selenium driver.
-
-[source, java]
-----
-import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
-
-WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
-    options.addPreference("intl.accept_languages", "de-DE");
-});
-----
-
-NOTE: Have a look into <<Browser specific knowledge>> for specific browser options.
+{empty}* The capability `CapabilityType.PLATFORM` is deprecated and has to be set manually.

@@ -209,13 +209,13 @@ When you create a WebDriver in a **setup method** annotated with `@Before...` or
 @BeforeMethod
 public void setupWebDriver() {
     // This WebDriver will not be closed, because its a setup method
-    WebDriver driver = WebDriverManager.getWebDriver();
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 }
 
 @Test
 public void test1() {
     // You get the already opened session
-    WebDriver driver = WebDriverManager.getWebDriver();
+    WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 }
 ----
 

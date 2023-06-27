@@ -37,18 +37,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
@@ -61,8 +49,20 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * @todo Rename to AbstractWebDriverCore
@@ -128,12 +128,13 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     /**
      * Tries to find elements from a given {@link WebDriver}.
+     *
      * @throws ElementNotFoundException with the internal selenium exception cause.
      */
     private List<WebElement> findElementsFromWebDriver(WebDriver webDriver, By by) {
         // Prevent finding EventFiringWebDriver$EventFiringWebElement
         if (webDriver instanceof EventFiringWebDriver) {
-            webDriver = ((EventFiringWebDriver)webDriver).getWrappedDriver();
+            webDriver = ((EventFiringWebDriver) webDriver).getWrappedDriver();
         }
         try {
             return webDriver.findElements(by);
@@ -145,6 +146,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     /**
      * Tries to find sub elements from a given {@link WebElement}.
+     *
      * @throws ElementNotFoundException with the internal selenium exception cause.
      */
     private List<WebElement> findElementsFromWebElement(WebElement webElement, By by) {
@@ -238,7 +240,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                     } catch (Exception e) {
                         log().error("Could not detect shadow root for " + guiElementData.toString() + ": " + e.getMessage());
                     }
-                } else if (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe")) {
+                } else if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
                     guiElementData.setIsFrame(true);
                 }
 
@@ -258,7 +260,12 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 }
 
             } else {
-                throwNotFoundException(new AssertionError(assertion.formatExpectGreaterEqualThan(assertion.toBigDecimal(0), assertion.toBigDecimal(1), formatLocateSubject(locate, numElementsBeforeFilter))));
+                throwNotFoundException(
+                        new AssertionError(assertion.formatExpectGreaterEqualThan(
+                                assertion.toBigDecimal(0),
+                                assertion.toBigDecimal(1),
+                                formatLocateSubject(locate, numElementsBeforeFilter)))
+                );
             }
         });
 //        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
@@ -287,7 +294,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
             final long limit = Timings.LARGE_LIMIT;
             if (ms >= limit) {
-                log().warn(String.format("find() #%d of %s took %.2fs of %.0fs", findCounter, this, ms/1000f, limit/1000f));
+                log().warn(String.format("find() #%d of %s took %.2fs of %.0fs", findCounter, this, ms / 1000f, limit / 1000f));
             }
         }
     }
@@ -373,7 +380,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 }
             } else {
                 log().warn("Cannot perform value check after type() because " + this.toString() +
-                    " doesn't have a value property. Consider using sendKeys() instead.");
+                        " doesn't have a value property. Consider using sendKeys() instead.");
             }
         });
     }
@@ -461,8 +468,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         this.findWebElement(webElement -> {
             if (!webElement.isDisplayed()) {
-            return;
-        }
+                return;
+            }
             Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             // getRect doesn't work
             Point elementLocation = webElement.getLocation();
@@ -501,7 +508,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         }
         return selectionStatusChanged;
     }
-
 
     @Override
     public Point getLocation() {

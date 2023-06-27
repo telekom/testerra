@@ -26,6 +26,7 @@ import {StatisticsGenerator} from "../../services/statistics-generator";
 import {ClassStatistics} from "../../services/statistic-models";
 import {ApexOptions} from "apexcharts";
 import {bindingMode} from "aurelia-binding";
+import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
 import ResultStatusType = data.ResultStatusType;
 
 export interface IClassBarClickedDetails {
@@ -50,11 +51,13 @@ export class TestClassesCard {
     @bindable classStatistics: ClassStatistics[];
     private _apexBarOptions: ApexOptions = undefined;
     private _filteredStatuses: number[];
+    private _fullClassNames: string[] = [];
 
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _element: Element
+        private _element: Element,
+        private _classNameValueConverter: ClassNameValueConverter
     ) {
     }
 
@@ -71,6 +74,7 @@ export class TestClassesCard {
     private _prepareHorizontalBarChart(classStatistics: ClassStatistics[]): void {
         const data: Map<ResultStatusType, Array<number>> = new Map();
         const yLabels: string[] = [];
+        this._fullClassNames = [];
 
         const series = [];
         this._filteredStatuses = this._statusConverter.relevantStatuses.filter(status => (!this.filter?.status || status === this.filter.status));
@@ -106,8 +110,10 @@ export class TestClassesCard {
                     }
                 }
                 const className = classStats.classIdentifier;
-                //Push Class Names in array for y-axis labels
-                yLabels.push(className);
+                // Push simple class names in array for y-axis labels
+                yLabels.push(this._classNameValueConverter.toView(className, ClassName.simpleName));
+                // Push full class names incl. package for click event
+                this._fullClassNames.push(className);
             });
 
 
@@ -193,7 +199,8 @@ export class TestClassesCard {
         event?.stopPropagation();
 
         const filter: IFilter = {
-            class: this._apexBarOptions.xaxis.categories[config.dataPointIndex],
+            // class: this._apexBarOptions.xaxis.categories[config.dataPointIndex],
+            class: this._fullClassNames[config.dataPointIndex],
             status: this._filteredStatuses[config.seriesIndex]
         }
 

@@ -73,3 +73,10 @@ public class TestClass extends TesterraTest implements PageFactoryProvider {
     }
 }
 ----
+
+[NOTE]
+====
+The method `PAGE_FACTORY.createPage()` uses the default WebDriver session via `WEB_DRIVER_MANAGER.getWebDriver()` if no driver object is given.
+
+This could mean that the usage of the `PAGE_FACTORY` creates a new browser session automatically (like in the given demo test case).
+====

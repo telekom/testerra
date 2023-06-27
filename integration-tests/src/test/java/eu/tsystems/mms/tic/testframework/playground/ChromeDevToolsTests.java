@@ -245,7 +245,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         List<LogEntry> logEntries = new ArrayList<>();
         Consumer<LogEntry> addedLog = logEntries::add;
 
-        // Consumer is running in another thread... Asserts do not have impact to main thread
+        // Consumer is running in another thread... Asserts does not have impact to main thread
         devTools.addListener(Log.entryAdded(), addedLog);
         webDriver.get("http://the-internet.herokuapp.com/broken_images");
 

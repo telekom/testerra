@@ -1,9 +1,11 @@
 function ttHighlight(element, color, timeout) {
     var origOutline = element.style.outline;
     ttAddStyle(element, "outline: 5px solid " + color + " !important");
-    window.setTimeout(function() {
-        element.style.outline = origOutline;
-    }, timeout);
+    if (timeout > 0) {
+        window.setTimeout(function () {
+            element.style.outline = origOutline;
+        }, timeout);
+    }
 }
 
 /**

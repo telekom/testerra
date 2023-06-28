@@ -34,6 +34,7 @@ import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 import MethodContext = data.MethodContext;
 import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+import LabelManager from "echarts/types/src/label/LabelManager";
 
 
 
@@ -214,13 +215,29 @@ export class Threads3 extends AbstractViewModel {
         this._options = {
             tooltip: {
                 formatter: function (params) {
+                    // Calculations for test duration
+                    const fullMinutes = Math.floor(params.value[4]/(60000));
+                    const fullSeconds = Math.floor(params.value[4]/1000);
+                    const remainingMS = (params.value[4]%1000);
+                    let duration;
+                    if (fullMinutes == 0) {
+                        if (fullSeconds == 0) {
+                            duration = remainingMS + "ms";
+                        } else {
+                            duration = fullSeconds + "s " + remainingMS + "ms";
+                        }
+                    } else {
+                        const remainingSeconds = Math.floor(fullSeconds%60);
+                        duration = fullMinutes + "min " + remainingSeconds + "s " + remainingMS + "ms";
+                    }
+
                     // console.log("params", params);
                     return params.marker + params.name
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
-                        // TODO use duration value converter
+                        // TODO use duration value converter: -> IntlDurationFormatValueConverter broken?
                         // + '<br>Duration: ' + durationFormatter.toView(params.value[4])
-                        + '<br>Duration: ' + params.value[4] + ' ms'
+                        + '<br>Duration: ' + duration
                         + '<br>Run index: ' + params.value[5];
                 }
             },
@@ -229,7 +246,7 @@ export class Threads3 extends AbstractViewModel {
                     type: 'slider',
                     filterMode: 'weakFilter',
                     showDataShadow: false,
-                    // top: sliderFromTop,
+                    top: sliderFromTop,
                     labelFormatter: ''
                 },
                 {
@@ -310,7 +327,7 @@ export class Threads3 extends AbstractViewModel {
                         // textBorderWidth: 0
                     },
                     labelLayout: {
-                        hideOverlap: true // only hides labels, that would overlap with others
+                        // hideOverlap: true // only hides labels, that would overlap with others
                     }
                 }
             ]

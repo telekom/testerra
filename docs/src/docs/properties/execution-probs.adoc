@@ -4,7 +4,7 @@ include::property-attributes.adoc[]
 |===
 | Property | default | Description
 | {demomode} | false | Visually marks every UiElement that is being processed by click, type or assert. This may break layout checks.
-| {demomode_timeout} | 2000 | Timeout in ms for visually marks of UiElements.
+| {demomode_timeout} | 2000 | Timeout in ms for visual marks of UiElements.
 | {dryrun} | false | All testmethods are executed with ignoring all steps. Also all setup methods (before, after) are ignored. +
 This is useful to check your TestNG suite without executing real testcode.
 | {list_tests} | false | Lists all test methods in the current context without executing them.

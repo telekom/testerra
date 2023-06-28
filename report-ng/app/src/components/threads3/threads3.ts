@@ -34,7 +34,8 @@ import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 import MethodContext = data.MethodContext;
 import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
-import LabelManager from "echarts/types/src/label/LabelManager";
+import IContextValues = data.IContextValues;
+import IMethodContext = data.IMethodContext;
 
 
 
@@ -43,6 +44,7 @@ export class Threads3 extends AbstractViewModel {
 
     private _filter: IFilter;
     private _loading = true;
+    private _searchRegexp: RegExp;
 
     private _options: EChartsOption;
     @observable()
@@ -61,6 +63,7 @@ export class Threads3 extends AbstractViewModel {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _statistics: StatisticsGenerator,
         private _router: Router
     ) {
         super();
@@ -88,6 +91,26 @@ export class Threads3 extends AbstractViewModel {
     private _chartChanged() {
         this._chart.on('click', event => this._handleClickEvent(event));
     }
+
+    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
+        return this._statistics.getExecutionStatistics().then(executionStatistics => {
+            let methodContexts:IMethodContext[];
+            if (methodId) {
+                methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
+                this._searchRegexp = null;
+                delete this.queryParams.methodName;
+                // this._focusOn(methodId);
+                this.updateUrl({methodId: methodId});
+            } else if (filter?.length > 0) {
+                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
+                delete this.queryParams.methodId;
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
+            } else {
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
+            }
+            return methodContexts.map(methodContext => methodContext.contextValues);
+        });
+    };
 
     // TODO: Zoom into method with name 'x'
     zoom() {

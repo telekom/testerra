@@ -33,7 +33,6 @@
                             <button mdc-button click.delegate="resetZoom()" class="m1">Reset zoom</button>
                         </mdc-card-action-buttons>
                         <mdc-card-action-textfield>
-                            <!-- TODO: Add search functionality -->
                             <mdc-text-field label="Method"
                                             outlined
                                             ref="_methodNameInput"
@@ -42,6 +41,16 @@
                                             input.delegate="selectionChanged()"
                             ></mdc-text-field>
                             <mdc-text-field-helper-line></mdc-text-field-helper-line>
+                            <mdc-lookup options.bind="_getLookupOptions"
+                                        display-field="name"
+                                        value-field="id"
+                                        value.bind="queryParams.methodId"
+                                        input.bind="_methodNameInput"
+                                        preload-options
+                            ><template replace-part="option">
+                                <span innerhtml="${option.name|highlightText:_searchRegexp}"></span>
+                            </template>
+                            </mdc-lookup>
                         </mdc-card-action-textfield>
                     </mdc-card-actions>
 <!--                    <div>-->

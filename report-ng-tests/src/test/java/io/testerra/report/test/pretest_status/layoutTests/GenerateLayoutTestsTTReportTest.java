@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 public class GenerateLayoutTestsTTReportTest extends AbstractTestSitesTest {
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void layoutTest01_layoutTestFailing() {
         TestStep.begin("get web driver");
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
@@ -23,7 +23,7 @@ public class GenerateLayoutTestsTTReportTest extends AbstractTestSitesTest {
                 .screenshot().pixelDistance("inputHtml_chromeHeadless").isLowerThan(screenshotPixelDistance);
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void layoutTest02_layoutTestPassing(){
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
@@ -33,7 +33,7 @@ public class GenerateLayoutTestsTTReportTest extends AbstractTestSitesTest {
                 .screenshot().pixelDistance("inputHtml_chromeHeadless").isLowerThan(screenshotPixelDistance);
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void layoutTest03_layoutTestPassingWithMinor(){
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);

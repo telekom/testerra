@@ -48,7 +48,6 @@ export class DependencyNetwork {
         }
 
         this._loadListener = (ev:Event) => {
-            // console.log("window load");
             this._resizeListener(ev);
             this._focus();
         }
@@ -66,7 +65,6 @@ export class DependencyNetwork {
     // }
 
     attached() {
-        // console.log("attached");
         this._createGraph();
 
         window.addEventListener("resize", this._resizeListener);
@@ -127,6 +125,7 @@ export class DependencyNetwork {
             return node;
         }
 
+        // Node of current method details
         const main = addNode(this._methodDetails);
         //main.mass = 10;
         main.value = 3;
@@ -195,6 +194,9 @@ export class DependencyNetwork {
                     })
                 }
             });
+
+        // console.log("Nodes", nodes);
+        // console.log("Edges", edges);
 
         // create a network
         const data: Data = {

@@ -107,7 +107,7 @@ public class ReportLogsPageTest extends AbstractReportTest {
      */
     @Test(enabled = false, description = "Issue in log view with Filter=INFO and Search=Failed -> View is shaking...")
     public void testT04_filterForMethodContentWithLogLevelBasic() {
-        final String methodeName = "testAssertCollector";
+        final String methodeName = "test_AssertCollector";
         final String methodeClass = "GeneratePassedStatusInTesterraReportTest";
         final Status methodStatus = Status.FAILED;
 

@@ -102,7 +102,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
 
     private boolean skippedTestFailsInBeforeMethod() {
         //check whether code contains '@BeforeMethod()'
-        UiElement beforeMethodCode = testOriginCard.find(By.xpath("//div[contains(@class,'line')]//span[contains(text(),'@BeforeMethod()')]"));
+        UiElement beforeMethodCode = testOriginCard.find(By.xpath("//div[contains(@class,'line')]//span[contains(text(),'@BeforeMethod(')]"));
         return beforeMethodCode.waitFor().displayed(true);
     }
 

@@ -7,7 +7,6 @@ Generate Testerra Report with several status
 gradle test -P pretest=true
 ```
 
-
 ## Run additional pretest (separate test set)
 Generate Testerra Report with additional status
 

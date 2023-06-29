@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
@@ -203,7 +202,6 @@ public class ReportingAllStatesTests extends TesterraTest {
     }
 
     //
-    @InfoMethod
     @Test
     public void testSkippedNoStatus() throws Exception {
 

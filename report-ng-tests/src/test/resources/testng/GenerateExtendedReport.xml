@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Report - Generate Additional Test Status for Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
+
+    <test name="Parallel" parallel="methods">
+        <groups>
+            <run>
+                <include name="extended"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="io.testerra.report.test.pretest_status.pageTests"/>
+            <package name="io.testerra.report.test.pretest_status.layoutTests"/>
+        </packages>
+        <classes>
+            <class name="io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest"/>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest"/>
+        </classes>
+    </test>
+
+    <test name="Parallel2" parallel="methods">
+        <packages>
+            <package name="io.testerra.report.test.pretest_status.classContext.*"/>
+        </packages>
+    </test>
+
+    <test name="Sequential">
+        <groups>
+            <run>
+                <include name="extended"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest">
+                <methods>
+                    <exclude name="test_Failed_WithScreenShot"/>
+                    <exclude name="test_GenerateScreenshotManually"/>
+                </methods>
+            </class>
+        </classes>
+
+    </test>
+
+</suite>

@@ -24,27 +24,28 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.common.IProperties;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Stream;
 
 /**
  * Testng Retry Analyzer.
@@ -53,28 +54,47 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
+    public enum Properties implements IProperties {
+        //Failed tests maximum number of retries.
+        FAILED_TESTS_MAX_RETRIES("tt.failed.tests.max.retries", 1),
+
+        // Failed tests condition: Throwable Class(~es, devided by ','.
+        FAILED_TESTS_IF_THROWABLE_CLASSES("tt.failed.tests.if.throwable.classes", ""),
+
+        // Failed tests condition. Throwable Message(~s, devided by ',').
+        FAILED_TESTS_IF_THROWABLE_MESSAGES("tt.failed.tests.if.throwable.messages", "");
+
+        private final String property;
+        private final Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public Object getDefault() {
+            return defaultValue;
+        }
+
+        public String toString() {
+            return property;
+        }
+    }
+
     private static final Queue<AdditionalRetryAnalyzer> ADDITIONAL_RETRY_ANALYZERS = new ConcurrentLinkedQueue<>();
 
-    /**
-     * Classes list.
-     */
     private static final List<Class> CLASSES_LIST = new ArrayList<>();
 
-    /**
-     * Messages list.
-     */
     private static final List<String> MESSAGES_LIST = new ArrayList<>();
 
     private static final Queue<MethodContext> RETRIED_METHODS = new ConcurrentLinkedQueue<>();
 
-    /**
-     * The retry counter.
-     */
     private static final Map<String, Integer> retryCounters = new ConcurrentHashMap<>();
 
     static {
-        final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
-        if (classes != null) {
+        final String classes = Properties.FAILED_TESTS_IF_THROWABLE_CLASSES.asString();
+        if (StringUtils.isNotBlank(classes)) {
             String[] split = classes.split(",");
             for (String clazz : split) {
                 try {
@@ -86,8 +106,8 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             }
         }
 
-        final String messages = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_MESSAGES);
-        if (messages != null) {
+        final String messages = Properties.FAILED_TESTS_IF_THROWABLE_MESSAGES.asString();
+        if (StringUtils.isNotBlank(messages)) {
             String[] split = messages.split(",");
             for (String message : split) {
                 MESSAGES_LIST.add(message.trim());
@@ -103,7 +123,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
          * Announce the test status change
          */
         if (methodContext.isStatusOneOf(Status.RETRIED, Status.RECOVERED, Status.FAILED)) {
-            TesterraListener.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+            Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
         return retry;
     }
@@ -124,7 +144,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
             annotatedRetries = optionalRetry.get().maxRetries();
         }
 
-        int defaultRetries = PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
+        int defaultRetries = Properties.FAILED_TESTS_MAX_RETRIES.asLong().intValue();
         int maxRetries = Math.max(defaultRetries, annotatedRetries);
 
         final String retryMessageString = "(" + (retryCounter + 1) + "/" + maxRetries + ")";
@@ -218,11 +238,16 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
         do {
 
             for (AdditionalRetryAnalyzer additionalRetryAnalyzer : ADDITIONAL_RETRY_ANALYZERS) {
-                Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable);
-                if (optionalRetryCause.isPresent()) {
-                    retryCause = optionalRetryCause.get();
-                    log().info(String.format("Found retry cause: \"%s\"", retryCause.getMessage()));
-                    break;
+                try {
+                    Optional<Throwable> optionalRetryCause = additionalRetryAnalyzer.analyzeThrowable(throwable);
+                    if (optionalRetryCause.isPresent()) {
+                        retryCause = optionalRetryCause.get();
+                        log().info(String.format("Found retry cause: \"%s\"", retryCause.getMessage()));
+                        break;
+                    }
+                } catch (Exception e) {
+                    log().warn("Exception while executing {}", additionalRetryAnalyzer.getClass(), e);
+
                 }
             }
 
@@ -283,6 +308,7 @@ public class RetryAnalyzer implements IRetryAnalyzer, Loggable {
 
     /**
      * Tells the RetryAnalyzer that a method has been passed
+     *
      * @param methodContext
      */
     public static void methodHasBeenPassed(MethodContext methodContext) {

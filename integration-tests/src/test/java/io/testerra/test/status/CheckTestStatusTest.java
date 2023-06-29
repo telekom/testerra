@@ -97,14 +97,14 @@ public class CheckTestStatusTest extends TesterraTest {
     @DataProvider
     public static Object[][] provideFinalTestResult() {
         return new Object[][]{
-                {"*** Stats: SuiteContexts:  2", "SuiteContext"},
-                {"*** Stats: TestContexts:   2", "TestContext"},
-                {"*** Stats: ClassContexts:  5", "ClassContext"},
-                {"*** Stats: MethodContexts: 49", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 46 (36 relevant)", "Test methods"},
+                {"*** Stats: SuiteContexts:  3", "SuiteContext"},
+                {"*** Stats: TestContexts:   3", "TestContext"},
+                {"*** Stats: ClassContexts:  6", "ClassContext"},
+                {"*** Stats: MethodContexts: 53", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 47 (37 relevant)", "Test methods"},
                 {"*** Stats: Failed: 9", "Failed tests"},
                 {"*** Stats: Retried: 10", "Retried tests"},
-                {"*** Stats: Expected Failed: 6", "Expected failed tests"},
+                {"*** Stats: Expected Failed: 7", "Expected failed tests"},
                 {"*** Stats: Skipped: 5", "Skipped tests"},
                 {"*** Stats: Passed: 16 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
         };

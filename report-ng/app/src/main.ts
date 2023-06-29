@@ -76,6 +76,7 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('value-converters/html-value-converter'),
             PLATFORM.moduleName('value-converters/log-level-value-converter'),
             PLATFORM.moduleName('value-converters/html-escape-value-converter'),
+            PLATFORM.moduleName('value-converters/class-name-value-converter'),
             /**
              * This is super important to dialogs
              * https://discourse.aurelia.io/t/solved-error-cannot-determine-default-view-strategy-for-object/3589/2

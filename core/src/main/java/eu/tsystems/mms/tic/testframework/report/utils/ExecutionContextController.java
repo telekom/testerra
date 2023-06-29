@@ -159,7 +159,7 @@ public class ExecutionContextController {
     }
 
     /**
-     * Returns the current active session context, set by WebdriverProxy
+     * Returns the current active session context
      */
     public static Optional<SessionContext> getSessionContextForThread() {
         return Optional.ofNullable(CURRENT_SESSION_CONTEXT.get());

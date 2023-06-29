@@ -33,18 +33,15 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.sikuli.api.ScreenLocation;
-import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -54,7 +51,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -91,7 +87,8 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     public static Screenshot takeScreenshot(final WebDriver driver, boolean intoReport) {
-        Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle());
+        String handle = executionUtils.getFailsafe(driver::getWindowHandle).orElse("");
+        Screenshot screenshot = takeScreenshot(driver, handle);
 
         if (intoReport) {
             IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
@@ -124,178 +121,20 @@ public class UITestUtils implements WebDriverManagerProvider {
         /*
         window and focus infos
          */
-        String window = "";
+        String window = "#1/1";
         String windowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElse("");
-        Set<String> windowHandles = webDriver.getWindowHandles();
-        if (windowHandles.size() < 2) {
-            window = "#1/1";
-        } else {
-            String[] handleStrings = windowHandles.toArray(new String[0]);
-            for (int i = 0; i < handleStrings.length; i++) {
-                if (handleStrings[i].equals(windowHandle)) {
-                    window = "#" + (i + 1) + "/" + handleStrings.length;
+        if (StringUtils.isNotBlank(windowHandle)) {
+            Set<String> windowHandles = webDriver.getWindowHandles();
+            if (windowHandles.size() > 2) {
+
+                String[] handleStrings = windowHandles.toArray(new String[0]);
+                for (int i = 0; i < handleStrings.length; i++) {
+                    if (handleStrings[i].equals(windowHandle)) {
+                        window = "#" + (i + 1) + "/" + handleStrings.length;
+                    }
                 }
             }
-        }
-        metaData.put(Screenshot.MetaData.WINDOW, window);
-    }
-
-    private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
-        Screenshot screenshot = new Screenshot();
-        takeScreenshot(eventFiringWebDriver, screenshot);
-
-        String windowHandle = eventFiringWebDriver.getWindowHandle();
-        if (originalWindowHandle != null) {
-            if (windowHandle.equals(originalWindowHandle)) {
-                screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "true");
-            } else {
-                screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "false");
-            }
-        }
-        return screenshot;
-    }
-
-    public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
-        WebDriver driver;
-        if (eventFiringWebDriver instanceof EventFiringWebDriver) {
-            driver = ((EventFiringWebDriver) eventFiringWebDriver).getWrappedDriver();
-        } else {
-            // just to be able to execute
-            driver = eventFiringWebDriver;
-        }
-
-        /*
-         * The ChromeDriver doesn't support Screenshots of a large Site currently (Selenium 2.44), only the viewport ist
-         * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
-         * If this is eventually supported by WebDriver, this special branch can be removed.
-         */
-        if (Browsers.ie.equalsIgnoreCase(WEB_DRIVER_MANAGER.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
-            Rectangle viewport = new JSUtils().getViewport(driver);
-
-            if (viewport.height > IE_SCREENSHOT_LIMIT) {
-                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + IE_SCREENSHOT_LIMIT);
-                return;
-            }
-        }
-
-        // take screenshot
-        makeSimpleScreenshot(driver, screenShotTargetFile);
-    }
-
-    private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        try {
-            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.moveFile(file, screenShotTargetFile);
-        } catch (Exception e) {
-            LOGGER.error("Unable to take screenshot to file", e);
-        }
-    }
-
-    /**
-     * Utility to store a Screenshot at the specified location.
-     *
-     * @param image BufferedImage
-     * @param targetFile filePath with fileName
-     */
-    private static void saveBufferedImage(BufferedImage image, File targetFile) {
-        try {
-            ImageIO.write(image, "png", targetFile);
-        } catch (final FileNotFoundException ex) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(
-                    ("Screenshot file could not be written to file system: " + ex.toString()));
-        } catch (final IOException ioe) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(ioe.toString());
-        }
-    }
-
-    /**
-     * Save page source to file.
-     *
-     * @param pageSource page source.
-     * @param sourceTargetFile target file.
-     */
-    private static void savePageSource(final String pageSource, final File sourceTargetFile) {
-        try {
-            final FileOutputStream fos = new FileOutputStream(sourceTargetFile);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos, "UTF-8");
-            outputStreamWriter.write(pageSource);
-            outputStreamWriter.close();
-        } catch (final FileNotFoundException ex) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(
-                    ("PageSource file could not be written to file system: " + ex.toString()));
-        } catch (final IOException ioe) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(ioe.toString());
-        }
-    }
-
-    public static void takeScreenshot(ScreenRegion screenRegion) {
-        if (screenRegion != null) {
-            LOGGER.info("Taking screenshot from desktop");
-            final ScreenLocation upperLeftCorner = screenRegion.getUpperLeftCorner();
-            final ScreenLocation lowerRightCorner = screenRegion.getLowerRightCorner();
-            final BufferedImage screenshotImage = screenRegion.getScreen()
-                    .getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
-
-            final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
-            Screenshot screenshot = new Screenshot(filename);
-            Report report = Testerra.getInjector().getInstance(Report.class);
-            saveBufferedImage(screenshotImage, screenshot.getScreenshotFile());
-            report.addScreenshot(screenshot, Report.FileMode.MOVE);
-        } else {
-            LOGGER.error("Could not take native screenshot, screen region is missing");
-        }
-    }
-
-    private static boolean switchToWindow(WebDriver webDriver, String windowHandle) {
-        try {
-            webDriver.switchTo().window(windowHandle);
-            return true;
-        } catch (Exception e) {
-            LOGGER.error("Unable to switch to window " + windowHandle, e);
-            return false;
-        }
-    }
-
-    private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
-        final List<Screenshot> screenshots = new LinkedList<>();
-        executionUtils.getFailsafe(webDriver::getWindowHandles).ifPresent(windowHandles -> {
-            String originalWindowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElseGet(() -> windowHandles.stream().findFirst().orElse(""));
-
-            if (windowHandles.size() > 1) {
-                for (String windowHandle : windowHandles) {
-                    takeScreenshotToList(screenshots, webDriver, windowHandle, originalWindowHandle);
-                }
-                // Switch back to original window handle
-                switchToWindow(webDriver, originalWindowHandle);
-            } else {
-                takeScreenshotToList(screenshots, webDriver, originalWindowHandle, originalWindowHandle);
-            }
-        });
-        return screenshots;
-    }
-
-    private static void takeScreenshotToList(List<Screenshot> screenshots, WebDriver webDriver, String windowHandle, String originalWindowHandle) {
-        if (switchToWindow(webDriver, windowHandle)) {
-            try {
-                Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
-                screenshots.add(screenshot);
-            } catch (Throwable t) {
-                LOGGER.error("Unable to take screenshot", t);
-            }
-        }
-    }
-
-    /**
-     * initialize properties for a Perf test with default values if PERF_TEST is true.
-     * all properties can be overwritten with the values in test.properties
-     */
-    public static void initializePerfTest() {
-
-        if (Testerra.Properties.PERF_TEST.asBool()) {
-            Properties fileProperties = PropertyManager.getFileProperties();
-
-            String value = fileProperties.getProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
-            fileProperties.setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
+            metaData.put(Screenshot.MetaData.WINDOW, window);
         }
     }
 
@@ -352,4 +191,138 @@ public class UITestUtils implements WebDriverManagerProvider {
         }
         return result;
     }
+
+    private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
+        Screenshot screenshot = new Screenshot();
+        takeScreenshot(eventFiringWebDriver, screenshot);
+
+        if (StringUtils.isNotBlank(originalWindowHandle)) {
+            String windowHandle = eventFiringWebDriver.getWindowHandle();
+            if (windowHandle.equals(originalWindowHandle)) {
+                screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "true");
+            } else {
+                screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "false");
+            }
+        }
+        return screenshot;
+    }
+
+    public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
+        WebDriver driver;
+        if (eventFiringWebDriver instanceof EventFiringWebDriver) {
+            driver = ((EventFiringWebDriver) eventFiringWebDriver).getWrappedDriver();
+        } else {
+            // just to be able to execute
+            driver = eventFiringWebDriver;
+        }
+
+        /*
+         * The ChromeDriver doesn't support Screenshots of a large Site currently (Selenium 2.44), only the viewport ist
+         * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
+         * If this is eventually supported by WebDriver, this special branch can be removed.
+         */
+        if (Browsers.ie.equalsIgnoreCase(WEB_DRIVER_MANAGER.getRequestedBrowser(eventFiringWebDriver).orElse(null))) {
+            Rectangle viewport = new JSUtils().getViewport(driver);
+
+            if (viewport.height > IE_SCREENSHOT_LIMIT) {
+                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + IE_SCREENSHOT_LIMIT);
+                return;
+            }
+        }
+
+        // take screenshot
+        makeSimpleScreenshot(driver, screenShotTargetFile);
+    }
+
+    private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
+        try {
+            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.moveFile(file, screenShotTargetFile);
+        } catch (Exception e) {
+            LOGGER.error("Unable to take screenshot to file", e);
+        }
+    }
+
+    /**
+     * Save page source to file.
+     *
+     * @param pageSource page source.
+     * @param sourceTargetFile target file.
+     */
+    private static void savePageSource(final String pageSource, final File sourceTargetFile) {
+        try {
+            final FileOutputStream fos = new FileOutputStream(sourceTargetFile);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos, "UTF-8");
+            outputStreamWriter.write(pageSource);
+            outputStreamWriter.close();
+        } catch (final FileNotFoundException ex) {
+            LoggerFactory.getLogger(UITestUtils.class).warn(
+                    ("PageSource file could not be written to file system: " + ex.toString()));
+        } catch (final IOException ioe) {
+            LoggerFactory.getLogger(UITestUtils.class).warn(ioe.toString());
+        }
+    }
+
+    private static boolean switchToWindow(WebDriver webDriver, String windowHandle) {
+        try {
+            webDriver.switchTo().window(windowHandle);
+            return true;
+        } catch (Exception e) {
+            LOGGER.error("Unable to switch to window " + windowHandle, e);
+            return false;
+        }
+    }
+
+    private static List<Screenshot> pTakeAllScreenshotsForSession(WebDriver webDriver) {
+        final List<Screenshot> screenshots = new LinkedList<>();
+        executionUtils.getFailsafe(webDriver::getWindowHandles).ifPresentOrElse(windowHandles -> {
+            String originalWindowHandle = executionUtils.getFailsafe(webDriver::getWindowHandle).orElseGet(() -> windowHandles.stream().findFirst().orElse(""));
+
+            if (windowHandles.size() > 1) {
+                for (String windowHandle : windowHandles) {
+                    takeScreenshotToList(screenshots, webDriver, windowHandle, originalWindowHandle);
+                }
+                // Switch back to original window handle
+                switchToWindow(webDriver, originalWindowHandle);
+            } else {
+                takeScreenshotToList(screenshots, webDriver, originalWindowHandle, originalWindowHandle);
+            }
+        }, () -> {
+            try {
+                // Some drivers like AppiumDriver for native apps has no window handles
+                Screenshot screenshot = takeScreenshot(webDriver, "");
+                screenshots.add(screenshot);
+            } catch (Throwable t) {
+                LOGGER.error("Unable to take screenshot", t);
+            }
+        });
+        return screenshots;
+    }
+
+    private static void takeScreenshotToList(List<Screenshot> screenshots, WebDriver webDriver, String windowHandle, String originalWindowHandle) {
+        if (switchToWindow(webDriver, windowHandle)) {
+            try {
+                Screenshot screenshot = takeScreenshot(webDriver, originalWindowHandle);
+                screenshots.add(screenshot);
+            } catch (Throwable t) {
+                LOGGER.error("Unable to take screenshot", t);
+            }
+        }
+    }
+
+    /**
+     * initialize properties for a Perf test with default values if PERF_TEST is true.
+     * all properties can be overwritten with the values in test.properties
+     */
+    public static void initializePerfTest() {
+
+        if (Testerra.Properties.PERF_TEST.asBool()) {
+            Properties fileProperties = PropertyManager.getFileProperties();
+
+            String value = fileProperties.getProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
+            fileProperties.setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
+        }
+    }
+
+
 }

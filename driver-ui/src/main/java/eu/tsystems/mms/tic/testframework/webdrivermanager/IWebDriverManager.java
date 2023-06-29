@@ -232,7 +232,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
     }
 
     /**
-     * Unwraps the raw {@link WebDriver} from {@link EventFiringWebDriver} and {@link WebDriverProxy}
+     * Unwraps the raw {@link WebDriver} from {@link EventFiringWebDriver}
      * and tries to cast it to the target class implementation.
      */
     default <WEBDRIVER> Optional<WEBDRIVER> unwrapWebDriver(WebDriver webDriver, Class<WEBDRIVER> targetWebDriverClass) {

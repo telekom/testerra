@@ -72,7 +72,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Propert
         return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
     }
 
-    public synchronized <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass, WebDriver driver) {
+    public <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass, WebDriver driver) {
         return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
     }
 

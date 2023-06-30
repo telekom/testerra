@@ -226,7 +226,7 @@ public class TestDataProvider {
                 {new TestData("AssertionError: minor fail", new Status[]{Status.PASSED})},
                 {new TestData("SkipException: Test Skipped.", new Status[]{Status.SKIPPED})},
                 {new TestData("RuntimeException: Error in DataProvider.", new Status[]{Status.SKIPPED})},
-                {new TestData(/*[...]*/"depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
+                {new TestData("Throwable: depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
                 {new TestData("AssertionError: test_FailedToPassedHistoryWithRetry", new Status[]{Status.RETRIED})},
                 {new TestData("AssertionError: No Oil.", new Status[]{Status.FAILED_EXPECTED})}
         };
@@ -241,14 +241,14 @@ public class TestDataProvider {
         };
     }
 
-    @DataProvider(parallel = false)
+    @DataProvider(parallel = true)
     public static Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
-//                {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-//                {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-//                {new TestData(String.format("PageFactoryException: Could not create instance of %s",NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-//                {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})}
+                {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData(String.format("PageFactoryException: Could not create instance of %s",NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})}
         };
     }
 

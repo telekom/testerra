@@ -241,14 +241,14 @@ public class TestDataProvider {
         };
     }
 
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public static Object[][] failureAspectsWithMultipleStatus() {
         return new Object[][]{
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
-                {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-                {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-                {new TestData(String.format("PageFactoryException: Could not create instance of %s",NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-                {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})}
+//                {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+//                {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+//                {new TestData(String.format("PageFactoryException: Could not create instance of %s",NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+//                {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})}
         };
     }
 

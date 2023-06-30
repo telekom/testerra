@@ -23,6 +23,7 @@
 package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.report.Report;
@@ -39,7 +40,7 @@ import java.net.BindException;
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractReportTest extends AbstractTest {
+public abstract class AbstractReportTest extends AbstractTest implements PropertyManagerProvider {
 
     private final static File serverRootDir = FileUtils.getResourceFile("reports");
     private final static Server server = new Server(serverRootDir);
@@ -57,6 +58,10 @@ public abstract class AbstractReportTest extends AbstractTest {
         return visitPageOnGeneralReport(ReportDashBoardPage.class);
     }
 
+    public ReportDashBoardPage gotoDashBoardOnGeneralReport(WebDriver driver) {
+        return visitPageOnGeneralReport(ReportDashBoardPage.class, driver);
+    }
+
     public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         return visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
@@ -64,7 +69,11 @@ public abstract class AbstractReportTest extends AbstractTest {
 
     public synchronized <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass) {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        return visitReportPage(reportPageClass, driver, new DefaultPropertyManager().getProperty("file.path.content.root"));
+        return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
+    }
+
+    public synchronized <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass, WebDriver driver) {
+        return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
     }
 
     /**
@@ -74,7 +83,7 @@ public abstract class AbstractReportTest extends AbstractTest {
      * @param driver {@link WebDriver} Current Instance
      * @param directory {@link TestPage} page to open
      */
-    public synchronized <T extends AbstractReportPage> T visitReportPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
+    public <T extends AbstractReportPage> T visitReportPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
         Assert.assertTrue(serverRootDir.exists(), String.format("Server root directory '%s' doesn't exists", serverRootDir));
 
         File reportDir = new File(serverRootDir, directory);

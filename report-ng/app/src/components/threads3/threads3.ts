@@ -117,12 +117,13 @@ export class Threads3 extends AbstractViewModel {
         });
         const zoomStart = dataToZoomInOn.value[1];
         const zoomEnd = dataToZoomInOn.value[2];
+        const spacing = (zoomEnd - zoomStart) * 0.05;
 
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
-            startValue: zoomStart,
-            endValue: zoomEnd
+            startValue: zoomStart - spacing,
+            endValue: zoomEnd + spacing
         });
     }
 

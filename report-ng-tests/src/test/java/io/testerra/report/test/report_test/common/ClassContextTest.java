@@ -59,7 +59,7 @@ public class ClassContextTest extends AbstractReportTest {
 //        List<String> methods = List.of("testTestMethodInChildClasses", "testTestMethodInParentClasses");
 
         TestStep.begin("Navigate to tests page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         reportTestsPage = reportTestsPage.selectClassName(testContainer.classContextName);

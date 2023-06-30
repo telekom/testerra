@@ -44,7 +44,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT01_showCorrectTestClassesWhenClickingOnPieChart(Status status) {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertPieChartContainsTestState(status);
@@ -57,7 +57,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT02_showCorrectTestClassesWhenClickingOnNumbersChart(Status status) {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
@@ -70,7 +70,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForNavigationBetweenDifferentPages")
     public void testT03_navigationTowardsDifferentPagesDashBoardPage(ReportSidebarPageType type, Class<AbstractReportPage> pageClass) {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to '" + type.name() + "' page, check whether page was reached and navigate back to 'Dashboard' page.");
         reportDashBoardPage.gotoToReportPage(type, pageClass);
@@ -80,7 +80,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test
     public void testT04_reportDurationDisplayed() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check whether the start is displayed");
         reportDashBoardPage.assertStartTimeIsDisplayed();
@@ -97,7 +97,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT05_barChartLinksToFilteredTestsPage(Status status) {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
@@ -113,7 +113,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         final double threshold = 0.01;  //1% (random chosen value, but some threshold is needed when asserting with double)
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check barchart is shown and iterate through all bars to check correct length");
         reportDashBoardPage.assertBarChartIsDisplayed();
@@ -123,7 +123,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test(dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
     public void testT07_reportPercentages(int amount, Status status) {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertPieChartContainsTestState(status);
@@ -135,7 +135,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test(dataProvider = "dataProviderForDashBoardTestStates")
     public void testT08_barChartFilterHovering(Status status) {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check whether each test status displays the correct test classes.");
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
@@ -150,7 +150,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test(dataProvider = "dataProviderFailureCorridorBounds")
     public void testT09_failureCorridorCorrectness(String failureCorridorType, long bound, int currentValue) {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check displayed and compare failure corridor values to allowed bounds");
         reportDashBoardPage.assertFailureCorridorValue(failureCorridorType, currentValue);
@@ -160,7 +160,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test
     public void testT10_topFailureAspectsMajorLink() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check top failure aspects are displayed");
         reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
@@ -174,7 +174,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test
     public void testT11_topFailureAspectsMinorLink() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check top failure aspects are displayed");
         reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
@@ -189,7 +189,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test
     public void testT12_topFailureAspectsOrderedList() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check top failure aspects are displayed");
         reportDashBoardPage.assertTopFailureAspectsAreDisplayed();

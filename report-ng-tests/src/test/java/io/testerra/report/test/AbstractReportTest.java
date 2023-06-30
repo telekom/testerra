@@ -54,25 +54,31 @@ public abstract class AbstractReportTest extends AbstractTest implements Propert
         }
     }
 
-    public synchronized ReportDashBoardPage gotoDashBoardOnGeneralReport() {
-        return visitPageOnGeneralReport(ReportDashBoardPage.class);
-    }
+//    @Deprecated
+//    public synchronized ReportDashBoardPage gotoDashBoardOnGeneralReport() {
+//        return visitPageOnGeneralReport(ReportDashBoardPage.class);
+//    }
 
     public ReportDashBoardPage gotoDashBoardOnGeneralReport(WebDriver driver) {
         return visitPageOnGeneralReport(ReportDashBoardPage.class, driver);
     }
 
-    public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+//    @Deprecated
+//    public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport() {
+//        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+//        return visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+//    }
+
+    public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport(WebDriver driver) {
         return visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
     }
 
-    public synchronized <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass) {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
-    }
+//    private synchronized <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass) {
+//        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+//        return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
+//    }
 
-    public <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass, WebDriver driver) {
+    private <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass, WebDriver driver) {
         return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
     }
 

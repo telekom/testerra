@@ -99,8 +99,7 @@ export class Threads3 extends AbstractViewModel {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
-                // this._focusOn(methodId);
-                this.updateUrl({methodId: methodId});
+                this.zoom(methodId);
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
@@ -112,21 +111,22 @@ export class Threads3 extends AbstractViewModel {
         });
     };
 
-    // TODO: Zoom into method with name 'x'
-    zoom() {
+    zoom(methodId) {
+        const dataToZoomInOn = this._options.series[0].data.find(function(method) {
+            return method.value[6] == methodId;
+        });
+        const zoomStart = dataToZoomInOn.value[1];
+        const zoomEnd = dataToZoomInOn.value[2];
+
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
-            start: 10,  // Percent from
-            end: 20,     // Percent to
-            // startValue: 10000,
-            // endValue: 20000
+            startValue: zoomStart,
+            endValue: zoomEnd
         });
     }
 
     resetZoom() {
-        // console.log("Data", this._options);
-        // console.log("End", this._options.series[0].data.endValue);
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
@@ -149,6 +149,7 @@ export class Threads3 extends AbstractViewModel {
         this._dateFormatter.setLocale('en-GB');
         this._dateFormatter.setOptions('date', { year: 'numeric', month: 'short', day: 'numeric' });
         this._dateFormatter.setOptions('time', { hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: '2', hour12: false });
+        this._dateFormatter.setOptions('time_min', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
         this._dateFormatter.setOptions('full', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
     }
 
@@ -291,7 +292,7 @@ export class Threads3 extends AbstractViewModel {
                 axisLabel: {
                     interval: 2,
                     formatter: function (val) {
-                        return dateFormatter.toView(Number(val), 'time') + '\n\n' + dateFormatter.toView(Number(val), 'date');
+                        return dateFormatter.toView(Number(val), 'time_min') + '\n\n' + dateFormatter.toView(Number(val), 'date');
                     }
                 }
             },
@@ -337,7 +338,7 @@ export class Threads3 extends AbstractViewModel {
                         );
                     },
                     itemStyle: {
-                        opacity: 0.8
+                        opacity: 0.9
                     },
                     encode: {
                         x: [1, 2],

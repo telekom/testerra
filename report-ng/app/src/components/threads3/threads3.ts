@@ -45,7 +45,6 @@ export class Threads3 extends AbstractViewModel {
     private _filter: IFilter;
     private _loading = true;
     private _searchRegexp: RegExp;
-
     private _options: EChartsOption;
     @observable()
     private _chart: echarts.ECharts;
@@ -55,7 +54,7 @@ export class Threads3 extends AbstractViewModel {
 
     // Some values for presentation
     // TODO Whats the best value?
-    private _gapFromBorderToStart = 1_000;      // To prevent that the beginning of the first test is located ON the y axis.
+    private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y axis.
     private _threadHeight = 80;                 // in pixel
     private _sliderSpacingFromChart = 100;      // in pixel
     private _cardHeight = 400;
@@ -133,8 +132,6 @@ export class Threads3 extends AbstractViewModel {
             id: 'threadZoom',
             start: 0,
             end: 100
-            // startValue:0,
-            // endValue: undefined
         });
     }
 
@@ -200,7 +197,6 @@ export class Threads3 extends AbstractViewModel {
 
                 data.push({
                     name: context.contextValues.name,
-                    // value: [threadName, baseTime, (baseTime += duration), duration],
                     value: [
                         threadName,
                         context.contextValues.startTime,
@@ -218,8 +214,6 @@ export class Threads3 extends AbstractViewModel {
                 });
             });
         });
-
-        // console.log("data", data);
 
         // Some calculations for chard presentation
         const gridHeight = threadCategories.size * this._threadHeight;

@@ -54,29 +54,13 @@ public abstract class AbstractReportTest extends AbstractTest implements Propert
         }
     }
 
-//    @Deprecated
-//    public synchronized ReportDashBoardPage gotoDashBoardOnGeneralReport() {
-//        return visitPageOnGeneralReport(ReportDashBoardPage.class);
-//    }
-
     public ReportDashBoardPage gotoDashBoardOnGeneralReport(WebDriver driver) {
         return visitPageOnGeneralReport(ReportDashBoardPage.class, driver);
     }
 
-//    @Deprecated
-//    public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport() {
-//        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-//        return visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
-//    }
-
     public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport(WebDriver driver) {
         return visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
     }
-
-//    private synchronized <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass) {
-//        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-//        return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));
-//    }
 
     private <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass, WebDriver driver) {
         return visitReportPage(reportPageClass, driver, PROPERTY_MANAGER.getProperty("file.path.content.root"));

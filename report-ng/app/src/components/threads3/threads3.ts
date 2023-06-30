@@ -329,7 +329,10 @@ export class Threads3 extends AbstractViewModel {
                                 type: 'rect',
                                 transition: ['shape'],
                                 shape: rectShape,
-                                style: api.style()
+                                style: api.style({
+                                    // overflow: 'truncate', // doesn't do much
+                                    // text: rectShape && rectShape.width > 0 ? api.value(3) : ''
+                                })
                             }
                         );
                     },
@@ -346,11 +349,11 @@ export class Threads3 extends AbstractViewModel {
                         // TODO label text overflows to other shapes
                         show: true,
                         position: 'insideLeft',
-                        overflow: 'truncate' // doesn't do much
-                        // textBorderWidth: 0
+                        overflow: 'truncate', // doesn't do much
+                        textBorderWidth: 0
                     },
                     labelLayout: {
-                        // hideOverlap: true // only hides labels, that would overlap with others
+                        hideOverlap: true // only hides labels, that would overlap with others
                     }
                 }
             ]

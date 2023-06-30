@@ -48,6 +48,7 @@
 // execution
 :dryrun:                                        tt.dryrun
 :demomode:                                      tt.demomode
+:demomode_timeout:                              tt.demomode.timeout
 :on_state_testfailed_skip_shutdown:             tt.on.state.testfailed.skip.shutdown
 :on_state_testfailed_skip_following_tests:      tt.on.state.testfailed.skip.following.tests
 :failed_tests_if_throwable_classes:             tt.failed.tests.if.throwable.classes

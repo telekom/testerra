@@ -195,7 +195,7 @@ public final class JSUtils {
             WebElement webElement,
             Color color
     ) {
-        int ms = 2000;
+        long timeout = Testerra.Properties.DEMO_MODE_TIMEOUT.asLong();
         try {
             executeScriptWOCatch(
                     driver,
@@ -204,7 +204,7 @@ public final class JSUtils {
                             "ttHighlight(arguments[0], '%s', %d)",
                             readSnippets(Snippet.HIGHLIGHT),
                             toHex(color),
-                            ms
+                            timeout
                     ),
                     webElement
             );

@@ -34,6 +34,7 @@ import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 import MethodContext = data.MethodContext;
 import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+// import {IntlDurationFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-duration-format-value-converter";
 import IContextValues = data.IContextValues;
 import IMethodContext = data.IMethodContext;
 
@@ -46,11 +47,12 @@ export class Threads3 extends AbstractViewModel {
     private _loading = true;
     private _searchRegexp: RegExp;
     private _options: EChartsOption;
+    private _inputValue;
     @observable()
     private _chart: echarts.ECharts;
 
     private _dateFormatter : IntlDateFormatValueConverter;
-    // private _durationFormatter: DurationFormatValueConverter;
+    // private _durationFormatter: IntlDurationFormatValueConverter;
 
     // Some values for presentation
     // TODO Whats the best value?
@@ -89,6 +91,12 @@ export class Threads3 extends AbstractViewModel {
 
     private _chartChanged() {
         this._chart.on('click', event => this._handleClickEvent(event));
+    }
+
+    selectionChanged(){
+        if (this._inputValue.length == 0){
+            this.resetZoom();
+        }
     }
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
@@ -137,7 +145,7 @@ export class Threads3 extends AbstractViewModel {
 
     // private _initDurationFormatter() {
     //     const container = new Container();
-    //     this._durationFormatter = container.get(DurationFormatValueConverter);
+    //     this._durationFormatter = container.get(IntlDurationFormatValueConverter);
     //     this._durationFormatter.setDefaultFormat("m[min] s[s] ms[ms]");
     // }
 
@@ -346,7 +354,7 @@ export class Threads3 extends AbstractViewModel {
                         show: true,
                         position: 'insideLeft',
                         overflow: 'truncate', // doesn't do much
-                        textBorderWidth: 0
+                        textBorderWidth: 1
                     },
                     labelLayout: {
                         hideOverlap: true // only hides labels, that would overlap with others

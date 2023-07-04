@@ -239,7 +239,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     //
 
     @Test
-    public void testT08_LogListener_BrokenImages() throws MalformedURLException {
+    public void testT10_LogListener_BrokenImages() throws MalformedURLException {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
 //        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
@@ -261,7 +261,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     }
 
     @Test
-    public void testT10_LogListener_JsLogs() throws MalformedURLException {
+    public void testT11_LogListener_JsLogs() throws MalformedURLException {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
@@ -278,12 +278,12 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         uiElementFinder.find(By.id("logWithStacktrace")).click();   // --> not working
 
         for (ConsoleEvent event : consoleEvents) {
-            log().info("Console: {} {} - {}", event.getTimestamp(), event.getType(), event.getMessages().toString());
+            log().info("JS_LOGS: {} {} - {}", event.getTimestamp(), event.getType(), event.getMessages().toString());
         }
     }
 
     @Test
-    public void testT10_LogListener_JsExceptions() throws MalformedURLException {
+    public void testT12_LogListener_JsExceptions() throws MalformedURLException {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);

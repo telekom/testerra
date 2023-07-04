@@ -24,21 +24,23 @@ import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.ChromeDevToolsProvider;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.HasAuthentication;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
+import org.openqa.selenium.devtools.events.ConsoleEvent;
 import org.openqa.selenium.devtools.v112.emulation.Emulation;
 import org.openqa.selenium.devtools.v114.log.Log;
 import org.openqa.selenium.devtools.v114.log.model.LogEntry;
 import org.openqa.selenium.devtools.v85.runtime.Runtime;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
@@ -211,30 +213,33 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
     }
 
+//    @Test
+//    public void testT07_LogListener() throws MalformedURLException {
+//        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+//        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+//        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+//        DevTools rawDevTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+//
+//        rawDevTools.send(Runtime.enable());
+//        rawDevTools.send(Log.enable());
+//        rawDevTools.addListener(Log.entryAdded(),
+//                entry -> {
+//                    log().info("{} - {}: {}", entry.getTimestamp(), entry.getLevel().toString().toUpperCase(), entry.getText());
+//                    System.out.println(entry.getText());
+//                });
+//
+//        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+//        uiElementFinder.find(By.id("consoleLog")).click();
+//        uiElementFinder.find(By.id("consoleError")).click();
+//
+//    }
+
+    //
+    // The following tests demonstrate Browser console listener
+    //
+
     @Test
-    public void testT07_LogListener() throws MalformedURLException {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        DevTools rawDevTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
-
-        rawDevTools.send(Runtime.enable());
-        rawDevTools.send(Log.enable());
-        rawDevTools.addListener(Log.entryAdded(),
-                entry -> {
-                    log().info("{} - {}: {}", entry.getTimestamp(), entry.getLevel().toString().toUpperCase(), entry.getText());
-                    System.out.println(entry.getText());
-                });
-
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-        uiElementFinder.find(By.id("consoleLog")).click();
-        uiElementFinder.find(By.id("consoleError")).click();
-
-    }
-
-
-    @Test
-    public void testT08_LogListenerBrokenImages() throws MalformedURLException {
+    public void testT08_LogListener_BrokenImages() throws MalformedURLException {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
 //        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
@@ -248,12 +253,56 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         // Consumer is running in another thread... Asserts does not have impact to main thread
         devTools.addListener(Log.entryAdded(), addedLog);
         webDriver.get("http://the-internet.herokuapp.com/broken_images");
-
+        TimerUtils.sleep(1000);     // Short wait to get delayed logs
         for (LogEntry logEntry : logEntries) {
-            System.out.println(String.format("LOG_ENTRY: %s %s %s - %s (%s)", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getSource(), logEntry.getText(), logEntry.getUrl()));
             log().info("LOG_ENTRY: {} {} {} - {} ({})", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getSource(), logEntry.getText(), logEntry.getUrl());
             ASSERT.assertFalse(logEntry.getText().contains("404"));
         }
     }
+
+    @Test
+    public void testT10_LogListener_JsLogs() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+
+        List<ConsoleEvent> consoleEvents = new ArrayList<>();
+        Consumer<ConsoleEvent> addEntry = consoleEvents::add;
+        devTools.getDomains().events().addConsoleListener(addEntry);
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.id("consoleLog")).click();          // --> working
+        uiElementFinder.find(By.id("consoleError")).click();        // --> working
+        uiElementFinder.find(By.id("jsException")).click();         // --> not working
+        uiElementFinder.find(By.id("logWithStacktrace")).click();   // --> not working
+
+        for (ConsoleEvent event : consoleEvents) {
+            log().info("Console: {} {} - {}", event.getTimestamp(), event.getType(), event.getMessages().toString());
+        }
+    }
+
+    @Test
+    public void testT10_LogListener_JsExceptions() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+
+        List<JavascriptException> jsExceptionsList = new ArrayList<>();
+        Consumer<JavascriptException> addEntry = jsExceptionsList::add;
+        devTools.getDomains().events().addJavascriptExceptionListener(addEntry);
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.id("consoleLog")).click();          // --> not working
+        uiElementFinder.find(By.id("consoleError")).click();        // --> not working
+        uiElementFinder.find(By.id("jsException")).click();         // --> working
+        uiElementFinder.find(By.id("logWithStacktrace")).click();   // --> working
+
+        for (JavascriptException jsException : jsExceptionsList) {
+            log().info("JS_EXCEPTION: {} {}", jsException.getMessage(), jsException.getSystemInformation());
+        }
+    }
+
 
 }

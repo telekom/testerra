@@ -809,6 +809,9 @@ export namespace data {
 
         /** SessionContext nodeUrl */
         nodeUrl?: (string|null);
+
+        /** SessionContext userAgent */
+        userAgent?: (string|null);
     }
 
     /** Represents a SessionContext. */
@@ -846,6 +849,9 @@ export namespace data {
 
         /** SessionContext nodeUrl. */
         public nodeUrl: string;
+
+        /** SessionContext userAgent. */
+        public userAgent: string;
 
         /**
          * Decodes a SessionContext message from the specified reader or buffer.

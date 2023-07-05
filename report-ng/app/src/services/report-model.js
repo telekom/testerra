@@ -1792,6 +1792,7 @@ export const data = $root.data = (() => {
          * @property {string|null} [capabilities] SessionContext capabilities
          * @property {string|null} [serverUrl] SessionContext serverUrl
          * @property {string|null} [nodeUrl] SessionContext nodeUrl
+         * @property {string|null} [userAgent] SessionContext userAgent
          */
 
         /**
@@ -1882,6 +1883,14 @@ export const data = $root.data = (() => {
         SessionContext.prototype.nodeUrl = "";
 
         /**
+         * SessionContext userAgent.
+         * @member {string} userAgent
+         * @memberof data.SessionContext
+         * @instance
+         */
+        SessionContext.prototype.userAgent = "";
+
+        /**
          * Decodes a SessionContext message from the specified reader or buffer.
          * @function decode
          * @memberof data.SessionContext
@@ -1925,6 +1934,9 @@ export const data = $root.data = (() => {
                     break;
                 case 13:
                     m.nodeUrl = r.string();
+                    break;
+                case 14:
+                    m.userAgent = r.string();
                     break;
                 default:
                     r.skipType(t & 7);

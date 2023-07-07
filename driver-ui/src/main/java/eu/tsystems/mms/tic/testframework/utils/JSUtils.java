@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import java.awt.Color;
@@ -64,18 +65,18 @@ import org.slf4j.LoggerFactory;
  */
 public final class JSUtils {
 
-    private enum Snippet {
-        HIGHLIGHT("snippets/highlight.js"),
-        ;
-        private final String resourcePath;
-        Snippet(String resourcePath) {
-            this.resourcePath = resourcePath;
-        }
-
-        public String getResourcePath() {
-            return this.resourcePath;
-        }
-    }
+//    private enum Snippet {
+//        HIGHLIGHT("snippets/highlight.js"),
+//        ;
+//        private final String resourcePath;
+//        Snippet(String resourcePath) {
+//            this.resourcePath = resourcePath;
+//        }
+//
+//        public String getResourcePath() {
+//            return this.resourcePath;
+//        }
+//    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JSUtils.class);
 
@@ -182,42 +183,42 @@ public final class JSUtils {
         }
     }
 
-    public void highlight(WebDriver webDriver, WebElement webElement, Color color) {
-        highlightWebElement(webDriver, webElement, color);
-    }
+//    public void highlight(WebDriver webDriver, WebElement webElement, Color color) {
+//        highlightWebElement(webDriver, webElement, color);
+//    }
 
-    /**
-     * Highlights an element for a specified time.
-     * @deprecated Use {@link #highlight(WebDriver, WebElement, Color)} instead
-     */
-    public static void highlightWebElement(
-            WebDriver driver,
-            WebElement webElement,
-            Color color
-    ) {
-        long timeout = Testerra.Properties.DEMO_MODE_TIMEOUT.asLong();
-        try {
-            executeScriptWOCatch(
-                    driver,
-                    String.format(
-                            "%s\n"+
-                            "ttHighlight(arguments[0], '%s', %d)",
-                            readSnippets(Snippet.HIGHLIGHT),
-                            toHex(color),
-                            timeout
-                    ),
-                    webElement
-            );
-        } catch (Exception e) {
-            LOGGER.error("Unable to highlight WebElement: " + e.getMessage());
-        }
-    }
+//    /**
+//     * Highlights an element for a specified time.
+//     * @deprecated Use {@link #highlight(WebDriver, WebElement, Color)} instead
+//     */
+//    public static void highlightWebElement(
+//            WebDriver driver,
+//            WebElement webElement,
+//            Color color
+//    ) {
+//        long timeout = Testerra.Properties.DEMO_MODE_TIMEOUT.asLong();
+//        try {
+//            executeScriptWOCatch(
+//                    driver,
+//                    String.format(
+//                            "%s\n"+
+//                            "ttHighlight(arguments[0], '%s', %d)",
+//                            readSnippets(Snippet.HIGHLIGHT),
+//                            toHex(color),
+//                            timeout
+//                    ),
+//                    webElement
+//            );
+//        } catch (Exception e) {
+//            LOGGER.error("Unable to highlight WebElement: " + e.getMessage());
+//        }
+//    }
 
-    private static String readSnippets(Snippet...snippets) {
-        return readScriptResources(Arrays.stream(snippets).map(Snippet::getResourcePath));
-    }
+//    private static String readSnippets(Snippet...snippets) {
+//        return readScriptResources(Arrays.stream(snippets).map(Snippet::getResourcePath));
+//    }
 
-    private static String readScriptResources(Stream<String> resourceFiles) {
+    public static String readScriptResources(Stream<String> resourceFiles) {
         StringBuilder sb = new StringBuilder();
         resourceFiles.forEach(resourceFile -> {
             try {
@@ -570,7 +571,8 @@ public final class JSUtils {
 
     private void demoMouseOver(final WebDriver webDriver, final WebElement webElement) {
         if (Testerra.Properties.DEMO_MODE.asBool()) {
-            highlightWebElement(webDriver, webElement, new Color(255, 255, 0));
+            UiElementHighlighter elementHighlighter = Testerra.getInjector().getInstance(UiElementHighlighter.class);
+            elementHighlighter.highlight(webDriver, webElement, new Color(255, 255, 0));
         }
     }
 

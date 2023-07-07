@@ -42,7 +42,7 @@
         "highlight.js": "^11.8.0",
         "moment": "^2.29.4",
         "moment-duration-format": "^2.3.2",
-        "protobufjs": "^6.11.3",
+        "protobufjs": "^7.2.4",
         "t-systems-aurelia-components": "^1.1.0",
         "ts-replace-all": "^1.0.0",
         "vis-network": "^7.4.2",

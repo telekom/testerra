@@ -539,9 +539,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     protected void highlightWebElement(WebElement webElement, Color color) {
         UiElementHighlighter instance = Testerra.getInjector().getInstance(UiElementHighlighter.class);
         instance.highlight(guiElementData.getWebDriver(), webElement, color);
-//        JSUtils utils = new JSUtils();
-//        utils.highlight(guiElementData.getWebDriver(), webElement, color);
-
     }
 
     /**

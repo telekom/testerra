@@ -226,7 +226,7 @@ public class TestDataProvider {
                 {new TestData("AssertionError: minor fail", new Status[]{Status.PASSED})},
                 {new TestData("SkipException: Test Skipped.", new Status[]{Status.SKIPPED})},
                 {new TestData("RuntimeException: Error in DataProvider.", new Status[]{Status.SKIPPED})},
-                {new TestData(/*[...]*/"depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
+                {new TestData("Throwable: depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
                 {new TestData("AssertionError: test_FailedToPassedHistoryWithRetry", new Status[]{Status.RETRIED})},
                 {new TestData("AssertionError: No Oil.", new Status[]{Status.FAILED_EXPECTED})}
         };

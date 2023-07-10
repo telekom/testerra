@@ -38,7 +38,7 @@ public class ExclusiveSessionsTest extends AbstractReportTest {
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderMultipleScreenShotTests")
     public void test_multipleScreenshotsShown(final String methodName, final String className, final Class<AbstractReportMethodPage> detailsPage){
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         AbstractReportMethodPage reportDetailsPage = reportTestsPage.navigateToMethodDetails(detailsPage, methodName);
@@ -51,7 +51,7 @@ public class ExclusiveSessionsTest extends AbstractReportTest {
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderSingleScreenShotTests")
     public void test_singleScreenshotShown(final String methodName, final String className, final Class<AbstractReportMethodPage> detailsPage){
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         AbstractReportMethodPage reportDetailsPage = reportTestsPage.navigateToMethodDetails(detailsPage, methodName);

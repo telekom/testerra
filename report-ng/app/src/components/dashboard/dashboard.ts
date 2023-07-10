@@ -25,7 +25,6 @@ import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics, FailureAspectStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
-import MethodType = data.MethodType;
 import FailureCorridorValue = data.FailureCorridorValue;
 import ResultStatusType = data.ResultStatusType;
 import "./dashboard.scss"

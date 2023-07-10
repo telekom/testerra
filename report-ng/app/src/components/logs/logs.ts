@@ -80,9 +80,9 @@ export class Logs extends AbstractViewModel {
             const logMessages:ILogEntry[] = [];
             const logLevels = {};
 
-            const filterPredicate = (this._selectedLogLevel?(logMessage:data.ILogMessage) => this._selectedLogLevel == logMessage.type:(logMessage:data.ILogMessage) => logMessage);
+            const filterPredicate = (this._selectedLogLevel ? (logMessage: data.LogMessage) => this._selectedLogLevel == logMessage.type : (logMessage: data.LogMessage) => logMessage);
 
-            const collectLogLevel = (logMessage:data.ILogMessage) => {
+            const collectLogLevel = (logMessage: data.LogMessage) => {
                 logLevels[logMessage.type] = 1;
                 return logMessage;
             }

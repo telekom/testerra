@@ -82,10 +82,10 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
                 {"testT02_crashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
                 {"testT03_AssertFailedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT01_BeforeClassWithAssertion", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT02_BeforeClassWithException", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT03_BeforeMethodWithAssertion", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT04_BeforeMethodWithException", Status.SKIPPED, "java.lang.AssertionError"}
+                {"testT01_BeforeClassWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
+                {"testT02_BeforeClassWithException", Status.NO_RUN, "java.lang.RuntimeException"},
+                {"testT03_BeforeMethodWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
+                {"testT04_BeforeMethodWithException", Status.NO_RUN, "java.lang.RuntimeException"}
         };
     }
 

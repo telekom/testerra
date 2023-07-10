@@ -58,8 +58,8 @@ export class Threads3 extends AbstractViewModel {
     // TODO Whats the best value?
     private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y axis.
     private _threadHeight = 50;                 // in pixel
-    private _sliderSpacingFromChart = 40;      // in pixel
-    private _cardHeight = 400;
+    private _sliderSpacingFromChart = 90;      // in pixel
+    private _cardHeight;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -229,7 +229,7 @@ export class Threads3 extends AbstractViewModel {
         const sliderFromTop = gridHeight + this._sliderSpacingFromChart
         const dateFormatter = this._dateFormatter;
         // const durationFormatter = this._durationFormatter;
-        this._cardHeight = gridHeight + 100;
+        this._cardHeight = sliderFromTop + 60; // 60px space for dataZoom-slider
 
         // Set gridLeftValue dynamically to the longest thread name
         const longestThreadName = Array.from(threadCategories.keys()).reduce(
@@ -284,8 +284,7 @@ export class Threads3 extends AbstractViewModel {
                 }
             ],
             grid: {
-                // height: gridHeight,
-                height: 'auto',
+                height: gridHeight,
                 top: 30,
                 bottom: 100,
                 left: gridLeftValue
@@ -368,35 +367,5 @@ export class Threads3 extends AbstractViewModel {
     private _handleClickEvent(event: echarts.ECElementEvent) {
         this._router.navigateToRoute('method', {methodId: event.value[6]})
     }
-
-    /*getRenderItem(params, api): any {
-        const categoryIndex = api.value(0);
-        const start = api.coord([api.value(1), categoryIndex]);
-        const end = api.coord([api.value(2), categoryIndex]);
-        const height = api.size([0, 1])[1] * 0.6;
-        const rectShape = echarts.graphic.clipRectByRect(
-            {
-                x: start[0],
-                y: start[1] - height / 2,
-                width: end[0] - start[0],
-                height: height
-            },
-            {
-                x: params.coordSys["x"],
-                y: params.coordSys["y"],
-                width: params.coordSys["width"],
-                height: params.coordSys["height"]
-            }
-        );
-        return (
-            rectShape && {
-                type: 'rect',
-                transition: ['shape'],
-                shape: rectShape,
-                style: api.style()
-            }
-        );
-    }*/
-
 }
 

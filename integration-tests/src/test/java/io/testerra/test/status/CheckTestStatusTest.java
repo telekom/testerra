@@ -117,7 +117,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"*** Stats: TestContexts:   3", "TestContext"},
                 {"*** Stats: ClassContexts:  14", "ClassContext"},
                 {"*** Stats: MethodContexts: 69", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 57 (47 relevant)", "Test methods"},
+                {"*** Stats: Test Methods Count: 55 (45 relevant)", "Test methods"},
                 {"*** Stats: Failed: 9", "Failed tests"},
                 {"*** Stats: Retried: 10", "Retried tests"},
                 {"*** Stats: Expected Failed: 7", "Expected failed tests"},

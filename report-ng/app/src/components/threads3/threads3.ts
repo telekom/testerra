@@ -57,8 +57,8 @@ export class Threads3 extends AbstractViewModel {
     // Some values for presentation
     // TODO Whats the best value?
     private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y axis.
-    private _threadHeight = 80;                 // in pixel
-    private _sliderSpacingFromChart = 100;      // in pixel
+    private _threadHeight = 50;                 // in pixel
+    private _sliderSpacingFromChart = 40;      // in pixel
     private _cardHeight = 400;
 
     constructor(
@@ -146,7 +146,8 @@ export class Threads3 extends AbstractViewModel {
     // private _initDurationFormatter() {
     //     const container = new Container();
     //     this._durationFormatter = container.get(IntlDurationFormatValueConverter);
-    //     this._durationFormatter.setDefaultFormat("m[min] s[s] ms[ms]");
+    //     this._durationFormatter.setLocale('en-GB');
+    //     this._durationFormatter.setOptions('duration', {})
     // }
 
     private _initDateFormatter() {
@@ -154,8 +155,8 @@ export class Threads3 extends AbstractViewModel {
         this._dateFormatter = container.get(IntlDateFormatValueConverter);
         this._dateFormatter.setLocale('en-GB');
         this._dateFormatter.setOptions('date', { year: 'numeric', month: 'short', day: 'numeric' });
-        this._dateFormatter.setOptions('time', { hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: '2', hour12: false });
-        this._dateFormatter.setOptions('time_min', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+        this._dateFormatter.setOptions('time_full', { hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: '2', hour12: false });
+        this._dateFormatter.setOptions('time', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
         this._dateFormatter.setOptions('full', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
     }
 
@@ -230,7 +231,7 @@ export class Threads3 extends AbstractViewModel {
         // const durationFormatter = this._durationFormatter;
         this._cardHeight = gridHeight + 100;
 
-        // Set gridLeftValue dynamically to longest thread name
+        // Set gridLeftValue dynamically to the longest thread name
         const longestThreadName = Array.from(threadCategories.keys()).reduce(
             function (a, b) {
                 return a.length > b.length ? a : b;
@@ -295,7 +296,7 @@ export class Threads3 extends AbstractViewModel {
                 axisLabel: {
                     interval: 2,
                     formatter: function (val) {
-                        return dateFormatter.toView(Number(val), 'time_min') + '\n\n' + dateFormatter.toView(Number(val), 'date');
+                        return dateFormatter.toView(Number(val), 'time') + '\n\n' + dateFormatter.toView(Number(val), 'date');
                     }
                 }
             },
@@ -306,13 +307,10 @@ export class Threads3 extends AbstractViewModel {
                 {
                     type: 'custom',
                     renderItem: function (params: echarts.CustomSeriesRenderItemParams, api: echarts.CustomSeriesRenderItemAPI) {
-                        // return this.getRenderItem(params, api); -> does not work
                         const categoryIndex = api.value(0);
-                        // TODO: (Start, end) -> (start time, end time)
                         const start = api.coord([api.value(1), categoryIndex]);
                         const end = api.coord([api.value(2), categoryIndex]);
-                        // TODO: 0.6: Minimized height to get space between threads
-                        const height = api.size([0, 1])[1] * 0.6;
+                        const height = api.size([0, 1])[1] * 0.7; // 0.7: Minimized height to get space between threads
 
                         const rectShape = echarts.graphic.clipRectByRect(
                             {
@@ -341,24 +339,27 @@ export class Threads3 extends AbstractViewModel {
                         );
                     },
                     itemStyle: {
-                        opacity: 0.9
+                        opacity: 0.9,
+                        // borderType: 'solid',
+                        // borderWidth: 1,
+                        // borderColor: '#6E8192'
                     },
                     encode: {
                         x: [1, 2],
                         y: 0,
                         label: 3    // Index in value array
                     },
-                    data: data,
-                    label: {
+                    data: data
+                    /*label: {
                         // TODO label text overflows to other shapes
                         show: true,
                         position: 'insideLeft',
-                        overflow: 'truncate', // doesn't do much
+                        // overflow: 'truncate', // doesn't do much
                         textBorderWidth: 1
                     },
                     labelLayout: {
                         hideOverlap: true // only hides labels, that would overlap with others
-                    }
+                    }*/
                 }
             ]
         };
@@ -368,7 +369,7 @@ export class Threads3 extends AbstractViewModel {
         this._router.navigateToRoute('method', {methodId: event.value[6]})
     }
 
-    getRenderItem(params, api): any {
+    /*getRenderItem(params, api): any {
         const categoryIndex = api.value(0);
         const start = api.coord([api.value(1), categoryIndex]);
         const end = api.coord([api.value(2), categoryIndex]);
@@ -395,7 +396,7 @@ export class Threads3 extends AbstractViewModel {
                 style: api.style()
             }
         );
-    }
+    }*/
 
 }
 

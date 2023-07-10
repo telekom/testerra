@@ -98,7 +98,7 @@ public final class DesktopWebDriverUtils implements Loggable {
                     + "var evObj = document.createEvent('MouseEvents');"
                     + "evObj.initEvent( 'mouseover', true, true );"
                     + "fireOnThis.dispatchEvent(evObj);";
-            JSUtils.executeScriptWOCatch(driver, script);
+            JSUtils.executeScriptWOCatch(driver, script, webElement);
         });
     }
 

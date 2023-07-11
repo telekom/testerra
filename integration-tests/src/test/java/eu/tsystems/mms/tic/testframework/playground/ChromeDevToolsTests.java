@@ -145,6 +145,10 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
     }
 
+    /**
+     * The following example set basic authentication via driver augumentation. This solution works only remote, not local.
+     * A more flexible solution is implemented in SeleniumChromeDevTools
+     */
     @Test
     public void testT04_BasicAuth_remoteDriver() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
@@ -212,27 +216,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
     }
-
-//    @Test
-//    public void testT07_LogListener() throws MalformedURLException {
-//        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-//        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
-//        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-//        DevTools rawDevTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
-//
-//        rawDevTools.send(Runtime.enable());
-//        rawDevTools.send(Log.enable());
-//        rawDevTools.addListener(Log.entryAdded(),
-//                entry -> {
-//                    log().info("{} - {}: {}", entry.getTimestamp(), entry.getLevel().toString().toUpperCase(), entry.getText());
-//                    System.out.println(entry.getText());
-//                });
-//
-//        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-//        uiElementFinder.find(By.id("consoleLog")).click();
-//        uiElementFinder.find(By.id("consoleError")).click();
-//
-//    }
 
     //
     // The following tests demonstrate Browser console listener

@@ -21,24 +21,24 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.Credentials;
-import org.openqa.selenium.HasAuthentication;
+import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.v112.emulation.Emulation;
+import org.openqa.selenium.devtools.v112.network.Network;
+import org.openqa.selenium.devtools.v112.network.model.Headers;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.net.URI;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -94,37 +94,25 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
         if (!isSupported(webDriver)) {
             throw new RuntimeException("The current browser does not support DevTools");
         }
-        if (isRemoteDriver(webDriver)) {
-            WebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
-            AtomicReference<DevTools> devToolsAtomicReference = new AtomicReference<>();
-            remoteWebDriver = new Augmenter()
-                    .addDriverAugmentation(
-                            "chrome",
-                            HasAuthentication.class,
-                            (caps, exec) -> (whenThisMatches, useTheseCredentials) -> {
-                                devToolsAtomicReference.get().createSessionIfThereIsNotOne();
-                                devToolsAtomicReference.get().getDomains()
-                                        .network()
-                                        .addAuthHandler(whenThisMatches, useTheseCredentials);
-                            })
-                    .augment(remoteWebDriver);
-            DevTools devTools = ((HasDevTools) remoteWebDriver).getDevTools();
-            devTools.createSession();
-            devToolsAtomicReference.set(devTools);
-            ((HasAuthentication) remoteWebDriver).register(credentials);
-        } else {
-            DesktopWebDriverRequest webDriverRequest = (DesktopWebDriverRequest) WEB_DRIVER_MANAGER.getSessionContext(webDriver)
-                    .map(SessionContext::getWebDriverRequest)
-                    .orElse(null);
-            if (webDriverRequest == null) {
-                throw new RuntimeException("Cannot get WebdriverRequest from SessionContext");
-            }
-            String baseUrlHost = webDriverRequest.getBaseUrl().map(URL::getHost).orElse("");
-            Predicate<URI> uriPredicate = uri -> uri.getHost().contains(baseUrlHost);
-            ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
-            ((HasAuthentication) chromeDriver).register(uriPredicate, credentials);
-        }
+        DevTools devTools = this.getRawDevTools(webDriver);
 
+        try {
+            Map<String, Object> headers = new HashMap<>();
+            byte[] authByteArray = "".getBytes();
+
+            if (credentials.get() instanceof UsernameAndPassword) {
+                UsernameAndPassword usernameAndPassword = (UsernameAndPassword) credentials.get();
+                authByteArray = String.format("%s:%s", usernameAndPassword.username(), usernameAndPassword.password()).getBytes("UTF-8");
+            } else {
+                throw new RuntimeException("Unsupported type of Credentials");
+            }
+
+            headers.put("authorization", "Basic " + Base64.getEncoder().encodeToString(authByteArray));
+            devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+            devTools.send(Network.setExtraHTTPHeaders(new Headers(headers)));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Cannot set basic authentication", e);
+        }
 
     }
 

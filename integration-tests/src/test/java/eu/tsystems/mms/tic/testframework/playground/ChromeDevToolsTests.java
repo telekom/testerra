@@ -36,9 +36,11 @@ import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
 import org.openqa.selenium.devtools.v112.emulation.Emulation;
+import org.openqa.selenium.devtools.v112.network.Network;
+import org.openqa.selenium.devtools.v112.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v112.network.model.ResponseReceived;
 import org.openqa.selenium.devtools.v114.log.Log;
 import org.openqa.selenium.devtools.v114.log.model.LogEntry;
-import org.openqa.selenium.devtools.v85.runtime.Runtime;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.Test;
@@ -181,7 +183,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     public void testT05_BasicAuth_DevTools() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);
-//        request.setBrowserVersion("106");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
@@ -189,7 +190,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
 
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
-
     }
 
     /**
@@ -304,5 +304,27 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         }
     }
 
+    @Test
+    public void testT13_NetworkListener() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+
+        List<ResponseReceived> responseReceivedList = new ArrayList<>();
+        List<RequestWillBeSent> requestList = new ArrayList<>();
+        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+
+        devTools.addListener(Network.responseReceived(), responseReceivedList::add);
+        devTools.addListener(Network.requestWillBeSent(), requestList::add);
+
+        webDriver.get("https://the-internet.herokuapp.com/");
+
+        for (RequestWillBeSent request : requestList) {
+            log().info("Request: {} - {}", request.getRequestId().toString(), request.getRequest().getUrl());
+        }
+
+        for (ResponseReceived response : responseReceivedList) {
+            log().info("Response: {} - [{}] {}", response.getRequestId().toString(), response.getResponse().getStatus(), response.getResponse().getStatusText());
+        }
+    }
 
 }

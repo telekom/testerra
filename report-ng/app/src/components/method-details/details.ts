@@ -25,7 +25,7 @@
  */
 import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
-import 'highlight.js/styles/darcula.css';
+import 'highlight.js/styles/base16/darcula.css';
 import {autoinject} from 'aurelia-framework';
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {FailureAspectStatistics} from "services/statistic-models";

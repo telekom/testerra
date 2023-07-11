@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,19 +19,18 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.annotations;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 /**
- * Flags a method (mainly a @test method) as a support method. Retests wont skip these if previously passed.
+ * Default implementation for UiElement highlighting
+ * <p>
+ * highlight.js added an outlined border to the WebElement
+ *
+ * @author mgn
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Deprecated
-public @interface SupportMethod {
-
-    String color() default "#848282";
-    String name() default "Support Method";
-
+public class DefaultUiElementHighlighter implements UiElementHighlighter {
+    @Override
+    public String getJSSnippet() {
+        return "snippets/highlight.js";
+    }
 }

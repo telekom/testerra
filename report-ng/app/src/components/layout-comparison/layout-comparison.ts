@@ -21,7 +21,6 @@
 import {autoinject, bindable} from "aurelia-framework";
 import {IComparison, ScreenshotComparison} from "../screenshot-comparison/screenshot-comparison";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
-import pixelmatch from 'pixelmatch';
 import {bindingMode} from "aurelia-binding";
 import {Config} from "../../services/config-dev";
 

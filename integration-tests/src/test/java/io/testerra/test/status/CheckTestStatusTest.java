@@ -58,7 +58,19 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"testT04_DataProviderWithFailedTests", Status.PASSED},
                 {"testT05_DataProviderWithFailedTestsOptional", Status.PASSED},
                 {"testT06_DataProviderWithCollectedAssertions", Status.PASSED},
-                {"testT06_DataProviderWithCollectedAssertions", Status.FAILED}
+                {"testT06_DataProviderWithCollectedAssertions", Status.FAILED},
+                {"testT07_AfterClassWithAssertion", Status.PASSED},
+                {"testT08_AfterClassWithException", Status.PASSED},
+                {"testT05_AfterMethodWithAssertion", Status.PASSED},
+                {"testT06_AfterMethodWithException", Status.PASSED},
+                {"beforeClassSetup01", Status.FAILED},
+                {"beforeClassSetup02", Status.FAILED},
+                {"beforeMethodSetup01", Status.FAILED},
+                {"beforeMethodSetup02", Status.FAILED},
+                {"afterMethodSetup01", Status.FAILED},
+                {"afterMethodSetup02", Status.FAILED},
+                {"afterClassSetup01", Status.FAILED},
+                {"afterClassSetup02", Status.FAILED},
         };
     }
 
@@ -69,7 +81,11 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"test_Skipped_dependingOnFailed", Status.NO_RUN, "depends on not successfully finished methods"},
                 {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
                 {"testT02_crashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT03_AssertFailedDataProvider", Status.SKIPPED, "java.lang.AssertionError"}
+                {"testT03_AssertFailedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
+                {"testT01_BeforeClassWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
+                {"testT02_BeforeClassWithException", Status.NO_RUN, "java.lang.RuntimeException"},
+                {"testT03_BeforeMethodWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
+                {"testT04_BeforeMethodWithException", Status.NO_RUN, "java.lang.RuntimeException"}
         };
     }
 
@@ -99,14 +115,14 @@ public class CheckTestStatusTest extends TesterraTest {
         return new Object[][]{
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
-                {"*** Stats: ClassContexts:  6", "ClassContext"},
-                {"*** Stats: MethodContexts: 53", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 47 (37 relevant)", "Test methods"},
+                {"*** Stats: ClassContexts:  14", "ClassContext"},
+                {"*** Stats: MethodContexts: 69", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 55 (45 relevant)", "Test methods"},
                 {"*** Stats: Failed: 9", "Failed tests"},
                 {"*** Stats: Retried: 10", "Retried tests"},
                 {"*** Stats: Expected Failed: 7", "Expected failed tests"},
-                {"*** Stats: Skipped: 5", "Skipped tests"},
-                {"*** Stats: Passed: 16 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
+                {"*** Stats: Skipped: 9", "Skipped tests"},
+                {"*** Stats: Passed: 20 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
         };
     }
 

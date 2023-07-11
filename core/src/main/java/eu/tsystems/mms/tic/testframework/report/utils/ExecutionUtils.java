@@ -19,17 +19,14 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.utils;
+package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
 import eu.tsystems.mms.tic.testframework.report.model.context.Cause;
 import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-import java.lang.reflect.Method;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -126,44 +123,6 @@ public final class ExecutionUtils {
 //
 //        return null;
 //    }
-
-    /**
-     * Determines if given method is in execution scope
-     * * support method
-     * * or matching exec. filter
-     * * or failed last run
-     * * or is precondition for other
-     *
-     * @param testMethod {@link Method}
-     * @return boolean
-     */
-    public static boolean isMethodInExecutionScope(final Method testMethod, final ITestContext testContext, final ITestResult testResult, boolean withFailed) {
-        final SupportMethod supportMethod = testMethod.getAnnotation(SupportMethod.class);
-
-        // given method is a support method -> run it!
-        if (supportMethod != null) {
-            return true;
-        }
-
-        // this method is a precondition -> run it!
-        if (ExecutionUtils.pIsMethodPreconditionForOther(testMethod)) {
-            LOGGER.info("Executing method because another method depends on it");
-            return true;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determines if given method is pre-condition for another method
-     *
-     * @param method {@link Method}
-     * @return boolean
-     */
-    private static boolean pIsMethodPreconditionForOther(final Method method) {
-        final String testName = String.format("%s.%s", method.getDeclaringClass().getName(), method.getName());
-        return dependsOnMethods.contains(testName);
-    }
 
     /**
      * Recursive dependency analysis

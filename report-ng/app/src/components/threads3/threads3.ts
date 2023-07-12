@@ -55,10 +55,9 @@ export class Threads3 extends AbstractViewModel {
     // private _durationFormatter: IntlDurationFormatValueConverter;
 
     // Some values for presentation
-    // TODO Whats the best value?
     private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y axis.
-    private _threadHeight = 50;                 // in pixel
-    private _sliderSpacingFromChart = 90;      // in pixel
+    private _threadHeight = 50;                 // height of y-axis categories in pixel
+    private _sliderSpacingFromChart = 90;      // distance between chart and dataZoom-slider in pixel
     private _cardHeight;
 
     constructor(
@@ -167,7 +166,7 @@ export class Threads3 extends AbstractViewModel {
 
         this._options.series[0].data.forEach(function (value) {
             // value.itemStyle.normal.color = style.get(value.value[7]);
-            value.itemStyle.normal.opacity = 0.9;
+            value.itemStyle.normal.opacity = 1;
         });
 
         this._chart.setOption(this._options);
@@ -205,14 +204,8 @@ export class Threads3 extends AbstractViewModel {
      */
     private _prepareTimeline(executionStatistics: ExecutionStatistics) {
         const data = [];
-        // const dataCount = 10;
-        // const startTime = +new Date();
         let startTimes : number[] = [];
-
         const threadCategories = new Map();
-        // const classContexts = Object.values(executionStatistics.executionAggregate.classContexts);
-        // classContexts.filter(context => context.)
-        // classContexts.find(context => context.c)
 
         Object.values(executionStatistics.executionAggregate.methodContexts).forEach(methodContext => {
             if (!threadCategories.has(methodContext.threadName)) {
@@ -235,10 +228,7 @@ export class Threads3 extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
         threadCategories.forEach(function (methodContexts, threadName) {
-            // let baseTime = startTime;
-            // for (var i = 0; i < dataCount; i++) {
             methodContexts.forEach((context: MethodContext) => {
-                // console.log(context);
 
                 const itemColor = style.get(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
@@ -282,7 +272,6 @@ export class Threads3 extends AbstractViewModel {
 
         this._options = {
             tooltip: {
-                // extraCssText: "background-color:",
                 formatter: function (params) {
                     // Calculations for test duration
                     const fullMinutes = Math.floor(params.value[4]/(60000));
@@ -300,10 +289,6 @@ export class Threads3 extends AbstractViewModel {
                         duration = fullMinutes + "min " + remainingSeconds + "s " + remainingMS + "ms";
                     }
 
-                    const color = params.color;
-
-                    // console.log("params", params);
-                    // console.log("color", params.color);
                     return '<span>' + params.marker + params.name + '</span>'
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
@@ -382,7 +367,7 @@ export class Threads3 extends AbstractViewModel {
                         );
                     },
                     itemStyle: {
-                        opacity: 0.9
+                        // opacity: 0.9
                         // borderType: 'solid',
                         // borderWidth: 1,
                         // borderColor: '#6E8192'

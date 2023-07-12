@@ -1,0 +1,20 @@
+= Important changes
+
+The Selenium devs provide a short https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4/[migration guide] for Selenium 4 ().
+
+The following subsections describes how the changes affect Testerra.
+
+== Custom capabilities
+
+Any capability that not in the standard of https://www.w3.org/TR/webdriver1/#capabilities[W3C] needs a vendor prefix.
+
+
+
+== Global capabilities
+
+== Browser version
+
+Be aware of using a browser version if you execute your test against a standalone Selenium 4 server. This is running as a local grid which knows nothing about any local browser versions.
+
+Your test will run into a timeout!
+

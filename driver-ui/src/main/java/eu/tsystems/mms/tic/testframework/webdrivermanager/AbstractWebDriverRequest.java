@@ -40,6 +40,7 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
 
     private String sessionKey = DEFAULT_SESSION_KEY;
     private URL serverUrl;
+    @Deprecated
     private DesiredCapabilities desiredCapabilities;
 
     private Capabilities capabilities;
@@ -147,6 +148,11 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
         this.sessionKey = sessionKey;
     }
 
+    /**
+     *
+     * @deprecated Use {@link #getMutableCapabilities()} instead
+     */
+    @Deprecated
     public DesiredCapabilities getDesiredCapabilities() {
         if (this.desiredCapabilities == null) {
             this.desiredCapabilities = new DesiredCapabilities();

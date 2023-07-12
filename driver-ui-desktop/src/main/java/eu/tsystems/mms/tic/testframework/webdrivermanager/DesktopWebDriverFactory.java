@@ -42,6 +42,7 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -53,7 +54,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.AbstractDriverOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -143,18 +143,12 @@ public class DesktopWebDriverFactory implements
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 ChromeOptions chromeOptions = new ChromeOptions();
-//                if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
-//                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
-//                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
-//                }
-
                 WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(chromeOptions);
                 });
-
                 chromeOptions.addArguments("--no-sandbox");
                 if (browser.equals(Browsers.chromeHeadless)) {
-                    chromeOptions.setHeadless(true);
+                    chromeOptions.addArguments("--headless");
                 }
                 userAgentCapabilities = chromeOptions;
                 break;

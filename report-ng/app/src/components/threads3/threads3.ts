@@ -95,6 +95,7 @@ export class Threads3 extends AbstractViewModel {
 
     selectionChanged(){
         if (this._inputValue.length == 0){
+            this.resetColor();
             this.resetZoom();
         }
     }
@@ -126,12 +127,50 @@ export class Threads3 extends AbstractViewModel {
         const zoomEnd = dataToZoomInOn.value[2];
         const spacing = (zoomEnd - zoomStart) * 0.05;
 
+        // const style = new Map<number, string>();
+        // style.set(ResultStatusType.PASSED, '#417336');
+        // style.set(ResultStatusType.REPAIRED, '#417336');
+        // style.set(ResultStatusType.PASSED_RETRY, '#417336');
+        // style.set(ResultStatusType.SKIPPED, '#f7af3e');
+        // style.set(ResultStatusType.FAILED, '#e63946');
+        // style.set(ResultStatusType.FAILED_EXPECTED, '#4f031b');
+        // style.set(ResultStatusType.FAILED_MINOR, '#e63946');
+        // style.set(ResultStatusType.FAILED_RETRIED, '#e63946');
+
+        this._options.series[0].data.forEach(function (value) {
+            const mid = value.value[6];
+            if (mid != methodId) {
+                // value.itemStyle.normal.color = style.get(value.value[7]);
+                value.itemStyle.normal.opacity = 0.38;
+            }
+        });
+
+        this._chart.setOption(this._options);
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
             startValue: zoomStart - spacing,
             endValue: zoomEnd + spacing
         });
+    }
+
+    resetColor() {
+        // const style = new Map<number, string>();
+        // style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        // style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        // style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        // style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        // style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        // style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        // style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        // style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+
+        this._options.series[0].data.forEach(function (value) {
+            // value.itemStyle.normal.color = style.get(value.value[7]);
+            value.itemStyle.normal.opacity = 0.9;
+        });
+
+        this._chart.setOption(this._options);
     }
 
     resetZoom() {
@@ -199,7 +238,7 @@ export class Threads3 extends AbstractViewModel {
             // let baseTime = startTime;
             // for (var i = 0; i < dataCount; i++) {
             methodContexts.forEach((context: MethodContext) => {
-                console.log(context);
+                // console.log(context);
 
                 const itemColor = style.get(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
@@ -213,7 +252,8 @@ export class Threads3 extends AbstractViewModel {
                         context.contextValues.name,
                         duration,
                         context.methodRunIndex,
-                        context.contextValues.id
+                        context.contextValues.id,
+                        context.resultStatus
                     ],
                     itemStyle: {
                         normal: {
@@ -242,6 +282,7 @@ export class Threads3 extends AbstractViewModel {
 
         this._options = {
             tooltip: {
+                // extraCssText: "background-color:",
                 formatter: function (params) {
                     // Calculations for test duration
                     const fullMinutes = Math.floor(params.value[4]/(60000));
@@ -259,8 +300,11 @@ export class Threads3 extends AbstractViewModel {
                         duration = fullMinutes + "min " + remainingSeconds + "s " + remainingMS + "ms";
                     }
 
+                    const color = params.color;
+
                     // console.log("params", params);
-                    return params.marker + params.name
+                    // console.log("color", params.color);
+                    return '<span>' + params.marker + params.name + '</span>'
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
                         // TODO use duration value converter: -> IntlDurationFormatValueConverter broken?
@@ -338,7 +382,7 @@ export class Threads3 extends AbstractViewModel {
                         );
                     },
                     itemStyle: {
-                        opacity: 0.9,
+                        opacity: 0.9
                         // borderType: 'solid',
                         // borderWidth: 1,
                         // borderColor: '#6E8192'

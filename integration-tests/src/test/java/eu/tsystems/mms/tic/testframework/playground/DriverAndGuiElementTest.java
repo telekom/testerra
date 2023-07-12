@@ -76,7 +76,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
+        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities().asMap();
 
         Assert.assertEquals(sessionCapabilities.get("projectId"), caps.getCapability("projectId"), "EndPoint Capability is set");
     }

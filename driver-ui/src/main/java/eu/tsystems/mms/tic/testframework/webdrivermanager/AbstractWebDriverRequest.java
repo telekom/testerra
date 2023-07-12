@@ -29,6 +29,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -42,6 +43,8 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
     private URL serverUrl;
     @Deprecated
     private DesiredCapabilities desiredCapabilities;
+
+    private MutableCapabilities mutableCapabilities;
 
     private Capabilities capabilities;
     private boolean shutdownAfterTest = false;
@@ -68,12 +71,12 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
     }
 
     public String getBrowserVersion() {
-        return getDesiredCapabilities().getBrowserVersion();
+        return this.getMutableCapabilities().getBrowserVersion();
     }
 
     public void setBrowserVersion(String browserVersion) {
         if (StringUtils.isNotBlank(browserVersion)) {
-            this.getDesiredCapabilities().setVersion(browserVersion);
+            this.getMutableCapabilities().setCapability(CapabilityType.BROWSER_VERSION, browserVersion);
         }
     }
 
@@ -135,13 +138,20 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
         return shutdownAfterExecution;
     }
 
-    @Override
-    public Map<String, Object> getCapabilities() {
-        if (getBrowserOptions() != null) {
-            return getBrowserOptions().asMap();
+    public Capabilities getCapabilities() {
+        if (capabilities != null) {
+            return this.capabilities;
         } else {
-            return Map.of();
+            return new MutableCapabilities();
         }
+    }
+
+    /**
+     * This method is needed to update the current capabilities with merged capabilities.
+     * Should use only internally.
+     */
+    public void setCapabilities(Capabilities capabilities) {
+        this.capabilities = capabilities;
     }
 
     public void setSessionKey(String sessionKey) {
@@ -149,7 +159,6 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
     }
 
     /**
-     *
      * @deprecated Use {@link #getMutableCapabilities()} instead
      */
     @Deprecated
@@ -160,30 +169,29 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
         return desiredCapabilities;
     }
 
-    public Capabilities getBrowserOptions() {
-        return capabilities;
-    }
-
-    public void setBrowserOptions(Capabilities capabilities) {
-        this.capabilities = capabilities;
+    public MutableCapabilities getMutableCapabilities() {
+        if (this.mutableCapabilities == null) {
+            this.mutableCapabilities = new MutableCapabilities();
+        }
+        return this.mutableCapabilities;
     }
 
     public void setPlatformName(String platformName) {
         try {
             if (StringUtils.isNotBlank(platformName)) {
                 final Platform platform = Platform.fromString(platformName);
-                this.getDesiredCapabilities().setPlatform(platform);
+                this.getMutableCapabilities().setCapability(CapabilityType.PLATFORM_NAME, platform);
             }
         } catch (WebDriverException e) {
             log().warn("Trying to set invalid platform '{}' was ignored.", platformName);
         }
     }
 
-    public Optional<String> getPlatformName() {
-        if (this.getDesiredCapabilities().getPlatformName() != null) {
-            return Optional.ofNullable(this.getDesiredCapabilities().getPlatformName().toString());
+    public String getPlatformName() {
+        if (this.getMutableCapabilities().getPlatformName() != null) {
+            return this.getMutableCapabilities().getPlatformName().toString();
         }
-        return Optional.empty();
+        return null;
     }
 
     /**
@@ -203,7 +211,7 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
         }
         if (this.capabilities != null) {
             Map<String, Object> clonedCaps = capabilityUtils.clone(this.capabilities.asMap());
-            clone.setBrowserOptions(new MutableCapabilities(clonedCaps));
+            clone.capabilities = new MutableCapabilities(clonedCaps);
         }
         return clone;
     }

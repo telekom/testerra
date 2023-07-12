@@ -42,7 +42,6 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -123,10 +122,6 @@ public class DesktopWebDriverFactory implements
         switch (browser) {
             case Browsers.firefox:
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-//                if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
-//                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
-//                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
-//                }
                 WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(firefoxOptions);
                 });
@@ -171,7 +166,8 @@ public class DesktopWebDriverFactory implements
         // Any additional defined desired capabilities are merged into browser options
         if (userAgentCapabilities != null) {
             userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
-            finalRequest.setBrowserOptions(userAgentCapabilities);
+            userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getMutableCapabilities());
+            finalRequest.setCapabilities(userAgentCapabilities);
         }
         return finalRequest;
     }
@@ -351,22 +347,22 @@ public class DesktopWebDriverFactory implements
                 // TODO: Reduced timeouts of Selenium 3, needed in Selenium 4?
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl);
-                Capabilities browserOptions = request.getBrowserOptions();
-                if (browserOptions == null) {
+                Capabilities capabilities = request.getCapabilities();
+                if (capabilities == null) {
                     throw new SystemException("Cannot start browser session with empty browser options");
                 }
-                webDriver = new RemoteWebDriver(seleniumUrl, browserOptions);
+                webDriver = new RemoteWebDriver(seleniumUrl, capabilities);
                 webDriver.setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
 
                 // Starting local webdriver needs caps as browser options
-                if (optionClass == request.getBrowserOptions().getClass()) {
+                if (optionClass == request.getCapabilities().getClass()) {
                     Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(optionClass);
-                    webDriver = constructor.newInstance(request.getBrowserOptions());
+                    webDriver = constructor.newInstance(request.getCapabilities());
                 } else {
-                    throw new SystemException("Browser options cannot use for new session: \nRequired " + optionClass.getName() + ",\nProvided: " + request.getBrowserOptions().getClass().getName());
+                    throw new SystemException("Browser options cannot use for new session: \nRequired " + optionClass.getName() + ",\nProvided: " + request.getCapabilities().getClass().getName());
                 }
             }
         } catch (Exception e) {

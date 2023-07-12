@@ -29,10 +29,10 @@ dependencies {
     implementation 'com.opencsv:opencsv:3.9'
     // </CSVTestDataReader>
 
-    // <ExceptionUtils>
-    // Comes already implicit from reflections
-    // implementation 'org.javassist:javassist:3.20.0-GA'
-    // </ExceptionUtils>
+
+    // Selenium 4.6 comes with 'io.netty:netty-transport-native-epoll:4.1.84.Final'
+    // -> Dependency error Could not find netty-transport-native-epoll-4.1.84.Final-linux-x86_64.jar (io.netty:netty-transport-native-epoll:4.1.84.Final).
+    api 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 
     api('org.testng:testng:7.6.1')
     //  {

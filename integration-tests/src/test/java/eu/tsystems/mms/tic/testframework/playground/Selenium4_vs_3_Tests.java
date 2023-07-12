@@ -9,7 +9,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -44,16 +43,15 @@ public class Selenium4_vs_3_Tests extends AbstractWebDriverTest {
         WEB_DRIVER_MANAGER.getWebDriver(request);
     }
 
-//    @Test
-//    public void testBrowserCustomCaps_Selenium4() {
-//        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-//        MutableCapabilities caps = new MutableCapabilities();
-//        caps.setCapability("foo", "bar");
-//
-//        request.getCapabilities()
-//        request.getBrowserOptions().merge(caps);
-//
-//        WEB_DRIVER_MANAGER.getWebDriver(request);
-//    }
+    @Test
+    public void testBrowserCustomCaps_Selenium4() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        MutableCapabilities caps = request.getMutableCapabilities();
+
+        Map<String, Object> customCaps = Map.of("foo", "bar");
+        caps.setCapability("custom:caps", customCaps);
+
+        WEB_DRIVER_MANAGER.getWebDriver(request);
+    }
 
 }

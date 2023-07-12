@@ -81,7 +81,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().get("selenoid:options");
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().getCapability("selenoid:options");
 
         Assert.assertEquals(sessionCapabilities.get("enableVideo"), selenoidCaps.get("enableVideo"), "EndPoint Capability via WebDriverRequest is set");
         Assert.assertEquals(sessionCapabilities.get("enableVNC"), selenoidCaps.get("enableVNC"), "EndPoint Capability via WebDriverRequest is set");
@@ -99,7 +99,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         WEB_DRIVER_MANAGER.removeGlobalCapability("custom:caps");
 
         SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().get("custom:caps");
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().asMap().get("custom:caps");
 
         Assert.assertEquals(sessionCapabilities.get("t04Global"), "yes", "EndPoint Capability is set");
     }
@@ -115,7 +115,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
         SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().get("custom:caps");
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().asMap().get("custom:caps");
 
         Assert.assertEquals(sessionCapabilities.get("t05UserAgent"), "yesyes", "EndPoint Capability is set");
     }
@@ -129,7 +129,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
 
         WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(driver).get().getWebDriverRequest();
 
-        Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.WINDOWS);
+        Assert.assertEquals(webDriverRequest.getCapabilities().asMap().get(CapabilityType.PLATFORM_NAME), Platform.WINDOWS);
     }
 
     // Global caps!! -> needs to be independent of other tests
@@ -151,7 +151,7 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().get("custom:caps");
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().asMap().get("custom:caps");
 
         Assert.assertEquals(sessionCapabilities.get("t07Overwrite"), "requestCaps", "Request capability is set");
     }

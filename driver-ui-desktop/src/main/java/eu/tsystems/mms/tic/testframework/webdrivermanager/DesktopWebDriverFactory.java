@@ -339,7 +339,6 @@ public class DesktopWebDriverFactory implements
         }
 
         // Finalize capabilities
-//        final DesiredCapabilities requestCapabilities = request.getDesiredCapabilities();
         RemoteWebDriver webDriver;
         try {
             if (request.getServerUrl().isPresent()) {

@@ -1,1 +1,43 @@
 = Support of Chrome developer toos (CDP)
+
+Selenium 4 supports the access to the Chrome developer tools. Testerra provides a simple API to interact with CDP.
+
+NOTE: As the name says, it only works in Chrome browser. :-)
+
+== Set basic authentication
+
+[source, java]
+----
+...
+import org.openqa.selenium.UsernameAndPassword
+...
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        WebDriverManagerProvider,
+        UiElementFinderFactoryProvider {
+
+    @Test
+    public void test_BasicAuthentication_DevTools() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        CHROME_DEV_TOOLS
+            .setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"));
+
+        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
+        uiElementFinder.find(By.tagName("p"))
+            .assertThat().text().isContaining("Congratulations");
+    }
+
+}
+
+----
+
+== Change geolocation
+
+
+
+== Listen to Network logs
+
+== Listen to browser console

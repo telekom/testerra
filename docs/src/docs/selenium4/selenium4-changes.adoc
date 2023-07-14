@@ -6,11 +6,23 @@ The following subsections describes how the changes affect Testerra.
 
 == Custom capabilities
 
-Any capability that not in the standard of https://www.w3.org/TR/webdriver1/#capabilities[W3C] needs a vendor prefix.
+Any capability that not in the standard of https://www.w3.org/TR/webdriver1/#capabilities[W3C] needs a vendor prefix. Otherwise, the session could not created and Selenium returns
 
+* `WARNUNG: Support for Legacy Capabilities is deprecated; You are sending the following invalid capabilities: [foo]; Please update to W3C Syntax: https://www.selenium.dev/blog/2022/legacy-protocol-support/`
+* `java.lang.IllegalArgumentException: Illegal key values seen in w3c capabilities: [foo]`.
 
+.Example for custom capabilities compatible with Selenium 4
+[source, java]
+----
+DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+MutableCapabilities caps = request.getMutableCapabilities();
 
-== Global capabilities
+// The custom caps have to packaged into an additional map and added to the request with a vendor prefix.
+Map<String, Object> customCaps = Map.of("foo", "bar");
+caps.setCapability("custom:caps", customCaps);
+
+WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
+----
 
 == Browser version
 

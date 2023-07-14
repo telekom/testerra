@@ -58,11 +58,6 @@ public final class WebDriverManager {
     }
 
     /**
-     * @deprecated Use {@link WebDriverRequest#DEFAULT_SESSION_KEY} instead
-     */
-    public static final String DEFAULT_SESSION_KEY = WebDriverRequest.DEFAULT_SESSION_KEY;
-
-    /**
      * WebDriverManager configuration set. Modify by config() call!
      */
     @Deprecated
@@ -139,7 +134,7 @@ public final class WebDriverManager {
      * @return instance of WebDriver object.
      */
     public static WebDriver getWebDriver() {
-        return getWebDriver(DEFAULT_SESSION_KEY);
+        return getWebDriver(WebDriverRequest.DEFAULT_SESSION_KEY);
     }
 
     /**
@@ -164,7 +159,7 @@ public final class WebDriverManager {
      * @param driver .
      */
     public static void introduceWebDriver(final WebDriver driver) {
-        introduceWebDriver(DEFAULT_SESSION_KEY, driver);
+        introduceWebDriver(WebDriverRequest.DEFAULT_SESSION_KEY, driver);
     }
 
     /**
@@ -277,7 +272,7 @@ public final class WebDriverManager {
     public static boolean hasSessionsActiveInThisThread() {
         return WebDriverSessionsManager.hasSessionActiveInThisThread();
     }
-    
+
     /**
      * Are you sure you want do that?? This action quits all browser sessions in all threads.
      */

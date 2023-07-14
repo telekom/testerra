@@ -223,10 +223,18 @@ public interface IWebDriverManager extends
         WebDriverUtils.removeKeepAliveForWebDriver(webDriver);
     }
 
+    /**
+     * @deprecated Use {@link #setUserAgentConfig(String, UserAgentConfig)} or {@link DesktopWebDriverRequest#getMutableCapabilities()} for custom capabilities instead
+     */
+    @Deprecated
     default void setGlobalCapability(String key, Object value) {
         WebDriverManager.setGlobalExtraCapability(key, value);
     }
 
+    /**
+     * @deprecated Use {@link #setUserAgentConfig(String, UserAgentConfig)} or {@link DesktopWebDriverRequest#getMutableCapabilities()} instead.
+     */
+    @Deprecated
     default void removeGlobalCapability(String key) {
         WebDriverManager.removeGlobalExtraCapability(key);
     }

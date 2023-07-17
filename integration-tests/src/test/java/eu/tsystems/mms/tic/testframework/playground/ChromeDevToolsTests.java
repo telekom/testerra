@@ -35,10 +35,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
-import org.openqa.selenium.devtools.v112.emulation.Emulation;
-import org.openqa.selenium.devtools.v112.network.Network;
-import org.openqa.selenium.devtools.v112.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v112.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v114.emulation.Emulation;
+import org.openqa.selenium.devtools.v114.network.Network;
+import org.openqa.selenium.devtools.v114.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v114.network.model.ResponseReceived;
 import org.openqa.selenium.devtools.v114.log.Log;
 import org.openqa.selenium.devtools.v114.log.model.LogEntry;
 import org.openqa.selenium.remote.Augmenter;
@@ -222,19 +222,15 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     //
 
     @Test
-    public void testT10_LogListener_BrokenImages() throws MalformedURLException {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-//        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+    public void testT10_LogListener_BrokenImages() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
         DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
-
         devTools.send(Log.enable());
 
         List<LogEntry> logEntries = new ArrayList<>();
         Consumer<LogEntry> addedLog = logEntries::add;
-
-        // Consumer is running in another thread... Asserts does not have impact to main thread
         devTools.addListener(Log.entryAdded(), addedLog);
+
         webDriver.get("http://the-internet.herokuapp.com/broken_images");
         TimerUtils.sleep(1000);     // Short wait to get delayed logs
         for (LogEntry logEntry : logEntries) {
@@ -299,10 +295,10 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         devTools.addListener(Network.responseReceived(), responseReceivedList::add);
         devTools.addListener(Network.requestWillBeSent(), requestList::add);
 
-        webDriver.get("https://the-internet.herokuapp.com/");
+        webDriver.get("https://the-internet.herokuapp.com/broken_images");
 
         for (RequestWillBeSent request : requestList) {
-            log().info("Request: {} - {}", request.getRequestId().toString(), request.getRequest().getUrl());
+            log().info("Request: {} {} - {}", request.getRequestId().toString(), request.getRequest().getMethod(), request.getRequest().getUrl());
         }
 
         for (ResponseReceived response : responseReceivedList) {

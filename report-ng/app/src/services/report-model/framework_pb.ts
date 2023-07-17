@@ -78,41 +78,59 @@ export enum ResultStatusType {
 }
 
 export interface SuiteContext {
-  contextValues?: ContextValues;
+  contextValues?:
+    | ContextValues
+    | undefined;
   /**
    * list of all test
    *
    * @deprecated
    */
-  testContextIds?: string[];
+  testContextIds?:
+    | string[]
+    | undefined;
   /** reference */
-  executionContextId?: string;
+  executionContextId?: string | undefined;
 }
 
 export interface ClassContext {
-  contextValues?: ContextValues;
+  contextValues?:
+    | ContextValues
+    | undefined;
   /** @deprecated */
-  methodContextIds?: string[];
-  fullClassName?: string;
+  methodContextIds?: string[] | undefined;
+  fullClassName?:
+    | string
+    | undefined;
   /** string simple_class_name = 8 [deprecated = true]; */
-  testContextId?: string;
+  testContextId?:
+    | string
+    | undefined;
   /** @deprecated */
-  executionContextId?: string;
+  executionContextId?:
+    | string
+    | undefined;
   /** bool merged = 12 [deprecated = true]; */
-  testContextName?: string;
+  testContextName?: string | undefined;
 }
 
 export interface TestContext {
-  contextValues?: ContextValues;
+  contextValues?:
+    | ContextValues
+    | undefined;
   /** @deprecated */
-  classContextIds?: string[];
-  suiteContextId?: string;
+  classContextIds?: string[] | undefined;
+  suiteContextId?:
+    | string
+    | undefined;
   /** @deprecated */
-  executionContextId?: string;
+  executionContextId?: string | undefined;
 }
 
 export interface ExecutionContext {
-  contextValues?: ContextValues;
+  contextValues?:
+    | ContextValues
+    | undefined;
   /**
    * repeated string merged_class_context_ids = 3 [deprecated = true];
    *    repeated ContextClip exit_points = 4 [deprecated = true];
@@ -120,17 +138,17 @@ export interface ExecutionContext {
    *
    * @deprecated
    */
-  suiteContextIds?: string[];
-  runConfig?: RunConfig;
-  projectId?: string;
-  jobId?: string;
-  runId?: string;
-  taskId?: string;
-  exclusiveSessionContextIds?: string[];
-  logMessages?: LogMessage[];
-  estimatedTestsCount?: number;
-  failureCorridorLimits?: { [key: number]: number };
-  failureCorridorCounts?: { [key: number]: number };
+  suiteContextIds?: string[] | undefined;
+  runConfig?: RunConfig | undefined;
+  projectId?: string | undefined;
+  jobId?: string | undefined;
+  runId?: string | undefined;
+  taskId?: string | undefined;
+  exclusiveSessionContextIds?: string[] | undefined;
+  logMessages?: LogMessage[] | undefined;
+  estimatedTestsCount?: number | undefined;
+  failureCorridorLimits?: { [key: number]: number } | undefined;
+  failureCorridorCounts?: { [key: number]: number } | undefined;
 }
 
 export interface ExecutionContext_FailureCorridorLimitsEntry {
@@ -144,51 +162,71 @@ export interface ExecutionContext_FailureCorridorCountsEntry {
 }
 
 export interface MethodContext {
-  contextValues?: ContextValues;
-  methodType?: MethodType;
+  contextValues?: ContextValues | undefined;
+  methodType?:
+    | MethodType
+    | undefined;
   /**
    * repeated string parameters = 8 [deprecated = true];
    *    repeated string method_tags = 9 [deprecated = true];
    */
-  retryNumber?: number;
-  methodRunIndex?: number;
-  threadName?: string;
+  retryNumber?: number | undefined;
+  methodRunIndex?: number | undefined;
+  threadName?:
+    | string
+    | undefined;
   /** TestStep failed_step = 13; */
-  failureCorridorValue?: FailureCorridorValue;
-  classContextId?: string;
+  failureCorridorValue?: FailureCorridorValue | undefined;
+  classContextId?:
+    | string
+    | undefined;
   /** @deprecated */
-  executionContextId?: string;
+  executionContextId?:
+    | string
+    | undefined;
   /**
    * repeated ErrorContext non_functional_infos = 17 [deprecated = true];
    *    repeated ErrorContext collected_assertions = 18 [deprecated = true];
    *
    * @deprecated
    */
-  infos?: string[];
+  infos?:
+    | string[]
+    | undefined;
   /** @deprecated */
-  priorityMessage?: string;
-  relatedMethodContextIds?: string[];
-  dependsOnMethodContextIds?: string[];
+  priorityMessage?: string | undefined;
+  relatedMethodContextIds?: string[] | undefined;
+  dependsOnMethodContextIds?:
+    | string[]
+    | undefined;
   /** @deprecated */
-  errorContext?: ErrorContext;
-  testSteps?: TestStep[];
+  errorContext?: ErrorContext | undefined;
+  testSteps?:
+    | TestStep[]
+    | undefined;
   /** @deprecated */
-  testContextId?: string;
+  testContextId?:
+    | string
+    | undefined;
   /** @deprecated */
-  suiteContextId?: string;
-  sessionContextIds?: string[];
+  suiteContextId?: string | undefined;
+  sessionContextIds?:
+    | string[]
+    | undefined;
   /**
    * repeated string video_ids = 30  [deprecated = true];
    *    repeated string screenshot_ids = 31 [deprecated = true];
    *    string custom_context_json = 32 [deprecated = true];
    */
-  failedStepIndex?: number;
-  resultStatus?: ResultStatusType;
-  parameters?: { [key: string]: string };
-  customContexts?: { [key: string]: string };
-  annotations?: { [key: string]: string };
+  failedStepIndex?: number | undefined;
+  resultStatus?: ResultStatusType | undefined;
+  parameters?: { [key: string]: string } | undefined;
+  customContexts?: { [key: string]: string } | undefined;
+  annotations?:
+    | { [key: string]: string }
+    | undefined;
   /** A custom generated test name (e.a. cucumber scenario) */
-  testName?: string;
+  testName?: string | undefined;
 }
 
 export interface MethodContext_ParametersEntry {
@@ -207,34 +245,42 @@ export interface MethodContext_AnnotationsEntry {
 }
 
 export interface ContextValues {
-  id?: string;
-  created?: number;
-  name?: string;
-  startTime?: number;
+  id?: string | undefined;
+  created?: number | undefined;
+  name?: string | undefined;
+  startTime?:
+    | number
+    | undefined;
   /**
    * string swi = 6 [deprecated = true];
    *    ResultStatusType result_status = 7 [deprecated = true];
    *    ExecStatusType exec_status = 8 [deprecated = true];
    */
-  endTime?: number;
+  endTime?: number | undefined;
 }
 
 export interface TestStep {
-  name?: string;
+  name?:
+    | string
+    | undefined;
   /** string id = 2; */
-  actions?: TestStepAction[];
+  actions?: TestStepAction[] | undefined;
 }
 
 export interface TestStepAction {
-  name?: string;
+  name?:
+    | string
+    | undefined;
   /** string id = 2; */
-  timestamp?: number;
+  timestamp?:
+    | number
+    | undefined;
   /**
    * repeated string screenshot_names = 4 [deprecated = true];
    *    repeated ClickPathEvent clickpath_events = 5 [deprecated = true];
    *    repeated string screenshot_ids = 6 [deprecated = true];
    */
-  entries?: TestStepActionEntry[];
+  entries?: TestStepActionEntry[] | undefined;
 }
 
 export interface TestStepActionEntry {
@@ -249,19 +295,19 @@ export interface TestStepActionEntry {
 }
 
 export interface ClickPathEvent {
-  type?: ClickPathEventType;
-  subject?: string;
-  sessionId?: string;
+  type?: ClickPathEventType | undefined;
+  subject?: string | undefined;
+  sessionId?: string | undefined;
 }
 
 export interface LogMessage {
-  type?: LogMessageType;
-  loggerName?: string;
-  message?: string;
-  timestamp?: number;
-  threadName?: string;
-  stackTrace?: StackTraceCause[];
-  prompt?: boolean;
+  type?: LogMessageType | undefined;
+  loggerName?: string | undefined;
+  message?: string | undefined;
+  timestamp?: number | undefined;
+  threadName?: string | undefined;
+  stackTrace?: StackTraceCause[] | undefined;
+  prompt?: boolean | undefined;
 }
 
 export interface ErrorContext {
@@ -271,87 +317,101 @@ export interface ErrorContext {
    *    StackTrace stack_trace = 3  [deprecated = true];
    *    string error_fingerprint = 6 [deprecated = true];
    */
-  scriptSource?: ScriptSource;
+  scriptSource?:
+    | ScriptSource
+    | undefined;
   /**
    * ScriptSource execution_object_source = 8 [deprecated = true];
    *
    * @deprecated
    */
-  ticketId?: string;
+  ticketId?:
+    | string
+    | undefined;
   /** @deprecated */
-  description?: string;
-  stackTrace?: StackTraceCause[];
-  optional?: boolean;
+  description?: string | undefined;
+  stackTrace?: StackTraceCause[] | undefined;
+  optional?: boolean | undefined;
 }
 
 export interface SessionContext {
-  contextValues?: ContextValues;
+  contextValues?:
+    | ContextValues
+    | undefined;
   /**
    * string session_key = 2 [deprecated = true];
    *    string provider = 3 [deprecated = true];
    *    map<string, string> metadata = 4 [deprecated = true];
    */
-  sessionId?: string;
-  videoId?: string;
-  executionContextId?: string;
-  browserName?: string;
-  browserVersion?: string;
-  capabilities?: string;
-  serverUrl?: string;
-  nodeUrl?: string;
+  sessionId?: string | undefined;
+  videoId?: string | undefined;
+  executionContextId?: string | undefined;
+  browserName?: string | undefined;
+  browserVersion?: string | undefined;
+  capabilities?: string | undefined;
+  serverUrl?: string | undefined;
+  nodeUrl?: string | undefined;
 }
 
 export interface RunConfig {
-  runcfg?: string;
-  buildInformation?: BuildInformation;
-  reportName?: string;
+  runcfg?: string | undefined;
+  buildInformation?: BuildInformation | undefined;
+  reportName?: string | undefined;
 }
 
 export interface BuildInformation {
-  buildJavaVersion?: string;
-  buildOsName?: string;
-  buildOsVersion?: string;
-  buildUserName?: string;
-  buildVersion?: string;
-  buildTimestamp?: string;
+  buildJavaVersion?: string | undefined;
+  buildOsName?: string | undefined;
+  buildOsVersion?: string | undefined;
+  buildUserName?: string | undefined;
+  buildVersion?: string | undefined;
+  buildTimestamp?: string | undefined;
 }
 
 export interface StackTraceCause {
-  className?: string;
-  message?: string;
+  className?: string | undefined;
+  message?:
+    | string
+    | undefined;
   /** StackTraceCause cause = 4 [deprecated = true]; */
-  stackTraceElements?: string[];
+  stackTraceElements?: string[] | undefined;
 }
 
 export interface ScriptSource {
-  fileName?: string;
-  methodName?: string;
-  lines?: ScriptSourceLine[];
-  mark?: number;
+  fileName?: string | undefined;
+  methodName?: string | undefined;
+  lines?: ScriptSourceLine[] | undefined;
+  mark?: number | undefined;
 }
 
 export interface ScriptSourceLine {
-  line?: string;
+  line?:
+    | string
+    | undefined;
   /** bool mark = 3 [deprecated = true]; */
-  lineNumber?: number;
+  lineNumber?: number | undefined;
 }
 
 export interface File {
   /** XID */
-  id?: string;
+  id?:
+    | string
+    | undefined;
   /** in bytes */
-  size?: number;
-  mimetype?: string;
+  size?: number | undefined;
+  mimetype?:
+    | string
+    | undefined;
   /** relative path based on project storage --> /projectID/jobID/XXX... */
-  relativePath?: string;
-  createdTimestamp?: number;
-  sha1Checksum?: Uint8Array;
-  meta?: { [key: string]: string };
-  lastModified?: number;
-  projectId?: string;
-  jobId?: string;
-  isDirectory?: boolean;
-  name?: string;
+  relativePath?: string | undefined;
+  createdTimestamp?: number | undefined;
+  sha1Checksum?: Uint8Array | undefined;
+  meta?: { [key: string]: string } | undefined;
+  lastModified?: number | undefined;
+  projectId?: string | undefined;
+  jobId?: string | undefined;
+  isDirectory?: boolean | undefined;
+  name?: string | undefined;
 }
 
 export interface File_MetaEntry {
@@ -2433,10 +2493,10 @@ export const File_MetaEntry = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var tsProtoGlobalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }

@@ -10,37 +10,37 @@ import {
 } from "./framework_pb";
 
 export interface ExecutionAggregate {
-  executionContext?: ExecutionContext;
-  suiteContexts?: { [key: string]: SuiteContext };
-  testContexts?: { [key: string]: TestContext };
-  classContexts?: { [key: string]: ClassContext };
-  methodContexts?: { [key: string]: MethodContext };
-  sessionContexts?: { [key: string]: SessionContext };
+  executionContext?: ExecutionContext | undefined;
+  suiteContexts?: { [key: string]: SuiteContext } | undefined;
+  testContexts?: { [key: string]: TestContext } | undefined;
+  classContexts?: { [key: string]: ClassContext } | undefined;
+  methodContexts?: { [key: string]: MethodContext } | undefined;
+  sessionContexts?: { [key: string]: SessionContext } | undefined;
 }
 
 export interface ExecutionAggregate_SuiteContextsEntry {
   key: string;
-  value?: SuiteContext;
+  value?: SuiteContext | undefined;
 }
 
 export interface ExecutionAggregate_TestContextsEntry {
   key: string;
-  value?: TestContext;
+  value?: TestContext | undefined;
 }
 
 export interface ExecutionAggregate_ClassContextsEntry {
   key: string;
-  value?: ClassContext;
+  value?: ClassContext | undefined;
 }
 
 export interface ExecutionAggregate_MethodContextsEntry {
   key: string;
-  value?: MethodContext;
+  value?: MethodContext | undefined;
 }
 
 export interface ExecutionAggregate_SessionContextsEntry {
   key: string;
-  value?: SessionContext;
+  value?: SessionContext | undefined;
 }
 
 function createBaseExecutionAggregate(): ExecutionAggregate {

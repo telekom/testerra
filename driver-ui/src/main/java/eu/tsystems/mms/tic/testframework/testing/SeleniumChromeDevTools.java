@@ -87,6 +87,7 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
                 Optional.of(latitude),
                 Optional.of(longitude),
                 Optional.of(accuracy)));
+        log().info("Changed geolocation information to lat={}, long={}", latitude, longitude);
     }
 
     @Override
@@ -110,6 +111,7 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
             headers.put("authorization", "Basic " + Base64.getEncoder().encodeToString(authByteArray));
             devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
             devTools.send(Network.setExtraHTTPHeaders(new Headers(headers)));
+            log().info("Set credentials for basic authentication");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Cannot set basic authentication", e);
         }

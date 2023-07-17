@@ -65,6 +65,7 @@ export function configure(aurelia: Aurelia) {
             PLATFORM.moduleName('components/alert/alert.html'),
             PLATFORM.moduleName('components/lazy-image/lazy-image'),
             PLATFORM.moduleName('components/lazy-video/lazy-video'),
+            PLATFORM.moduleName('components/timings/timings'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/object-values-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/highlight-text-value-converter'),
             PLATFORM.moduleName('t-systems-aurelia-components/src/value-converters/duration-format-value-converter'),

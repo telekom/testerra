@@ -127,13 +127,13 @@ export class App {
                 nav: true,
                 title: 'Threads'
             },
-            // {
-            //     route: 'timings',
-            //     name: 'Timings',
-            //     moduleId: PLATFORM.moduleName('components/timings'),
-            //     nav: true,
-            //     title: 'Timings'
-            // },
+            {
+                route: 'timings',
+                name: 'timings',
+                moduleId: PLATFORM.moduleName('components/timings/timings'),
+                nav: true,
+                title: 'Timings'
+            },
             // {
             //     route: 'jvm-monitor',
             //     name: 'JVM Monitor',

@@ -58,7 +58,7 @@ public class TestDataProvider {
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
                 {5, Status.FAILED},
-                {3, Status.FAILED_EXPECTED},
+                {4, Status.FAILED_EXPECTED},
                 {4, Status.SKIPPED},
                 {5, Status.PASSED}
         };

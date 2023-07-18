@@ -27,30 +27,30 @@ import {Config} from "./config-dev";
 import {data} from "./report-model";
 import {StatusConverter} from "./status-converter";
 
-export interface ILogEntry extends data.ILogMessage {
-    methodContext?: data.IMethodContext;
-    index?:number,
-    cause?:string;
+export interface ILogEntry extends data.LogMessage {
+    methodContext?: data.MethodContext;
+    index?: number,
+    cause?: string;
 }
 
 export class MethodDetails {
     executionStatistics: ExecutionStatistics;
-    testContext: data.ITestContext;
-    suiteContext: data.ISuiteContext;
-    sessionContexts:data.ISessionContext[];
-    private _identifier:string = null;
-    static readonly FAILS_ANNOTATION_NAME="eu.tsystems.mms.tic.testframework.annotations.Fails";
-    static readonly TEST_ANNOTATION_NAME="org.testng.annotations.Test";
-    static readonly XRAY_ANNOTATION_NAME="eu.tsystems.mms.tic.testerra.plugins.xray.annotation.XrayTest";
+    testContext: data.TestContext;
+    suiteContext: data.SuiteContext;
+    sessionContexts: data.SessionContext[];
+    private _identifier: string = null;
+    static readonly FAILS_ANNOTATION_NAME = "eu.tsystems.mms.tic.testframework.annotations.Fails";
+    static readonly TEST_ANNOTATION_NAME = "org.testng.annotations.Test";
+    static readonly XRAY_ANNOTATION_NAME = "eu.tsystems.mms.tic.testerra.plugins.xray.annotation.XrayTest";
 
     private _decodedAnnotations = {};
     private _decodedCustomContexts = {};
-    private _failureAspects:FailureAspectStatistics[] = null;
+    private _failureAspects: FailureAspectStatistics[] = null;
     private _numDetails = -1;
 
     constructor(
-        readonly methodContext:data.IMethodContext,
-        readonly classStatistics:ClassStatistics,
+        readonly methodContext: data.MethodContext,
+        readonly classStatistics: ClassStatistics,
     ) {
     }
 
@@ -208,7 +208,7 @@ export class StatisticsGenerator {
         });
     }
 
-    getScreenshotIdsFromMethodContext(methodContext:data.IMethodContext):string[] {
+    getScreenshotIdsFromMethodContext(methodContext: data.MethodContext): string[] {
         return methodContext.testSteps
             .flatMap(value => value.actions)
             .flatMap(value => value.entries)
@@ -217,7 +217,7 @@ export class StatisticsGenerator {
     }
 
     getFilesForIds(fileIds:string[]) {
-        const files:data.IFile[] = [];
+        const files: data.File[] = [];
         const allFilePromises = [];
         fileIds.forEach(fileId => {
             const loadingPromise = this._getFileForId(fileId).then(file => {

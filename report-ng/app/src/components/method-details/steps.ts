@@ -37,28 +37,28 @@ enum EntryType {
 }
 
 class TestStepActionGroup {
-    readonly screenshotIds:string[]=[];
-    readonly clickPathEvents:data.IClickPathEvent[]=[];
-    readonly logMessages:data.ILogMessage[]=[];
-    readonly errorContexts:data.IErrorContext[]=[];
+    readonly screenshotIds: string[] = [];
+    readonly clickPathEvents: data.ClickPathEvent[] = [];
+    readonly logMessages: data.LogMessage[] = [];
+    readonly errorContexts: data.ErrorContext[] = [];
 
-    addScreenshotId(screenshotId:string) {
+    addScreenshotId(screenshotId: string) {
         this.screenshotIds.push(screenshotId);
     }
 
-    addErrorContext(errorContext:data.IErrorContext) {
+    addErrorContext(errorContext: data.ErrorContext) {
         this.errorContexts.push(errorContext);
     }
 
-    addClickPathEvent(clickPathEvent:data.IClickPathEvent) {
+    addClickPathEvent(clickPathEvent: data.ClickPathEvent) {
         this.clickPathEvents.push(clickPathEvent);
     }
 
-    addLogMessage(logMessage:data.ILogMessage) {
+    addLogMessage(logMessage: data.LogMessage) {
         this.logMessages.push(logMessage);
     }
 
-    static getEntryType(entry:data.ITestStepActionEntry) {
+    static getEntryType(entry: data.TestStepActionEntry) {
         if (entry.screenshotId) {
             return EntryType.SCREENSHOT;
         } else if (entry.errorContext) {
@@ -71,8 +71,8 @@ class TestStepActionGroup {
     }
 }
 
-interface TestStepActionDetails extends data.ITestStepAction {
-    groups:TestStepActionGroup[];
+interface TestStepActionDetails extends data.TestStepAction {
+    groups: TestStepActionGroup[];
 }
 
 @autoinject()

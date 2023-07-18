@@ -4,7 +4,12 @@ Selenium 4 supports the access to the Chrome developer tools. Testerra provides 
 
 You can find some more examples at https://www.selenium.dev/documentation/webdriver/bidirectional/chrome_devtools/.
 
-NOTE: As the name says, it only works in Chrome browser. :-)
+[NOTE]
+====
+* As the name says, it only works in Chrome browser. :-)
+* If you're running your tests against a grid, check the CDP compatible Chrome versions in https://github.com/SeleniumHQ/selenium/blob/trunk/java/CHANGELOG[Selenium release notes]
+====
+
 
 == Set basic authentication
 

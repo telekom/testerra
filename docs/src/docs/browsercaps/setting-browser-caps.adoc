@@ -13,33 +13,7 @@ WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options 
 });
 ----
 
-NOTE: Have a look into <<Browser specific knowledge>> for specific browser options.
-
-NOTE: Since Selenium 4 the `DesiredCapabilties` are replaced by browser options (https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4).
-
-= Request capabilities
-
-Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`. It's used to specify a single WebDriver session.
-
-.Set capabilities to a DesktopWebDriverRequest object
-[source,java]
-----
-DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-DesiredCapabilities caps = request.getDesiredCapabilities();
-caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-// Start your session with the DesktopWebDriverRequest object
-WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-----
-
-[NOTE]
-=====
-Have a look into <<Browser specific knowledge>> for specific browser options. +
-Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
-=====
-
-= Custom capabilties
-
-Non-standard capabilties need a vendor prefix and can be set as follows:
+Non-standard capabilities need a vendor prefix and can be set as follows:
 
 [source,java]
 ----
@@ -50,6 +24,31 @@ WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options 
     options.setCapability("custom:caps", customCaps);
 });
 ----
+
+NOTE: Have a look into <<Browser specific knowledge>> for specific browser options.
+
+= Request capabilities
+
+Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`. It's used to specify a single WebDriver session.
+
+.Set capabilities to a DesktopWebDriverRequest object
+[source,java]
+----
+DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+MutableCapabilities caps = request.getMutableCapabilities();
+caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+
+// Start your session with the DesktopWebDriverRequest object
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+----
+
+[NOTE]
+=====
+* Have a look into <<Browser specific knowledge>> for specific browser options.
+* Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
+* Since Selenium 4 browser options should use instead of `DesiredCapabilties` (https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4). +
+Therefore `request.getDesiredCapabilities()` is deprecated.
+=====
 
 = Global capabilities with `WEB_DRIVER_MANAGER` (*@deprecated*)
 

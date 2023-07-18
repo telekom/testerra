@@ -10,7 +10,6 @@ The following code setups a proxy based on the <<Using a proxy,System's proxy co
 [source,java]
 ----
 import org.testng.annotations.BeforeSuite;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
 import org.openqa.selenium.Proxy;

@@ -5,6 +5,7 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.Test;
 
@@ -31,6 +32,22 @@ public class Selenium4_vs_3_Tests extends AbstractWebDriverTest {
         request.setBrowserVersion("110");
         request.setBaseUrl("https://the-internet.herokuapp.com/");
 
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+    }
+
+    @Test
+    public void testBrowserCapsW3C_Selenium3() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        DesiredCapabilities caps = request.getDesiredCapabilities();
+        caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+    }
+
+    @Test
+    public void testBrowserCapsW3C_Selenium4() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        MutableCapabilities caps = request.getMutableCapabilities();
+        caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
     }
 

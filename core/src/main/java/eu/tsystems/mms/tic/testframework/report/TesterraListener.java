@@ -402,12 +402,16 @@ public class TesterraListener implements
 
     }
 
+    /**
+     * This is only a fallback when 'afterInvocation was not called.' This could happen when TestNG runs into an exception, e.g.
+     * the Test method points to a non-existing dataprovider.
+     * Therefor the events will only post if the corresponding MethodContext has no status.
+     */
     @Override
     public void onTestFailure(ITestResult iTestResult) {
         InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), iTestResult);
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
-        // 'afterInvocation' was not executed
-        // e.g. the Test method points to an non-existing dataprovider --> TestNG exception
+
         if (methodContext != null && methodContext.getStatus() == Status.NO_RUN) {
             AbstractMethodEvent event = new MethodEndEvent()
                     .setTestResult(iTestResult)

@@ -25,10 +25,10 @@ import {StatusConverter} from "./status-converter";
 import ResultStatusType = data.ResultStatusType;
 import ExecutionAggregate = data.ExecutionAggregate;
 import MethodType = data.MethodType;
-import IMethodContext = data.IMethodContext;
-import IClassContext = data.IClassContext;
-import IErrorContext = data.IErrorContext;
-import IStackTraceCause = data.IStackTraceCause;
+import IMethodContext = data.MethodContext;
+import IClassContext = data.ClassContext;
+import IErrorContext = data.ErrorContext;
+import IStackTraceCause = data.StackTraceCause;
 import {MethodDetails} from "./statistics-generator";
 
 class Statistics {
@@ -133,7 +133,7 @@ export class ExecutionStatistics extends Statistics {
         this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
     }
 
-    private _addUniqueFailureAspect(failureAspect: FailureAspectStatistics, methodContext: data.IMethodContext) {
+    private _addUniqueFailureAspect(failureAspect: FailureAspectStatistics, methodContext: data.MethodContext) {
         const foundFailureAspect = this._uniqueFailureAspects.find(existingFailureAspectStatistics => {
             return existingFailureAspectStatistics.identifier == failureAspect.identifier;
         });
@@ -229,13 +229,8 @@ export class FailureAspectStatistics extends Statistics {
             this.identifier = this.errorContext.description;
             this.message = this.errorContext.description;
         } else if (this.relevantCause) {
-            // Cut the identifier message to first occurrence of line-break
-            const breakPos = this.relevantCause.message?.indexOf("\n");
-            if (breakPos >= 0) {
-                this.message = this.relevantCause.message.substring(0, breakPos);
-            } else {
-                this.message = this.relevantCause.message;
-            }
+            // Replace all occurring line-breaks with a space-character
+            this.message = this.relevantCause.message.replaceAll('\n', ' ');
             this.message = this.message.trim();
             this.identifier = this.relevantCause.className + this.message;
         }

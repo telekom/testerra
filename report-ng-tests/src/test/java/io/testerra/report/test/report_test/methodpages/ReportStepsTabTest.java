@@ -42,7 +42,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
     public void testT01_passedTestsWithoutFailureAspectsLinkToStepsTab(String method) {
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -61,7 +61,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         final String failureAspect = data.getFailureAspects()[0];
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -74,16 +74,16 @@ public class ReportStepsTabTest extends AbstractReportTest {
 
     @Test
     public void testT03_assertCollectorsAreListedInTestSteps(){
-        String preTestCollectorMethod = "testAssertCollector"; //testAssertCollector //index on Page: 3 but offset 1 (Starts counting with 1)
+        String preTestCollectorMethod = "test_AssertCollector"; //test_AssertCollector //index on Page: 3 but offset 1 (Starts counting with 1)
         String expectedStatement = "AssertCollector";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Navigate to report method page of testAssertCollector()");
+        TestStep.begin("Navigate to report method page of test_AssertCollector()");
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(preTestCollectorMethod);
 
         TestStep.begin("Navigate to test steps tab");
@@ -98,7 +98,7 @@ public class ReportStepsTabTest extends AbstractReportTest {
         String repairedTest = "test_expectedFailedPassed";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);

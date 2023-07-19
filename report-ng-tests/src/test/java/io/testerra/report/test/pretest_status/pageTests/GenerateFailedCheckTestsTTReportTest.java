@@ -16,7 +16,7 @@ public class GenerateFailedCheckTestsTTReportTest extends AbstractTestSitesTest 
 
     private final static TestPage testPage = TestPage.DUMMY_TEST_PAGE_2;
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void preTest01_collectCheck() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
@@ -25,7 +25,7 @@ public class GenerateFailedCheckTestsTTReportTest extends AbstractTestSitesTest 
 
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void preTest03_prioritizedErrorMessageCheck() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
@@ -33,7 +33,7 @@ public class GenerateFailedCheckTestsTTReportTest extends AbstractTestSitesTest 
         PAGE_FACTORY.createPage(PrioritizedErrorMessageCheckPage.class);
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void preTest04_timeoutCheck() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
@@ -42,7 +42,7 @@ public class GenerateFailedCheckTestsTTReportTest extends AbstractTestSitesTest 
     }
 
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void preTest05_checkRule_IS_DISPLAYED_check() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
@@ -50,7 +50,7 @@ public class GenerateFailedCheckTestsTTReportTest extends AbstractTestSitesTest 
         PAGE_FACTORY.createPage(CheckRule_IS_DISPLAYED_CheckPage.class);
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void preTest06_checkRule_IS_NOT_DISPLAYED_check() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
@@ -58,7 +58,7 @@ public class GenerateFailedCheckTestsTTReportTest extends AbstractTestSitesTest 
         PAGE_FACTORY.createPage(CheckRule_IS_NOT_DISPLAYED_CheckPage.class);
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void preTest07_checkRule_IS_PRESENT_check() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
@@ -66,7 +66,7 @@ public class GenerateFailedCheckTestsTTReportTest extends AbstractTestSitesTest 
         PAGE_FACTORY.createPage(CheckRule_IS_PRESENT_CheckPage.class);
     }
 
-    @Test
+    @Test(groups = {Groups.EXT})
     public void preTest08_checkRule_IS_NOT_PRESENT_check() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);

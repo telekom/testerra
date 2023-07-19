@@ -435,7 +435,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             }
         });
 
-        if (!step.actualFileDimension.equals(step.referenceFileDimension)) {
+        if (!isMatchDimensions(step)) {
             OptionalAssert.fail(
                     String.format(
                             "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
@@ -458,6 +458,10 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
             methodContext.addCustomContext(context);
         });
+    }
+
+    public static boolean isMatchDimensions(final MatchStep step) {
+        return step.actualFileDimension.equals(step.referenceFileDimension);
     }
 
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {

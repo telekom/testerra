@@ -29,11 +29,11 @@ import org.testng.annotations.Test;
 
 public class GeneratePassedStatusInTesterraReportTest extends AbstractTestSitesTest {
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     public void test_Passed() {
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     public void test_Optional_Assert() {
         OptionalAssert.fail("minor fail");
     }

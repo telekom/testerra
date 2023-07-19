@@ -21,8 +21,6 @@
 
 package io.testerra.report.test.pretest_status.simple;
 
-import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-
 import io.testerra.report.test.AbstractTestSitesTest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -30,12 +28,12 @@ import org.testng.annotations.Test;
 
 public class GenerateSkippedStatusViaBeforeMethodInTesterraReportTest extends AbstractTestSitesTest {
 
-    @BeforeMethod()
+    @BeforeMethod(groups = {Groups.BASIC})
     public void beforeMethodFailing() {
         Assert.fail("Error in @BeforeMethod");
     }
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     public void test_Skipped_AfterErrorInBeforeMethod() {
 //    Skipped due to failing before method
     }

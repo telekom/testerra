@@ -23,7 +23,7 @@ import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {data} from "../../services/report-model";
-import IErrorContext = data.IErrorContext;
+import IErrorContext = data.ErrorContext;
 
 @autoinject()
 export class Assertions {

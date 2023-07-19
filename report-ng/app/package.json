@@ -39,20 +39,19 @@
         "aurelia-templating": "^1.10.4",
         "aurelia-typed-observable-plugin": "^0.4.2",
         "aurelia-ui-virtualization": "^1.0.0-rc2",
-        "highlight.js": "^10.3.2",
+        "highlight.js": "^11.8.0",
         "moment": "^2.29.4",
         "moment-duration-format": "^2.3.2",
-        "pixelmatch": "^5.2.1",
-        "protobufjs": "^6.11.3",
-        "t-systems-aurelia-components": "^1.0.21",
+        "t-systems-aurelia-components": "^1.1.0",
         "ts-replace-all": "^1.0.0",
         "vis-network": "^7.4.2",
         "vis-timeline": "^7.4.6"
     },
     "devDependencies": {
+        "@protobuf-ts/protoc": "^2.9.0",
         "@types/lodash": "^4.14.165",
         "@types/node": "^13.13.30",
-        "@types/webpack": "^5.28.0",
+        "@types/webpack": "^5.28.1",
         "aurelia-loader-nodejs": "^1.1.0",
         "aurelia-pal-nodejs": "^3.0.0-rc.1",
         "aurelia-webpack-plugin": "^5.0.3",
@@ -69,11 +68,12 @@
         "sass-loader": "^10.1.0",
         "through2": "^3.0.1",
         "tree-kill": "^1.2.1",
-        "ts-loader": "^6.2.1",
-        "ts-node": "^8.6.2",
-        "typescript": "^3.8.2",
+        "ts-loader": "^9.4.4",
+        "ts-node": "^10.9.1",
+        "ts-proto": "^1.155.1",
+        "typescript": "^5.1.6",
         "url-loader": "^3.0.0",
-        "webpack": "^5.62.1",
+        "webpack": "^5.76.0",
         "webpack-bundle-analyzer": "^4.5.0",
         "webpack-cli": "^4.9.1",
         "webpack-dev-server": "^4.4.0"
@@ -83,6 +83,6 @@
         "start": "webpack-dev-server",
         "build:dev": "webpack",
         "analyze": "webpack --env production --analyze",
-        "generateProto": "pbjs --no-create --no-encode --no-verify --no-convert --no-delimited --no-beautify --force-number -t static-module --es6 -w es6 -o src/services/report-model.js ../../report-model/src/main/proto/*.proto && pbts -o src/services/report-model.d.ts src/services/report-model.js"
+        "generateProto": "npx protoc --plugin=.\\node_modules\\.bin\\protoc-gen-ts_proto --ts_proto_opt=outputJsonMethods=false --ts_proto_opt=outputPartialMethods=false --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=outputIndex=true --ts_proto_opt=forceLong=number --ts_proto_opt=useOptionals=all --ts_proto_opt=esModuleInterop=true --ts_proto_opt=fileSuffix=_pb --ts_proto_out=src/services/report-model --proto_path=../../report-model/src/main/proto report.proto"
     }
 }

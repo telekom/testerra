@@ -20,27 +20,27 @@ public class GenerateLayoutTestsTTReportTest extends AbstractTestSitesTest {
 
         TestStep.begin("create page object and take screenshot");
         PAGE_FACTORY.createPage(UniversalPage.class).expect()
-                .screenshot().pixelDistance("inputHtml_chromeHeadless").isLowerThan(screenshotPixelDistance);
+                .screenshot().pixelDistance("inputHtml_image2").isLowerThan(screenshotPixelDistance);
     }
 
     @Test(groups = {Groups.EXT})
-    public void layoutTest02_layoutTestPassing(){
+    public void layoutTest02_layoutTestPassing() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
         double screenshotPixelDistance = 5.0;
 
         PAGE_FACTORY.createPage(UniversalPage.class).expect()
-                .screenshot().pixelDistance("inputHtml_chromeHeadless").isLowerThan(screenshotPixelDistance);
+                .screenshot().pixelDistance("inputHtml_image2").isLowerThan(screenshotPixelDistance);
     }
 
     @Test(groups = {Groups.EXT})
-    public void layoutTest03_layoutTestPassingWithMinor(){
+    public void layoutTest03_layoutTestPassingWithMinor() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
         double screenshotPixelDistance = 5.0;
 
         PAGE_FACTORY.createPage(UniversalPage.class).expect()
-                .screenshot().pixelDistance("inputHtml_chrome").isLowerThan(screenshotPixelDistance);
+                .screenshot().pixelDistance("inputHtml_image1").isLowerThan(screenshotPixelDistance);
     }
 
 }

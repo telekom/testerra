@@ -141,14 +141,7 @@ export class App {
                 nav: true,
                 title: 'Threads - ECharts'
             },
-            // {
-            //     route: 'threads4',
-            //     name: 'threads4',
-            //     moduleId: PLATFORM.moduleName('components/threads4/threads4'),
-            //     nav: true,
-            //     title: 'Threads - ECharts'
-            // }
-            // ,
+
             // {
             //     route: 'timings',
             //     name: 'Timings',

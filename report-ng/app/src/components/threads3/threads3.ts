@@ -59,6 +59,7 @@ export class Threads3 extends AbstractViewModel {
     private _threadHeight = 50;                 // height of y-axis categories in pixel
     private _sliderSpacingFromChart = 90;      // distance between chart and dataZoom-slider in pixel
     private _cardHeight;
+    private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -125,6 +126,7 @@ export class Threads3 extends AbstractViewModel {
         const zoomStart = dataToZoomInOn.value[1];
         const zoomEnd = dataToZoomInOn.value[2];
         const spacing = (zoomEnd - zoomStart) * 0.05;
+        const opacity = this._opacityOfInactiveElements;
 
         // const style = new Map<number, string>();
         // style.set(ResultStatusType.PASSED, '#417336');
@@ -140,7 +142,7 @@ export class Threads3 extends AbstractViewModel {
             const mid = value.value[6];
             if (mid != methodId) {
                 // value.itemStyle.normal.color = style.get(value.value[7]);
-                value.itemStyle.normal.opacity = 0.38;
+                value.itemStyle.normal.opacity = opacity;
             }
         });
 

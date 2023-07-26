@@ -110,7 +110,7 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
 
     private AtomicInteger counter = new AtomicInteger(0);
 
-//    @Test(dataProvider = "dataProviderSimple")
+    @Test(dataProvider = "dataProviderSimple")
     public void testT08_DataProviderWithRetry(String dp) {
         if ("failed".equals(dp)) {
             this.counter.incrementAndGet();

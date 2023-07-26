@@ -72,6 +72,8 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"afterMethodSetup02", Status.FAILED},
                 {"afterClassSetup01", Status.FAILED},
                 {"afterClassSetup02", Status.FAILED},
+                {"testT08_DataProviderWithRetry", Status.FAILED},
+                {"testT08_DataProviderWithRetry", Status.PASSED}
         };
     }
 
@@ -117,13 +119,13 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
                 {"*** Stats: ClassContexts:  14", "ClassContext"},
-                {"*** Stats: MethodContexts: 70", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 56 (46 relevant)", "Test methods"},
+                {"*** Stats: MethodContexts: 73", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 59 (48 relevant)", "Test methods"},
                 {"*** Stats: Failed: 10", "Failed tests"},
-                {"*** Stats: Retried: 10", "Retried tests"},
+                {"*** Stats: Retried: 11", "Retried tests"},
                 {"*** Stats: Expected Failed: 7", "Expected failed tests"},
                 {"*** Stats: Skipped: 9", "Skipped tests"},
-                {"*** Stats: Passed: 20 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
+                {"*** Stats: Passed: 22 ⊃ Recovered: 5 ⊃ Repaired: 1", "Passed tests"}
         };
     }
 

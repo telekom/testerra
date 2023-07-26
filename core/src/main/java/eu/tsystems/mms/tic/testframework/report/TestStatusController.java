@@ -73,7 +73,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
         }
         methodContext.updateEndTimeRecursive(new Date());
 
-        // Only add status count for tests, not config methds
+        // Only add status count for tests, not config methods
         if (methodContext.isTestMethod()) {
             statusCounter.increment(methodContext);
 

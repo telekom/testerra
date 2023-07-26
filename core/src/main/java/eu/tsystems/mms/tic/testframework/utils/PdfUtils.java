@@ -19,16 +19,18 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+package eu.tsystems.mms.tic.testframework.utils;
 
-import org.apache.pdfbox.cos.COSDocument;
-import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Class for Reading Pdfs
@@ -37,8 +39,16 @@ import java.io.*;
  */
 public final class PdfUtils {
 
-    /** Logger */
+    /**
+     * Logger
+     */
     private static final Logger LOG = LoggerFactory.getLogger(PdfUtils.class);
+
+    /**
+     * Hide constructor.
+     */
+    private PdfUtils() {
+    }
 
     /**
      * Get content of pdf as string.
@@ -67,17 +77,11 @@ public final class PdfUtils {
      * @return PDF content as String
      */
     public static String getStringFromPdf(InputStream stream) {
-        PDFParser parser = null;
-        COSDocument cosDoc = null;
         PDDocument pdDoc = null;
         PDFTextStripper stripper = null;
         String parsedtext = null;
         try {
-            parser = new PDFParser(stream);
-
-            parser.parse();
-            cosDoc = parser.getDocument();
-            pdDoc = new PDDocument(cosDoc);
+            pdDoc = PDDocument.load(stream);
             stripper = new PDFTextStripper();
             parsedtext = stripper.getText(pdDoc);
             return parsedtext;
@@ -93,11 +97,5 @@ public final class PdfUtils {
                 LOG.debug("error closing pdf stream", e);
             }
         }
-    }
-
-    /**
-     * Hide constructor.
-     */
-    private PdfUtils() {
     }
 }

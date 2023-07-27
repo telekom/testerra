@@ -116,7 +116,7 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
             this.counterDp.incrementAndGet();
             if (counterDp.get() == 1) {
                 // Retry message is defined in test.properties
-                Assert.fail("test_T07_RetriedDataProvider");
+                Assert.fail("test_T08_RetriedDataProvider");
             }
         }
     }

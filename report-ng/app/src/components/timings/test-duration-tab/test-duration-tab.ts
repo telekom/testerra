@@ -34,7 +34,7 @@ import moment from "moment";
 export class TestDurationTab extends AbstractViewModel {
 
     private _echart_test_duration: HTMLDivElement = undefined;
-    private _myChart: ECharts = undefined;
+    private _chart: ECharts = undefined;
     private _executionStatistics: ExecutionStatistics
     private _option: EChartsOption;
     private _attached = false;
@@ -139,8 +139,8 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _createChart() {
-        this._myChart = echarts.init(this._echart_test_duration);
-        this._option && this._myChart.setOption(this._option)
+        this._chart = echarts.init(this._echart_test_duration);
+        this._option && this._chart.setOption(this._option)
     }
 
     private _prepareData(durations: number[], names: string[], ids: string[]) {

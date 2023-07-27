@@ -29,7 +29,7 @@ import {ECharts, EChartsOption} from "echarts";
 export class PageTimingsTab extends AbstractViewModel {
 
     private _echart_page_timings: HTMLDivElement = undefined;
-    private _myChart: ECharts = undefined;
+    private _chart: ECharts = undefined;
 
     private _pageData = [
         [0, 1700, 1400, 1200, 300, 0],
@@ -64,8 +64,8 @@ export class PageTimingsTab extends AbstractViewModel {
     }
 
     private _createChart() {
-        this._myChart = echarts.init(this._echart_page_timings);
-        this._option && this._myChart.setOption(this._option);
+        this._chart = echarts.init(this._echart_page_timings);
+        this._option && this._chart.setOption(this._option);
     }
 
     private _updateOption(labels, data) {
@@ -133,6 +133,6 @@ export class PageTimingsTab extends AbstractViewModel {
         } else {
             this._updateOption(this._pageLabels, this._pageData);
         }
-        this._myChart.setOption(this._option, false);
+        this._chart.setOption(this._option, false);
     }
 }

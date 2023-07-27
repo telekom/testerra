@@ -22,6 +22,7 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -207,18 +208,14 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return df.format(amount / total).replace(" ", "");
     }
 
+    // Test classes chart
     public void assertPopupWhileHoveringWithCorrectContent(Status status) {
         for (UiElement bar : segmentsOfBarsPerTestStatus.list().stream().collect(Collectors.toList())) {
             bar.hover();
-            TimerUtils.sleep(10_000);
-            //String popUpTestStatePath = "//*[contains(@class,'apexcharts-canvas')]//div[contains(@class,'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-label']";
-            String popUpTestStatePath = "//div[contains(@class,'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-label']";
-
-            Optional<UiElement> popUpTestState = find(By.xpath(popUpTestStatePath)).list()
-                    .stream()
-                    .filter(uiElement -> uiElement.expect().text().getActual().contains(status.title)) //text().contains(...) oder text().isContaining(...) funktioniert nicht, da dort schon ein assert mit ausgeführt wird
-                    .findFirst();
-            Assert.assertTrue(popUpTestState.isPresent(), "Should find a text element, which contains the corresponding state description!");
+            TimerUtils.sleep(5_000);
+            PreparedLocator tooltip = LOCATE.prepare("//div[contains(@class, 'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-y-label' and contains(text(), '%s')]");
+            UiElement tooltipElement = testClassesElement.find(tooltip.with(status.title));
+            tooltipElement.assertThat().present(true);
         }
     }
 

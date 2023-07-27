@@ -45,7 +45,7 @@ export class Timings extends AbstractViewModel {
                 name: "test duration tab",
                 title: 'Test Duration',
                 settings: {
-                    icon: "center_focus_strong"
+                    icon: "dns"
                 }
             },
             {
@@ -55,7 +55,7 @@ export class Timings extends AbstractViewModel {
                 name: "page timings tab",
                 title: 'Page Timings',
                 settings: {
-                    icon: "center_focus_strong"
+                    icon: "desktop_windows"
                 }
             },
         ]);

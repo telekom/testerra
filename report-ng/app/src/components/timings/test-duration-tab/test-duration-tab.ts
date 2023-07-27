@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -26,7 +26,8 @@ import * as echarts from 'echarts';
 import {ECharts, EChartsOption} from 'echarts';
 import "./test-duration-tab.scss";
 import {ExecutionStatistics} from "services/statistic-models";
-import {StatisticsGenerator} from "services/statistics-generator";
+import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import moment from "moment";
 
 
 @autoinject()
@@ -35,25 +36,11 @@ export class TestDurationTab extends AbstractViewModel {
     private _echart_test_duration: HTMLDivElement = undefined;
     private _myChart: ECharts = undefined;
     private _executionStatistics: ExecutionStatistics
-    private _option: EChartsOption = {
-        xAxis: {
-            type: 'category',
-            data: ['0s', '2s', '4s', '6s', '8s', '10s', '12s']
-        },
-        yAxis: {
-            type: 'value',
-        },
-        series: [
-            {
-                data: [12, 2, 1, 1, 0, 1, 2],
-                type: 'bar',
-                itemStyle: {
-                    color: '#6897EA',
-                }
-            }
-        ]
-    };
+    private _option: EChartsOption;
     private _attached = false;
+    private _hasEnded = false;
+    private _methodDetails: MethodDetails[];
+    private _durationOptions: IDurationOptions;
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
@@ -63,13 +50,88 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     attached() {
+        this._methodDetails = [];
+
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
+            executionStatistics.classStatistics
+                .forEach(classStatistic => {
+                    let methodContexts = classStatistic.methodContexts;
+                    let methodDetails = methodContexts.map(methodContext => {
+                        return new MethodDetails(methodContext, classStatistic);
+                    });
+                    methodDetails.forEach(methodDetails => {
+                        this._methodDetails.push(methodDetails);
+                    })
+                })
+
+            const names = [];
+            const ids = [];
+            const durations = [];
+
+            this._methodDetails.forEach(method => {
+                names.push(method.methodContext.contextValues.name);
+                ids.push(method.methodContext.contextValues.id);
+                durations.push(this._updateDuration(method.methodContext.contextValues.startTime, method.methodContext.contextValues.endTime));
+            })
+
+            this._prepareData(durations,names,ids);
+
+        }).finally(() => {
+            this._option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    // this enables that the y coordinate stays the same => should facilitate clicking inside later on
+                    // position: function (point) {
+                    //     var x = point[0]-100;
+                    //     return [x.toString(), '20%'];
+                    // },
+                    formatter: function (params) {
+                        if (params.length > 0) {
+                            const dataIndex = params[0].dataIndex; // gives the index of the data point for bar chart
+                            const testNumber = this._durationOptions.durationAmount[dataIndex];
+                            const testNames = this._durationOptions.testNames;
+
+                            let tooltipString = testNumber + ` test cases: <br>`;
+                            tooltipString += "<ul>";
+
+                            testNames[dataIndex].forEach(testCase => {
+                                tooltipString += `<li>${testCase}</li>`;
+                            });
+
+                            tooltipString += "</ul>";
+                            return tooltipString;
+                        }
+                        return ""; // Return an empty string if no data points are hovered on
+                    }.bind(this), // Binding the current context to the formatter function to access this._durationOptions
+                },
+                xAxis: {
+                    type: 'category',
+                    data: this._durationOptions.labels, //TODO: add dynamic scaling to the axis
+                },
+                yAxis: {
+                    type: 'value',
+                    minInterval: 1, //allows only integer values
+                },
+                series: [
+                    {
+                        data: this._durationOptions.durationAmount,
+                        type: 'bar',
+                        itemStyle: {
+                            color: '#6897EA',
+                        }
+                    }
+                ]
+            };
+
+            this._attached = true;
+            if (this._option) {
+                this._createChart();
+            }
         })
-        this._attached = true;
-        if (this._option) {
-            this._createChart();
-        }
     }
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
@@ -80,4 +142,46 @@ export class TestDurationTab extends AbstractViewModel {
         this._myChart = echarts.init(this._echart_test_duration);
         this._option && this._myChart.setOption(this._option)
     }
+
+    private _prepareData(durations: number[], names: string[], ids: string[]) {
+        const nameMap: { [duration: number]: string[] } = {};
+        const idMap: { [duration: number]: string[] } = {};
+        const dataCountMap: { [duration: number]: number } = {};
+
+        durations.forEach((datum, index) => {
+            if (!dataCountMap.hasOwnProperty(datum)) {
+                dataCountMap[datum] = 0;
+                nameMap[datum] = [];
+                idMap[datum] = [];
+            }
+
+            dataCountMap[datum]++;
+            nameMap[datum].push(names[index]);
+            idMap[datum].push(ids[index]);
+        });
+
+        this._durationOptions = {
+            labels: Object.keys(dataCountMap).map(count => `${count}s`),
+            durationAmount: Object.values(dataCountMap),
+            testIds: Object.values(idMap),
+            testNames: Object.values(nameMap),
+        };
+    }
+
+    private _updateDuration(startTime, endTime) {
+        if (!endTime) {
+            this._hasEnded = false;
+            endTime = new Date().getMilliseconds();
+        } else {
+            this._hasEnded = true;
+        }
+        return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
+    }
+}
+
+export interface IDurationOptions {
+    labels: string[];
+    durationAmount: number[];
+    testNames;
+    testIds;
 }

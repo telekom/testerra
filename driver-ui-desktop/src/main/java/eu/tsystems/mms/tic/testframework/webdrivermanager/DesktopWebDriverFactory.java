@@ -343,9 +343,9 @@ public class DesktopWebDriverFactory implements
         try {
             if (request.getServerUrl().isPresent()) {
                 final URL seleniumUrl = request.getServerUrl().get();
-                // TODO: Reduced timeouts of Selenium 3, needed in Selenium 4?
+                // The old HttpClientFactory reduced timeouts of Selenium 3 because of very long timeouts
+                // Selenium 4 uses JDK 11 HttpClient: connectionTimeout=10sec, readTimeout=180 sec, seems to be ok
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
-//                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl);
                 Capabilities capabilities = request.getCapabilities();
                 if (capabilities == null) {
                     throw new SystemException("Cannot start browser session with empty browser options");

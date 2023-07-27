@@ -345,6 +345,7 @@ public class DesktopWebDriverFactory implements
                 final URL seleniumUrl = request.getServerUrl().get();
                 // The old HttpClientFactory reduced timeouts of Selenium 3 because of very long timeouts
                 // Selenium 4 uses JDK 11 HttpClient: connectionTimeout=10sec, readTimeout=180 sec, seems to be ok
+                // see {@link org.openqa.selenium.remote.http.ClientConfig#defaultConfig()}
 //                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
                 Capabilities capabilities = request.getCapabilities();
                 if (capabilities == null) {

@@ -25,7 +25,11 @@ WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options 
 });
 ----
 
-NOTE: Have a look into <<Browser specific knowledge>> for specific browser options.
+[NOTE]
+====
+* Have a look into <<Browser specific knowledge>> for specific browser options.
+* See https://www.w3.org/TR/webdriver1/#capabilities[here] a list of W3C conform capabilities.
+====
 
 = Request capabilities
 

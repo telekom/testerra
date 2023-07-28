@@ -39,7 +39,6 @@ import IContextValues = data.IContextValues;
 import IMethodContext = data.IMethodContext;
 
 
-
 @autoinject()
 export class Threads3 extends AbstractViewModel {
 
@@ -128,7 +127,11 @@ export class Threads3 extends AbstractViewModel {
             } else {
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
-            return methodContexts.map(methodContext => methodContext.contextValues);
+            return methodContexts.map(methodContext => methodContext.contextValues).sort(function(a, b){
+                if(a.name < b.name) { return -1; }
+                if(a.name > b.name) { return 1; }
+                return 0;
+            });
         });
     };
 
@@ -138,7 +141,6 @@ export class Threads3 extends AbstractViewModel {
         });
         const zoomStart = dataToZoomInOn.value[1];
         const zoomEnd = dataToZoomInOn.value[2];
-        const spacing = (zoomEnd - zoomStart) * 0.05;
         const opacity = this._opacityOfInactiveElements;
 
         this._options.series[0].data.forEach(function (value) {
@@ -147,16 +149,17 @@ export class Threads3 extends AbstractViewModel {
                 value.itemStyle.normal.opacity = opacity;
             }
         });
-        this.zoom(zoomStart - spacing, zoomEnd + spacing);
+        this._chart.setOption(this._options);
+        this.zoom(zoomStart, zoomEnd);
     }
 
     zoom(zoomStart: number, zoomEnd: number) {
-        this._chart.setOption(this._options);
+        const spacing = (zoomEnd - zoomStart) * 0.05;
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
-            startValue: zoomStart,
-            endValue: zoomEnd
+            startValue: zoomStart - spacing,
+            endValue: zoomEnd + spacing
         });
     }
 
@@ -212,8 +215,7 @@ export class Threads3 extends AbstractViewModel {
         this._chart.setOption(this._options);
 
         if (zoomStart != 0 && zoomEnd != 0) {
-            const spacing = (zoomEnd - zoomStart) * 0.05;
-            this.zoom(zoomStart - spacing, zoomEnd + spacing);
+            this.zoom(zoomStart, zoomEnd);
         } else {
             this.resetZoom();
         }
@@ -397,18 +399,9 @@ export class Threads3 extends AbstractViewModel {
                                 type: 'rect',
                                 transition: ['shape'],
                                 shape: rectShape,
-                                style: api.style({
-                                    // overflow: 'truncate', // doesn't do much
-                                    // text: rectShape && rectShape.width > 0 ? api.value(3) : ''
-                                })
+                                style: api.style()
                             }
                         );
-                    },
-                    itemStyle: {
-                        // opacity: 0.9
-                        // borderType: 'solid',
-                        // borderWidth: 1,
-                        // borderColor: '#6E8192'
                     },
                     encode: {
                         x: [1, 2],
@@ -416,16 +409,6 @@ export class Threads3 extends AbstractViewModel {
                         label: 3    // Index in value array
                     },
                     data: data
-                    /*label: {
-                        // TODO label text overflows to other shapes
-                        show: true,
-                        position: 'insideLeft',
-                        // overflow: 'truncate', // doesn't do much
-                        textBorderWidth: 1
-                    },
-                    labelLayout: {
-                        hideOverlap: true // only hides labels, that would overlap with others
-                    }*/
                 }
             ]
         };
@@ -435,4 +418,3 @@ export class Threads3 extends AbstractViewModel {
         this._router.navigateToRoute('method', {methodId: event.value[6]})
     }
 }
-

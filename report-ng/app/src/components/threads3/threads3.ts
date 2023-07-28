@@ -48,6 +48,8 @@ export class Threads3 extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _options: EChartsOption;
     private _inputValue;
+    private _availableStatuses: data.ResultStatusType[] | number[];
+    private _selectedStatus: data.ResultStatusType;
     @observable()
     private _chart: echarts.ECharts;
 
@@ -73,6 +75,13 @@ export class Threads3 extends AbstractViewModel {
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
+
+        if (params.status) {
+            this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+        } else {
+            this._selectedStatus = null;
+        }
+
         if (this.queryParams.status) {
             this._filter = {
                 status: this._statusConverter.getStatusForClass(this.queryParams.status)
@@ -83,6 +92,8 @@ export class Threads3 extends AbstractViewModel {
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             // this._initDurationFormatter();
+            this._availableStatuses = [];
+            this._availableStatuses = executionStatistics.availableStatuses;
             this._initDateFormatter();
             this._prepareTimeline(executionStatistics);
             this._loading = false;
@@ -107,6 +118,7 @@ export class Threads3 extends AbstractViewModel {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
+                this.resetColor();
                 this.zoom(methodId);
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
@@ -128,20 +140,9 @@ export class Threads3 extends AbstractViewModel {
         const spacing = (zoomEnd - zoomStart) * 0.05;
         const opacity = this._opacityOfInactiveElements;
 
-        // const style = new Map<number, string>();
-        // style.set(ResultStatusType.PASSED, '#417336');
-        // style.set(ResultStatusType.REPAIRED, '#417336');
-        // style.set(ResultStatusType.PASSED_RETRY, '#417336');
-        // style.set(ResultStatusType.SKIPPED, '#f7af3e');
-        // style.set(ResultStatusType.FAILED, '#e63946');
-        // style.set(ResultStatusType.FAILED_EXPECTED, '#4f031b');
-        // style.set(ResultStatusType.FAILED_MINOR, '#e63946');
-        // style.set(ResultStatusType.FAILED_RETRIED, '#e63946');
-
         this._options.series[0].data.forEach(function (value) {
             const mid = value.value[6];
             if (mid != methodId) {
-                // value.itemStyle.normal.color = style.get(value.value[7]);
                 value.itemStyle.normal.opacity = opacity;
             }
         });
@@ -156,21 +157,9 @@ export class Threads3 extends AbstractViewModel {
     }
 
     resetColor() {
-        // const style = new Map<number, string>();
-        // style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        // style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        // style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        // style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        // style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        // style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        // style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        // style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
-
         this._options.series[0].data.forEach(function (value) {
-            // value.itemStyle.normal.color = style.get(value.value[7]);
             value.itemStyle.normal.opacity = 1;
         });
-
         this._chart.setOption(this._options);
     }
 
@@ -181,6 +170,22 @@ export class Threads3 extends AbstractViewModel {
             start: 0,
             end: 100
         });
+    }
+
+    private _statusChanged() {
+        const opacity = this._opacityOfInactiveElements;
+        const selectedStat = this._selectedStatus;
+
+        this.resetColor();
+        if (this._selectedStatus > 0) {
+            this._options.series[0].data.forEach(function (value) {
+                const stat = value.value[7];
+                if (stat != selectedStat) {
+                    value.itemStyle.normal.opacity = opacity;
+                }
+            });
+        }
+        this._chart.setOption(this._options);
     }
 
     // private _initDurationFormatter() {

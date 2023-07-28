@@ -119,7 +119,7 @@ export class Threads3 extends AbstractViewModel {
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
                 this.resetColor();
-                this.zoom(methodId);
+                this.zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
@@ -132,7 +132,7 @@ export class Threads3 extends AbstractViewModel {
         });
     };
 
-    zoom(methodId) {
+    zoomInOnMethod(methodId: string) {
         const dataToZoomInOn = this._options.series[0].data.find(function(method) {
             return method.value[6] == methodId;
         });
@@ -147,13 +147,16 @@ export class Threads3 extends AbstractViewModel {
                 value.itemStyle.normal.opacity = opacity;
             }
         });
+        this.zoom(zoomStart - spacing, zoomEnd + spacing);
+    }
 
+    zoom(zoomStart: number, zoomEnd: number) {
         this._chart.setOption(this._options);
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
-            startValue: zoomStart - spacing,
-            endValue: zoomEnd + spacing
+            startValue: zoomStart,
+            endValue: zoomEnd
         });
     }
 
@@ -180,6 +183,9 @@ export class Threads3 extends AbstractViewModel {
     private _statusChanged() {
         const opacity = this._opacityOfInactiveElements;
         const selectedStat = this._selectedStatus;
+        let zoomStart = 0;
+        let zoomEnd = 0;
+        let isFirstMethod = true;
 
         this.resetColor();
         if (this._selectedStatus > 0) {
@@ -187,10 +193,30 @@ export class Threads3 extends AbstractViewModel {
                 const stat = value.value[7];
                 if (stat != selectedStat) {
                     value.itemStyle.normal.opacity = opacity;
+                } else {
+                    const methodStart = value.value[1];
+                    const methodEnd = value.value[2];
+                    if (!isFirstMethod) {
+                        if (zoomStart > methodStart)
+                            zoomStart = methodStart;
+                        if (zoomEnd < methodEnd)
+                            zoomEnd = methodEnd;
+                    } else {
+                        zoomStart = methodStart;
+                        zoomEnd = methodEnd;
+                        isFirstMethod = false;
+                    }
                 }
             });
         }
         this._chart.setOption(this._options);
+
+        if (zoomStart != 0 && zoomEnd != 0) {
+            const spacing = (zoomEnd - zoomStart) * 0.05;
+            this.zoom(zoomStart - spacing, zoomEnd + spacing);
+        } else {
+            this.resetZoom();
+        }
     }
 
     // private _initDurationFormatter() {

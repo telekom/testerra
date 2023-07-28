@@ -48,6 +48,7 @@ export class Threads3 extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _options: EChartsOption;
     private _inputValue;
+    private _methodNameInput:HTMLElement;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
     @observable()
@@ -106,7 +107,6 @@ export class Threads3 extends AbstractViewModel {
 
     selectionChanged(){
         if (this._inputValue.length == 0){
-            this.resetColor();
             this.resetZoom();
         }
     }
@@ -120,6 +120,7 @@ export class Threads3 extends AbstractViewModel {
                 delete this.queryParams.methodName;
                 this.resetColor();
                 this.zoom(methodId);
+                this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
@@ -164,6 +165,10 @@ export class Threads3 extends AbstractViewModel {
     }
 
     resetZoom() {
+        this.resetColor();
+        this.updateUrl({});
+
+        // console.log("Test" + this._inputValue);
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',

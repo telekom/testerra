@@ -128,13 +128,6 @@ export class App {
                 title: 'Threads'
             },
             {
-                route: 'threads2',
-                name: 'threads2',
-                moduleId: PLATFORM.moduleName('components/threads2/threads2'),
-                nav: true,
-                title: 'Threads - Apex'
-            },
-            {
                 route: 'threads3',
                 name: 'threads3',
                 moduleId: PLATFORM.moduleName('components/threads3/threads3'),

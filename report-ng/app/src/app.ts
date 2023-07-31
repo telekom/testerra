@@ -128,11 +128,11 @@ export class App {
                 title: 'Threads'
             },
             {
-                route: 'timings',
-                name: 'timings',
-                moduleId: PLATFORM.moduleName('components/timings/timings'),
+                route: 'test durations',
+                name: 'test durations',
+                moduleId: PLATFORM.moduleName('components/test-durations/test-duration-tab'),
                 nav: true,
-                title: 'Timings'
+                title: 'Test Durations'
             },
             // {
             //     route: 'jvm-monitor',

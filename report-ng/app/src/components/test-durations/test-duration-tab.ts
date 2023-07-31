@@ -21,9 +21,9 @@
 
 import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {AbstractViewModel} from "../../abstract-view-model";
+import {AbstractViewModel} from "../abstract-view-model";
 import * as echarts from 'echarts';
-import {ECharts, EChartsOption} from 'echarts';
+import {EChartsOption} from 'echarts';
 import "./test-duration-tab.scss";
 import {ExecutionStatistics} from "services/statistic-models";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
@@ -32,21 +32,19 @@ import moment from "moment";
 
 @autoinject()
 export class TestDurationTab extends AbstractViewModel {
-
-    private _echart_test_duration: HTMLDivElement = undefined;
-    private _chart: ECharts = undefined;
+    private _chart: echarts.ECharts;
     private _executionStatistics: ExecutionStatistics
     private _option: EChartsOption;
     private _attached = false;
     private _hasEnded = false;
     private _methodDetails: MethodDetails[];
     private _durationOptions: IDurationOptions;
+    private _showConfigurationMethods = false;
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
     ) {
         super();
-
     }
 
     attached() {
@@ -54,9 +52,11 @@ export class TestDurationTab extends AbstractViewModel {
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
+
             executionStatistics.classStatistics
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
+
                     let methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);
                     });
@@ -68,14 +68,16 @@ export class TestDurationTab extends AbstractViewModel {
             const names = [];
             const ids = [];
             const durations = [];
+            const methodTypes = [];
 
             this._methodDetails.forEach(method => {
                 names.push(method.methodContext.contextValues.name);
                 ids.push(method.methodContext.contextValues.id);
                 durations.push(this._updateDuration(method.methodContext.contextValues.startTime, method.methodContext.contextValues.endTime));
+                methodTypes.push((method.methodContext.methodType))
             })
 
-            this._prepareData(durations,names,ids);
+            this._prepareData(durations,names,ids, methodTypes);
 
         }).finally(() => {
             this._option = {
@@ -139,13 +141,13 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _createChart() {
-        this._chart = echarts.init(this._echart_test_duration);
         this._option && this._chart.setOption(this._option)
     }
 
-    private _prepareData(durations: number[], names: string[], ids: string[]) {
+    private _prepareData(durations: number[], names: string[], ids: string[], methodTypes: number[]) {
         const nameMap: { [duration: number]: string[] } = {};
         const idMap: { [duration: number]: string[] } = {};
+        const methodTypeMap: { [duration: number]: number[] } = {};
         const dataCountMap: { [duration: number]: number } = {};
 
         durations.forEach((datum, index) => {
@@ -153,11 +155,17 @@ export class TestDurationTab extends AbstractViewModel {
                 dataCountMap[datum] = 0;
                 nameMap[datum] = [];
                 idMap[datum] = [];
+                methodTypeMap[datum] = [];
             }
 
-            dataCountMap[datum]++;
-            nameMap[datum].push(names[index]);
-            idMap[datum].push(ids[index]);
+            // if(methodTypes[index] === 1){
+                dataCountMap[datum]++;
+                nameMap[datum].push(names[index]);
+                idMap[datum].push(ids[index]);
+                methodTypeMap[datum].push(methodTypes[index]);
+            // } else if(methodTypes[index] === 2){
+            //     //fix
+            // }
         });
 
         this._durationOptions = {
@@ -165,6 +173,7 @@ export class TestDurationTab extends AbstractViewModel {
             durationAmount: Object.values(dataCountMap),
             testIds: Object.values(idMap),
             testNames: Object.values(nameMap),
+            methodType: Object.values(methodTypeMap),
         };
     }
 
@@ -177,6 +186,14 @@ export class TestDurationTab extends AbstractViewModel {
         }
         return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
     }
+
+    private _showConfigurationMethodsChanged(){
+        if(this._showConfigurationMethods){
+            console.log("on")
+        } else {
+            console.log("off")
+        }
+    }
 }
 
 export interface IDurationOptions {
@@ -184,4 +201,5 @@ export interface IDurationOptions {
     durationAmount: number[];
     testNames;
     testIds;
+    methodType;
 }

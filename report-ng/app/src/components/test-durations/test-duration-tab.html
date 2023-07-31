@@ -23,29 +23,29 @@
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="4">
-                <mdc-text-field class="w100"
-                                label="Search"
+                <mdc-text-field label="Search"
                                 outlined
+                                class="w100"
                 >
-                    <mdc-icon leading mdc-text-field-icon>search</mdc-icon>
+                    <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
                 </mdc-text-field>
 
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell class="flex" position="middle" span="8">
+            <mdc-layout-grid-cell span="8" position="middle" class="flex">
                 <mdc-form-field class="right-aligned">
-                    <button change.delegate="_showComponentsChanged()"
+                    <button change.delegate="_showConfigurationMethodsChanged()"
                             mdc-switch
-                            selected.bind="_showComponents"></button>
-                    <label>Show components</label>
+                            selected.bind="_showConfigurationMethods"></button>
+                    <label>Show configuration methods</label>
                 </mdc-form-field>
             </mdc-layout-grid-cell>
 
             <mdc-layout-grid-cell span="12">
                 <mdc-card>
-                    <div class="card-headline" mdc-subtitle2>Page Run Times - Min, Max, Average Times</div>
+                    <div mdc-subtitle2 class="card-headline">Test Durations</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <!--Diagram Page Timings-->
-                    <div class="chart-container" ref="_echart_page_timings"></div>
+                    <!--Diagram Test Duration-->
+                    <echart options.bind="_option" chart.bind="_chart" class="echart"></echart>
                 </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

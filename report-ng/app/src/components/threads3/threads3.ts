@@ -27,7 +27,6 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {Container} from "aurelia-dependency-injection";
 import "./threads3.scss"
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-// import echarts from "echarts/types/dist/shared";
 import * as echarts from "echarts";
 import {EChartsOption} from "echarts";
 import {data} from "../../services/report-model";
@@ -91,9 +90,9 @@ export class Threads3 extends AbstractViewModel {
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            // this._initDurationFormatter();
             this._availableStatuses = [];
             this._availableStatuses = executionStatistics.availableStatuses;
+            // this._initDurationFormatter();
             this._initDateFormatter();
             this._prepareTimeline(executionStatistics);
             this._loading = false;
@@ -174,7 +173,6 @@ export class Threads3 extends AbstractViewModel {
         this.resetColor();
         this.updateUrl({});
 
-        // console.log("Test" + this._inputValue);
         this._chart.dispatchAction({
             type: 'dataZoom',
             id: 'threadZoom',
@@ -186,9 +184,8 @@ export class Threads3 extends AbstractViewModel {
     private _statusChanged() {
         const opacity = this._opacityOfInactiveElements;
         const selectedStat = this._selectedStatus;
-        let zoomStart = 0;
-        let zoomEnd = 0;
-        let isFirstMethod = true;
+        let startTimes : number[] = [];
+        let endTimes : number[] = [];
 
         this.resetColor();
         if (this._selectedStatus > 0) {
@@ -197,24 +194,14 @@ export class Threads3 extends AbstractViewModel {
                 if (stat != selectedStat) {
                     value.itemStyle.normal.opacity = opacity;
                 } else {
-                    const methodStart = value.value[1];
-                    const methodEnd = value.value[2];
-                    if (!isFirstMethod) {
-                        if (zoomStart > methodStart)
-                            zoomStart = methodStart;
-                        if (zoomEnd < methodEnd)
-                            zoomEnd = methodEnd;
-                    } else {
-                        zoomStart = methodStart;
-                        zoomEnd = methodEnd;
-                        isFirstMethod = false;
-                    }
+                    startTimes.push(value.value[1]);
+                    endTimes.push(value.value[2]);
                 }
             });
-        }
-        this._chart.setOption(this._options);
+            this._chart.setOption(this._options);
 
-        if (zoomStart != 0 && zoomEnd != 0) {
+            const zoomStart = Math.min.apply(Math, startTimes);
+            const zoomEnd = Math.max.apply(Math, endTimes);
             this.zoom(zoomStart, zoomEnd);
         } else {
             this.resetZoom();

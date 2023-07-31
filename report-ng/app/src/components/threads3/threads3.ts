@@ -103,7 +103,7 @@ export class Threads3 extends AbstractViewModel {
         this._chart.on('click', event => this._handleClickEvent(event));
     }
 
-    selectionChanged(){
+    private selectionChanged(){
         if (this._inputValue.length == 0){
             this.resetZoom();
         }
@@ -134,7 +134,7 @@ export class Threads3 extends AbstractViewModel {
         });
     };
 
-    zoomInOnMethod(methodId: string) {
+    private zoomInOnMethod(methodId: string) {
         const dataToZoomInOn = this._options.series[0].data.find(function(method) {
             return method.value[6] == methodId;
         });
@@ -152,7 +152,7 @@ export class Threads3 extends AbstractViewModel {
         this.zoom(zoomStart, zoomEnd);
     }
 
-    zoom(zoomStart: number, zoomEnd: number) {
+    private zoom(zoomStart: number, zoomEnd: number) {
         const spacing = (zoomEnd - zoomStart) * 0.05;
         this._chart.dispatchAction({
             type: 'dataZoom',
@@ -162,14 +162,21 @@ export class Threads3 extends AbstractViewModel {
         });
     }
 
-    resetColor() {
+    private resetColor() {
         this._options.series[0].data.forEach(function (value) {
             value.itemStyle.normal.opacity = 1;
         });
         this._chart.setOption(this._options);
     }
 
-    resetZoom() {
+    private resetZoomButtonClicked() {
+        this._inputValue = "";
+        this._inputValue = undefined;
+        this._selectedStatus = undefined;
+        this.resetZoom();
+    }
+
+    private resetZoom() {
         this.resetColor();
         this.updateUrl({});
 

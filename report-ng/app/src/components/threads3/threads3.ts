@@ -326,7 +326,8 @@ export class Threads3 extends AbstractViewModel {
                         duration = fullMinutes + "min " + remainingSeconds + "s " + remainingMS + "ms";
                     }
 
-                    return '<span>' + params.marker + params.name + '</span>'
+                    return '<div class="header" style="background-color: ' +
+                        params.color + ';"> ' + params.name + '</div>'
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
                         // TODO use duration value converter: -> IntlDurationFormatValueConverter broken?

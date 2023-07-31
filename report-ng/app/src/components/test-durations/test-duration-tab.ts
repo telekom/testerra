@@ -30,6 +30,7 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import moment from "moment";
 import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
+import {ClassName} from "../../value-converters/class-name-value-converter";
 
 
 @autoinject()
@@ -40,11 +41,13 @@ export class TestDurationTab extends AbstractViewModel {
     private _attached = false;
     private _hasEnded = false;
     private _methodDetails: MethodDetails[];
-    private _showConfigurationMethods = false;
+    private _showConfigurationMethods: boolean = null;
     private _labels: string[];
     private _sectionValues: number[];
     private _data: number[];
     private _bars: IDurationBar[];
+    private _loading = false;
+
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
@@ -52,15 +55,41 @@ export class TestDurationTab extends AbstractViewModel {
         super();
     }
 
-    attached() {
+    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+        super.activate(params, routeConfig, navInstruction);
+
+        if (params.config) {
+            if (params.config.toLowerCase() == "true") {
+                this._showConfigurationMethods = true;
+            } else {
+                this._showConfigurationMethods = false;
+            }
+        }
+        this._filter();
+    }
+
+    private _filter(){
+        this._loading = true;
+
         this._methodDetails = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
 
             executionStatistics.classStatistics
+                .map(classStatistics => {
+                    // Determine if we need to enable showing config methods by default if there has any error occured
+                    if (this._showConfigurationMethods === null) {
+                        this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
+                    }
+                    return classStatistics;
+                })
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
+
+                    if (this._showConfigurationMethods === false) {
+                        methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
+                    }
 
                     let methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);
@@ -83,14 +112,11 @@ export class TestDurationTab extends AbstractViewModel {
             })
             this._prepareData(testDurationMethods);
 
+            this._loading = false;
         }).finally(() => {
             this._attached = true;
             this._updateOption()
         })
-    }
-
-    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
-        super.activate(params, routeConfig, navInstruction);
     }
 
     private _updateOption(){
@@ -222,11 +248,13 @@ export class TestDurationTab extends AbstractViewModel {
         return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
     }
 
-    private _showConfigurationMethodsChanged(){
-        if(this._showConfigurationMethods){
-            console.log("on")
-        } else {
-            console.log("off")
+    private _showConfigurationChanged() {
+        this._filterOnce();
+    }
+
+    private _filterOnce() {
+        if (!this._loading) {
+            this._filter();
         }
     }
 }

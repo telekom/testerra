@@ -172,8 +172,11 @@ export class Threads3 extends AbstractViewModel {
     private resetZoomButtonClicked() {
         this._inputValue = "";
         this._inputValue = undefined;
-        this._selectedStatus = undefined;
-        this.resetZoom();
+        if (this._selectedStatus != null) {
+            this._selectedStatus = undefined;
+        } else {
+            this.resetZoom();
+        }
     }
 
     private resetZoom() {

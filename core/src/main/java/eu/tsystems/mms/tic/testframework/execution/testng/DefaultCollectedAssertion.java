@@ -21,7 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+
+import java.util.List;
 
 /**
  * Collects {@link AssertionError} on failed assertion
@@ -30,8 +36,16 @@ public class DefaultCollectedAssertion extends AbstractAssertion implements Coll
 
     @Override
     public void fail(Error error) {
-        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+        IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
+        executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
             methodContext.addError(error);
+            // get screenshots
+            List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
+            Report report = Testerra.getInjector().getInstance(Report.class);
+            screenshots.forEach(screenshot -> {
+                methodContext.addScreenshot(screenshot);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            });
         });
     }
 }

@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 
 import java.util.List;
@@ -36,8 +35,7 @@ import java.util.List;
  */
 public class DefaultOptionalAssertion extends AbstractAssertion implements
         OptionalAssertion,
-        Loggable
-{
+        Loggable {
     @Override
     public void fail(Error error) {
         log().warn("Failed optional assertion: " + error.getMessage());

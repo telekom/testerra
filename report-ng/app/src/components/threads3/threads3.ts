@@ -49,6 +49,7 @@ export class Threads3 extends AbstractViewModel {
     private _methodNameInput:HTMLElement;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
+    private newMethodToFilter = false;
     @observable()
     private _chart: echarts.ECharts;
 
@@ -116,6 +117,10 @@ export class Threads3 extends AbstractViewModel {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
+                if (this._selectedStatus != null) {
+                    this.newMethodToFilter = true;
+                    this._selectedStatus = undefined;
+                }
                 this.resetColor();
                 this.zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
@@ -135,6 +140,7 @@ export class Threads3 extends AbstractViewModel {
     };
 
     private zoomInOnMethod(methodId: string) {
+        console.log("zoomInOnMethod " + methodId);
         const dataToZoomInOn = this._options.series[0].data.find(function(method) {
             return method.value[6] == methodId;
         });
@@ -163,6 +169,7 @@ export class Threads3 extends AbstractViewModel {
     }
 
     private resetColor() {
+        console.log("resetColor");
         this._options.series[0].data.forEach(function (value) {
             value.itemStyle.normal.opacity = 1;
         });
@@ -170,13 +177,17 @@ export class Threads3 extends AbstractViewModel {
     }
 
     private resetZoomButtonClicked() {
-        this._inputValue = "";
-        this._inputValue = undefined;
+        this.clearMethodFilter();
         if (this._selectedStatus != null) {
             this._selectedStatus = undefined;
         } else {
             this.resetZoom();
         }
+    }
+
+    private clearMethodFilter() {
+        this._inputValue = "";
+        this._inputValue = undefined;
     }
 
     private resetZoom() {
@@ -192,11 +203,16 @@ export class Threads3 extends AbstractViewModel {
     }
 
     private _statusChanged() {
+        if (this.newMethodToFilter) {
+            this.newMethodToFilter = false;
+            return;
+        }
         const opacity = this._opacityOfInactiveElements;
         const selectedStat = this._selectedStatus;
         let startTimes : number[] = [];
         let endTimes : number[] = [];
 
+        this.clearMethodFilter();
         this.resetColor();
         if (this._selectedStatus > 0) {
             this._options.series[0].data.forEach(function (value) {

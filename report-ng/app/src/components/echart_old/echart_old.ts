@@ -7,7 +7,7 @@ import {ECBasicOption} from "echarts/types/dist/shared";
  * Component for Apache ECharts
  * @author Mike Reiche <mike@reiche.world>
  */
-export class Echart {
+export class Echart_old {
     private _container: HTMLDivElement;
 
     @bindable({ defaultBindingMode: bindingMode.fromView })

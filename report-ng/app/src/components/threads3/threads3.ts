@@ -105,6 +105,7 @@ export class Threads3 extends AbstractViewModel {
     }
 
     private selectionChanged(){
+        console.log("selection changed");
         if (this._inputValue.length == 0){
             this.resetZoom();
         }
@@ -121,6 +122,7 @@ export class Threads3 extends AbstractViewModel {
                     this.newMethodToFilter = true;
                     this._selectedStatus = undefined;
                 }
+                console.log("Test");
                 this.resetColor();
                 this.zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
@@ -178,6 +180,8 @@ export class Threads3 extends AbstractViewModel {
 
     private resetZoomButtonClicked() {
         this.clearMethodFilter();
+        // this._searchRegexp = null;
+        // delete this.queryParams.methodName;
         if (this._selectedStatus != null) {
             this._selectedStatus = undefined;
         } else {
@@ -343,13 +347,12 @@ export class Threads3 extends AbstractViewModel {
                     }
 
                     return '<div class="header" style="background-color: ' +
-                        params.color + ';"> ' + params.name + '</div>'
+                        params.color + ';"> ' + params.name + ' (' + params.value[5] + ')' + '</div>'
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
                         // TODO use duration value converter: -> IntlDurationFormatValueConverter broken?
                         // + '<br>Duration: ' + durationFormatter.toView(params.value[4])
-                        + '<br>Duration: ' + duration
-                        + '<br>Run index: ' + params.value[5];
+                        + '<br>Duration: ' + duration;
                 }
             },
             dataZoom: [

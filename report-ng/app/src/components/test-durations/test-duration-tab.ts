@@ -30,7 +30,9 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import moment from "moment";
 import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
-import {ClassName} from "../../value-converters/class-name-value-converter";
+import IContextValues = data.IContextValues;
+import IMethodContext = data.IMethodContext;
+import {StatusConverter} from "../../services/status-converter";
 
 
 @autoinject()
@@ -47,9 +49,11 @@ export class TestDurationTab extends AbstractViewModel {
     private _data: number[];
     private _bars: IDurationBar[];
     private _loading = false;
-
+    private _searchRegexp: RegExp;
+    private _inputValue;
 
     constructor(
+        private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
     ) {
         super();
@@ -59,13 +63,58 @@ export class TestDurationTab extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
 
         if (params.config) {
-            if (params.config.toLowerCase() == "true") {
+            if (params.config.toLowerCase()) {
                 this._showConfigurationMethods = true;
             } else {
                 this._showConfigurationMethods = false;
             }
         }
         this._filter();
+    }
+
+    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
+        return this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            let methodContexts:IMethodContext[];
+            if (methodId) {
+                methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
+                this._searchRegexp = null;
+                delete this.queryParams.methodName;
+                this._focusOn(methodId);
+                this.updateUrl({methodId: methodId});
+            } else if (filter?.length > 0) {
+                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
+                delete this.queryParams.methodId;
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
+            } else {
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
+            }
+            return methodContexts.map(methodContext => methodContext.contextValues);
+        });
+    };
+
+    private _focusOn(methodId: string) {
+
+        // Finds the index of the bar that contains the method that is searched
+        const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === methodId));
+
+        const totalDataPoints = this._chart.getOption().series[0].data.length;
+
+        // Create an array of dataIndex representing all bars except for the one that should be highlighted
+        const otherDataIndices = Array.from({ length: totalDataPoints }, (_, index) => index);
+        otherDataIndices.splice(dataIndex, 1);
+
+        // Downplay all the other bars by changing their color
+        this._chart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0, // Assuming the bar chart is the first series
+            dataIndex: otherDataIndices,
+        });
+    }
+
+    selectionChanged(){
+        if (this._inputValue.length == 0){
+            this.updateUrl({});
+        }
     }
 
     private _filter(){
@@ -78,7 +127,7 @@ export class TestDurationTab extends AbstractViewModel {
 
             executionStatistics.classStatistics
                 .map(classStatistics => {
-                    // Determine if we need to enable showing config methods by default if there has any error occured
+                    // Determine if we need to enable showing config methods by default if there has any error occurred
                     if (this._showConfigurationMethods === null) {
                         this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
                     }
@@ -135,7 +184,7 @@ export class TestDurationTab extends AbstractViewModel {
                     if (params.length > 0) {
                         const dataIndex = params[0].dataIndex; // gives the index of the data point for bar chart
                         const testNumber = this._bars[dataIndex].durationAmount;
-                        const testNames = this._bars[dataIndex].methodList;
+                        const testNames = this._bars[dataIndex].methodList.map(method => method.name);
 
                         let tooltipString = testNumber + ` test cases: <br>`;
                         tooltipString += "<ul>";
@@ -149,6 +198,7 @@ export class TestDurationTab extends AbstractViewModel {
                     }
                     return ""; // Return an empty string if no data points are hovered on
                 }.bind(this), // Binding the current context to the formatter function to access this._durationOptions
+                enterable: true,
             },
             xAxis: {
                 type: 'category',
@@ -164,7 +214,12 @@ export class TestDurationTab extends AbstractViewModel {
                     type: 'bar',
                     itemStyle: {
                         color: '#6897EA',
-                    }
+                    },
+                    emphasis: {
+                        itemStyle :{
+                            color: '#c8d4f4',
+                        }
+                    },
                 }
             ]
         };
@@ -179,7 +234,7 @@ export class TestDurationTab extends AbstractViewModel {
         this._bars = this._sectionValues.map((sectionValue, i) => {
             const methodList = methods.reduce((list, method) => {
                 if (method.duration < sectionValue && (method.duration > this._sectionValues[i - 1] || this._sectionValues[i - 1] === undefined)) {
-                    list.push(method.name);
+                    list.push(method);
                 }
                 return list;
             }, []);
@@ -213,12 +268,12 @@ export class TestDurationTab extends AbstractViewModel {
             }
         }
 
-        // Choose the section range that results in fewer sections (but at least 4)
+        // Choose the section range that results in fewer sections (but at least 5)
         let numSections = 10;
         let chosenSectionRange = possibleSectionRanges[possibleSectionRanges.length - 1];
         for (const sectionRange of possibleSectionRanges) {
             const sections = Math.ceil(maxDuration / sectionRange);
-            if (sections >= 4 && sections <= 10 && sections < numSections) {
+            if (sections >= 5 && sections <= 10 && sections < numSections) {
                 numSections = sections;
                 chosenSectionRange = sectionRange;
             }
@@ -262,7 +317,7 @@ export class TestDurationTab extends AbstractViewModel {
 export interface IDurationBar {
     label: string,
     durationAmount: number;
-    methodList: string[];
+    methodList: ITestDurationMethod[];
 }
 
 export interface ITestDurationMethod {

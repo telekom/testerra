@@ -23,12 +23,27 @@
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="4">
-                <mdc-text-field label="Search"
-                                outlined
-                                class="w100"
-                >
-                    <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
-                </mdc-text-field>
+                <div mdc-menu-surface-anchor>
+                    <mdc-text-field label="Method"
+                                    outlined
+                                    ref="_methodNameInput"
+                                    class="w100"
+                                    value.bind="_inputValue"
+                                    input.delegate="selectionChanged()"
+                    ></mdc-text-field>
+                    <mdc-text-field-helper-line></mdc-text-field-helper-line>
+                    <mdc-lookup options.bind="_getLookupOptions"
+                                display-field="name"
+                                value-field="id"
+                                value.bind="queryParams.methodId"
+                                input.bind="_methodNameInput"
+                                preload-options
+                    >
+                        <template replace-part="option">
+                            <span innerhtml="${option.name|highlightText:_searchRegexp}"></span>
+                        </template>
+                    </mdc-lookup>
+                </div>
 
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="8" position="middle" class="flex">

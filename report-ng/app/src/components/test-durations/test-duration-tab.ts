@@ -63,11 +63,7 @@ export class TestDurationTab extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
 
         if (params.config) {
-            if (params.config.toLowerCase()) {
-                this._showConfigurationMethods = true;
-            } else {
-                this._showConfigurationMethods = false;
-            }
+            this._showConfigurationMethods = !!params.config.toLowerCase();
         }
         this._filter();
     }
@@ -79,7 +75,7 @@ export class TestDurationTab extends AbstractViewModel {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
-                this._focusOn(methodId);
+                this._highlightData();
                 this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
@@ -92,26 +88,8 @@ export class TestDurationTab extends AbstractViewModel {
         });
     };
 
-    private _focusOn(methodId: string) {
-
-        // Finds the index of the bar that contains the method that is searched
-        const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === methodId));
-
-        const totalDataPoints = this._chart.getOption().series[0].data.length;
-
-        // Create an array of dataIndex representing all bars except for the one that should be highlighted
-        const otherDataIndices = Array.from({ length: totalDataPoints }, (_, index) => index);
-        otherDataIndices.splice(dataIndex, 1);
-
-        // Downplay all the other bars by changing their color
-        this._chart.dispatchAction({
-            type: 'highlight',
-            seriesIndex: 0, // Assuming the bar chart is the first series
-            dataIndex: otherDataIndices,
-        });
-    }
-
     selectionChanged(){
+        this._setChartOption(); // overwrites color highlighting
         if (this._inputValue.length == 0){
             this.updateUrl({});
         }
@@ -126,17 +104,10 @@ export class TestDurationTab extends AbstractViewModel {
             this._executionStatistics = executionStatistics;
 
             executionStatistics.classStatistics
-                .map(classStatistics => {
-                    // Determine if we need to enable showing config methods by default if there has any error occurred
-                    if (this._showConfigurationMethods === null) {
-                        this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
-                    }
-                    return classStatistics;
-                })
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
 
-                    if (this._showConfigurationMethods === false) {
+                    if (this._showConfigurationMethods === false || this._showConfigurationMethods === null) {
                         methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
                     }
 
@@ -164,11 +135,15 @@ export class TestDurationTab extends AbstractViewModel {
             this._loading = false;
         }).finally(() => {
             this._attached = true;
-            this._updateOption()
+            this._setChartOption()
+
+            if(this.queryParams.methodId != undefined){
+                this._highlightData()
+            }
         })
     }
 
-    private _updateOption(){
+    private _setChartOption(){
         this._option = {
             tooltip: {
                 trigger: 'axis',
@@ -198,7 +173,6 @@ export class TestDurationTab extends AbstractViewModel {
                     }
                     return ""; // Return an empty string if no data points are hovered on
                 }.bind(this), // Binding the current context to the formatter function to access this._durationOptions
-                enterable: true,
             },
             xAxis: {
                 type: 'category',
@@ -215,16 +189,35 @@ export class TestDurationTab extends AbstractViewModel {
                     itemStyle: {
                         color: '#6897EA',
                     },
-                    emphasis: {
-                        itemStyle :{
-                            color: '#c8d4f4',
-                        }
-                    },
                 }
             ]
         };
-
         this._option && this._chart.setOption(this._option)
+    }
+
+    private _highlightData() {
+        var methodId = this.queryParams.methodId
+        const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === methodId));
+
+        this._option.series[0].data = this._data.map((item, index) => {
+            if (index === dataIndex) {
+                return {
+                    value: item,
+                    itemStyle: {
+                        color: '#6897EA'
+                    }
+                };
+            } else {
+                return {
+                    value: item,
+                    itemStyle: {
+                        color: '#c8d4f4'
+                    }
+                };
+            }
+        });
+
+        this._chart.setOption(this._option)
     }
 
     private _prepareData(methods: ITestDurationMethod[]) {
@@ -268,7 +261,7 @@ export class TestDurationTab extends AbstractViewModel {
             }
         }
 
-        // Choose the section range that results in fewer sections (but at least 5)
+        // Choose the section range that results in fewer sections (at least 5)
         let numSections = 10;
         let chosenSectionRange = possibleSectionRanges[possibleSectionRanges.length - 1];
         for (const sectionRange of possibleSectionRanges) {

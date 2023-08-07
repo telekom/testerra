@@ -132,6 +132,14 @@ export class TestDurationTab extends AbstractViewModel {
             })
             this._prepareData(testDurationMethods);
 
+            if (this._showConfigurationMethods) {
+                this.queryParams.config = this._showConfigurationMethods;
+            } else {
+                delete this.queryParams.config;
+            }
+            this.updateUrl(this.queryParams);
+
+
             this._loading = false;
         }).finally(() => {
             this._attached = true;

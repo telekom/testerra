@@ -127,13 +127,6 @@ export class App {
                 nav: true,
                 title: 'Threads'
             },
-            {
-                route: 'threads3',
-                name: 'threads3',
-                moduleId: PLATFORM.moduleName('components/threads3/threads3'),
-                nav: true,
-                title: 'Threads - ECharts'
-            },
 
             // {
             //     route: 'timings',

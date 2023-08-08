@@ -84,6 +84,9 @@ export class TestDurationTab extends AbstractViewModel {
             } else {
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
+            if (this._showConfigurationMethods === false || this._showConfigurationMethods === null) {
+                methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
+            }
             return methodContexts.map(methodContext => methodContext.contextValues);
         });
     };
@@ -138,7 +141,6 @@ export class TestDurationTab extends AbstractViewModel {
                 delete this.queryParams.config;
             }
             this.updateUrl(this.queryParams);
-
 
             this._loading = false;
         }).finally(() => {
@@ -204,27 +206,17 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _highlightData() {
-        var methodId = this.queryParams.methodId
+        const methodId = this.queryParams.methodId
         const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === methodId));
 
         this._option.series[0].data = this._data.map((item, index) => {
-            if (index === dataIndex) {
                 return {
                     value: item,
                     itemStyle: {
-                        color: '#6897EA'
+                        color: (index === dataIndex) ? '#6897EA' : '#c8d4f4'
                     }
                 };
-            } else {
-                return {
-                    value: item,
-                    itemStyle: {
-                        color: '#c8d4f4'
-                    }
-                };
-            }
         });
-
         this._chart.setOption(this._option)
     }
 
@@ -305,6 +297,7 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _showConfigurationChanged() {
+        this._getLookupOptions(this._inputValue, this.queryParams.methodId);
         this._filterOnce();
     }
 

@@ -112,6 +112,10 @@ export class Threads3 extends AbstractViewModel {
     }
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
+        if (this._loading == true) {
+            await new Promise(f => setTimeout(f, 100)); // timeout for first loading of chart to prevent zoom-issue
+        }
+        console.log("_getLookupOptions");
         return this._statistics.getExecutionStatistics().then(executionStatistics => {
             let methodContexts:IMethodContext[];
             if (methodId) {
@@ -122,7 +126,6 @@ export class Threads3 extends AbstractViewModel {
                     this.newMethodToFilter = true;
                     this._selectedStatus = undefined;
                 }
-                console.log("Test");
                 this.resetColor();
                 this.zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
@@ -182,6 +185,8 @@ export class Threads3 extends AbstractViewModel {
         this.clearMethodFilter();
         // this._searchRegexp = null;
         // delete this.queryParams.methodName;
+        // console.log(this._methodNameInput.innerText);
+
         if (this._selectedStatus != null) {
             this._selectedStatus = undefined;
         } else {
@@ -232,6 +237,7 @@ export class Threads3 extends AbstractViewModel {
 
             const zoomStart = Math.min.apply(Math, startTimes);
             const zoomEnd = Math.max.apply(Math, endTimes);
+            this.updateUrl({});
             this.zoom(zoomStart, zoomEnd);
         } else {
             this.resetZoom();

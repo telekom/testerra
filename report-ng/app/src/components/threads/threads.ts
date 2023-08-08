@@ -104,10 +104,10 @@ export class Threads extends AbstractViewModel {
         this._chart.on('click', event => this._handleClickEvent(event));
     }
 
-    private selectionChanged(){
+    private _selectionChanged(){
         console.log("selection changed");
         if (this._inputValue.length == 0){
-            this.resetZoom();
+            this._resetZoom();
         }
     }
 
@@ -126,8 +126,8 @@ export class Threads extends AbstractViewModel {
                     this.newMethodToFilter = true;
                     this._selectedStatus = undefined;
                 }
-                this.resetColor();
-                this.zoomInOnMethod(methodId);
+                this._resetColor();
+                this._zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
@@ -144,8 +144,8 @@ export class Threads extends AbstractViewModel {
         });
     };
 
-    private zoomInOnMethod(methodId: string) {
-        console.log("zoomInOnMethod " + methodId);
+    private _zoomInOnMethod(methodId: string) {
+        console.log("_zoomInOnMethod " + methodId);
         const dataToZoomInOn = this._options.series[0].data.find(function(method) {
             return method.value[6] == methodId;
         });
@@ -160,10 +160,10 @@ export class Threads extends AbstractViewModel {
             }
         });
         this._chart.setOption(this._options);
-        this.zoom(zoomStart, zoomEnd);
+        this._zoom(zoomStart, zoomEnd);
     }
 
-    private zoom(zoomStart: number, zoomEnd: number) {
+    private _zoom(zoomStart: number, zoomEnd: number) {
         const spacing = (zoomEnd - zoomStart) * 0.05;
         this._chart.dispatchAction({
             type: 'dataZoom',
@@ -173,34 +173,31 @@ export class Threads extends AbstractViewModel {
         });
     }
 
-    private resetColor() {
-        console.log("resetColor");
+    private _resetColor() {
+        console.log("_resetColor");
         this._options.series[0].data.forEach(function (value) {
             value.itemStyle.normal.opacity = 1;
         });
         this._chart.setOption(this._options);
     }
 
-    private resetZoomButtonClicked() {
-        this.clearMethodFilter();
-        // this._searchRegexp = null;
-        // delete this.queryParams.methodName;
-        // console.log(this._methodNameInput.innerText);
+    private _resetZoomButtonClicked() {
+        this._clearMethodFilter();
 
         if (this._selectedStatus != null) {
             this._selectedStatus = undefined;
         } else {
-            this.resetZoom();
+            this._resetZoom();
         }
     }
 
-    private clearMethodFilter() {
+    private _clearMethodFilter() {
         this._inputValue = "";
         this._inputValue = undefined;
     }
 
-    private resetZoom() {
-        this.resetColor();
+    private _resetZoom() {
+        this._resetColor();
         this.updateUrl({});
 
         this._chart.dispatchAction({
@@ -221,8 +218,8 @@ export class Threads extends AbstractViewModel {
         let startTimes : number[] = [];
         let endTimes : number[] = [];
 
-        this.clearMethodFilter();
-        this.resetColor();
+        this._clearMethodFilter();
+        this._resetColor();
         if (this._selectedStatus > 0) {
             this._options.series[0].data.forEach(function (value) {
                 const stat = value.value[7];
@@ -238,9 +235,9 @@ export class Threads extends AbstractViewModel {
             const zoomStart = Math.min.apply(Math, startTimes);
             const zoomEnd = Math.max.apply(Math, endTimes);
             this.updateUrl({});
-            this.zoom(zoomStart, zoomEnd);
+            this._zoom(zoomStart, zoomEnd);
         } else {
-            this.resetZoom();
+            this._resetZoom();
         }
     }
 

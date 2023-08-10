@@ -42,14 +42,15 @@ import IMethodContext = data.IMethodContext;
 export class Threads extends AbstractViewModel {
 
     private _filter: IFilter;
-    private _loading = true;
+    private _initialChartLoading = true;
     private _searchRegexp: RegExp;
     private _options: EChartsOption;
     private _inputValue;
     private _methodNameInput:HTMLElement;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
-    private newMethodToFilter = false;
+    private _filterActive = false;   // To prevent unnecessary method calls
+    private _methodFilterActive = false;  // To prevent conflict between method filter and status filter
     @observable()
     private _chart: echarts.ECharts;
 
@@ -96,7 +97,7 @@ export class Threads extends AbstractViewModel {
             // this._initDurationFormatter();
             this._initDateFormatter();
             this._prepareTimeline(executionStatistics);
-            this._loading = false;
+            this._initialChartLoading = false;
         });
     };
 
@@ -107,12 +108,15 @@ export class Threads extends AbstractViewModel {
     private _selectionChanged(){
         console.log("selection changed");
         if (this._inputValue.length == 0){
-            this._resetZoom();
+            this._searchRegexp = null;
+            if (this._filterActive) {
+                this._resetZoom();
+            }
         }
     }
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
-        if (this._loading == true) {
+        if (this._initialChartLoading == true) {
             await new Promise(f => setTimeout(f, 100)); // timeout for first loading of chart to prevent zoom-issue
         }
         console.log("_getLookupOptions");
@@ -123,7 +127,7 @@ export class Threads extends AbstractViewModel {
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
                 if (this._selectedStatus != null) {
-                    this.newMethodToFilter = true;
+                    this._methodFilterActive = true;
                     this._selectedStatus = undefined;
                 }
                 this._resetColor();
@@ -164,6 +168,7 @@ export class Threads extends AbstractViewModel {
     }
 
     private _zoom(zoomStart: number, zoomEnd: number) {
+        this._filterActive = true;
         const spacing = (zoomEnd - zoomStart) * 0.05;
         this._chart.dispatchAction({
             type: 'dataZoom',
@@ -192,11 +197,18 @@ export class Threads extends AbstractViewModel {
     }
 
     private _clearMethodFilter() {
-        this._inputValue = "";
-        this._inputValue = undefined;
+        // this._inputValue = "";
+        // this._inputValue = undefined;
+
+        // this._searchRegexp = this._statusConverter.createRegexpFromSearchString("");
+        // delete this.queryParams.methodId;
+        // this._searchRegexp = null;
+        // delete this.queryParams.methodName;
+        // this._methodNameInput.dispatchEvent(new Event('change'));
     }
 
     private _resetZoom() {
+        this._filterActive = false;
         this._resetColor();
         this.updateUrl({});
 
@@ -209,8 +221,8 @@ export class Threads extends AbstractViewModel {
     }
 
     private _statusChanged() {
-        if (this.newMethodToFilter) {
-            this.newMethodToFilter = false;
+        if (this._methodFilterActive) {
+            this._methodFilterActive = false;
             return;
         }
         const opacity = this._opacityOfInactiveElements;
@@ -219,7 +231,9 @@ export class Threads extends AbstractViewModel {
         let endTimes : number[] = [];
 
         this._clearMethodFilter();
-        this._resetColor();
+        if (this._filterActive) {
+            this._resetColor();
+        }
         if (this._selectedStatus > 0) {
             this._options.series[0].data.forEach(function (value) {
                 const stat = value.value[7];

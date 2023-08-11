@@ -41,7 +41,6 @@ import IMethodContext = data.IMethodContext;
 @autoinject()
 export class Threads extends AbstractViewModel {
 
-    private _filter: IFilter;
     private _initialChartLoading = true;
     private _searchRegexp: RegExp;
     private _options: EChartsOption;
@@ -50,7 +49,7 @@ export class Threads extends AbstractViewModel {
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
     private _filterActive = false;   // To prevent unnecessary method calls
-    private _methodFilterActive = false;  // To prevent conflict between method filter and status filter
+    private _suppressMethodFilter = false;  // To prevent conflict between method filter and status filter
     @observable()
     private _chart: echarts.ECharts;
 
@@ -58,9 +57,9 @@ export class Threads extends AbstractViewModel {
     // private _durationFormatter: IntlDurationFormatValueConverter;
 
     // Some values for presentation
-    private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y axis.
-    private _threadHeight = 50;                 // height of y-axis categories in pixel
-    private _sliderSpacingFromChart = 90;      // distance between chart and dataZoom-slider in pixel
+    private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y-axis.
+    private _threadHeight = 50;                 // Height of y-axis categories in pixel
+    private _sliderSpacingFromChart = 90;      // Distance between chart and dataZoom-slider in pixel
     private _cardHeight;
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
 
@@ -77,17 +76,19 @@ export class Threads extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
 
-        if (params.status) {
-            this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
-        } else {
-            this._selectedStatus = null;
-        }
-
-        if (this.queryParams.status) {
-            this._filter = {
-                status: this._statusConverter.getStatusForClass(this.queryParams.status)
-            }
-        }
+        // if (params.status) {
+        //     this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+        // } else {
+        //     this._selectedStatus = null;
+        // }
+        //
+        // if (this.queryParams.status) {
+        //     this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+        //     console.log(this._selectedStatus);
+        // }
+        // if(this._selectedStatus != null) {
+        //     this.updateUrl({}); // To clear the url from status
+        // }
     }
 
     attached() {
@@ -109,7 +110,7 @@ export class Threads extends AbstractViewModel {
         console.log("selection changed");
         if (this._inputValue.length == 0){
             this._searchRegexp = null;
-            if (this._filterActive) {
+            if (this._filterActive && this._selectedStatus == null) {
                 this._resetZoom();
             }
         }
@@ -117,7 +118,7 @@ export class Threads extends AbstractViewModel {
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
         if (this._initialChartLoading == true) {
-            await new Promise(f => setTimeout(f, 100)); // timeout for first loading of chart to prevent zoom-issue
+            await new Promise(f => setTimeout(f, 100)); // Timeout for first loading of chart to prevent zoom-issue
         }
         console.log("_getLookupOptions");
         return this._statistics.getExecutionStatistics().then(executionStatistics => {
@@ -127,7 +128,7 @@ export class Threads extends AbstractViewModel {
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
                 if (this._selectedStatus != null) {
-                    this._methodFilterActive = true;
+                    this._suppressMethodFilter = true;
                     this._selectedStatus = undefined;
                 }
                 this._resetColor();
@@ -197,8 +198,9 @@ export class Threads extends AbstractViewModel {
     }
 
     private _clearMethodFilter() {
-        // this._inputValue = "";
-        // this._inputValue = undefined;
+        // TODO clear method filter input field and reset mdc-lookup
+        this._inputValue = "";
+        this._inputValue = undefined;
 
         // this._searchRegexp = this._statusConverter.createRegexpFromSearchString("");
         // delete this.queryParams.methodId;
@@ -221,8 +223,8 @@ export class Threads extends AbstractViewModel {
     }
 
     private _statusChanged() {
-        if (this._methodFilterActive) {
-            this._methodFilterActive = false;
+        if (this._suppressMethodFilter) {
+            this._suppressMethodFilter = false;
             return;
         }
         const opacity = this._opacityOfInactiveElements;
@@ -230,8 +232,8 @@ export class Threads extends AbstractViewModel {
         let startTimes : number[] = [];
         let endTimes : number[] = [];
 
-        this._clearMethodFilter();
         if (this._filterActive) {
+            this._clearMethodFilter();
             this._resetColor();
         }
         if (this._selectedStatus > 0) {
@@ -249,9 +251,11 @@ export class Threads extends AbstractViewModel {
             const zoomStart = Math.min.apply(Math, startTimes);
             const zoomEnd = Math.max.apply(Math, endTimes);
             this.updateUrl({});
+            // this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
             this._zoom(zoomStart, zoomEnd);
         } else {
             this._resetZoom();
+            // this.updateUrl({});
         }
     }
 
@@ -368,7 +372,7 @@ export class Threads extends AbstractViewModel {
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
                         // TODO use duration value converter: -> IntlDurationFormatValueConverter broken?
-                        // + '<br>Duration: ' + durationFormatter.toView(params.value[4])
+                        // + '<br>Duration: ' + durationFormatter.toView(params.value[4]);
                         + '<br>Duration: ' + duration;
                 }
             },

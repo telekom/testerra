@@ -34,7 +34,7 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {StatusConverter} from "services/status-converter";
 import {data} from "../../services/report-model";
 import {MdcSnackbarService} from '@aurelia-mdc-web/snackbar';
-import IStackTraceCause = data.IStackTraceCause;
+import IStackTraceCause = data.StackTraceCause;
 import {ILayoutComparisonContext} from "../layout-comparison/layout-comparison";
 import {Clipboard} from "t-systems-aurelia-components/src/utils/clipboard";
 

@@ -59,6 +59,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"testT05_DataProviderWithFailedTestsOptional", Status.PASSED},
                 {"testT06_DataProviderWithCollectedAssertions", Status.PASSED},
                 {"testT06_DataProviderWithCollectedAssertions", Status.FAILED},
+                {"testT07_NonExistingDataProvider", Status.FAILED},
                 {"testT07_AfterClassWithAssertion", Status.PASSED},
                 {"testT08_AfterClassWithException", Status.PASSED},
                 {"testT05_AfterMethodWithAssertion", Status.PASSED},

@@ -84,8 +84,8 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
     public void testFailing() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
-        request.setWebDriverMode(WebDriverMode.local);
-        request.setBrowser(Browsers.phantomjs);
+//        request.setWebDriverMode(WebDriverMode.local);
+//        request.setBrowser(Browsers.phantomjs);
 
         WEB_DRIVER_MANAGER.getWebDriver(request);
         Assert.assertTrue(false);

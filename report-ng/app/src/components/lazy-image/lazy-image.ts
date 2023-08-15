@@ -24,7 +24,7 @@ import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
-import IFile = data.IFile;
+import IFile = data.File;
 
 @autoinject()
 export class LazyImage {

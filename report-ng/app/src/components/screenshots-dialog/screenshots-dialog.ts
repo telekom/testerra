@@ -23,20 +23,20 @@ import {data} from "../../services/report-model";
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './screenshot-dialog.scss'
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import ISessionContext = data.ISessionContext;
+import ISessionContext = data.SessionContext;
 
 export interface IScreenshotsDialogParams {
     screenshotIds:string[],
-    current:data.IFile
+    current: data.File
 }
 
 @autoinject
 export class ScreenshotsDialog {
-    private _screenshots:data.IFile[];
-    private _current:data.IFile;
+    private _screenshots: data.File[];
+    private _current: data.File;
     private _index = 0;
-    private _sessionContext:ISessionContext;
-    private _pageSourceFile:data.IFile;
+    private _sessionContext: ISessionContext;
+    private _pageSourceFile: data.File;
 
     constructor(
         private _dialog: MdcDialog,
@@ -66,7 +66,7 @@ export class ScreenshotsDialog {
         // }
     }
 
-    private _showScreenshot(file:data.IFile) {
+    private _showScreenshot(file: data.File) {
         this._current = file;
 
         const sessionKey = this._current.meta.SessionKey;

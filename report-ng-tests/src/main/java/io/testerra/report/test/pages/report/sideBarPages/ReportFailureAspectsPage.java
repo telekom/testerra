@@ -23,6 +23,7 @@
 package io.testerra.report.test.pages.report.sideBarPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
@@ -50,6 +51,9 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     @Check
     private final UiElement failureAspectsTable = pageContent.find(By.xpath("//tbody[@ref='content']"));
 
+
+    // failureAspect can contain apostrophes
+    PreparedLocator subFailureAspectRow = LOCATE.prepare(".//tr[.//td[contains(.,\"%s\") and contains(., \"%s\")]]");
 
     public enum FailureAspectsTableEntry {
         RANK(0), FAILURE_ASPECT(1), STATUS(2);
@@ -158,22 +162,22 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public ReportTestsPage clickStateLink(String observedFailureAspect, Status expectedState) {
-        // failureAspect can contain apostrophes
-        final UiElement failureAspectInRow = failureAspectsTable.find(
-                By.xpath(".//tr[.//td[contains(., \"" + observedFailureAspect + "\")]]"));
+        // Failure aspects are based on error type and error message. For locate it in Report frontend we have split the failure aspect
+        String[] splittedFailure = observedFailureAspect.split(":");
+        final UiElement failureAspectInRow = failureAspectsTable.find(subFailureAspectRow.with(splittedFailure[0], splittedFailure[1]));
 
-        final int columnIndexStatus = FailureAspectsTableEntry.STATUS.value + 1;
-        final UiElement statusInRow = failureAspectInRow.find(By.xpath(".//td[" + columnIndexStatus + "]//a[contains(., '" + expectedState.title + "')]"));
-
+        final UiElement statusInRow = failureAspectInRow.find(By.xpath("//a[contains(@href, 'status') and contains(., '" + expectedState.title + "')]"));
         statusInRow.click();
         return createPage(ReportTestsPage.class);
     }
 
     public ReportTestsPage clickFailureAspectLink(final String failureAspect) {
-        // failureAspect can contain apostrophes
-        final int columnIndexAspect = FailureAspectsTableEntry.FAILURE_ASPECT.value + 1;
-        UiElement subElement = failureAspectsTable.find(By.xpath(".//tr//td[" + columnIndexAspect + "]//a[contains(., \"" + failureAspect + "\")]"));
-        subElement.click();
+        // Failure aspects are based on error type and error message. For locate it in Report frontend we have split the failure aspect
+        String[] splittedFailure = failureAspect.split(":");
+        final UiElement failureAspectInRow = failureAspectsTable.find(subFailureAspectRow.with(splittedFailure[0], splittedFailure[1]));
+
+        UiElement link = failureAspectInRow.find(By.xpath("//a[contains(., '" + splittedFailure[0] + "')]"));
+        link.click();
 
         return createPage(ReportTestsPage.class);
     }

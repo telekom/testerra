@@ -66,7 +66,7 @@ public class SetupFailedTests extends TesterraTest implements Loggable {
     @DataProvider(name = "dpOptionalAssertFailed")
     public Object[][] dpOptionalAssertFailed() {
         Object[][] objects = new Object[1][1];
-        // TODO: This otpional assert cannot store because at this time no method context is created
+        // TODO: This optional assert cannot store because at this time no method context is created
         OptionalAssert.assertTrue(false, "Failed optional assertion in Dataprovider");
         return objects;
     }
@@ -98,6 +98,8 @@ public class SetupFailedTests extends TesterraTest implements Loggable {
     public void test_retriedFailed() {
         Assert.fail();
     }
+
+
 
 //    @BeforeMethod(groups = "failedGroup1")
 //    public void beforeMethod() {

@@ -99,4 +99,11 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
         });
     }
 
+    /**
+     * This test occurs a TestNGException
+     */
+    @Test(dataProvider = "it-does-not-exist")
+    public void testT07_NonExistingDataProvider() {
+    }
+
 }

@@ -29,8 +29,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import org.apache.commons.io.FileUtils;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -54,7 +54,7 @@ import java.util.HashMap;
  *
  * @author mibu
  */
-public final class LayoutCheck implements PropertyManagerProvider {
+public final class LayoutCheck implements PropertyManagerProvider, AssertProvider {
 
     public enum Properties implements IProperties {
         MODE("mode", "pixel"),
@@ -276,21 +276,6 @@ public final class LayoutCheck implements PropertyManagerProvider {
                 distanceImageSize.width, distanceImageSize.height,
                 expectedImage.getType());
 
-        Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
-        Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
-
-        if (!actualImageDimension.equals(expectedImageDimension)) {
-            OptionalAssert.fail(
-                    String.format(
-                            "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
-                            actualImageDimension.width,
-                            actualImageDimension.height,
-                            expectedImageDimension.width,
-                            expectedImageDimension.height
-                    )
-            );
-        }
-
         int ignoreColor = getColorOfPixel(expectedImage, 0, 0);
 
         for (int currentY = 0; currentY < distanceImageSize.height; currentY++) {
@@ -330,8 +315,16 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
         try {
             // Write image to given file
-            resultFilename.toFile().getParentFile().mkdirs();
-            ImageIO.write(distanceImage, "PNG", resultFilename.toAbsolutePath().toFile());
+            // Note:
+            //      The distance image needs to be created first in a temp dir and moved then to the destination dir
+            //      Cause: Executing a 'gradle test' with option '-p <project-dir>' causes a mismatch of working directory. It is still the project root dir,
+            //      but the subdirectory is needed. 'org.apache.commons.io.FileUtil.FileUtils' can handle this, but not 'ImageIO'.
+            File tempDistanceImage = new FileUtils().createTempFileName(resultFilename.getFileName().toString());
+            ImageIO.write(distanceImage, "PNG", tempDistanceImage);
+            if (resultFilename.toFile().exists()) {
+                resultFilename.toFile().delete();
+            }
+            FileUtils.moveFile(tempDistanceImage, resultFilename.toFile());
         } catch (IOException ioe) {
             LOGGER.error(
                     String.format("An error occurred while trying to persist image to '%s'.", resultFilename),
@@ -342,6 +335,10 @@ public final class LayoutCheck implements PropertyManagerProvider {
 
         // calculate and return the percentage number of pixels in error
         double result = ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+
+        // Just for debug log
+        Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
+        Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
         LOGGER.debug("Raw results of pixel check: \n" +
                         "Dimension actual image: {}\n" +
                         "Dimension expected image: {}\n" +
@@ -381,7 +378,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
      * Calculates the sizes that result from the minimum sizes of both pictures.
      *
      * @param expectedImage The expected image
-     * @param actualImage   The actual image
+     * @param actualImage The actual image
      * @return Calculated minimum size of the images
      */
     private static Dimension calculateMinImageSize(
@@ -411,6 +408,10 @@ public final class LayoutCheck implements PropertyManagerProvider {
     }
 
     public static void toReport(final MatchStep step) {
+        if (step == null) {
+            LOGGER.warn("Cannot add layout check to report.");
+            return;
+        }
         final String name = step.consecutiveTargetImageName;
         final Path referenceScreenshotPath = step.referenceFileName;
         final Path actualScreenshotPath = step.actualFileName;
@@ -418,7 +419,7 @@ public final class LayoutCheck implements PropertyManagerProvider {
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
 
-        if (!step.actualFileDimension.equals(step.referenceFileDimension)) {
+        if (!isMatchDimensions(step)) {
             OptionalAssert.fail(
                     String.format(
                             "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
@@ -443,22 +444,29 @@ public final class LayoutCheck implements PropertyManagerProvider {
         });
     }
 
+    public static boolean isMatchDimensions(final MatchStep step) {
+        return step.actualFileDimension.equals(step.referenceFileDimension);
+    }
+
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
-        LayoutCheck.MatchStep matchStep;
-        final String assertMessage = String.format("Expected that pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
+        LayoutCheck.MatchStep matchStep = null;
+        final String assertMessage = String.format("pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
         try {
-            //PropertyManager.setPriorityResolvers(Stream.of(new WebDriverPropertyResolver(webDriver)));
             matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
-            //PropertyManager.clearPriorityResolvers();
+            // Check for 2 decimals of % value is enough --> Readable assertion message
+            ASSERT.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
+            // In case of optional or collected assertions
             if (!matchStep.takeReferenceOnly) {
                 LayoutCheck.toReport(matchStep);
             }
-            // Check for 2 decimals of % value is enough --> Readable assertion message
-            AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
         } catch (LayoutCheckException e) {
             matchStep = e.getMatchStep();
             LayoutCheck.toReport(matchStep);
             throw e;
+        } catch (Throwable t) {
+            // Needed for assertion errors
+            LayoutCheck.toReport(matchStep);
+            throw t;
         }
     }
 }

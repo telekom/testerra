@@ -37,7 +37,7 @@ public class DetailsTabExtensionsTest extends AbstractReportTest{
         String className = "GenerateFailedStatusInTesterraReportTest";
 
         TestStep.begin("Navigate to details page");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);

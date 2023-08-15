@@ -22,7 +22,6 @@
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
 import {autoinject} from "aurelia-framework";
-import {data} from "../../services/report-model";
 import {MethodDetails} from "../../services/statistics-generator";
 
 @autoinject()

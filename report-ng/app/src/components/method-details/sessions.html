@@ -29,7 +29,10 @@
                         <span class="secondary sr1">ID</span>${sessionContext.contextValues.id}
                     </li>
                     <li class="mdc-custom-list-item">
-                        <span class="secondary sr1">User agent</span>${sessionContext.browserName}:${sessionContext.browserVersion}
+                        <span class="secondary sr1">Browser</span>${sessionContext.browserName}:${sessionContext.browserVersion}
+                    </li>
+                    <li class="mdc-custom-list-item">
+                        <span class="secondary sr1">User&nbsp;agent</span>${sessionContext.userAgent}
                     </li>
                     <li class="mdc-custom-list-item" if.bind="sessionContext.serverUrl.length>0">
                         <span class="secondary sr1">Server</span><a href="${sessionContext.serverUrl}">${sessionContext.serverUrl}</a>

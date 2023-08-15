@@ -34,7 +34,7 @@ dependencies {
     // implementation 'org.javassist:javassist:3.20.0-GA'
     // </ExceptionUtils>
 
-    api('org.testng:testng:7.6.1')
+    api('org.testng:testng:7.8.0')
     //  {
     // Update TestNG 7.4.0: This is not needed anymore because TestNG extremly reduced transitive dependencies.
     //

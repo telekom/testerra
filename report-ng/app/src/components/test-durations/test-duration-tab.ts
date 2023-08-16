@@ -32,6 +32,7 @@ import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
 import IMethodContext = data.IMethodContext;
 import {StatusConverter} from "../../services/status-converter";
+import IContextValues = data.IContextValues;
 
 
 @autoinject()
@@ -42,7 +43,6 @@ export class TestDurationTab extends AbstractViewModel {
     private _attached = false;
     private _hasEnded = false;
     private _methodDetails: MethodDetails[];
-    private _showConfigurationMethods: boolean = null;
     private _labels: string[];
     private _sectionValues: number[];
     private _data: number[];
@@ -50,7 +50,6 @@ export class TestDurationTab extends AbstractViewModel {
     private _loading = false;
     private _searchRegexp: RegExp;
     private _inputValue;
-    private _lookUpOptions;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -61,36 +60,26 @@ export class TestDurationTab extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-
-        if (params.config) {
-            this._showConfigurationMethods = !!params.config.toLowerCase();
-        }
-        this._lookUpOptions = [];
-        this._getLookUpOptions()
         this._filter();
     }
 
-    private _getLookUpOptions() {
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+    private _getLookUpOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
+        return this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             let methodContexts:IMethodContext[];
-            if (this.queryParams.methodId) {
-                methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
+            if (methodId) {
+                methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
                 this._highlightData();
-                this.updateUrl({methodId: this.queryParams.methodId});
-            } else if (this._inputValue?.length > 0) {
-                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._inputValue);
+                this.updateUrl({methodId: methodId});
+            } else if (filter?.length > 0) {
+                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
             } else {
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
-            if (this._showConfigurationMethods === false || this._showConfigurationMethods === null) {
-                methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-            }
-
-            this._lookUpOptions = methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
+            return methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
                 if (a.name < b.name) {
                     return -1;
                 }
@@ -98,12 +87,10 @@ export class TestDurationTab extends AbstractViewModel {
                     return 1;
                 }
                 return 0;
-            });
-        });
+            });        });
     };
 
     selectionChanged(){
-        console.log("selection changed")
         this._setChartOption(); // overwrites color highlighting
         if (this._inputValue.length == 0){
             this.updateUrl({});
@@ -121,10 +108,6 @@ export class TestDurationTab extends AbstractViewModel {
             executionStatistics.classStatistics
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
-
-                    if (this._showConfigurationMethods === false || this._showConfigurationMethods === null) {
-                        methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-                    }
 
                     let methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);
@@ -147,11 +130,8 @@ export class TestDurationTab extends AbstractViewModel {
             })
             this._prepareData(testDurationMethods);
 
-            if (this._showConfigurationMethods) {
-                this.queryParams.config = this._showConfigurationMethods;
-            } else {
-                delete this.queryParams.config;
-            }
+            delete this.queryParams.config;
+
             this.updateUrl(this.queryParams);
 
             this._loading = false;
@@ -172,11 +152,6 @@ export class TestDurationTab extends AbstractViewModel {
                 axisPointer: {
                     type: 'shadow'
                 },
-                // this enables that the y coordinate stays the same => should facilitate clicking inside later on
-                // position: function (point) {
-                //     var x = point[0]-100;
-                //     return [x.toString(), '20%'];
-                // },
                 formatter: function (params) {
                     if (params.length > 0) {
                         const dataIndex = params[0].dataIndex; // gives the index of the data point for bar chart
@@ -287,17 +262,6 @@ export class TestDurationTab extends AbstractViewModel {
             this._hasEnded = true;
         }
         return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
-    }
-
-    private _showConfigurationChanged() {
-        this._getLookUpOptions();
-        this._filterOnce();
-    }
-
-    private _filterOnce() {
-        if (!this._loading) {
-            this._filter();
-        }
     }
 }
 

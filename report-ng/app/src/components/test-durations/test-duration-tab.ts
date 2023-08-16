@@ -30,7 +30,6 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import moment from "moment";
 import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
-import IContextValues = data.IContextValues;
 import IMethodContext = data.IMethodContext;
 import {StatusConverter} from "../../services/status-converter";
 
@@ -51,6 +50,7 @@ export class TestDurationTab extends AbstractViewModel {
     private _loading = false;
     private _searchRegexp: RegExp;
     private _inputValue;
+    private _lookUpOptions;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -65,20 +65,22 @@ export class TestDurationTab extends AbstractViewModel {
         if (params.config) {
             this._showConfigurationMethods = !!params.config.toLowerCase();
         }
+        this._lookUpOptions = [];
+        this._getLookUpOptions()
         this._filter();
     }
 
-    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
-        return this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+    private _getLookUpOptions() {
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             let methodContexts:IMethodContext[];
-            if (methodId) {
-                methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
+            if (this.queryParams.methodId) {
+                methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
                 this._highlightData();
-                this.updateUrl({methodId: methodId});
-            } else if (filter?.length > 0) {
-                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
+                this.updateUrl({methodId: this.queryParams.methodId});
+            } else if (this._inputValue?.length > 0) {
+                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._inputValue);
                 delete this.queryParams.methodId;
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
             } else {
@@ -87,11 +89,21 @@ export class TestDurationTab extends AbstractViewModel {
             if (this._showConfigurationMethods === false || this._showConfigurationMethods === null) {
                 methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
             }
-            return methodContexts.map(methodContext => methodContext.contextValues);
+
+            this._lookUpOptions = methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
         });
     };
 
     selectionChanged(){
+        console.log("selection changed")
         this._setChartOption(); // overwrites color highlighting
         if (this._inputValue.length == 0){
             this.updateUrl({});
@@ -244,40 +256,21 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _calculateDurationAxis(durations: number[]) {
-        durations.sort((a, b) => a - b); // sort array in ascending order
+        durations.sort((a, b) => a - b)
 
-        const maxDuration = durations[durations.length - 1];
+        let maxDuration = durations[durations.length - 1];
+        const remainder = maxDuration % 5;
+        maxDuration = remainder === 0 ? maxDuration : maxDuration + (5 - remainder);
 
-        // Determine the possible section ranges (multiples of 3 and 5)
-        const possibleSectionRanges: number[] = [];
-        for (let i = 3; i <= 5; i += 2) {
-            for (let j = 1; j <= 10; j++) {
-                const sectionRange = i * j;
-                if (sectionRange <= maxDuration) {
-                    possibleSectionRanges.push(sectionRange);
-                } else {
-                    break;
-                }
-            }
-        }
+        const sectionRange = maxDuration / 5;
 
-        // Choose the section range that results in fewer sections (at least 5)
-        let numSections = 10;
-        let chosenSectionRange = possibleSectionRanges[possibleSectionRanges.length - 1];
-        for (const sectionRange of possibleSectionRanges) {
-            const sections = Math.ceil(maxDuration / sectionRange);
-            if (sections >= 5 && sections <= 10 && sections < numSections) {
-                numSections = sections;
-                chosenSectionRange = sectionRange;
-            }
-        }
+        const resultDurations: number[] = Array(5).fill(0);
+        const resultSections: string[] = Array(5).fill("");
 
-        const resultDurations: number[] = Array(numSections).fill(0);
-        const resultSections: string[] = Array(numSections).fill("");
-
-        for (let i = 0; i < numSections; i++) {
-            const start = i * chosenSectionRange;
-            const end = (i + 1) * chosenSectionRange - 1;
+        // calculate ranges
+        for (let i = 0; i < 5; i++) {
+            const start = i * sectionRange;
+            const end = (i + 1) * sectionRange - 1;
             resultSections[i] = `${start}-${end}s`;
             resultDurations[i] = end;
         }
@@ -297,7 +290,7 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _showConfigurationChanged() {
-        this._getLookupOptions(this._inputValue, this.queryParams.methodId);
+        this._getLookUpOptions();
         this._filterOnce();
     }
 

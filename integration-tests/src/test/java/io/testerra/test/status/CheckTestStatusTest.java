@@ -72,13 +72,14 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"afterMethodSetup02", Status.FAILED},
                 {"afterClassSetup01", Status.FAILED},
                 {"afterClassSetup02", Status.FAILED},
+                {"testT08_DataProviderWithRetry", Status.PASSED},
         };
     }
 
     @DataProvider
     public static Object[][] provideTestMethodsSkipped() {
         return new Object[][]{
-                {"test_SkippedNoStatus", Status.FAILED, Status.SKIPPED.title},
+                {"test_SkippedNoStatus", Status.NO_RUN, Status.SKIPPED.title},
                 {"test_Skipped_dependingOnFailed", Status.NO_RUN, "depends on not successfully finished methods"},
                 {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
                 {"testT02_crashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
@@ -93,14 +94,15 @@ public class CheckTestStatusTest extends TesterraTest {
     @DataProvider
     public static Object[][] provideTestMethodsRetried() {
         return new Object[][]{
-                {"testCaseOne", Status.RECOVERED},
-                {"test_retryOnWebDriverException", Status.RECOVERED},
-                {"test_retryOnUnreachableBrowserException", Status.RECOVERED},
-                {"test_retryOnJsonException", Status.RECOVERED},
-                {"test_RetryFailed", Status.FAILED},
-                {"test_RetryExpectedFailed", Status.FAILED_EXPECTED},
-                {"test_RetryValidExpectedFailed", Status.FAILED_EXPECTED},
-                {"test_RetryInvalidExpectedFailed", Status.FAILED}
+                {"testCaseOne", Status.RECOVERED, 2, 0, 1},
+                {"test_retryOnWebDriverException", Status.RECOVERED, 2, 0, 1},
+                {"test_retryOnUnreachableBrowserException", Status.RECOVERED, 2, 0, 1},
+                {"test_retryOnJsonException", Status.RECOVERED, 2, 0, 1},
+                {"test_RetryFailed", Status.FAILED, 2, 0, 1},
+                {"test_RetryExpectedFailed", Status.FAILED_EXPECTED, 2, 0, 1},
+                {"test_RetryValidExpectedFailed", Status.FAILED_EXPECTED, 2, 0, 1},
+                {"test_RetryInvalidExpectedFailed", Status.FAILED, 2, 0, 1},
+                {"testT08_DataProviderWithRetry", Status.RECOVERED, 3, 1, 2}
         };
     }
 
@@ -117,13 +119,13 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
                 {"*** Stats: ClassContexts:  14", "ClassContext"},
-                {"*** Stats: MethodContexts: 70", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 56 (46 relevant)", "Test methods"},
+                {"*** Stats: MethodContexts: 73", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 59 (48 relevant)", "Test methods"},
                 {"*** Stats: Failed: 10", "Failed tests"},
-                {"*** Stats: Retried: 10", "Retried tests"},
+                {"*** Stats: Retried: 11", "Retried tests"},
                 {"*** Stats: Expected Failed: 7", "Expected failed tests"},
                 {"*** Stats: Skipped: 9", "Skipped tests"},
-                {"*** Stats: Passed: 20 ⊃ Recovered: 4 ⊃ Repaired: 1", "Passed tests"}
+                {"*** Stats: Passed: 22 ⊃ Recovered: 5 ⊃ Repaired: 1", "Passed tests"}
         };
     }
 
@@ -137,8 +139,16 @@ public class CheckTestStatusTest extends TesterraTest {
         LOG_4_J_FILE_READER.assertTestStatusPerMethod(METHOD_END_WORKER_SEARCH_TERM, methodName, expectedTestStatus);
     }
 
+    /**
+     *
+     * @param methodName Searched name of test method
+     * @param finalStatus Final status of test method
+     * @param count Count of found methods in log
+     * @param retriedIndex Index with first retried in log
+     * @param finalIndex Index with final status in log
+     */
     @Test(dataProvider = "provideTestMethodsRetried")
-    public void testT02_verifyRetryStatus(final String methodName, final Status finalStatus) {
+    public void testT02_verifyRetryStatus(final String methodName, final Status finalStatus, final int count, final int retriedIndex, final int finalIndex) {
 
         final String failedStatus = Status.FAILED.title;
         final String finalStatusTitle = finalStatus.title;
@@ -146,12 +156,9 @@ public class CheckTestStatusTest extends TesterraTest {
         // check basic test status in log
         final List<String> methodEndEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(METHOD_END_WORKER_SEARCH_TERM, methodName);
 
-        Assert.assertEquals(methodEndEntries.size(), 2,
-                "correct amount of test status entries found.");
-        Assert.assertTrue(methodEndEntries.get(0).contains(failedStatus),
-                String.format("'%s' has status '%s'", methodName, failedStatus));
-        Assert.assertTrue(methodEndEntries.get(1).contains(finalStatusTitle),
-                String.format("'%s' has status '%s'", methodName, finalStatusTitle));
+        Assert.assertEquals(methodEndEntries.size(), count, "correct amount of test status entries found.");
+        Assert.assertTrue(methodEndEntries.get(retriedIndex).contains(failedStatus), String.format("'%s' has status '%s'", methodName, failedStatus));
+        Assert.assertTrue(methodEndEntries.get(finalIndex).contains(finalStatusTitle), String.format("'%s' has status '%s'", methodName, finalStatusTitle));
 
         // check retry information, check of actual status 'retried' not possible in log
         final List<String> retryEntries = LOG_4_J_FILE_READER.filterLogForTestMethod(RETRY_ANALYZER_SEARCH_TERM, methodName);

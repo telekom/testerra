@@ -423,6 +423,7 @@ public final class WebDriverSessionsManager {
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
+                sessionContext.setUserAgent(browserInformation.getUserAgent());
                 sessionContext.setActualBrowserName(browserInformation.getBrowserName());
                 sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
             }

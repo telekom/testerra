@@ -56,7 +56,7 @@ subprojects {
 
     // important!
     repositories {
-        mavenLocal()
+//        mavenLocal()
         mavenCentral()
     }
 

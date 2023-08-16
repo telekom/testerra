@@ -34,6 +34,8 @@ public class UapBrowserInformation implements BrowserInformation, Loggable {
     private static Parser userAgentAnalyzer;
     private Client client;
 
+    private String userAgent;
+
     public UapBrowserInformation() {
         try {
             userAgentAnalyzer = new Parser();
@@ -47,7 +49,13 @@ public class UapBrowserInformation implements BrowserInformation, Loggable {
      */
     @Override
     public void parseUserAgent(String userAgent) {
+        this.userAgent = userAgent;
         client = userAgentAnalyzer.parse(userAgent);
+    }
+
+    @Override
+    public String getUserAgent() {
+        return this.userAgent;
     }
 
     @Override

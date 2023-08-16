@@ -36,8 +36,9 @@ public class ReportSessionsTab extends AbstractReportMethodPage {
     @Check
     private final UiElement id = sessionCard.find(By.xpath("/ul//span[contains(text(),'ID')]"));
     @Check
-    private final UiElement userAgent = sessionCard.find(By.xpath("/ul//span[contains(text(),'User agent')]"));
-
+    private final UiElement browser = sessionCard.find(By.xpath("//li[./span[contains(text(), 'Browser')]]"));
+    @Check
+    private final UiElement userAgent = sessionCard.find(By.xpath("//li[./span[contains(text(), 'User') and contains(text(), 'agent')]]"));
     private final UiElement node = sessionCard.find(By.xpath("/ul//span[contains(text(),'Node')]"));
     @Check
     private final UiElement capabilityHeadline = sessionCard.find(By.xpath("/div[contains(text(),'Capabilities')]"));
@@ -47,4 +48,11 @@ public class ReportSessionsTab extends AbstractReportMethodPage {
     public ReportSessionsTab(WebDriver driver) {
         super(driver);
     }
+
+    public void validateBrowser(String browser) {
+        this.browser.assertThat().text().contains(browser);
+        this.userAgent.assertThat().text().contains(browser);
+    }
+
+
 }

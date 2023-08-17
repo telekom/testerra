@@ -32,8 +32,12 @@ import {EChartsOption} from "echarts";
 import {data} from "../../services/report-model";
 import ResultStatusType = data.ResultStatusType;
 import MethodContext = data.MethodContext;
-import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
-// import {IntlDurationFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-duration-format-value-converter";
+import {
+    IntlDateFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+// import {
+//     IntlDurationFormatValueConverter
+// } from "t-systems-aurelia-components/src/value-converters/intl-duration-format-value-converter";
 import IContextValues = data.IContextValues;
 import IMethodContext = data.IMethodContext;
 
@@ -45,7 +49,7 @@ export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _options: EChartsOption;
     private _inputValue;
-    private _methodNameInput:HTMLElement;
+    private _methodNameInput: HTMLElement;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
     private _filterActive = false;   // To prevent unnecessary method calls
@@ -53,7 +57,7 @@ export class Threads extends AbstractViewModel {
     @observable()
     private _chart: echarts.ECharts;
 
-    private _dateFormatter : IntlDateFormatValueConverter;
+    private _dateFormatter: IntlDateFormatValueConverter;
     // private _durationFormatter: IntlDurationFormatValueConverter;
 
     // Some values for presentation
@@ -76,19 +80,37 @@ export class Threads extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
 
-        // if (params.status) {
-        //     this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
-        // } else {
-        //     this._selectedStatus = null;
-        // }
-        //
-        // if (this.queryParams.status) {
-        //     this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
-        //     console.log(this._selectedStatus);
-        // }
-        // if(this._selectedStatus != null) {
-        //     this.updateUrl({}); // To clear the url from status
-        // }
+        if (this.queryParams.status || params.status) {
+            (async () => {
+                this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+                console.log("Params:", params.status);
+                console.log("SetStat:", this._selectedStatus);
+                await new Promise(f => setTimeout(f, 200));
+
+                const opacity = this._opacityOfInactiveElements;
+                const selectedStat = this._statusConverter.getStatusForClass(params.status);
+                let startTimes: number[] = [];
+                let endTimes: number[] = [];
+
+                this._options.series[0].data.forEach(function (value) {
+                    const stat = value.value[7];
+                    console.log(stat, selectedStat);
+                    if (stat != selectedStat) {
+                        value.itemStyle.normal.opacity = opacity;
+                    } else {
+                        startTimes.push(value.value[1]);
+                        endTimes.push(value.value[2]);
+                    }
+                });
+                this._chart.setOption(this._options);
+
+                const zoomStart = Math.min.apply(Math, startTimes);
+                const zoomEnd = Math.max.apply(Math, endTimes);
+                this._zoom(zoomStart, zoomEnd);
+            })();
+        } else {
+            this._selectedStatus = null;
+        }
     }
 
     attached() {
@@ -116,14 +138,15 @@ export class Threads extends AbstractViewModel {
         }
     }
 
-    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
+    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]> => {
         if (this._initialChartLoading == true) {
             await new Promise(f => setTimeout(f, 100)); // Timeout for first loading of chart to prevent zoom-issue
         }
         console.log("_getLookupOptions");
         return this._statistics.getExecutionStatistics().then(executionStatistics => {
-            let methodContexts:IMethodContext[];
+            let methodContexts: IMethodContext[];
             if (methodId) {
+                console.log("Method");
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
@@ -135,15 +158,21 @@ export class Threads extends AbstractViewModel {
                 this._zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
+                console.log("Filter");
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
             } else {
+                console.log("Normal");
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
-            return methodContexts.map(methodContext => methodContext.contextValues).sort(function(a, b){
-                if(a.name < b.name) { return -1; }
-                if(a.name > b.name) { return 1; }
+            return methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
                 return 0;
             });
         });
@@ -151,7 +180,8 @@ export class Threads extends AbstractViewModel {
 
     private _zoomInOnMethod(methodId: string) {
         console.log("_zoomInOnMethod " + methodId);
-        const dataToZoomInOn = this._options.series[0].data.find(function(method) {
+        this._resetColor();
+        const dataToZoomInOn = this._options.series[0].data.find(function (method) {
             return method.value[6] == methodId;
         });
         const zoomStart = dataToZoomInOn.value[1];
@@ -227,53 +257,71 @@ export class Threads extends AbstractViewModel {
             this._suppressMethodFilter = false;
             return;
         }
-        const opacity = this._opacityOfInactiveElements;
-        const selectedStat = this._selectedStatus;
-        let startTimes : number[] = [];
-        let endTimes : number[] = [];
+        // const opacity = this._opacityOfInactiveElements;
+        // const selectedStat = this._selectedStatus;
+        // let startTimes: number[] = [];
+        // let endTimes: number[] = [];
 
         if (this._filterActive) {
             this._clearMethodFilter();
             this._resetColor();
         }
-        if (this._selectedStatus > 0) {
-            this._options.series[0].data.forEach(function (value) {
-                const stat = value.value[7];
-                if (stat != selectedStat) {
-                    value.itemStyle.normal.opacity = opacity;
-                } else {
-                    startTimes.push(value.value[1]);
-                    endTimes.push(value.value[2]);
-                }
-            });
-            this._chart.setOption(this._options);
+        // console.log("Status:", selectedStat);
 
-            const zoomStart = Math.min.apply(Math, startTimes);
-            const zoomEnd = Math.max.apply(Math, endTimes);
-            this.updateUrl({});
-            // this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
-            this._zoom(zoomStart, zoomEnd);
+        if (this._selectedStatus > 0) {
+            this._zoomInOnMethodsWithStatus();
+            this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
         } else {
             this._resetZoom();
-            // this.updateUrl({});
+            this.updateUrl({});
         }
     }
 
-    // private _initDurationFormatter() {
-    //     const container = new Container();
-    //     this._durationFormatter = container.get(IntlDurationFormatValueConverter);
-    //     this._durationFormatter.setLocale('en-GB');
-    //     this._durationFormatter.setOptions('duration', {})
-    // }
+    private _zoomInOnMethodsWithStatus() {
+        const opacity = this._opacityOfInactiveElements;
+        const selectedStat = this._selectedStatus;
+        let startTimes: number[] = [];
+        let endTimes: number[] = [];
+
+        this._options.series[0].data.forEach(function (value) {
+            const stat = value.value[7];
+            if (stat != selectedStat) {
+                value.itemStyle.normal.opacity = opacity;
+            } else {
+                startTimes.push(value.value[1]);
+                endTimes.push(value.value[2]);
+            }
+        });
+        this._chart.setOption(this._options);
+
+        const zoomStart = Math.min.apply(Math, startTimes);
+        const zoomEnd = Math.max.apply(Math, endTimes);
+        this._zoom(zoomStart, zoomEnd);
+    }
+
+    /*private _initDurationFormatter() {
+        const container = new Container();
+        this._durationFormatter = container.get(IntlDurationFormatValueConverter);
+        this._durationFormatter.setLocale("en");
+        this._durationFormatter.setUnits("executionTime", ["minute", "second"]);
+        this._durationFormatter.setOptions("executionTime", {numeric: "auto"});
+    }*/
 
     private _initDateFormatter() {
         const container = new Container();
         this._dateFormatter = container.get(IntlDateFormatValueConverter);
         this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', { year: 'numeric', month: 'short', day: 'numeric' });
-        this._dateFormatter.setOptions('time_full', { hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: '2', hour12: false });
-        this._dateFormatter.setOptions('time', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
-        this._dateFormatter.setOptions('full', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
+        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
+        this._dateFormatter.setOptions('full', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: false
+        });
     }
 
     /**
@@ -282,7 +330,7 @@ export class Threads extends AbstractViewModel {
      */
     private _prepareTimeline(executionStatistics: ExecutionStatistics) {
         const data = [];
-        let startTimes : number[] = [];
+        let startTimes: number[] = [];
         const threadCategories = new Map();
 
         Object.values(executionStatistics.executionAggregate.methodContexts).forEach(methodContext => {
@@ -345,16 +393,16 @@ export class Threads extends AbstractViewModel {
                 return a.length > b.length ? a : b;
             }
         );
-        let gridLeftValue= longestThreadName.length * 6.5; // Calculate the value for grid:left
+        let gridLeftValue = longestThreadName.length * 7; // Calculate the value for grid:left
         gridLeftValue = gridLeftValue > 100 ? gridLeftValue : 100; // Set to default of 100, if lower
 
         this._options = {
             tooltip: {
                 formatter: function (params) {
                     // Calculations for test duration
-                    const fullMinutes = Math.floor(params.value[4]/(60000));
-                    const fullSeconds = Math.floor(params.value[4]/1000);
-                    const remainingMS = (params.value[4]%1000);
+                    const fullMinutes = Math.floor(params.value[4] / (60000));
+                    const fullSeconds = Math.floor(params.value[4] / 1000);
+                    const remainingMS = (params.value[4] % 1000);
                     let duration;
                     if (fullMinutes == 0) {
                         if (fullSeconds == 0) {
@@ -363,7 +411,7 @@ export class Threads extends AbstractViewModel {
                             duration = fullSeconds + "s " + remainingMS + "ms";
                         }
                     } else {
-                        const remainingSeconds = Math.floor(fullSeconds%60);
+                        const remainingSeconds = Math.floor(fullSeconds % 60);
                         duration = fullMinutes + "min " + remainingSeconds + "s " + remainingMS + "ms";
                     }
 
@@ -371,8 +419,8 @@ export class Threads extends AbstractViewModel {
                         params.color + ';"> ' + params.name + ' (' + params.value[5] + ')' + '</div>'
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
-                        // TODO use duration value converter: -> IntlDurationFormatValueConverter broken?
-                        // + '<br>Duration: ' + durationFormatter.toView(params.value[4]);
+                        // TODO use duration value converter
+                        // + '<br>Duration: ' + durationFormatter.toView(params.value[4], 'executionTime');
                         + '<br>Duration: ' + duration;
                 }
             },

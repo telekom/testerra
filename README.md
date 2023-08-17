@@ -42,8 +42,8 @@ Include the following dependency in your project.
 Gradle:
 ```groovy
 dependencies {
-    implementation 'io.testerra:driver-ui-desktop:2.3'
-    implementation 'io.testerra:report-ng:2.3'
+    implementation 'io.testerra:driver-ui-desktop:2.4'
+    implementation 'io.testerra:report-ng:2.4'
 }
 ```
 
@@ -53,17 +53,17 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2.3</version>
+        <version>2.4</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.3</version>
+        <version>2.4</version>
     </dependency>
 </dependencies>
 ```
 
-Testerra requires **JDK11** or later.
+Testerra requires **JDK11** or later and uses **Selenium 4**.
 
 ### Using Testerra functionality
 

@@ -20,7 +20,7 @@
  */
 
 import {autoinject, observable} from "aurelia-framework";
-import {IFilter, StatusConverter} from "services/status-converter";
+import {StatusConverter} from "services/status-converter";
 import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
@@ -49,7 +49,6 @@ export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _options: EChartsOption;
     private _inputValue;
-    private _methodNameInput: HTMLElement;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
     private _filterActive = false;   // To prevent unnecessary method calls
@@ -83,30 +82,8 @@ export class Threads extends AbstractViewModel {
         if (this.queryParams.status || params.status) {
             (async () => {
                 this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
-                console.log("Params:", params.status);
-                console.log("SetStat:", this._selectedStatus);
                 await new Promise(f => setTimeout(f, 200));
-
-                const opacity = this._opacityOfInactiveElements;
-                const selectedStat = this._statusConverter.getStatusForClass(params.status);
-                let startTimes: number[] = [];
-                let endTimes: number[] = [];
-
-                this._options.series[0].data.forEach(function (value) {
-                    const stat = value.value[7];
-                    console.log(stat, selectedStat);
-                    if (stat != selectedStat) {
-                        value.itemStyle.normal.opacity = opacity;
-                    } else {
-                        startTimes.push(value.value[1]);
-                        endTimes.push(value.value[2]);
-                    }
-                });
-                this._chart.setOption(this._options);
-
-                const zoomStart = Math.min.apply(Math, startTimes);
-                const zoomEnd = Math.max.apply(Math, endTimes);
-                this._zoom(zoomStart, zoomEnd);
+                this._zoomInOnMethodsWithStatus(this._statusConverter.getStatusForClass(params.status));
             })();
         } else {
             this._selectedStatus = null;
@@ -128,9 +105,8 @@ export class Threads extends AbstractViewModel {
         this._chart.on('click', event => this._handleClickEvent(event));
     }
 
-    private _selectionChanged(){
-        console.log("selection changed");
-        if (this._inputValue.length == 0){
+    private _selectionChanged() {
+        if (this._inputValue.length == 0) {
             this._searchRegexp = null;
             if (this._filterActive && this._selectedStatus == null) {
                 this._resetZoom();
@@ -142,11 +118,9 @@ export class Threads extends AbstractViewModel {
         if (this._initialChartLoading == true) {
             await new Promise(f => setTimeout(f, 100)); // Timeout for first loading of chart to prevent zoom-issue
         }
-        console.log("_getLookupOptions");
         return this._statistics.getExecutionStatistics().then(executionStatistics => {
             let methodContexts: IMethodContext[];
             if (methodId) {
-                console.log("Method");
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
@@ -158,12 +132,10 @@ export class Threads extends AbstractViewModel {
                 this._zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
-                console.log("Filter");
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
             } else {
-                console.log("Normal");
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
             return methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
@@ -179,7 +151,6 @@ export class Threads extends AbstractViewModel {
     };
 
     private _zoomInOnMethod(methodId: string) {
-        console.log("_zoomInOnMethod " + methodId);
         this._resetColor();
         const dataToZoomInOn = this._options.series[0].data.find(function (method) {
             return method.value[6] == methodId;
@@ -210,7 +181,6 @@ export class Threads extends AbstractViewModel {
     }
 
     private _resetColor() {
-        console.log("_resetColor");
         this._options.series[0].data.forEach(function (value) {
             value.itemStyle.normal.opacity = 1;
         });
@@ -219,7 +189,6 @@ export class Threads extends AbstractViewModel {
 
     private _resetZoomButtonClicked() {
         this._clearMethodFilter();
-
         if (this._selectedStatus != null) {
             this._selectedStatus = undefined;
         } else {
@@ -231,12 +200,6 @@ export class Threads extends AbstractViewModel {
         // TODO clear method filter input field and reset mdc-lookup
         this._inputValue = "";
         this._inputValue = undefined;
-
-        // this._searchRegexp = this._statusConverter.createRegexpFromSearchString("");
-        // delete this.queryParams.methodId;
-        // this._searchRegexp = null;
-        // delete this.queryParams.methodName;
-        // this._methodNameInput.dispatchEvent(new Event('change'));
     }
 
     private _resetZoom() {
@@ -257,17 +220,10 @@ export class Threads extends AbstractViewModel {
             this._suppressMethodFilter = false;
             return;
         }
-        // const opacity = this._opacityOfInactiveElements;
-        // const selectedStat = this._selectedStatus;
-        // let startTimes: number[] = [];
-        // let endTimes: number[] = [];
-
         if (this._filterActive) {
             this._clearMethodFilter();
             this._resetColor();
         }
-        // console.log("Status:", selectedStat);
-
         if (this._selectedStatus > 0) {
             this._zoomInOnMethodsWithStatus();
             this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
@@ -277,12 +233,15 @@ export class Threads extends AbstractViewModel {
         }
     }
 
-    private _zoomInOnMethodsWithStatus() {
+    private _zoomInOnMethodsWithStatus(status?: data.ResultStatusType) {
         const opacity = this._opacityOfInactiveElements;
-        const selectedStat = this._selectedStatus;
+        let selectedStat = this._selectedStatus;
         let startTimes: number[] = [];
         let endTimes: number[] = [];
 
+        if (status) {
+            selectedStat = status;
+        }
         this._options.series[0].data.forEach(function (value) {
             const stat = value.value[7];
             if (stat != selectedStat) {

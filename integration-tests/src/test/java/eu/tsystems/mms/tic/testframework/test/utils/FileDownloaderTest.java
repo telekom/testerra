@@ -137,7 +137,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     @Test
     public void test05_readFileFromUrl() throws IOException {
 
-        final String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
+        final String baseUrl = String.format("http://localhost:%d/%s", staticServer.getPort(), getTestPage().getPath());
 
         final FileDownloader downloader = new FileDownloader();
         final File file = downloader.download(baseUrl);

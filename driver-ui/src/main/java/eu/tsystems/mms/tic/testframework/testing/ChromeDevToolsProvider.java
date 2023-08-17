@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,16 +17,17 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.constants;
+package eu.tsystems.mms.tic.testframework.testing;
 
-public class Browsers {
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
 
-    public static final String firefox = "firefox";
-    public static final String chrome = "chrome";
-    public static final String ie = "ie";
-    public static final String edge = "edge";
-    public static final String safari = "safari";
-    public static final String chromeHeadless = "chromeHeadless";
+/**
+ * Provides a {@link ChromeDevTools}
+ *
+ * @author mgn
+ */
+public interface ChromeDevToolsProvider {
+    ChromeDevTools CHROME_DEV_TOOLS = Testerra.getInjector().getInstance(ChromeDevTools.class);
 }

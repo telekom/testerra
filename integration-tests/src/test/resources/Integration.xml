@@ -5,10 +5,11 @@
         <suite-file path="GuiElementStandard.xml"/>
         <suite-file path="GuiElementVariations.xml"/>
         <suite-file path="PageObjects.xml"/>
-        <suite-file path="UiElement.xml"></suite-file>
+        <suite-file path="UiElement.xml"/>
         <suite-file path="Localization.xml"/>
         <suite-file path="Core.xml"/>
         <suite-file path="Execution.xml"/>
         <suite-file path="CheckTestStatus.xml"/>
+        <suite-file path="SingleRuns.xml"/>
     </suite-files>
 </suite>

@@ -21,12 +21,14 @@
 
 package eu.tsystems.mms.tic.testframework.test.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
+import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
@@ -39,6 +41,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,8 +51,6 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
     public void testT01_BaseURL() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
-        //request.webDriverMode = WebDriverMode.local;
-        //request.browser = Browsers.phantomjs;
 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
@@ -57,10 +58,8 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
     }
 
     @Test
-    public void testT02_BaseURL_NotSet() throws Exception {
+    public void testT02_BaseURL_NotSet() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        //request.webDriverMode = WebDriverMode.local;
-        //request.browser = Browsers.phantomjs;
 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
@@ -69,41 +68,97 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
     }
 
     @Test
-    public void testT03_EndPointCapabilities() throws Exception {
+    public void testT03_EndPointCapabilities_WebDriverRequest() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
-        //request.webDriverMode = WebDriverMode.local;
-        //request.browser = Browsers.phantomjs;
 
-        /*
-        create caps
-         */
-        DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability("enableVideo", true);
-        caps.setCapability("enableVNC", true);
+        DesiredCapabilities caps = request.getDesiredCapabilities();
+        Map<String, Object> selenoidCaps = new HashMap<>();
+        selenoidCaps.put("enableVideo", true);
+        selenoidCaps.put("enableVNC", true);
+        caps.setCapability("selenoid:options", selenoidCaps);
 
-        // start session
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
 
-        Assert.assertEquals(sessionCapabilities.get("tap:projectId"), caps.getCapability("tap:projectId"), "EndPoint Capability is set");
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().getCapability("selenoid:options");
+
+        Assert.assertEquals(sessionCapabilities.get("enableVideo"), selenoidCaps.get("enableVideo"), "EndPoint Capability via WebDriverRequest is set");
+        Assert.assertEquals(sessionCapabilities.get("enableVNC"), selenoidCaps.get("enableVNC"), "EndPoint Capability via WebDriverRequest is set");
     }
 
-    @Test
-    public void testT04_PlatformCaps() {
+    // Global caps! -> needs to be independent of other tests
+    @Test(groups = "SEQUENTIAL_SINGLE")
+    public void testT04_EndPointCapabilities_Global() {
+        Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("t04Global", "yes");
+        WEB_DRIVER_MANAGER.setGlobalCapability("custom:caps", customCaps);
+
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        WEB_DRIVER_MANAGER.removeGlobalCapability("custom:caps");
+
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().asMap().get("custom:caps");
+
+        Assert.assertEquals(sessionCapabilities.get("t04Global"), "yes", "EndPoint Capability is set");
+    }
+
+    // Global caps! -> needs to be independent of other tests
+    @Test(groups = "SEQUENTIAL_SINGLE")
+    public void test05_EndPointCapabilities_UserAgent() {
+        Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("t05UserAgent", "yesyes");
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless,
+                (ChromeConfig) options -> options.setCapability("custom:caps", customCaps));
+
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().asMap().get("custom:caps");
+
+        Assert.assertEquals(sessionCapabilities.get("t05UserAgent"), "yesyes", "EndPoint Capability is set");
+    }
+
+    // TODO Can only run with Remote Selenium server
+    @Test(enabled = false)
+    public void testT06_PlatformCaps() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setPlatformName(Platform.LINUX.toString());
+        request.setPlatformName(Platform.WINDOWS.toString());
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(driver).get().getWebDriverRequest();
 
-        Assert.assertEquals(webDriverRequest.getCapabilities().get(CapabilityType.PLATFORM_NAME), Platform.LINUX);
+        Assert.assertEquals(webDriverRequest.getCapabilities().asMap().get(CapabilityType.PLATFORM_NAME), Platform.WINDOWS);
     }
 
-    // TODO: Selenium 3 cannot merge correctly caps. Issue is fixed in Selenium 4 (https://github.com/telekom/testerra/issues/285)
+    // Global caps!! -> needs to be independent of other tests
+    @Test(groups = "SEQUENTIAL_SINGLE")
+    public void testT07_OverwriteCaps() {
+        Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("t07Overwrite", "agentCaps");
+
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless,
+                (ChromeConfig) options -> {
+                    options.setCapability("custom:caps", customCaps);
+                });
+
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        Map<String, Object> customCaps2 = new HashMap<>();
+        customCaps2.put("t07Overwrite", "requestCaps");
+        request.getDesiredCapabilities().setCapability("custom:caps", customCaps2);
+
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
+
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
+        Map<String, Object> sessionCapabilities = (Map<String, Object>) sessionContext.getWebDriverRequest().getCapabilities().asMap().get("custom:caps");
+
+        Assert.assertEquals(sessionCapabilities.get("t07Overwrite"), "requestCaps", "Request capability is set");
+    }
+
+    // TODO Does not work in Chrome Headless
     @Test(enabled = false)
-    public void testT05_ChromeExtensions() {
+    public void testT08_ChromeExtensions() {
 
         File chromeExtensionFile = new File(
                 Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("testfiles/Simple_Translate_2.8.1.0.crx")).getFile());

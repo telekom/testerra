@@ -42,6 +42,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Map;
+
 import java.io.File;
 import java.util.Map;
 import java.util.Objects;
@@ -49,7 +51,7 @@ import java.util.Objects;
 public class DriverAndGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, PageFactoryProvider {
 
     @Test
-    public void testUiElement() throws Exception {
+    public void testUiElement()  {
         WebDriver driver = getWebDriver();
 
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(driver);
@@ -63,6 +65,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
     public void testTapCapabilities() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
+        request.setBrowser(Browsers.chrome);
 
         /*
         create caps
@@ -73,7 +76,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver).get();
-        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities();
+        Map<String, Object> sessionCapabilities = sessionContext.getWebDriverRequest().getCapabilities().asMap();
 
         Assert.assertEquals(sessionCapabilities.get("projectId"), caps.getCapability("projectId"), "EndPoint Capability is set");
     }
@@ -82,6 +85,7 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
     public void testFailing() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
+        request.setBrowser(Browsers.chrome);
 
         WEB_DRIVER_MANAGER.getWebDriver(request);
         Assert.assertTrue(false);

@@ -1,0 +1,260 @@
+= Support of Chrome developer toos (CDP)
+
+Selenium 4 supports the access to the Chrome developer tools. Testerra provides a simple API to interact with CDP.
+
+You can find some more examples at https://www.selenium.dev/documentation/webdriver/bidirectional/chrome_devtools/.
+
+[NOTE]
+====
+* As the name says, it only works in Chrome browser. :-)
+* If you're running your tests against a grid, check the CDP compatible Chrome versions in https://github.com/SeleniumHQ/selenium/blob/trunk/java/CHANGELOG[Selenium release notes]
+====
+
+
+== Set basic authentication
+
+[source, java]
+----
+import org.openqa.selenium.UsernameAndPassword;
+...
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        WebDriverManagerProvider,
+        UiElementFinderFactoryProvider {
+
+    @Test
+    public void test_CDP_BasicAuthentication() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        // Credentials are used for all further website calls in your webdriver session
+        CHROME_DEV_TOOLS
+            .setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"));
+
+        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
+        uiElementFinder.find(By.tagName("p"))
+            .assertThat().text().isContaining("Congratulations");
+    }
+
+}
+
+----
+
+== Change geolocation
+
+[source, java]
+----
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        WebDriverManagerProvider,
+        UiElementFinderFactoryProvider {
+
+    @Test
+    public void test_CDP_GeoLocation() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        CHROME_DEV_TOOLS.setGeoLocation(
+                webDriver,
+                Optional.of(52.52084),      // latitude
+                Optional.of(13.40943),      // longitude
+                1);                         // accuracy
+
+        webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.id("latitude"))
+            .assertThat().text().isContaining("52.52084");
+        uiElementFinder.find(By.id("longitude"))
+            .assertThat().text().isContaining("13.40943");
+    }
+
+}
+
+----
+
+== Listen to browser console
+
+The browser console window shows different types of logging information. You have to know which kind of logs you need.
+
+IMPORTANT: The created consumer for all listeners will be executed in an additional thread. +
+If you use an `Assert` this will be no impact to the main thread.
+
+.JavaScript logging information
+[source, java]
+----
+
+import org.openqa.selenium.devtools.events.ConsoleEvent;
+...
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        Loggable,
+        WebDriverManagerProvider,
+        UiElementFinderFactoryProvider {
+
+    @Test
+    public void test_CDP_LogListener_JsLogs() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request
+            .setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+
+        // Create a list for console events
+        List<ConsoleEvent> consoleEvents = new ArrayList<>();
+        // Create a consumer and add them to a listener
+        Consumer<ConsoleEvent> addEntry = consoleEvents::add;
+        devTools.getDomains().events().addConsoleListener(addEntry);
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.id("consoleLog")).click();
+        uiElementFinder.find(By.id("consoleError")).click();
+
+        for (ConsoleEvent event : consoleEvents) {
+            log().info(
+                    "JS_LOGS: {} {} - {}",
+                    event.getTimestamp(),
+                    event.getType(),
+                    event.getMessages().toString()
+            );
+        }
+    }
+}
+----
+
+.JavaScript exception logs
+[source, java]
+----
+import org.openqa.selenium.JavascriptException;
+...
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        Loggable,
+        WebDriverManagerProvider,
+        UiElementFinderFactoryProvider {
+
+    @Test
+    public void testT_CDP_LogListener_JsExceptions() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request
+            .setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+
+        // Create a list for JS exceptions
+        List<JavascriptException> jsExceptionsList = new ArrayList<>();
+        Consumer<JavascriptException> addEntry = jsExceptionsList::add;
+        devTools.getDomains().events().addJavascriptExceptionListener(addEntry);
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.id("jsException")).click();
+        uiElementFinder.find(By.id("logWithStacktrace")).click();
+
+        for (JavascriptException jsException : jsExceptionsList) {
+            log().info(
+                    "JS_EXCEPTION: {} {}",
+                    jsException.getMessage(),
+                    jsException.getSystemInformation()
+            );
+        }
+    }
+
+}
+
+----
+
+.'Broken' page resources
+[source, java]
+----
+import org.openqa.selenium.devtools.v114.log.model.LogEntry;
+...
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        Loggable,
+        WebDriverManagerProvider {
+
+    @Test
+    public void test_CDP_LogListener_BrokenImages() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+        devTools.send(Log.enable());
+
+        List<LogEntry> logEntries = new ArrayList<>();
+        Consumer<LogEntry> addedLog = logEntries::add;
+        devTools.addListener(Log.entryAdded(), addedLog);
+
+        webDriver.get("http://the-internet.herokuapp.com/broken_images");
+        TimerUtils.sleep(1000);     // Short wait to get delayed logs
+
+        for (LogEntry logEntry : logEntries) {
+            log().info(
+                    "LOG_ENTRY: {} {} {} - {} ({})",
+                    logEntry.getTimestamp(),
+                    logEntry.getLevel(),
+                    logEntry.getSource(),
+                    logEntry.getText(),
+                    logEntry.getUrl()
+            );
+        }
+    }
+
+}
+
+----
+
+== Listen to Network logs
+
+[source, java]
+----
+import org.openqa.selenium.devtools.v114.network.Network;
+import org.openqa.selenium.devtools.v114.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v114.network.model.ResponseReceived;
+...
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        Loggable,
+        WebDriverManagerProvider {
+
+    @Test
+    public void test_CDP_NetworkListener() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+
+        // Create lists for requests and responses
+        List<ResponseReceived> responseReceivedList = new ArrayList<>();
+        List<RequestWillBeSent> requestList = new ArrayList<>();
+
+        devTools.addListener(Network.responseReceived(), responseReceivedList::add);
+        devTools.addListener(Network.requestWillBeSent(), requestList::add);
+
+        webDriver.get("https://the-internet.herokuapp.com/broken_images");
+
+        for (RequestWillBeSent request : requestList) {
+            log().info(
+                    "Request: {} {} - {}",
+                    request.getRequestId().toString(),
+                    request.getRequest().getMethod(),
+                    request.getRequest().getUrl()
+            );
+        }
+
+        for (ResponseReceived response : responseReceivedList) {
+            log().info(
+                    "Response: {} {} - {}",
+                    response.getRequestId().toString(),
+                    response.getResponse().getStatus(),
+                    response.getResponse().getStatusText()
+            );
+        }
+    }
+
+}
+
+----
+
+

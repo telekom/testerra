@@ -102,19 +102,6 @@ export class Threads extends AbstractViewModel {
         });
     };
 
-    private _chartChanged() {
-        this._chart.on('click', event => this._handleClickEvent(event));
-    }
-
-    private _selectionChanged() {
-        if (this._inputValue.length == 0) {
-            this._searchRegexp = null;
-            if (this._filterActive && this._selectedStatus == null) {
-                this._resetZoom();
-            }
-        }
-    }
-
     private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]> => {
         if (this._initialChartLoading == true) {
             await new Promise(f => setTimeout(f, 100)); // Timeout for first loading of chart to prevent zoom-issue
@@ -151,41 +138,8 @@ export class Threads extends AbstractViewModel {
         });
     };
 
-    private _zoomInOnMethod(methodId: string) {
-        this._resetColor();
-        const dataToZoomInOn = this._options.series[0].data.find(function (method) {
-            return method.value[6] == methodId;
-        });
-        const zoomStart = dataToZoomInOn.value[1];
-        const zoomEnd = dataToZoomInOn.value[2];
-        const opacity = this._opacityOfInactiveElements;
-
-        this._options.series[0].data.forEach(function (value) {
-            const mid = value.value[6];
-            if (mid != methodId) {
-                value.itemStyle.normal.opacity = opacity;
-            }
-        });
-        this._chart.setOption(this._options);
-        this._zoom(zoomStart, zoomEnd);
-    }
-
-    private _zoom(zoomStart: number, zoomEnd: number) {
-        this._filterActive = true;
-        const spacing = (zoomEnd - zoomStart) * 0.05;
-        this._chart.dispatchAction({
-            type: 'dataZoom',
-            id: 'threadZoom',
-            startValue: zoomStart - spacing,
-            endValue: zoomEnd + spacing
-        });
-    }
-
-    private _resetColor() {
-        this._options.series[0].data.forEach(function (value) {
-            value.itemStyle.normal.opacity = 1;
-        });
-        this._chart.setOption(this._options);
+    private _chartChanged() {
+        this._chart.on('click', event => this._handleClickEvent(event));
     }
 
     private _resetZoomButtonClicked() {
@@ -197,22 +151,13 @@ export class Threads extends AbstractViewModel {
         }
     }
 
-    private _clearMethodFilter() {
-        this._inputValue = "";
-        this._inputValue = undefined;
-    }
-
-    private _resetZoom() {
-        this._filterActive = false;
-        this._resetColor();
-        this.updateUrl({});
-
-        this._chart.dispatchAction({
-            type: 'dataZoom',
-            id: 'threadZoom',
-            start: 0,
-            end: 100
-        });
+    private _selectionChanged() {
+        if (this._inputValue.length == 0) {
+            this._searchRegexp = null;
+            if (this._filterActive && this._selectedStatus == null) {
+                this._resetZoom();
+            }
+        }
     }
 
     private _statusChanged() {
@@ -231,6 +176,36 @@ export class Threads extends AbstractViewModel {
             this._resetZoom();
             this.updateUrl({});
         }
+    }
+
+    private _zoom(zoomStart: number, zoomEnd: number) {
+        this._filterActive = true;
+        const spacing = (zoomEnd - zoomStart) * 0.05;
+        this._chart.dispatchAction({
+            type: 'dataZoom',
+            id: 'threadZoom',
+            startValue: zoomStart - spacing,
+            endValue: zoomEnd + spacing
+        });
+    }
+
+    private _zoomInOnMethod(methodId: string) {
+        this._resetColor();
+        const dataToZoomInOn = this._options.series[0].data.find(function (method) {
+            return method.value[6] == methodId;
+        });
+        const zoomStart = dataToZoomInOn.value[1];
+        const zoomEnd = dataToZoomInOn.value[2];
+        const opacity = this._opacityOfInactiveElements;
+
+        this._options.series[0].data.forEach(function (value) {
+            const mid = value.value[6];
+            if (mid != methodId) {
+                value.itemStyle.normal.opacity = opacity;
+            }
+        });
+        this._chart.setOption(this._options);
+        this._zoom(zoomStart, zoomEnd);
     }
 
     private _zoomInOnMethodsWithStatus(status?: data.ResultStatusType) {
@@ -258,10 +233,35 @@ export class Threads extends AbstractViewModel {
         this._zoom(zoomStart, zoomEnd);
     }
 
+    private _resetZoom() {
+        this._filterActive = false;
+        this._resetColor();
+        this.updateUrl({});
+
+        this._chart.dispatchAction({
+            type: 'dataZoom',
+            id: 'threadZoom',
+            start: 0,
+            end: 100
+        });
+    }
+
+    private _resetColor() {
+        this._options.series[0].data.forEach(function (value) {
+            value.itemStyle.normal.opacity = 1;
+        });
+        this._chart.setOption(this._options);
+    }
+
+    private _clearMethodFilter() {
+        this._inputValue = "";
+        this._inputValue = undefined;
+    }
+
     private _initDurationFormatter() {
         const container = new Container();
         this._durationFormatter = container.get(DurationFormatValueConverter);
-        this._durationFormatter.setDefaultFormat("m[min] s[s] S[ms]");
+        this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
     }
 
     private _initDateFormatter() {

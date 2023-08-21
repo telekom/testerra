@@ -47,12 +47,12 @@ export class Threads extends AbstractViewModel {
 
     private _searchRegexp: RegExp;
     private _inputValue;
-    private _options: EChartsOption;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
     private _initialChartLoading = true;
-    private _filterActive = false;   // To prevent unnecessary method calls
+    private _filterActive = false;          // To prevent unnecessary method calls
     private _suppressMethodFilter = false;  // To prevent conflict between method filter and status filter
+    private _options: EChartsOption;
     @observable()
     private _chart: echarts.ECharts;
 
@@ -60,10 +60,10 @@ export class Threads extends AbstractViewModel {
     private _dateFormatter: IntlDateFormatValueConverter;
     private _durationFormatter: DurationFormatValueConverter;
 
-    // Some values for presentation
-    private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y-axis.
+    // Values for presentation
+    private _gapFromBorderToStart = 400;        // To prevent that the beginning of the first test is located ON the y-axis.
     private _threadHeight = 50;                 // Height of y-axis categories in pixel
-    private _sliderSpacingFromChart = 90;      // Distance between chart and dataZoom-slider in pixel
+    private _sliderSpacingFromChart = 90;       // Distance between chart and dataZoom-slider in pixel
     private _cardHeight;
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
 
@@ -335,8 +335,8 @@ export class Threads extends AbstractViewModel {
                 return a.length > b.length ? a : b;
             }
         );
-        let gridLeftValue = longestThreadName.length * 7; // Calculate the value for grid:left
-        gridLeftValue = gridLeftValue > 100 ? gridLeftValue : 100; // Set to default of 100, if lower
+        let gridLeftValue = longestThreadName.length * 7;   // Calculate the value for grid:left
+        gridLeftValue = gridLeftValue > 100 ? gridLeftValue : 100;  // Set to default of 100, if lower
 
         this._options = {
             tooltip: {

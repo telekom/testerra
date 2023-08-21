@@ -50,6 +50,7 @@ export class TestDurationTab extends AbstractViewModel {
     private _loading = false;
     private _searchRegexp: RegExp;
     private _inputValue;
+    private _methodId;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -72,6 +73,7 @@ export class TestDurationTab extends AbstractViewModel {
                 delete this.queryParams.methodName;
                 this._highlightData();
                 this.updateUrl({methodId: methodId});
+                this._methodId = methodId;
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
@@ -139,7 +141,7 @@ export class TestDurationTab extends AbstractViewModel {
         }).finally(() => {
             this._attached = true;
             this._setChartOption()
-
+            this._methodId = this.queryParams.methodId;
             if(this.queryParams.methodId != undefined){
                 this._highlightData()
             }
@@ -198,8 +200,7 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _highlightData() {
-        const methodId = this.queryParams.methodId
-        const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === methodId));
+        const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === this._methodId));
 
         this._option.series[0].data = this._data.map((item, index) => {
                 return {

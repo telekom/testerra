@@ -29,9 +29,9 @@ import {ExecutionStatistics} from "services/statistic-models";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import moment from "moment";
 import {data} from "../../services/report-model";
+import {StatusConverter} from "../../services/status-converter";
 import MethodType = data.MethodType;
 import IMethodContext = data.IMethodContext;
-import {StatusConverter} from "../../services/status-converter";
 import IContextValues = data.IContextValues;
 
 
@@ -87,7 +87,8 @@ export class TestDurationTab extends AbstractViewModel {
                     return 1;
                 }
                 return 0;
-            });        });
+            });
+        });
     };
 
     selectionChanged(){
@@ -156,9 +157,13 @@ export class TestDurationTab extends AbstractViewModel {
                     if (params.length > 0) {
                         const dataIndex = params[0].dataIndex; // gives the index of the data point for bar chart
                         const testNumber = this._bars[dataIndex].durationAmount;
+
+                        if (testNumber == 0) {
+                            return "";
+                        }
                         const testNames = this._bars[dataIndex].methodList.map(method => method.name);
 
-                        let tooltipString = testNumber + ` test cases: <br>`;
+                        let tooltipString = testNumber + ` test case(s): <br>`;
                         tooltipString += "<ul>";
 
                         testNames.forEach(testCase => {

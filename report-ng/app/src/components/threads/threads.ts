@@ -35,9 +35,9 @@ import MethodContext = data.MethodContext;
 import {
     IntlDateFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
-// import {
-//     IntlDurationFormatValueConverter
-// } from "t-systems-aurelia-components/src/value-converters/intl-duration-format-value-converter";
+import {
+    DurationFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
 import IContextValues = data.IContextValues;
 import IMethodContext = data.IMethodContext;
 
@@ -45,19 +45,20 @@ import IMethodContext = data.IMethodContext;
 @autoinject()
 export class Threads extends AbstractViewModel {
 
-    private _initialChartLoading = true;
     private _searchRegexp: RegExp;
-    private _options: EChartsOption;
     private _inputValue;
+    private _options: EChartsOption;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
+    private _initialChartLoading = true;
     private _filterActive = false;   // To prevent unnecessary method calls
     private _suppressMethodFilter = false;  // To prevent conflict between method filter and status filter
     @observable()
     private _chart: echarts.ECharts;
 
+    // Aurelia Value Converters
     private _dateFormatter: IntlDateFormatValueConverter;
-    // private _durationFormatter: IntlDurationFormatValueConverter;
+    private _durationFormatter: DurationFormatValueConverter;
 
     // Some values for presentation
     private _gapFromBorderToStart = 400;      // To prevent that the beginning of the first test is located ON the y-axis.
@@ -94,8 +95,8 @@ export class Threads extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._availableStatuses = [];
             this._availableStatuses = executionStatistics.availableStatuses;
-            // this._initDurationFormatter();
             this._initDateFormatter();
+            this._initDurationFormatter();
             this._prepareTimeline(executionStatistics);
             this._initialChartLoading = false;
         });
@@ -197,7 +198,6 @@ export class Threads extends AbstractViewModel {
     }
 
     private _clearMethodFilter() {
-        // TODO clear method filter input field and reset mdc-lookup
         this._inputValue = "";
         this._inputValue = undefined;
     }
@@ -258,13 +258,11 @@ export class Threads extends AbstractViewModel {
         this._zoom(zoomStart, zoomEnd);
     }
 
-    /*private _initDurationFormatter() {
+    private _initDurationFormatter() {
         const container = new Container();
-        this._durationFormatter = container.get(IntlDurationFormatValueConverter);
-        this._durationFormatter.setLocale("en");
-        this._durationFormatter.setUnits("executionTime", ["minute", "second"]);
-        this._durationFormatter.setOptions("executionTime", {numeric: "auto"});
-    }*/
+        this._durationFormatter = container.get(DurationFormatValueConverter);
+        this._durationFormatter.setDefaultFormat("m[min] s[s] S[ms]");
+    }
 
     private _initDateFormatter() {
         const container = new Container();
@@ -343,7 +341,7 @@ export class Threads extends AbstractViewModel {
         const gridHeight = threadCategories.size * this._threadHeight;
         const sliderFromTop = gridHeight + this._sliderSpacingFromChart
         const dateFormatter = this._dateFormatter;
-        // const durationFormatter = this._durationFormatter;
+        const durationFormatter = this._durationFormatter;
         this._cardHeight = sliderFromTop + 60; // 60px space for dataZoom-slider
 
         // Set gridLeftValue dynamically to the longest thread name
@@ -358,29 +356,11 @@ export class Threads extends AbstractViewModel {
         this._options = {
             tooltip: {
                 formatter: function (params) {
-                    // Calculations for test duration
-                    const fullMinutes = Math.floor(params.value[4] / (60000));
-                    const fullSeconds = Math.floor(params.value[4] / 1000);
-                    const remainingMS = (params.value[4] % 1000);
-                    let duration;
-                    if (fullMinutes == 0) {
-                        if (fullSeconds == 0) {
-                            duration = remainingMS + "ms";
-                        } else {
-                            duration = fullSeconds + "s " + remainingMS + "ms";
-                        }
-                    } else {
-                        const remainingSeconds = Math.floor(fullSeconds % 60);
-                        duration = fullMinutes + "min " + remainingSeconds + "s " + remainingMS + "ms";
-                    }
-
                     return '<div class="header" style="background-color: ' +
                         params.color + ';"> ' + params.name + ' (' + params.value[5] + ')' + '</div>'
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
-                        // TODO use duration value converter
-                        // + '<br>Duration: ' + durationFormatter.toView(params.value[4], 'executionTime');
-                        + '<br>Duration: ' + duration;
+                        + '<br>Duration: ' + durationFormatter.toView(params.value[4]);
                 }
             },
             dataZoom: [

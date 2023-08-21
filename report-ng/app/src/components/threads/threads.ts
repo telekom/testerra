@@ -142,15 +142,6 @@ export class Threads extends AbstractViewModel {
         this._chart.on('click', event => this._handleClickEvent(event));
     }
 
-    private _resetZoomButtonClicked() {
-        this._clearMethodFilter();
-        if (this._selectedStatus != null) {
-            this._selectedStatus = undefined;
-        } else {
-            this._resetZoom();
-        }
-    }
-
     private _selectionChanged() {
         if (this._inputValue.length == 0) {
             this._searchRegexp = null;
@@ -166,7 +157,6 @@ export class Threads extends AbstractViewModel {
             return;
         }
         if (this._filterActive) {
-            this._clearMethodFilter();
             this._resetColor();
         }
         if (this._selectedStatus > 0) {
@@ -251,11 +241,6 @@ export class Threads extends AbstractViewModel {
             value.itemStyle.normal.opacity = 1;
         });
         this._chart.setOption(this._options);
-    }
-
-    private _clearMethodFilter() {
-        this._inputValue = "";
-        this._inputValue = undefined;
     }
 
     private _initDurationFormatter() {

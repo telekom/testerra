@@ -151,30 +151,46 @@ export class TestDurationTab extends AbstractViewModel {
     private _setChartOption(){
         this._option = {
             tooltip: {
+                position: function(point){
+                    return {top: 0, left: point[0]};
+                },
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
                 },
                 formatter: function (params) {
                     if (params.length > 0) {
-                        const dataIndex = params[0].dataIndex; // gives the index of the data point for bar chart
+                        const dataIndex = params[0].dataIndex;
                         const testNumber = this._bars[dataIndex].durationAmount;
 
-                        if (testNumber == 0) {
+                        if (testNumber === 0) {
                             return "";
                         }
+
                         const testNames = this._bars[dataIndex].methodList.map(method => method.name);
+                        let tooltipString = `${testNumber} test case(s): <br>`;
 
-                        let tooltipString = testNumber + ` test case(s): <br>`;
-                        tooltipString += "<ul>";
+                        if (testNumber < 20) {
+                            tooltipString += "<ul>";
+                            testNames.forEach(testCase => {
+                                tooltipString += `<li>${testCase}</li>`;
+                            });
+                            tooltipString += "</ul>";
+                        } else {
+                            const displayedTestNames = testNames.slice(0, 19);
+                            const remainingTestCount = testNames.length - 20;
 
-                        testNames.forEach(testCase => {
-                            tooltipString += `<li>${testCase}</li>`;
-                        });
+                            tooltipString += "<ul>";
+                            displayedTestNames.forEach(testCase => {
+                                tooltipString += `<li>${testCase}</li>`;
+                            });
+                            tooltipString += "</ul>";
+                            tooltipString += ` and ${remainingTestCount} more`;
+                        }
 
-                        tooltipString += "</ul>";
                         return tooltipString;
                     }
+
                     return ""; // Return an empty string if no data points are hovered on
                 }.bind(this), // Binding the current context to the formatter function to access this._durationOptions
             },

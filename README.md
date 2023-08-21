@@ -170,7 +170,7 @@ The following channels are available for discussions, feedback, and support requ
 
 [testerra]: https://github.com/telekom/testerra
 [testerra-skeleton]: https://github.com/telekom/testerra-skeleton
-[testerra-demo]: https://github.com/T-Systems-MMS/testerra-demo
+[testerra-demo]: https://github.com/telekom-mms/testerra-demo
 [testerra-selenoid-connector]: https://github.com/telekom/testerra-selenoid-connector
 [testerra-hpqc-connector]: https://github.com/telekom/testerra-hpqc-connector
 [testerra-teamcity-connector]: https://github.com/telekom/testerra-teamcity-connector

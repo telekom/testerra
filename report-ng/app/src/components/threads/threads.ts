@@ -38,8 +38,8 @@ import {
 import {
     DurationFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
-import IContextValues = data.IContextValues;
-import IMethodContext = data.IMethodContext;
+import IContextValues = data.ContextValues;
+import IMethodContext = data.MethodContext;
 
 
 @autoinject()

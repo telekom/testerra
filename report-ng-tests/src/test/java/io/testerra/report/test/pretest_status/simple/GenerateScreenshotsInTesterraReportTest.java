@@ -25,29 +25,27 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-
+import io.testerra.report.test.AbstractTestSitesTest;
+import io.testerra.report.test.pages.TestPage;
+import io.testerra.report.test.pages.pretest.CheckPages.checkRuleCheckPages.CheckRule_IS_DISPLAYED_CheckPage;
+import io.testerra.report.test.pages.pretest.UniversalPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
-import io.testerra.report.test.AbstractTestSitesTest;
-import io.testerra.report.test.pages.TestPage;
-import io.testerra.report.test.pages.pretest.CheckPages.checkRuleCheckPages.CheckRule_IS_DISPLAYED_CheckPage;
-import io.testerra.report.test.pages.pretest.UniversalPage;
-
 public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTest implements AssertProvider {
 
     private String exclusiveSessionId2;
 
-    @Test
+    @Test(groups = {Groups.BASIC})
     public void test_Failed_WithScreenShot() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
         Assert.fail("'Failed' on reached Page.");
     }
 
-    @Test()
+    @Test(groups = {Groups.EXT})
     @Fails()
     public void test_takeScreenshotViaCollectedAssertion_fails() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
@@ -58,8 +56,8 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         });
     }
 
-//     one screenshot manually shot on normal session
-    @Test
+    // one screenshot manually shot on normal session
+    @Test(groups = {Groups.BASIC})
     public void test_GenerateScreenshotManually() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
@@ -68,8 +66,8 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         pageWithExistingElement.screenshotToReport();
     }
 
-//     one screenshot on error on exclusive session
-    @Test()
+    // one screenshot on error on exclusive session
+    @Test(groups = {Groups.EXT})
     @Fails()
     public void test_takeScreenshotOnExclusiveSession_fails() {
         WebDriver driver = getExclusiveWebDriver();
@@ -77,9 +75,9 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         Assert.fail("'Failed' on reached Page.");
     }
 
-//    two screenshots success on different session types
-    @Test
-    public void test_takeScreenshotsWithMultipleActiveSessions(){
+    // two screenshots success on different session types
+    @Test(groups = {Groups.EXT})
+    public void test_takeScreenshotsWithMultipleActiveSessions() {
         WebDriver driver1 = getExclusiveWebDriver();
         WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
 
@@ -89,9 +87,9 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         UITestUtils.takeScreenshots();
     }
 
-//    two screenshot on success exclusive sessions only
-    @Test
-    public void test_takeScreenshotWithMultipleExclusiveSessions(){
+    // two screenshot on success exclusive sessions only
+    @Test(groups = {Groups.EXT})
+    public void test_takeScreenshotWithMultipleExclusiveSessions() {
         WebDriver driver1 = getExclusiveWebDriver();
         WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
         exclusiveSessionId2 = WEB_DRIVER_MANAGER.makeExclusive(driver2);
@@ -102,9 +100,9 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         UITestUtils.takeScreenshots();
     }
 
-//    one screenshot manually shot on exclusive session shown
-    @Test
-    public void test_takeExclusiveSessionScreenshotWithMultipleActiveSessions(){
+    // one screenshot manually shot on exclusive session shown
+    @Test(groups = {Groups.EXT})
+    public void test_takeExclusiveSessionScreenshotWithMultipleActiveSessions() {
         WebDriver driver1 = getExclusiveWebDriver();
         WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
 
@@ -116,9 +114,9 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         pageWithExistingElement.screenshotToReport();
     }
 
-// two screenshots on error different session types
-    @Test
-    public void test_takeScreenshotOnErrorWithMultipleActiveSessionsError(){
+    // two screenshots on error different session types
+    @Test(groups = {Groups.EXT})
+    public void test_takeScreenshotOnErrorWithMultipleActiveSessionsError() {
         WebDriver driver1 = getExclusiveWebDriver();
         WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
 
@@ -128,9 +126,9 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         PAGE_FACTORY.createPage(PageWithExistingElement.class, driver2);
     }
 
-//    two screenshot on error exclusive sessions only
-    @Test
-    public void test_takeScreenshotOnErrorWithMultipleExclusiveSessions(){
+    // two screenshot on error exclusive sessions only
+    @Test(groups = {Groups.EXT})
+    public void test_takeScreenshotOnErrorWithMultipleExclusiveSessions() {
         WebDriver driver1 = getExclusiveWebDriver();
         WebDriver driver2 = WEB_DRIVER_MANAGER.getWebDriver();
         exclusiveSessionId2 = WEB_DRIVER_MANAGER.makeExclusive(driver2);
@@ -141,7 +139,7 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
         PAGE_FACTORY.createPage(PageWithExistingElement.class, driver2);
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void closeExclusiveSessionOfTestClass() {
         if (exclusiveSessionId2 != null) {
             WEB_DRIVER_MANAGER.shutdownSession(this.exclusiveSessionId2);

@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
-import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -188,7 +187,7 @@ public final class WebDriverSessionsManager {
 
         // create new session context
         SessionContext sessionContext = new SessionContext(request);
-        EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(webDriver, sessionContext);
+        EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(webDriver);
 
         // store to method context
         executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
@@ -364,7 +363,7 @@ public final class WebDriverSessionsManager {
             Link sessionContext to methodContext if not exist
             e.g. Session was created in setup method and reused in test method or exclusive session is used in current test.
             */
-            if(sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
+            if (sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
                 // Link an exclusive sessionContext
                 executionContextController.getExecutionContext().readExclusiveSessionContexts()
                         .filter(sessionContext -> sessionContext.getSessionKey().equals(sessionKey))
@@ -400,12 +399,12 @@ public final class WebDriverSessionsManager {
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
             WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 
-             /*
-            create session context and link to method context
-             */
+            // Catch all existing browser caps and add them to specific browser options
             final WebDriverRequest finalWebDriverRequest = webDriverFactory.prepareWebDriverRequest(webDriverRequest);
+            // Update webDriverRequest with caps of external or global defined request configurators
             webDriverRequestConfigurators.forEach(handler -> handler.accept(finalWebDriverRequest));
 
+            // Create session context and link to method context
             SessionContext sessionContext = new SessionContext(finalWebDriverRequest);
             executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
                 methodContext.addSessionContext(sessionContext);
@@ -424,6 +423,7 @@ public final class WebDriverSessionsManager {
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
+                sessionContext.setUserAgent(browserInformation.getUserAgent());
                 sessionContext.setActualBrowserName(browserInformation.getBrowserName());
                 sessionContext.setActualBrowserVersion(browserInformation.getBrowserVersion());
             }
@@ -443,7 +443,7 @@ public final class WebDriverSessionsManager {
                     sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
                     sw
             ));
-            EventFiringWebDriver eventFiringWebDriver = wrapWebDriver(newRawWebDriver, sessionContext);
+            EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(newRawWebDriver);
             storeWebDriverSession(eventFiringWebDriver, sessionContext);
 
             webDriverFactory.setupNewWebDriverSession(eventFiringWebDriver, sessionContext);
@@ -466,6 +466,7 @@ public final class WebDriverSessionsManager {
     }
 
     private static void logRequest(WebDriverRequest request, SessionContext sessionContext) {
+
         Map<String, Object> cleanedCapsMap = new DefaultCapabilityUtils().clean(request.getCapabilities());
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
@@ -534,24 +535,4 @@ public final class WebDriverSessionsManager {
         return WEBDRIVER_SESSIONS_CONTEXTS_MAP.keySet().stream();
     }
 
-    private static EventFiringWebDriver wrapWebDriver(WebDriver webDriver, SessionContext sessionContext) {
-        /*
-        wrap the driver with the proxy
-         */
-        /*
-         * Watch out when wrapping the driver here. Any more wraps than EventFiringWebDriver will break at least
-         * the MobileDriverAdapter. This is because we need to compare the lowermost implementation of WebDriver in this case.
-         * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
-         * For more info, please ask @rnhb
-         */
-        try {
-            WebDriverProxy webDriverProxy = new WebDriverProxy(webDriver, sessionContext);
-            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webDriver);
-            webDriver = ObjectUtils.simpleProxy(WebDriver.class, webDriverProxy, interfaces);
-        } catch (Exception e) {
-            LOGGER.error("Could not create proxy for raw webdriver", e);
-        }
-
-        return new EventFiringWebDriver(webDriver);
-    }
 }

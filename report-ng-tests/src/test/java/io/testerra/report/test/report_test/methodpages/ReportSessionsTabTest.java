@@ -38,9 +38,10 @@ public class ReportSessionsTabTest extends AbstractReportTest {
     @Test
     public void testT01_checkDisplayedSessionGotContent() {
         String preTestWithSessionTab = "test_Failed_WithScreenShot";
+        String usedBrowser = "Chrome";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport();
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -49,6 +50,6 @@ public class ReportSessionsTabTest extends AbstractReportTest {
         reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(preTestWithSessionTab);
         ReportSessionsTab reportSessionsTab = reportDetailsTab.navigateToSessionsTab();
-        reportSessionsTab.expect().present();
+        reportSessionsTab.validateBrowser(usedBrowser);
     }
 }

@@ -23,7 +23,7 @@ public class TestDataProvider {
     public static Object[][] dataProviderForDifferentTestMethodForEachStatus() {
         return new Object[][]{
                 {"test_Passed"},
-                {"testAssertCollector"},
+                {"test_AssertCollector"},
                 {"test_SkippedNoStatus"},
                 {"test_expectedFailed"},
                 {"test_PassedAfterRetry"},
@@ -58,11 +58,10 @@ public class TestDataProvider {
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
                 {5, Status.FAILED},
-                {3, Status.FAILED_EXPECTED},
+                {4, Status.FAILED_EXPECTED},
                 {4, Status.SKIPPED},
                 {5, Status.PASSED}
-        };
-    }
+        };    }
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestClasses() {
@@ -114,7 +113,7 @@ public class TestDataProvider {
     @DataProvider(parallel = false)
     public static Object[][] dataProviderForPreTestMethodsWithStatusFailed() {
         return new Object[][]{
-                {new TestData("testAssertCollector", "ASSERT.fail(\"failed1\")", "ASSERT.fail(\"failed2\")")},
+                {new TestData("test_AssertCollector", "ASSERT.fail(\"failed1\")", "ASSERT.fail(\"failed2\")")},
                 {new TestData("test_failedPageNotFound", "PAGE_FACTORY.createPage(NonExistingPage.class, WEB_DRIVER_MANAGER.getWebDriver());")},
                 {new TestData("test_Failed", "Assert.fail")},
                 {new TestData("test_Failed_WithScreenShot", "Assert.fail")}
@@ -180,7 +179,7 @@ public class TestDataProvider {
                 // skipped
                 {new TestData("test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", Status.SKIPPED)},
                 // Failed
-                {new TestData("testAssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED)},
+                {new TestData("test_AssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED)},
                 // expected Failed
                 {new TestData("test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", Status.FAILED_EXPECTED)},
                 // retried
@@ -206,7 +205,7 @@ public class TestDataProvider {
                 // skipped
                 {new TestData("test_SkippedNoStatus", "GenerateSkippedStatusInTesterraReportTest", Status.SKIPPED)},
                 // Failed
-                {new TestData("testAssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED)},
+                {new TestData("test_AssertCollector", "GenerateFailedStatusInTesterraReportTest", Status.FAILED)},
                 // expected Failed
                 {new TestData("test_expectedFailedAssertCollector", "GenerateExpectedFailedStatusInTesterraReportTest", Status.FAILED_EXPECTED)},
                 // retried
@@ -226,7 +225,7 @@ public class TestDataProvider {
                 {new TestData("AssertionError: minor fail", new Status[]{Status.PASSED})},
                 {new TestData("SkipException: Test Skipped.", new Status[]{Status.SKIPPED})},
                 {new TestData("RuntimeException: Error in DataProvider.", new Status[]{Status.SKIPPED})},
-                {new TestData(/*[...]*/"depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
+                {new TestData("Throwable: depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
                 {new TestData("AssertionError: test_FailedToPassedHistoryWithRetry", new Status[]{Status.RETRIED})},
                 {new TestData("AssertionError: No Oil.", new Status[]{Status.FAILED_EXPECTED})}
         };
@@ -268,7 +267,7 @@ public class TestDataProvider {
                 // skipped
                 {new TestData("test_SkippedNoStatus", Status.SKIPPED)},
                 // Failed
-                {new TestData("testAssertCollector", Status.FAILED)},
+                {new TestData("test_AssertCollector", Status.FAILED)},
                 // expected Failed
                 {new TestData("test_expectedFailedAssertCollector", Status.FAILED_EXPECTED)},
                 // retried

@@ -25,6 +25,13 @@ public interface BrowserInformation {
     void parseUserAgent(String userAgent);
 
     /**
+     * Gets the user agent string of used browser.
+     *
+     * @return the raw user agent string
+     */
+    String getUserAgent();
+
+    /**
      * Gets the browser name of the test run.
      *
      * @return the browser name.
@@ -37,4 +44,6 @@ public interface BrowserInformation {
      * @return the browser version.
      */
     String getBrowserVersion();
+
+
 }

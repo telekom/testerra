@@ -195,6 +195,7 @@ message SessionContext {
     string capabilities = 11;
     string server_url = 12;
     string node_url = 13;
+    string user_agent = 14;
 }
 
 message RunConfig {

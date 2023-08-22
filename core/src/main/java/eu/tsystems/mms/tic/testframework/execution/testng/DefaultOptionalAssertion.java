@@ -21,10 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+
 import java.util.List;
 
 /**
@@ -32,20 +35,22 @@ import java.util.List;
  */
 public class DefaultOptionalAssertion extends AbstractAssertion implements
         OptionalAssertion,
-        Loggable
-{
+        Loggable {
     @Override
     public void fail(Error error) {
         log().warn("Failed optional assertion: " + error.getMessage());
-        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+        IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
+        executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
             // add nf info
             methodContext.addOptionalAssertion(error);
 
-            // get screenshots and videos
+            // get screenshots
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
-            if (screenshots != null) {
-                methodContext.addScreenshots(screenshots.stream());
-            }
+            Report report = Testerra.getInjector().getInstance(Report.class);
+            screenshots.forEach(screenshot -> {
+                methodContext.addScreenshot(screenshot);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            });
         });
     }
 }

@@ -23,7 +23,7 @@ import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {data} from "../../services/report-model";
-import ISessionContext = data.ISessionContext;
+import ISessionContext = data.SessionContext;
 import "./sessions.scss"
 
 @autoinject()

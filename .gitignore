@@ -1,7 +1,6 @@
 test-report
 **/report-testsundertest-*
 .gradle
-gradle
 *.iml
 .idea
 target
@@ -9,7 +8,6 @@ licenses
 *.zip
 out
 build
-gradlew
 /bin/
 /.classpath
 /.project
@@ -25,3 +23,5 @@ gradlew
 /report-ng/app/static/assets/model/
 /report-ng-tests/src/test/resources/reports/report-generated-status/
 /report-ng-tests/src/test/resources/reports/report-extended-status/
+/report-ng-tests/src/test/resources/screenreferences/distance/
+/report-ng-tests/src/test/resources/screenreferences/actual/

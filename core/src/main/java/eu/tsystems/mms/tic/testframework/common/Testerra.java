@@ -67,6 +67,7 @@ public class Testerra {
         DRY_RUN("tt.dryrun", false),
         MONITOR_MEMORY("tt.monitor.memory", true),
         DEMO_MODE("tt.demomode", false),
+        DEMO_MODE_TIMEOUT("tt.demomode.timeout", 2000),
         @Deprecated
         SELENIUM_SERVER_HOST("tt.selenium.server.host", null),
         @Deprecated

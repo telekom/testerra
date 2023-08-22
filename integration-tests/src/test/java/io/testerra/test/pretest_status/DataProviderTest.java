@@ -27,6 +27,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DataProviderTest extends TesterraTest implements AssertProvider {
 
     /**
@@ -97,6 +99,26 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
             ASSERT.assertEquals(dp, "passed");
             ASSERT.assertEquals(dp, "passed");
         });
+    }
+
+    /**
+     * This test occurs a TestNGException
+     */
+    @Test(dataProvider = "it-does-not-exist")
+    public void testT07_NonExistingDataProvider() {
+    }
+
+    private AtomicInteger counterDp = new AtomicInteger(0);
+
+    @Test(dataProvider = "dataProviderSimple")
+    public void testT08_DataProviderWithRetry(String dp) {
+        if ("failed".equals(dp)) {
+            this.counterDp.incrementAndGet();
+            if (counterDp.get() == 1) {
+                // Retry message is defined in test.properties
+                Assert.fail("test_T08_RetriedDataProvider");
+            }
+        }
     }
 
 }

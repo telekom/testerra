@@ -19,10 +19,11 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.utils.CertUtils;
-import java.util.function.Consumer;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
 
@@ -42,7 +44,7 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
     /**
      * Adds a capability.
      *
-     * @param key   The key of the capability to set.
+     * @param key The key of the capability to set.
      * @param value The value of the capability to set.
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
@@ -66,6 +68,7 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
 
     /**
      * Clear capabilities.
+     *
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
     static void clearGlobalCapabilities() {
@@ -93,13 +96,17 @@ public class WebDriverCapabilities implements Consumer<WebDriverRequest> {
     @Override
     public void accept(WebDriverRequest webDriverRequest) {
         if (webDriverRequest instanceof AbstractWebDriverRequest) {
-            DesiredCapabilities desiredCapabilities = ((AbstractWebDriverRequest) webDriverRequest).getDesiredCapabilities();
-            desiredCapabilities.merge(new DesiredCapabilities(GLOBALCAPABILITIES));
+            Capabilities capabilities = webDriverRequest.getCapabilities();
+            if (!GLOBALCAPABILITIES.isEmpty()) {
+                // 'merge' method of browser options always creates a new instance
+                capabilities = capabilities.merge(new MutableCapabilities(GLOBALCAPABILITIES));
+            }
 
             CertUtils certUtils = CertUtils.getInstance();
             if (certUtils.isTrustAllHosts() || certUtils.getTrustedHosts().length > 0) {
-                desiredCapabilities.setAcceptInsecureCerts(true);
+                capabilities = capabilities.merge(new MutableCapabilities(Map.of(CapabilityType.ACCEPT_INSECURE_CERTS, true)));
             }
+            ((AbstractWebDriverRequest) webDriverRequest).setCapabilities(capabilities);
         }
     }
 }

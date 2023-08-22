@@ -24,6 +24,7 @@ private static final long serialVersionUID = 0L;
     capabilities_ = "";
     serverUrl_ = "";
     nodeUrl_ = "";
+    userAgent_ = "";
   }
 
   @java.lang.Override
@@ -115,6 +116,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             nodeUrl_ = s;
+            break;
+          }
+          case 114: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            userAgent_ = s;
             break;
           }
           default: {
@@ -491,6 +498,44 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int USER_AGENT_FIELD_NUMBER = 14;
+  private volatile java.lang.Object userAgent_;
+  /**
+   * <code>string user_agent = 14;</code>
+   * @return The userAgent.
+   */
+  @java.lang.Override
+  public java.lang.String getUserAgent() {
+    java.lang.Object ref = userAgent_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      userAgent_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string user_agent = 14;</code>
+   * @return The bytes for userAgent.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getUserAgentBytes() {
+    java.lang.Object ref = userAgent_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      userAgent_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -532,6 +577,9 @@ private static final long serialVersionUID = 0L;
     if (!getNodeUrlBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 13, nodeUrl_);
     }
+    if (!getUserAgentBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 14, userAgent_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -569,6 +617,9 @@ private static final long serialVersionUID = 0L;
     if (!getNodeUrlBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, nodeUrl_);
     }
+    if (!getUserAgentBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, userAgent_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -605,6 +656,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getServerUrl())) return false;
     if (!getNodeUrl()
         .equals(other.getNodeUrl())) return false;
+    if (!getUserAgent()
+        .equals(other.getUserAgent())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -636,6 +689,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getServerUrl().hashCode();
     hash = (37 * hash) + NODE_URL_FIELD_NUMBER;
     hash = (53 * hash) + getNodeUrl().hashCode();
+    hash = (37 * hash) + USER_AGENT_FIELD_NUMBER;
+    hash = (53 * hash) + getUserAgent().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -791,6 +846,8 @@ private static final long serialVersionUID = 0L;
 
       nodeUrl_ = "";
 
+      userAgent_ = "";
+
       return this;
     }
 
@@ -830,6 +887,7 @@ private static final long serialVersionUID = 0L;
       result.capabilities_ = capabilities_;
       result.serverUrl_ = serverUrl_;
       result.nodeUrl_ = nodeUrl_;
+      result.userAgent_ = userAgent_;
       onBuilt();
       return result;
     }
@@ -911,6 +969,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getNodeUrl().isEmpty()) {
         nodeUrl_ = other.nodeUrl_;
+        onChanged();
+      }
+      if (!other.getUserAgent().isEmpty()) {
+        userAgent_ = other.userAgent_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -1695,6 +1757,82 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       nodeUrl_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object userAgent_ = "";
+    /**
+     * <code>string user_agent = 14;</code>
+     * @return The userAgent.
+     */
+    public java.lang.String getUserAgent() {
+      java.lang.Object ref = userAgent_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userAgent_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string user_agent = 14;</code>
+     * @return The bytes for userAgent.
+     */
+    public com.google.protobuf.ByteString
+        getUserAgentBytes() {
+      java.lang.Object ref = userAgent_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userAgent_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string user_agent = 14;</code>
+     * @param value The userAgent to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUserAgent(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      userAgent_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string user_agent = 14;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUserAgent() {
+      
+      userAgent_ = getDefaultInstance().getUserAgent();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string user_agent = 14;</code>
+     * @param value The bytes for userAgent to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUserAgentBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      userAgent_ = value;
       onChanged();
       return this;
     }

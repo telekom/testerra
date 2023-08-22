@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -536,8 +537,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     }
 
     protected void highlightWebElement(WebElement webElement, Color color) {
-        JSUtils utils = new JSUtils();
-        utils.highlight(guiElementData.getWebDriver(), webElement, color);
+        UiElementHighlighter instance = Testerra.getInjector().getInstance(UiElementHighlighter.class);
+        instance.highlight(guiElementData.getWebDriver(), webElement, color);
     }
 
     /**

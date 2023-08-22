@@ -25,7 +25,7 @@
  */
 import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
-import 'highlight.js/styles/darcula.css';
+import 'highlight.js/styles/base16/darcula.css';
 import {autoinject} from 'aurelia-framework';
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {FailureAspectStatistics} from "services/statistic-models";
@@ -34,7 +34,7 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {StatusConverter} from "services/status-converter";
 import {data} from "../../services/report-model";
 import {MdcSnackbarService} from '@aurelia-mdc-web/snackbar';
-import IStackTraceCause = data.IStackTraceCause;
+import IStackTraceCause = data.StackTraceCause;
 import {ILayoutComparisonContext} from "../layout-comparison/layout-comparison";
 import {Clipboard} from "t-systems-aurelia-components/src/utils/clipboard";
 

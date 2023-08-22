@@ -23,17 +23,10 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
  *
  */
 
-import com.google.common.base.Strings;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import java.net.URL;
-import java.time.Duration;
-import okhttp3.ConnectionPool;
-import okhttp3.Credentials;
-import okhttp3.Request;
-import okhttp3.Response;
+import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.remote.http.HttpClient;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
+import java.time.Duration;
 
 /**
  * This Client Factory allows us to reduces timeouts of 3 HOURS to our custom timeouts.
@@ -45,71 +38,86 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * @author Eric Kubenka
  */
 class HttpClientFactory implements HttpClient.Factory {
+
+    /** TODO: Delete or re-implement
+     * This class was used to set a custom timeout for sending commands to browser sessions. Selenium 3 has a default of 120 minutes. This was reduced to 2 minutes.
+     *
+     * For using in Selenium 4 this class has to re-implement because Selenium 4 uses HttpClient of Java 11.
+     * Selenium 4 has the following default timeouts: connectionTimeout=10sec, readTimeout=180 sec, seems to be ok
+     */
+
     private final Duration factoryConnectionTimeout = Duration.ofSeconds(120); // Kill, when connect does not succeed in this timeout
     private final Duration factoryReadTimeout = factoryConnectionTimeout; // Kill hanging / stuck selenium commands after this timeout.
-    private final ConnectionPool pool = new ConnectionPool();
 
+//    private final ConnectionPool pool = new ConnectionPool();
+
+    // TODO: Just a placeholder
     @Override
-    public HttpClient.Builder builder() {
-
-        // this code is copied from OkHttpClient.Factory .. and modified in timeout configuration.
-        return new HttpClient.Builder() {
-
-            @Override
-            public HttpClient createClient(URL url) {
-
-                connectionTimeout = factoryConnectionTimeout;
-                readTimeout = factoryReadTimeout;
-
-                okhttp3.OkHttpClient.Builder client = new okhttp3.OkHttpClient.Builder()
-                        .connectionPool(pool)
-                        .followRedirects(true)
-                        .followSslRedirects(true)
-                        .proxy(proxy)
-                        .readTimeout(readTimeout.toMillis(), MILLISECONDS)
-                        .connectTimeout(connectionTimeout.toMillis(), MILLISECONDS);
-
-                String info = url.getUserInfo();
-                if (!Strings.isNullOrEmpty(info)) {
-                    String[] parts = info.split(":", 2);
-                    String user = parts[0];
-                    String pass = parts.length > 1 ? parts[1] : null;
-
-                    String credentials = Credentials.basic(user, pass);
-
-                    client.authenticator((route, response) -> {
-                        if (response.request().header("Authorization") != null) {
-                            return null; // Give up, we've already attempted to authenticate.
-                        }
-
-                        return response.request().newBuilder()
-                                .header("Authorization", credentials)
-                                .build();
-                    });
-                }
-
-                client.addNetworkInterceptor(chain -> {
-                    Request request = chain.request();
-                    Response response = chain.proceed(request);
-                    return response.code() == 408
-                            ? response.newBuilder().code(500).message("Server-Side Timeout").build()
-                            : response;
-                });
-
-                return new org.openqa.selenium.remote.internal.OkHttpClient(client.build(), url);
-            }
-        };
+    public HttpClient createClient(ClientConfig config) {
+        return null;
     }
 
-    @Override
-    public HttpClient createClient(URL url) {
-
-        return builder().createClient(url);
-    }
-
-    @Override
-    public void cleanupIdleClients() {
-
-        pool.evictAll();
-    }
+//    @Override
+//    public HttpClient.Builder builder() {
+//
+//        // this code is copied from OkHttpClient.Factory .. and modified in timeout configuration.
+//        return new HttpClient.Builder() {
+//
+//            @Override
+//            public HttpClient createClient(URL url) {
+//
+//                connectionTimeout = factoryConnectionTimeout;
+//                readTimeout = factoryReadTimeout;
+//
+//                okhttp3.OkHttpClient.Builder client = new okhttp3.OkHttpClient.Builder()
+//                        .connectionPool(pool)
+//                        .followRedirects(true)
+//                        .followSslRedirects(true)
+//                        .proxy(proxy)
+//                        .readTimeout(readTimeout.toMillis(), MILLISECONDS)
+//                        .connectTimeout(connectionTimeout.toMillis(), MILLISECONDS);
+//
+//                String info = url.getUserInfo();
+//                if (!Strings.isNullOrEmpty(info)) {
+//                    String[] parts = info.split(":", 2);
+//                    String user = parts[0];
+//                    String pass = parts.length > 1 ? parts[1] : null;
+//
+//                    String credentials = Credentials.basic(user, pass);
+//
+//                    client.authenticator((route, response) -> {
+//                        if (response.request().header("Authorization") != null) {
+//                            return null; // Give up, we've already attempted to authenticate.
+//                        }
+//
+//                        return response.request().newBuilder()
+//                                .header("Authorization", credentials)
+//                                .build();
+//                    });
+//                }
+//
+//                client.addNetworkInterceptor(chain -> {
+//                    Request request = chain.request();
+//                    Response response = chain.proceed(request);
+//                    return response.code() == 408
+//                            ? response.newBuilder().code(500).message("Server-Side Timeout").build()
+//                            : response;
+//                });
+//
+//                return new org.openqa.selenium.remote.internal.OkHttpClient(client.build(), url);
+//            }
+//        };
+//    }
+//
+//    @Override
+//    public HttpClient createClient(URL url) {
+//
+//        return builder().createClient(url);
+//    }
+//
+//    @Override
+//    public void cleanupIdleClients() {
+//
+//        pool.evictAll();
+//    }
 }

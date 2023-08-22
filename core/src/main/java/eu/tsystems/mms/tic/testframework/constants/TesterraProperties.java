@@ -23,6 +23,8 @@ package eu.tsystems.mms.tic.testframework.constants;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra.Properties;
 
+import java.util.function.Predicate;
+
 /**
  * Class holding keys of all properties.
  *
@@ -38,21 +40,6 @@ public final class TesterraProperties {
     }
 
     /**
-     * Failed tests maximum number of retries.
-     */
-    public static final String FAILED_TESTS_MAX_RETRIES = "tt.failed.tests.max.retries";
-
-    /**
-     * Failed tests condition: Throwable Class(~es, devided by ','.
-     */
-    public static final String FAILED_TESTS_IF_THROWABLE_CLASSES = "tt.failed.tests.if.throwable.classes";
-
-    /**
-     * Failed tests condition. Throwable Message(~s, devided by ',').
-     */
-    public static final String FAILED_TESTS_IF_THROWABLE_MESSAGES = "tt.failed.tests.if.throwable.messages";
-
-    /**
      * WDM close windows rule.
      */
     public static final String CLOSE_WINDOWS_AFTER_TEST_METHODS = "tt.wdm.closewindows.aftertestmethods";
@@ -64,7 +51,10 @@ public final class TesterraProperties {
 
     /**
      * WDM: Timeout / Duration Setting for Window Switching
+     *
+     * @deprecated Use {@link IWebDriverManager#switchToWindow(Predicate)} and {@link CONTROL#waitFor(int, Predicate)} instead
      */
+    @Deprecated
     public static final String WEBDRIVER_WINDOW_SWITCH_MAX_DURATION = "tt.wdm.timeouts.seconds.window.switch.duration";
 
     /**

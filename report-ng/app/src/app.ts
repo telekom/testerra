@@ -28,7 +28,7 @@ import {MdcDrawer} from "@aurelia-mdc-web/drawer";
 import "./app.scss"
 import {StatisticsGenerator} from "./services/statistics-generator";
 import Logo from 'assets/logo.png'
-import IExecutionContext = data.IExecutionContext;
+import IExecutionContext = data.ExecutionContext;
 
 @autoinject()
 export class App {

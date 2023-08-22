@@ -18,16 +18,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
-import org.apache.commons.lang3.StringUtils;
 
 public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implements Serializable {
 
@@ -51,7 +50,7 @@ public class SeleniumWebDriverRequest extends AbstractWebDriverRequest implement
             this.setBrowserVersion(IWebDriverManager.Properties.BROWSER_VERSION.asString());
         }
 
-        if (!this.getPlatformName().isPresent()) {
+        if (StringUtils.isBlank(this.getPlatformName())) {
             this.setPlatformName(IWebDriverManager.Properties.BROWSER_PLATFORM.asString());
         }
 

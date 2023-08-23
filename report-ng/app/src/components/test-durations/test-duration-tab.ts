@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {autoinject} from 'aurelia-framework';
+import {autoinject, bindable} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import * as echarts from 'echarts';
@@ -51,6 +51,8 @@ export class TestDurationTab extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _inputValue;
     private _methodId;
+    @bindable private _rangeNum;
+    private _rangeOptions = ['5','10','15','20'];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -61,6 +63,10 @@ export class TestDurationTab extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
+        if(this.queryParams.rangeNum == undefined){
+            this._rangeNum = '10';
+            this.queryParams.rangeNum = parseInt(this._rangeNum);
+        }
         this._filter();
     }
 
@@ -72,8 +78,9 @@ export class TestDurationTab extends AbstractViewModel {
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
                 this._highlightData();
-                this.updateUrl({methodId: methodId});
+                this.updateUrl({methodId: methodId, rangeNum: this._rangeNum});
                 this._methodId = methodId;
+                this.queryParams.methodId = methodId;
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
@@ -96,7 +103,9 @@ export class TestDurationTab extends AbstractViewModel {
     selectionChanged(){
         this._setChartOption(); // overwrites color highlighting
         if (this._inputValue.length == 0){
-            this.updateUrl({});
+            this._methodId = undefined;
+            this.queryParams.methodId = undefined;
+            this.updateUrl({rangeNum: this._rangeNum, methodId: this._methodId});
         }
     }
 
@@ -142,6 +151,7 @@ export class TestDurationTab extends AbstractViewModel {
             this._attached = true;
             this._setChartOption()
             this._methodId = this.queryParams.methodId;
+            this._rangeNum = this.queryParams.rangeNum
             if(this.queryParams.methodId != undefined){
                 this._highlightData()
             }
@@ -253,19 +263,20 @@ export class TestDurationTab extends AbstractViewModel {
     }
 
     private _calculateDurationAxis(durations: number[]) {
+        const rangeNum = this.queryParams.rangeNum;
         durations.sort((a, b) => a - b)
 
         let maxDuration = durations[durations.length - 1];
-        const remainder = maxDuration % 5;
-        maxDuration = remainder === 0 ? maxDuration : maxDuration + (5 - remainder);
+        const remainder = maxDuration % rangeNum;
+        maxDuration = remainder === 0 ? maxDuration : maxDuration + (rangeNum - remainder);
 
-        const sectionRange = maxDuration / 5;
+        const sectionRange = maxDuration / rangeNum;
 
-        const resultDurations: number[] = Array(5).fill(0);
-        const resultSections: string[] = Array(5).fill("");
+        const resultDurations: number[] = Array(rangeNum).fill(0);
+        const resultSections: string[] = Array(rangeNum).fill("");
 
         // calculate ranges
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < rangeNum; i++) {
             const start = i * sectionRange;
             const end = (i + 1) * sectionRange - 1;
             resultSections[i] = `${start}-${end}s`;
@@ -284,6 +295,11 @@ export class TestDurationTab extends AbstractViewModel {
             this._hasEnded = true;
         }
         return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
+    }
+
+    private _rangeNumChanged(){
+        this._filter();
+        this.queryParams.rangeNum = this._rangeNum
     }
 }
 

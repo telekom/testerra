@@ -23,6 +23,18 @@
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="4">
+                <mdc-select class="w50"
+                            label="Number of Sections"
+                            value.bind="_rangeNum"
+                            change.delegate="_rangeNumChanged()"
+                            outlined
+                >
+                    <mdc-list>
+                        <mdc-list-item repeat.for="range of _rangeOptions"
+                                       value="${range}"
+                        >${range}</mdc-list-item>
+                    </mdc-list>
+                </mdc-select>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4">
                 <div mdc-menu-surface-anchor>

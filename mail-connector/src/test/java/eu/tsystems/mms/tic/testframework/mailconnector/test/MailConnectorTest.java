@@ -35,7 +35,11 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import eu.tsystems.mms.tic.testframework.utils.PdfUtils;
+import jakarta.mail.BodyPart;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -62,12 +66,26 @@ import jakarta.mail.search.RecipientTerm;
 import jakarta.mail.search.SearchTerm;
 import jakarta.mail.search.SentDateTerm;
 import jakarta.mail.search.SubjectTerm;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Security;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -250,8 +268,9 @@ public class MailConnectorTest extends TesterraTest {
     @Test
     public void testT03_sendAndWaitForMessageWithAttachment() throws Exception {
 
+        final String fileName = "attachment.txt";
         final String subject = STR_MAIL_SUBJECT + "testT03_sendAndWaitForMessageWithAttachment";
-        final File attachmentFile = FileUtils.getResourceFile("attachment.txt");
+        final File attachmentFile = FileUtils.getResourceFile(fileName);
 
         // SETUP - Create message, add attachment.
         final MimeMessage msg = this.createDefaultMessage(session, subject);
@@ -292,6 +311,218 @@ public class MailConnectorTest extends TesterraTest {
 
         Assert.assertEquals(text, STR_MAIL_TEXT);
         Assert.assertEquals(attachmentFileName, attachmentFile.getName());
+
+        FileUtils.writeStringToFile(new File(fileName), receivedMsg.getAttachments().get(fileName));
+
+        // CLEAN UP - Delete message.
+        deleteMessage(receivedMsg, pop3);
+    }
+
+    /**
+     * Tests the correct creating and sending of mails with attachment.
+     *
+     * @throws Exception if there was an error while sending/receiving the messages.
+     */
+    @Test
+    public void testT14_sendAndWaitForMessageWithPdfAttachmentAndSavePdf() throws Exception {
+
+        final String fileName = "protocol.pdf";
+        final String subject = STR_MAIL_SUBJECT + "testT14_sendAndWaitForMessageWithPdfAttachment";
+        final File attachmentFile = FileUtils.getResourceFile(fileName);
+
+        // SETUP - Create message, add attachment.
+        final MimeMessage msg = this.createDefaultMessage(session, subject);
+        final MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
+        final MimeBodyPart[] attachments = {attachment};
+        smtp.addAttachmentsToMessage(attachments, msg);
+
+        // EXECUTION - Send and receive message.
+        smtp.sendMessage(msg);
+
+        final Email receivedMsg = waitForMessage(subject);
+
+        // TEST 1 - Fail, if the message contains no attachment (content is plain text).
+        if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
+            Assert.fail(ERR_NO_ATTACHMENT);
+        }
+
+        // TEST 2 - Check email attachment
+        FileUtils.writeStringToFile(new File(fileName), receivedMsg.getAttachments().get(fileName), Charset.forName("ISO_8859_1").name());
+
+//        InputStream targetStream = FileUtils.openInputStream(attachmentFile);;
+//        InputStream i = new ByteArrayInputStream(receivedMsg.getAttachments().get(fileName).getBytes());
+//        System.out.println(targetStream);
+//        System.out.println("--------------------------------------------------------");
+//        System.out.println(i);
+//        Assert.assertEquals(targetStream, i);
+
+        // CLEAN UP - Delete message.
+        deleteMessage(receivedMsg, pop3);
+    }
+
+    /**
+     * Tests the correct creating and sending of mails with attachment.
+     *
+     * @throws Exception if there was an error while sending/receiving the messages.
+     */
+    @Test
+    public void testT14_sendAndWaitForMessageWithPdfAttachment() throws Exception {
+
+        final String subject = STR_MAIL_SUBJECT + "testT14_sendAndWaitForMessageWithPdfAttachment";
+        final String fileName = "attachment.pdf";
+        final File attachmentFile = FileUtils.getResourceFile(fileName);
+        final String attachmentContent = IOUtils.toString(FileUtils.openInputStream(attachmentFile), StandardCharsets.ISO_8859_1);
+
+        // SETUP - Create message, add attachment.
+        final MimeMessage msg = this.createDefaultMessage(session, subject);
+        final MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
+        final MimeBodyPart[] attachments = {attachment};
+        smtp.addAttachmentsToMessage(attachments, msg);
+
+        // EXECUTION - Send and receive message.
+        smtp.sendMessage(msg);
+
+        final Email receivedMsg = waitForMessage(subject);
+
+        // TEST 1 - Fail, if the message contains no attachment (content is plain text).
+        if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
+            Assert.fail(ERR_NO_ATTACHMENT);
+        }
+
+        // TEST 2 - Check email text and attachment file.
+        String text = receivedMsg.getMessageText();
+
+        Assert.assertEquals(text, STR_MAIL_TEXT);
+        Assert.assertTrue(receivedMsg.getAttachments().containsKey(fileName));
+        Assert.assertEquals(receivedMsg.getAttachments().get(fileName), attachmentContent);
+
+        FileUtils.writeStringToFile(new File(fileName), receivedMsg.getAttachments().get(fileName), Charset.forName("ISO_8859_1"));
+
+        // CLEAN UP - Delete message.
+        deleteMessage(receivedMsg, pop3);
+    }
+
+    /**
+     * Tests the correct creating and sending of mails with attachment.
+     *
+     * @throws Exception if there was an error while sending/receiving the messages.
+     */
+    @Test
+    public void testT15_sendAndWaitForMessageWithPngAttachment() throws Exception {
+
+        final String subject = STR_MAIL_SUBJECT + "testT15_sendAndWaitForMessageWithPngAttachment";
+        final String fileName = "attachment.png";
+        final File attachmentFile = FileUtils.getResourceFile(fileName);
+        final String attachmentContent = IOUtils.toString(FileUtils.openInputStream(attachmentFile), StandardCharsets.ISO_8859_1);
+
+        // SETUP - Create message, add attachment.
+        final MimeMessage msg = this.createDefaultMessage(session, subject);
+        final MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
+        final MimeBodyPart[] attachments = {attachment};
+        smtp.addAttachmentsToMessage(attachments, msg);
+
+        // EXECUTION - Send and receive message.
+        smtp.sendMessage(msg);
+
+        final Email receivedMsg = waitForMessage(subject);
+
+        // TEST 1 - Fail, if the message contains no attachment (content is plain text).
+        if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
+            Assert.fail(ERR_NO_ATTACHMENT);
+        }
+
+        // TEST 2 - Check email text and attachment file name.
+        String text = receivedMsg.getMessageText();
+
+        Assert.assertEquals(text, STR_MAIL_TEXT);
+        Assert.assertTrue(receivedMsg.getAttachments().containsKey(fileName));
+        Assert.assertEquals(receivedMsg.getAttachments().get(fileName), attachmentContent);
+
+        FileUtils.writeStringToFile(new File(fileName), receivedMsg.getAttachments().get(fileName), Charset.forName("ISO_8859_1"));
+
+        // CLEAN UP - Delete message.
+        deleteMessage(receivedMsg, pop3);
+    }
+
+    /**
+     * Tests the correct creating and sending of mails with attachment.
+     *
+     * @throws Exception if there was an error while sending/receiving the messages.
+     */
+    @Test
+    public void testT17_sendAndWaitForMessageWithJpgAttachment() throws Exception {
+
+        final String subject = STR_MAIL_SUBJECT + "testT15_sendAndWaitForMessageWithPngAttachment";
+        final String fileName = "attachment.jpg";
+        final File attachmentFile = FileUtils.getResourceFile(fileName);
+        final String attachmentContent = IOUtils.toString(FileUtils.openInputStream(attachmentFile), StandardCharsets.ISO_8859_1);
+
+        // SETUP - Create message, add attachment.
+        final MimeMessage msg = this.createDefaultMessage(session, subject);
+        final MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
+        final MimeBodyPart[] attachments = {attachment};
+        smtp.addAttachmentsToMessage(attachments, msg);
+
+        // EXECUTION - Send and receive message.
+        smtp.sendMessage(msg);
+
+        final Email receivedMsg = waitForMessage(subject);
+
+        // TEST 1 - Fail, if the message contains no attachment (content is plain text).
+        if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
+            Assert.fail(ERR_NO_ATTACHMENT);
+        }
+
+        // TEST 2 - Check email text and attachment file name.
+        String text = receivedMsg.getMessageText();
+
+        Assert.assertEquals(text, STR_MAIL_TEXT);
+        Assert.assertTrue(receivedMsg.getAttachments().containsKey(fileName));
+        Assert.assertEquals(receivedMsg.getAttachments().get(fileName), attachmentContent);
+
+        FileUtils.writeStringToFile(new File(fileName), receivedMsg.getAttachments().get(fileName), Charset.forName("ISO_8859_1"));
+
+        // CLEAN UP - Delete message.
+        deleteMessage(receivedMsg, pop3);
+    }
+
+    /**
+     * Tests the correct creating and sending of mails with attachment.
+     *
+     * @throws Exception if there was an error while sending/receiving the messages.
+     */
+    @Test
+    public void testT16_sendAndWaitForMessageWithZipAttachment() throws Exception {
+
+        final String subject = STR_MAIL_SUBJECT + "testT16_sendAndWaitForMessageWithZipAttachment";
+        final String fileName = "attachment.zip";
+        final File attachmentFile = FileUtils.getResourceFile(fileName);
+        final String attachmentContent = IOUtils.toString(FileUtils.openInputStream(attachmentFile), StandardCharsets.ISO_8859_1);
+
+        // SETUP - Create message, add attachment.
+        final MimeMessage msg = this.createDefaultMessage(session, subject);
+        final MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
+        final MimeBodyPart[] attachments = {attachment};
+        smtp.addAttachmentsToMessage(attachments, msg);
+
+        // EXECUTION - Send and receive message.
+        smtp.sendMessage(msg);
+
+        final Email receivedMsg = waitForMessage(subject);
+
+        // TEST 1 - Fail, if the message contains no attachment (content is plain text).
+        if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
+            Assert.fail(ERR_NO_ATTACHMENT);
+        }
+
+        // TEST 2 - Check email text and attachment file name.
+        String text = receivedMsg.getMessageText();
+
+        Assert.assertEquals(text, STR_MAIL_TEXT);
+        Assert.assertTrue(receivedMsg.getAttachments().containsKey(fileName));
+        Assert.assertEquals(receivedMsg.getAttachments().get(fileName), attachmentContent);
+
+        FileUtils.writeStringToFile(new File(fileName), receivedMsg.getAttachments().get(fileName), Charset.forName("ISO_8859_1"));
 
         // CLEAN UP - Delete message.
         deleteMessage(receivedMsg, pop3);

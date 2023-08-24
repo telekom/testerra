@@ -27,13 +27,13 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.timings.TimingCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
@@ -189,13 +189,13 @@ public class DesktopWebDriverFactory implements
             WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);
         }
 
-        /*
-         start StopWatch
-          */
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                StopWatch.startPageLoad(eventFiringWebDriver);
+//                StopWatch.startPageLoad(eventFiringWebDriver);
+                TimingCollector.get().start(sessionContext, TimingCollector.SessionTiming.BASEURL);
                 eventFiringWebDriver.get(baseUrl.toString());
+//                StopWatch.stopPageLoad(eventFiringWebDriver, this.getClass());
+                TimingCollector.get().stop(sessionContext, TimingCollector.SessionTiming.BASEURL);
             } catch (Exception e) {
                 log().error("Unable to open baseUrl", e);
             }

@@ -30,13 +30,13 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.timings.TimingCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -416,10 +416,9 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            StopWatch sw = new StopWatch();
-            sw.start();
+            TimingCollector.get().start(sessionContext, TimingCollector.SessionTiming.SESSION_START);
             WebDriver newRawWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
-            sw.stop();
+            TimingCollector.get().stop(sessionContext, TimingCollector.SessionTiming.SESSION_START);
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
@@ -441,7 +440,7 @@ public final class WebDriverSessionsManager {
                     sessionContext.getSessionKey(),
                     sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
                     sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
-                    sw
+                    TimingCollector.get().getSessionTiming(sessionContext, TimingCollector.SessionTiming.SESSION_START)
             ));
             EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(newRawWebDriver);
             storeWebDriverSession(eventFiringWebDriver, sessionContext);

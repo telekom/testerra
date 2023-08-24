@@ -38,6 +38,8 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                 // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
                 // out-of-date dependencies on 3rd party aurelia plugins
                 'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding'),
+                // Enforce single tslib, to avoid v1/v2 duplication due to
+                // out-of-date dependencies on 3rd party aurelia plugins, in this case: echarts
                 'tslib': path.resolve(__dirname, 'node_modules/tslib')
             }
         },

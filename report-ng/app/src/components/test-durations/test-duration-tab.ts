@@ -248,7 +248,7 @@ export class TestDurationTab extends AbstractViewModel {
 
         this._bars = this._sectionValues.map((sectionValue, i) => {
             const methodList = methods.reduce((list, method) => {
-                if (method.duration < sectionValue && (method.duration > this._sectionValues[i - 1] || this._sectionValues[i - 1] === undefined)) {
+                if (method.duration <= sectionValue && (method.duration > this._sectionValues[i - 1] || this._sectionValues[i - 1] === undefined)) {
                     list.push(method);
                 }
                 return list;

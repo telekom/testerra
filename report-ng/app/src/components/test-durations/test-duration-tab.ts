@@ -84,19 +84,21 @@ export class TestDurationTab extends AbstractViewModel {
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
                 delete this.queryParams.methodId;
-                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts).filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp));
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts)
+                    .filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp))
             } else {
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
-            return methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
-                if (a.name < b.name) {
-                    return -1;
-                }
-                if (a.name > b.name) {
-                    return 1;
-                }
-                return 0;
-            });
+            return methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
+                .map(methodContext => methodContext.contextValues).sort(function (a, b) {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
         });
     };
 
@@ -120,6 +122,7 @@ export class TestDurationTab extends AbstractViewModel {
             executionStatistics.classStatistics
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
+                    methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
 
                     let methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);

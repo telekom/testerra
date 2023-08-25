@@ -33,6 +33,8 @@ import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+
 import java.util.Date;
 
 /**
@@ -43,12 +45,14 @@ import java.util.Date;
 public final class ExecutionEndListener implements
         ExecutionFinishEvent.Listener,
         ExecutionAbortEvent.Listener,
-        Loggable
-{
+        Loggable {
+
+    IExecutionContextController contextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
+
     @Override
     @Subscribe
     public void onExecutionAbort(ExecutionAbortEvent event) {
-        ExecutionContextController.getCurrentExecutionContext().setCrashed(true);
+        contextController.getExecutionContext().setCrashed(true);
         finalizeExecutionContext();
     }
 
@@ -62,7 +66,7 @@ public final class ExecutionEndListener implements
     private void finalizeExecutionContext() {
         MethodRelations.flushAll();
 
-        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
+        ExecutionContext currentExecutionContext = contextController.getExecutionContext();
         currentExecutionContext.updateEndTimeRecursive(new Date());
 
         ExecutionContextController.printExecutionStatistics();

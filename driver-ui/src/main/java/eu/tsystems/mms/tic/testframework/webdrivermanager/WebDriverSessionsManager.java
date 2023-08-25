@@ -28,10 +28,9 @@ import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.TimingCollector;
+import eu.tsystems.mms.tic.testframework.internal.MetricsController;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.model.timings.TimingType;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
@@ -45,6 +44,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -417,9 +417,9 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            TimingCollector.get().start(sessionContext, TimingType.SESSION_START);
+            MetricsController.get().start(sessionContext, MetricsController.MetricsType.SESSION_START);
             WebDriver newRawWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
-            TimingCollector.get().stop(sessionContext, TimingType.SESSION_START);
+            MetricsController.get().stop(sessionContext, MetricsController.MetricsType.SESSION_START);
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
@@ -435,13 +435,16 @@ public final class WebDriverSessionsManager {
                 sessionContext.setRemoteSessionId(sessionContext.getId());
             }
 
+            MetricsController.TimeInfo timeInfo = MetricsController.get().readStopWatch(sessionContext, MetricsController.MetricsType.SESSION_START);
+            Duration diff = Duration.between(timeInfo.getStartTime(), timeInfo.getEndTime());
             LOGGER.info(String.format(
-                    "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %s",
+                    "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %02d:%02d.%03d",
                     newRawWebDriver.getClass().getSimpleName(),
                     sessionContext.getSessionKey(),
                     sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
                     sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
-                    TimingCollector.get().readStopWatch(sessionContext, TimingType.SESSION_START)
+                    diff.toMinutesPart(), diff.toSecondsPart(), diff.toMillisPart()
+
             ));
             EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(newRawWebDriver);
             storeWebDriverSession(eventFiringWebDriver, sessionContext);

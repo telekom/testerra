@@ -27,14 +27,13 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.TimingCollector;
+import eu.tsystems.mms.tic.testframework.internal.MetricsController;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.model.timings.TimingType;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
@@ -192,9 +191,9 @@ public class DesktopWebDriverFactory implements
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                TimingCollector.get().start(sessionContext, TimingType.BASEURL_LOAD);
+                MetricsController.get().start(sessionContext, MetricsController.MetricsType.BASEURL_LOAD);
                 eventFiringWebDriver.get(baseUrl.toString());
-                TimingCollector.get().stop(sessionContext, TimingType.BASEURL_LOAD);
+                MetricsController.get().stop(sessionContext, MetricsController.MetricsType.BASEURL_LOAD);
             } catch (Exception e) {
                 log().error("Unable to open baseUrl", e);
             }

@@ -23,17 +23,11 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.internal.TimingCollector;
-import eu.tsystems.mms.tic.testframework.report.model.timings.TimingType;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
-import org.apache.commons.lang3.time.StopWatch;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
@@ -53,10 +47,6 @@ public class ExecutionContext extends AbstractContext {
      */
     public int estimatedTestMethodCount;
     private final ConcurrentLinkedQueue<LogMessage> methodContextLessLogs = new ConcurrentLinkedQueue<>();
-
-    // Additional timing information
-    private Map<AbstractContext, Map<TimingType, StopWatch>> contextTimings = new ConcurrentHashMap<>();
-    // page timings
 
     public ExecutionContext() {
         setName(runConfig.RUNCFG);
@@ -132,20 +122,5 @@ public class ExecutionContext extends AbstractContext {
 
     public void setEstimatedTestMethodCount(int count) {
         this.estimatedTestMethodCount = count;
-    }
-
-    public void addContextTiming(AbstractContext context, TimingType type, StopWatch stopWatch) {
-        Map<TimingType, StopWatch> mapEntry;
-        if (this.contextTimings.containsKey(context)) {
-            mapEntry = this.contextTimings.get(context);
-        } else {
-            mapEntry = new HashMap<>();
-            this.contextTimings.put(context, mapEntry);
-        }
-        mapEntry.put(type, stopWatch);
-    }
-
-    public Map<AbstractContext, Map<TimingType, StopWatch>> getContextTimings() {
-        return this.contextTimings;
     }
 }

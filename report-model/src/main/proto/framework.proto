@@ -288,3 +288,35 @@ enum ResultStatusType {
     MINOR_RETRY = 12 [deprecated = true]; // minor after a retry
     REPAIRED = 13; // passed with fail annotation
 }
+
+/**
+The following types define all objects for Testerra test metrics
+ */
+
+message TestMetrics {
+    repeated SessionMetric session_metrics = 1;
+    repeated MethodMetric method_metrics = 2;
+}
+
+message MetricsValue {
+    int64 start_timestamp = 1;
+    int64 end_timestamp = 2;
+    MetricType metric_type = 3;
+}
+
+message SessionMetric {
+    MetricsValue metrics_value = 1;
+    SessionContext session_context = 2;
+}
+
+message MethodMetric {
+    MetricsValue metrics_value = 1;
+    MethodContext method_context = 2;
+}
+
+enum MetricType {
+    BASEURL = 0;
+    SESSION_LOAD = 1;
+    SESSION_DURATION = 2;
+    METHOD_DURATION = 3;
+}

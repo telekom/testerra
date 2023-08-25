@@ -13,4 +13,5 @@ message ExecutionAggregate {
     map<string, ClassContext> class_contexts = 4;
     map<string, MethodContext> method_contexts = 5;
     map<string, SessionContext> session_contexts = 6;
+    TestMetrics test_metrics = 7;
 }

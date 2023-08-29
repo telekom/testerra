@@ -139,6 +139,26 @@ public final class Framework {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_File_MetaEntry_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_TestMetrics_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_TestMetrics_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_MetricsValue_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_MetricsValue_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_SessionMetric_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_SessionMetric_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_MethodMetric_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_MethodMetric_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -251,24 +271,37 @@ public final class Framework {
       "ata.File.MetaEntry\022\025\n\rlast_modified\030\t \001(" +
       "\003\022\022\n\nproject_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n" +
       "\014is_directory\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMet" +
-      "aEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*t" +
-      "\n\022ClickPathEventType\022\020\n\014CPET_NOT_SET\020\000\022\017" +
-      "\n\013CPET_WINDOW\020\001\022\016\n\nCPET_CLICK\020\002\022\016\n\nCPET_" +
-      "VALUE\020\003\022\r\n\tCPET_PAGE\020\004\022\014\n\010CPET_URL\020\005*W\n\016" +
-      "LogMessageType\022\013\n\007LMT_OFF\020\000\022\r\n\tLMT_ERROR" +
-      "\020\001\022\014\n\010LMT_WARN\020\002\022\014\n\010LMT_INFO\020\003\022\r\n\tLMT_DE" +
-      "BUG\020\004*O\n\024FailureCorridorValue\022\017\n\013FCV_NOT" +
-      "_SET\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV" +
-      "_LOW\020\003*G\n\nMethodType\022\016\n\nMT_NOT_SET\020\000\022\017\n\013" +
-      "TEST_METHOD\020\001\022\030\n\024CONFIGURATION_METHOD\020\002*" +
-      "\345\001\n\020ResultStatusType\022\017\n\013RST_NOT_SET\020\000\022\n\n" +
-      "\006NO_RUN\020\001\022\014\n\004INFO\020\002\032\002\010\001\022\013\n\007SKIPPED\020\003\022\n\n\006" +
-      "PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020\007\022\024\n\014F" +
-      "AILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_RETRIED\020\t\022\023\n" +
-      "\017FAILED_EXPECTED\020\n\022\020\n\014PASSED_RETRY\020\013\022\023\n\013" +
-      "MINOR_RETRY\020\014\032\002\010\001\022\014\n\010REPAIRED\020\rB2\n.eu.ts" +
-      "ystems.mms.tic.testframework.report.mode" +
-      "lP\001b\006proto3"
+      "aEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"g" +
+      "\n\013TestMetrics\022,\n\017session_metrics\030\001 \003(\0132\023" +
+      ".data.SessionMetric\022*\n\016method_metrics\030\002 " +
+      "\003(\0132\022.data.MethodMetric\"e\n\014MetricsValue\022" +
+      "%\n\013metric_type\030\001 \001(\0162\020.data.MetricType\022\027" +
+      "\n\017start_timestamp\030\002 \001(\003\022\025\n\rend_timestamp" +
+      "\030\003 \001(\003\"j\n\rSessionMetric\022*\n\016metrics_value" +
+      "s\030\001 \003(\0132\022.data.MetricsValue\022-\n\017session_c" +
+      "ontext\030\002 \001(\0132\024.data.SessionContext\"g\n\014Me" +
+      "thodMetric\022*\n\016metrics_values\030\001 \003(\0132\022.dat" +
+      "a.MetricsValue\022+\n\016method_context\030\002 \001(\0132\023" +
+      ".data.MethodContext*t\n\022ClickPathEventTyp" +
+      "e\022\020\n\014CPET_NOT_SET\020\000\022\017\n\013CPET_WINDOW\020\001\022\016\n\n" +
+      "CPET_CLICK\020\002\022\016\n\nCPET_VALUE\020\003\022\r\n\tCPET_PAG" +
+      "E\020\004\022\014\n\010CPET_URL\020\005*W\n\016LogMessageType\022\013\n\007L" +
+      "MT_OFF\020\000\022\r\n\tLMT_ERROR\020\001\022\014\n\010LMT_WARN\020\002\022\014\n" +
+      "\010LMT_INFO\020\003\022\r\n\tLMT_DEBUG\020\004*O\n\024FailureCor" +
+      "ridorValue\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010FCV_HIGH\020" +
+      "\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nMethodTyp" +
+      "e\022\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CO" +
+      "NFIGURATION_METHOD\020\002*\345\001\n\020ResultStatusTyp" +
+      "e\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\014\n\004INFO\020\002" +
+      "\032\002\010\001\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005" +
+      "\032\002\010\001\022\n\n\006FAILED\020\007\022\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022" +
+      "\n\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022" +
+      "\020\n\014PASSED_RETRY\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001\022\014" +
+      "\n\010REPAIRED\020\r*[\n\nMetricType\022\020\n\014BASEURL_LO" +
+      "AD\020\000\022\020\n\014SESSION_LOAD\020\001\022\024\n\020SESSION_DURATI" +
+      "ON\020\002\022\023\n\017METHOD_DURATION\020\003B2\n.eu.tsystems" +
+      ".mms.tic.testframework.report.modelP\001b\006p" +
+      "roto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -424,6 +457,30 @@ public final class Framework {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_File_MetaEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
+    internal_static_data_TestMetrics_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_data_TestMetrics_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_TestMetrics_descriptor,
+        new java.lang.String[] { "SessionMetrics", "MethodMetrics", });
+    internal_static_data_MetricsValue_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_data_MetricsValue_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_MetricsValue_descriptor,
+        new java.lang.String[] { "MetricType", "StartTimestamp", "EndTimestamp", });
+    internal_static_data_SessionMetric_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_data_SessionMetric_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_SessionMetric_descriptor,
+        new java.lang.String[] { "MetricsValues", "SessionContext", });
+    internal_static_data_MethodMetric_descriptor =
+      getDescriptor().getMessageTypes().get(22);
+    internal_static_data_MethodMetric_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_MethodMetric_descriptor,
+        new java.lang.String[] { "MetricsValues", "MethodContext", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

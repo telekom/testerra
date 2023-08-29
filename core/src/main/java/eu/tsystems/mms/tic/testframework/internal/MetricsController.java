@@ -94,8 +94,9 @@ public class MetricsController implements Loggable {
 
     public enum MetricsType {
         BASEURL_LOAD,
-        SESSION_START,
-        SESSION_DURATION;
+        SESSION_LOAD,
+        SESSION_DURATION,
+        METHOD_DURATION;
     }
 
     public class TimeInfo {

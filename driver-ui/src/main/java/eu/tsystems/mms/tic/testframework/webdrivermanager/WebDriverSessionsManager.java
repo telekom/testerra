@@ -417,9 +417,9 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            MetricsController.get().start(sessionContext, MetricsController.MetricsType.SESSION_START);
+            MetricsController.get().start(sessionContext, MetricsController.MetricsType.SESSION_LOAD);
             WebDriver newRawWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
-            MetricsController.get().stop(sessionContext, MetricsController.MetricsType.SESSION_START);
+            MetricsController.get().stop(sessionContext, MetricsController.MetricsType.SESSION_LOAD);
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
@@ -435,7 +435,7 @@ public final class WebDriverSessionsManager {
                 sessionContext.setRemoteSessionId(sessionContext.getId());
             }
 
-            MetricsController.TimeInfo timeInfo = MetricsController.get().readStopWatch(sessionContext, MetricsController.MetricsType.SESSION_START);
+            MetricsController.TimeInfo timeInfo = MetricsController.get().readStopWatch(sessionContext, MetricsController.MetricsType.SESSION_LOAD);
             Duration diff = Duration.between(timeInfo.getStartTime(), timeInfo.getEndTime());
             LOGGER.info(String.format(
                     "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %02d:%02d.%03d",

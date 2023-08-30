@@ -30,17 +30,19 @@ import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import * as echarts from "echarts";
 import {EChartsOption} from "echarts";
 import {data} from "../../services/report-model";
-import ResultStatusType = data.ResultStatusType;
-import MethodContext = data.MethodContext;
 import {
     IntlDateFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
 import {
     DurationFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
-import IContextValues = data.ContextValues;
-import IMethodContext = data.MethodContext;
+import ResultStatusType = data.ResultStatusType;
+import MethodContext = data.MethodContext;
 
+interface MethodInfo {
+    id: string;
+    name: string;
+}
 
 @autoinject()
 export class Threads extends AbstractViewModel {
@@ -102,12 +104,13 @@ export class Threads extends AbstractViewModel {
         });
     };
 
-    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]> => {
+    private _getLookupOptions = async (filter: string, methodId: string): Promise<MethodInfo[]> => {
         if (this._initialChartLoading == true) {
             await new Promise(f => setTimeout(f, 100)); // Timeout for first loading of chart to prevent zoom-issue
         }
         return this._statistics.getExecutionStatistics().then(executionStatistics => {
-            let methodContexts: IMethodContext[];
+            let methodContexts: MethodContext[];
+            let methodInfo: MethodInfo[] = [];
             if (methodId) {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
@@ -126,7 +129,16 @@ export class Threads extends AbstractViewModel {
             } else {
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
-            return methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
+
+            for (const methodContext of methodContexts) {
+                const method: MethodInfo = {
+                    id: methodContext.contextValues.id,
+                    name: methodContext.contextValues.name + " (" + methodContext.methodRunIndex + ")"
+                };
+                methodInfo.push(method);
+            }
+
+            return methodInfo.sort(function (a, b) {
                 if (a.name < b.name) {
                     return -1;
                 }

@@ -44,9 +44,7 @@
         "moment": "^2.29.4",
         "moment-duration-format": "^2.3.2",
         "t-systems-aurelia-components": "^1.1.1",
-        "ts-replace-all": "^1.0.0",
-        "vis-network": "^7.4.2",
-        "vis-timeline": "^7.4.6"
+        "ts-replace-all": "^1.0.0"
     },
     "devDependencies": {
         "@protobuf-ts/protoc": "^2.9.0",

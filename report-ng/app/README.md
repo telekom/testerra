@@ -37,6 +37,7 @@ npm install
 - Charts Framework: 
   - https://apexcharts.com/
   - https://echarts.apache.org/
+  - https://visjs.github.io/vis-network/docs/network/
 - Time and Date: https://momentjs.com/
 - Duration Format: https://github.com/jsmreese/moment-duration-format
 - Aurelia Value Converters: https://aurelia.io/docs/binding/value-converters#converter-parameters

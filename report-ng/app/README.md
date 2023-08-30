@@ -6,7 +6,7 @@ npm start
 ```
 
 ## Compile Proto
-Generates models into `src/services/report-model.js`
+Generates models into `src/services/report-model/*.js`
 ```bash
 npm run generateProto
 ```

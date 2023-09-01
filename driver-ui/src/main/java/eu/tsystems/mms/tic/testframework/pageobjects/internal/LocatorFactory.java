@@ -26,7 +26,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
+
+import java.net.URL;
 import java.util.function.Consumer;
+
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import org.openqa.selenium.By;
 
 /**
@@ -34,7 +38,7 @@ import org.openqa.selenium.By;
  *
  * @author Mike Reiche
  */
-public class LocatorFactory implements Loggable {
+public class LocatorFactory implements Loggable, WebDriverManagerProvider {
     ThreadLocal<Consumer<Locator>> locatorConfigurator = new ThreadLocal<>();
 
     public Locator by(By by) {
@@ -48,6 +52,11 @@ public class LocatorFactory implements Loggable {
     public Locator byQa(String string) {
         return by(XPath.from("*").attribute(UiElement.Properties.QA_ATTRIBUTE.asString()).is(string));
     }
+
+//    public Locator byImage(URL resourceURL) {
+//        return new ByImage(driver, resourceURL);
+//    }
+
     public PreparedLocator prepare(final String format) {
         return new DefaultPreparedLocator(format);
     }

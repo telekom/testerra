@@ -19,38 +19,45 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.sikuli;
+package eu.tsystems.mms.tic.testframework.test.sikuli;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageWebDriver;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import java.net.URL;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.annotations.Test;
 
-public class SikuliBasedWebTest extends AbstractTestSitesTest {
+import java.net.URL;
+
+public class SikuliBasedWebTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, LocatorFactoryProvider {
 
     @Override
     protected TestPage getTestPage() {
         return TestPage.DRAG_AND_DROP_OVER_FRAMES;
     }
 
-    //    @Test
+    @Test
     public void testT01_ByImage() throws Exception {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-
-        URL resourceURL = FileUtils.getResourceURL("sikuli/testimage.png");
+//        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        WebDriver driver = getWebDriver();
+        URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
         guiElement.click();
     }
 
-//    @Test
+    //    @Test
     public void testT01_ByImage_Directly() throws Exception {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 
@@ -61,9 +68,9 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         imageElement.click();
     }
 
-//    @Test
+    @Test
     public void testT03a_ByImage_InFrames_FindElementInFrame() throws Exception {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        WebDriver driver = this.getWebDriver();
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
@@ -71,7 +78,19 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         guiElement.asserts().assertAttributeContains("src", "ringo");
     }
 
-//    @Test
+    @Test
+    public void testT03a_UiElement_ByImage_InFrames_FindElementInFrame() {
+        WebDriver driver = this.getWebDriver();
+        URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(driver);
+        UiElement uiElement = uiElementFinder.find(new ByImage(driver, resourceURL));
+
+        uiElement.assertThat().displayed(true);
+        uiElement.assertThat().attribute("src").contains("ringo");
+
+    }
+
+    //    @Test
     public void testT03b_ByImage_InFrames_FindElementInFrame_withObsoleteGuiElementFrame() throws Exception {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         GuiElement frame = new GuiElement(driver, By.id("draggableNodes"));

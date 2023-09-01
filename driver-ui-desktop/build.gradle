@@ -1,5 +1,9 @@
 dependencies {
     api driver_ui
+
+    // <ByImage, SikuliWebDriver>
+    implementation 'org.sikuli:sikuli-api:1.2.0'
+    // </UITestUtils>
 }
 
 test {

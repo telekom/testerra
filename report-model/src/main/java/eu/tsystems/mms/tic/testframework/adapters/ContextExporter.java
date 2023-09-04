@@ -32,32 +32,9 @@ import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
-
-import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
-import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
-import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
-import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
-import eu.tsystems.mms.tic.testframework.report.model.File;
-import eu.tsystems.mms.tic.testframework.report.model.MethodType;
-import eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
-import eu.tsystems.mms.tic.testframework.report.model.LogMessageType;
-import eu.tsystems.mms.tic.testframework.report.model.TestStep;
-import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
-import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
-import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
-import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
-import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
-import eu.tsystems.mms.tic.testframework.report.model.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.model.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
-import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
-import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.TestContext;
-import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
+import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
+
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -141,6 +118,11 @@ public class ContextExporter implements Loggable {
         // build context
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
+        methodContext.readCustomContexts()
+                .filter(context -> context instanceof eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext)
+                .map(context -> (eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext) context)
+                .forEach(layoutCheckContext -> builder.addLayoutCheckContext(buildLayoutCheckContext(layoutCheckContext)));
+        ;
         methodContext.readCustomContexts().forEach(customContext -> {
             builder.putCustomContexts(customContext.getName(), jsonEncoder.toJson(customContext.exportToReport(report)));
         });
@@ -246,6 +228,8 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
+
+
     public ClickPathEvent.Builder buildClickPathEvent(eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent clickPathEvent) {
         ClickPathEvent.Builder builder = eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.newBuilder();
         switch (clickPathEvent.getType()) {
@@ -307,6 +291,28 @@ public class ContextExporter implements Loggable {
             }
         });
         return actionBuilder;
+    }
+
+    public LayoutCheckContext.Builder buildLayoutCheckContext(eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext layoutCheckContext) {
+        LayoutCheckContext.Builder builder = LayoutCheckContext.newBuilder();
+        apply(layoutCheckContext.image, builder::setImage);
+        apply(layoutCheckContext.distance, builder::setDistance);
+
+        File.Builder[] fileBuilders = buildScreenshot(layoutCheckContext.expectedScreenshot);
+        Optional<File.Builder> fileOptional = Optional.ofNullable(fileBuilders[0]);
+        fileOptional.ifPresent(file -> builder.setExpectedScreenshotId(file.getId()));
+
+        fileBuilders = buildScreenshot(layoutCheckContext.actualScreenshot);
+        fileOptional = Optional.ofNullable(fileBuilders[0]);
+        fileOptional.ifPresent(file -> builder.setActualScreenshotId(file.getId()));
+
+        fileBuilders = buildScreenshot(layoutCheckContext.distanceScreenshot);
+        fileOptional = Optional.ofNullable(fileBuilders[0]);
+        fileOptional.ifPresent(file -> builder.setDistanceScreenshotId(file.getId()));
+
+        builder.setErrorContext(buildErrorContext(layoutCheckContext.errorContext));
+
+        return builder;
     }
 
     public ContextExporter() {

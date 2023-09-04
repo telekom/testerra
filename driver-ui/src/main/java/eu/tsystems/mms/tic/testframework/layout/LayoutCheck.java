@@ -26,8 +26,8 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
-import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -412,12 +412,12 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             LOGGER.warn("Cannot add layout check to report.");
             return;
         }
-        final String name = step.consecutiveTargetImageName;
+        final String imageName = step.consecutiveTargetImageName;
         final Path referenceScreenshotPath = step.referenceFileName;
         final Path actualScreenshotPath = step.actualFileName;
         final Path distanceScreenshotPath = step.distanceFileName;
         LayoutCheckContext context = new LayoutCheckContext();
-        context.image = name;
+        context.image = imageName;
 
         if (!isMatchDimensions(step)) {
             OptionalAssert.fail(
@@ -440,6 +440,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
 
         ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
+
             methodContext.addCustomContext(context);
         });
     }

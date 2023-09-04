@@ -19,28 +19,26 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.layout.reporting;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LayoutCheckContext implements CustomContext {
     public String image;
-    public String mode;
     public double distance;
     public Screenshot expectedScreenshot;
     public Screenshot actualScreenshot;
     public Screenshot distanceScreenshot;
 
+    public ErrorContext errorContext;
+
     @Override
     public Map<String, Object> exportToReport(Report report) {
         Map<String, Object> exported = new HashMap<>();
         exported.put("image", this.image);
-        exported.put("mode", this.mode);
         exported.put("actualDistance", this.distance);
         exported.put("expectedScreenshotPath", report.getRelativePath(expectedScreenshot.getScreenshotFile()));
         exported.put("actualScreenshotPath", report.getRelativePath(actualScreenshot.getScreenshotFile()));

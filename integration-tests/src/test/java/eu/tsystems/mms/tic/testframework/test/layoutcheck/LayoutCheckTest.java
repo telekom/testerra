@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -36,10 +35,6 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     @Override
     protected TestPage getTestPage() {
         return TestPage.LAYOUT;
-    }
-
-    private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(getWebDriver(), LOCATE.byQa(qaTag));
     }
 
     private UiElement getUIElementQa(final String qaTag) {
@@ -98,4 +93,14 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
     }
 
+    @Test
+    public void testT07_CheckElementLayoutCollected() {
+        CONTROL.collectAssertions(() -> {
+            UiElement uiElement = getUIElementQa("section/layoutTestArticle");
+            uiElement.expect().screenshot().pixelDistance("TestArticle").isLowerThan(0.3);
+
+            uiElement = getUIElementQa("section/invisibleTestArticle");
+            uiElement.expect().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(0.3);
+        });
+    }
 }

@@ -216,7 +216,9 @@ public class MethodContext extends AbstractContext {
     }
 
     public void addOptionalAssertion(Throwable throwable) {
-        getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, true));
+        ErrorContext errorContext = new ErrorContext(throwable, true);
+        getCurrentTestStep().getCurrentTestStepAction().addAssertion(errorContext);
+        this.updateLayoutCheckContext(errorContext);
     }
 
     public void addError(Throwable throwable) {
@@ -225,6 +227,19 @@ public class MethodContext extends AbstractContext {
 
     public void addError(ErrorContext errorContext) {
         getCurrentTestStep().getCurrentTestStepAction().addAssertion(errorContext);
+        this.updateLayoutCheckContext(errorContext);
+    }
+
+    /**
+     * Tries to link the last LayoutcheckContext with current ErrorContext
+     */
+    private void updateLayoutCheckContext(ErrorContext context) {
+        this.getCustomContexts().stream()
+                .filter(elem -> elem instanceof LayoutCheckContext)
+                .map(elem -> (LayoutCheckContext) elem)
+                .filter(elem -> elem.errorContext == null)
+                .findFirst()
+                .ifPresent(elem -> elem.errorContext = context);
     }
 
     @Deprecated

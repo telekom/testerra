@@ -62,17 +62,14 @@ public interface LayoutCheckContextOrBuilder extends
       getDistanceScreenshotIdBytes();
 
   /**
-   * <code>.data.ErrorContext error_context = 6;</code>
-   * @return Whether the errorContext field is set.
+   * <code>string error_context_id = 6;</code>
+   * @return The errorContextId.
    */
-  boolean hasErrorContext();
+  java.lang.String getErrorContextId();
   /**
-   * <code>.data.ErrorContext error_context = 6;</code>
-   * @return The errorContext.
+   * <code>string error_context_id = 6;</code>
+   * @return The bytes for errorContextId.
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext();
-  /**
-   * <code>.data.ErrorContext error_context = 6;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder();
+  com.google.protobuf.ByteString
+      getErrorContextIdBytes();
 }

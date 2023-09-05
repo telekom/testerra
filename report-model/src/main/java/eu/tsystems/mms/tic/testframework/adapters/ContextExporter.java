@@ -215,7 +215,7 @@ public class ContextExporter implements Loggable {
 //        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
 //        apply(errorContext.getDescription(), builder::setDescription);
         builder.setOptional(errorContext.isOptional());
-
+        apply(errorContext.getId(), builder::setId);
         return builder;
     }
 
@@ -310,7 +310,7 @@ public class ContextExporter implements Loggable {
         fileOptional = Optional.ofNullable(fileBuilders[0]);
         fileOptional.ifPresent(file -> builder.setDistanceScreenshotId(file.getId()));
 
-        builder.setErrorContext(buildErrorContext(layoutCheckContext.errorContext));
+        apply(layoutCheckContext.errorContext.getId(), builder::setErrorContextId);
 
         return builder;
     }

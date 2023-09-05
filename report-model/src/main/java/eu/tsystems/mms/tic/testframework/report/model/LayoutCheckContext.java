@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     expectedScreenshotId_ = "";
     actualScreenshotId_ = "";
     distanceScreenshotId_ = "";
+    errorContextId_ = "";
   }
 
   @java.lang.Override
@@ -82,16 +83,9 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 50: {
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder subBuilder = null;
-            if (errorContext_ != null) {
-              subBuilder = errorContext_.toBuilder();
-            }
-            errorContext_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.ErrorContext.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(errorContext_);
-              errorContext_ = subBuilder.buildPartial();
-            }
+            java.lang.String s = input.readStringRequireUtf8();
 
+            errorContextId_ = s;
             break;
           }
           default: {
@@ -289,30 +283,42 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int ERROR_CONTEXT_FIELD_NUMBER = 6;
-  private eu.tsystems.mms.tic.testframework.report.model.ErrorContext errorContext_;
+  public static final int ERROR_CONTEXT_ID_FIELD_NUMBER = 6;
+  private volatile java.lang.Object errorContextId_;
   /**
-   * <code>.data.ErrorContext error_context = 6;</code>
-   * @return Whether the errorContext field is set.
+   * <code>string error_context_id = 6;</code>
+   * @return The errorContextId.
    */
   @java.lang.Override
-  public boolean hasErrorContext() {
-    return errorContext_ != null;
+  public java.lang.String getErrorContextId() {
+    java.lang.Object ref = errorContextId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      errorContextId_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.data.ErrorContext error_context = 6;</code>
-   * @return The errorContext.
+   * <code>string error_context_id = 6;</code>
+   * @return The bytes for errorContextId.
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
-    return errorContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance() : errorContext_;
-  }
-  /**
-   * <code>.data.ErrorContext error_context = 6;</code>
-   */
-  @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
-    return getErrorContext();
+  public com.google.protobuf.ByteString
+      getErrorContextIdBytes() {
+    java.lang.Object ref = errorContextId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      errorContextId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -344,8 +350,8 @@ private static final long serialVersionUID = 0L;
     if (!getDistanceScreenshotIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, distanceScreenshotId_);
     }
-    if (errorContext_ != null) {
-      output.writeMessage(6, getErrorContext());
+    if (!getErrorContextIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, errorContextId_);
     }
     unknownFields.writeTo(output);
   }
@@ -372,9 +378,8 @@ private static final long serialVersionUID = 0L;
     if (!getDistanceScreenshotIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, distanceScreenshotId_);
     }
-    if (errorContext_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(6, getErrorContext());
+    if (!getErrorContextIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, errorContextId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -402,11 +407,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getActualScreenshotId())) return false;
     if (!getDistanceScreenshotId()
         .equals(other.getDistanceScreenshotId())) return false;
-    if (hasErrorContext() != other.hasErrorContext()) return false;
-    if (hasErrorContext()) {
-      if (!getErrorContext()
-          .equals(other.getErrorContext())) return false;
-    }
+    if (!getErrorContextId()
+        .equals(other.getErrorContextId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -429,10 +431,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getActualScreenshotId().hashCode();
     hash = (37 * hash) + DISTANCE_SCREENSHOT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getDistanceScreenshotId().hashCode();
-    if (hasErrorContext()) {
-      hash = (37 * hash) + ERROR_CONTEXT_FIELD_NUMBER;
-      hash = (53 * hash) + getErrorContext().hashCode();
-    }
+    hash = (37 * hash) + ERROR_CONTEXT_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getErrorContextId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -576,12 +576,8 @@ private static final long serialVersionUID = 0L;
 
       distanceScreenshotId_ = "";
 
-      if (errorContextBuilder_ == null) {
-        errorContext_ = null;
-      } else {
-        errorContext_ = null;
-        errorContextBuilder_ = null;
-      }
+      errorContextId_ = "";
+
       return this;
     }
 
@@ -613,11 +609,7 @@ private static final long serialVersionUID = 0L;
       result.expectedScreenshotId_ = expectedScreenshotId_;
       result.actualScreenshotId_ = actualScreenshotId_;
       result.distanceScreenshotId_ = distanceScreenshotId_;
-      if (errorContextBuilder_ == null) {
-        result.errorContext_ = errorContext_;
-      } else {
-        result.errorContext_ = errorContextBuilder_.build();
-      }
+      result.errorContextId_ = errorContextId_;
       onBuilt();
       return result;
     }
@@ -685,8 +677,9 @@ private static final long serialVersionUID = 0L;
         distanceScreenshotId_ = other.distanceScreenshotId_;
         onChanged();
       }
-      if (other.hasErrorContext()) {
-        mergeErrorContext(other.getErrorContext());
+      if (!other.getErrorContextId().isEmpty()) {
+        errorContextId_ = other.errorContextId_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1052,123 +1045,80 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private eu.tsystems.mms.tic.testframework.report.model.ErrorContext errorContext_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> errorContextBuilder_;
+    private java.lang.Object errorContextId_ = "";
     /**
-     * <code>.data.ErrorContext error_context = 6;</code>
-     * @return Whether the errorContext field is set.
+     * <code>string error_context_id = 6;</code>
+     * @return The errorContextId.
      */
-    public boolean hasErrorContext() {
-      return errorContextBuilder_ != null || errorContext_ != null;
-    }
-    /**
-     * <code>.data.ErrorContext error_context = 6;</code>
-     * @return The errorContext.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext getErrorContext() {
-      if (errorContextBuilder_ == null) {
-        return errorContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance() : errorContext_;
+    public java.lang.String getErrorContextId() {
+      java.lang.Object ref = errorContextId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        errorContextId_ = s;
+        return s;
       } else {
-        return errorContextBuilder_.getMessage();
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>.data.ErrorContext error_context = 6;</code>
+     * <code>string error_context_id = 6;</code>
+     * @return The bytes for errorContextId.
      */
-    public Builder setErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (errorContextBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        errorContext_ = value;
-        onChanged();
+    public com.google.protobuf.ByteString
+        getErrorContextIdBytes() {
+      java.lang.Object ref = errorContextId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errorContextId_ = b;
+        return b;
       } else {
-        errorContextBuilder_.setMessage(value);
+        return (com.google.protobuf.ByteString) ref;
       }
-
-      return this;
     }
     /**
-     * <code>.data.ErrorContext error_context = 6;</code>
+     * <code>string error_context_id = 6;</code>
+     * @param value The errorContextId to set.
+     * @return This builder for chaining.
      */
-    public Builder setErrorContext(
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder builderForValue) {
-      if (errorContextBuilder_ == null) {
-        errorContext_ = builderForValue.build();
-        onChanged();
-      } else {
-        errorContextBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.ErrorContext error_context = 6;</code>
-     */
-    public Builder mergeErrorContext(eu.tsystems.mms.tic.testframework.report.model.ErrorContext value) {
-      if (errorContextBuilder_ == null) {
-        if (errorContext_ != null) {
-          errorContext_ =
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext.newBuilder(errorContext_).mergeFrom(value).buildPartial();
-        } else {
-          errorContext_ = value;
-        }
-        onChanged();
-      } else {
-        errorContextBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.ErrorContext error_context = 6;</code>
-     */
-    public Builder clearErrorContext() {
-      if (errorContextBuilder_ == null) {
-        errorContext_ = null;
-        onChanged();
-      } else {
-        errorContext_ = null;
-        errorContextBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.ErrorContext error_context = 6;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder getErrorContextBuilder() {
-      
+    public Builder setErrorContextId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      errorContextId_ = value;
       onChanged();
-      return getErrorContextFieldBuilder().getBuilder();
+      return this;
     }
     /**
-     * <code>.data.ErrorContext error_context = 6;</code>
+     * <code>string error_context_id = 6;</code>
+     * @return This builder for chaining.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder() {
-      if (errorContextBuilder_ != null) {
-        return errorContextBuilder_.getMessageOrBuilder();
-      } else {
-        return errorContext_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance() : errorContext_;
-      }
+    public Builder clearErrorContextId() {
+      
+      errorContextId_ = getDefaultInstance().getErrorContextId();
+      onChanged();
+      return this;
     }
     /**
-     * <code>.data.ErrorContext error_context = 6;</code>
+     * <code>string error_context_id = 6;</code>
+     * @param value The bytes for errorContextId to set.
+     * @return This builder for chaining.
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-        getErrorContextFieldBuilder() {
-      if (errorContextBuilder_ == null) {
-        errorContextBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.ErrorContext, eu.tsystems.mms.tic.testframework.report.model.ErrorContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder>(
-                getErrorContext(),
-                getParentForChildren(),
-                isClean());
-        errorContext_ = null;
-      }
-      return errorContextBuilder_;
+    public Builder setErrorContextIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      errorContextId_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

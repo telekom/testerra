@@ -181,6 +181,7 @@ message ErrorContext {
     string description = 10 [deprecated = true];
     repeated StackTraceCause stack_trace = 11;
     bool optional = 12;
+    string id = 13;
 }
 
 message SessionContext {
@@ -205,7 +206,7 @@ message LayoutCheckContext {
     string expected_screenshot_id = 3;
     string actual_screenshot_id = 4;
     string distance_screenshot_id = 5;
-    ErrorContext error_context = 6;
+    string error_context_id = 6;
 }
 
 message RunConfig {

@@ -20,12 +20,17 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
 import java.util.Optional;
 
 public class ErrorContext {
+
+    private String id;
+
     private transient Throwable throwable = null;
     private ScriptSource scriptSource;
     private boolean optional;
@@ -69,5 +74,12 @@ public class ErrorContext {
         } else {
             return null;
         }
+    }
+
+    public String getId() {
+        if (this.id == null) {
+            this.id = Testerra.getInjector().getInstance(IdGenerator.class).generate().toString();
+        }
+        return this.id;
     }
 }

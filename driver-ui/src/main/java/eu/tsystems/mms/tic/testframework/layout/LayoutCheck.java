@@ -433,6 +433,8 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         if (!isMatchDimensions(step)) {
             // Add LayoutCheckContext for dimension check assertion
             contextController.getCurrentMethodContext().ifPresent(methodContext -> {
+                // The current LayoutCheckContexts needs to be cloned here, otherwise the linking of ErrorContext and
+                // LayoutCheckContext (for dimension check and for pixel check) is working with identical objects
                 methodContext.addCustomContext(context.clone());
             });
             OptionalAssert.fail(

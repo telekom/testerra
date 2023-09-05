@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
@@ -426,9 +427,12 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image
         context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.FileMode.COPY);
+        context.expectedScreenshot.getMetaData().put(Screenshot.MetaData.TITLE, "Expected image");
         context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
+        context.actualScreenshot.getMetaData().put(Screenshot.MetaData.TITLE, "Actual image");
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
         context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
+        context.distanceScreenshot.getMetaData().put(Screenshot.MetaData.TITLE, "Difference image");
 
         if (!isMatchDimensions(step)) {
             // Add LayoutCheckContext for dimension check assertion

@@ -27,11 +27,11 @@
                 class="thumbnail-fixed"
                 outlined
             >
-                <img src.bind="_images.actual.src"
-                     ref="_actualImageElement"
-                     class="thumbnail-fixed clickable"
-                     click.delegate="_imageClicked(_images.actual)"
-                     title.bind="_images.actual.title"/>
+                <lazy-image
+                    file-id.bind="_images.actual.id"
+                    class="thumbnail clickable"
+                    click.delegate="_imageClicked(_images.actual)"
+                ></lazy-image>
             </mdc-card>
             <span mdc-caption>${ _images.actual.title }</span>
         </div>
@@ -41,10 +41,11 @@
                 class="thumbnail-fixed"
                 outlined
             >
-                <img src.bind="_images.diff.src"
-                     class="thumbnail-fixed clickable"
-                     click.delegate="_imageClicked(_images.diff)"
-                     title.bind="_images.diff.title"/>
+                <lazy-image
+                    file-id.bind="_images.diff.id"
+                    class="thumbnail clickable"
+                    click.delegate="_imageClicked(_images.diff)"
+                ></lazy-image>
             </mdc-card>
             <span mdc-caption>${ _images.diff.title }</span>
         </div>
@@ -54,11 +55,11 @@
                 class="thumbnail-fixed"
                 outlined
             >
-                <img src.bind="_images.expected.src"
-                     ref="_expectedImageElement"
-                     class="thumbnail-fixed clickable"
-                     click.delegate="_imageClicked(_images.expected)"
-                     title.bind="_images.expected.title"/>
+                <lazy-image
+                    file-id.bind="_images.expected.id"
+                    class="thumbnail clickable"
+                    click.delegate="_imageClicked(_images.expected)"
+                ></lazy-image>
             </mdc-card>
             <span mdc-caption>${ _images.expected.title }</span>
         </div>

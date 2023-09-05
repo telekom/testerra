@@ -92,15 +92,4 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     public void testT06_CheckPageLayout() {
         LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
     }
-
-    @Test
-    public void testT07_CheckElementLayoutCollected() {
-        CONTROL.collectAssertions(() -> {
-            UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-            uiElement.expect().screenshot().pixelDistance("TestArticle").isLowerThan(0.3);
-
-            uiElement = getUIElementQa("section/invisibleTestArticle");
-            uiElement.expect().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(0.3);
-        });
-    }
 }

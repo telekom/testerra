@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -412,6 +413,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             LOGGER.warn("Cannot add layout check to report.");
             return;
         }
+        IExecutionContextController contextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
         final String imageName = step.consecutiveTargetImageName;
         final Path referenceScreenshotPath = step.referenceFileName;
         final Path actualScreenshotPath = step.actualFileName;
@@ -419,7 +421,20 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = imageName;
 
+
+        // For readable report
+        context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        // Always copy the reference image
+        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.FileMode.COPY);
+        context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
+        context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
+        context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
+
         if (!isMatchDimensions(step)) {
+            // Add LayoutCheckContext for dimension check assertion
+            contextController.getCurrentMethodContext().ifPresent(methodContext -> {
+                methodContext.addCustomContext(context.clone());
+            });
             OptionalAssert.fail(
                     String.format(
                             "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
@@ -431,16 +446,8 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             );
         }
 
-        // For readable report
-        context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        // Always copy the reference image
-        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.FileMode.COPY);
-        context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.FileMode.MOVE);
-        context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.FileMode.MOVE);
-        context.distanceScreenshot.getMetaData().put("Distance", Double.toString(step.distance));
-
-        ExecutionContextController.getMethodContextForThread().ifPresent(methodContext -> {
-
+        // Add LayoutCheckContext for pixel distance assertion
+        contextController.getCurrentMethodContext().ifPresent(methodContext -> {
             methodContext.addCustomContext(context);
         });
     }

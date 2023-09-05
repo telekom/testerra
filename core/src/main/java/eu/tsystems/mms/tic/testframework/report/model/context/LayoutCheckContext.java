@@ -21,12 +21,13 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LayoutCheckContext implements CustomContext {
+public class LayoutCheckContext implements CustomContext, Cloneable, Loggable {
     public String image;
     public double distance;
     public Screenshot expectedScreenshot;
@@ -44,5 +45,15 @@ public class LayoutCheckContext implements CustomContext {
         exported.put("actualScreenshotPath", report.getRelativePath(actualScreenshot.getScreenshotFile()));
         exported.put("distanceScreenshotPath", report.getRelativePath(distanceScreenshot.getScreenshotFile()));
         return exported;
+    }
+
+    @Override
+    public LayoutCheckContext clone() {
+        try {
+            return (LayoutCheckContext) super.clone();
+        } catch (CloneNotSupportedException e) {
+            log().debug("Cannot clone LayoutCheckContext", e);
+            return this;
+        }
     }
 }

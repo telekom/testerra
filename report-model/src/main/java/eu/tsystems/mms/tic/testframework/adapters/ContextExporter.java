@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
-
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -228,8 +227,6 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
-
-
     public ClickPathEvent.Builder buildClickPathEvent(eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent clickPathEvent) {
         ClickPathEvent.Builder builder = eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent.newBuilder();
         switch (clickPathEvent.getType()) {
@@ -310,7 +307,9 @@ public class ContextExporter implements Loggable {
         fileOptional = Optional.ofNullable(fileBuilders[0]);
         fileOptional.ifPresent(file -> builder.setDistanceScreenshotId(file.getId()));
 
-        apply(layoutCheckContext.errorContext.getId(), builder::setErrorContextId);
+        if (layoutCheckContext.errorContext != null) {
+            apply(layoutCheckContext.errorContext.getId(), builder::setErrorContextId);
+        }
 
         return builder;
     }

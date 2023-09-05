@@ -97,8 +97,6 @@ export class Details {
                 // }
             }
             // this._failureAspect = firstFailedFailureAspect || firstFailureAspect;
-            console.log("errorDetails", this._errorDetails);
-            // console.log("layout", this._layoutComparisonContext);
         });
     }
 

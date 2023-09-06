@@ -23,13 +23,18 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import jakarta.mail.Address;
+import jakarta.mail.BodyPart;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
+import jakarta.mail.Part;
+import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -198,28 +203,30 @@ public class Email implements Loggable {
         try {
             // unterscheiden zwischen Multipart-Mail oder nicht
             if (message.getContentType().startsWith("multipart")) {
-                Multipart multipart = (Multipart) message.getContent();
+                Multipart content = (Multipart) message.getContent();
 
-                for (int j = 0; j < multipart.getCount(); j++) {
-                    is = ((Multipart) message.getContent()).getBodyPart(j).getInputStream();
-                    encoding = ((Multipart) message.getContent()).getBodyPart(j).getContentType();
-
+                for (int j = 0; j < content.getCount(); j++) {
+                    Part part = content.getBodyPart(j);
+                    is = part.getInputStream();
+                    encoding = part.getContentType();
                     encoding = getCharSetForEncoding(encoding);
 
-                    String mail;
-                    String attachmentName;
-                    try {
-                        mail = IOUtils.toString(is, encoding).replaceAll("\r", "");
-                    } catch (IllegalCharsetNameException e) {
-                        log().error("Unable to encode attachement", e);
-                        mail = null;
+                    if (part.getDisposition().equals(Part.INLINE)) {
+                        try {
+                            messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
+                        } catch (IllegalCharsetNameException e) {
+                            log().error("Unable to encode attachement", e);
+                        }
                     }
-                    attachmentName = ((Multipart) message.getContent()).getBodyPart(j).getFileName();
+                    else if (part.getDisposition().equals(Part.ATTACHMENT)) {
+                        String attachmentContent = null;
 
-                    if (j == 0) {
-                        messageText = mail;
-                    } else {
-                        attachments.put(attachmentName, mail);
+                        try {
+                            attachmentContent = IOUtils.toString(is, encoding);
+                        } catch (IllegalCharsetNameException e) {
+                            log().error("Unable to encode attachement", e);
+                        }
+                        attachments.put(part.getFileName(), attachmentContent);
                     }
                 } // end for
             } else {
@@ -256,8 +263,13 @@ public class Email implements Loggable {
             // Remove quotes from encoding string
             encoding = encoding.replace("\"", "");
         } else {
-            log().warn("No encoding found in email. Using '" + StandardCharsets.UTF_8.name() + "' instead");
-            encoding = StandardCharsets.UTF_8.name();
+            if (encoding.startsWith("image/") || encoding.endsWith(".pdf") || encoding.endsWith(".zip")) {
+//            if (encoding.contains("application/octet-stream")) {
+                encoding = StandardCharsets.ISO_8859_1.name();
+            } else {
+                log().warn("No encoding found in email. Using '" + StandardCharsets.UTF_8.name() + "' instead");
+                encoding = StandardCharsets.UTF_8.name();
+            }
         }
 
         return encoding;

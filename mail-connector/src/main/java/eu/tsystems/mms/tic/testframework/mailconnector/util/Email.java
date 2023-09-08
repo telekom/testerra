@@ -211,23 +211,20 @@ public class Email implements Loggable {
                     encoding = part.getContentType();
                     encoding = getCharSetForEncoding(encoding);
 
-                    if (part.getDisposition().equals(Part.INLINE)) {
-                        try {
-                            messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
-                        } catch (IllegalCharsetNameException e) {
-                            log().error("Unable to encode attachement", e);
-                        }
-                    }
-                    else if (part.getDisposition().equals(Part.ATTACHMENT)) {
-                        String attachmentContent = null;
+                    String mail;
+                    try {
+                        mail = IOUtils.toString(is, encoding);
 
-                        try {
-                            attachmentContent = IOUtils.toString(is, encoding);
-                        } catch (IllegalCharsetNameException e) {
-                            log().error("Unable to encode attachement", e);
+                        if (part.getDisposition().equals(Part.INLINE)) {
+                            messageText = mail.replaceAll("\r", "");
                         }
-                        attachments.put(part.getFileName(), attachmentContent);
+                        else if (part.getDisposition().equals(Part.ATTACHMENT)) {
+                            attachments.put(part.getFileName(), mail);
+                        }
+                    } catch (IllegalCharsetNameException e) {
+                        log().error("Unable to encode input stream", e);
                     }
+
                 } // end for
             } else {
                 is = message.getInputStream();
@@ -264,7 +261,6 @@ public class Email implements Loggable {
             encoding = encoding.replace("\"", "");
         } else {
             if (encoding.startsWith("image/") || encoding.endsWith(".pdf") || encoding.endsWith(".zip")) {
-//            if (encoding.contains("application/octet-stream")) {
                 encoding = StandardCharsets.ISO_8859_1.name();
             } else {
                 log().warn("No encoding found in email. Using '" + StandardCharsets.UTF_8.name() + "' instead");

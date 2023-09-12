@@ -131,11 +131,10 @@ export class Threads extends AbstractViewModel {
             }
 
             for (const methodContext of methodContexts) {
-                const method: MethodInfo = {
+                methodInfo.push({
                     id: methodContext.contextValues.id,
                     name: methodContext.contextValues.name + " (" + methodContext.methodRunIndex + ")"
-                };
-                methodInfo.push(method);
+                });
             }
 
             return methodInfo.sort(function (a, b) {

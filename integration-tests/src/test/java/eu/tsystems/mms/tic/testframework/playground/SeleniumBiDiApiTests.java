@@ -31,16 +31,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.LogInspector;
 import org.openqa.selenium.bidi.log.ConsoleLogEntry;
-import org.openqa.selenium.bidi.log.LogEntry;
 import org.openqa.selenium.bidi.log.LogLevel;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
-import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -137,6 +135,7 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);
         request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        request.getMutableCapabilities().setCapability("webSocketUrl", true);
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
@@ -151,9 +150,28 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         uiElementFinder.find(By.id("jsException")).click();     // --> not working
         uiElementFinder.find(By.id("logWithStacktrace")).click(); // --> not working
 
-        for (ConsoleLogEntry logEntry : logEntryList) {
-            System.out.println(String.format("LOG_ENTRY: %s %s %s - %s", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getMethod(), logEntry.getText()));
-        }
+        ASSERT.assertEquals(logEntryList.size(), 2, "LogEntry list");
+    }
+
+    @Test
+    public void testT03a_ListenToConsoleLogWithList_REMOTE() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chrome);
+        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        request.getMutableCapabilities().setCapability("webSocketUrl", true);
+        request.setServerUrl("http://localhost:4444/wd/hub");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+
+        RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        LogInspector logInspector = new LogInspector(remoteWebDriver);
+        List<ConsoleLogEntry> logEntryList = new ArrayList<>();
+        logInspector.onConsoleEntry(logEntryList::add);
+
+        uiElementFinder.find(By.id("consoleLog")).click();
+        uiElementFinder.find(By.id("consoleError")).click();
+
         ASSERT.assertEquals(logEntryList.size(), 2, "LogEntry list");
     }
 
@@ -183,14 +201,18 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
 
     @Test
     public void testT04_ListenToConsoleLogWithList_REMOTE() throws MalformedURLException, ExecutionException, InterruptedException, TimeoutException {
-//        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+            options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+        });
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
 //        request.setBrowser(Browsers.chrome);
-//        request.setServerUrl("http://localhost:4444/wd/hub");
-//        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
-//        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        request.setBrowser(Browsers.firefox);
+        request.setServerUrl("http://localhost:4444/wd/hub");
+        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+//        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
         RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
-//        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
         LogInspector logInspector = new LogInspector(remoteWebDriver);
 
@@ -199,20 +221,24 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         logInspector.onConsoleEntry(logs::add);
 
         TestStep.begin("clicks");
-        log().info("Vor click");
-//        uiElementFinder.find(By.id("consoleLog")).click();
-        log().info("Nach click");
+//        log().info("Vor click");
+        uiElementFinder.find(By.id("consoleLog")).click();
+
+        Assert.assertTrue(logs.size() > 0);
+
+//        log().info("Nach click");
 //        uiElementFinder.find(By.id("consoleError")).click();
         // Exception behandeln, ohne get() aufzurufen
 
-        TestStep.begin("nach allem");
-        log().info("Foo bar");
+//        TestStep.begin("nach allem");
+//        log().info("Foo bar");
 
 //        ConsoleLogEntry logEntry = future.get(5, TimeUnit.SECONDS);
 //        log().info(logEntry.getText());
-//        ASSERT.assertTrue(logEntry.getText().contains("Hello, world!"));
+        ASSERT.assertTrue(logs.get(0).getText().contains("Hello, world!"));
         // Cause that exception are thrown to current main thread
 //        CompletableFuture.allOf(future).join();
     }
+
 
 }

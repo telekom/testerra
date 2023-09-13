@@ -2,6 +2,7 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,15 +55,18 @@ public class Selenium4_vs_3_Tests extends AbstractWebDriverTest {
 
     @Test
     public void testBrowserCustomCaps_Selenium3() {
+
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         DesiredCapabilities desiredCapabilities = request.getDesiredCapabilities();
         desiredCapabilities.setCapability("foo", "bar");
 
         WEB_DRIVER_MANAGER.getWebDriver(request);
+
     }
 
     @Test
     public void testBrowserCustomCaps_Selenium4() {
+
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         MutableCapabilities caps = request.getMutableCapabilities();
 
@@ -69,6 +74,18 @@ public class Selenium4_vs_3_Tests extends AbstractWebDriverTest {
         caps.setCapability("custom:caps", customCaps);
 
         WEB_DRIVER_MANAGER.getWebDriver(request);
+
+    }
+
+    public void test() {
+
+        Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("foo", "bar");
+
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+            options.setCapability("custom:caps", customCaps);
+        });
+
     }
 
 }

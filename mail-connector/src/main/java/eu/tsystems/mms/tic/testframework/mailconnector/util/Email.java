@@ -23,18 +23,16 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import jakarta.mail.Address;
-import jakarta.mail.BodyPart;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
 import jakarta.mail.Part;
-import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -52,7 +50,7 @@ public class Email implements Loggable {
     /**
      * Liste von Anhängen der Mail.
      */
-    private final Map<String, String> attachments;
+    private final Map<String, InputStream> attachments;
 
     /**
      * Textinhalt der Mail.
@@ -195,34 +193,31 @@ public class Email implements Loggable {
     }
 
     /**
-     * Speichert Textinhalt und Anhänge in den lokalen Feldern.
+     * Saves message text and attachments in local fields
      */
     private void readMessageContents() {
         InputStream is;
         String encoding;
         try {
-            // unterscheiden zwischen Multipart-Mail oder nicht
+            // Check if multipart mail or not
             if (message.getContentType().startsWith("multipart")) {
                 Multipart content = (Multipart) message.getContent();
 
                 for (int j = 0; j < content.getCount(); j++) {
                     Part part = content.getBodyPart(j);
                     is = part.getInputStream();
-                    encoding = part.getContentType();
-                    encoding = getCharSetForEncoding(encoding);
 
-                    String mail;
-                    try {
-                        mail = IOUtils.toString(is, encoding);
-
-                        if (part.getDisposition().equals(Part.INLINE)) {
-                            messageText = mail.replaceAll("\r", "");
+                    if (part.getDisposition().equals(Part.INLINE)) {
+                        encoding = part.getContentType();
+                        encoding = getCharSetForEncoding(encoding);
+                        try {
+                            messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
+                        } catch (IllegalCharsetNameException e) {
+                            log().error("Unable to encode input stream", e);
                         }
-                        else if (part.getDisposition().equals(Part.ATTACHMENT)) {
-                            attachments.put(part.getFileName(), mail);
-                        }
-                    } catch (IllegalCharsetNameException e) {
-                        log().error("Unable to encode input stream", e);
+                    } else if (part.getDisposition().equals(Part.ATTACHMENT)) {
+                        String fileName = part.getFileName();
+                        attachments.put(fileName, is);
                     }
 
                 } // end for
@@ -239,16 +234,16 @@ public class Email implements Loggable {
     }
 
     /**
-     * get charset for encoding from Mail, use UTF-8 as default
+     * Get charset for encoding from Mail, use UTF-8 as default
      *
-     * @param encoding
-     * @return
+     * @param encoding the ContentType of the Part
+     * @return encoding for the given ContentType
      */
     private String getCharSetForEncoding(String encoding) {
         final int indexOfEncoding = encoding.lastIndexOf("charset=");
 
         if (indexOfEncoding > -1) {
-            // das eigentliche encoding aus dem Content Type extrahieren
+            // Extracting the encoding from Content Type
             // CSOFF: MagicNumber
             encoding = encoding.substring(indexOfEncoding + 8);
             // CSON: MagicNumber
@@ -260,7 +255,7 @@ public class Email implements Loggable {
             // Remove quotes from encoding string
             encoding = encoding.replace("\"", "");
         } else {
-            if (encoding.startsWith("image/") || encoding.endsWith(".pdf") || encoding.endsWith(".zip")) {
+            if (encoding.startsWith("image/") || encoding.startsWith("application/octet-stream")) {
                 encoding = StandardCharsets.ISO_8859_1.name();
             } else {
                 log().warn("No encoding found in email. Using '" + StandardCharsets.UTF_8.name() + "' instead");
@@ -272,11 +267,23 @@ public class Email implements Loggable {
     }
 
     /**
+     * Saves the given attachment
+     *
+     * @param fileName Name of attachment
+     */
+    public void saveAttachment(String fileName) throws IOException {
+        File file = new File(fileName);
+        // Reset the stream to the correct position to ensure the file is created properly
+        getAttachment(fileName).reset();
+        FileUtils.copyInputStreamToFile(this.getAttachment(fileName), file);
+    }
+
+    /**
      * gets the given attachments
      *
      * @return the attachments
      */
-    public Map<String, String> getAttachments() {
+    public Map<String, InputStream> getAttachments() {
         return attachments;
     }
 
@@ -284,9 +291,9 @@ public class Email implements Loggable {
      * Gets the content of the given attachment
      *
      * @param fileName Name of attachment
-     * @return content of attachment
+     * @return attachment
      */
-    public String getAttachmentsContent(String fileName) {
+    public InputStream getAttachment(String fileName) throws IOException {
         return attachments.get(fileName);
     }
 

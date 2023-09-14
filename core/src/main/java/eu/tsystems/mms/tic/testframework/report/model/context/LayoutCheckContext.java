@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, René Habermann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -22,10 +22,6 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.Report;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The LayoutCheckContext contains additional information about the result of a LayoutCheck
@@ -39,17 +35,6 @@ public class LayoutCheckContext implements Cloneable, Loggable {
     public Screenshot distanceScreenshot;
 
     public ErrorContext errorContext;
-
-//    @Override
-//    public Map<String, Object> exportToReport(Report report) {
-//        Map<String, Object> exported = new HashMap<>();
-//        exported.put("image", this.image);
-//        exported.put("actualDistance", this.distance);
-//        exported.put("expectedScreenshotPath", report.getRelativePath(expectedScreenshot.getScreenshotFile()));
-//        exported.put("actualScreenshotPath", report.getRelativePath(actualScreenshot.getScreenshotFile()));
-//        exported.put("distanceScreenshotPath", report.getRelativePath(distanceScreenshot.getScreenshotFile()));
-//        return exported;
-//    }
 
     /**
      * LayoutCheckContext needs to be clonable because of similar contexts for dimension check (optional)

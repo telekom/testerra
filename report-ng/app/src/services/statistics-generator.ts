@@ -137,8 +137,6 @@ export class MethodDetails {
     get failureAspects() {
         if (this._failureAspects == null) {
             this._failureAspects = this.errorContexts.map(errorContext => {
-
-                // this.methodContext.layoutCheckContext.filter(context -> context.errorContext === errorContext)
                 const failureAspect = new FailureAspectStatistics(errorContext);
                 failureAspect.addMethodContext(this.methodContext);
                 return failureAspect;

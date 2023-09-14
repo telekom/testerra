@@ -75,19 +75,16 @@ export class LayoutComparison {
     private _prepareComparison() {
         this._images = {
             actual: {
-                // src: this._config.correctRelativePath(this.context.actualScreenshotPath),
                 src: "",
                 id: this.context.actualScreenshotId,
                 title: "Actual"
             },
             diff: {
-                // src: this._config.correctRelativePath(this.context.distanceScreenshotPath),
                 src: "",
                 id: this.context.distanceScreenshotId,
                 title: "Difference"
             },
             expected: {
-                // src: this._config.correctRelativePath(this.context.expectedScreenshotPath),
                 src: "",
                 id: this.context.expectedScreenshotId,
                 title: "Expected"

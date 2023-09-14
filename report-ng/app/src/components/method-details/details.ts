@@ -34,9 +34,8 @@ import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {StatusConverter} from "services/status-converter";
 import {data} from "../../services/report-model";
 import {MdcSnackbarService} from '@aurelia-mdc-web/snackbar';
-import IStackTraceCause = data.StackTraceCause;
-import {ILayoutComparisonContext} from "../layout-comparison/layout-comparison";
 import {Clipboard} from "t-systems-aurelia-components/src/utils/clipboard";
+import IStackTraceCause = data.StackTraceCause;
 
 interface ErrorDetails {
     failureAspect: FailureAspectStatistics;
@@ -46,12 +45,8 @@ interface ErrorDetails {
 @autoinject()
 export class Details {
     private _hljs = hljs;
-    // private _failureAspect: FailureAspectStatistics;
     private _methodDetails: MethodDetails;
-
-    // private _layoutComparisonContext: ILayoutComparisonContext;
-
-    private _errorDetails : ErrorDetails[] = [];
+    private _errorDetails: ErrorDetails[] = [];
 
     constructor(
         private _statistics: StatisticsGenerator,
@@ -69,34 +64,15 @@ export class Details {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
-            // this._layoutComparisonContext = methodDetails.decodeCustomContext("LayoutCheckContext");
-            // this._layoutCheckContext = methodDetails.methodContext.layoutCheckContext;
-            // let firstFailureAspect = null;
-            // let firstFailedFailureAspect = null;
 
             for (const failureAspect of methodDetails.failureAspects) {
                 const layoutCheckContext = methodDetails.methodContext.layoutCheckContext
                     .find(context => context.errorContextId === failureAspect.errorContext.id);
-
                 this._errorDetails.push({
                     failureAspect: failureAspect,
                     layoutCheckContext: layoutCheckContext
                 });
-
-                // failureAspect.errorContext.optional
-                // if (!firstFailureAspect) {
-                //     firstFailureAspect = failureAspect;
-                // }
-                // if (failureAspect.overallFailed > 0) {
-                //     firstFailedFailureAspect = failureAspect;
-                    // Stop search on first found failed non-optional FailureAspect
-                    // If only optionals exist the last optional is taken
-                    // if (!failureAspect.errorContext.optional) {
-                    //     break;
-                    // }
-                // }
             }
-            // this._failureAspect = firstFailedFailureAspect || firstFailureAspect;
         });
     }
 

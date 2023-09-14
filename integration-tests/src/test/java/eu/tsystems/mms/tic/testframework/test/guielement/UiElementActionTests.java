@@ -27,8 +27,10 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -132,6 +134,17 @@ public class UiElementActionTests extends AbstractExclusiveTestSitesTest<WebTest
         element.expect().value().isContaining("tex");
         element.type("foo");
         element.expect().value().is("foo");
+    }
+
+    @Test
+    public void testT07_UiElement_upload() {
+        final File resourceFile = FileUtils.getResourceFile("testfiles/Test.txt");
+        final String absoluteFilePath = resourceFile.getAbsolutePath();
+
+        WebTestPage page = getPage();
+        UiElement element = page.getFinder().findById(2);
+        element.sendKeys(absoluteFilePath);
+        element.expect().value().isContaining("Test.txt");
     }
 
 }

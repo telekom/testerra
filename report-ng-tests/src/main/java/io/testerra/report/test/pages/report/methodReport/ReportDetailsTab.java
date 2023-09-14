@@ -24,24 +24,26 @@ package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-
+import io.testerra.report.test.pages.utils.RegExUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-import io.testerra.report.test.pages.utils.RegExUtils;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class ReportDetailsTab extends AbstractReportMethodPage {
     @Check
     private final UiElement pageContent = find(By.xpath("//router-view[contains(@class,'au-target')]"));
     @Check
     private final UiElement testFailureAspect = pageContent.find(By.xpath("//div[contains(@class,'p1') and contains(@class,'status')]"));
+    PreparedLocator failureAspectLocator = LOCATE.prepare("//div[contains(@class,'p1') and contains(@class,'status') %s]");
     //TODO: mandatory?
     private final UiElement testOriginCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Origin')]]"));
     @Check
@@ -51,6 +53,29 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
 
     public ReportDetailsTab(WebDriver driver) {
         super(driver);
+    }
+
+    // Returns the first failure aspect box
+    public TestableUiElement getFailureAspect() {
+        return getFailureAspect("");
+    }
+
+    public TestableUiElement getFailureAspect(final String assertMessage) {
+        return this.getFailureAspectElement(assertMessage);
+    }
+
+    public TestableUiElement getComparisonImgElement(String assertMessage, String type) {
+        PreparedLocator imgLocator = LOCATE.prepare("//layout-comparison//img[contains(@title, '%s')]");
+        return this.getFailureAspectElement(assertMessage).find(imgLocator.with(type));
+    }
+
+    private UiElement getFailureAspectElement(final String assertMessage) {
+        String messagePart = String.format("and .//span[contains(text(), '%s')]", assertMessage);
+        if (StringUtils.isNotEmpty(assertMessage)) {
+            return this.pageContent.find(failureAspectLocator.with(messagePart));
+        } else {
+            return this.pageContent.find(failureAspectLocator.with(""));
+        }
     }
 
     public void assertFailureAspectsCorrespondsToCorrectStatus(final String expectedStatusTitle) {
@@ -112,7 +137,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         return failureAspect.contains(expectedContainedText);
     }
 
-    public void assertPageIsValid(){
+    public void assertPageIsValid() {
         expandStacktrace();
         assertStacktraceIsDisplayed();
         assertContainsCodeLines();
@@ -140,10 +165,6 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     private void assertFailLureLineIsMarked() {
         UiElement markedFailureCodeLine = testOriginCard.find(By.xpath("//div[@class='code-view']//div[contains(@class,'error')]"));
         markedFailureCodeLine.expect().displayed().is(true);
-    }
-
-    public String getFailureAspect() {
-        return testFailureAspect.waitFor().text().getActual();
     }
 
     public void assertStacktraceContainsExpectedFailureAspects(String... expectedFailureAspects) {
@@ -197,5 +218,9 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         previousFailedMethod.find(By.xpath("//a")).click();
 
         return createPage(ReportDetailsTab.class);
+    }
+
+    public boolean hasFailureAspectAScreenshotComparison(String failureMessage) {
+        return this.getFailureAspectElement(failureMessage).find(By.xpath("//layout-comparison")).waitFor().present(true);
     }
 }

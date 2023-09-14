@@ -78,4 +78,36 @@ public class LayoutTest extends AbstractReportTest {
         reportDetailsTab.assertMethodOverviewContainsCorrectContent(className, Status.PASSED.title, methodName);
     }
 
+    @Test
+    public void testT03_checkMultiCheckLayoutTest() {
+        String methodName = "layoutTest04_layoutTestFailing_MultiChecks";
+        String className = "GenerateLayoutTestsTTReportTest";
+        String[] failureAspects = new String[]{
+                "pixelDistance(\"inputHtml_box1\")",
+                "pixelDistance(\"inputHtml_box2\")",
+                "Just a simple error message"
+        };
+
+        String[] errorMessages = new String[]{
+                "Expected that UniversalPage -> UiElement(By.id: box1)",
+                "Expected that UniversalPage -> UiElement(By.id: box2)",
+                "Just a simple error message"
+        };
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        reportDetailsTab.assertTestMethodContainsCorrectFailureAspect(failureAspects);
+        ASSERT.assertTrue(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[0]), "Visibility of screenshot comparison in Failure aspect box");
+        ASSERT.assertTrue(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[1]), "Visibility of screenshot comparison in Failure aspect box");
+        ASSERT.assertFalse(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[2]), "Visibility of screenshot comparison in Failure aspect box");
+
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Actual").assertThat().attribute("src").isContaining("box1");
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Expected").assertThat().attribute("src").isContaining("box1");
+        reportDetailsTab.getComparisonImgElement(errorMessages[1], "Actual").assertThat().attribute("src").isContaining("box2");
+        reportDetailsTab.getComparisonImgElement(errorMessages[1], "Expected").assertThat().attribute("src").isContaining("box2");
+    }
+
 }

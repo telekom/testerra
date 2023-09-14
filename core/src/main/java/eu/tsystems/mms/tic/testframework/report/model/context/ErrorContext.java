@@ -30,7 +30,6 @@ import java.util.Optional;
 public class ErrorContext {
 
     private String id;
-
     private transient Throwable throwable = null;
     private ScriptSource scriptSource;
     private boolean optional;

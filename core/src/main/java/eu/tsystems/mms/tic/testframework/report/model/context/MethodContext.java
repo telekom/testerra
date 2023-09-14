@@ -70,6 +70,7 @@ public class MethodContext extends AbstractContext {
     private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<CustomContext> customContexts;
     private List<Annotation> customAnnotations;
+    private List<LayoutCheckContext> layoutCheckContexts;
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -230,13 +231,30 @@ public class MethodContext extends AbstractContext {
         this.updateLayoutCheckContext(errorContext);
     }
 
+    private List<LayoutCheckContext> getLayoutCheckContexts() {
+        if (this.layoutCheckContexts == null) {
+            this.layoutCheckContexts = new LinkedList<>();
+        }
+        return layoutCheckContexts;
+    }
+
+    public void addLayoutCheckContext(LayoutCheckContext layoutCheckContext) {
+        this.getLayoutCheckContexts().add(layoutCheckContext);
+    }
+
+    public Stream<LayoutCheckContext> readLayoutCheckContexts() {
+        if (this.layoutCheckContexts == null) {
+            return Stream.empty();
+        } else {
+            return this.layoutCheckContexts.stream();
+        }
+    }
+
     /**
      * Tries to link the last LayoutcheckContext with current ErrorContext
      */
     private void updateLayoutCheckContext(ErrorContext context) {
-        this.getCustomContexts().stream()
-                .filter(elem -> elem instanceof LayoutCheckContext)
-                .map(elem -> (LayoutCheckContext) elem)
+        this.getLayoutCheckContexts().stream()
                 .filter(elem -> elem.errorContext == null)
                 .findFirst()
                 .ifPresent(elem -> elem.errorContext = context);

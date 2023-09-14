@@ -141,11 +141,9 @@ public class ContextExporter implements Loggable {
         // build context
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 
-        methodContext.readCustomContexts()
-                .filter(context -> context instanceof eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext)
-                .map(context -> (eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext) context)
+        methodContext.readLayoutCheckContexts()
                 .forEach(layoutCheckContext -> builder.addLayoutCheckContext(buildLayoutCheckContext(layoutCheckContext)));
-        ;
+
         methodContext.readCustomContexts().forEach(customContext -> {
             builder.putCustomContexts(customContext.getName(), jsonEncoder.toJson(customContext.exportToReport(report)));
         });

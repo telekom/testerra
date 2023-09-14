@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -422,7 +421,6 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = imageName;
 
-
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image
@@ -439,7 +437,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             contextController.getCurrentMethodContext().ifPresent(methodContext -> {
                 // The current LayoutCheckContexts needs to be cloned here, otherwise the linking of ErrorContext and
                 // LayoutCheckContext (for dimension check and for pixel check) is working with identical objects
-                methodContext.addCustomContext(context.clone());
+                methodContext.addLayoutCheckContext(context.clone());
             });
             OptionalAssert.fail(
                     String.format(
@@ -454,7 +452,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
         // Add LayoutCheckContext for pixel distance assertion
         contextController.getCurrentMethodContext().ifPresent(methodContext -> {
-            methodContext.addCustomContext(context);
+            methodContext.addLayoutCheckContext(context);
         });
     }
 

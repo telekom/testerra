@@ -27,7 +27,11 @@ import eu.tsystems.mms.tic.testframework.report.Report;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LayoutCheckContext implements CustomContext, Cloneable, Loggable {
+/**
+ * The LayoutCheckContext contains additional information about the result of a LayoutCheck
+ * It always links to an ErrorContext.
+ */
+public class LayoutCheckContext implements Cloneable, Loggable {
     public String image;
     public double distance;
     public Screenshot expectedScreenshot;
@@ -36,17 +40,21 @@ public class LayoutCheckContext implements CustomContext, Cloneable, Loggable {
 
     public ErrorContext errorContext;
 
-    @Override
-    public Map<String, Object> exportToReport(Report report) {
-        Map<String, Object> exported = new HashMap<>();
-        exported.put("image", this.image);
-        exported.put("actualDistance", this.distance);
-        exported.put("expectedScreenshotPath", report.getRelativePath(expectedScreenshot.getScreenshotFile()));
-        exported.put("actualScreenshotPath", report.getRelativePath(actualScreenshot.getScreenshotFile()));
-        exported.put("distanceScreenshotPath", report.getRelativePath(distanceScreenshot.getScreenshotFile()));
-        return exported;
-    }
+//    @Override
+//    public Map<String, Object> exportToReport(Report report) {
+//        Map<String, Object> exported = new HashMap<>();
+//        exported.put("image", this.image);
+//        exported.put("actualDistance", this.distance);
+//        exported.put("expectedScreenshotPath", report.getRelativePath(expectedScreenshot.getScreenshotFile()));
+//        exported.put("actualScreenshotPath", report.getRelativePath(actualScreenshot.getScreenshotFile()));
+//        exported.put("distanceScreenshotPath", report.getRelativePath(distanceScreenshot.getScreenshotFile()));
+//        return exported;
+//    }
 
+    /**
+     * LayoutCheckContext needs to be clonable because of similar contexts for dimension check (optional)
+     * and pixel difference (see LayoutCheck.toReport())
+     */
     @Override
     public LayoutCheckContext clone() {
         try {

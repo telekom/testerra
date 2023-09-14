@@ -36,6 +36,8 @@ public class LayoutTest extends AbstractReportTest {
     public void testT01_checkFailedLayoutTestReport() {
         String methodName = "layoutTest01_layoutTestFailing";
         String className = "GenerateLayoutTestsTTReportTest";
+        String errorMessage = "Expected that UniversalPage pixel distance";
+
         String[] failureAspects = new String[]{
                 "AssertionError",
                 "pixel distance",
@@ -49,7 +51,9 @@ public class LayoutTest extends AbstractReportTest {
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
 
         TestStep.begin("Failure Aspect contains actual-expected comparison");
-        reportDetailsTab.assertFailureAspectCardContainsImageComparison();
+        reportDetailsTab.getComparisonImgElement(errorMessage, "Actual").assertThat().displayed(true);
+        reportDetailsTab.getComparisonImgElement(errorMessage, "Difference").assertThat().displayed(true);
+        reportDetailsTab.getComparisonImgElement(errorMessage, "Expected").assertThat().displayed(true);
 
         TestStep.begin("Check details tab contains correct failure aspects");
         reportDetailsTab.assertStacktraceContainsExpectedFailureAspects(failureAspects);

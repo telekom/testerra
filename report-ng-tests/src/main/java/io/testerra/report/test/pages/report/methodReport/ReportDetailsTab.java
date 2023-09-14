@@ -186,21 +186,6 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         Assert.assertFalse(lowerBound > seconds, "Run duration should not be in valid interval");
     }
 
-    public void assertFailureAspectCardContainsImageComparison() {
-        String[] expectedImageTitles = new String[]{
-                "Actual",
-                "Difference",
-                "Expected"
-        };
-        UiElement comparison = testFailureAspect.find(By.xpath("//layout-comparison"));
-
-        for (String title : expectedImageTitles) {
-            String xpath = String.format("//mdc-card/img[@title='%s']", title);
-            comparison.find(By.xpath(xpath)).expect().displayed().is(true,
-                    String.format("There should be an image comparison, that contains the %s image", title));
-        }
-    }
-
     public void assertFailsAnnotationMessage(String expectedTicketString) {
         UiElement failsAnnotationSegment = find(By.xpath("//div[./span[contains(text(),'@Fails')]]"));
         failsAnnotationSegment.expect().text().contains(expectedTicketString).is(true);

@@ -39,6 +39,8 @@ import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.listeners.ShutdownSessionsListener;
 import eu.tsystems.mms.tic.testframework.listeners.WatchdogStartupListener;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementHighlighter;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AriaElementLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultUiElementFinderFactory;
@@ -53,8 +55,10 @@ import eu.tsystems.mms.tic.testframework.testing.UiElementOverrides;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.useragents.UapBrowserInformation;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.testing.SeleniumChromeDevTools;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
@@ -75,6 +79,8 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
 
         // Instances
         bind(BrowserInformation.class).to(UapBrowserInformation.class);
+        bind(ChromeDevTools.class).to(SeleniumChromeDevTools.class);
+        bind(UiElementHighlighter.class).to(DefaultUiElementHighlighter.class);
     }
 
     @Override

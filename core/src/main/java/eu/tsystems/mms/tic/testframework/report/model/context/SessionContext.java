@@ -33,6 +33,7 @@ public class SessionContext extends AbstractContext {
     private Video video;
     private String actualBrowserName;
     private String actualBrowserVersion;
+    private String userAgent;
     private WebDriverRequest webDriverRequest;
     private URL nodeUrl;
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
@@ -41,6 +42,7 @@ public class SessionContext extends AbstractContext {
 
     public SessionContext(WebDriverRequest webDriverRequest) {
         try {
+            // Store a clone of current WebDriverRequest to prevent changes and keep the real request settings for every session
             setWebDriverRequest(webDriverRequest.clone());
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -118,6 +120,14 @@ public class SessionContext extends AbstractContext {
 
     public  void setActualBrowserVersion(String browserVersion) {
         this.actualBrowserVersion = browserVersion;
+    }
+
+    public Optional<String> getUserAgent() {
+        return Optional.ofNullable(userAgent);
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 
     void addMethodContext(MethodContext methodContext) {

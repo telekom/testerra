@@ -22,14 +22,11 @@
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsDisplayed;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsNotDisplayed;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsNotPresent;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsPresent;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCollectedAndOptionalElement;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCollectedElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
@@ -37,18 +34,8 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotEx
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithOptionalElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
-import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
-import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryProvider {
 
@@ -101,6 +88,13 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
     public void testT10_checkOptionalElement_IsNotPresent() {
         PAGE_FACTORY.createPage(PageWithOptionalElement.class, getClassExclusiveWebDriver());
     }
+
+    // Cannot checked with 'expectedException' because TestNG test result is changed by Testerra
+    // {@link eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker}
+//    @Test(expectedExceptions = UiElementAssertionError.class)
+//    public void testT11_checkCollectedElement() {
+//        PAGE_FACTORY.createPage(PageWithCollectedElement.class, getClassExclusiveWebDriver());
+//    }
 
     @Test
     public void testT12_checkCollectedAndOptionalElements_IsNotPresent() {

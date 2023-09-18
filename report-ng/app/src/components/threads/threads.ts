@@ -20,20 +20,18 @@
  */
 
 import {autoinject} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../abstract-view-model";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {StatusConverter} from "../../services/status-converter";
 import {Timeline, TimelineOptionsGroupHeightModeType} from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.css";
 import {data} from "../../services/report-model";
-import {Router} from "aurelia-router";
 import MethodContext = data.MethodContext;
 import ResultStatusType = data.ResultStatusType;
-import IMethodContext = data.IMethodContext;
-import IContextValues = data.IContextValues;
+import IMethodContext = data.MethodContext;
+import IContextValues = data.ContextValues;
 import "./threads.scss";
-import IExecutionAggregate = data.IExecutionAggregate;
 import {ExecutionStatistics} from "../../services/statistic-models";
 
 @autoinject()

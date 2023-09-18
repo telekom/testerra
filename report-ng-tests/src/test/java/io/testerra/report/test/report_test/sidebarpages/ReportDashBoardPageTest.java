@@ -94,7 +94,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
     }
 
-    @Test(dataProvider = "dataProviderForDashBoardTestStates")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT05_barChartLinksToFilteredTestsPage(Status status) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
@@ -120,7 +120,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertCorrectBarsLength(threshold);
     }
 
-    @Test(dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
     public void testT07_reportPercentages(int amount, Status status) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
@@ -132,7 +132,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPieChartPercentages(amount, status);
     }
 
-    @Test(dataProvider = "dataProviderForDashBoardTestStates")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT08_barChartFilterHovering(Status status) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
@@ -147,7 +147,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(status);
     }
 
-    @Test(dataProvider = "dataProviderFailureCorridorBounds")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderFailureCorridorBounds")
     public void testT09_failureCorridorCorrectness(String failureCorridorType, long bound, int currentValue) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());

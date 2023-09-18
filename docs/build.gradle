@@ -57,6 +57,7 @@ asciidoctor {
             revnumber: "${version}",
             nofooter: true,
             'source-highlighter': 'highlightjs',
+//            'highlightjs-theme': 'atom-one-dark',
             'highlightjs-theme': 'atom-one-light',
             highlightjsdir: 'highlight',
             icons: 'font',

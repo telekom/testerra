@@ -83,11 +83,10 @@ public class TesterraListener implements
         ISuiteListener,
         Loggable,
         IDataProviderListener,
-        IConfigurationListener
-{
+        IConfigurationListener {
     /**
      * Default package namespace used in ClassFinder and for initializing of modules.
-     *
+     * <p>
      * Additional modules have to use
      */
     public static final String[] DEFAULT_PACKAGES = {"eu.tsystems.mms.tic", "io.testerra"};
@@ -403,9 +402,26 @@ public class TesterraListener implements
 
     }
 
+    /**
+     * This is only a fallback when 'afterInvocation was not called.' This could happen when TestNG runs into an exception, e.g.
+     * the Test method points to a non-existing dataprovider.
+     * Therefor the events will only post if the corresponding MethodContext has no status.
+     */
     @Override
     public void onTestFailure(ITestResult iTestResult) {
+        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), iTestResult);
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
 
+        if (methodContext != null && methodContext.getStatus() == Status.NO_RUN) {
+            AbstractMethodEvent event = new MethodEndEvent()
+                    .setTestResult(iTestResult)
+                    .setInvokedMethod(invokedMethod)
+                    .setMethodName(getMethodName(iTestResult))
+                    .setTestContext(iTestResult.getTestContext())
+                    .setMethodContext(methodContext);
+            Testerra.getEventBus().post(event);
+            Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
+        }
     }
 
     @Override

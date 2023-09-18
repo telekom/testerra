@@ -1,0 +1,5 @@
+= Testerra and Selenium 4
+
+Since version 2.4 Testerra includes Selenium 4. It brings some new features like support of Chrome developer tools, but also some breaking changes.
+
+

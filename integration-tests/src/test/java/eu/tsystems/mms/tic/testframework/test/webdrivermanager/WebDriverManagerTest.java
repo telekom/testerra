@@ -43,6 +43,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -143,10 +144,11 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         }
     }
 
-    @Test
+    // Testcase is replaced by DesktopWebDriverFactoryTest.testT04_EndPointCapabilities_Global
+    // Does not work with Selenium 4 (see custom caps)
+    @Test(enabled = false)
     public void testT04_ManageGlobalCapabilities() {
-
-        WebDriverManager.setGlobalExtraCapability("foo", "bar");
+        WEB_DRIVER_MANAGER.setGlobalCapability("foo", "bar");
 
         Map<String, Object> globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
         Assert.assertTrue(globalExtraCapabilities.containsKey("foo"));
@@ -154,7 +156,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
         WebDriver driver = WebDriverManager.getWebDriver();
 
-        WebDriverManager.removeGlobalExtraCapability("foo");
+        WEB_DRIVER_MANAGER.removeGlobalCapability("foo");
         globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
         Assert.assertFalse(globalExtraCapabilities.containsKey("foo"));
     }
@@ -171,7 +173,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 //        WebDriverManager.getThreadCapabilities().clear();
     }
 
-    @Test
+    @Test(groups = "SEQUENTIAL_SINGLE")
     public void testT06_clonedWebDriverRequest() {
         final String sessionKey = "testT06";
         final String capKey = "MyCap";
@@ -180,10 +182,12 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setSessionKey(sessionKey);
         DesiredCapabilities baseCaps = request.getDesiredCapabilities();
-        baseCaps.setCapability(capKey, capVal);
+        Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put(capKey, capVal);
+        baseCaps.setCapability("custom:caps", customCaps);
 
-        WebDriver webDriver = WebDriverManager.getWebDriver(request);
-        SessionContext sessionContext = WebDriverSessionsManager.getSessionContext(webDriver).get();
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        SessionContext sessionContext = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get();
         DesktopWebDriverRequest clonedRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
 
         // Test for cloned primitives
@@ -193,11 +197,12 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
         // Test for not shallow copy of capabilities
         DesiredCapabilities clonedCaps = clonedRequest.getDesiredCapabilities();
-        Assert.assertEquals(capVal, clonedCaps.getCapability(capKey));
-        Assert.assertEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
+        Map<String, Object> clonedCustomCaps = (Map<String, Object>) clonedCaps.getCapability("custom:caps");
+        Assert.assertEquals(capVal, clonedCustomCaps.get(capKey));
+        Assert.assertEquals(clonedCustomCaps.get(capKey), customCaps.get(capKey));
 
-        clonedCaps.setCapability(capKey, "newValue");
-        Assert.assertNotEquals(clonedCaps.getCapability(capKey), baseCaps.getCapability(capKey));
+        clonedCustomCaps.put(capKey, "newValue");
+        Assert.assertNotEquals(clonedCustomCaps.get(capKey), customCaps.get(capKey));
     }
 
     @Test

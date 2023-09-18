@@ -10,7 +10,6 @@ The following code setups a proxy based on the <<Using a proxy,System's proxy co
 [source,java]
 ----
 import org.testng.annotations.BeforeSuite;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
 import org.openqa.selenium.Proxy;
@@ -20,15 +19,7 @@ public abstract class AbstractTest extends TesterraTest {
     @BeforeSuite
     public void proxySetup() {
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
-        /**
-        * Global browser proxy configuration
-        */
-        Proxy defaultProxy = utils.getDefaultHttpProxy();
-        WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.PROXY, defaultProxy);
 
-        /**
-        * Browser specific proxy configuration
-        */
         Proxy otherProxy = utils.createHttpProxyFromUrl(
             new URL("http://proxyUser:secretPassword@my-proxy:3128")
         );

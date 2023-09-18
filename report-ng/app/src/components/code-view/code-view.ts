@@ -26,7 +26,7 @@ import {data} from "../../services/report-model";
 import hljs from "highlight.js/lib/core";
 import java from 'highlight.js/lib/languages/java';
 import 'highlight.js/styles/base16/darcula.css';
-import IScriptSource = data.IScriptSource;
+import IScriptSource = data.ScriptSource;
 import './code-view.scss'
 
 @autoinject()

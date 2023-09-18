@@ -54,16 +54,23 @@ public class DefaultCapabilityUtils implements Loggable {
 
     public Map<String, Object> clean(Map<String, Object> capabilityMap) {
         // 1. clone and make map modifiable.
-        // For deep cloning it is needed convert it to JSON and back because Firefox options also contain some immutable map objects
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(capabilityMap);
-        Map<String, Object> clonedMap = (Map<String, Object>) gson.fromJson(json, Map.class);
+        Map<String, Object> clonedMap = this.clone(capabilityMap);
 
         // 2. do all the operations
         shortMapValues(clonedMap);
 
         // 3. make the map unmodifiable again.
         return Collections.unmodifiableMap(clonedMap);
+    }
+
+    /**
+     * For deep cloning it is needed convert it to JSON and back because Firefox options also contain some immutable map objects
+     * Note: Complex objects are simplified to key-value pairs. This is acceptable because capabilities are always simplified to a kind of Map<String, Object>
+     */
+    public Map<String, Object> clone(Map<String, Object> capabilityMap) {
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(capabilityMap);
+        return (Map<String, Object>) gson.fromJson(json, Map.class);
     }
 
     /**

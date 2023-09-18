@@ -37,11 +37,9 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.Sleepy;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -54,25 +52,18 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.BrowserType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.HttpCommandExecutor;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
-import java.util.Arrays;
+import java.time.Duration;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DesktopWebDriverFactory implements
         WebDriverFactory,
@@ -81,8 +72,6 @@ public class DesktopWebDriverFactory implements
         TestControllerProvider,
         Sleepy {
     //public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
-
-    private static File phantomjsFile = null;
 
     @Override
     public WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
@@ -133,10 +122,6 @@ public class DesktopWebDriverFactory implements
         switch (browser) {
             case Browsers.firefox:
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-//                if (capabilities.getCapabilityNames().contains(FirefoxOptions.FIREFOX_OPTIONS)) {
-//                    final TreeMap predefinedFirefoxOptions = (TreeMap) capabilities.getCapability(FirefoxOptions.FIREFOX_OPTIONS);
-//                    predefinedFirefoxOptions.forEach((s, o) -> firefoxOptions.setCapability(s.toString(), o));
-//                }
                 WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(firefoxOptions);
                 });
@@ -153,33 +138,14 @@ public class DesktopWebDriverFactory implements
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 ChromeOptions chromeOptions = new ChromeOptions();
-//                if (capabilities.getCapabilityNames().contains(ChromeOptions.CAPABILITY)) {
-//                    final TreeMap predefinedChromeOptions = (TreeMap) capabilities.getCapability(ChromeOptions.CAPABILITY);
-//                    predefinedChromeOptions.forEach((s, o) -> chromeOptions.setCapability(s.toString(), o));
-//                }
-
                 WEB_DRIVER_MANAGER.getUserAgentConfig(browser).ifPresent(userAgentConfig -> {
                     userAgentConfig.configure(chromeOptions);
                 });
-
                 chromeOptions.addArguments("--no-sandbox");
                 if (browser.equals(Browsers.chromeHeadless)) {
-                    chromeOptions.setHeadless(true);
+                    chromeOptions.addArguments("--headless");
                 }
                 userAgentCapabilities = chromeOptions;
-                break;
-            case Browsers.phantomjs:
-                File phantomjsFile = getPhantomJSBinary();
-                DesiredCapabilities phantomJsOptions = new DesiredCapabilities();
-                phantomJsOptions.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
-                phantomJsOptions.setBrowserName(BrowserType.PHANTOMJS);
-                phantomJsOptions.setJavascriptEnabled(true);
-
-                String[] args = {
-                        "--ssl-protocol=any"
-                };
-                phantomJsOptions.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
-                userAgentCapabilities = phantomJsOptions;
                 break;
             case Browsers.safari:
                 SafariOptions safariOptions = new SafariOptions();
@@ -197,9 +163,11 @@ public class DesktopWebDriverFactory implements
                 break;
         }
 
-        DesiredCapabilities desiredCapabilities = finalRequest.getDesiredCapabilities();
+        // Any additional defined desired capabilities are merged into browser options
         if (userAgentCapabilities != null) {
-            desiredCapabilities.merge(userAgentCapabilities);
+            userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getDesiredCapabilities());
+            userAgentCapabilities = userAgentCapabilities.merge(finalRequest.getMutableCapabilities());
+            finalRequest.setCapabilities(userAgentCapabilities);
         }
         return finalRequest;
     }
@@ -278,12 +246,12 @@ public class DesktopWebDriverFactory implements
             int pageLoadTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD.asLong().intValue();
             int scriptTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT.asLong().intValue();
             try {
-                eventFiringWebDriver.manage().timeouts().pageLoadTimeout(pageLoadTimeout, TimeUnit.SECONDS);
+                eventFiringWebDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
             } catch (Exception e) {
                 log().error("Could not set Page Load Timeout", e);
             }
             try {
-                eventFiringWebDriver.manage().timeouts().setScriptTimeout(scriptTimeout, TimeUnit.SECONDS);
+                eventFiringWebDriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(scriptTimeout));
             } catch (Exception e) {
                 log().error("Could not set Script Timeout", e);
             }
@@ -341,46 +309,61 @@ public class DesktopWebDriverFactory implements
     private WebDriver startNewWebDriverSession(DesktopWebDriverRequest request, SessionContext sessionContext) {
 
         final Class<? extends RemoteWebDriver> driverClass;
+        final Class<? extends AbstractDriverOptions> optionClass;
         final String browser = request.getBrowser();
 
         switch (browser) {
             case Browsers.firefox:
                 driverClass = FirefoxDriver.class;
+                optionClass = FirefoxOptions.class;
                 break;
             case Browsers.ie:
                 driverClass = InternetExplorerDriver.class;
+                optionClass = InternetExplorerOptions.class;
                 break;
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 driverClass = ChromeDriver.class;
-                break;
-            case Browsers.phantomjs:
-                driverClass = PhantomJSDriver.class;
+                optionClass = ChromeOptions.class;
                 break;
             case Browsers.safari:
                 driverClass = SafariDriver.class;
+                optionClass = SafariOptions.class;
                 break;
             case Browsers.edge:
                 driverClass = EdgeDriver.class;
+                optionClass = EdgeOptions.class;
                 break;
             default:
                 throw new SystemException("Browser not supported: " + browser);
         }
 
         // Finalize capabilities
-        final DesiredCapabilities requestCapabilities = request.getDesiredCapabilities();
         RemoteWebDriver webDriver;
         try {
             if (request.getServerUrl().isPresent()) {
                 final URL seleniumUrl = request.getServerUrl().get();
-                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
-                webDriver = new RemoteWebDriver(httpCommandExecutor, requestCapabilities);
+                // The old HttpClientFactory reduced timeouts of Selenium 3 because of very long timeouts
+                // Selenium 4 uses JDK 11 HttpClient: connectionTimeout=10sec, readTimeout=180 sec, seems to be ok
+                // see {@link org.openqa.selenium.remote.http.ClientConfig#defaultConfig()}
+//                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
+                Capabilities capabilities = request.getCapabilities();
+                if (capabilities == null) {
+                    throw new SystemException("Cannot start browser session with empty browser options");
+                }
+                webDriver = new RemoteWebDriver(seleniumUrl, capabilities);
                 webDriver.setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
-                Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);
-                webDriver = constructor.newInstance(requestCapabilities);
+
+                // Starting local webdriver needs caps as browser options
+                if (optionClass == request.getCapabilities().getClass()) {
+                    Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(optionClass);
+                    webDriver = constructor.newInstance(request.getCapabilities());
+                } else {
+                    throw new SystemException("Browser options cannot use for new session: \nRequired " + optionClass.getName() + ",\nProvided: " + request.getCapabilities().getClass().getName());
+                }
             }
         } catch (Exception e) {
             WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);
@@ -390,34 +373,15 @@ public class DesktopWebDriverFactory implements
         return webDriver;
     }
 
-    private File getPhantomJSBinary() {
-        if (phantomjsFile == null) {
-            log().info("Unpacking phantomJS...");
-            try {
-                phantomjsFile = Phanbedder.unpack(); //Phanbedder to the rescue!
-            } catch (Exception e) {
-                if (e.getMessage() != null && e.getMessage().toLowerCase().contains("failed to make target directory")) {
-                    File tmp = new File(FileUtils.getTempDirectory(), "phantomjs" + System.currentTimeMillis());
-                    phantomjsFile = Phanbedder.unpack(tmp);
-                } else {
-                    throw e;
-                }
-            }
-            log().info("Unpacked phantomJS to: " + phantomjsFile);
-        }
-        return phantomjsFile;
-    }
-
     @Override
     public List<String> getSupportedBrowsers() {
-        return Arrays.asList(
+        return List.of(
                 Browsers.safari,
                 Browsers.ie,
                 Browsers.chrome,
                 Browsers.chromeHeadless,
                 Browsers.edge,
-                Browsers.firefox,
-                Browsers.phantomjs
+                Browsers.firefox
         );
     }
 

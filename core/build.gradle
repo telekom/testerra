@@ -16,7 +16,7 @@ dependencies {
     api 'org.apache.commons:commons-lang3:3.9'
 
     // <PdfUtils>
-    implementation 'org.apache.pdfbox:pdfbox:1.8.16'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.29'
     // </PdfUtils>
 
     api "com.google.guava:guava:${guavaVersion}"
@@ -29,12 +29,12 @@ dependencies {
     implementation 'com.opencsv:opencsv:3.9'
     // </CSVTestDataReader>
 
-    // <ExceptionUtils>
-    // Comes already implicit from reflections
-    // implementation 'org.javassist:javassist:3.20.0-GA'
-    // </ExceptionUtils>
 
-    api('org.testng:testng:7.6.1')
+    // Selenium 4.6 comes with 'io.netty:netty-transport-native-epoll:4.1.84.Final'
+    // -> Dependency error Could not find netty-transport-native-epoll-4.1.84.Final-linux-x86_64.jar (io.netty:netty-transport-native-epoll:4.1.84.Final).
+    api 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
+
+    api('org.testng:testng:7.8.0')
     //  {
     // Update TestNG 7.4.0: This is not needed anymore because TestNG extremly reduced transitive dependencies.
     //

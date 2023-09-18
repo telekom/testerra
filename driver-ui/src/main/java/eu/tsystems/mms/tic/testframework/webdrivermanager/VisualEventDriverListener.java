@@ -19,23 +19,24 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Highlights some WebDriver events in Demo Mode
  */
 public class VisualEventDriverListener implements WebDriverEventListener {
 
-    private final JSUtils jsUtils = new JSUtils();
+    UiElementHighlighter elementHighlighter = Testerra.getInjector().getInstance(UiElementHighlighter.class);
 
     @Override
     public void beforeAlertAccept(WebDriver webDriver) {
@@ -112,14 +113,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     @Override
     public void beforeClickOn(WebElement webElement, WebDriver webDriver) {
         if (webElement != null) {
-
-// deactivated click animation since it may disturb test somehow, wait is needed and we dont want to wait - pele 24.11.2016
-//                if (lastClickedElement != null && !lastClickedElement.equals(webElement)) {
-//                    JSUtils.highlightWebElementClick(webDriver, webElement);
-//                }
-
-            jsUtils.highlight(webDriver, webElement, new Color(0, 0, 255));
-            //lastClickedElement = webElement;
+            elementHighlighter.highlight(webDriver, webElement, new Color(0, 0, 255));
         }
     }
 
@@ -130,7 +124,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     @Override
     public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
         if (webElement != null) {
-            jsUtils.highlight(webDriver, webElement, new Color(0, 0, 255));
+            elementHighlighter.highlight(webDriver, webElement, new Color(0, 0, 255));
         }
     }
 

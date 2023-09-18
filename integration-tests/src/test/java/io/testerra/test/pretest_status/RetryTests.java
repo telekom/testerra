@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  */
 public class RetryTests extends TesterraTest implements TestStatusTest {
 
-    AtomicInteger counter = new AtomicInteger(0);
+    private AtomicInteger counter = new AtomicInteger(0);
     private boolean webDriverExceptionThrown = false;
     private boolean unreachableBrowserExceptionThrown = false;
     private boolean jsonExceptionThrown = false;

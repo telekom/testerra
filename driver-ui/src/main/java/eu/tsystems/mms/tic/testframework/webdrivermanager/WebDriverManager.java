@@ -58,11 +58,6 @@ public final class WebDriverManager {
     }
 
     /**
-     * @deprecated Use {@link WebDriverRequest#DEFAULT_SESSION_KEY} instead
-     */
-    public static final String DEFAULT_SESSION_KEY = WebDriverRequest.DEFAULT_SESSION_KEY;
-
-    /**
      * WebDriverManager configuration set. Modify by config() call!
      */
     @Deprecated
@@ -84,6 +79,7 @@ public final class WebDriverManager {
      * @param value The value of the capability to set.
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     public static void setGlobalExtraCapability(final String key, final Object value) {
         addGlobalCapability(key, value);
     }
@@ -102,9 +98,9 @@ public final class WebDriverManager {
     /**
      * Get all set extra capabilities (not the DesiredCapabilities that are set automatically
      *
-     * @return
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     public static Map<String, Object> getGlobalExtraCapabilities() {
         return WebDriverCapabilities.getGlobalExtraCapabilities();
     }
@@ -116,6 +112,7 @@ public final class WebDriverManager {
      * @param value The value of the capability to set.
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     private static void addGlobalCapability(String key, Object value) {
         WebDriverCapabilities.addGlobalCapability(key, value);
     }
@@ -124,7 +121,9 @@ public final class WebDriverManager {
      * Remove extra capability from capabilities.
      *
      * @param key The key of the capability to remove.
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     public static void removeGlobalExtraCapability(final String key) {
         WebDriverCapabilities.removeGlobalExtraCapability(key);
     }
@@ -135,7 +134,7 @@ public final class WebDriverManager {
      * @return instance of WebDriver object.
      */
     public static WebDriver getWebDriver() {
-        return getWebDriver(DEFAULT_SESSION_KEY);
+        return getWebDriver(WebDriverRequest.DEFAULT_SESSION_KEY);
     }
 
     /**
@@ -160,7 +159,7 @@ public final class WebDriverManager {
      * @param driver .
      */
     public static void introduceWebDriver(final WebDriver driver) {
-        introduceWebDriver(DEFAULT_SESSION_KEY, driver);
+        introduceWebDriver(WebDriverRequest.DEFAULT_SESSION_KEY, driver);
     }
 
     /**
@@ -197,6 +196,7 @@ public final class WebDriverManager {
     /**
      * @deprecated Use {@link IWebDriverManager#shutdownAllThreadSessions()} instead
      */
+    @Deprecated
     public static void shutdown() {
         forceShutdown();
     }
@@ -272,17 +272,6 @@ public final class WebDriverManager {
     public static boolean hasSessionsActiveInThisThread() {
         return WebDriverSessionsManager.hasSessionActiveInThisThread();
     }
-
-    /**
-     * Are you sure you want do that?? This action quits all browser sessions in all threads.
-     * Does not close windows when executeCloseWindows == false.
-     *
-     * @deprecated Use forceShotDownAllThreads, does the same thing, but sounds more dangerous.
-     */
-//    @Deprecated
-//    public static void shutdownAllThreads() {
-//        pRealShutdownAllThreads(false);
-//    }
 
     /**
      * Are you sure you want do that?? This action quits all browser sessions in all threads.

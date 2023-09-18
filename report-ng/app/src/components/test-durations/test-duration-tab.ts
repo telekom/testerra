@@ -31,8 +31,8 @@ import moment from "moment";
 import {data} from "../../services/report-model";
 import {StatusConverter} from "../../services/status-converter";
 import MethodType = data.MethodType;
-import IMethodContext = data.IMethodContext;
-import IContextValues = data.IContextValues;
+import IMethodContext = data.MethodContext;
+import IContextValues = data.ContextValues;
 
 
 @autoinject()
@@ -225,7 +225,6 @@ export class TestDurationTab extends AbstractViewModel {
                 }
             ]
         };
-        this._option && this._chart.setOption(this._option)
     }
 
     private _highlightData() {

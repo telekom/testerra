@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.EmailAttachment;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.EmailQuery;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
@@ -53,7 +54,6 @@ import jakarta.mail.search.RecipientTerm;
 import jakarta.mail.search.SearchTerm;
 import jakarta.mail.search.SentDateTerm;
 import jakarta.mail.search.SubjectTerm;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,11 +65,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.Date;
@@ -250,16 +249,16 @@ public class MailConnectorTest extends TesterraTest {
     }
 
     /**
-     * Tests the correct creating and sending of mails with attachment.
+     * Tests the correct creating and sending of mails with a plain text attachment.
      *
      * @throws Exception if there was an error while sending/receiving the messages.
      */
     @Test
-    public void testT03_sendAndWaitForMessageWithAttachment() throws Exception {
-
+    public void testT03_sendAndWaitForMessageWithPlainTextAttachment() throws Exception {
         final String fileName = "attachment.txt";
-        final String subject = STR_MAIL_SUBJECT + "testT03_sendAndWaitForMessageWithAttachment";
+        final String subject = STR_MAIL_SUBJECT + "testT03_sendAndWaitForMessageWithPlainTextAttachment";
         final File attachmentFile = FileUtils.getResourceFile(fileName);
+        String fileContent = FileUtils.readFileToString(attachmentFile, StandardCharsets.US_ASCII);
 
         // SETUP - Create message, add attachment.
         final MimeMessage msg = this.createDefaultMessage(session, subject);
@@ -269,7 +268,6 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-
         final Email receivedMsg = waitForMessage(subject);
 
         // TEST 1 - Fail, if the message contains no attachment (content is plain text).
@@ -277,29 +275,12 @@ public class MailConnectorTest extends TesterraTest {
             Assert.fail(ERR_NO_ATTACHMENT);
         }
 
-        // TEST 2 - Check email text and attachment file name.
-        final Multipart content = (Multipart) receivedMsg.getMessage().getContent();
-        final int contentCnt = content.getCount();
+        // TEST 2 - Check email text and attachment content.
+        String messageText = receivedMsg.getMessageText();
+        EmailAttachment receivedAttachment = receivedMsg.getAttachment(fileName);
 
-        String attachmentFileName = null;
-        String text = null;
-
-        for (int i = 0; i < contentCnt; i++) {
-            Part part = content.getBodyPart(i);
-
-            // Retrieve email text.
-            if (part.getDisposition().equals(Part.INLINE)) {
-                text = part.getContent().toString();
-            }
-
-            // Retrieve attachment.
-            else if (part.getDisposition().equals(Part.ATTACHMENT)) {
-                attachmentFileName = part.getFileName();
-            }
-        }
-
-        Assert.assertEquals(text, STR_MAIL_TEXT);
-        Assert.assertEquals(attachmentFileName, attachmentFile.getName());
+        Assert.assertEquals(messageText, STR_MAIL_TEXT);
+        Assert.assertEquals(receivedAttachment.getContent(), fileContent);
 
         // CLEAN UP - Delete message.
         deleteMessage(receivedMsg, pop3);
@@ -326,18 +307,16 @@ public class MailConnectorTest extends TesterraTest {
     @Test(dataProvider = "binaryAttachmentFiles")
     public void testT14_sendAndWaitForMessageWithBinaryAttachment(String fileName) throws Exception {
         final String subject = STR_MAIL_SUBJECT + "testT14_sendAndWaitForMessageWithBinaryAttachment";
-        final File attachmentFile = FileUtils.getResourceFile(fileName);
-        InputStream attachmentStream = new FileInputStream(attachmentFile);
+        final File sentAttachmentFile = FileUtils.getResourceFile(fileName);
 
         // SETUP - Create message, add attachment.
         final MimeMessage msg = this.createDefaultMessage(session, subject);
-        final MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
+        final MimeBodyPart attachment = smtp.createAttachment(sentAttachmentFile);
         final MimeBodyPart[] attachments = {attachment};
         smtp.addAttachmentsToMessage(attachments, msg);
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-
         final Email receivedMsg = waitForMessage(subject);
 
         // TEST 1 - Fail, if the message contains no attachment (content is plain text).
@@ -347,12 +326,17 @@ public class MailConnectorTest extends TesterraTest {
 
         // TEST 2 - Check email text and attachment file.
         String text = receivedMsg.getMessageText();
+        EmailAttachment receivedAttachment = receivedMsg.getAttachment(fileName);
+        File savedAttachment = receivedAttachment.saveAsFile();
 
         Assert.assertEquals(text, STR_MAIL_TEXT);
-        Assert.assertTrue(receivedMsg.getAttachments().containsKey(fileName));
-        Assert.assertTrue(IOUtils.contentEquals(attachmentStream, receivedMsg.getAttachment(fileName)));
+        Assert.assertTrue(FileUtils.contentEquals(sentAttachmentFile, savedAttachment));
 
-        // CLEAN UP - Delete message.
+        // CLEAN UP - Delete saved file and message.
+        if (!savedAttachment.delete()) {
+            LOGGER.warn(String.format("File >%s< couldn't be deleted. Please remove file manually.",
+                    savedAttachment.getAbsolutePath()));
+        }
         deleteMessage(receivedMsg, pop3);
     }
 

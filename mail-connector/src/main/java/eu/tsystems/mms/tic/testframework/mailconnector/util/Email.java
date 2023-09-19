@@ -27,19 +27,16 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
 import jakarta.mail.Part;
 import jakarta.mail.internet.MimeMessage;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * E-Mail Objekt, das alle Inhalte eines javax.mail.Message-Objekts ausliest.
@@ -50,7 +47,7 @@ public class Email implements Loggable {
     /**
      * Liste von Anhängen der Mail.
      */
-    private final Map<String, InputStream> attachments;
+    private final List<EmailAttachment> attachments = new ArrayList<>();
 
     /**
      * Textinhalt der Mail.
@@ -158,7 +155,6 @@ public class Email implements Loggable {
      * @param javaMessage zu wandelndes Message-Objekt.
      */
     public Email(final MimeMessage javaMessage) {
-        attachments = new HashMap<>();
         this.message = javaMessage;
 
         readMessageContents();
@@ -206,10 +202,10 @@ public class Email implements Loggable {
                 for (int j = 0; j < content.getCount(); j++) {
                     Part part = content.getBodyPart(j);
                     is = part.getInputStream();
+                    encoding = part.getContentType();
+                    encoding = getCharSetForEncoding(encoding);
 
                     if (part.getDisposition().equals(Part.INLINE)) {
-                        encoding = part.getContentType();
-                        encoding = getCharSetForEncoding(encoding);
                         try {
                             messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
                         } catch (IllegalCharsetNameException e) {
@@ -217,7 +213,8 @@ public class Email implements Loggable {
                         }
                     } else if (part.getDisposition().equals(Part.ATTACHMENT)) {
                         String fileName = part.getFileName();
-                        attachments.put(fileName, is);
+                        EmailAttachment attachment = new EmailAttachment(fileName, is, encoding);
+                        attachments.add(attachment);
                     }
 
                 } // end for
@@ -267,34 +264,27 @@ public class Email implements Loggable {
     }
 
     /**
-     * Saves the given attachment
-     *
-     * @param fileName Name of attachment
-     */
-    public void saveAttachment(String fileName) throws IOException {
-        File file = new File(fileName);
-        // Reset the stream to the correct position to ensure the file is created properly
-        getAttachment(fileName).reset();
-        FileUtils.copyInputStreamToFile(this.getAttachment(fileName), file);
-    }
-
-    /**
-     * gets the given attachments
+     * Gets the given attachments
      *
      * @return the attachments
      */
-    public Map<String, InputStream> getAttachments() {
+    public List<EmailAttachment> getAttachments() {
         return attachments;
     }
 
     /**
      * Gets the content of the given attachment
      *
-     * @param fileName Name of attachment
+     * @param fileName name of the attachment file
      * @return attachment
      */
-    public InputStream getAttachment(String fileName) throws IOException {
-        return attachments.get(fileName);
+    public EmailAttachment getAttachment(String fileName) throws IOException {
+        for (EmailAttachment attachment : attachments) {
+            if (attachment.getFileName().equals(fileName)) {
+                return attachment;
+            }
+        }
+        return null;
     }
 
     /**

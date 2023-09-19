@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
@@ -51,6 +52,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -645,6 +647,15 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
             Actions actions = new Actions(guiElementData.getWebDriver());
             actions.moveToElement(webElement).contextClick().build().perform();
         });
+    }
+
+    @Override
+    public File takeScreenshot() {
+        AtomicReference<File> atomicReference = new AtomicReference<>();
+        this.findWebElement(webElement -> {
+            atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
+        });
+        return atomicReference.get();
     }
 
 }

@@ -7,29 +7,47 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * E-mail attachment object that is used to store information about the name of a file, its InputStream
+ * and the encoding used for the file content.
+ */
 public class EmailAttachment {
 
+    /**
+     * Name of the file
+     */
     private final String fileName;
-    private final InputStream is;
+
+    /**
+     * InputStream of the attachment
+     */
+    private final InputStream inputStream;
+
+    /**
+     * The encoding used for the file
+     */
     private final String encoding;
 
+    /**
+     * Constructor, creates an EmailAttachment object
+     */
     public EmailAttachment(String fileName, InputStream is, String encoding) {
         this.fileName = fileName;
-        this.is = is;
+        this.inputStream = is;
         this.encoding = encoding;
     }
 
     /**
      * Saves the attachment as a file under the given destination
      *
-     * @param pathToFile the destination where the file should be saved
+     * @param destination the destination path where the file should be saved
      * @return the File object
      */
-    public File saveAsFile(String pathToFile) throws IOException {
-        File file = new File(pathToFile);
+    public File saveFile(String destination) throws IOException {
+        File file = new File(destination);
         // Reset the InputStream to ensure the file is created properly
-        is.reset();
-        FileUtils.copyInputStreamToFile(is, file);
+        inputStream.reset();
+        FileUtils.copyInputStreamToFile(inputStream, file);
         return file;
     }
 
@@ -38,8 +56,8 @@ public class EmailAttachment {
      *
      * @return the File object
      */
-    public File saveAsFile() throws IOException {
-        return saveAsFile(fileName);
+    public File saveFile() throws IOException {
+        return saveFile(fileName);
     }
 
     /**
@@ -49,8 +67,8 @@ public class EmailAttachment {
      */
     public String getContent() throws IOException {
         // Reset the InputStream to ensure the content is read properly
-        is.reset();
-        return IOUtils.toString(is, encoding);
+        inputStream.reset();
+        return IOUtils.toString(inputStream, encoding);
     }
 
     /**
@@ -64,7 +82,7 @@ public class EmailAttachment {
      * @return the InputStream of the attachment
      */
     public InputStream getInputStream() {
-        return is;
+        return inputStream;
     }
 
     /**

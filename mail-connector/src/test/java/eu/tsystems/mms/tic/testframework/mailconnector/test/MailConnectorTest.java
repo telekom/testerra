@@ -327,7 +327,7 @@ public class MailConnectorTest extends TesterraTest {
         // TEST 2 - Check email text and attachment file.
         String text = receivedMsg.getMessageText();
         EmailAttachment receivedAttachment = receivedMsg.getAttachment(fileName);
-        File savedAttachment = receivedAttachment.saveAsFile();
+        File savedAttachment = receivedAttachment.saveFile();
 
         Assert.assertEquals(text, STR_MAIL_TEXT);
         Assert.assertTrue(FileUtils.contentEquals(sentAttachmentFile, savedAttachment));

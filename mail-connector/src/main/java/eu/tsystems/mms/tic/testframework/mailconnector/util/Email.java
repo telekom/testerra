@@ -39,58 +39,36 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * E-Mail Objekt, das alle Inhalte eines javax.mail.Message-Objekts ausliest.
+ * E-mail object that reads the content of the javax.mail.Message object
  *
  * @author sepr, clgr
  */
 public class Email implements Loggable {
-    /**
-     * Liste von Anhängen der Mail.
-     */
+
     private final List<EmailAttachment> attachments = new ArrayList<>();
 
-    /**
-     * Textinhalt der Mail.
-     */
     private String messageText;
 
-    /**
-     * Message-Object
-     */
     private final MimeMessage message;
 
-    /**
-     * Liste der Empfänger (CC,BCC,TO)
-     */
     private final List<String> recipientList = new LinkedList<String>();
 
-    /**
-     * Liste der Absender
-     */
     private final List<String> senderList = new LinkedList<String>();
 
-    /**
-     * Betreff der Nachricht
-     */
     private String subject = null;
 
     private String messageID;
 
     private Date sentDate;
 
-    /**
-     * Methode liefert die enthaltene Message Instanz
-     *
-     * @return message
-     */
     public MimeMessage getMessage() {
         return this.message;
     }
 
     /**
-     * Methode zur Umwandlung eines Address-Arrays in Empfängerliste
+     * Converts an Address-Array into a list of recipients
      *
-     * @param allRecipients Array, mit zu wandelnden Empfänger-Adressen
+     * @param allRecipients Array containing all recipient addresses
      */
     private void setRecipientsFromAddressArray(final Address[] allRecipients) {
         if (allRecipients != null) {
@@ -101,9 +79,9 @@ public class Email implements Loggable {
     }
 
     /**
-     * Methode zur Umwandlung eines Address-Array in Absenderliste
+     * Converts an Address-Array into a list of senders
      *
-     * @param allSenders Array, mit zu wandelnden Absendern-Adressen
+     * @param allSenders Array containing all sender addresses
      */
     private void setSendersFromAddressArray(final Address[] allSenders) {
         if (allSenders != null) {
@@ -113,46 +91,26 @@ public class Email implements Loggable {
         }
     }
 
-    /**
-     * Methode zum Setzen des Betreffes
-     *
-     * @param subject String E-Mail-Betreff
-     */
     private void setSubject(final String subject) {
         this.subject = subject;
     }
 
-    /**
-     * Methode liefert ein Array aller Empfänger
-     *
-     * @return Address[], Liste aller Empfänger
-     */
     public List<String> getRecipients() {
         return this.recipientList;
     }
 
-    /**
-     * Methode liefert ein Array aller Absender
-     *
-     * @return Address[], Liste aller Absender
-     */
     public List<String> getSenders() {
         return this.senderList;
     }
 
-    /**
-     * Methode liefert den Betreff
-     *
-     * @return String, E-Mail-Betreff
-     */
     public String getSubject() {
         return this.subject;
     }
 
     /**
-     * Konstruktor, der Message-Objekt in FTMessage wandelt.
+     * Constructor, converts a Message object to an FTMessage
      *
-     * @param javaMessage zu wandelndes Message-Objekt.
+     * @param javaMessage Message object to be converted
      */
     public Email(final MimeMessage javaMessage) {
         this.message = javaMessage;
@@ -231,7 +189,8 @@ public class Email implements Loggable {
     }
 
     /**
-     * Get charset for encoding from Mail, use UTF-8 as default
+     * Get charset for encoding from Mail, use UTF-8 as default and
+     * ISO_8859_1 for binary files
      *
      * @param encoding the ContentType of the Part
      * @return encoding for the given ContentType
@@ -263,11 +222,6 @@ public class Email implements Loggable {
         return encoding;
     }
 
-    /**
-     * Gets the given attachments
-     *
-     * @return the attachments
-     */
     public List<EmailAttachment> getAttachments() {
         return attachments;
     }
@@ -287,39 +241,22 @@ public class Email implements Loggable {
         return null;
     }
 
-    /**
-     * Gibt Textinhalt der E-Mail zurück.
-     *
-     * @return Textinhalt der E-Mail als String
-     */
     public String getMessageText() {
         return messageText;
     }
 
-    /**
-     * @return the sentDate
-     */
     public Date getSentDate() {
         return sentDate;
     }
 
-    /**
-     * @param sentDate the sentDate to set
-     */
     public void setSentDate(Date sentDate) {
         this.sentDate = sentDate;
     }
 
-    /**
-     * @return the messageID
-     */
     public String getMessageID() {
         return messageID;
     }
 
-    /**
-     * @param messageID the messageID to set
-     */
     public void setMessageID(String messageID) {
         this.messageID = messageID;
     }

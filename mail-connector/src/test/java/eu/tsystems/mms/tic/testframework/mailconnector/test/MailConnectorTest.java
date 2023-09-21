@@ -25,6 +25,7 @@ import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.imap.ImapMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
@@ -55,8 +56,6 @@ import jakarta.mail.search.SearchTerm;
 import jakarta.mail.search.SentDateTerm;
 import jakarta.mail.search.SubjectTerm;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -81,7 +80,7 @@ import java.util.stream.Stream;
  *
  * @author mrgi, tbmi
  */
-public class MailConnectorTest extends TesterraTest {
+public class MailConnectorTest extends TesterraTest implements Loggable {
 
     // CONSTANTS
     /**
@@ -130,11 +129,6 @@ public class MailConnectorTest extends TesterraTest {
     private static final String SENDER = "secret@host";
 
     // REFERENCES
-    /**
-     * LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailConnectorTest.class);
-
     /**
      * SMTPMailConnector
      */
@@ -327,14 +321,14 @@ public class MailConnectorTest extends TesterraTest {
         // TEST 2 - Check email text and attachment file.
         String text = receivedMsg.getMessageText();
         EmailAttachment receivedAttachment = receivedMsg.getAttachment(fileName);
-        File savedAttachment = receivedAttachment.saveFile();
+        File savedAttachment = receivedAttachment.saveAsFile();
 
         Assert.assertEquals(text, STR_MAIL_TEXT);
         Assert.assertTrue(FileUtils.contentEquals(sentAttachmentFile, savedAttachment));
 
         // CLEAN UP - Delete saved file and message.
         if (!savedAttachment.delete()) {
-            LOGGER.warn(String.format("File >%s< couldn't be deleted. Please remove file manually.",
+            log().warn(String.format("File >%s< couldn't be deleted. Please remove file manually.",
                     savedAttachment.getAbsolutePath()));
         }
         deleteMessage(receivedMsg, pop3);
@@ -502,7 +496,7 @@ public class MailConnectorTest extends TesterraTest {
             }
         } catch (final Exception e) {
 
-            LOGGER.error(e.getMessage());
+            log().error(e.getMessage());
             Assert.fail(e.getMessage());
         }
     }
@@ -668,7 +662,7 @@ public class MailConnectorTest extends TesterraTest {
             msg.setSubject(subject);
             msg.setText(STR_MAIL_TEXT);
         } catch (MessagingException e) {
-            LOGGER.error(e.toString());
+            log().error(e.toString());
         }
 
         return msg;

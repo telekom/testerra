@@ -1,3 +1,23 @@
+/*
+ * Testerra
+ *
+ * (C) 2023, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import org.apache.commons.io.FileUtils;
@@ -13,19 +33,10 @@ import java.io.InputStream;
  */
 public class EmailAttachment {
 
-    /**
-     * Name of the file
-     */
     private final String fileName;
 
-    /**
-     * InputStream of the attachment
-     */
     private final InputStream inputStream;
 
-    /**
-     * The encoding used for the file
-     */
     private final String encoding;
 
     /**
@@ -38,12 +49,12 @@ public class EmailAttachment {
     }
 
     /**
-     * Saves the attachment as a file under the given destination
+     * Saves the attachment as a file under the given destination and returns the File object
      *
      * @param destination the destination path where the file should be saved
      * @return the File object
      */
-    public File saveFile(String destination) throws IOException {
+    public File saveAsFile(String destination) throws IOException {
         File file = new File(destination);
         // Reset the InputStream to ensure the file is created properly
         inputStream.reset();
@@ -52,12 +63,12 @@ public class EmailAttachment {
     }
 
     /**
-     * Saves the attachment as a file
+     * Saves the attachment as a file and returns the File object
      *
      * @return the File object
      */
-    public File saveFile() throws IOException {
-        return saveFile(fileName);
+    public File saveAsFile() throws IOException {
+        return saveAsFile(fileName);
     }
 
     /**
@@ -71,23 +82,14 @@ public class EmailAttachment {
         return IOUtils.toString(inputStream, encoding);
     }
 
-    /**
-     * @return the name of the attachment
-     */
     public String getFileName() {
         return fileName;
     }
 
-    /**
-     * @return the InputStream of the attachment
-     */
     public InputStream getInputStream() {
         return inputStream;
     }
 
-    /**
-     * @return the encoding used for the attachment
-     */
     public String getEncoding() {
         return encoding;
     }

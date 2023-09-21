@@ -59,7 +59,9 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
         reportStepsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportStepsTab.clickThreadLink();
-        reportThreadsPage.assertMethodBoxIsSelected(method);
+        // Deactivated test step due to renewed threads view (echarts) since it is not that easy possible
+        // to access elements such as the specific testcases inside the canvas element of echarts
+//        reportThreadsPage.assertMethodBoxIsSelected(method);
     }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
@@ -79,7 +81,9 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
         reportDetailsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportDetailsTab.clickThreadLink();
-        reportThreadsPage.assertMethodBoxIsSelected(method);
+        // Deactivated test step due to renewed threads view (echarts) since it is not that easy possible
+        // to access elements such as the specific testcases inside the canvas element of echarts
+//        reportThreadsPage.assertMethodBoxIsSelected(method);
     }
 
     @Test

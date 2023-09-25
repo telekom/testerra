@@ -37,9 +37,9 @@ public class ReportThreadsPage extends AbstractReportPage {
     @Check
     private final UiElement testMethodSearchbar = pageContent.find(By.xpath("//label[@label='Method']//input"));
     @Check
-    private final UiElement testMethodDropDownList = pageContent.find(By.xpath("//div[./label[@label='Method']]//mdc-lookup"));
+    private final UiElement testMethodDropDownList = pageContent.find(By.xpath("//div[.//label[@label='Method']]//mdc-lookup"));
     @Check
-    private final UiElement testThreadReport = pageContent.find(By.xpath("//div[@class='vis-foreground']"));
+    private final UiElement testThreadReport = pageContent.find(By.xpath("//echart//canvas"));
 
     /**
      * Constructor for existing sessions.

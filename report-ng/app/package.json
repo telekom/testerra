@@ -39,10 +39,11 @@
         "aurelia-templating": "^1.10.4",
         "aurelia-typed-observable-plugin": "^0.4.2",
         "aurelia-ui-virtualization": "^1.0.0-rc2",
+        "echarts": "^5.4.3",
         "highlight.js": "^11.8.0",
         "moment": "^2.29.4",
         "moment-duration-format": "^2.3.2",
-        "t-systems-aurelia-components": "^1.1.0",
+        "t-systems-aurelia-components": "^1.1.1",
         "ts-replace-all": "^1.0.0",
         "vis-network": "^7.4.2",
         "vis-timeline": "^7.4.6"

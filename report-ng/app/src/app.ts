@@ -127,6 +127,13 @@ export class App {
                 nav: true,
                 title: 'Threads'
             },
+            {
+                route: 'timings',
+                name: 'timings',
+                moduleId: PLATFORM.moduleName('components/session-timings/session-timings-tab'),
+                nav: true,
+                title: 'Timings'
+            },
             // {
             //     route: 'timings',
             //     name: 'Timings',

@@ -91,13 +91,15 @@ export class SessionTimings extends AbstractViewModel {
                 });
 
                 const sessionInformation: ISessionInformation = {
+                    sessionName: metric.sessionContext.contextValues.name,
                     sessionId: metric.sessionContext.sessionId,
                     browserName: metric.sessionContext.browserName,
                     browserVersion: metric.sessionContext.browserVersion,
                     server: metric.sessionContext.serverUrl,
                     node: metric.sessionContext.nodeUrl,
                     methodList: methodList,
-                    duration: this._calculateDuration(metric.metricsValues[0].startTimestamp, metric.metricsValues[0].endTimestamp),
+                    sessionDuration: this._calculateDuration(metric.metricsValues[0].startTimestamp, metric.metricsValues[0].endTimestamp),
+                    baseurlDuration: this._calculateDuration(metric.metricsValues[1].startTimestamp, metric.metricsValues[1].endTimestamp),
                     startTime: metric.metricsValues[0].startTimestamp,
                 }
                 sessionInformationArray.push(sessionInformation);
@@ -110,20 +112,32 @@ export class SessionTimings extends AbstractViewModel {
 
     private _prepareData(sessionInformationArray: ISessionInformation[]){
         this._sessionData = [];
+        this._baseURLData = [];
         sessionInformationArray.forEach(info => {
             const bar: ISessionBar = {
                 x: info.startTime,
-                y: info.duration,
+                ySession: info.sessionDuration,
+                yBaseurl: info.baseurlDuration, //the two durations are stacking on top of each other
                 sessionInformation: info,
             }
-            this._bars.push(bar)
-            const array = [bar.x, bar.y]
-            this._sessionData.push(array);
+            this._bars.push(bar);
+            this._sessionData.push([bar.x, bar.ySession]);
+            this._baseURLData.push([bar.x, bar.yBaseurl]);
         })
     }
 
     private _setChartOption(){
         this._option = {
+            barMinWidth: 5,
+            dataZoom: [
+                {
+                    type: 'inside'
+                },
+                {
+                    type: 'slider'
+                }
+            ],
+            legend: {},
             tooltip: {
                 trigger: 'axis',
                 formatter: function (params) {
@@ -131,13 +145,16 @@ export class SessionTimings extends AbstractViewModel {
                         const dataIndex = params[0].dataIndex;
 
                         const testNames = this._bars[dataIndex].sessionInformation.methodList.map(method => method.methodContext.contextValues.name);
-
-                        let tooltipString = `<b>session id:</b> ${this._bars[dataIndex].sessionInformation.sessionId} <br>`;
+                        let tooltipString = `<b>session name:</b> ${this._bars[dataIndex].sessionInformation.sessionName} <br>`;
+                        tooltipString += `<b>session id:</b> ${this._bars[dataIndex].sessionInformation.sessionId} <br>`;
                         tooltipString += `<b>browser name:</b> ${this._bars[dataIndex].sessionInformation.browserName} <br>`;
                         tooltipString += `<b>browser version:</b> ${this._bars[dataIndex].sessionInformation.browserVersion} <br>`;
                         tooltipString += `<b>server:</b> ${this._bars[dataIndex].sessionInformation.server} <br>`;
                         tooltipString += `<b>node:</b> ${this._bars[dataIndex].sessionInformation.node} <br>`;
+                        tooltipString += `<b>session start duration:</b> ${this._bars[dataIndex].sessionInformation.sessionDuration} <br>`;
+                        tooltipString += `<b>base url start duration:</b> ${this._bars[dataIndex].sessionInformation.baseurlDuration} <br>`;
                         tooltipString += `<b>test case(s):</b> ` + testNames.join(', ');
+
 
                         return tooltipString;
                     }
@@ -160,23 +177,19 @@ export class SessionTimings extends AbstractViewModel {
                     type: 'bar',
                     stack: 'x',
                     data: this._sessionData,
+                    itemStyle: {
+                        color: '#6897EA',
+                    }
                 },
-                // dummy data:
-                // {
-                //     name: 'Base URL Load',
-                //     type: 'bar',
-                //     stack: 'x',
-                //     data: [
-                //         [120, 10],
-                //         [10, 24],
-                //         [80, 19],
-                //         [50, 20],
-                //         [15, 8],
-                //         [70, 4],
-                //         [39, 56],
-                //         [56, 20],
-                //     ],
-                // },
+                {
+                    name: 'Base URL Load',
+                    type: 'bar',
+                    stack: 'x',
+                    data: this._baseURLData,
+                    itemStyle: {
+                        color: '#75C6CB',
+                    }
+                },
             ],
         };
     }
@@ -188,23 +201,26 @@ export class SessionTimings extends AbstractViewModel {
         } else {
             this._hasEnded = true;
         }
-        return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
+        return moment.duration(endTime - startTime, 'milliseconds').asSeconds();
     }
 }
 
 export interface ISessionBar {
     x: number,
-    y: number,
+    ySession: number,
+    yBaseurl: number,
     sessionInformation: ISessionInformation,
 }
 
 export interface ISessionInformation {
+    sessionName: string;
     sessionId: string;
     browserName: string;
     browserVersion: string;
     server: string;
     node: string;
     methodList: MethodDetails[];
-    duration: number;
+    sessionDuration: number;
+    baseurlDuration: number;
     startTime: number;
 }

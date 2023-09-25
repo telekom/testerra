@@ -26,8 +26,8 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+
 import java.util.List;
 
 public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
@@ -36,13 +36,12 @@ public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
         // get screenshots and videos
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
 
-        if (screenshots != null) {
-            Report report = Testerra.getInjector().getInstance(Report.class);
-            screenshots.forEach(screenshot -> {
-                methodEndEvent.getMethodContext().addScreenshot(screenshot);
-                report.addScreenshot(screenshot, Report.FileMode.MOVE);
-            });
-        }
+        Report report = Testerra.getInjector().getInstance(Report.class);
+        screenshots.forEach(screenshot -> {
+            methodEndEvent.getMethodContext().addScreenshot(screenshot);
+            report.addScreenshot(screenshot, Report.FileMode.MOVE);
+        });
+
     }
 
     @Override

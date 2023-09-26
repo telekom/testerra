@@ -36,13 +36,11 @@ public class TakeInSessionEvidencesWorker implements MethodEndEvent.Listener {
         // get screenshots and videos
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
 
-        if (screenshots != null) {
-            Report report = Testerra.getInjector().getInstance(Report.class);
-            screenshots.forEach(screenshot -> {
-                methodEndEvent.getMethodContext().addScreenshot(screenshot);
-                report.addScreenshot(screenshot, Report.FileMode.MOVE);
-            });
-        }
+        Report report = Testerra.getInjector().getInstance(Report.class);
+        screenshots.forEach(screenshot -> {
+            methodEndEvent.getMethodContext().addScreenshot(screenshot);
+            report.addScreenshot(screenshot, Report.FileMode.MOVE);
+        });
     }
 
     @Override

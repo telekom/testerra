@@ -46,13 +46,12 @@ public class DefaultOptionalAssertion extends AbstractAssertion implements
 
             // get screenshots
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
-            if (screenshots != null) {
-                Report report = Testerra.getInjector().getInstance(Report.class);
-                screenshots.forEach(screenshot -> {
-                    methodContext.addScreenshot(screenshot);
-                    report.addScreenshot(screenshot, Report.FileMode.MOVE);
-                });
-            }
+
+            Report report = Testerra.getInjector().getInstance(Report.class);
+            screenshots.forEach(screenshot -> {
+                methodContext.addScreenshot(screenshot);
+                report.addScreenshot(screenshot, Report.FileMode.MOVE);
+            });
         });
     }
 }

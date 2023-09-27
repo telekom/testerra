@@ -54,6 +54,7 @@ export class TestDurationTab extends AbstractViewModel {
     private _showConfigurationMethods: boolean = null;
     private _lookUpOptions;
     @observable private selectedOptionId;
+    private _methodNameInput;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -83,8 +84,6 @@ export class TestDurationTab extends AbstractViewModel {
             let methodContexts:IMethodContext[];
             if (this.queryParams.methodId) {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
-                this._searchRegexp = null;
-                delete this.queryParams.methodName;
                 this._highlightData();
                 this.updateUrl({methodId: this.queryParams.methodId, rangeNum: this._rangeNum});
                 this._methodId = this.queryParams.methodId;
@@ -198,6 +197,7 @@ export class TestDurationTab extends AbstractViewModel {
     private _showConfigurationChanged() {
         this._getLookUpOptions();
         this._filterOnce();
+        this._methodNameInput = this.queryParams.methodId; //needs to be set here, otherwise the text input might disappear after changing the configuration method visibility
     }
 
     private _filterOnce() {

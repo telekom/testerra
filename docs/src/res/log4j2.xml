@@ -9,10 +9,10 @@
             <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss.SSS} [%t][%p]%contextIds: %c{2} - %m{nolookups}%n" />
         </Console>
     </Appenders>
-    <Logger name="org.asynchttpclient" level="info" additivity="false">
-        <AppenderRef ref="CONSOLE"/>
-    </Logger>
     <Loggers>
+        <Logger name="org.asynchttpclient" level="info" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
         <Root level="debug">
             <AppenderRef ref="CONSOLE"/>
         </Root>

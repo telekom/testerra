@@ -80,12 +80,6 @@ export class App {
                 name: "tests",
                 title: 'Tests'
             },
-            // {
-            //     route: 'threads',
-            //     moduleId: PLATFORM.moduleName('components/threads'),
-            //     nav: true,
-            //     title: 'Threads'
-            // },
             {
                 route: 'failure-aspects',
                 moduleId: PLATFORM.moduleName('components/failure-aspects/failure-aspects'),

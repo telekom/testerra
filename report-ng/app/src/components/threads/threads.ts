@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,35 +19,60 @@
  * under the License.
  */
 
-import {autoinject} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
+import {autoinject, observable} from "aurelia-framework";
+import {StatusConverter} from "services/status-converter";
+import {StatisticsGenerator} from "services/statistics-generator";
+import {ExecutionStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
-import {StatisticsGenerator} from "../../services/statistics-generator";
-import {StatusConverter} from "../../services/status-converter";
-import {Timeline, TimelineOptionsGroupHeightModeType} from "vis-timeline/standalone";
-import "vis-timeline/styles/vis-timeline-graph2d.css";
+import {Container} from "aurelia-dependency-injection";
+import "./threads.scss"
+import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
+import * as echarts from "echarts";
+import {EChartsOption} from "echarts";
 import {data} from "../../services/report-model";
-import MethodContext = data.MethodContext;
+import {
+    IntlDateFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+import {
+    DurationFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
 import ResultStatusType = data.ResultStatusType;
-import IMethodContext = data.MethodContext;
-import IContextValues = data.ContextValues;
-import "./threads.scss";
-import {ExecutionStatistics} from "../../services/statistic-models";
+import MethodContext = data.MethodContext;
+
+interface MethodInfo {
+    id: string;
+    name: string;
+}
 
 @autoinject()
 export class Threads extends AbstractViewModel {
+
     private _searchRegexp: RegExp;
-    private _classNamesMap:{[key:string]:string};
-    private _loading: boolean;
-    private _container:HTMLDivElement;
-    private _methodNameInput:HTMLElement;
     private _inputValue;
-    private _timeline;
-    private _currentSelection;
+    private _availableStatuses: data.ResultStatusType[] | number[];
+    private _selectedStatus: data.ResultStatusType;
+    private _initialChartLoading = true;
+    private _filterActive = false;          // To prevent unnecessary method calls
+    private _suppressMethodFilter = false;  // To prevent conflict between method filter and status filter
+    private _options: EChartsOption;
+    @observable()
+    private _chart: echarts.ECharts;
+
+    // Aurelia Value Converters
+    private _dateFormatter: IntlDateFormatValueConverter;
+    private _durationFormatter: DurationFormatValueConverter;
+
+    // Values for presentation
+    private _gapFromBorderToStart = 400;        // To prevent that the beginning of the first test is located ON the y-axis.
+    private _threadHeight = 50;                 // Height of y-axis categories in pixel
+    private _sliderSpacingFromChart = 90;       // Distance between chart and dataZoom-slider in pixel
+    private _cardHeight;
+    private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
 
     constructor(
-        private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
+        private _statisticsGenerator: StatisticsGenerator,
+        private _statistics: StatisticsGenerator,
         private _router: Router
     ) {
         super();
@@ -56,43 +81,46 @@ export class Threads extends AbstractViewModel {
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
-    }
 
-    attached() {
-        this._loading = true;
-        this._statistics.getExecutionStatistics().then(executionStatistics => {
-            this._classNamesMap = {};
-            executionStatistics.classStatistics.forEach(classStatistic => {
-                this._classNamesMap[classStatistic.classContext.contextValues.id] = classStatistic.classIdentifier;
-            });
-            this._prepareTimelineData(executionStatistics)
-        });
-    }
-
-    selectionChanged(){
-        if (this._inputValue.length == 0){
-            this.updateUrl({});
-            this._timeline.fit();
+        if (this.queryParams.status || params.status) {
+            (async () => {
+                this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+                await new Promise(f => setTimeout(f, 200));
+                this._zoomInOnMethodsWithStatus(this._statusConverter.getStatusForClass(params.status));
+            })();
+        } else {
+            this._selectedStatus = null;
         }
     }
 
-    private _focusOn(methodId:string) {
-        //adjusts timeline zoom to selected method
-        this._timeline.setSelection(methodId, {focus: "true"});
-        window.setTimeout(() => {
-            const methodElement = document.getElementById(methodId);
-            methodElement?.scrollIntoView();
-        }, 500);
-    }
+    attached() {
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._availableStatuses = [];
+            this._availableStatuses = executionStatistics.availableStatuses;
+            this._initDateFormatter();
+            this._initDurationFormatter();
+            this._prepareTimeline(executionStatistics);
+            this._initialChartLoading = false;
+        });
+    };
 
-    private _getLookupOptions = async (filter: string, methodId: string): Promise<IContextValues[]>  => {
+    private _getLookupOptions = async (filter: string, methodId: string): Promise<MethodInfo[]> => {
+        if (this._initialChartLoading == true) {
+            await new Promise(f => setTimeout(f, 100)); // Timeout for first loading of chart to prevent zoom-issue
+        }
         return this._statistics.getExecutionStatistics().then(executionStatistics => {
-            let methodContexts:IMethodContext[];
+            let methodContexts: MethodContext[];
+            let methodInfo: MethodInfo[] = [];
             if (methodId) {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
-                this._focusOn(methodId);
+                if (this._selectedStatus != null) {
+                    this._suppressMethodFilter = true;
+                    this._selectedStatus = undefined;
+                }
+                this._resetColor();
+                this._zoomInOnMethod(methodId);
                 this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
@@ -101,112 +129,313 @@ export class Threads extends AbstractViewModel {
             } else {
                 methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
             }
-            return methodContexts.map(methodContext => methodContext.contextValues);
+
+            for (const methodContext of methodContexts) {
+                methodInfo.push({
+                    id: methodContext.contextValues.id,
+                    name: methodContext.contextValues.name + " (" + methodContext.methodRunIndex + ")"
+                });
+            }
+
+            return methodInfo.sort(function (a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
         });
     };
 
-    private _threadItemClicked(properties) {
-        // console.log("timeline element selected.", properties);
-        let methodId = properties.items[0].split("_")[0];
-        this._router.navigateToRoute('method', {methodId: methodId})
+    private _chartChanged() {
+        this._chart.on('click', event => this._handleClickEvent(event));
     }
 
-    private _prepareTimelineData(executionStatistics:ExecutionStatistics) {
-        // DOM element where the Timeline will be attached
-        const container = this._container;
+    private _selectionChanged() {
+        if (this._inputValue.length == 0) {
+            this._searchRegexp = null;
+            if (this._filterActive && this._selectedStatus == null) {
+                this._resetZoom();
+            }
+        }
+    }
 
-        const style = new Map <string,string>();
-        style.set("PASSED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED) + "; color: #fff;");
-        style.set("REPAIRED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED) + "; color: #fff;");
-        style.set("PASSED_RETRY", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY) + "; color: #fff;");
-        style.set("SKIPPED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED) + "; color: #fff;");
-        style.set("FAILED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED) + "; color: #fff;");
-        style.set("FAILED_EXPECTED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED) + "; color: #fff;");
-        style.set("FAILED_MINOR", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR) + "; color: #fff;");
-        style.set("FAILED_RETRIED", "background-color: " + this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED) + "; color: #fff;");
+    private _statusChanged() {
+        if (this._suppressMethodFilter) {
+            this._suppressMethodFilter = false;
+            return;
+        }
+        if (this._filterActive) {
+            this._resetColor();
+        }
+        if (this._selectedStatus > 0) {
+            this._zoomInOnMethodsWithStatus();
+            this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
+        } else {
+            this._resetZoom();
+            this.updateUrl({});
+        }
+    }
 
-        const groupItems = [];
-        const dataItems = [];
-        const dataMap = new Map();
+    private _zoom(zoomStart: number, zoomEnd: number) {
+        this._filterActive = true;
+        const spacing = (zoomEnd - zoomStart) * 0.05;
+        this._chart.dispatchAction({
+            type: 'dataZoom',
+            id: 'threadZoom',
+            startValue: zoomStart - spacing,
+            endValue: zoomEnd + spacing
+        });
+    }
+
+    private _zoomInOnMethod(methodId: string) {
+        this._resetColor();
+        const dataToZoomInOn = this._options.series[0].data.find(function (method) {
+            return method.value[6] == methodId;
+        });
+        const zoomStart = dataToZoomInOn.value[1];
+        const zoomEnd = dataToZoomInOn.value[2];
+        const opacity = this._opacityOfInactiveElements;
+
+        this._options.series[0].data.forEach(function (value) {
+            const mid = value.value[6];
+            if (mid != methodId) {
+                value.itemStyle.normal.opacity = opacity;
+            }
+        });
+        this._chart.setOption(this._options);
+        this._zoom(zoomStart, zoomEnd);
+    }
+
+    private _zoomInOnMethodsWithStatus(status?: data.ResultStatusType) {
+        const opacity = this._opacityOfInactiveElements;
+        let selectedStat = this._selectedStatus;
+        let startTimes: number[] = [];
+        let endTimes: number[] = [];
+
+        if (status) {
+            selectedStat = status;
+        }
+        this._options.series[0].data.forEach(function (value) {
+            const stat = value.value[7];
+            if (stat != selectedStat) {
+                value.itemStyle.normal.opacity = opacity;
+            } else {
+                startTimes.push(value.value[1]);
+                endTimes.push(value.value[2]);
+            }
+        });
+        this._chart.setOption(this._options);
+
+        const zoomStart = Math.min.apply(Math, startTimes);
+        const zoomEnd = Math.max.apply(Math, endTimes);
+        this._zoom(zoomStart, zoomEnd);
+    }
+
+    private _resetZoom() {
+        this._filterActive = false;
+        this._resetColor();
+        this.updateUrl({});
+
+        this._chart.dispatchAction({
+            type: 'dataZoom',
+            id: 'threadZoom',
+            start: 0,
+            end: 100
+        });
+    }
+
+    private _resetColor() {
+        this._options.series[0].data.forEach(function (value) {
+            value.itemStyle.normal.opacity = 1;
+        });
+        this._chart.setOption(this._options);
+    }
+
+    private _initDurationFormatter() {
+        const container = new Container();
+        this._durationFormatter = container.get(DurationFormatValueConverter);
+        this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
+    }
+
+    private _initDateFormatter() {
+        const container = new Container();
+        this._dateFormatter = container.get(IntlDateFormatValueConverter);
+        this._dateFormatter.setLocale('en-GB');
+        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
+        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
+        this._dateFormatter.setOptions('full', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: false
+        });
+    }
+
+    /**
+     * Build Thread timeline according https://echarts.apache.org/examples/en/editor.html?c=custom-profile
+     * and https://echarts.apache.org/en/option.html#series-custom
+     */
+    private _prepareTimeline(executionStatistics: ExecutionStatistics) {
+        const data = [];
+        let startTimes: number[] = [];
+        const threadCategories = new Map();
 
         Object.values(executionStatistics.executionAggregate.methodContexts).forEach(methodContext => {
-            if (!dataMap.has(methodContext.threadName)) {
-                dataMap.set(methodContext.threadName, []);
+            if (!threadCategories.has(methodContext.threadName)) {
+                threadCategories.set(methodContext.threadName, []);
             }
-            dataMap.get(methodContext.threadName).push(methodContext);
+            threadCategories.get(methodContext.threadName).push(methodContext);
+            startTimes.push(methodContext.contextValues.startTime);
         });
 
-        dataMap.forEach((methodContexts, threadName) => {
-            let groupId: string = "group-" + threadName;
-            groupItems.push({id: groupId, content: threadName});
+        const chartStartTime = Math.min.apply(Math, startTimes) - this._gapFromBorderToStart;
 
+        const style = new Map<number, string>();
+        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+
+        threadCategories.forEach(function (methodContexts, threadName) {
             methodContexts.forEach((context: MethodContext) => {
-                /*
-                * workaround for XSS-protection update of vis-timeline by using an HTMLElement instead of injecting the html directly in which the XSS protection would remove the class names needed for our styling
-                * @see: https://github.com/visjs/vis-timeline/issues/846#issuecomment-749691286
-                */
-                const element = document.createElement("content");
-                element.innerHTML = `
-                    <div class="item-content" id="${context.contextValues.id}">
-                    <div class="item-content-head">${context.contextValues.name}</div>
-                    <div class='item-content-body'>
-                    <p class="m0">${this._classNamesMap[context.classContextId]}</p>
-                    <p class="m0">(${context.methodRunIndex})</p>
-                    </div>
-                    </div>
-                `;
-                dataItems.push({
-                    id: context.contextValues.id,
-                    content: element,
-                    start: context.contextValues.startTime,
-                    end: context.contextValues.endTime,
-                    group: groupId,
-                    callbackInfos: [context.contextValues.id],
-                    style: "background-color: " + this._statusConverter.getColorForStatus(context.resultStatus) + ";",
-                    title: context.contextValues.name
+
+                const itemColor = style.get(context.resultStatus);
+                const duration = context.contextValues.endTime - context.contextValues.startTime;
+
+                data.push({
+                    name: context.contextValues.name,
+                    value: [
+                        threadName,
+                        context.contextValues.startTime,
+                        context.contextValues.endTime,
+                        context.contextValues.name,
+                        duration,
+                        context.methodRunIndex,
+                        context.contextValues.id,
+                        context.resultStatus
+                    ],
+                    itemStyle: {
+                        normal: {
+                            color: itemColor
+                        }
+                    }
                 });
             });
-
         });
 
-        groupItems.sort((item1, item2) => {
-            let contentA = item1.content.toUpperCase(),
-                contentB = item2.content.toUpperCase();
+        // Some calculations for chard presentation
+        const gridHeight = threadCategories.size * this._threadHeight;
+        const sliderFromTop = gridHeight + this._sliderSpacingFromChart
+        const dateFormatter = this._dateFormatter;
+        const durationFormatter = this._durationFormatter;
+        this._cardHeight = sliderFromTop + 60; // 60px space for dataZoom-slider
 
-            if (contentA < contentB) {
-                return -1;
+        // Set gridLeftValue dynamically to the longest thread name
+        const longestThreadName = Array.from(threadCategories.keys()).reduce(
+            function (a, b) {
+                return a.length > b.length ? a : b;
             }
-            if (contentA > contentB) {
-                return 1;
-            }
+        );
+        let gridLeftValue = longestThreadName.length * 7;   // Calculate the value for grid:left
+        gridLeftValue = gridLeftValue > 100 ? gridLeftValue : 100;  // Set to default of 100, if lower
 
-            return 0;
-        });
-
-        // Configuration for the Timeline
-        const options = {
-            onInitialDrawComplete: () => {
-                this._loading = false;
-
-                if (this.queryParams.methodId?.length > 0) {
-                    this._focusOn(this.queryParams.methodId);
+        this._options = {
+            tooltip: {
+                formatter: function (params) {
+                    return '<div class="header" style="background-color: ' +
+                        params.color + ';"> ' + params.name + ' (' + params.value[5] + ')' + '</div>'
+                        + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
+                        + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
+                        + '<br>Duration: ' + durationFormatter.toView(params.value[4]);
                 }
             },
-            showTooltips:false,
-            //max zoom out to be 1 Day
-            zoomMax:8.64e+7,
-            //Min Zoom set to be 10 Millisecond
-            zoomMin:10,
-            margin: {
-                item: { horizontal: 2 }
+            dataZoom: [
+                {
+                    type: 'slider',
+                    filterMode: 'weakFilter',
+                    showDataShadow: false,
+                    top: sliderFromTop,
+                    labelFormatter: ''
+                },
+                {
+                    id: 'threadZoom',
+                    type: 'inside',
+                    filterMode: 'weakFilter'
+                }
+            ],
+            grid: {
+                height: gridHeight,
+                top: 30,
+                bottom: 100,
+                left: gridLeftValue
             },
-            groupHeightMode: 'fixed' as TimelineOptionsGroupHeightModeType
-        };
+            xAxis: {
+                min: chartStartTime,
+                scale: true,
+                axisLabel: {
+                    interval: 2,
+                    formatter: function (val) {
+                        return dateFormatter.toView(Number(val), 'time') + '\n\n' + dateFormatter.toView(Number(val), 'date');
+                    }
+                }
+            },
+            yAxis: {
+                data: Array.from(threadCategories.keys())
+            },
+            series: [
+                {
+                    type: 'custom',
+                    renderItem: function (params: echarts.CustomSeriesRenderItemParams, api: echarts.CustomSeriesRenderItemAPI) {
+                        const categoryIndex = api.value(0);
+                        const start = api.coord([api.value(1), categoryIndex]);
+                        const end = api.coord([api.value(2), categoryIndex]);
+                        const height = api.size([0, 1])[1] * 0.7; // 0.7: Minimized height to get space between threads
 
-        // Create a Timeline
-        this._timeline = new Timeline(container, dataItems, groupItems, options);
-        this._timeline.on('select',(event) => {
-            this._threadItemClicked(event);
-        });
+                        const rectShape = echarts.graphic.clipRectByRect(
+                            {
+                                x: start[0],
+                                y: start[1] - height / 2,
+                                width: end[0] - start[0],
+                                height: height
+                            },
+                            {
+                                x: params.coordSys["x"],
+                                y: params.coordSys["y"],
+                                width: params.coordSys["width"],
+                                height: params.coordSys["height"]
+                            },
+                        );
+                        return (
+                            rectShape && {
+                                type: 'rect',
+                                transition: ['shape'],
+                                shape: rectShape,
+                                style: api.style()
+                            }
+                        );
+                    },
+                    encode: {
+                        x: [1, 2],
+                        y: 0,
+                        label: 3    // Index in value array
+                    },
+                    data: data
+                }
+            ]
+        };
+    }
+
+    private _handleClickEvent(event: echarts.ECElementEvent) {
+        this._router.navigateToRoute('method', {methodId: event.value[6]})
     }
 }

@@ -34,12 +34,10 @@ npm install
 ## References
 
 - Material Framework: https://github.com/aurelia-ui-toolkits/aurelia-mdc-web
-- Charts Framework: https://apexcharts.com/
-    - Timeline: https://apexcharts.com/javascript-chart-demos/timeline-charts/
-    - VIS.js Timeline: https://visjs.github.io/vis-timeline/examples/timeline/
+- Charts Framework: 
+  - https://apexcharts.com/
+  - https://echarts.apache.org/
+  - https://visjs.github.io/vis-network/docs/network/
 - Time and Date: https://momentjs.com/
 - Duration Format: https://github.com/jsmreese/moment-duration-format
 - Aurelia Value Converters: https://aurelia.io/docs/binding/value-converters#converter-parameters
-- Image Comparison:
-  - https://www.w3schools.com/howto/howto_js_image_comparison.asp
-  - https://github.com/rsmbl/Resemble.js

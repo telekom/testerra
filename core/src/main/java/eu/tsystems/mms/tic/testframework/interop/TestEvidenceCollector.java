@@ -51,11 +51,11 @@ public final class TestEvidenceCollector {
 
     public static List<Screenshot> collectScreenshots() {
         if (!Testerra.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
-            return null;
+            return List.of();
         }
 
         if (SCREENSHOT_COLLECTORS.isEmpty()) {
-            return null;
+            return List.of();
         }
 
         List<Screenshot> screenshots = new LinkedList<>();

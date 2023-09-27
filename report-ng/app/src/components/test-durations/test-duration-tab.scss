@@ -1,7 +1,7 @@
 /*!
  * Testerra
  *
- * (C) 2023, Martin Großmann, Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2023, Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,19 +19,8 @@
  * under the License.
  */
 
-.item-label {
-    min-width: 64px;
-    display: inline-block;
-}
-
 .echart {
-    width: 100%;
-    height: 100%;
-}
-
-.header {
-    margin:-10px;
-    padding: 5px;
-    text-align: left;
-    color: white;
+    width: 80em;
+    height: 30em;
+    margin: auto;
 }

@@ -80,12 +80,6 @@ export class App {
                 name: "tests",
                 title: 'Tests'
             },
-            // {
-            //     route: 'threads',
-            //     moduleId: PLATFORM.moduleName('components/threads'),
-            //     nav: true,
-            //     title: 'Threads'
-            // },
             {
                 route: 'failure-aspects',
                 moduleId: PLATFORM.moduleName('components/failure-aspects/failure-aspects'),
@@ -128,11 +122,18 @@ export class App {
                 title: 'Threads'
             },
             {
-                route: 'timings',
-                name: 'timings',
+                route: 'session-timings',
+                name: 'session timings',
                 moduleId: PLATFORM.moduleName('components/session-timings/session-timings-tab'),
                 nav: true,
-                title: 'Timings'
+                title: 'Timings-Sessions'
+            },
+            {
+                route: 'test-durations',
+                name: 'test durations',
+                moduleId: PLATFORM.moduleName('components/test-durations/test-duration-tab'),
+                nav: true,
+                title: 'Timings-Test Durations'
             },
             // {
             //     route: 'timings',

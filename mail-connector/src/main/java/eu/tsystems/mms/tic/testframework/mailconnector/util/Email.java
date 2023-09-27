@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
+import jakarta.mail.Part;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.io.IOUtils;
 
@@ -32,65 +33,42 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
- * E-Mail Objekt, das alle Inhalte eines javax.mail.Message-Objekts ausliest.
+ * E-mail object that reads the content of the javax.mail.Message object
  *
  * @author sepr, clgr
  */
 public class Email implements Loggable {
-    /**
-     * Liste von Anhängen der Mail.
-     */
-    private final Map<String, String> attachments;
 
-    /**
-     * Textinhalt der Mail.
-     */
+    private final List<EmailAttachment> attachments = new ArrayList<>();
+
     private String messageText;
 
-    /**
-     * Message-Object
-     */
     private final MimeMessage message;
 
-    /**
-     * Liste der Empfänger (CC,BCC,TO)
-     */
     private final List<String> recipientList = new LinkedList<String>();
 
-    /**
-     * Liste der Absender
-     */
     private final List<String> senderList = new LinkedList<String>();
 
-    /**
-     * Betreff der Nachricht
-     */
     private String subject = null;
 
     private String messageID;
 
     private Date sentDate;
 
-    /**
-     * Methode liefert die enthaltene Message Instanz
-     *
-     * @return message
-     */
     public MimeMessage getMessage() {
         return this.message;
     }
 
     /**
-     * Methode zur Umwandlung eines Address-Arrays in Empfängerliste
+     * Converts an Address-Array into a list of recipients
      *
-     * @param allRecipients Array, mit zu wandelnden Empfänger-Adressen
+     * @param allRecipients Array containing all recipient addresses
      */
     private void setRecipientsFromAddressArray(final Address[] allRecipients) {
         if (allRecipients != null) {
@@ -101,9 +79,9 @@ public class Email implements Loggable {
     }
 
     /**
-     * Methode zur Umwandlung eines Address-Array in Absenderliste
+     * Converts an Address-Array into a list of senders
      *
-     * @param allSenders Array, mit zu wandelnden Absendern-Adressen
+     * @param allSenders Array containing all sender addresses
      */
     private void setSendersFromAddressArray(final Address[] allSenders) {
         if (allSenders != null) {
@@ -113,49 +91,28 @@ public class Email implements Loggable {
         }
     }
 
-    /**
-     * Methode zum Setzen des Betreffes
-     *
-     * @param subject String E-Mail-Betreff
-     */
     private void setSubject(final String subject) {
         this.subject = subject;
     }
 
-    /**
-     * Methode liefert ein Array aller Empfänger
-     *
-     * @return Address[], Liste aller Empfänger
-     */
     public List<String> getRecipients() {
         return this.recipientList;
     }
 
-    /**
-     * Methode liefert ein Array aller Absender
-     *
-     * @return Address[], Liste aller Absender
-     */
     public List<String> getSenders() {
         return this.senderList;
     }
 
-    /**
-     * Methode liefert den Betreff
-     *
-     * @return String, E-Mail-Betreff
-     */
     public String getSubject() {
         return this.subject;
     }
 
     /**
-     * Konstruktor, der Message-Objekt in FTMessage wandelt.
+     * Constructor, converts a Message object to an FTMessage
      *
-     * @param javaMessage zu wandelndes Message-Objekt.
+     * @param javaMessage Message object to be converted
      */
     public Email(final MimeMessage javaMessage) {
-        attachments = new HashMap<>();
         this.message = javaMessage;
 
         readMessageContents();
@@ -190,37 +147,34 @@ public class Email implements Loggable {
     }
 
     /**
-     * Speichert Textinhalt und Anhänge in den lokalen Feldern.
+     * Saves message text and attachments in local fields
      */
     private void readMessageContents() {
         InputStream is;
         String encoding;
         try {
-            // unterscheiden zwischen Multipart-Mail oder nicht
+            // Check if multipart mail or not
             if (message.getContentType().startsWith("multipart")) {
-                Multipart multipart = (Multipart) message.getContent();
+                Multipart content = (Multipart) message.getContent();
 
-                for (int j = 0; j < multipart.getCount(); j++) {
-                    is = ((Multipart) message.getContent()).getBodyPart(j).getInputStream();
-                    encoding = ((Multipart) message.getContent()).getBodyPart(j).getContentType();
-
+                for (int j = 0; j < content.getCount(); j++) {
+                    Part part = content.getBodyPart(j);
+                    is = part.getInputStream();
+                    encoding = part.getContentType();
                     encoding = getCharSetForEncoding(encoding);
 
-                    String mail;
-                    String attachmentName;
-                    try {
-                        mail = IOUtils.toString(is, encoding).replaceAll("\r", "");
-                    } catch (IllegalCharsetNameException e) {
-                        log().error("Unable to encode attachement", e);
-                        mail = null;
+                    if (part.getDisposition().equals(Part.INLINE)) {
+                        try {
+                            messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
+                        } catch (IllegalCharsetNameException e) {
+                            log().error("Unable to encode input stream", e);
+                        }
+                    } else if (part.getDisposition().equals(Part.ATTACHMENT)) {
+                        String fileName = part.getFileName();
+                        EmailAttachment attachment = new EmailAttachment(fileName, is, encoding);
+                        attachments.add(attachment);
                     }
-                    attachmentName = ((Multipart) message.getContent()).getBodyPart(j).getFileName();
 
-                    if (j == 0) {
-                        messageText = mail;
-                    } else {
-                        attachments.put(attachmentName, mail);
-                    }
                 } // end for
             } else {
                 is = message.getInputStream();
@@ -235,16 +189,17 @@ public class Email implements Loggable {
     }
 
     /**
-     * get charset for encoding from Mail, use UTF-8 as default
+     * Get charset for encoding from Mail, use UTF-8 as default and
+     * ISO_8859_1 for binary files
      *
-     * @param encoding
-     * @return
+     * @param encoding the ContentType of the Part
+     * @return encoding for the given ContentType
      */
     private String getCharSetForEncoding(String encoding) {
         final int indexOfEncoding = encoding.lastIndexOf("charset=");
 
         if (indexOfEncoding > -1) {
-            // das eigentliche encoding aus dem Content Type extrahieren
+            // Extracting the encoding from Content Type
             // CSOFF: MagicNumber
             encoding = encoding.substring(indexOfEncoding + 8);
             // CSON: MagicNumber
@@ -256,65 +211,52 @@ public class Email implements Loggable {
             // Remove quotes from encoding string
             encoding = encoding.replace("\"", "");
         } else {
-            log().warn("No encoding found in email. Using '" + StandardCharsets.UTF_8.name() + "' instead");
-            encoding = StandardCharsets.UTF_8.name();
+            if (encoding.startsWith("image/") || encoding.startsWith("application/octet-stream")) {
+                encoding = StandardCharsets.ISO_8859_1.name();
+            } else {
+                log().warn("No encoding found in email. Using '" + StandardCharsets.UTF_8.name() + "' instead");
+                encoding = StandardCharsets.UTF_8.name();
+            }
         }
 
         return encoding;
     }
 
-    /**
-     * gets the given attachments
-     *
-     * @return the attachments
-     */
-    public Map<String, String> getAttachments() {
+    public List<EmailAttachment> getAttachments() {
         return attachments;
     }
 
     /**
      * Gets the content of the given attachment
      *
-     * @param fileName Name of attachment
-     * @return content of attachment
+     * @param fileName name of the attachment file
+     * @return attachment
      */
-    public String getAttachmentsContent(String fileName) {
-        return attachments.get(fileName);
+    public EmailAttachment getAttachment(String fileName) throws IOException {
+        for (EmailAttachment attachment : attachments) {
+            if (attachment.getFileName().equals(fileName)) {
+                return attachment;
+            }
+        }
+        return null;
     }
 
-    /**
-     * Gibt Textinhalt der E-Mail zurück.
-     *
-     * @return Textinhalt der E-Mail als String
-     */
     public String getMessageText() {
         return messageText;
     }
 
-    /**
-     * @return the sentDate
-     */
     public Date getSentDate() {
         return sentDate;
     }
 
-    /**
-     * @param sentDate the sentDate to set
-     */
     public void setSentDate(Date sentDate) {
         this.sentDate = sentDate;
     }
 
-    /**
-     * @return the messageID
-     */
     public String getMessageID() {
         return messageID;
     }
 
-    /**
-     * @param messageID the messageID to set
-     */
     public void setMessageID(String messageID) {
         this.messageID = messageID;
     }

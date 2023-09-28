@@ -21,14 +21,14 @@
 
 import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {AbstractViewModel} from "../abstract-view-model";
+import {AbstractViewModel} from "../../abstract-view-model";
 import * as echarts from 'echarts';
 import {EChartsOption} from 'echarts';
-import "./session-timings-tab.scss";
+import "./session-timings.scss";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
-import {StatusConverter} from "../../services/status-converter";
+import {StatusConverter} from "../../../services/status-converter";
 import moment from "moment";
-import {MethodType} from "../../services/report-model/framework_pb";
+import {MethodType} from "../../../services/report-model/framework_pb";
 
 @autoinject()
 export class SessionTimings extends AbstractViewModel {

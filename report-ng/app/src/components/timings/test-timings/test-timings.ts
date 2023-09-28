@@ -21,20 +21,20 @@
 
 import {autoinject, bindable, observable} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {AbstractViewModel} from "../abstract-view-model";
+import {AbstractViewModel} from "../../abstract-view-model";
 import * as echarts from 'echarts';
 import {EChartsOption} from 'echarts';
-import "./test-duration-tab.scss";
+import "./test-timings.scss";
 import {ExecutionStatistics} from "services/statistic-models";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import moment from "moment";
-import {data} from "../../services/report-model";
-import {StatusConverter} from "../../services/status-converter";
+import {data} from "../../../services/report-model";
+import {StatusConverter} from "../../../services/status-converter";
 import MethodType = data.MethodType;
 import IMethodContext = data.MethodContext;
 
 @autoinject()
-export class TestDurationTab extends AbstractViewModel {
+export class TestTimings extends AbstractViewModel {
     private _chart: echarts.ECharts;
     private _executionStatistics: ExecutionStatistics
     private _option: EChartsOption;

@@ -122,18 +122,11 @@ export class App {
                 title: 'Threads'
             },
             {
-                route: 'session-timings',
-                name: 'session timings',
-                moduleId: PLATFORM.moduleName('components/session-timings/session-timings-tab'),
+                route: 'timings',
+                name: 'timings',
+                moduleId: PLATFORM.moduleName('components/timings/timings'),
                 nav: true,
-                title: 'Timings-Sessions'
-            },
-            {
-                route: 'test-durations',
-                name: 'test durations',
-                moduleId: PLATFORM.moduleName('components/test-durations/test-duration-tab'),
-                nav: true,
-                title: 'Timings-Test Durations'
+                title: 'Timings'
             },
             // {
             //     route: 'timings',

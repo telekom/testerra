@@ -68,6 +68,8 @@ export class Timings {
     }
 
     private _tabClicked(routeConfig: RouteConfig) {
-        this._router.navigateToRoute(routeConfig.name);
+        if (this._router.currentInstruction.config.name !== routeConfig.name) {
+            this._router.navigateToRoute(routeConfig.name);
+        }
     }
 }

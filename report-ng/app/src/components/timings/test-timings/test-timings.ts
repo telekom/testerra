@@ -193,6 +193,10 @@ export class TestTimings extends AbstractViewModel {
     }
 
     private _showConfigurationChanged() {
+        if(!this._showConfigurationMethods && this.queryParams.methodId && this._methodDetails.find(method => method.methodContext.contextValues.id === this.queryParams.methodId).methodContext.methodType == MethodType.CONFIGURATION_METHOD){
+            delete this.queryParams.methodId
+            this._methodId = null;
+        }
         this._getLookUpOptions();
         this._filterOnce();
     }

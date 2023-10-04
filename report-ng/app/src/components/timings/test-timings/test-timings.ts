@@ -38,7 +38,6 @@ export class TestTimings extends AbstractViewModel {
     private _chart: echarts.ECharts;
     private _executionStatistics: ExecutionStatistics
     private _option: EChartsOption;
-    private _attached = false;
     private _hasEnded = false;
     private _methodDetails: MethodDetails[];
     private _labels: string[];
@@ -85,7 +84,7 @@ export class TestTimings extends AbstractViewModel {
             if (this.queryParams.methodId) {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
                 this._highlightData();
-                this.updateUrl({methodId: this.queryParams.methodId, rangeNum: this._rangeNum});
+                this.updateUrl({methodId: this.queryParams.methodId});
                 this._methodId = this.queryParams.methodId;
             } else if (this._inputValue?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._inputValue);
@@ -119,9 +118,9 @@ export class TestTimings extends AbstractViewModel {
         }
     }
 
-    selectionChanged(){
+    selectionChanged() { // called when input from lookup text field is deleted manually
         this._setChartOption(); // overwrites color highlighting (reset)
-        if (this._inputValue.length == 0){
+        if (this._inputValue.length == 0) {
             this._methodId = undefined;
             this.queryParams.methodId = undefined;
             this.updateUrl({rangeNum: this._rangeNum, methodId: this._methodId});
@@ -148,14 +147,14 @@ export class TestTimings extends AbstractViewModel {
                     let methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);
                     });
-                    methodDetails.forEach(methodDetails => {
-                        this._methodDetails.push(methodDetails);
+                    methodDetails.forEach(methodDetail => {
+                        this._methodDetails.push(methodDetail);
                     })
                 })
 
             const testDurationMethods = [];
 
-            if(this.queryParams.methodId && this._methodDetails){
+            if (this.queryParams.methodId && this._methodDetails) { //prevents that input disappears after refreshing the page
                 const inputMethod = this._methodDetails.find(method => method.methodContext.contextValues.id === this.queryParams.methodId);
                 const inputValueFromQueryParam = inputMethod.methodContext.contextValues.name;
                 if (inputValueFromQueryParam) {
@@ -184,7 +183,6 @@ export class TestTimings extends AbstractViewModel {
 
             this._loading = false;
         }).finally(() => {
-            this._attached = true;
             this._setChartOption()
             this._methodId = this.queryParams.methodId;
             this._rangeNum = this.queryParams.rangeNum
@@ -197,7 +195,6 @@ export class TestTimings extends AbstractViewModel {
     private _showConfigurationChanged() {
         this._getLookUpOptions();
         this._filterOnce();
-        this._methodNameInput = this.queryParams.methodId; //needs to be set here, otherwise the text input might disappear after changing the configuration method visibility
     }
 
     private _filterOnce() {
@@ -311,20 +308,20 @@ export class TestTimings extends AbstractViewModel {
     }
 
     private _calculateDurationAxis(durations: number[]) {
-        const rangeNum = this.queryParams.rangeNum;
+        this._rangeNum = this.queryParams.rangeNum;
         durations.sort((a, b) => a - b)
 
         let maxDuration = durations[durations.length - 1];
-        const remainder = maxDuration % rangeNum;
-        maxDuration = remainder === 0 ? maxDuration : maxDuration + (rangeNum - remainder);
+        const remainder = maxDuration % this._rangeNum;
+        maxDuration = remainder === 0 ? maxDuration : maxDuration + (this._rangeNum - remainder);
 
-        const sectionRange = maxDuration / rangeNum;
+        const sectionRange = maxDuration / this._rangeNum;
 
-        const resultDurations: number[] = Array(rangeNum).fill(0);
-        const resultSections: string[] = Array(rangeNum).fill("");
+        const resultDurations: number[] = Array(this._rangeNum).fill(0);
+        const resultSections: string[] = Array(this._rangeNum).fill("");
 
         // calculate ranges
-        for (let i = 0; i < rangeNum; i++) {
+        for (let i = 0; i < this._rangeNum; i++) {
             const start = i * sectionRange;
             const end = (i + 1) * sectionRange - 1;
             resultSections[i] = `${start}-${end}s`;

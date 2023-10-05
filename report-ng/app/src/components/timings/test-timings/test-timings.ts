@@ -256,10 +256,12 @@ export class TestTimings extends AbstractViewModel {
             xAxis: {
                 type: 'category',
                 data: this._labels,
+                name: 'duration'
             },
             yAxis: {
                 type: 'value',
                 minInterval: 1, //allows only integer values
+                name: 'number of test cases'
             },
             series: [
                 {

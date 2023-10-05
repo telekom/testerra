@@ -151,8 +151,8 @@ export class SessionTimings extends AbstractViewModel {
                         tooltipString += `<b>browser version:</b> ${this._bars[dataIndex].sessionInformation.browserVersion} <br>`;
                         tooltipString += `<b>server:</b> ${this._bars[dataIndex].sessionInformation.server} <br>`;
                         tooltipString += `<b>node:</b> ${this._bars[dataIndex].sessionInformation.node} <br>`;
-                        tooltipString += `<b>session start duration:</b> ${this._bars[dataIndex].sessionInformation.sessionDuration} <br>`;
-                        tooltipString += `<b>base url start duration:</b> ${this._bars[dataIndex].sessionInformation.baseurlDuration} <br>`;
+                        tooltipString += `<b>session start duration:</b> ${this._bars[dataIndex].sessionInformation.sessionDuration}s <br>`;
+                        tooltipString += `<b>base url start duration:</b> ${this._bars[dataIndex].sessionInformation.baseurlDuration}s <br>`;
                         tooltipString += `<b>test case(s):</b> ` + testNames.join(', ');
 
 
@@ -167,9 +167,11 @@ export class SessionTimings extends AbstractViewModel {
                 type: 'time',
                 min: this._testDuration[0],
                 max: this._testDuration[1],
+                name: 'total test duration',
             },
             yAxis: {
                 type: 'value',
+                name: 'load duration in seconds',
             },
             series: [
                 {

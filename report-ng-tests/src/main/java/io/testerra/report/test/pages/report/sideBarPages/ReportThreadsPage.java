@@ -27,10 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import io.testerra.report.test.pages.AbstractReportPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReportThreadsPage extends AbstractReportPage {
 
@@ -61,18 +57,12 @@ public class ReportThreadsPage extends AbstractReportPage {
         return createPage(ReportThreadsPage.class);
     }
 
-    public void assertMethodBoxIsSelected(String method) {
-        UiElement subElement = testThreadReport.find(
-                By.xpath("//div[contains(@class, 'vis-item') and contains(@class, 'vis-range') and .//div[text()='" + method + "']]"));
-
-        // make list to avoid checking wrong entry, e.g. retried tests have multiple entries, which aren't distinguishable explicitly
-        final List<UiElement> list = subElement.list().stream().collect(Collectors.toList());
-
-        final boolean isSelected = list.stream().anyMatch(entry -> entry.expect().attribute("class").getActual().contains("vis-selected"));
-        Assert.assertTrue(isSelected, String.format("Method '%s' is selected in Threads Overview", method));
+    public void assertTooltipCorrect(String method) {
+        UiElement tooltipHeader = pageContent.find(By.xpath("//echart//div[@class='header']"));
+        tooltipHeader.expect().text().contains(method).is(true);
     }
 
-    public ReportThreadsPage clickSearchBar(){
+    public ReportThreadsPage clickSearchBar() {
         testMethodSearchbar.click();
         return createPage(ReportThreadsPage.class);
     }

@@ -27,13 +27,28 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
+import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.sikuli.api.DefaultScreenRegion;
+import org.sikuli.api.ImageTarget;
+import org.sikuli.api.ScreenLocation;
+import org.sikuli.api.ScreenRegion;
 
-import java.awt.Color;
+import java.awt.*;
+import java.net.URL;
+import java.time.Duration;
+import java.util.Collections;
+
+import static eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider.PROPERTY_MANAGER;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -131,6 +146,59 @@ public final class DesktopWebDriverUtils implements Loggable {
         if (Testerra.Properties.DEMO_MODE.asBool()) {
             UiElementHighlighter elementHighlighter = Testerra.getInjector().getInstance(UiElementHighlighter.class);
             elementHighlighter.highlight(webDriver, webElement, new Color(255, 255, 0));
+        }
+    }
+
+    public void clickByImage(final WebDriver driver, URL url) {
+        final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
+        Actions action = new Actions(driver);
+        action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).click().build().perform();
+    }
+
+    public void mouseOverByImage(final WebDriver driver, URL url) {
+        final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
+        Actions action = new Actions(driver);
+        action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).build().perform();
+    }
+
+    private ScreenRegion getElementPositionByImage(final WebDriver driver, URL url) {
+        WebDriverScreen webDriverScreen;
+        webDriverScreen = new WebDriverScreen(driver);
+        ScreenRegion webdriverRegion = new DefaultScreenRegion(webDriverScreen);
+
+        ImageTarget target = new ImageTarget(url);
+        ScreenRegion imageRegion;
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        boolean elementFound = false;
+
+        // Calculate scroll height from viewport size and
+        int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.9);
+        System.out.println(scrollHeight);
+
+        while (true) {
+            imageRegion = webdriverRegion.find(target);
+            // Check if the element is visible in the current viewport
+            if (imageRegion != null) {
+                // Element is visible, break out of the loop
+                Rectangle r = imageRegion.getBounds();
+                log().info("image " + url + " found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
+                elementFound = true;
+                break;
+            } else {
+                // Check if the bottom of the page is reached
+                boolean isScrolledToBottom = (boolean) js.executeScript("return (window.innerHeight + window.scrollY) >= document.body.scrollHeight;");
+                if (!isScrolledToBottom) {
+                    // Scroll down to further search for the element
+                    js.executeScript("window.scrollBy(0, " + scrollHeight + ");");
+                } else {
+                    break;
+                }
+            }
+        }
+        if (elementFound) {
+            return imageRegion;
+        } else {
+            throw new RuntimeException("Element not found similar to " + url);
         }
     }
 }

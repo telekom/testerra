@@ -42,7 +42,9 @@ import io.testerra.report.test.pages.utils.TestData;
 public class ReportMethodPageTest extends AbstractReportTest {
 
 
-    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForStepsType")
+    // Deactivated testcase due to renewed threads view (echarts) since it is not that easy possible
+    // to access elements such as the specific testcases inside the canvas element of echarts
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForStepsType", enabled = false)
     public void testT01_methodOverviewIsCorrectForStepsType(TestData data) {
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
@@ -59,12 +61,12 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
         reportStepsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportStepsTab.clickThreadLink();
-        // Deactivated test step due to renewed threads view (echarts) since it is not that easy possible
-        // to access elements such as the specific testcases inside the canvas element of echarts
-//        reportThreadsPage.assertMethodBoxIsSelected(method);
+        reportThreadsPage.assertMethodBoxIsSelected(method);
     }
 
-    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
+    // Deactivated testcase due to renewed threads view (echarts) since it is not that easy possible
+    // to access elements such as the specific testcases inside the canvas element of echarts
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType", enabled = false)
     public void testT01_methodOverviewIsCorrectForDetailsType(TestData data) {
         String method = data.getMethod();
         String methodClass = data.getMethodClass();
@@ -81,9 +83,7 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
         reportDetailsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportDetailsTab.clickThreadLink();
-        // Deactivated test step due to renewed threads view (echarts) since it is not that easy possible
-        // to access elements such as the specific testcases inside the canvas element of echarts
-//        reportThreadsPage.assertMethodBoxIsSelected(method);
+        reportThreadsPage.assertMethodBoxIsSelected(method);
     }
 
     @Test

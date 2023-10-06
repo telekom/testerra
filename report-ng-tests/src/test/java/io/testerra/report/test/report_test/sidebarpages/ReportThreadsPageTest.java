@@ -36,7 +36,7 @@ public class ReportThreadsPageTest extends AbstractReportTest {
 
     // Deactivated testcase due to renewed threads view (echarts) since it is not that easy possible
     // to access elements such as the specific testcases inside the canvas element of echarts
-/*    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestMethodForEachStatus", enabled = false)
     public void testT01_checkSearchForMethodsSelectionWorksCorrectly(String method) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
@@ -49,6 +49,6 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         reportThreadsPage = reportThreadsPage.clickSearchBar();
         reportThreadsPage = reportThreadsPage.selectMethod(method);
         reportThreadsPage.assertMethodBoxIsSelected(method);
-    }*/
+    }
 
 }

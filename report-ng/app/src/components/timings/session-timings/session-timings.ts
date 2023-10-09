@@ -67,7 +67,7 @@ export class SessionTimings extends AbstractViewModel {
                     let methodContexts = classStatistic.methodContexts;
                     methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
 
-                    let methodDetails = methodContexts.map(methodContext => {
+                    const methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);
                     });
                     methodDetails.forEach(methodDetails => {

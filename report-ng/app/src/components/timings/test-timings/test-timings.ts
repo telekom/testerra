@@ -54,6 +54,7 @@ export class TestTimings extends AbstractViewModel {
     private _lookUpOptions;
     @observable private selectedOptionId;
     private _methodNameInput;
+    private static readonly TEST_NUMBER_LIMIT = 20;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -144,7 +145,7 @@ export class TestTimings extends AbstractViewModel {
                         methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
                     }
 
-                    let methodDetails = methodContexts.map(methodContext => {
+                    const methodDetails = methodContexts.map(methodContext => {
                         return new MethodDetails(methodContext, classStatistic);
                     });
                     methodDetails.forEach(methodDetail => {
@@ -229,7 +230,7 @@ export class TestTimings extends AbstractViewModel {
                         const testNames = this._bars[dataIndex].methodList.map(method => method.name);
                         let tooltipString = `${testNumber} test case(s): <br>`;
 
-                        if (testNumber < 20) {
+                        if (testNumber < this.TEST_NUMBER_LIMIT) {
                             tooltipString += "<ul>";
                             testNames.forEach(testCase => {
                                 tooltipString += `<li>${testCase}</li>`;

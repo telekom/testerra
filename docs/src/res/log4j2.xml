@@ -10,7 +10,10 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Logger name="org.asynchttpclient" level="info" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+        <Root level="debug">
             <AppenderRef ref="CONSOLE"/>
         </Root>
     </Loggers>

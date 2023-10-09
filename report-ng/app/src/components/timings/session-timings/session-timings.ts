@@ -34,7 +34,6 @@ import {MethodType} from "../../../services/report-model/framework_pb";
 export class SessionTimings extends AbstractViewModel {
     private _chart: echarts.ECharts;
     private _option: EChartsOption;
-    private _sessionMetrics;
     private _executionStatistics;
     private _methodDetails;
     private _baseURLData;
@@ -49,7 +48,6 @@ export class SessionTimings extends AbstractViewModel {
         private _statisticsGenerator: StatisticsGenerator,
     ) {
         super();
-        this._sessionMetrics = [];
         this._executionStatistics = [];
         this._methodDetails = [];
         this._bars = [];
@@ -81,7 +79,6 @@ export class SessionTimings extends AbstractViewModel {
         const sessionInformationArray = [];
 
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
-            this._sessionMetrics = sessionMetrics;
             sessionMetrics.forEach(metric => {
                 const methodList = [];
                 this._methodDetails.forEach(method => {
@@ -145,16 +142,16 @@ export class SessionTimings extends AbstractViewModel {
                         const dataIndex = params[0].dataIndex;
 
                         const testNames = this._bars[dataIndex].sessionInformation.methodList.map(method => method.methodContext.contextValues.name);
-                        let tooltipString = `<b>session name:</b> ${this._bars[dataIndex].sessionInformation.sessionName} <br>`;
-                        tooltipString += `<b>session id:</b> ${this._bars[dataIndex].sessionInformation.sessionId} <br>`;
-                        tooltipString += `<b>browser name:</b> ${this._bars[dataIndex].sessionInformation.browserName} <br>`;
-                        tooltipString += `<b>browser version:</b> ${this._bars[dataIndex].sessionInformation.browserVersion} <br>`;
-                        tooltipString += `<b>server:</b> ${this._bars[dataIndex].sessionInformation.server} <br>`;
-                        tooltipString += `<b>node:</b> ${this._bars[dataIndex].sessionInformation.node} <br>`;
-                        tooltipString += `<b>session start duration:</b> ${this._bars[dataIndex].sessionInformation.sessionDuration}s <br>`;
-                        tooltipString += `<b>base url start duration:</b> ${this._bars[dataIndex].sessionInformation.baseurlDuration}s <br>`;
-                        tooltipString += `<b>test case(s):</b> ` + testNames.join(', ');
-
+                        let tooltipString = `<b>Session name:</b> ${this._bars[dataIndex].sessionInformation.sessionName} <br>`;
+                        tooltipString += `<b>Session id:</b> ${this._bars[dataIndex].sessionInformation.sessionId} <br>`;
+                        tooltipString += `<b>Browser name:</b> ${this._bars[dataIndex].sessionInformation.browserName} <br>`;
+                        tooltipString += `<b>Browser version:</b> ${this._bars[dataIndex].sessionInformation.browserVersion} <br>`;
+                        tooltipString += `<b>Server:</b> ${this._bars[dataIndex].sessionInformation.server} <br>`;
+                        tooltipString += `<b>Node:</b> ${this._bars[dataIndex].sessionInformation.node} <br>`;
+                        tooltipString += `<b>Session start duration:</b> ${this._bars[dataIndex].sessionInformation.sessionDuration}s <br>`;
+                        tooltipString += `<b>Base url start duration:</b> ${this._bars[dataIndex].sessionInformation.baseurlDuration}s <br>`;
+                        tooltipString += `<b>Starttime:</b> ${params[0].axisValueLabel} <br>`;
+                        tooltipString += `<b>Test case(s):</b> ` + testNames.join(', ');
 
                         return tooltipString;
                     }

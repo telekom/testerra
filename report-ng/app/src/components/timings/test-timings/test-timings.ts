@@ -47,7 +47,7 @@ export class TestTimings extends AbstractViewModel {
     private _loading = false;
     private _searchRegexp: RegExp;
     private _inputValue = '';
-    private _methodId;
+    private _methodId: string;
     @bindable private _rangeNum;
     private _rangeOptions = ['5','10','15','20'];
     private _showConfigurationMethods: boolean = null;
@@ -67,7 +67,7 @@ export class TestTimings extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        if(this.queryParams.rangeNum == undefined){
+        if(!this.queryParams.rangeNum){
             this._rangeNum = '10';
             this.queryParams.rangeNum = parseInt(this._rangeNum);
         }

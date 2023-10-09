@@ -1,7 +1,7 @@
 <!--
   ~ Testerra
   ~
-  ~ (C) 2023, Telekom MMS GmbH, Deutsche Telekom AG
+  ~ (C) 2023, Selina Natschke, Telekom MMS GmbH, Deutsche Telekom AG
   ~
   ~ Deutsche Telekom AG and all other contributors /
   ~ copyright owners license this file to you under the Apache
@@ -21,16 +21,16 @@
 
 <template>
     <mdc-layout-grid>
-            <mdc-layout-grid-cell span="12">
-                <mdc-tab-bar>
-                    <mdc-tab repeat.for="route of _router.routes"
-                             if.bind="route.nav"
-                             icon.bind="route.settings.icon"
-                             label="${route.title + (route.settings.count?' ('+route.settings.count+')':'')}"
-                             active.bind="route.navModel.isActive"
-                             click.delegate="_tabClicked(route)"></mdc-tab>
-                </mdc-tab-bar>
-            </mdc-layout-grid-cell>
+        <mdc-layout-grid-cell span="12">
+            <mdc-tab-bar>
+                <mdc-tab active.bind="route.navModel.isActive"
+                         click.delegate="_tabClicked(route)"
+                         icon.bind="route.settings.icon"
+                         if.bind="route.nav"
+                         label="${route.title + (route.settings.count?' ('+route.settings.count+')':'')}"
+                         repeat.for="route of _router.routes"></mdc-tab>
+            </mdc-tab-bar>
+        </mdc-layout-grid-cell>
     </mdc-layout-grid>
     <router-view></router-view>
 </template>

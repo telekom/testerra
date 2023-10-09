@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2023, Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2023, Selina Natschke, Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -107,7 +107,7 @@ export class SessionTimings extends AbstractViewModel {
         })
     }
 
-    private _prepareData(sessionInformationArray: ISessionInformation[]){
+    private _prepareData(sessionInformationArray: ISessionInformation[]) {
         this._sessionData = [];
         this._baseURLData = [];
         sessionInformationArray.forEach(info => {
@@ -123,7 +123,7 @@ export class SessionTimings extends AbstractViewModel {
         })
     }
 
-    private _setChartOption(){
+    private _setChartOption() {
         this._option = {
             barMinWidth: 5,
             dataZoom: [

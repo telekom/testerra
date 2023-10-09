@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2023, Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2023, Selina Natschke, Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -49,7 +49,7 @@ export class TestTimings extends AbstractViewModel {
     private _inputValue = '';
     private _methodId: string;
     @bindable private _rangeNum;
-    private _rangeOptions = ['5','10','15','20'];
+    private _rangeOptions = ['5', '10', '15', '20'];
     private _showConfigurationMethods: boolean = null;
     private _lookUpOptions;
     @observable private selectedOptionId;
@@ -67,7 +67,7 @@ export class TestTimings extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        if(!this.queryParams.rangeNum){
+        if (!this.queryParams.rangeNum) {
             this._rangeNum = '10';
             this.queryParams.rangeNum = parseInt(this._rangeNum);
         }
@@ -78,39 +78,8 @@ export class TestTimings extends AbstractViewModel {
         this._filter();
     }
 
-    private _getLookUpOptions() {
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            let methodContexts:IMethodContext[];
-            if (this.queryParams.methodId) {
-                methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
-                this._highlightData();
-                this.updateUrl({methodId: this.queryParams.methodId});
-                this._methodId = this.queryParams.methodId;
-            } else if (this._inputValue?.length > 0) {
-                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._inputValue);
-                delete this.queryParams.methodId;
-                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts)
-                    .filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp))
-            } else {
-                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
-            }
-            if (!this._showConfigurationMethods) {
-                methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-            }
-            this._lookUpOptions = methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                    if (a.name > b.name) {
-                        return 1;
-                    }
-                return 0;
-            });
-        });
-    };
-
-    selectedOptionIdChanged(n: string){
-        if(n){
+    selectedOptionIdChanged(n: string) {
+        if (n) {
             this._methodId = n;
             this.queryParams.methodId = n
             this.updateUrl(this.queryParams);
@@ -128,7 +97,38 @@ export class TestTimings extends AbstractViewModel {
         }
     }
 
-    private _filter(){
+    private _getLookUpOptions() {
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            let methodContexts: IMethodContext[];
+            if (this.queryParams.methodId) {
+                methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
+                this._highlightData();
+                this.updateUrl({methodId: this.queryParams.methodId});
+                this._methodId = this.queryParams.methodId;
+            } else if (this._inputValue?.length > 0) {
+                this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._inputValue);
+                delete this.queryParams.methodId;
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts)
+                    .filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp))
+            } else {
+                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
+            }
+            if (!this._showConfigurationMethods) {
+                methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
+            }
+            this._lookUpOptions = methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+        });
+    };
+
+    private _filter() {
         this._loading = true;
 
         this._methodDetails = [];
@@ -186,14 +186,14 @@ export class TestTimings extends AbstractViewModel {
             this._setChartOption()
             this._methodId = this.queryParams.methodId;
             this._rangeNum = this.queryParams.rangeNum
-            if(this.queryParams.methodId != undefined){
+            if (this.queryParams.methodId != undefined) {
                 this._highlightData()
             }
         })
     }
 
     private _showConfigurationChanged() {
-        if(!this._showConfigurationMethods && this.queryParams.methodId && this._methodDetails.find(method => method.methodContext.contextValues.id === this.queryParams.methodId).methodContext.methodType == MethodType.CONFIGURATION_METHOD){
+        if (!this._showConfigurationMethods && this.queryParams.methodId && this._methodDetails.find(method => method.methodContext.contextValues.id === this.queryParams.methodId).methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
             delete this.queryParams.methodId
             this._methodId = null;
         }
@@ -207,10 +207,10 @@ export class TestTimings extends AbstractViewModel {
         }
     }
 
-    private _setChartOption(){
+    private _setChartOption() {
         this._option = {
             tooltip: {
-                position: function(point){
+                position: function (point) {
                     return {top: 0, left: point[0]};
                 },
                 trigger: 'axis',
@@ -279,12 +279,12 @@ export class TestTimings extends AbstractViewModel {
         if (this._bars.length > 0) {
             const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === this._methodId));
             this._option.series[0].data = this._data.map((item, index) => {
-                    return {
-                        value: item,
-                        itemStyle: {
-                            color: (index === dataIndex) ? '#6897EA' : '#c8d4f4'
-                        }
-                    };
+                return {
+                    value: item,
+                    itemStyle: {
+                        color: (index === dataIndex) ? '#6897EA' : '#c8d4f4'
+                    }
+                };
             });
             this._chart.setOption(this._option)
         }
@@ -348,8 +348,8 @@ export class TestTimings extends AbstractViewModel {
         return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
     }
 
-    private _rangeNumChanged(){
-        if(this._rangeNum != this.queryParams.rangeNum) {
+    private _rangeNumChanged() {
+        if (this._rangeNum != this.queryParams.rangeNum) {
             this._filter();
             this.queryParams.rangeNum = this._rangeNum
         }

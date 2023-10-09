@@ -1,7 +1,7 @@
 <!--
   ~ Testerra
   ~
- * (C) 2023, Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2023, Selina Natschke, Telekom MMS GmbH, Deutsche Telekom AG
   ~
   ~ Deutsche Telekom AG and all other contributors /
   ~ copyright owners license this file to you under the Apache
@@ -23,35 +23,36 @@
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="4">
-                <mdc-select class="w50"
+                <mdc-select change.delegate="_rangeNumChanged()"
+                            class="w50"
                             label="Number of Sections"
-                            value.bind="_rangeNum"
-                            change.delegate="_rangeNumChanged()"
                             outlined
+                            value.bind="_rangeNum"
                 >
                     <mdc-list>
                         <mdc-list-item repeat.for="range of _rangeOptions"
                                        value="${range}"
-                        >${range}</mdc-list-item>
+                        >${range}
+                        </mdc-list-item>
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4">
                 <div mdc-menu-surface-anchor>
-                    <mdc-text-field label="Method"
+                    <mdc-text-field class="w100"
+                                    input.delegate="selectionChanged()"
+                                    label="Method"
                                     outlined
                                     ref="_methodNameInput"
-                                    class="w100"
                                     value.bind="_inputValue"
-                                    input.delegate="selectionChanged()"
                     ></mdc-text-field>
                     <mdc-text-field-helper-line></mdc-text-field-helper-line>
-                    <mdc-lookup options.bind="_lookUpOptions"
-                                display-field="name"
+                    <mdc-lookup display-field="name"
+                                input.bind="_methodNameInput"
+                                options.bind="_lookUpOptions"
+                                preload-options
                                 value-field="id"
                                 value.bind="selectedOptionId"
-                                input.bind="_methodNameInput"
-                                preload-options
                     >
                         <template replace-part="option">
                             <span innerhtml="${option.name|highlightText:_searchRegexp}"></span>
@@ -59,7 +60,7 @@
                     </mdc-lookup>
                 </div>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="4" position="middle" class="flex">
+            <mdc-layout-grid-cell class="flex" position="middle" span="4">
                 <mdc-form-field class="right-aligned">
                     <button change.delegate="_showConfigurationChanged()"
                             mdc-switch
@@ -70,10 +71,10 @@
 
             <mdc-layout-grid-cell span="12">
                 <mdc-card>
-                    <div mdc-subtitle2 class="card-headline">Test Durations</div>
+                    <div class="card-headline" mdc-subtitle2>Test Durations</div>
                     <mdc-list-divider></mdc-list-divider>
                     <!--Diagram Test Duration-->
-                    <echart options.bind="_option" chart.bind="_chart" class="echart-timings"></echart>
+                    <echart chart.bind="_chart" class="echart-timings" options.bind="_option"></echart>
                 </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

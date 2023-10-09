@@ -19,11 +19,10 @@
  * under the License.
  */
 
-import {autoinject, bindable, observable} from 'aurelia-framework';
+import {autoinject, observable} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
-import * as echarts from 'echarts';
-import {EChartsOption} from 'echarts';
+import {ECharts, EChartsOption} from 'echarts';
 import "./test-timings.scss";
 import {ExecutionStatistics} from "services/statistic-models";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
@@ -35,8 +34,11 @@ import IMethodContext = data.MethodContext;
 
 @autoinject()
 export class TestTimings extends AbstractViewModel {
-    private _chart: echarts.ECharts;
-    private _executionStatistics: ExecutionStatistics
+    private static readonly TEST_NUMBER_LIMIT = 20;
+    private static readonly TEST_COLOR = '#6897EA';
+    private static readonly TEST_COLOR_PALE = '#c8d4f4';
+    private _chart: ECharts;
+    private _executionStatistics: ExecutionStatistics;
     private _option: EChartsOption;
     private _hasEnded = false;
     private _methodDetails: MethodDetails[];
@@ -48,13 +50,11 @@ export class TestTimings extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _inputValue = '';
     private _methodId: string;
-    @bindable private _rangeNum;
-    private _rangeOptions = ['5', '10', '15', '20'];
+    private _rangeOptions = ['5', '10', '15', '20']; // ranges of time in seconds that the test durations can be sorted in
     private _showConfigurationMethods: boolean = null;
     private _lookUpOptions;
     @observable private selectedOptionId;
     private _methodNameInput;
-    private static readonly TEST_NUMBER_LIMIT = 20;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -68,10 +68,7 @@ export class TestTimings extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        if (!this.queryParams.rangeNum) {
-            this._rangeNum = '10';
-            this.queryParams.rangeNum = parseInt(this._rangeNum);
-        }
+        if (!this.queryParams.rangeNum) this.queryParams.rangeNum = '10';// only set range 10 if there is no range at all (e.g. when navigation from another view)
         if (params.config) {
             this._showConfigurationMethods = !!params.config.toLowerCase();
         }
@@ -79,10 +76,10 @@ export class TestTimings extends AbstractViewModel {
         this._filter();
     }
 
-    selectedOptionIdChanged(n: string) {
-        if (n) {
-            this._methodId = n;
-            this.queryParams.methodId = n
+    selectedOptionIdChanged(methodId: string) {
+        if (methodId) {
+            this._methodId = methodId;
+            this.queryParams.methodId = methodId
             this.updateUrl(this.queryParams);
             this._highlightData()
         }
@@ -92,8 +89,8 @@ export class TestTimings extends AbstractViewModel {
         this._setChartOption(); // overwrites color highlighting (reset)
         if (this._inputValue.length == 0) {
             this._methodId = undefined;
-            this.queryParams.methodId = undefined;
-            this.updateUrl({rangeNum: this._rangeNum, methodId: this._methodId});
+            delete this.queryParams.methodId;
+            this.updateUrl({rangeNum: this.queryParams.rangeNum, methodId: this._methodId});
             this._getLookUpOptions();
         }
     }
@@ -138,19 +135,11 @@ export class TestTimings extends AbstractViewModel {
             this._executionStatistics = executionStatistics;
 
             executionStatistics.classStatistics
-                .forEach(classStatistic => {
-                    let methodContexts = classStatistic.methodContexts;
-
-                    if (!this._showConfigurationMethods) {
-                        methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-                    }
-
-                    const methodDetails = methodContexts.map(methodContext => {
-                        return new MethodDetails(methodContext, classStatistic);
-                    });
-                    methodDetails.forEach(methodDetail => {
-                        this._methodDetails.push(methodDetail);
-                    })
+                .flatMap(classStatistic => {
+                    this._methodDetails = executionStatistics.classStatistics
+                        .flatMap(classStatistic => classStatistic.methodContexts)
+                        .filter(methodContext => this._showConfigurationMethods || methodContext.methodType == MethodType.TEST_METHOD)
+                        .map(methodContext => new MethodDetails(methodContext, classStatistic))
                 })
 
             const testDurationMethods = [];
@@ -163,7 +152,7 @@ export class TestTimings extends AbstractViewModel {
                 }
             }
 
-            this._methodDetails.forEach(method => {
+            this._methodDetails.map(method => {
                 const testDurationMethod: ITestDurationMethod = {
                     id: method.methodContext.contextValues.id,
                     name: method.methodContext.contextValues.name,
@@ -181,12 +170,10 @@ export class TestTimings extends AbstractViewModel {
             }
 
             this.updateUrl(this.queryParams);
-
-            this._loading = false;
         }).finally(() => {
+            this._loading = false;
             this._setChartOption()
             this._methodId = this.queryParams.methodId;
-            this._rangeNum = this.queryParams.rangeNum
             if (this.queryParams.methodId != undefined) {
                 this._highlightData()
             }
@@ -194,7 +181,9 @@ export class TestTimings extends AbstractViewModel {
     }
 
     private _showConfigurationChanged() {
-        if (!this._showConfigurationMethods && this.queryParams.methodId && this._methodDetails.find(method => method.methodContext.contextValues.id === this.queryParams.methodId).methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
+        if (!this._showConfigurationMethods
+            && this.queryParams.methodId
+            && this._methodDetails.find(method => method.methodContext.contextValues.id === this.queryParams.methodId).methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
             delete this.queryParams.methodId
             this._methodId = null;
         }
@@ -230,7 +219,7 @@ export class TestTimings extends AbstractViewModel {
                         const testNames = this._bars[dataIndex].methodList.map(method => method.name);
                         let tooltipString = `${testNumber} test case(s): <br>`;
 
-                        if (testNumber < this.TEST_NUMBER_LIMIT) {
+                        if (testNumber < TestTimings.TEST_NUMBER_LIMIT) {
                             tooltipString += "<ul>";
                             testNames.forEach(testCase => {
                                 tooltipString += `<li>${testCase}</li>`;
@@ -269,7 +258,7 @@ export class TestTimings extends AbstractViewModel {
                     data: this._data,
                     type: 'bar',
                     itemStyle: {
-                        color: '#6897EA',
+                        color: TestTimings.TEST_COLOR,
                     },
                 }
             ]
@@ -283,7 +272,7 @@ export class TestTimings extends AbstractViewModel {
                 return {
                     value: item,
                     itemStyle: {
-                        color: (index === dataIndex) ? '#6897EA' : '#c8d4f4'
+                        color: (index === dataIndex) ? TestTimings.TEST_COLOR : TestTimings.TEST_COLOR_PALE
                     }
                 };
             });
@@ -297,7 +286,9 @@ export class TestTimings extends AbstractViewModel {
 
         this._bars = this._sectionValues.map((sectionValue, i) => {
             const methodList = methods.reduce((list, method) => {
-                if (method.duration <= sectionValue && (method.duration > this._sectionValues[i - 1] || this._sectionValues[i - 1] === undefined)) {
+                if (method.duration <= sectionValue
+                    && (method.duration > this._sectionValues[i - 1]
+                        || this._sectionValues[i - 1] === undefined)) {
                     list.push(method);
                 }
                 return list;
@@ -315,20 +306,20 @@ export class TestTimings extends AbstractViewModel {
     }
 
     private _calculateDurationAxis(durations: number[]) {
-        this._rangeNum = this.queryParams.rangeNum;
+        const rangeNumInt = parseInt(this.queryParams.rangeNum)
         durations.sort((a, b) => a - b)
 
         let maxDuration = durations[durations.length - 1];
-        const remainder = maxDuration % this._rangeNum;
-        maxDuration = remainder === 0 ? maxDuration : maxDuration + (this._rangeNum - remainder);
+        const remainder = maxDuration % rangeNumInt;
+        maxDuration = remainder === 0 ? maxDuration : maxDuration + (rangeNumInt - remainder);
 
-        const sectionRange = maxDuration / this._rangeNum;
+        const sectionRange = maxDuration / rangeNumInt;
 
-        const resultDurations: number[] = Array(this._rangeNum).fill(0);
-        const resultSections: string[] = Array(this._rangeNum).fill("");
+        const resultDurations: number[] = Array(rangeNumInt).fill(0);
+        const resultSections: string[] = Array(rangeNumInt).fill("");
 
         // calculate ranges
-        for (let i = 0; i < this._rangeNum; i++) {
+        for (let i = 0; i < rangeNumInt; i++) {
             const start = i * sectionRange;
             const end = (i + 1) * sectionRange - 1;
             resultSections[i] = `${start}-${end}s`;
@@ -348,22 +339,15 @@ export class TestTimings extends AbstractViewModel {
         }
         return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
     }
-
-    private _rangeNumChanged() {
-        if (this._rangeNum != this.queryParams.rangeNum) {
-            this._filter();
-            this.queryParams.rangeNum = this._rangeNum
-        }
-    }
 }
 
-export interface IDurationBar {
+interface IDurationBar {
     label: string,
     durationAmount: number;
     methodList: ITestDurationMethod[];
 }
 
-export interface ITestDurationMethod {
+interface ITestDurationMethod {
     id: string;
     name: string;
     duration: number;

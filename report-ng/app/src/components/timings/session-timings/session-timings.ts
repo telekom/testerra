@@ -22,33 +22,33 @@
 import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
-import * as echarts from 'echarts';
-import {EChartsOption} from 'echarts';
+import {ECharts, EChartsOption} from 'echarts';
 import "./session-timings.scss";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "../../../services/status-converter";
 import moment from "moment";
 import {MethodType} from "../../../services/report-model/framework_pb";
+import {ExecutionStatistics} from "../../../services/statistic-models";
 
 @autoinject()
 export class SessionTimings extends AbstractViewModel {
-    private _chart: echarts.ECharts;
+    private static readonly SESSION_COLOR = '#6897EA';
+    private static readonly BASEURL_COLOR = '#75C6CB';
+    private _chart: ECharts;
     private _option: EChartsOption;
-    private _executionStatistics;
+    private _executionStatistics: ExecutionStatistics;
     private _methodDetails;
     private _baseURLData;
     private _sessionData;
     private _hasEnded = false;
-    private _testDuration;
+    private _testDuration: Duration | null = null;
     private _bars;
 
-
     constructor(
-        private _statusConverter: StatusConverter,
+        private readonly _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
     ) {
         super();
-        this._executionStatistics = [];
         this._methodDetails = [];
         this._bars = [];
     }
@@ -59,20 +59,17 @@ export class SessionTimings extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
 
-            this._testDuration = [this._executionStatistics.executionAggregate.executionContext.contextValues.startTime,
-                this._executionStatistics.executionAggregate.executionContext.contextValues.endTime]
+            this._testDuration = {
+                startTime: this._executionStatistics.executionAggregate.executionContext.contextValues.startTime,
+                endTime: this._executionStatistics.executionAggregate.executionContext.contextValues.endTime,
+            }
 
             executionStatistics.classStatistics
-                .forEach(classStatistic => {
-                    let methodContexts = classStatistic.methodContexts;
-                    methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-
-                    const methodDetails = methodContexts.map(methodContext => {
-                        return new MethodDetails(methodContext, classStatistic);
-                    });
-                    methodDetails.forEach(methodDetails => {
-                        this._methodDetails.push(methodDetails);
-                    })
+                .flatMap(classStatistic => {
+                    this._methodDetails = executionStatistics.classStatistics
+                        .flatMap(classStatistic => classStatistic.methodContexts)
+                        .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
+                        .map(methodContext => new MethodDetails(methodContext, classStatistic))
                 })
         });
 
@@ -80,12 +77,7 @@ export class SessionTimings extends AbstractViewModel {
 
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
             sessionMetrics.forEach(metric => {
-                const methodList = [];
-                this._methodDetails.forEach(method => {
-                    if (method.methodContext.sessionContextIds.includes(metric.sessionContext.contextValues.id)) {
-                        methodList.push(method);
-                    }
-                });
+                const methodList = this._methodDetails.filter(method => method.methodContext.sessionContextIds.includes(metric.sessionContext.contextValues.id))
 
                 const sessionInformation: ISessionInformation = {
                     sessionName: metric.sessionContext.contextValues.name,
@@ -162,8 +154,8 @@ export class SessionTimings extends AbstractViewModel {
             },
             xAxis: {
                 type: 'time',
-                min: this._testDuration[0],
-                max: this._testDuration[1],
+                min: this._testDuration.startTime,
+                max: this._testDuration.endTime,
                 name: 'total test duration',
             },
             yAxis: {
@@ -177,7 +169,7 @@ export class SessionTimings extends AbstractViewModel {
                     stack: 'x',
                     data: this._sessionData,
                     itemStyle: {
-                        color: '#6897EA',
+                        color: SessionTimings.SESSION_COLOR,
                     }
                 },
                 {
@@ -186,14 +178,14 @@ export class SessionTimings extends AbstractViewModel {
                     stack: 'x',
                     data: this._baseURLData,
                     itemStyle: {
-                        color: '#75C6CB',
+                        color: SessionTimings.BASEURL_COLOR,
                     }
                 },
             ],
         };
     }
 
-    private _calculateDuration(startTime, endTime) {
+    private _calculateDuration(startTime: number, endTime: number) {
         if (!endTime) {
             this._hasEnded = false;
             endTime = new Date().getMilliseconds();
@@ -204,14 +196,14 @@ export class SessionTimings extends AbstractViewModel {
     }
 }
 
-export interface ISessionBar {
+interface ISessionBar {
     x: number,
     ySession: number,
     yBaseurl: number,
     sessionInformation: ISessionInformation,
 }
 
-export interface ISessionInformation {
+interface ISessionInformation {
     sessionName: string;
     sessionId: string;
     browserName: string;
@@ -222,4 +214,9 @@ export interface ISessionInformation {
     sessionDuration: number;
     baseurlDuration: number;
     startTime: number;
+}
+
+interface Duration {
+    startTime: number;
+    endTime: number;
 }

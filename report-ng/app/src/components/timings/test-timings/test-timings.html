@@ -23,11 +23,11 @@
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="4">
-                <mdc-select change.delegate="_rangeNumChanged()"
+                <mdc-select change.delegate="_filter()"
                             class="w50"
                             label="Number of Sections"
                             outlined
-                            value.bind="_rangeNum"
+                            value.bind="queryParams.rangeNum"
                 >
                     <mdc-list>
                         <mdc-list-item repeat.for="range of _rangeOptions"

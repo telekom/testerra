@@ -23,12 +23,12 @@
     <mdc-layout-grid>
         <mdc-layout-grid-cell span="12">
             <mdc-tab-bar>
-                <mdc-tab active.bind="route.navModel.isActive"
+                <mdc-tab repeat.for="route of _router.routes"
+                         active.bind="route.navModel.isActive"
                          click.delegate="_tabClicked(route)"
                          icon.bind="route.settings.icon"
                          if.bind="route.nav"
-                         label="${route.title + (route.settings.count?' ('+route.settings.count+')':'')}"
-                         repeat.for="route of _router.routes"></mdc-tab>
+                         label="${route.title + (route.settings.count?' ('+route.settings.count+')':'')}"></mdc-tab>
             </mdc-tab-bar>
         </mdc-layout-grid-cell>
     </mdc-layout-grid>

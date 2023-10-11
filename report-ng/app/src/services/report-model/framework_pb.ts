@@ -227,6 +227,7 @@ export interface MethodContext {
     | undefined;
   /** A custom generated test name (e.a. cucumber scenario) */
   testName?: string | undefined;
+  layoutCheckContext?: LayoutCheckContext[] | undefined;
 }
 
 export interface MethodContext_ParametersEntry {
@@ -332,6 +333,7 @@ export interface ErrorContext {
   description?: string | undefined;
   stackTrace?: StackTraceCause[] | undefined;
   optional?: boolean | undefined;
+  id?: string | undefined;
 }
 
 export interface SessionContext {
@@ -352,6 +354,15 @@ export interface SessionContext {
   serverUrl?: string | undefined;
   nodeUrl?: string | undefined;
   userAgent?: string | undefined;
+}
+
+export interface LayoutCheckContext {
+  image?: string | undefined;
+  distance?: number | undefined;
+  expectedScreenshotId?: string | undefined;
+  actualScreenshotId?: string | undefined;
+  distanceScreenshotId?: string | undefined;
+  errorContextId?: string | undefined;
 }
 
 export interface RunConfig {
@@ -931,6 +942,7 @@ function createBaseMethodContext(): MethodContext {
     customContexts: {},
     annotations: {},
     testName: "",
+    layoutCheckContext: [],
   };
 }
 
@@ -1014,6 +1026,11 @@ export const MethodContext = {
     });
     if (message.testName !== undefined && message.testName !== "") {
       writer.uint32(306).string(message.testName);
+    }
+    if (message.layoutCheckContext !== undefined && message.layoutCheckContext.length !== 0) {
+      for (const v of message.layoutCheckContext) {
+        LayoutCheckContext.encode(v!, writer.uint32(314).fork()).ldelim();
+      }
     }
     return writer;
   },
@@ -1194,6 +1211,13 @@ export const MethodContext = {
           }
 
           message.testName = reader.string();
+          continue;
+        case 39:
+          if (tag !== 314) {
+            break;
+          }
+
+          message.layoutCheckContext!.push(LayoutCheckContext.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1762,7 +1786,7 @@ export const LogMessage = {
 };
 
 function createBaseErrorContext(): ErrorContext {
-  return { scriptSource: undefined, ticketId: "", description: "", stackTrace: [], optional: false };
+  return { scriptSource: undefined, ticketId: "", description: "", stackTrace: [], optional: false, id: "" };
 }
 
 export const ErrorContext = {
@@ -1783,6 +1807,9 @@ export const ErrorContext = {
     }
     if (message.optional === true) {
       writer.uint32(96).bool(message.optional);
+    }
+    if (message.id !== undefined && message.id !== "") {
+      writer.uint32(106).string(message.id);
     }
     return writer;
   },
@@ -1828,6 +1855,13 @@ export const ErrorContext = {
           }
 
           message.optional = reader.bool();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1965,6 +1999,99 @@ export const SessionContext = {
           }
 
           message.userAgent = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseLayoutCheckContext(): LayoutCheckContext {
+  return {
+    image: "",
+    distance: 0,
+    expectedScreenshotId: "",
+    actualScreenshotId: "",
+    distanceScreenshotId: "",
+    errorContextId: "",
+  };
+}
+
+export const LayoutCheckContext = {
+  encode(message: LayoutCheckContext, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.image !== undefined && message.image !== "") {
+      writer.uint32(10).string(message.image);
+    }
+    if (message.distance !== undefined && message.distance !== 0) {
+      writer.uint32(17).double(message.distance);
+    }
+    if (message.expectedScreenshotId !== undefined && message.expectedScreenshotId !== "") {
+      writer.uint32(26).string(message.expectedScreenshotId);
+    }
+    if (message.actualScreenshotId !== undefined && message.actualScreenshotId !== "") {
+      writer.uint32(34).string(message.actualScreenshotId);
+    }
+    if (message.distanceScreenshotId !== undefined && message.distanceScreenshotId !== "") {
+      writer.uint32(42).string(message.distanceScreenshotId);
+    }
+    if (message.errorContextId !== undefined && message.errorContextId !== "") {
+      writer.uint32(50).string(message.errorContextId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LayoutCheckContext {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLayoutCheckContext();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.image = reader.string();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.distance = reader.double();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expectedScreenshotId = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.actualScreenshotId = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.distanceScreenshotId = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.errorContextId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

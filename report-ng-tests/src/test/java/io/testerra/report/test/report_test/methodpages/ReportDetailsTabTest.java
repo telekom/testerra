@@ -143,7 +143,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         reportTestsPage = reportTestsPage.selectTestStatus(Status.FAILED);
         final ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
 
-        final String failureAspect = reportDetailsTab.getFailureAspect();
+        final String failureAspect = reportDetailsTab.getFailureAspect().waitFor().text().getActual();
         Assert.assertTrue(failureAspect.contains(expectedFailureAspect), "html shown as text in failure aspect");
 
         TestStep.begin("verify status of failure aspect");

@@ -19,11 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -37,12 +34,4 @@ public abstract class AbstractGuiElementCore implements GuiElementCore {
         this.guiElementData = guiElementData;
     }
 
-    @Override
-    public File takeScreenshot() {
-        AtomicReference<File> atomicReference = new AtomicReference<>();
-        this.findWebElement(webElement -> {
-            atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
-        });
-        return atomicReference.get();
-    }
 }

@@ -130,13 +130,12 @@ export class TestTimings extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
 
-            executionStatistics.classStatistics
-                .flatMap(classStatistic => {
-                    this._methodDetails = executionStatistics.classStatistics
-                        .flatMap(classStatistic => classStatistic.methodContexts)
-                        .filter(methodContext => this._showConfigurationMethods || methodContext.methodType == MethodType.TEST_METHOD)
-                        .map(methodContext => new MethodDetails(methodContext, classStatistic))
-                })
+            executionStatistics.classStatistics.forEach(classStatistic => {
+                const filteredMethodDetails = classStatistic.methodContexts
+                    .filter(methodContext => this._showConfigurationMethods || methodContext.methodType == MethodType.TEST_METHOD)
+                    .map(methodContext => new MethodDetails(methodContext, classStatistic));
+                this._methodDetails.push(...filteredMethodDetails);
+            })
 
             const testDurationMethods = [];
 

@@ -49,7 +49,6 @@ export class TestTimings extends AbstractViewModel {
     private _loading = false;
     private _searchRegexp: RegExp;
     private _inputValue = '';
-    private _methodId: string;
     private _rangeOptions = ['5', '10', '15', '20']; // ranges of time in seconds that the test durations can be sorted in
     private _showConfigurationMethods: boolean = null;
     private _lookUpOptions;
@@ -78,7 +77,6 @@ export class TestTimings extends AbstractViewModel {
 
     selectedOptionIdChanged(methodId: string) {
         if (methodId) {
-            this._methodId = methodId;
             this.queryParams.methodId = methodId
             this.updateUrl(this.queryParams);
             this._highlightData()
@@ -88,9 +86,8 @@ export class TestTimings extends AbstractViewModel {
     selectionChanged() { // called when input from lookup text field is deleted manually
         this._setChartOption(); // overwrites color highlighting (reset)
         if (this._inputValue.length == 0) {
-            this._methodId = undefined;
             delete this.queryParams.methodId;
-            this.updateUrl({rangeNum: this.queryParams.rangeNum, methodId: this._methodId});
+            this.updateUrl(this.queryParams);
             this._getLookUpOptions();
         }
     }
@@ -101,8 +98,7 @@ export class TestTimings extends AbstractViewModel {
             if (this.queryParams.methodId) {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
                 this._highlightData();
-                this.updateUrl({methodId: this.queryParams.methodId});
-                this._methodId = this.queryParams.methodId;
+                this.updateUrl(this.queryParams);
             } else if (this._inputValue?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._inputValue);
                 delete this.queryParams.methodId;
@@ -152,7 +148,7 @@ export class TestTimings extends AbstractViewModel {
                 }
             }
 
-            this._methodDetails.map(method => {
+            this._methodDetails.forEach(method => {
                 const testDurationMethod: ITestDurationMethod = {
                     id: method.methodContext.contextValues.id,
                     name: method.methodContext.contextValues.name,
@@ -173,7 +169,6 @@ export class TestTimings extends AbstractViewModel {
         }).finally(() => {
             this._loading = false;
             this._setChartOption()
-            this._methodId = this.queryParams.methodId;
             if (this.queryParams.methodId != undefined) {
                 this._highlightData()
             }
@@ -185,7 +180,6 @@ export class TestTimings extends AbstractViewModel {
             && this.queryParams.methodId
             && this._methodDetails.find(method => method.methodContext.contextValues.id === this.queryParams.methodId).methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
             delete this.queryParams.methodId
-            this._methodId = null;
         }
         this._getLookUpOptions();
         this._filterOnce();
@@ -267,7 +261,7 @@ export class TestTimings extends AbstractViewModel {
 
     private _highlightData() {
         if (this._bars.length > 0) {
-            const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === this._methodId));
+            const dataIndex = this._bars.findIndex(value => value.methodList.find(value => value.id === this.queryParams.methodId));
             this._option.series[0].data = this._data.map((item, index) => {
                 return {
                     value: item,

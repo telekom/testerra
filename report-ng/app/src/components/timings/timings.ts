@@ -40,7 +40,7 @@ export class Timings {
                 name: "tests",
                 title: 'Tests',
                 settings: {
-                    icon: "center_focus_strong"
+                    icon: "read_more"
                 }
             },
             {
@@ -50,7 +50,7 @@ export class Timings {
                 name: "sessions",
                 title: 'Sessions',
                 settings: {
-                    icon: "list",
+                    icon: "open_in_new_down",
                 }
             },
         ]);

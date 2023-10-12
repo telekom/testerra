@@ -84,8 +84,6 @@ export class SessionTimings extends AbstractViewModel {
                     sessionId: metric.sessionContext.sessionId,
                     browserName: metric.sessionContext.browserName,
                     browserVersion: metric.sessionContext.browserVersion,
-                    server: metric.sessionContext.serverUrl,
-                    node: metric.sessionContext.nodeUrl,
                     methodList: methodList,
                     sessionDuration: this._calculateDuration(metric.metricsValues[0].startTimestamp, metric.metricsValues[0].endTimestamp),
                     baseurlDuration: this._calculateDuration(metric.metricsValues[1].startTimestamp, metric.metricsValues[1].endTimestamp),
@@ -128,21 +126,22 @@ export class SessionTimings extends AbstractViewModel {
             ],
             legend: {},
             tooltip: {
-                trigger: 'axis',
+                trigger: 'item',
                 formatter: function (params) {
-                    if (params.length > 0) {
-                        const dataIndex = params[0].dataIndex;
+                    if (params.data) {
+                        const dataIndex = params.dataIndex;
 
                         const testNames = this._bars[dataIndex].sessionInformation.methodList.map(method => method.methodContext.contextValues.name);
-                        let tooltipString = `<b>Session name:</b> ${this._bars[dataIndex].sessionInformation.sessionName} <br>`;
+                        let tooltipString = '<div class="header" style="background-color: ' +
+                            params.color + ';"> ' + this._bars[dataIndex].sessionInformation.browserName + ', Version: ' +
+                            this._bars[dataIndex].sessionInformation.browserVersion + '</div> <br>'
+                        tooltipString += `<b>Session name:</b> ${this._bars[dataIndex].sessionInformation.sessionName} <br>`;
                         tooltipString += `<b>Session id:</b> ${this._bars[dataIndex].sessionInformation.sessionId} <br>`;
                         tooltipString += `<b>Browser name:</b> ${this._bars[dataIndex].sessionInformation.browserName} <br>`;
                         tooltipString += `<b>Browser version:</b> ${this._bars[dataIndex].sessionInformation.browserVersion} <br>`;
-                        tooltipString += `<b>Server:</b> ${this._bars[dataIndex].sessionInformation.server} <br>`;
-                        tooltipString += `<b>Node:</b> ${this._bars[dataIndex].sessionInformation.node} <br>`;
                         tooltipString += `<b>Session start duration:</b> ${this._bars[dataIndex].sessionInformation.sessionDuration}s <br>`;
                         tooltipString += `<b>Base url start duration:</b> ${this._bars[dataIndex].sessionInformation.baseurlDuration}s <br>`;
-                        tooltipString += `<b>Starttime:</b> ${params[0].axisValueLabel} <br>`;
+                        tooltipString += `<b>Starttime:</b> ${params.data[0]} <br>`;
                         tooltipString += `<b>Test case(s):</b> ` + testNames.join(', ');
 
                         return tooltipString;
@@ -156,15 +155,15 @@ export class SessionTimings extends AbstractViewModel {
                 type: 'time',
                 min: this._testDuration.startTime,
                 max: this._testDuration.endTime,
-                name: 'total test duration',
+                name: 'Total test duration',
             },
             yAxis: {
                 type: 'value',
-                name: 'load duration in seconds',
+                name: 'Load duration in seconds',
             },
             series: [
                 {
-                    name: 'Session Load',
+                    name: 'Session load',
                     type: 'bar',
                     stack: 'x',
                     data: this._sessionData,
@@ -173,7 +172,7 @@ export class SessionTimings extends AbstractViewModel {
                     }
                 },
                 {
-                    name: 'Base URL Load',
+                    name: 'Base URL load',
                     type: 'bar',
                     stack: 'x',
                     data: this._baseURLData,
@@ -208,8 +207,6 @@ interface ISessionInformation {
     sessionId: string;
     browserName: string;
     browserVersion: string;
-    server: string;
-    node: string;
     methodList: MethodDetails[];
     sessionDuration: number;
     baseurlDuration: number;

@@ -20,13 +20,11 @@
  *
  */
 
-package eu.tsystems.mms.tic.testframework.internal;
+package eu.tsystems.mms.tic.testframework.internal.metrics;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +38,7 @@ import java.util.stream.Stream;
 public class MetricsController implements Loggable {
 
     private final Map<SessionContext, Map<MetricsType, TimeInfo>> sessionMetrics = new ConcurrentHashMap<>();
-    private final Map<MethodContext, Map<MetricsType, TimeInfo>> methodMetrics = new ConcurrentHashMap<>();
+    // private final Map<MethodContext, Map<MetricsType, TimeInfo>> methodMetrics = new ConcurrentHashMap<>();
     // page timings
 
     private static MetricsController instance;
@@ -93,33 +91,4 @@ public class MetricsController implements Loggable {
         return this.sessionMetrics.entrySet().stream();
     }
 
-    public enum MetricsType {
-        BASEURL_LOAD,
-        SESSION_LOAD,
-        SESSION_DURATION,
-        METHOD_DURATION;
-    }
-
-    public class TimeInfo {
-        private Instant startTime;
-        private Instant endTime;
-
-        public TimeInfo() {
-            this.startTime = Instant.now();
-        }
-
-        public void finish() {
-            if (this.endTime == null) {
-                this.endTime = Instant.now();
-            }
-        }
-
-        public Instant getStartTime() {
-            return this.startTime;
-        }
-
-        public Instant getEndTime() {
-            return this.endTime;
-        }
-    }
 }

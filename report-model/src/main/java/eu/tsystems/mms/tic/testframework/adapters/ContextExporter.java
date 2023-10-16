@@ -26,7 +26,9 @@ import com.google.gson.Gson;
 import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
-import eu.tsystems.mms.tic.testframework.internal.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
+import eu.tsystems.mms.tic.testframework.internal.metrics.TimeInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
@@ -545,7 +547,7 @@ public class ContextExporter implements Loggable {
         TestMetrics.Builder testMetricsBuilder = TestMetrics.newBuilder();
         MetricsController.get().readSessionMetrics().forEach(entry -> {
             eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext = entry.getKey();
-            Map<MetricsController.MetricsType, MetricsController.TimeInfo> metrics = entry.getValue();
+            Map<MetricsType, TimeInfo> metrics = entry.getValue();
             SessionMetric.Builder builder = buildSessionContextMetrics(sessionContext, metrics);
             testMetricsBuilder.addSessionMetrics(builder.build());
         });
@@ -556,7 +558,7 @@ public class ContextExporter implements Loggable {
     }
 
     public SessionMetric.Builder buildSessionContextMetrics(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext,
-                                                            Map<MetricsController.MetricsType, MetricsController.TimeInfo> metricsType) {
+                                                            Map<MetricsType, TimeInfo> metricsType) {
         SessionMetric.Builder builder = SessionMetric.newBuilder();
         apply(sessionContext.getId(), builder::setSessionContextId);
 

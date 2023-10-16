@@ -28,7 +28,9 @@ import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
+import eu.tsystems.mms.tic.testframework.internal.metrics.TimeInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
@@ -417,9 +419,9 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            MetricsController.get().start(sessionContext, MetricsController.MetricsType.SESSION_LOAD);
+            MetricsController.get().start(sessionContext, MetricsType.SESSION_LOAD);
             WebDriver newRawWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
-            MetricsController.get().stop(sessionContext, MetricsController.MetricsType.SESSION_LOAD);
+            MetricsController.get().stop(sessionContext, MetricsType.SESSION_LOAD);
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
@@ -435,7 +437,7 @@ public final class WebDriverSessionsManager {
                 sessionContext.setRemoteSessionId(sessionContext.getId());
             }
 
-            MetricsController.TimeInfo timeInfo = MetricsController.get().readStopWatch(sessionContext, MetricsController.MetricsType.SESSION_LOAD);
+            TimeInfo timeInfo = MetricsController.get().readStopWatch(sessionContext, MetricsType.SESSION_LOAD);
             Duration diff = Duration.between(timeInfo.getStartTime(), timeInfo.getEndTime());
             LOGGER.info(String.format(
                     "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %02d:%02d.%03d",

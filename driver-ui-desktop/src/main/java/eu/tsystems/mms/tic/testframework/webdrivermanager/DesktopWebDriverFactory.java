@@ -27,7 +27,8 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
@@ -191,9 +192,9 @@ public class DesktopWebDriverFactory implements
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                MetricsController.get().start(sessionContext, MetricsController.MetricsType.BASEURL_LOAD);
+                MetricsController.get().start(sessionContext, MetricsType.BASEURL_LOAD);
                 eventFiringWebDriver.get(baseUrl.toString());
-                MetricsController.get().stop(sessionContext, MetricsController.MetricsType.BASEURL_LOAD);
+                MetricsController.get().stop(sessionContext, MetricsType.BASEURL_LOAD);
             } catch (Exception e) {
                 log().error("Unable to open baseUrl", e);
             }

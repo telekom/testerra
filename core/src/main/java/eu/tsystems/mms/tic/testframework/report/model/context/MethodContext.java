@@ -20,8 +20,8 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -40,8 +40,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Holds the information of a test method.
@@ -70,6 +70,7 @@ public class MethodContext extends AbstractContext {
     private final List<MethodContext> dependsOnMethodContexts = new LinkedList<>();
     private List<CustomContext> customContexts;
     private List<Annotation> customAnnotations;
+    private List<LayoutCheckContext> layoutCheckContexts;
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -216,7 +217,9 @@ public class MethodContext extends AbstractContext {
     }
 
     public void addOptionalAssertion(Throwable throwable) {
-        getCurrentTestStep().getCurrentTestStepAction().addAssertion(new ErrorContext(throwable, true));
+        ErrorContext errorContext = new ErrorContext(throwable, true);
+        getCurrentTestStep().getCurrentTestStepAction().addAssertion(errorContext);
+        this.updateLayoutCheckContext(errorContext);
     }
 
     public void addError(Throwable throwable) {
@@ -225,6 +228,36 @@ public class MethodContext extends AbstractContext {
 
     public void addError(ErrorContext errorContext) {
         getCurrentTestStep().getCurrentTestStepAction().addAssertion(errorContext);
+        this.updateLayoutCheckContext(errorContext);
+    }
+
+    private List<LayoutCheckContext> getLayoutCheckContexts() {
+        if (this.layoutCheckContexts == null) {
+            this.layoutCheckContexts = new LinkedList<>();
+        }
+        return layoutCheckContexts;
+    }
+
+    public void addLayoutCheckContext(LayoutCheckContext layoutCheckContext) {
+        this.getLayoutCheckContexts().add(layoutCheckContext);
+    }
+
+    public Stream<LayoutCheckContext> readLayoutCheckContexts() {
+        if (this.layoutCheckContexts == null) {
+            return Stream.empty();
+        } else {
+            return this.layoutCheckContexts.stream();
+        }
+    }
+
+    /**
+     * Tries to link the last LayoutcheckContext with current ErrorContext
+     */
+    private void updateLayoutCheckContext(ErrorContext context) {
+        this.getLayoutCheckContexts().stream()
+                .filter(elem -> elem.errorContext == null)
+                .findFirst()
+                .ifPresent(elem -> elem.errorContext = context);
     }
 
     @Deprecated
@@ -248,7 +281,7 @@ public class MethodContext extends AbstractContext {
         this.status = status;
     }
 
-    public boolean isStatusOneOf(Status ...statuses) {
+    public boolean isStatusOneOf(Status... statuses) {
         return Arrays.stream(statuses).anyMatch(givenStatus -> givenStatus == this.status);
     }
 
@@ -303,7 +336,7 @@ public class MethodContext extends AbstractContext {
 
     public Stream<Annotation> readAnnotations() {
         return Stream.concat(
-                (this.customAnnotations!=null)?this.customAnnotations.stream():Stream.empty(),
+                (this.customAnnotations != null) ? this.customAnnotations.stream() : Stream.empty(),
                 getTestNgResult()
                         .map(testResult -> Stream.of(testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotations()))
                         .orElse(Stream.empty())
@@ -315,11 +348,12 @@ public class MethodContext extends AbstractContext {
     }
 
     public <T extends Annotation> Optional<T> getAnnotation(Class<T> annotationClass) {
-        return readAnnotations().filter(annotationClass::isInstance).map(annotation -> (T)annotation).findFirst();
+        return readAnnotations().filter(annotationClass::isInstance).map(annotation -> (T) annotation).findFirst();
     }
 
     /**
      * Required by cucumber-connector
+     *
      * @param annotation
      */
     public void addAnnotation(Annotation annotation) {

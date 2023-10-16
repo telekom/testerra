@@ -44,12 +44,15 @@ import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
+import eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessageType;
 import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.MetricType;
 import eu.tsystems.mms.tic.testframework.report.model.MetricsValue;
+import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
@@ -60,6 +63,8 @@ import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestMetrics;
+import eu.tsystems.mms.tic.testframework.report.model.TestStep;
+import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
@@ -146,6 +151,9 @@ public class ContextExporter implements Loggable {
 
         // build context
         methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
+
+        methodContext.readLayoutCheckContexts()
+                .forEach(layoutCheckContext -> builder.addLayoutCheckContext(buildLayoutCheckContext(layoutCheckContext)));
 
         methodContext.readCustomContexts().forEach(customContext -> {
             builder.putCustomContexts(customContext.getName(), jsonEncoder.toJson(customContext.exportToReport(report)));
@@ -239,7 +247,7 @@ public class ContextExporter implements Loggable {
 //        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
 //        apply(errorContext.getDescription(), builder::setDescription);
         builder.setOptional(errorContext.isOptional());
-
+        apply(errorContext.getId(), builder::setId);
         return builder;
     }
 
@@ -313,6 +321,30 @@ public class ContextExporter implements Loggable {
             }
         });
         return actionBuilder;
+    }
+
+    public LayoutCheckContext.Builder buildLayoutCheckContext(eu.tsystems.mms.tic.testframework.report.model.context.LayoutCheckContext layoutCheckContext) {
+        LayoutCheckContext.Builder builder = LayoutCheckContext.newBuilder();
+        apply(layoutCheckContext.image, builder::setImage);
+        apply(layoutCheckContext.distance, builder::setDistance);
+
+        File.Builder[] fileBuilders = buildScreenshot(layoutCheckContext.expectedScreenshot);
+        Optional<File.Builder> fileOptional = Optional.ofNullable(fileBuilders[0]);
+        fileOptional.ifPresent(file -> builder.setExpectedScreenshotId(file.getId()));
+
+        fileBuilders = buildScreenshot(layoutCheckContext.actualScreenshot);
+        fileOptional = Optional.ofNullable(fileBuilders[0]);
+        fileOptional.ifPresent(file -> builder.setActualScreenshotId(file.getId()));
+
+        fileBuilders = buildScreenshot(layoutCheckContext.distanceScreenshot);
+        fileOptional = Optional.ofNullable(fileBuilders[0]);
+        fileOptional.ifPresent(file -> builder.setDistanceScreenshotId(file.getId()));
+
+        if (layoutCheckContext.errorContext != null) {
+            apply(layoutCheckContext.errorContext.getId(), builder::setErrorContextId);
+        }
+
+        return builder;
     }
 
     public ContextExporter() {

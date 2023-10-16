@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Layout test within frames</title>
+    <link href="layout.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Layout test within frames</h1>
+<iframe src="index.html" style="width: 100%" id="iframe"></iframe>
+<script>
+    let frame = document.getElementById("iframe");
+    frame.onload = function () {
+        frame.style.height = frame.contentWindow.document.body.scrollHeight + 40 + 'px';
+    }
+</script>
+</body>
+</html>

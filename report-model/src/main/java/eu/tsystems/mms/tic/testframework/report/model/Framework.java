@@ -16,147 +16,152 @@ public final class Framework {
   }
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_SuiteContext_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_SuiteContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ClassContext_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ClassContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_TestContext_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_TestContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ExecutionContext_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ExecutionContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ExecutionContext_FailureCorridorLimitsEntry_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ExecutionContext_FailureCorridorLimitsEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ExecutionContext_FailureCorridorCountsEntry_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ExecutionContext_FailureCorridorCountsEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_MethodContext_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_MethodContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_MethodContext_ParametersEntry_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_MethodContext_ParametersEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_MethodContext_CustomContextsEntry_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_MethodContext_CustomContextsEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_MethodContext_AnnotationsEntry_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_MethodContext_AnnotationsEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ContextValues_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ContextValues_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_TestStep_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_TestStep_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_TestStepAction_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_TestStepAction_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_TestStepActionEntry_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_TestStepActionEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ClickPathEvent_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ClickPathEvent_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_LogMessage_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_LogMessage_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ErrorContext_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ErrorContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_SessionContext_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_SessionContext_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_LayoutCheckContext_descriptor;
+  static final
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_LayoutCheckContext_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_RunConfig_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_RunConfig_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_BuildInformation_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_BuildInformation_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_StackTraceCause_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_StackTraceCause_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ScriptSource_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ScriptSource_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_ScriptSourceLine_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ScriptSourceLine_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_File_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_File_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_File_MetaEntry_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_File_MetaEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_TestMetrics_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_TestMetrics_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_MetricsValue_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_MetricsValue_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_SessionMetric_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_SessionMetric_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_data_MethodMetric_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_MethodMetric_fieldAccessorTable;
 
@@ -195,7 +200,7 @@ public final class Framework {
       "ureCorridorCountsEntry\032<\n\032FailureCorrido" +
       "rLimitsEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\005" +
       ":\0028\001\032<\n\032FailureCorridorCountsEntry\022\013\n\003ke" +
-      "y\030\001 \001(\005\022\r\n\005value\030\002 \001(\005:\0028\001\"\370\007\n\rMethodCon" +
+      "y\030\001 \001(\005\022\r\n\005value\030\002 \001(\005:\0028\001\"\260\010\n\rMethodCon" +
       "text\022+\n\016context_values\030\001 \001(\0132\023.data.Cont" +
       "extValues\022%\n\013method_type\030\007 \001(\0162\020.data.Me" +
       "thodType\022\024\n\014retry_number\030\n \001(\005\022\030\n\020method" +
@@ -271,36 +276,24 @@ public final class Framework {
       "ata.File.MetaEntry\022\025\n\rlast_modified\030\t \001(" +
       "\003\022\022\n\nproject_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n" +
       "\014is_directory\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMet" +
-      "aEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"g" +
-      "\n\013TestMetrics\022,\n\017session_metrics\030\001 \003(\0132\023" +
-      ".data.SessionMetric\022*\n\016method_metrics\030\002 " +
-      "\003(\0132\022.data.MethodMetric\"e\n\014MetricsValue\022" +
-      "%\n\013metric_type\030\001 \001(\0162\020.data.MetricType\022\027" +
-      "\n\017start_timestamp\030\002 \001(\003\022\025\n\rend_timestamp" +
-      "\030\003 \001(\003\"W\n\rSessionMetric\022*\n\016metrics_value" +
-      "s\030\001 \003(\0132\022.data.MetricsValue\022\032\n\022session_c" +
-      "ontext_id\030\002 \001(\t\"U\n\014MethodMetric\022*\n\016metri" +
-      "cs_values\030\001 \003(\0132\022.data.MetricsValue\022\031\n\021m" +
-      "ethod_context_id\030\002 \001(\t*t\n\022ClickPathEvent" +
-      "Type\022\020\n\014CPET_NOT_SET\020\000\022\017\n\013CPET_WINDOW\020\001\022" +
-      "\016\n\nCPET_CLICK\020\002\022\016\n\nCPET_VALUE\020\003\022\r\n\tCPET_" +
-      "PAGE\020\004\022\014\n\010CPET_URL\020\005*W\n\016LogMessageType\022\013" +
-      "\n\007LMT_OFF\020\000\022\r\n\tLMT_ERROR\020\001\022\014\n\010LMT_WARN\020\002" +
-      "\022\014\n\010LMT_INFO\020\003\022\r\n\tLMT_DEBUG\020\004*O\n\024Failure" +
-      "CorridorValue\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010FCV_HI" +
-      "GH\020\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nMethod" +
-      "Type\022\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n" +
-      "\024CONFIGURATION_METHOD\020\002*\345\001\n\020ResultStatus" +
-      "Type\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\014\n\004INF" +
-      "O\020\002\032\002\010\001\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINO" +
-      "R\020\005\032\002\010\001\022\n\n\006FAILED\020\007\022\024\n\014FAILED_MINOR\020\010\032\002\010" +
-      "\001\022\022\n\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXPECTED" +
-      "\020\n\022\020\n\014PASSED_RETRY\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010" +
-      "\001\022\014\n\010REPAIRED\020\r*[\n\nMetricType\022\020\n\014BASEURL" +
-      "_LOAD\020\000\022\020\n\014SESSION_LOAD\020\001\022\024\n\020SESSION_DUR" +
-      "ATION\020\002\022\023\n\017METHOD_DURATION\020\003B2\n.eu.tsyst" +
-      "ems.mms.tic.testframework.report.modelP\001" +
-      "b\006proto3"
+      "aEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*t" +
+      "\n\022ClickPathEventType\022\020\n\014CPET_NOT_SET\020\000\022\017" +
+      "\n\013CPET_WINDOW\020\001\022\016\n\nCPET_CLICK\020\002\022\016\n\nCPET_" +
+      "VALUE\020\003\022\r\n\tCPET_PAGE\020\004\022\014\n\010CPET_URL\020\005*W\n\016" +
+      "LogMessageType\022\013\n\007LMT_OFF\020\000\022\r\n\tLMT_ERROR" +
+      "\020\001\022\014\n\010LMT_WARN\020\002\022\014\n\010LMT_INFO\020\003\022\r\n\tLMT_DE" +
+      "BUG\020\004*O\n\024FailureCorridorValue\022\017\n\013FCV_NOT" +
+      "_SET\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV" +
+      "_LOW\020\003*G\n\nMethodType\022\016\n\nMT_NOT_SET\020\000\022\017\n\013" +
+      "TEST_METHOD\020\001\022\030\n\024CONFIGURATION_METHOD\020\002*" +
+      "\345\001\n\020ResultStatusType\022\017\n\013RST_NOT_SET\020\000\022\n\n" +
+      "\006NO_RUN\020\001\022\014\n\004INFO\020\002\032\002\010\001\022\013\n\007SKIPPED\020\003\022\n\n\006" +
+      "PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020\007\022\024\n\014F" +
+      "AILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_RETRIED\020\t\022\023\n" +
+      "\017FAILED_EXPECTED\020\n\022\020\n\014PASSED_RETRY\020\013\022\023\n\013" +
+      "MINOR_RETRY\020\014\032\002\010\001\022\014\n\010REPAIRED\020\rB2\n.eu.ts" +
+      "ystems.mms.tic.testframework.report.mode" +
+      "lP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -347,7 +340,7 @@ public final class Framework {
     internal_static_data_MethodContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_MethodContext_descriptor,
-        new java.lang.String[] { "ContextValues", "MethodType", "RetryNumber", "MethodRunIndex", "ThreadName", "FailureCorridorValue", "ClassContextId", "ExecutionContextId", "Infos", "PriorityMessage", "RelatedMethodContextIds", "DependsOnMethodContextIds", "ErrorContext", "TestSteps", "TestContextId", "SuiteContextId", "SessionContextIds", "FailedStepIndex", "ResultStatus", "Parameters", "CustomContexts", "Annotations", "TestName", });
+        new java.lang.String[] { "ContextValues", "MethodType", "RetryNumber", "MethodRunIndex", "ThreadName", "FailureCorridorValue", "ClassContextId", "ExecutionContextId", "Infos", "PriorityMessage", "RelatedMethodContextIds", "DependsOnMethodContextIds", "ErrorContext", "TestSteps", "TestContextId", "SuiteContextId", "SessionContextIds", "FailedStepIndex", "ResultStatus", "Parameters", "CustomContexts", "Annotations", "TestName", "LayoutCheckContext", });
     internal_static_data_MethodContext_ParametersEntry_descriptor =
       internal_static_data_MethodContext_descriptor.getNestedTypes().get(0);
     internal_static_data_MethodContext_ParametersEntry_fieldAccessorTable = new
@@ -407,45 +400,51 @@ public final class Framework {
     internal_static_data_ErrorContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ErrorContext_descriptor,
-        new java.lang.String[] { "ScriptSource", "TicketId", "Description", "StackTrace", "Optional", });
+        new java.lang.String[] { "ScriptSource", "TicketId", "Description", "StackTrace", "Optional", "Id", });
     internal_static_data_SessionContext_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_data_SessionContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_SessionContext_descriptor,
         new java.lang.String[] { "ContextValues", "SessionId", "VideoId", "ExecutionContextId", "BrowserName", "BrowserVersion", "Capabilities", "ServerUrl", "NodeUrl", "UserAgent", });
-    internal_static_data_RunConfig_descriptor =
+    internal_static_data_LayoutCheckContext_descriptor =
       getDescriptor().getMessageTypes().get(13);
+    internal_static_data_LayoutCheckContext_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_LayoutCheckContext_descriptor,
+        new java.lang.String[] { "Image", "Distance", "ExpectedScreenshotId", "ActualScreenshotId", "DistanceScreenshotId", "ErrorContextId", });
+    internal_static_data_RunConfig_descriptor =
+      getDescriptor().getMessageTypes().get(14);
     internal_static_data_RunConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_RunConfig_descriptor,
         new java.lang.String[] { "Runcfg", "BuildInformation", "ReportName", });
     internal_static_data_BuildInformation_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_data_BuildInformation_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_BuildInformation_descriptor,
         new java.lang.String[] { "BuildJavaVersion", "BuildOsName", "BuildOsVersion", "BuildUserName", "BuildVersion", "BuildTimestamp", });
     internal_static_data_StackTraceCause_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_data_StackTraceCause_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_StackTraceCause_descriptor,
         new java.lang.String[] { "ClassName", "Message", "StackTraceElements", });
     internal_static_data_ScriptSource_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_data_ScriptSource_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ScriptSource_descriptor,
         new java.lang.String[] { "FileName", "MethodName", "Lines", "Mark", });
     internal_static_data_ScriptSourceLine_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_data_ScriptSourceLine_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ScriptSourceLine_descriptor,
         new java.lang.String[] { "Line", "LineNumber", });
     internal_static_data_File_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_data_File_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_File_descriptor,

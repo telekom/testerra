@@ -43,4 +43,24 @@ public class GenerateLayoutTestsTTReportTest extends AbstractTestSitesTest {
                 .screenshot().pixelDistance("inputHtml_image1").isLowerThan(screenshotPixelDistance);
     }
 
+    @Test(groups = {Groups.EXT})
+    public void layoutTest04_layoutTestFailing_MultiChecks() {
+        TestStep.begin("get web driver");
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        TestStep.begin("visit test page");
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
+        double screenshotPixelDistance = 0;
+
+        CONTROL.collectAssertions(() -> {
+            TestStep.begin("create page object and take element screenshots");
+            UniversalPage page = PAGE_FACTORY.createPage(UniversalPage.class);
+            page.getFinder().findById("box1").assertThat()
+                    .screenshot().pixelDistance("inputHtml_box1").isLowerThan(screenshotPixelDistance);
+            page.getFinder().findById("box2").assertThat()
+                    .screenshot().pixelDistance("inputHtml_box2").isLowerThan(screenshotPixelDistance);
+            ASSERT.fail("Just a simple error message");
+        });
+    }
+
 }

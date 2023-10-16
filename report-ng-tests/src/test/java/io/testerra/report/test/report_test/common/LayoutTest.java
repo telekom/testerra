@@ -36,6 +36,8 @@ public class LayoutTest extends AbstractReportTest {
     public void testT01_checkFailedLayoutTestReport() {
         String methodName = "layoutTest01_layoutTestFailing";
         String className = "GenerateLayoutTestsTTReportTest";
+        String errorMessage = "Expected that UniversalPage pixel distance";
+
         String[] failureAspects = new String[]{
                 "AssertionError",
                 "pixel distance",
@@ -49,7 +51,9 @@ public class LayoutTest extends AbstractReportTest {
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
 
         TestStep.begin("Failure Aspect contains actual-expected comparison");
-        reportDetailsTab.assertFailureAspectCardContainsImageComparison();
+        reportDetailsTab.getComparisonImgElement(errorMessage, "Actual").assertThat().displayed(true);
+        reportDetailsTab.getComparisonImgElement(errorMessage, "Difference").assertThat().displayed(true);
+        reportDetailsTab.getComparisonImgElement(errorMessage, "Expected").assertThat().displayed(true);
 
         TestStep.begin("Check details tab contains correct failure aspects");
         reportDetailsTab.assertStacktraceContainsExpectedFailureAspects(failureAspects);
@@ -76,6 +80,38 @@ public class LayoutTest extends AbstractReportTest {
 
         TestStep.begin("Check test is passed");
         reportDetailsTab.assertMethodOverviewContainsCorrectContent(className, Status.PASSED.title, methodName);
+    }
+
+    @Test
+    public void testT03_checkMultiCheckLayoutTest() {
+        String methodName = "layoutTest04_layoutTestFailing_MultiChecks";
+        String className = "GenerateLayoutTestsTTReportTest";
+        String[] failureAspects = new String[]{
+                "pixelDistance(\"inputHtml_box1\")",
+                "pixelDistance(\"inputHtml_box2\")",
+                "Just a simple error message"
+        };
+
+        String[] errorMessages = new String[]{
+                "Expected that UniversalPage -> UiElement(By.id: box1)",
+                "Expected that UniversalPage -> UiElement(By.id: box2)",
+                "Just a simple error message"
+        };
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        reportDetailsTab.assertTestMethodContainsCorrectFailureAspect(failureAspects);
+        ASSERT.assertTrue(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[0]), "Visibility of screenshot comparison in Failure aspect box");
+        ASSERT.assertTrue(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[1]), "Visibility of screenshot comparison in Failure aspect box");
+        ASSERT.assertFalse(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[2]), "Visibility of screenshot comparison in Failure aspect box");
+
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Actual").assertThat().attribute("src").isContaining("box1");
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Expected").assertThat().attribute("src").isContaining("box1");
+        reportDetailsTab.getComparisonImgElement(errorMessages[1], "Actual").assertThat().attribute("src").isContaining("box2");
+        reportDetailsTab.getComparisonImgElement(errorMessages[1], "Expected").assertThat().attribute("src").isContaining("box2");
     }
 
 }

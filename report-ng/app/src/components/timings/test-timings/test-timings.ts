@@ -30,7 +30,6 @@ import moment from "moment";
 import {data} from "../../../services/report-model";
 import {StatusConverter} from "../../../services/status-converter";
 import MethodType = data.MethodType;
-import IMethodContext = data.MethodContext;
 
 @autoinject()
 export class TestTimings extends AbstractViewModel {
@@ -94,18 +93,10 @@ export class TestTimings extends AbstractViewModel {
 
     private _getLookUpOptions() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            let methodContexts: IMethodContext[];
-            if (this.queryParams.methodId) {
-                methodContexts = [executionStatistics.executionAggregate.methodContexts[this.queryParams.methodId]];
-                this._highlightData();
-                this.updateUrl(this.queryParams);
-            } else if (this._inputValue?.length > 0) {
+            let methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts)
+            if (this._inputValue?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this._inputValue);
-                delete this.queryParams.methodId;
-                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts)
-                    .filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp))
-            } else {
-                methodContexts = Object.values(executionStatistics.executionAggregate.methodContexts);
+                methodContexts = methodContexts.filter(methodContext => methodContext.contextValues.name.match(this._searchRegexp))
             }
             if (!this._showConfigurationMethods) {
                 methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);

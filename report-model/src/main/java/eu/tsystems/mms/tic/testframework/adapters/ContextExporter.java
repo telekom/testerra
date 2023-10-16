@@ -33,7 +33,34 @@ import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.*;
+import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
+import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
+import eu.tsystems.mms.tic.testframework.report.model.ClickPathEventType;
+import eu.tsystems.mms.tic.testframework.report.model.ContextValues;
+import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
+import eu.tsystems.mms.tic.testframework.report.model.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
+import eu.tsystems.mms.tic.testframework.report.model.File;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessageType;
+import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.MethodType;
+import eu.tsystems.mms.tic.testframework.report.model.MetricType;
+import eu.tsystems.mms.tic.testframework.report.model.MetricsValue;
+import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
+import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
+import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
+import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
+import eu.tsystems.mms.tic.testframework.report.model.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.SessionMetric;
+import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
+import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
+import eu.tsystems.mms.tic.testframework.report.model.TestContext;
+import eu.tsystems.mms.tic.testframework.report.model.TestMetrics;
+import eu.tsystems.mms.tic.testframework.report.model.TestStep;
+import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
+import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
@@ -516,12 +543,14 @@ public class ContextExporter implements Loggable {
 
     public TestMetrics.Builder buildTestMetrics() {
         TestMetrics.Builder testMetricsBuilder = TestMetrics.newBuilder();
-        MetricsController.get().getSessionMetrics().forEach((sessionContext, metricsType) -> {
-            SessionMetric.Builder builder = buildSessionContextMetrics(sessionContext, metricsType);
+        MetricsController.get().readSessionMetrics().forEach(entry -> {
+            eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext = entry.getKey();
+            Map<MetricsController.MetricsType, MetricsController.TimeInfo> metrics = entry.getValue();
+            SessionMetric.Builder builder = buildSessionContextMetrics(sessionContext, metrics);
             testMetricsBuilder.addSessionMetrics(builder.build());
         });
 
-        // TODO Implement method metrics export here
+        // Implement other metrics exports here if needed
 
         return testMetricsBuilder;
     }

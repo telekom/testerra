@@ -30,6 +30,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * Created on 2023-08-23
@@ -61,7 +62,7 @@ public class MetricsController implements Loggable {
     }
 
     public void stop(SessionContext context, MetricsType type) {
-        Map<MetricsType, TimeInfo> entry = this.getSessionMetrics().get(context);
+        Map<MetricsType, TimeInfo> entry = this.sessionMetrics.get(context);
         if (entry != null) {
             entry.get(type).finish();
         } else {
@@ -70,7 +71,7 @@ public class MetricsController implements Loggable {
     }
 
     public TimeInfo readStopWatch(SessionContext context, MetricsType type) {
-        Map<MetricsType, TimeInfo> entry = this.getSessionMetrics().get(context);
+        Map<MetricsType, TimeInfo> entry = this.sessionMetrics.get(context);
         if (entry != null) {
             return entry.get(type);
         }
@@ -88,8 +89,8 @@ public class MetricsController implements Loggable {
         mapEntry.put(type, timeInfo);
     }
 
-    public Map<SessionContext, Map<MetricsType, TimeInfo>> getSessionMetrics() {
-        return this.sessionMetrics;
+    public Stream<Map.Entry<SessionContext, Map<MetricsType, TimeInfo>>> readSessionMetrics() {
+        return this.sessionMetrics.entrySet().stream();
     }
 
     public enum MetricsType {

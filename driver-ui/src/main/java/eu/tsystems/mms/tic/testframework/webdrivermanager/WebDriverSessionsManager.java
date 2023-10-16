@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
-import eu.tsystems.mms.tic.testframework.internal.metrics.TimeInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
@@ -437,8 +436,7 @@ public final class WebDriverSessionsManager {
                 sessionContext.setRemoteSessionId(sessionContext.getId());
             }
 
-            TimeInfo timeInfo = MetricsController.get().readStopWatch(sessionContext, MetricsType.SESSION_LOAD);
-            Duration diff = Duration.between(timeInfo.getStartTime(), timeInfo.getEndTime());
+            Duration diff = MetricsController.get().readDuration(sessionContext, MetricsType.SESSION_LOAD);
             LOGGER.info(String.format(
                     "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %02d:%02d.%03d",
                     newRawWebDriver.getClass().getSimpleName(),

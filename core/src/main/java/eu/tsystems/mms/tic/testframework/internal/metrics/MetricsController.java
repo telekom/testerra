@@ -25,6 +25,7 @@ package eu.tsystems.mms.tic.testframework.internal.metrics;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -74,6 +75,17 @@ public class MetricsController implements Loggable {
             return entry.get(type);
         }
         return null;
+    }
+
+    public Duration readDuration(SessionContext context, MetricsType type) {
+        Map<MetricsType, TimeInfo> entry = this.sessionMetrics.get(context);
+        if (entry != null && entry.get(type) != null) {
+            TimeInfo timeInfo = entry.get(type);
+            return Duration.between(timeInfo.getStartTime(), timeInfo.getEndTime());
+        } else {
+            return Duration.ZERO;
+        }
+
     }
 
     public void addMetric(SessionContext context, MetricsType type, TimeInfo timeInfo) {

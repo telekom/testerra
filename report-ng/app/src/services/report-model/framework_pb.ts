@@ -444,12 +444,12 @@ export interface MetricsValue {
 
 export interface SessionMetric {
   metricsValues?: MetricsValue[] | undefined;
-  sessionContext?: SessionContext | undefined;
+  sessionContextId?: string | undefined;
 }
 
 export interface MethodMetric {
   metricsValues?: MetricsValue[] | undefined;
-  methodContext?: MethodContext | undefined;
+  methodContextId?: string | undefined;
 }
 
 function createBaseSuiteContext(): SuiteContext {
@@ -2644,7 +2644,7 @@ export const MetricsValue = {
 };
 
 function createBaseSessionMetric(): SessionMetric {
-  return { metricsValues: [], sessionContext: undefined };
+  return { metricsValues: [], sessionContextId: "" };
 }
 
 export const SessionMetric = {
@@ -2654,8 +2654,8 @@ export const SessionMetric = {
         MetricsValue.encode(v!, writer.uint32(10).fork()).ldelim();
       }
     }
-    if (message.sessionContext !== undefined) {
-      SessionContext.encode(message.sessionContext, writer.uint32(18).fork()).ldelim();
+    if (message.sessionContextId !== undefined && message.sessionContextId !== "") {
+      writer.uint32(18).string(message.sessionContextId);
     }
     return writer;
   },
@@ -2679,7 +2679,7 @@ export const SessionMetric = {
             break;
           }
 
-          message.sessionContext = SessionContext.decode(reader, reader.uint32());
+          message.sessionContextId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2692,7 +2692,7 @@ export const SessionMetric = {
 };
 
 function createBaseMethodMetric(): MethodMetric {
-  return { metricsValues: [], methodContext: undefined };
+  return { metricsValues: [], methodContextId: "" };
 }
 
 export const MethodMetric = {
@@ -2702,8 +2702,8 @@ export const MethodMetric = {
         MetricsValue.encode(v!, writer.uint32(10).fork()).ldelim();
       }
     }
-    if (message.methodContext !== undefined) {
-      MethodContext.encode(message.methodContext, writer.uint32(18).fork()).ldelim();
+    if (message.methodContextId !== undefined && message.methodContextId !== "") {
+      writer.uint32(18).string(message.methodContextId);
     }
     return writer;
   },
@@ -2727,7 +2727,7 @@ export const MethodMetric = {
             break;
           }
 
-          message.methodContext = MethodContext.decode(reader, reader.uint32());
+          message.methodContextId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

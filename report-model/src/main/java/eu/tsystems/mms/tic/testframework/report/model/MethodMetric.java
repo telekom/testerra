@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private MethodMetric() {
     metricsValues_ = java.util.Collections.emptyList();
+    methodContextId_ = "";
   }
 
   @java.lang.Override
@@ -60,16 +61,9 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 18: {
-            eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder subBuilder = null;
-            if (methodContext_ != null) {
-              subBuilder = methodContext_.toBuilder();
-            }
-            methodContext_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.MethodContext.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(methodContext_);
-              methodContext_ = subBuilder.buildPartial();
-            }
+            java.lang.String s = input.readStringRequireUtf8();
 
+            methodContextId_ = s;
             break;
           }
           default: {
@@ -147,30 +141,42 @@ private static final long serialVersionUID = 0L;
     return metricsValues_.get(index);
   }
 
-  public static final int METHOD_CONTEXT_FIELD_NUMBER = 2;
-  private eu.tsystems.mms.tic.testframework.report.model.MethodContext methodContext_;
+  public static final int METHOD_CONTEXT_ID_FIELD_NUMBER = 2;
+  private volatile java.lang.Object methodContextId_;
   /**
-   * <code>.data.MethodContext method_context = 2;</code>
-   * @return Whether the methodContext field is set.
+   * <code>string method_context_id = 2;</code>
+   * @return The methodContextId.
    */
   @java.lang.Override
-  public boolean hasMethodContext() {
-    return methodContext_ != null;
+  public java.lang.String getMethodContextId() {
+    java.lang.Object ref = methodContextId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      methodContextId_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.data.MethodContext method_context = 2;</code>
-   * @return The methodContext.
+   * <code>string method_context_id = 2;</code>
+   * @return The bytes for methodContextId.
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContext() {
-    return methodContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance() : methodContext_;
-  }
-  /**
-   * <code>.data.MethodContext method_context = 2;</code>
-   */
-  @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextOrBuilder() {
-    return getMethodContext();
+  public com.google.protobuf.ByteString
+      getMethodContextIdBytes() {
+    java.lang.Object ref = methodContextId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      methodContextId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -190,8 +196,8 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < metricsValues_.size(); i++) {
       output.writeMessage(1, metricsValues_.get(i));
     }
-    if (methodContext_ != null) {
-      output.writeMessage(2, getMethodContext());
+    if (!getMethodContextIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, methodContextId_);
     }
     unknownFields.writeTo(output);
   }
@@ -206,9 +212,8 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, metricsValues_.get(i));
     }
-    if (methodContext_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, getMethodContext());
+    if (!getMethodContextIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, methodContextId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -227,11 +232,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getMetricsValuesList()
         .equals(other.getMetricsValuesList())) return false;
-    if (hasMethodContext() != other.hasMethodContext()) return false;
-    if (hasMethodContext()) {
-      if (!getMethodContext()
-          .equals(other.getMethodContext())) return false;
-    }
+    if (!getMethodContextId()
+        .equals(other.getMethodContextId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -247,10 +249,8 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + METRICS_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getMetricsValuesList().hashCode();
     }
-    if (hasMethodContext()) {
-      hash = (37 * hash) + METHOD_CONTEXT_FIELD_NUMBER;
-      hash = (53 * hash) + getMethodContext().hashCode();
-    }
+    hash = (37 * hash) + METHOD_CONTEXT_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getMethodContextId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -391,12 +391,8 @@ private static final long serialVersionUID = 0L;
       } else {
         metricsValuesBuilder_.clear();
       }
-      if (methodContextBuilder_ == null) {
-        methodContext_ = null;
-      } else {
-        methodContext_ = null;
-        methodContextBuilder_ = null;
-      }
+      methodContextId_ = "";
+
       return this;
     }
 
@@ -433,11 +429,7 @@ private static final long serialVersionUID = 0L;
       } else {
         result.metricsValues_ = metricsValuesBuilder_.build();
       }
-      if (methodContextBuilder_ == null) {
-        result.methodContext_ = methodContext_;
-      } else {
-        result.methodContext_ = methodContextBuilder_.build();
-      }
+      result.methodContextId_ = methodContextId_;
       onBuilt();
       return result;
     }
@@ -512,8 +504,9 @@ private static final long serialVersionUID = 0L;
           }
         }
       }
-      if (other.hasMethodContext()) {
-        mergeMethodContext(other.getMethodContext());
+      if (!other.getMethodContextId().isEmpty()) {
+        methodContextId_ = other.methodContextId_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -785,123 +778,80 @@ private static final long serialVersionUID = 0L;
       return metricsValuesBuilder_;
     }
 
-    private eu.tsystems.mms.tic.testframework.report.model.MethodContext methodContext_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> methodContextBuilder_;
+    private java.lang.Object methodContextId_ = "";
     /**
-     * <code>.data.MethodContext method_context = 2;</code>
-     * @return Whether the methodContext field is set.
+     * <code>string method_context_id = 2;</code>
+     * @return The methodContextId.
      */
-    public boolean hasMethodContext() {
-      return methodContextBuilder_ != null || methodContext_ != null;
-    }
-    /**
-     * <code>.data.MethodContext method_context = 2;</code>
-     * @return The methodContext.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContext() {
-      if (methodContextBuilder_ == null) {
-        return methodContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance() : methodContext_;
+    public java.lang.String getMethodContextId() {
+      java.lang.Object ref = methodContextId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        methodContextId_ = s;
+        return s;
       } else {
-        return methodContextBuilder_.getMessage();
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>.data.MethodContext method_context = 2;</code>
+     * <code>string method_context_id = 2;</code>
+     * @return The bytes for methodContextId.
      */
-    public Builder setMethodContext(eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
-      if (methodContextBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        methodContext_ = value;
-        onChanged();
+    public com.google.protobuf.ByteString
+        getMethodContextIdBytes() {
+      java.lang.Object ref = methodContextId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        methodContextId_ = b;
+        return b;
       } else {
-        methodContextBuilder_.setMessage(value);
+        return (com.google.protobuf.ByteString) ref;
       }
-
-      return this;
     }
     /**
-     * <code>.data.MethodContext method_context = 2;</code>
+     * <code>string method_context_id = 2;</code>
+     * @param value The methodContextId to set.
+     * @return This builder for chaining.
      */
-    public Builder setMethodContext(
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder builderForValue) {
-      if (methodContextBuilder_ == null) {
-        methodContext_ = builderForValue.build();
-        onChanged();
-      } else {
-        methodContextBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.MethodContext method_context = 2;</code>
-     */
-    public Builder mergeMethodContext(eu.tsystems.mms.tic.testframework.report.model.MethodContext value) {
-      if (methodContextBuilder_ == null) {
-        if (methodContext_ != null) {
-          methodContext_ =
-            eu.tsystems.mms.tic.testframework.report.model.MethodContext.newBuilder(methodContext_).mergeFrom(value).buildPartial();
-        } else {
-          methodContext_ = value;
-        }
-        onChanged();
-      } else {
-        methodContextBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.MethodContext method_context = 2;</code>
-     */
-    public Builder clearMethodContext() {
-      if (methodContextBuilder_ == null) {
-        methodContext_ = null;
-        onChanged();
-      } else {
-        methodContext_ = null;
-        methodContextBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.MethodContext method_context = 2;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder getMethodContextBuilder() {
-      
+    public Builder setMethodContextId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      methodContextId_ = value;
       onChanged();
-      return getMethodContextFieldBuilder().getBuilder();
+      return this;
     }
     /**
-     * <code>.data.MethodContext method_context = 2;</code>
+     * <code>string method_context_id = 2;</code>
+     * @return This builder for chaining.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextOrBuilder() {
-      if (methodContextBuilder_ != null) {
-        return methodContextBuilder_.getMessageOrBuilder();
-      } else {
-        return methodContext_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.MethodContext.getDefaultInstance() : methodContext_;
-      }
+    public Builder clearMethodContextId() {
+      
+      methodContextId_ = getDefaultInstance().getMethodContextId();
+      onChanged();
+      return this;
     }
     /**
-     * <code>.data.MethodContext method_context = 2;</code>
+     * <code>string method_context_id = 2;</code>
+     * @param value The bytes for methodContextId to set.
+     * @return This builder for chaining.
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder> 
-        getMethodContextFieldBuilder() {
-      if (methodContextBuilder_ == null) {
-        methodContextBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.MethodContext, eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder, eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder>(
-                getMethodContext(),
-                getParentForChildren(),
-                isClean());
-        methodContext_ = null;
-      }
-      return methodContextBuilder_;
+    public Builder setMethodContextIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      methodContextId_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private SessionMetric() {
     metricsValues_ = java.util.Collections.emptyList();
+    sessionContextId_ = "";
   }
 
   @java.lang.Override
@@ -60,16 +61,9 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 18: {
-            eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder subBuilder = null;
-            if (sessionContext_ != null) {
-              subBuilder = sessionContext_.toBuilder();
-            }
-            sessionContext_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.SessionContext.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(sessionContext_);
-              sessionContext_ = subBuilder.buildPartial();
-            }
+            java.lang.String s = input.readStringRequireUtf8();
 
+            sessionContextId_ = s;
             break;
           }
           default: {
@@ -147,30 +141,42 @@ private static final long serialVersionUID = 0L;
     return metricsValues_.get(index);
   }
 
-  public static final int SESSION_CONTEXT_FIELD_NUMBER = 2;
-  private eu.tsystems.mms.tic.testframework.report.model.SessionContext sessionContext_;
+  public static final int SESSION_CONTEXT_ID_FIELD_NUMBER = 2;
+  private volatile java.lang.Object sessionContextId_;
   /**
-   * <code>.data.SessionContext session_context = 2;</code>
-   * @return Whether the sessionContext field is set.
+   * <code>string session_context_id = 2;</code>
+   * @return The sessionContextId.
    */
   @java.lang.Override
-  public boolean hasSessionContext() {
-    return sessionContext_ != null;
+  public java.lang.String getSessionContextId() {
+    java.lang.Object ref = sessionContextId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      sessionContextId_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.data.SessionContext session_context = 2;</code>
-   * @return The sessionContext.
+   * <code>string session_context_id = 2;</code>
+   * @return The bytes for sessionContextId.
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContext() {
-    return sessionContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance() : sessionContext_;
-  }
-  /**
-   * <code>.data.SessionContext session_context = 2;</code>
-   */
-  @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextOrBuilder() {
-    return getSessionContext();
+  public com.google.protobuf.ByteString
+      getSessionContextIdBytes() {
+    java.lang.Object ref = sessionContextId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      sessionContextId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -190,8 +196,8 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < metricsValues_.size(); i++) {
       output.writeMessage(1, metricsValues_.get(i));
     }
-    if (sessionContext_ != null) {
-      output.writeMessage(2, getSessionContext());
+    if (!getSessionContextIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sessionContextId_);
     }
     unknownFields.writeTo(output);
   }
@@ -206,9 +212,8 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, metricsValues_.get(i));
     }
-    if (sessionContext_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, getSessionContext());
+    if (!getSessionContextIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sessionContextId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -227,11 +232,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getMetricsValuesList()
         .equals(other.getMetricsValuesList())) return false;
-    if (hasSessionContext() != other.hasSessionContext()) return false;
-    if (hasSessionContext()) {
-      if (!getSessionContext()
-          .equals(other.getSessionContext())) return false;
-    }
+    if (!getSessionContextId()
+        .equals(other.getSessionContextId())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -247,10 +249,8 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + METRICS_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getMetricsValuesList().hashCode();
     }
-    if (hasSessionContext()) {
-      hash = (37 * hash) + SESSION_CONTEXT_FIELD_NUMBER;
-      hash = (53 * hash) + getSessionContext().hashCode();
-    }
+    hash = (37 * hash) + SESSION_CONTEXT_ID_FIELD_NUMBER;
+    hash = (53 * hash) + getSessionContextId().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -391,12 +391,8 @@ private static final long serialVersionUID = 0L;
       } else {
         metricsValuesBuilder_.clear();
       }
-      if (sessionContextBuilder_ == null) {
-        sessionContext_ = null;
-      } else {
-        sessionContext_ = null;
-        sessionContextBuilder_ = null;
-      }
+      sessionContextId_ = "";
+
       return this;
     }
 
@@ -433,11 +429,7 @@ private static final long serialVersionUID = 0L;
       } else {
         result.metricsValues_ = metricsValuesBuilder_.build();
       }
-      if (sessionContextBuilder_ == null) {
-        result.sessionContext_ = sessionContext_;
-      } else {
-        result.sessionContext_ = sessionContextBuilder_.build();
-      }
+      result.sessionContextId_ = sessionContextId_;
       onBuilt();
       return result;
     }
@@ -512,8 +504,9 @@ private static final long serialVersionUID = 0L;
           }
         }
       }
-      if (other.hasSessionContext()) {
-        mergeSessionContext(other.getSessionContext());
+      if (!other.getSessionContextId().isEmpty()) {
+        sessionContextId_ = other.sessionContextId_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -785,123 +778,80 @@ private static final long serialVersionUID = 0L;
       return metricsValuesBuilder_;
     }
 
-    private eu.tsystems.mms.tic.testframework.report.model.SessionContext sessionContext_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> sessionContextBuilder_;
+    private java.lang.Object sessionContextId_ = "";
     /**
-     * <code>.data.SessionContext session_context = 2;</code>
-     * @return Whether the sessionContext field is set.
+     * <code>string session_context_id = 2;</code>
+     * @return The sessionContextId.
      */
-    public boolean hasSessionContext() {
-      return sessionContextBuilder_ != null || sessionContext_ != null;
-    }
-    /**
-     * <code>.data.SessionContext session_context = 2;</code>
-     * @return The sessionContext.
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContext() {
-      if (sessionContextBuilder_ == null) {
-        return sessionContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance() : sessionContext_;
+    public java.lang.String getSessionContextId() {
+      java.lang.Object ref = sessionContextId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        sessionContextId_ = s;
+        return s;
       } else {
-        return sessionContextBuilder_.getMessage();
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>.data.SessionContext session_context = 2;</code>
+     * <code>string session_context_id = 2;</code>
+     * @return The bytes for sessionContextId.
      */
-    public Builder setSessionContext(eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
-      if (sessionContextBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        sessionContext_ = value;
-        onChanged();
+    public com.google.protobuf.ByteString
+        getSessionContextIdBytes() {
+      java.lang.Object ref = sessionContextId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sessionContextId_ = b;
+        return b;
       } else {
-        sessionContextBuilder_.setMessage(value);
+        return (com.google.protobuf.ByteString) ref;
       }
-
-      return this;
     }
     /**
-     * <code>.data.SessionContext session_context = 2;</code>
+     * <code>string session_context_id = 2;</code>
+     * @param value The sessionContextId to set.
+     * @return This builder for chaining.
      */
-    public Builder setSessionContext(
-        eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder builderForValue) {
-      if (sessionContextBuilder_ == null) {
-        sessionContext_ = builderForValue.build();
-        onChanged();
-      } else {
-        sessionContextBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.SessionContext session_context = 2;</code>
-     */
-    public Builder mergeSessionContext(eu.tsystems.mms.tic.testframework.report.model.SessionContext value) {
-      if (sessionContextBuilder_ == null) {
-        if (sessionContext_ != null) {
-          sessionContext_ =
-            eu.tsystems.mms.tic.testframework.report.model.SessionContext.newBuilder(sessionContext_).mergeFrom(value).buildPartial();
-        } else {
-          sessionContext_ = value;
-        }
-        onChanged();
-      } else {
-        sessionContextBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.SessionContext session_context = 2;</code>
-     */
-    public Builder clearSessionContext() {
-      if (sessionContextBuilder_ == null) {
-        sessionContext_ = null;
-        onChanged();
-      } else {
-        sessionContext_ = null;
-        sessionContextBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.data.SessionContext session_context = 2;</code>
-     */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder getSessionContextBuilder() {
-      
+    public Builder setSessionContextId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      sessionContextId_ = value;
       onChanged();
-      return getSessionContextFieldBuilder().getBuilder();
+      return this;
     }
     /**
-     * <code>.data.SessionContext session_context = 2;</code>
+     * <code>string session_context_id = 2;</code>
+     * @return This builder for chaining.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextOrBuilder() {
-      if (sessionContextBuilder_ != null) {
-        return sessionContextBuilder_.getMessageOrBuilder();
-      } else {
-        return sessionContext_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.SessionContext.getDefaultInstance() : sessionContext_;
-      }
+    public Builder clearSessionContextId() {
+      
+      sessionContextId_ = getDefaultInstance().getSessionContextId();
+      onChanged();
+      return this;
     }
     /**
-     * <code>.data.SessionContext session_context = 2;</code>
+     * <code>string session_context_id = 2;</code>
+     * @param value The bytes for sessionContextId to set.
+     * @return This builder for chaining.
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder> 
-        getSessionContextFieldBuilder() {
-      if (sessionContextBuilder_ == null) {
-        sessionContextBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.SessionContext, eu.tsystems.mms.tic.testframework.report.model.SessionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder>(
-                getSessionContext(),
-                getParentForChildren(),
-                isClean());
-        sessionContext_ = null;
-      }
-      return sessionContextBuilder_;
+    public Builder setSessionContextIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      sessionContextId_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

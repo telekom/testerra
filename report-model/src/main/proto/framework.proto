@@ -306,12 +306,12 @@ message MetricsValue {
 
 message SessionMetric {
     repeated MetricsValue metrics_values = 1;
-    SessionContext session_context = 2;
+    string session_context_id = 2;
 }
 
 message MethodMetric {
     repeated MetricsValue metrics_values = 1;
-    MethodContext method_context = 2;
+    string method_context_id = 2;
 }
 
 enum MetricType {

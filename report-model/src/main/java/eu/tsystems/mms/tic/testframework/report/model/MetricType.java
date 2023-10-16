@@ -9,18 +9,34 @@ package eu.tsystems.mms.tic.testframework.report.model;
 public enum MetricType
     implements com.google.protobuf.ProtocolMessageEnum {
   /**
+   * <pre>
+   * time information of loading the base url
+   * </pre>
+   *
    * <code>BASEURL_LOAD = 0;</code>
    */
   BASEURL_LOAD(0),
   /**
+   * <pre>
+   * time information of loading a new browser session
+   * </pre>
+   *
    * <code>SESSION_LOAD = 1;</code>
    */
   SESSION_LOAD(1),
   /**
+   * <pre>
+   * time information of the lifetime of a browser session
+   * </pre>
+   *
    * <code>SESSION_DURATION = 2;</code>
    */
   SESSION_DURATION(2),
   /**
+   * <pre>
+   * time information of the lifetime of a test method
+   * </pre>
+   *
    * <code>METHOD_DURATION = 3;</code>
    */
   METHOD_DURATION(3),
@@ -28,18 +44,34 @@ public enum MetricType
   ;
 
   /**
+   * <pre>
+   * time information of loading the base url
+   * </pre>
+   *
    * <code>BASEURL_LOAD = 0;</code>
    */
   public static final int BASEURL_LOAD_VALUE = 0;
   /**
+   * <pre>
+   * time information of loading a new browser session
+   * </pre>
+   *
    * <code>SESSION_LOAD = 1;</code>
    */
   public static final int SESSION_LOAD_VALUE = 1;
   /**
+   * <pre>
+   * time information of the lifetime of a browser session
+   * </pre>
+   *
    * <code>SESSION_DURATION = 2;</code>
    */
   public static final int SESSION_DURATION_VALUE = 2;
   /**
+   * <pre>
+   * time information of the lifetime of a test method
+   * </pre>
+   *
    * <code>METHOD_DURATION = 3;</code>
    */
   public static final int METHOD_DURATION_VALUE = 3;

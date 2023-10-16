@@ -32,17 +32,14 @@ public interface SessionMetricOrBuilder extends
       int index);
 
   /**
-   * <code>.data.SessionContext session_context = 2;</code>
-   * @return Whether the sessionContext field is set.
+   * <code>string session_context_id = 2;</code>
+   * @return The sessionContextId.
    */
-  boolean hasSessionContext();
+  java.lang.String getSessionContextId();
   /**
-   * <code>.data.SessionContext session_context = 2;</code>
-   * @return The sessionContext.
+   * <code>string session_context_id = 2;</code>
+   * @return The bytes for sessionContextId.
    */
-  eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContext();
-  /**
-   * <code>.data.SessionContext session_context = 2;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.SessionContextOrBuilder getSessionContextOrBuilder();
+  com.google.protobuf.ByteString
+      getSessionContextIdBytes();
 }

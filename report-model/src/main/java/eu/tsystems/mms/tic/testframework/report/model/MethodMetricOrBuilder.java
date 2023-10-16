@@ -32,17 +32,14 @@ public interface MethodMetricOrBuilder extends
       int index);
 
   /**
-   * <code>.data.MethodContext method_context = 2;</code>
-   * @return Whether the methodContext field is set.
+   * <code>string method_context_id = 2;</code>
+   * @return The methodContextId.
    */
-  boolean hasMethodContext();
+  java.lang.String getMethodContextId();
   /**
-   * <code>.data.MethodContext method_context = 2;</code>
-   * @return The methodContext.
+   * <code>string method_context_id = 2;</code>
+   * @return The bytes for methodContextId.
    */
-  eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContext();
-  /**
-   * <code>.data.MethodContext method_context = 2;</code>
-   */
-  eu.tsystems.mms.tic.testframework.report.model.MethodContextOrBuilder getMethodContextOrBuilder();
+  com.google.protobuf.ByteString
+      getMethodContextIdBytes();
 }

@@ -529,7 +529,7 @@ public class ContextExporter implements Loggable {
     public SessionMetric.Builder buildSessionContextMetrics(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext,
                                                             Map<MetricsController.MetricsType, MetricsController.TimeInfo> metricsType) {
         SessionMetric.Builder builder = SessionMetric.newBuilder();
-        apply(buildSessionContext(sessionContext), builder::setSessionContext);
+        apply(sessionContext.getId(), builder::setSessionContextId);
 
         metricsType.forEach((key, value) -> {
             MetricsValue.Builder metricsBuilder = MetricsValue.newBuilder();

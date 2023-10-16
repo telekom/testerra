@@ -69,14 +69,6 @@ public class MetricsController implements Loggable {
         }
     }
 
-    public TimeInfo readStopWatch(SessionContext context, MetricsType type) {
-        Map<MetricsType, TimeInfo> entry = this.sessionMetrics.get(context);
-        if (entry != null) {
-            return entry.get(type);
-        }
-        return null;
-    }
-
     public Duration readDuration(SessionContext context, MetricsType type) {
         Map<MetricsType, TimeInfo> entry = this.sessionMetrics.get(context);
         if (entry != null && entry.get(type) != null) {

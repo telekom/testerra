@@ -29,12 +29,13 @@ import java.util.Iterator;
 
 public abstract class AbstractUiElementList<SELF extends UiElementBase> implements UiElementList<SELF> {
     private final SELF uiElement;
-    private int iteratorIndex = 0;
+    private int iteratorIndex;
     private int iteratorSize;
     private int size;
 
     public AbstractUiElementList(SELF uiElement) {
         this.uiElement = uiElement;
+        this.iteratorIndex = 0;
         this.size = size();
         this.iteratorSize = this.size;
     }

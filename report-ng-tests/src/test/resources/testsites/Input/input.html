@@ -192,7 +192,7 @@
 <body style="margin:8px">
 <h1>Input test</h1>
 <hr>
-<div class="box">
+<div class="box" id="box1">
     <input id="1" maxlength="20" type="text" onfocus="log('Input 1 Focus')"
            onkeydown="log('Input 1 Key down')"
            onkeypress="log('Input 1 Key press')" onkeyup="log('Input 1 Key up')"> <br>
@@ -211,7 +211,7 @@
     <input id="10" type="radio" name=""> <br>
 </div>
 
-<div class="box" style="text-align:center;">
+<div class="box" style="text-align:center;" id="box2">
     <a href="input.html#" id="11" onclick="log('Open again clicked')">Open again</a> <br>
     <a href="#" id="12" onclick="showConfirm()">Show confirm</a> <br>
     <a href="#" id="13" onclick="openPopUp()">Open pop up</a> <br>

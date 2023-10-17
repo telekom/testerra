@@ -97,6 +97,7 @@ message MethodContext {
     map<string,string> annotations = 37;
     // A custom generated test name (e.a. cucumber scenario)
     string test_name = 38;
+    repeated LayoutCheckContext layout_check_context = 39;
 }
 
 message ContextValues {
@@ -180,6 +181,7 @@ message ErrorContext {
     string description = 10 [deprecated = true];
     repeated StackTraceCause stack_trace = 11;
     bool optional = 12;
+    string id = 13;
 }
 
 message SessionContext {
@@ -196,6 +198,15 @@ message SessionContext {
     string server_url = 12;
     string node_url = 13;
     string user_agent = 14;
+}
+
+message LayoutCheckContext {
+    string image = 1;
+    double distance = 2;
+    string expected_screenshot_id = 3;
+    string actual_screenshot_id = 4;
+    string distance_screenshot_id = 5;
+    string error_context_id = 6;
 }
 
 message RunConfig {

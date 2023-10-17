@@ -77,13 +77,13 @@ export class SessionTimings extends AbstractViewModel {
 
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
             sessionMetrics.forEach(metric => {
-                const methodList = this._methodDetails.filter(method => method.methodContext.sessionContextIds.includes(metric.sessionContext.contextValues.id))
-
+                const sessionContext = this._executionStatistics.executionAggregate.sessionContexts[metric.sessionContextId];
+                const methodList = this._methodDetails.filter(method => method.methodContext.sessionContextIds.includes(sessionContext.contextValues.id))
                 const sessionInformation: ISessionInformation = {
-                    sessionName: metric.sessionContext.contextValues.name,
-                    sessionId: metric.sessionContext.sessionId,
-                    browserName: metric.sessionContext.browserName,
-                    browserVersion: metric.sessionContext.browserVersion,
+                    sessionName: sessionContext.contextValues.name,
+                    sessionId: sessionContext.sessionId,
+                    browserName: sessionContext.browserName,
+                    browserVersion: sessionContext.browserVersion,
                     methodList: methodList,
                     sessionDuration: this._calculateDuration(metric.metricsValues[0].startTimestamp, metric.metricsValues[0].endTimestamp),
                     baseurlDuration: this._calculateDuration(metric.metricsValues[1].startTimestamp, metric.metricsValues[1].endTimestamp),

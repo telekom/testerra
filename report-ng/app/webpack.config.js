@@ -135,24 +135,20 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                     }
                 },
                 /**
-                 * Import images from source code
-                 * @see https://stackoverflow.com/questions/43638454/webpack-typescript-image-import
+                 * Replace file-loader with asset module
+                 * @see https://webpack.js.org/guides/asset-modules/#resource-assets
                  */
                 {
                     test: /\.(jpg|png)$/,
-                    use: {
-                        loader: 'file-loader'
-                    },
+                    type: 'asset/resource',
                 },
                 /**
-                 * Import font files from source with url-loader
-                 * @see https://stackoverflow.com/questions/68922912/reacterror-you-may-need-an-appropriate-loader-to-handle-this-file-type
+                 * Replace url-loader with asset module
+                 * @see https://webpack.js.org/guides/asset-modules/#inlining-assets
                  */
                 {
                     test: /\.(woff|woff2|ttf|eot)$/,
-                    use: {
-                        loader: 'url-loader'
-                    },
+                    type: 'asset/inline',
                 },
                 {
                     test: /\.css$/,

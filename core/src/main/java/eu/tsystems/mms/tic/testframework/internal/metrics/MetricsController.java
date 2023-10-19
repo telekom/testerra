@@ -23,7 +23,6 @@
 package eu.tsystems.mms.tic.testframework.internal.metrics;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -38,7 +37,7 @@ import java.util.stream.Stream;
  */
 public class MetricsController implements Loggable {
 
-    private final Map<SessionContext, Map<MetricsType, TimeInfo>> sessionMetrics = new ConcurrentHashMap<>();
+    private final Map<Measurable, Map<MetricsType, TimeInfo>> metrics = new ConcurrentHashMap<>();
     // private final Map<MethodContext, Map<MetricsType, TimeInfo>> methodMetrics = new ConcurrentHashMap<>();
     // page timings
 
@@ -55,22 +54,22 @@ public class MetricsController implements Loggable {
         return instance;
     }
 
-    public void start(SessionContext context, MetricsType type) {
+    public void start(Measurable measurable, MetricsType type) {
         TimeInfo timeInfo = new TimeInfo();
-        this.addMetric(context, type, timeInfo);
+        this.addMetric(measurable, type, timeInfo);
     }
 
-    public void stop(SessionContext context, MetricsType type) {
-        Map<MetricsType, TimeInfo> entry = this.sessionMetrics.get(context);
+    public void stop(Measurable measurable, MetricsType type) {
+        Map<MetricsType, TimeInfo> entry = this.metrics.get(measurable);
         if (entry != null) {
             entry.get(type).finish();
         } else {
-            log().warn("Cannot stop time: There is no entry for {} - {}", context.getName(), type.toString());
+            log().warn("Cannot stop time: There is no entry for {} - {}", measurable.getClass(), type.toString());
         }
     }
 
-    public Duration readDuration(SessionContext context, MetricsType type) {
-        Map<MetricsType, TimeInfo> entry = this.sessionMetrics.get(context);
+    public Duration readDuration(Measurable measurable, MetricsType type) {
+        Map<MetricsType, TimeInfo> entry = this.metrics.get(measurable);
         if (entry != null && entry.get(type) != null) {
             TimeInfo timeInfo = entry.get(type);
             return Duration.between(timeInfo.getStartTime(), timeInfo.getEndTime());
@@ -80,19 +79,19 @@ public class MetricsController implements Loggable {
 
     }
 
-    public void addMetric(SessionContext context, MetricsType type, TimeInfo timeInfo) {
+    public void addMetric(Measurable context, MetricsType type, TimeInfo timeInfo) {
         Map<MetricsType, TimeInfo> mapEntry;
-        if (this.sessionMetrics.containsKey(context)) {
-            mapEntry = this.sessionMetrics.get(context);
+        if (this.metrics.containsKey(context)) {
+            mapEntry = this.metrics.get(context);
         } else {
             mapEntry = new HashMap<>();
-            this.sessionMetrics.put(context, mapEntry);
+            this.metrics.put(context, mapEntry);
         }
         mapEntry.put(type, timeInfo);
     }
 
-    public Stream<Map.Entry<SessionContext, Map<MetricsType, TimeInfo>>> readSessionMetrics() {
-        return this.sessionMetrics.entrySet().stream();
+    public Stream<Map.Entry<Measurable, Map<MetricsType, TimeInfo>>> getMetrics() {
+        return this.metrics.entrySet().stream();
     }
 
 }

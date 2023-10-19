@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
+import eu.tsystems.mms.tic.testframework.internal.metrics.Measurable;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
 import eu.tsystems.mms.tic.testframework.internal.metrics.TimeInfo;
@@ -51,8 +52,6 @@ import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.MetricType;
 import eu.tsystems.mms.tic.testframework.report.model.MetricsValue;
-import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
@@ -63,8 +62,6 @@ import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestMetrics;
-import eu.tsystems.mms.tic.testframework.report.model.TestStep;
-import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
@@ -577,30 +574,31 @@ public class ContextExporter implements Loggable {
 
     public TestMetrics.Builder buildTestMetrics() {
         TestMetrics.Builder testMetricsBuilder = TestMetrics.newBuilder();
-        MetricsController.get().readSessionMetrics().forEach(entry -> {
-            eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext = entry.getKey();
-            Map<MetricsType, TimeInfo> metrics = entry.getValue();
-            SessionMetric.Builder builder = buildSessionContextMetrics(sessionContext, metrics);
-            testMetricsBuilder.addSessionMetrics(builder.build());
+        MetricsController.get().getMetrics().forEach(entry -> {
+            buildSessionContextMetrics(entry.getKey(), entry.getValue(), testMetricsBuilder);
+            // Call other metrics exports here if needed
         });
-
-        // Implement other metrics exports here if needed
 
         return testMetricsBuilder;
     }
 
-    public SessionMetric.Builder buildSessionContextMetrics(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext,
-                                                            Map<MetricsType, TimeInfo> metricsType) {
-        SessionMetric.Builder builder = SessionMetric.newBuilder();
-        apply(sessionContext.getId(), builder::setSessionContextId);
+    public void buildSessionContextMetrics(Measurable measurable, Map<MetricsType, TimeInfo> metrics, TestMetrics.Builder testMetricBuilder) {
+        if (measurable instanceof eu.tsystems.mms.tic.testframework.report.model.context.SessionContext) {
+            eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext = (eu.tsystems.mms.tic.testframework.report.model.context.SessionContext) measurable;
 
-        metricsType.forEach((key, value) -> {
-            MetricsValue.Builder metricsBuilder = MetricsValue.newBuilder();
-            map(key, type -> MetricType.valueOf(type.name()), metricsBuilder::setMetricType);
-            apply(value.getStartTime().toEpochMilli(), metricsBuilder::setStartTimestamp);
-            apply(value.getEndTime().toEpochMilli(), metricsBuilder::setEndTimestamp);
-            builder.addMetricsValues(metricsBuilder);
-        });
-        return builder;
+            SessionMetric.Builder sessionMetricBuilder = SessionMetric.newBuilder();
+            apply(sessionContext.getId(), sessionMetricBuilder::setSessionContextId);
+
+            metrics.forEach((key, value) -> {
+                MetricsValue.Builder metricsBuilder = MetricsValue.newBuilder();
+                map(key, type -> MetricType.valueOf(type.name()), metricsBuilder::setMetricType);
+                apply(value.getStartTime().toEpochMilli(), metricsBuilder::setStartTimestamp);
+                apply(value.getEndTime().toEpochMilli(), metricsBuilder::setEndTimestamp);
+                sessionMetricBuilder.addMetricsValues(metricsBuilder);
+            });
+
+            testMetricBuilder.addSessionMetrics(sessionMetricBuilder.build());
+        }
     }
+
 }

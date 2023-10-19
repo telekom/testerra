@@ -63,10 +63,9 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportThreadsPage reportThreadsPage = reportStepsTab.clickThreadLink();
 
         URL resourceURL = FileUtils.getResourceURL("byImage/ReportMethodPageTest/" + method + ".png");
-//        URL resourceURL = FileUtils.getResourceURL("byImage/" + "test_AssertCollector" + ".png");
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         utils.mouseOverByImage(reportThreadsPage.getWebDriver(), resourceURL);
-        reportThreadsPage.assertTooltipCorrect(method);
+        reportThreadsPage.assertTooltipShown(method);
     }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
@@ -87,10 +86,10 @@ public class ReportMethodPageTest extends AbstractReportTest {
         reportDetailsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportDetailsTab.clickThreadLink();
 
-        URL resourceURL = FileUtils.getResourceURL("byImage/" + method + ".png");
+        URL resourceURL = FileUtils.getResourceURL("byImage/ReportThreadsPageTest/" + method + ".png");
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         utils.mouseOverByImage(reportThreadsPage.getWebDriver(), resourceURL);
-        reportThreadsPage.assertTooltipCorrect(method);
+        reportThreadsPage.assertTooltipShown(method);
     }
 
     @Test

@@ -162,9 +162,8 @@ public final class DesktopWebDriverUtils implements Loggable {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         boolean elementFound = false;
 
-        // Calculate scroll height from viewport size and
-        int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.9);
-        System.out.println(scrollHeight);
+        // Calculate the scroll height by halving the viewport height to ensure the searched image is not skipped
+        int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.5);
 
         while (true) {
             imageRegion = webdriverRegion.find(target);

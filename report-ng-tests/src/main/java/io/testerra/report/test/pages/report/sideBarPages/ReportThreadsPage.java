@@ -35,7 +35,7 @@ public class ReportThreadsPage extends AbstractReportPage {
     @Check
     private final UiElement testMethodDropDownList = pageContent.find(By.xpath("//div[.//label[@label='Method']]//mdc-lookup"));
     @Check
-    private final UiElement testThreadReport = pageContent.find(By.xpath("//echart//canvas"));
+    private final UiElement testThreadReport = pageContent.find(By.xpath("//echart[.//canvas]"));
 
     /**
      * Constructor for existing sessions.
@@ -52,14 +52,13 @@ public class ReportThreadsPage extends AbstractReportPage {
     }
 
     public ReportThreadsPage selectMethod(String method) {
-//        UiElement methodAsGuiElement = testMethodDropDownList.find(By.xpath(String.format("//mdc-list-item[.//span[text()='%s']]", method)));
         UiElement methodAsGuiElement = testMethodDropDownList.find(By.xpath(String.format("//mdc-list-item[.//span[starts-with(text(), '%s (')]]", method)));
         methodAsGuiElement.click();
         return createPage(ReportThreadsPage.class);
     }
 
-    public void assertTooltipCorrect(String method) {
-        UiElement tooltipHeader = pageContent.find(By.xpath("//echart//div[@class='header']"));
+    public void assertTooltipShown(String method) {
+        UiElement tooltipHeader = testThreadReport.find(By.xpath("//div[@class='header']"));
         tooltipHeader.expect().text().contains(method).is(true);
     }
 

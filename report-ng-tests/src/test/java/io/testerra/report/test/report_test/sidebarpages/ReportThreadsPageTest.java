@@ -49,7 +49,7 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         reportThreadsPage = reportThreadsPage.clickSearchBar();
         reportThreadsPage = reportThreadsPage.selectMethod(method);
 
-        URL resourceURL = FileUtils.getResourceURL("byImage/" + method + ".png");
+        URL resourceURL = FileUtils.getResourceURL("byImage/ReportThreadsPageTest/" + method + ".png");
 //        URL resourceURL = FileUtils.getResourceURL("byImage/" + "test-pattern" + ".png");
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         utils.mouseOverByImage(reportThreadsPage.getWebDriver(), resourceURL);

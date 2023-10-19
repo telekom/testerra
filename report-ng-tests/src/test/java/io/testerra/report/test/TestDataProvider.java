@@ -191,9 +191,9 @@ public class TestDataProvider {
     public static Object[][] dataProviderForPreTestMethods_Classes_States_ForStepsType() {
         return new Object[][]{
                 //passed
-//                {new TestData("test_Passed", "GeneratePassedStatusInTesterraReportTest", Status.PASSED)},
+                {new TestData("test_Passed", "GeneratePassedStatusInTesterraReportTest", Status.PASSED)},
                 // recovered
-//                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RECOVERED)},
+                {new TestData("test_PassedAfterRetry", "GenerateExpectedFailedStatusInTesterraReportTest", Status.RECOVERED)},
                 // repaired
                 {new TestData("test_expectedFailedPassed", "GenerateExpectedFailedStatusInTesterraReportTest", Status.REPAIRED)}
         };

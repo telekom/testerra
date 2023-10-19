@@ -62,7 +62,7 @@ public class ReportMethodPageTest extends AbstractReportTest {
         reportStepsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportStepsTab.clickThreadLink();
 
-        URL resourceURL = FileUtils.getResourceURL("byImage/" + method + ".png");
+        URL resourceURL = FileUtils.getResourceURL("byImage/ReportMethodPageTest/" + method + ".png");
 //        URL resourceURL = FileUtils.getResourceURL("byImage/" + "test_AssertCollector" + ".png");
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         utils.mouseOverByImage(reportThreadsPage.getWebDriver(), resourceURL);

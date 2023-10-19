@@ -28,27 +28,18 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.PointerInput;
-import org.openqa.selenium.interactions.Sequence;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.sikuli.api.ColorImageTarget;
 import org.sikuli.api.DefaultScreenRegion;
-import org.sikuli.api.ImageTarget;
-import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
 
 import java.awt.*;
 import java.net.URL;
-import java.time.Duration;
-import java.util.Collections;
-
-import static eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider.PROPERTY_MANAGER;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -166,7 +157,7 @@ public final class DesktopWebDriverUtils implements Loggable {
         webDriverScreen = new WebDriverScreen(driver);
         ScreenRegion webdriverRegion = new DefaultScreenRegion(webDriverScreen);
 
-        ImageTarget target = new ImageTarget(url);
+        ColorImageTarget target = new ColorImageTarget(url);
         ScreenRegion imageRegion;
         JavascriptExecutor js = (JavascriptExecutor) driver;
         boolean elementFound = false;
@@ -186,8 +177,8 @@ public final class DesktopWebDriverUtils implements Loggable {
                 break;
             } else {
                 // Check if the bottom of the page is reached
-                boolean isScrolledToBottom = (boolean) js.executeScript("return (window.innerHeight + window.scrollY) >= document.body.scrollHeight;");
-                if (!isScrolledToBottom) {
+                boolean bottomOfPageReached = (boolean) js.executeScript("return (window.innerHeight + window.scrollY) >= document.body.scrollHeight;");
+                if (!bottomOfPageReached) {
                     // Scroll down to further search for the element
                     js.executeScript("window.scrollBy(0, " + scrollHeight + ");");
                 } else {

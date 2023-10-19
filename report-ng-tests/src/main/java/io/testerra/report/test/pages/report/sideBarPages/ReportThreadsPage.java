@@ -52,7 +52,8 @@ public class ReportThreadsPage extends AbstractReportPage {
     }
 
     public ReportThreadsPage selectMethod(String method) {
-        UiElement methodAsGuiElement = testMethodDropDownList.find(By.xpath(String.format("//mdc-list-item[.//span[text()='%s']]", method)));
+//        UiElement methodAsGuiElement = testMethodDropDownList.find(By.xpath(String.format("//mdc-list-item[.//span[text()='%s']]", method)));
+        UiElement methodAsGuiElement = testMethodDropDownList.find(By.xpath(String.format("//mdc-list-item[.//span[starts-with(text(), '%s (')]]", method)));
         methodAsGuiElement.click();
         return createPage(ReportThreadsPage.class);
     }

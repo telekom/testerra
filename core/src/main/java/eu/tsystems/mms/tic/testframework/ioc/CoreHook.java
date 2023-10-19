@@ -42,6 +42,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMetho
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
+import eu.tsystems.mms.tic.testframework.internal.metrics.DefaultMetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.ExecutionEndListener;
 import eu.tsystems.mms.tic.testframework.report.FailsAnnotationConverter;
@@ -80,6 +82,7 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         bind(IExecutionContextController.class).to(DefaultExecutionContextController.class).in(Scopes.SINGLETON);
         bind(ExecutionUtils.class).to(DefaultExecutionUtils.class).in(Scopes.SINGLETON);
         bind(ITestStatusController.class).to(TestStatusController.class).in(Scopes.SINGLETON);
+        bind(MetricsController.class).to(DefaultMetricsController.class).in(Scopes.SINGLETON);
     }
 
     @Override

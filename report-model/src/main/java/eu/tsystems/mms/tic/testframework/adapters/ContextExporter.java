@@ -574,7 +574,8 @@ public class ContextExporter implements Loggable {
 
     public TestMetrics.Builder buildTestMetrics() {
         TestMetrics.Builder testMetricsBuilder = TestMetrics.newBuilder();
-        MetricsController.get().getMetrics().forEach(entry -> {
+        MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
+        metricsController.readMetrics().forEach(entry -> {
             buildSessionContextMetrics(entry.getKey(), entry.getValue(), testMetricsBuilder);
             // Call other metrics exports here if needed
         });

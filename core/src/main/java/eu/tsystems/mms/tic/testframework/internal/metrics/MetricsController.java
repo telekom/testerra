@@ -19,79 +19,27 @@
  * under the License.
  *
  */
-
 package eu.tsystems.mms.tic.testframework.internal.metrics;
 
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
-
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 /**
- * Created on 2023-08-23
+ * Created on 2023-10-19
  *
  * @author mgn
  */
-public class MetricsController implements Loggable {
+public interface MetricsController {
 
-    private final Map<Measurable, Map<MetricsType, TimeInfo>> metrics = new ConcurrentHashMap<>();
-    // private final Map<MethodContext, Map<MetricsType, TimeInfo>> methodMetrics = new ConcurrentHashMap<>();
-    // page timings
+    void start(Measurable measurable, MetricsType type);
 
-    private static MetricsController instance;
+    void stop(Measurable measurable, MetricsType type);
 
-    private MetricsController() {
+    Duration getDuration(Measurable measurable, MetricsType type);
 
-    }
+    void addMetric(Measurable measurable, MetricsType type, TimeInfo timeInfo);
 
-    public static MetricsController get() {
-        if (instance == null) {
-            instance = new MetricsController();
-        }
-        return instance;
-    }
-
-    public void start(Measurable measurable, MetricsType type) {
-        TimeInfo timeInfo = new TimeInfo();
-        this.addMetric(measurable, type, timeInfo);
-    }
-
-    public void stop(Measurable measurable, MetricsType type) {
-        Map<MetricsType, TimeInfo> entry = this.metrics.get(measurable);
-        if (entry != null) {
-            entry.get(type).finish();
-        } else {
-            log().warn("Cannot stop time: There is no entry for {} - {}", measurable.getClass(), type.toString());
-        }
-    }
-
-    public Duration readDuration(Measurable measurable, MetricsType type) {
-        Map<MetricsType, TimeInfo> entry = this.metrics.get(measurable);
-        if (entry != null && entry.get(type) != null) {
-            TimeInfo timeInfo = entry.get(type);
-            return Duration.between(timeInfo.getStartTime(), timeInfo.getEndTime());
-        } else {
-            return Duration.ZERO;
-        }
-
-    }
-
-    public void addMetric(Measurable context, MetricsType type, TimeInfo timeInfo) {
-        Map<MetricsType, TimeInfo> mapEntry;
-        if (this.metrics.containsKey(context)) {
-            mapEntry = this.metrics.get(context);
-        } else {
-            mapEntry = new HashMap<>();
-            this.metrics.put(context, mapEntry);
-        }
-        mapEntry.put(type, timeInfo);
-    }
-
-    public Stream<Map.Entry<Measurable, Map<MetricsType, TimeInfo>>> getMetrics() {
-        return this.metrics.entrySet().stream();
-    }
+    Stream<Map.Entry<Measurable, Map<MetricsType, TimeInfo>>> readMetrics();
 
 }

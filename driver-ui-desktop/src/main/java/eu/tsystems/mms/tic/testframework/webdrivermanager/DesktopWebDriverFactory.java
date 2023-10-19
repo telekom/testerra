@@ -192,9 +192,10 @@ public class DesktopWebDriverFactory implements
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                MetricsController.get().start(sessionContext, MetricsType.BASEURL_LOAD);
+                MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
+                metricsController.start(sessionContext, MetricsType.BASEURL_LOAD);
                 eventFiringWebDriver.get(baseUrl.toString());
-                MetricsController.get().stop(sessionContext, MetricsType.BASEURL_LOAD);
+                metricsController.stop(sessionContext, MetricsType.BASEURL_LOAD);
             } catch (Exception e) {
                 log().error("Unable to open baseUrl", e);
             }

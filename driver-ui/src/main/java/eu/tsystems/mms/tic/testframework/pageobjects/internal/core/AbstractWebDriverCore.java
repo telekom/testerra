@@ -44,7 +44,6 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -52,11 +51,8 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-import javax.imageio.ImageIO;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -556,7 +552,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     @Override
     public boolean isPresent() {
         try {
-            this.findWebElement(webElement -> {});
+            this.findWebElement(webElement -> {
+            });
         } catch (Exception e) {
             return false;
         }
@@ -654,53 +651,11 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     @Override
     public File takeScreenshot() {
-        final boolean isSelenium4 = false;
-        if (isSelenium4) {
-            return super.takeScreenshot();
-        }
-
         AtomicReference<File> atomicReference = new AtomicReference<>();
         this.findWebElement(webElement -> {
-            if (!isVisible(false)) {
-                scrollToTop();
-            }
-            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
-            try {
-                final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
-
-                File screenshot = driver.getScreenshotAs(OutputType.FILE);
-                BufferedImage fullImg = ImageIO.read(screenshot);
-
-                Point elementPosition = webElement.getLocation();
-                Dimension elementSize = webElement.getSize();
-                int imageX = elementPosition.getX() - viewport.getX();
-                int imageY = elementPosition.getY() - viewport.getY();
-                int imageWidth = elementSize.getWidth();
-                int imageHeight = elementSize.getHeight();
-
-                if (imageX > fullImg.getWidth()) imageX = 0;
-                if (imageY > fullImg.getHeight()) imageY = 0;
-
-                // Make sure the image bounding box doesn't overflows the image dimension
-                if (imageX + imageWidth > fullImg.getWidth()) {
-                    imageWidth = fullImg.getWidth() - imageX;
-                }
-                if (imageY + imageHeight > fullImg.getHeight()) {
-                    imageHeight = fullImg.getHeight() - imageY;
-                }
-
-                BufferedImage eleScreenshot = fullImg.getSubimage(
-                        imageX,
-                        imageY,
-                        imageWidth,
-                        imageHeight
-                );
-                ImageIO.write(eleScreenshot, "png", screenshot);
-                atomicReference.set(screenshot);
-            } catch (IOException e) {
-                log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
-            }
+            atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
         });
         return atomicReference.get();
     }
+
 }

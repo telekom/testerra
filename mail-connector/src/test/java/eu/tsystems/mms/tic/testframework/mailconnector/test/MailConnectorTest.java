@@ -25,25 +25,18 @@ import com.icegreen.greenmail.util.DummySSLSocketFactory;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.imap.ImapMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.EmailAttachment;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.EmailQuery;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import jakarta.mail.Address;
 import jakarta.mail.Message.RecipientType;
 import jakarta.mail.MessagingException;
@@ -62,12 +55,24 @@ import jakarta.mail.search.RecipientTerm;
 import jakarta.mail.search.SearchTerm;
 import jakarta.mail.search.SentDateTerm;
 import jakarta.mail.search.SubjectTerm;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -75,7 +80,7 @@ import java.util.stream.Stream;
  *
  * @author mrgi, tbmi
  */
-public class MailConnectorTest extends TesterraTest {
+public class MailConnectorTest extends TesterraTest implements Loggable {
 
     // CONSTANTS
     /**
@@ -124,11 +129,6 @@ public class MailConnectorTest extends TesterraTest {
     private static final String SENDER = "secret@host";
 
     // REFERENCES
-    /**
-     * LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailConnectorTest.class);
-
     /**
      * SMTPMailConnector
      */
@@ -243,15 +243,16 @@ public class MailConnectorTest extends TesterraTest {
     }
 
     /**
-     * Tests the correct creating and sending of mails with attachment.
+     * Tests the correct creating and sending of mails with a plain text attachment.
      *
      * @throws Exception if there was an error while sending/receiving the messages.
      */
     @Test
-    public void testT03_sendAndWaitForMessageWithAttachment() throws Exception {
-
-        final String subject = STR_MAIL_SUBJECT + "testT03_sendAndWaitForMessageWithAttachment";
-        final File attachmentFile = FileUtils.getResourceFile("attachment.txt");
+    public void testT03_sendAndWaitForMessageWithPlainTextAttachment() throws Exception {
+        final String fileName = "attachment.txt";
+        final String subject = STR_MAIL_SUBJECT + "testT03_sendAndWaitForMessageWithPlainTextAttachment";
+        final File attachmentFile = FileUtils.getResourceFile(fileName);
+        String fileContent = FileUtils.readFileToString(attachmentFile, StandardCharsets.US_ASCII);
 
         // SETUP - Create message, add attachment.
         final MimeMessage msg = this.createDefaultMessage(session, subject);
@@ -261,7 +262,6 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-
         final Email receivedMsg = waitForMessage(subject);
 
         // TEST 1 - Fail, if the message contains no attachment (content is plain text).
@@ -269,31 +269,68 @@ public class MailConnectorTest extends TesterraTest {
             Assert.fail(ERR_NO_ATTACHMENT);
         }
 
-        // TEST 2 - Check email text and attachment file name.
-        final Multipart content = (Multipart) receivedMsg.getMessage().getContent();
-        final int contentCnt = content.getCount();
+        // TEST 2 - Check email text and attachment content.
+        String messageText = receivedMsg.getMessageText();
+        EmailAttachment receivedAttachment = receivedMsg.getAttachment(fileName);
 
-        String attachmentFileName = null;
-        String text = null;
-
-        for (int i = 0; i < contentCnt; i++) {
-            Part part = content.getBodyPart(i);
-
-            // Retrieve email text.
-            if (part.getDisposition().equals(Part.INLINE)) {
-                text = part.getContent().toString();
-            }
-
-            // Retrieve attachment.
-            else if (part.getDisposition().equals(Part.ATTACHMENT)) {
-                attachmentFileName = part.getFileName();
-            }
-        }
-
-        Assert.assertEquals(text, STR_MAIL_TEXT);
-        Assert.assertEquals(attachmentFileName, attachmentFile.getName());
+        Assert.assertEquals(messageText, STR_MAIL_TEXT);
+        Assert.assertEquals(receivedAttachment.getContent(), fileContent);
 
         // CLEAN UP - Delete message.
+        deleteMessage(receivedMsg, pop3);
+    }
+
+    @DataProvider(name = "binaryAttachmentFiles")
+    public Iterator<String> dataProvider() {
+
+        List<String> files = new ArrayList<>();
+        files.add("attachment.pdf");
+        files.add("attachment.jpg");
+        files.add("attachment.png");
+        files.add("attachment.zip");
+
+        return files.iterator();
+    }
+
+    /**
+     * Tests the correct creating and sending of mails with binary attachments.
+     *
+     * @param fileName name of the resource file
+     * @throws Exception if there was an error while sending/receiving the messages.
+     */
+    @Test(dataProvider = "binaryAttachmentFiles")
+    public void testT14_sendAndWaitForMessageWithBinaryAttachment(String fileName) throws Exception {
+        final String subject = STR_MAIL_SUBJECT + "testT14_sendAndWaitForMessageWithBinaryAttachment";
+        final File sentAttachmentFile = FileUtils.getResourceFile(fileName);
+
+        // SETUP - Create message, add attachment.
+        final MimeMessage msg = this.createDefaultMessage(session, subject);
+        final MimeBodyPart attachment = smtp.createAttachment(sentAttachmentFile);
+        final MimeBodyPart[] attachments = {attachment};
+        smtp.addAttachmentsToMessage(attachments, msg);
+
+        // EXECUTION - Send and receive message.
+        smtp.sendMessage(msg);
+        final Email receivedMsg = waitForMessage(subject);
+
+        // TEST 1 - Fail, if the message contains no attachment (content is plain text).
+        if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
+            Assert.fail(ERR_NO_ATTACHMENT);
+        }
+
+        // TEST 2 - Check email text and attachment file.
+        String text = receivedMsg.getMessageText();
+        EmailAttachment receivedAttachment = receivedMsg.getAttachment(fileName);
+        File savedAttachment = receivedAttachment.saveAsFile();
+
+        Assert.assertEquals(text, STR_MAIL_TEXT);
+        Assert.assertTrue(FileUtils.contentEquals(sentAttachmentFile, savedAttachment));
+
+        // CLEAN UP - Delete saved file and message.
+        if (!savedAttachment.delete()) {
+            log().warn(String.format("File >%s< couldn't be deleted. Please remove file manually.",
+                    savedAttachment.getAbsolutePath()));
+        }
         deleteMessage(receivedMsg, pop3);
     }
 
@@ -459,7 +496,7 @@ public class MailConnectorTest extends TesterraTest {
             }
         } catch (final Exception e) {
 
-            LOGGER.error(e.getMessage());
+            log().error(e.getMessage());
             Assert.fail(e.getMessage());
         }
     }
@@ -475,11 +512,11 @@ public class MailConnectorTest extends TesterraTest {
         final String subject = "testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient"
                 + RandomStringUtils.random(5, true, false);
 
-        final SearchTerm searchTerm = new AndTerm(new SearchTerm [] {
-                        new SubjectTerm(subject),
-                        new FromTerm(new InternetAddress(SENDER)),
-                        new RecipientTerm(RecipientType.TO, new InternetAddress(RECIPIENT))
-                        });
+        final SearchTerm searchTerm = new AndTerm(new SearchTerm[]{
+                new SubjectTerm(subject),
+                new FromTerm(new InternetAddress(SENDER)),
+                new RecipientTerm(RecipientType.TO, new InternetAddress(RECIPIENT))
+        });
 
         sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
     }
@@ -531,7 +568,7 @@ public class MailConnectorTest extends TesterraTest {
         final String subject = "testT12_sendAndWaitForMessageWithoutAttachement_SubjectSentDate";
 
         Date now = new Date();
-        Date aMinuteBefore = new Date(now.getTime()-(1000*60));
+        Date aMinuteBefore = new Date(now.getTime() - (1000 * 60));
         Assert.assertTrue(aMinuteBefore.before(now), "SentDate is not before now");
 
         final SearchTerm searchTerm = new AndTerm(
@@ -625,7 +662,7 @@ public class MailConnectorTest extends TesterraTest {
             msg.setSubject(subject);
             msg.setText(STR_MAIL_TEXT);
         } catch (MessagingException e) {
-            LOGGER.error(e.toString());
+            log().error(e.toString());
         }
 
         return msg;
@@ -658,7 +695,7 @@ public class MailConnectorTest extends TesterraTest {
      * @throws AssertionError in case no message was received at all
      */
     private Email waitForMessage(final SearchTerm searchTerm) throws AssertionError {
-       return waitForMessage(searchTerm, pop3);
+        return waitForMessage(searchTerm, pop3);
     }
 
     private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError {
@@ -681,7 +718,7 @@ public class MailConnectorTest extends TesterraTest {
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
      *
-     * @param msg          the TesterraMail-message to delete
+     * @param msg                    the TesterraMail-message to delete
      * @param abstractInboxConnector mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message
      */
@@ -721,8 +758,7 @@ public class MailConnectorTest extends TesterraTest {
         EmailQuery query = new EmailQuery()
                 .setPauseMs(initPause)
                 .setRetryCount(initRetry)
-                .setSearchTerm(new SubjectTerm("404: Not Found"))
-                ;
+                .setSearchTerm(new SubjectTerm("404: Not Found"));
 
         Assert.assertEquals(query.getPauseMs(), initPause);
         Assert.assertEquals(query.getRetryCount(), initRetry);
@@ -730,7 +766,7 @@ public class MailConnectorTest extends TesterraTest {
         long startTime = System.currentTimeMillis();
         Stream<Email> emails = this.imap.query(query);
         Assert.assertEquals(emails.count(), 0);
-        long endTime = System.currentTimeMillis()-startTime;
+        long endTime = System.currentTimeMillis() - startTime;
 
         AssertUtils.assertGreaterEqualThan(new BigDecimal(endTime), new BigDecimal(initPause * initRetry), "Invalid polling time");
     }

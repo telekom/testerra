@@ -32,6 +32,7 @@ public enum TestPage {
     DRAG_AND_DROP_OVER_FRAMES("DragAndDropFrame/index.html", INPUT_TEST_PAGE),
     MULTISELECT("Multiselect/index.html"),
     LAYOUT("Layout/index.html"),
+    LAYOUT_FRAME("Layout/index-frame.html"),
     LAYOUT_IMAGE("LayoutImage/index.html"),
     LIST("GuiElementList/index.html"),
     IMG("Img/logo", INPUT_TEST_PAGE),

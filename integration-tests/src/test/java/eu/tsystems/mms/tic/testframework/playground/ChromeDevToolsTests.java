@@ -132,12 +132,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
-//        DevTools devTools = BROWSER_DEV_TOOLS.getRawDevTools(webDriver);
-//
-//        devTools.send(Emulation.setGeolocationOverride(
-//                latitude,
-//                longitude,
-//                Optional.of(1)));
         CHROME_DEV_TOOLS.setGeoLocation(webDriver, latitude.get().doubleValue(), longitude.get().doubleValue(), 1);
 
         webDriver.get("https://my-location.org/");

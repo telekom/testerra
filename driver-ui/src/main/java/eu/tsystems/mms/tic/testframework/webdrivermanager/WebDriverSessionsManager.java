@@ -418,9 +418,10 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            MetricsController.get().start(sessionContext, MetricsType.SESSION_LOAD);
+            MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
+            metricsController.start(sessionContext, MetricsType.SESSION_LOAD);
             WebDriver newRawWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
-            MetricsController.get().stop(sessionContext, MetricsType.SESSION_LOAD);
+            metricsController.stop(sessionContext, MetricsType.SESSION_LOAD);
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
@@ -436,7 +437,7 @@ public final class WebDriverSessionsManager {
                 sessionContext.setRemoteSessionId(sessionContext.getId());
             }
 
-            Duration diff = MetricsController.get().readDuration(sessionContext, MetricsType.SESSION_LOAD);
+            Duration diff = metricsController.getDuration(sessionContext, MetricsType.SESSION_LOAD);
             LOGGER.info(String.format(
                     "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %02d:%02d.%03d",
                     newRawWebDriver.getClass().getSimpleName(),

@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementList;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElementListPage> {
@@ -116,6 +117,16 @@ public class UiElementListTests extends AbstractExclusiveTestSitesTest<UiElement
         tableRows.list().first().linkByXPath().expect().attribute(Attribute.HREF).endsWith("mkri").is(true);
         tableRows.list().get(1).linkByXPath().expect().attribute(Attribute.HREF).endsWith("joku").is(true);
         tableRows.list().last().linkByXPath().expect().attribute(Attribute.HREF).endsWith("erku").is(true);
+    }
+
+    @Test
+    public void test_iterator() {
+        UiElementListPage page = getPage();
+        final UiElement anchors = page.getNavigationSubElementsByTagName();
+        anchors.expect().foundElements().is(3);
+        UiElementList<UiElement> list = anchors.list();
+        Assert.assertTrue(list.hasNext());
+        Assert.assertTrue(list.iterator().hasNext());
     }
 
     @Override

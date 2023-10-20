@@ -21,25 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.internal.metrics;
 
-import java.time.Duration;
-import java.util.Map;
-import java.util.stream.Stream;
-
 /**
  * Created on 2023-10-19
  *
  * @author mgn
  */
-public interface MetricsController {
-
-    void start(Measurable measurable, MetricsType type);
-
-    void stop(Measurable measurable, MetricsType type);
-
-    Duration getDuration(Measurable measurable, MetricsType type);
-
-    void addMetric(Measurable measurable, MetricsType type, TimeInfo timeInfo);
-
-    Stream<Map.Entry<Measurable, Map<MetricsType, TimeInfo>>> readMetrics();
-
+public interface Measurable {
 }

@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -39,7 +40,7 @@ import org.sikuli.api.DefaultScreenRegion;
 import org.sikuli.api.ScreenRegion;
 
 import java.awt.*;
-import java.net.URL;
+import java.io.File;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -140,24 +141,26 @@ public final class DesktopWebDriverUtils implements Loggable {
         }
     }
 
-    public void clickByImage(final WebDriver driver, URL url) {
-        final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
+    public void clickByImage(final WebDriver driver, String fileName) {
+        final ScreenRegion imageRegion = getElementPositionByImage(driver, fileName);
         Actions action = new Actions(driver);
         action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).click().build().perform();
     }
 
-    public void mouseOverByImage(final WebDriver driver, URL url) {
-        final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
+    public void mouseOverByImage(final WebDriver driver, String fileName) {
+        final ScreenRegion imageRegion = getElementPositionByImage(driver, fileName);
         Actions action = new Actions(driver);
         action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).build().perform();
     }
 
-    public ScreenRegion getElementPositionByImage(final WebDriver driver, URL url) {
+    public ScreenRegion getElementPositionByImage(final WebDriver driver, String fileName) {
+        File imageFile = FileUtils.getResourceFile(fileName);
+
         WebDriverScreen webDriverScreen;
         webDriverScreen = new WebDriverScreen(driver);
         ScreenRegion webdriverRegion = new DefaultScreenRegion(webDriverScreen);
 
-        ColorImageTarget target = new ColorImageTarget(url);
+        ColorImageTarget target = new ColorImageTarget(imageFile);
         ScreenRegion imageRegion;
         boolean elementFound = false;
 
@@ -176,7 +179,7 @@ public final class DesktopWebDriverUtils implements Loggable {
             if (imageRegion != null) {
                 // Element is visible, break out of the loop
                 Rectangle r = imageRegion.getBounds();
-                log().info("image " + url + " found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
+                log().info("image " + imageFile.getAbsolutePath() + " found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
                 elementFound = true;
             } else {
                 // Scroll down to further search for the element
@@ -188,7 +191,8 @@ public final class DesktopWebDriverUtils implements Loggable {
             return imageRegion;
         } else {
 //        Assert.assertTrue(elementFound, "Element not found similar to " + url);
-            throw new ElementNotFoundException("Element not found similar to " + url);
+            // TODO: Replace with Optional and handle in calling methods
+            throw new ElementNotFoundException("Element not found similar to " + imageFile.getAbsolutePath());
         }
     }
 }

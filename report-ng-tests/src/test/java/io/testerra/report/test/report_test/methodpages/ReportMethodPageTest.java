@@ -24,7 +24,6 @@ package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.TestDataProvider;
@@ -38,8 +37,6 @@ import io.testerra.report.test.pages.utils.DateTimeUtils;
 import io.testerra.report.test.pages.utils.TestData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.net.URL;
 
 public class ReportMethodPageTest extends AbstractReportTest {
 
@@ -62,9 +59,9 @@ public class ReportMethodPageTest extends AbstractReportTest {
         reportStepsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportStepsTab.clickThreadLink();
 
-        URL resourceURL = FileUtils.getResourceURL("byImage/ReportMethodPageTest/" + method + ".png");
+        String imageFileName = "byImage/ReportMethodPageTest/" + method + ".png";
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), resourceURL);
+        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), imageFileName);
         reportThreadsPage.assertTooltipShown(method);
     }
 
@@ -86,9 +83,9 @@ public class ReportMethodPageTest extends AbstractReportTest {
         reportDetailsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportDetailsTab.clickThreadLink();
 
-        URL resourceURL = FileUtils.getResourceURL("byImage/ReportThreadsPageTest/" + method + ".png");
+        String imageFileName = "byImage/ReportThreadsPageTest/" + method + ".png";
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), resourceURL);
+        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), imageFileName);
         reportThreadsPage.assertTooltipShown(method);
     }
 

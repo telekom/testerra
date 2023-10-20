@@ -23,7 +23,6 @@
 package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.TestDataProvider;
@@ -31,8 +30,6 @@ import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import org.testng.annotations.Test;
-
-import java.net.URL;
 
 public class ReportThreadsPageTest extends AbstractReportTest {
 
@@ -49,9 +46,9 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         reportThreadsPage = reportThreadsPage.clickSearchBar();
         reportThreadsPage = reportThreadsPage.selectMethod(method);
 
-        URL resourceURL = FileUtils.getResourceURL("byImage/ReportThreadsPageTest/" + method + ".png");
+        String imageFileName = "byImage/ReportThreadsPageTest/" + method + ".png";
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), resourceURL);
+        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), imageFileName);
         reportThreadsPage.assertTooltipShown(method);
     }
 

@@ -23,13 +23,13 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -140,6 +140,23 @@ public final class DesktopWebDriverUtils implements Loggable {
         }
     }
 
+    public void scrollByValue(final WebDriver driver, int scrollHeight) {
+        JSUtils.executeScript(driver, "window.scrollBy(0, " + scrollHeight + ");");
+    }
+
+    public long getCurrentScrollHeight(final WebDriver driver) {
+        return (long) JSUtils.executeScriptWOCatch(driver, "return (window.innerHeight + window.scrollY)");
+    }
+
+    public long getDocumentHeight(final WebDriver driver) {
+        return (long) JSUtils.executeScriptWOCatch(driver, "return document.body.scrollHeight");
+    }
+
+    public Rectangle getElementBoundsByImage(final WebDriver driver, URL url) {
+        final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
+        return imageRegion.getBounds();
+    }
+
     public void clickByImage(final WebDriver driver, URL url) {
         final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
         Actions action = new Actions(driver);
@@ -159,36 +176,36 @@ public final class DesktopWebDriverUtils implements Loggable {
 
         ColorImageTarget target = new ColorImageTarget(url);
         ScreenRegion imageRegion;
-        JavascriptExecutor js = (JavascriptExecutor) driver;
         boolean elementFound = false;
 
         // Calculate the scroll height by halving the viewport height to ensure the searched image is not skipped
         int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.5);
+        // Get the height of the page
+        long documentHeight = getDocumentHeight(driver);
+        // The current scroll height in the browser
+        long currentScrollHeight;
 
-        while (true) {
+        do {
+            currentScrollHeight = getCurrentScrollHeight(driver);
             imageRegion = webdriverRegion.find(target);
+
             // Check if the element is visible in the current viewport
             if (imageRegion != null) {
                 // Element is visible, break out of the loop
                 Rectangle r = imageRegion.getBounds();
                 log().info("image " + url + " found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
                 elementFound = true;
-                break;
             } else {
-                // Check if the bottom of the page is reached
-                boolean bottomOfPageReached = (boolean) js.executeScript("return (window.innerHeight + window.scrollY) >= document.body.scrollHeight;");
-                if (!bottomOfPageReached) {
-                    // Scroll down to further search for the element
-                    js.executeScript("window.scrollBy(0, " + scrollHeight + ");");
-                } else {
-                    break;
-                }
+                // Scroll down to further search for the element
+                scrollByValue(driver, scrollHeight);
             }
-        }
+        } while (currentScrollHeight < documentHeight && !elementFound); // End loop if element was found or bottom of page is reached
+
         if (elementFound) {
             return imageRegion;
         } else {
-            throw new RuntimeException("Element not found similar to " + url);
+//        Assert.assertTrue(elementFound, "Element not found similar to " + url);
+            throw new ElementNotFoundException("Element not found similar to " + url);
         }
     }
 }

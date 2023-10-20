@@ -140,23 +140,6 @@ public final class DesktopWebDriverUtils implements Loggable {
         }
     }
 
-    public void scrollByValue(final WebDriver driver, int scrollHeight) {
-        JSUtils.executeScript(driver, "window.scrollBy(0, " + scrollHeight + ");");
-    }
-
-    public long getCurrentScrollHeight(final WebDriver driver) {
-        return (long) JSUtils.executeScriptWOCatch(driver, "return (window.innerHeight + window.scrollY)");
-    }
-
-    public long getDocumentHeight(final WebDriver driver) {
-        return (long) JSUtils.executeScriptWOCatch(driver, "return document.body.scrollHeight");
-    }
-
-    public Rectangle getElementBoundsByImage(final WebDriver driver, URL url) {
-        final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
-        return imageRegion.getBounds();
-    }
-
     public void clickByImage(final WebDriver driver, URL url) {
         final ScreenRegion imageRegion = getElementPositionByImage(driver, url);
         Actions action = new Actions(driver);
@@ -169,7 +152,7 @@ public final class DesktopWebDriverUtils implements Loggable {
         action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).build().perform();
     }
 
-    private ScreenRegion getElementPositionByImage(final WebDriver driver, URL url) {
+    public ScreenRegion getElementPositionByImage(final WebDriver driver, URL url) {
         WebDriverScreen webDriverScreen;
         webDriverScreen = new WebDriverScreen(driver);
         ScreenRegion webdriverRegion = new DefaultScreenRegion(webDriverScreen);
@@ -181,12 +164,12 @@ public final class DesktopWebDriverUtils implements Loggable {
         // Calculate the scroll height by halving the viewport height to ensure the searched image is not skipped
         int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.5);
         // Get the height of the page
-        long documentHeight = getDocumentHeight(driver);
+        long documentHeight = utils.getDocumentHeight(driver);
         // The current scroll height in the browser
         long currentScrollHeight;
 
         do {
-            currentScrollHeight = getCurrentScrollHeight(driver);
+            currentScrollHeight = utils.getCurrentScrollHeight(driver);
             imageRegion = webdriverRegion.find(target);
 
             // Check if the element is visible in the current viewport
@@ -197,7 +180,7 @@ public final class DesktopWebDriverUtils implements Loggable {
                 elementFound = true;
             } else {
                 // Scroll down to further search for the element
-                scrollByValue(driver, scrollHeight);
+                utils.scrollByValues(driver, 0, scrollHeight);
             }
         } while (currentScrollHeight < documentHeight && !elementFound); // End loop if element was found or bottom of page is reached
 

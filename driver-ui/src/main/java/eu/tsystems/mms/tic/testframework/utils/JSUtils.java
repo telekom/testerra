@@ -488,4 +488,35 @@ public final class JSUtils {
         );
     }
 
+    /**
+     * Scrolls horizontally and vertically by the given values
+     *
+     * @param driver {@link WebDriver}
+     * @param scrollX the value for scrolling horizontally
+     * @param scrollY the value for scrolling vertically
+     */
+    public void scrollByValues(final WebDriver driver, int scrollX, int scrollY) {
+        JSUtils.executeScript(driver, "window.scrollBy(" + scrollX + ", " + scrollY + ");");
+    }
+
+    /**
+     * Determines the height, the viewport is currently at
+     *
+     * @param driver {@link WebDriver}
+     * @return the height, the viewport is currently at
+     */
+    public long getCurrentScrollHeight(final WebDriver driver) {
+        return (long) JSUtils.executeScriptWOCatch(driver, "return (window.innerHeight + window.scrollY)");
+    }
+
+    /**
+     * Determines the height of the current page
+     *
+     * @param driver {@link WebDriver}
+     * @return the height of the page
+     */
+    public long getDocumentHeight(final WebDriver driver) {
+        return (long) JSUtils.executeScriptWOCatch(driver, "return document.body.scrollHeight");
+    }
+
 }

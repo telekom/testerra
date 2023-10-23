@@ -26,6 +26,10 @@ import com.google.gson.Gson;
 import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
+import eu.tsystems.mms.tic.testframework.internal.metrics.Measurable;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
+import eu.tsystems.mms.tic.testframework.internal.metrics.TimeInfo;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
@@ -46,14 +50,18 @@ import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessageType;
 import eu.tsystems.mms.tic.testframework.report.model.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
+import eu.tsystems.mms.tic.testframework.report.model.MetricType;
+import eu.tsystems.mms.tic.testframework.report.model.MetricsValue;
 import eu.tsystems.mms.tic.testframework.report.model.ResultStatusType;
 import eu.tsystems.mms.tic.testframework.report.model.RunConfig;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.SessionMetric;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
 import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
+import eu.tsystems.mms.tic.testframework.report.model.TestMetrics;
 import eu.tsystems.mms.tic.testframework.report.model.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
@@ -563,4 +571,35 @@ public class ContextExporter implements Loggable {
 
         return builder;
     }
+
+    public TestMetrics.Builder buildTestMetrics() {
+        TestMetrics.Builder testMetricsBuilder = TestMetrics.newBuilder();
+        MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
+        metricsController.readMetrics().forEach(entry -> {
+            buildSessionContextMetrics(entry.getKey(), entry.getValue(), testMetricsBuilder);
+            // Call other metrics exports here if needed
+        });
+
+        return testMetricsBuilder;
+    }
+
+    public void buildSessionContextMetrics(Measurable measurable, Map<MetricsType, TimeInfo> metrics, TestMetrics.Builder testMetricBuilder) {
+        if (measurable instanceof eu.tsystems.mms.tic.testframework.report.model.context.SessionContext) {
+            eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext = (eu.tsystems.mms.tic.testframework.report.model.context.SessionContext) measurable;
+
+            SessionMetric.Builder sessionMetricBuilder = SessionMetric.newBuilder();
+            apply(sessionContext.getId(), sessionMetricBuilder::setSessionContextId);
+
+            metrics.forEach((key, value) -> {
+                MetricsValue.Builder metricsBuilder = MetricsValue.newBuilder();
+                map(key, type -> MetricType.valueOf(type.name()), metricsBuilder::setMetricType);
+                apply(value.getStartTime().toEpochMilli(), metricsBuilder::setStartTimestamp);
+                apply(value.getEndTime().toEpochMilli(), metricsBuilder::setEndTimestamp);
+                sessionMetricBuilder.addMetricsValues(metricsBuilder);
+            });
+
+            testMetricBuilder.addSessionMetrics(sessionMetricBuilder.build());
+        }
+    }
+
 }

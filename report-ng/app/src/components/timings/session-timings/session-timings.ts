@@ -213,12 +213,12 @@ export class SessionTimings extends AbstractViewModel {
                         let tooltipString = '<div class="header" style="background-color: ' +
                             params.color + ';"> ' + this._dots[seriesIndex].information.browserName + ', Version: ' +
                             this._dots[seriesIndex].information.browserVersion + '</div> <br>';
-                        tooltipString += `<b>Session name:</b> ${this._dots[seriesIndex].information.sessionName} <br>`;
-                        tooltipString += `<b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>`;
-                        tooltipString += `<b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>`;
-                        tooltipString += `<b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>`;
-                        tooltipString += `<b>Start time session:</b> ${this._dots[seriesIndex].information.sessionStartTime} <br>`;
-                        tooltipString += `<b>Start time base URL:</b> ${this._dots[seriesIndex].information.baseurlStartTime} <br>`;
+                        tooltipString += `<b>Session name:</b> ${this._dots[seriesIndex].information.sessionName} <br>
+                            <b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>
+                            <b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>
+                            <b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>
+                            <b>Start time session:</b> ${this._dots[seriesIndex].information.sessionStartTime} <br>
+                            <b>Start time base URL:</b> ${this._dots[seriesIndex].information.baseurlStartTime} <br>`;
 
                         if (testNames.length > 1) {
                             tooltipString += `<b>Test case(s):</b><ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;

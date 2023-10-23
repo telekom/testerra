@@ -42,7 +42,7 @@ export class SessionTimings extends AbstractViewModel {
     private _sessionData;
     private _hasEnded = false;
     private _testDuration: Duration | null = null;
-    private _bars;
+    private _dots: IDots[];
 
     constructor(
         private readonly _statusConverter: StatusConverter,
@@ -50,7 +50,7 @@ export class SessionTimings extends AbstractViewModel {
     ) {
         super();
         this._methodDetails = [];
-        this._bars = [];
+        this._dots = [];
     }
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
@@ -70,7 +70,7 @@ export class SessionTimings extends AbstractViewModel {
                         .flatMap(classStatistic => classStatistic.methodContexts)
                         .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
                         .map(methodContext => new MethodDetails(methodContext, classStatistic))
-                })
+                });
         });
 
         const sessionInformationArray = [];
@@ -78,21 +78,22 @@ export class SessionTimings extends AbstractViewModel {
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
             sessionMetrics.forEach(metric => {
                 const sessionContext = this._executionStatistics.executionAggregate.sessionContexts[metric.sessionContextId];
-                const methodList = this._methodDetails.filter(method => method.methodContext.sessionContextIds.includes(sessionContext.contextValues.id))
+                const methodList = this._methodDetails.filter(method => method.methodContext.sessionContextIds.includes(sessionContext.contextValues.id));
                 const sessionInformation: ISessionInformation = {
                     sessionName: sessionContext.contextValues.name,
                     sessionId: sessionContext.sessionId,
                     browserName: sessionContext.browserName,
                     browserVersion: sessionContext.browserVersion,
                     methodList: methodList,
-                    sessionDuration: this._calculateDuration(metric.metricsValues[0].startTimestamp, metric.metricsValues[0].endTimestamp),
-                    baseurlDuration: this._calculateDuration(metric.metricsValues[1].startTimestamp, metric.metricsValues[1].endTimestamp),
-                    startTime: metric.metricsValues[0].startTimestamp,
+                    sessionDuration: this._calculateDuration(metric.metricsValues[1].startTimestamp, metric.metricsValues[1].endTimestamp),
+                    baseurlDuration: this._calculateDuration(metric.metricsValues[0].startTimestamp, metric.metricsValues[0].endTimestamp),
+                    sessionStartTime: metric.metricsValues[1].startTimestamp,
+                    baseurlStartTime: metric.metricsValues[0].startTimestamp,
                 }
                 sessionInformationArray.push(sessionInformation);
             })
         }).finally(() => {
-            this._prepareData(sessionInformationArray)
+            this._prepareData(sessionInformationArray);
             this._setChartOption();
         })
     }
@@ -101,86 +102,160 @@ export class SessionTimings extends AbstractViewModel {
         this._sessionData = [];
         this._baseURLData = [];
         sessionInformationArray.forEach(info => {
-            const bar: ISessionBar = {
-                x: info.startTime,
-                ySession: info.sessionDuration,
-                yBaseurl: info.baseurlDuration, //the two durations are stacking on top of each other
-                sessionInformation: info,
+            const dots: IDots = {
+                sessionValues: [info.sessionStartTime, info.sessionDuration],
+                baseUrlValues: [info.baseurlStartTime, info.baseurlDuration],
+                information: info,
             }
-            this._bars.push(bar);
-            this._sessionData.push([bar.x, bar.ySession]);
-            this._baseURLData.push([bar.x, bar.yBaseurl]);
+            this._dots.push(dots);
+            this._createSeriesForValuePairs();
         })
+    }
+
+    private _createSeriesForValuePairs() {
+        const seriesList = [];
+        // each series has two colors, but echarts usually uses the series colors to generate the legend
+        // => create two placeholder series with uniform colors and use these for legend generating
+        const legendPlaceholder = [{
+            name: 'Session load',
+            type: 'scatter',
+            data: [],
+            itemStyle: {
+                color: SessionTimings.SESSION_COLOR,
+            },
+            showInLegend: true,
+        },
+        {
+            name: 'Base URL load',
+            type: 'scatter',
+            data: [],
+            itemStyle: {
+                color: SessionTimings.BASEURL_COLOR,
+            },
+            showInLegend: true,
+        }]
+        seriesList.push(...legendPlaceholder);
+
+        this._dots.forEach((dots) => {
+            const seriesData = [
+                {
+                    name: 'Session',
+                    type: 'scatter',
+                    data: [{
+                        value: dots.sessionValues,
+                        itemStyle: {
+                            color: SessionTimings.SESSION_COLOR,
+                        }
+                    }, {
+                        value: dots.baseUrlValues,
+                        itemStyle: {
+                            color: SessionTimings.BASEURL_COLOR,
+                        }
+                    },
+                    ],
+                    // enables highlighting only items of the series (session load and connected baseurl load) when hovering
+                    emphasis: {
+                        focus: 'series',
+                    },
+                    itemStyle: {
+                    },
+                    showInLegend: false,
+                },
+            ];
+            seriesList.push(...seriesData);
+        });
+        return seriesList;
     }
 
     private _setChartOption() {
         this._option = {
-            barMinWidth: 5,
+            legend: {
+                data: [
+                    {
+                        name: 'Session load',
+                        itemStyle: {
+                            color: SessionTimings.SESSION_COLOR,
+                        }
+                    },
+                    {
+                        name: 'Base URL load',
+                        itemStyle: {
+                            color: SessionTimings.BASEURL_COLOR,
+                        }
+                    },
+                ]
+            },
             dataZoom: [
                 {
-                    type: 'inside'
+                    type: 'inside',
+                    yAxisIndex: [0],
                 },
                 {
-                    type: 'slider'
-                }
+                        type: 'slider',
+                        xAxisIndex: [0],
+                    },
+                    {
+                        type: 'slider',
+                        yAxisIndex: [0],
+                    },
             ],
-            legend: {},
+            toolbox: {
+                itemSize: 25,
+                feature: {
+                    dataZoom: {},
+                    restore: {}
+                }
+            },
+
             tooltip: {
-                trigger: 'item',
+                textStyle: {
+                    fontSize: 13,
+                },
                 formatter: function (params) {
                     if (params.data) {
-                        const dataIndex = params.dataIndex;
-
-                        const testNames = this._bars[dataIndex].sessionInformation.methodList.map(method => method.methodContext.contextValues.name);
+                        const seriesIndex = (params.seriesIndex - 2); // two series as offset for the legend placeholder
+                        const testNames = this._dots[seriesIndex].information.methodList.map(method => method.methodContext.contextValues.name);
                         let tooltipString = '<div class="header" style="background-color: ' +
-                            params.color + ';"> ' + this._bars[dataIndex].sessionInformation.browserName + ', Version: ' +
-                            this._bars[dataIndex].sessionInformation.browserVersion + '</div> <br>'
-                        tooltipString += `<b>Session name:</b> ${this._bars[dataIndex].sessionInformation.sessionName} <br>`;
-                        tooltipString += `<b>Session id:</b> ${this._bars[dataIndex].sessionInformation.sessionId} <br>`;
-                        tooltipString += `<b>Browser name:</b> ${this._bars[dataIndex].sessionInformation.browserName} <br>`;
-                        tooltipString += `<b>Browser version:</b> ${this._bars[dataIndex].sessionInformation.browserVersion} <br>`;
-                        tooltipString += `<b>Session start duration:</b> ${this._bars[dataIndex].sessionInformation.sessionDuration}s <br>`;
-                        tooltipString += `<b>Base url start duration:</b> ${this._bars[dataIndex].sessionInformation.baseurlDuration}s <br>`;
-                        tooltipString += `<b>Starttime:</b> ${params.data[0]} <br>`;
-                        tooltipString += `<b>Test case(s):</b> ` + testNames.join(', ');
+                            params.color + ';"> ' + this._dots[seriesIndex].information.browserName + ', Version: ' +
+                            this._dots[seriesIndex].information.browserVersion + '</div> <br>';
+                        tooltipString += `<b>Session name:</b> ${this._dots[seriesIndex].information.sessionName} <br>`;
+                        tooltipString += `<b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>`;
+                        tooltipString += `<b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>`;
+                        tooltipString += `<b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>`;
+                        tooltipString += `<b>Start time session:</b> ${this._dots[seriesIndex].information.sessionStartTime} <br>`;
+                        tooltipString += `<b>Start time base URL:</b> ${this._dots[seriesIndex].information.baseurlStartTime} <br>`;
 
+                        if (testNames.length > 1) {
+                            tooltipString += `<b>Test case(s):</b><ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;
+                            testNames.forEach(testName => {
+                                tooltipString += `<li style="margin-bottom: 2px;">${testName}</li>`;
+                            });
+                            tooltipString += '</ul>';
+                        } else {
+                            tooltipString += `<b>Test case(s):</b> ${testNames}`;
+                        }
                         return tooltipString;
                     }
-
                     return "";
                 }.bind(this),
-
+                backgroundColor: 'rgba(255,255,255,0.5)',
             },
             xAxis: {
                 type: 'time',
                 min: this._testDuration.startTime,
                 max: this._testDuration.endTime,
                 name: 'Total test duration',
+                nameTextStyle: {
+                    align: 'right',
+                    verticalAlign: 'top',
+                    padding: [8, -40, 0, 0], // prevents that data zoom slider and label overlap
+                }
             },
             yAxis: {
                 type: 'value',
                 name: 'Load duration in seconds',
             },
-            series: [
-                {
-                    name: 'Session load',
-                    type: 'bar',
-                    stack: 'x',
-                    data: this._sessionData,
-                    itemStyle: {
-                        color: SessionTimings.SESSION_COLOR,
-                    }
-                },
-                {
-                    name: 'Base URL load',
-                    type: 'bar',
-                    stack: 'x',
-                    data: this._baseURLData,
-                    itemStyle: {
-                        color: SessionTimings.BASEURL_COLOR,
-                    }
-                },
-            ],
+            series: this._createSeriesForValuePairs(),
         };
     }
 
@@ -195,11 +270,10 @@ export class SessionTimings extends AbstractViewModel {
     }
 }
 
-interface ISessionBar {
-    x: number,
-    ySession: number,
-    yBaseurl: number,
-    sessionInformation: ISessionInformation,
+interface IDots {
+    sessionValues: number[];
+    baseUrlValues: number[];
+    information: ISessionInformation;
 }
 
 interface ISessionInformation {
@@ -210,7 +284,8 @@ interface ISessionInformation {
     methodList: MethodDetails[];
     sessionDuration: number;
     baseurlDuration: number;
-    startTime: number;
+    sessionStartTime: number;
+    baseurlStartTime: number;
 }
 
 interface Duration {

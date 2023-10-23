@@ -37,9 +37,7 @@ export class SessionTimings extends AbstractViewModel {
     private _chart: ECharts;
     private _option: EChartsOption;
     private _executionStatistics: ExecutionStatistics;
-    private _methodDetails;
-    private _baseURLData;
-    private _sessionData;
+    private _methodDetails: MethodDetails[];
     private _hasEnded = false;
     private _testDuration: Duration | null = null;
     private _dots: IDots[];
@@ -64,13 +62,12 @@ export class SessionTimings extends AbstractViewModel {
                 endTime: this._executionStatistics.executionAggregate.executionContext.contextValues.endTime,
             }
 
-            executionStatistics.classStatistics
-                .flatMap(classStatistic => {
-                    this._methodDetails = executionStatistics.classStatistics
-                        .flatMap(classStatistic => classStatistic.methodContexts)
-                        .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
-                        .map(methodContext => new MethodDetails(methodContext, classStatistic))
-                });
+            executionStatistics.classStatistics.forEach(classStatistic => {
+                const filteredMethodDetails = classStatistic.methodContexts
+                    .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
+                    .map(methodContext => new MethodDetails(methodContext, classStatistic));
+                this._methodDetails.push(...filteredMethodDetails);
+            })
         });
 
         const sessionInformationArray = [];
@@ -99,8 +96,6 @@ export class SessionTimings extends AbstractViewModel {
     }
 
     private _prepareData(sessionInformationArray: ISessionInformation[]) {
-        this._sessionData = [];
-        this._baseURLData = [];
         sessionInformationArray.forEach(info => {
             const dots: IDots = {
                 sessionValues: [info.sessionStartTime, info.sessionDuration],

@@ -101,15 +101,11 @@ export class TestTimings extends AbstractViewModel {
             if (!this._showConfigurationMethods) {
                 methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
             }
-            this._lookUpOptions = methodContexts.map(methodContext => methodContext.contextValues).sort(function (a, b) {
-                if (a.name < b.name) {
-                    return -1;
-                }
-                if (a.name > b.name) {
-                    return 1;
-                }
-                return 0;
-            });
+
+            this._lookUpOptions = methodContexts
+                .map(methodContext => methodContext.contextValues)
+                .filter(data => data && data.name?.trim().length > 0)
+                .sort((a, b) => a.name.localeCompare(b.name));
         });
     };
 
@@ -314,7 +310,7 @@ export class TestTimings extends AbstractViewModel {
         this._labels = resultSections;
     }
 
-    private _calculateDuration(startTime, endTime) {
+    private _calculateDuration(startTime: number, endTime: number) {
         if (!endTime) {
             this._hasEnded = false;
             endTime = new Date().getMilliseconds();

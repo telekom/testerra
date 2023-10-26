@@ -217,8 +217,8 @@ export class SessionTimings extends AbstractViewModel {
                             <b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>
                             <b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>
                             <b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>
-                            <b>Start time session:</b> ${this._dots[seriesIndex].information.sessionStartTime} <br>
-                            <b>Start time base URL:</b> ${this._dots[seriesIndex].information.baseurlStartTime} <br>`;
+                            <b>Start time session:</b> ${this._getTime(this._dots[seriesIndex].information.sessionStartTime)} <br>
+                            <b>Start time base URL:</b> ${this._getTime(this._dots[seriesIndex].information.baseurlStartTime)} <br>`;
 
                         if (testNames.length > 1) {
                             tooltipString += `<b>Test case(s):</b><ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;
@@ -233,7 +233,6 @@ export class SessionTimings extends AbstractViewModel {
                     }
                     return "";
                 }.bind(this),
-                backgroundColor: 'rgba(255,255,255,0.5)',
             },
             xAxis: {
                 type: 'time',
@@ -252,6 +251,11 @@ export class SessionTimings extends AbstractViewModel {
             },
             series: this._createSeriesForValuePairs(),
         };
+    }
+
+    private _getTime(timestamp: number){
+        const date = new Date(timestamp)
+        return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ":" + date.getMilliseconds();
     }
 
     private _calculateDuration(startTime: number, endTime: number) {

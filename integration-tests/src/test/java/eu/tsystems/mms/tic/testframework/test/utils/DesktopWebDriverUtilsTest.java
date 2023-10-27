@@ -107,6 +107,42 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
         utils.mouseOverAbsolute2Axis(element);      // How can we assert this special mouse over?
     }
 
+    /**
+     * Test the mouseOverByImage method of DesktopWebDriverUtils
+     */
+    @Test
+    public void testT07_mouseOverByImage() {
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+
+        String fileName = "byImage/input_field.png";
+        utils.mouseOverByImage(getWebDriver(), fileName);
+        getLoggerTableElement().expect().text().isContaining("Input 5 Mouse over");
+    }
+
+    /**
+     * Test the clickOverByImage method of DesktopWebDriverUtils
+     */
+    @Test
+    public void testT08_clickByImage() {
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+
+        String fileName = "byImage/submit_button.png";
+        utils.clickByImage(getWebDriver(), fileName);
+        getLoggerTableElement().expect().text().isContaining("Form 16 submit");
+    }
+
+    /**
+     * Test the clickOverByImage method of DesktopWebDriverUtils for an element that is not in the current viewport
+     */
+    @Test
+    public void testT09_clickByImageWithScrolling() {
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+
+        String fileName = "byImage/click_me_button.png";
+        utils.clickByImage(getWebDriver(), fileName);
+        getClickPosition().expect().text().isContaining("center center");
+    }
+
     public GuiElement getGuiElementBy(Locator locator) {
         WebDriver driver = getWebDriver();
         return new GuiElement(driver, locator);

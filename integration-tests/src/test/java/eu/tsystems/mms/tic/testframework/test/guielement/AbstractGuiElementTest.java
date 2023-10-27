@@ -192,6 +192,10 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest imple
         return getGuiElementBy(By.id("9"));
     }
 
+    public GuiElement getClickPosition() {
+        return getGuiElementBy(By.id("clickPosition"));
+    }
+
     public GuiElement getSelectRadioButtonMitVerzoegerungButton() {
         return getGuiElementBy(By.id("SelectRDButton"));
     }

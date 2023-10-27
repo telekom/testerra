@@ -53,7 +53,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     @Test
     public void testT02_CheckElementLayoutWithSubfolder() {
         UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticle").isLowerThan(1.3);
+        uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticleElement").isLowerThan(1.3);
 
         uiElement = getUIElementQa("section/invisibleTestArticle");
         uiElement.assertThat().screenshot().pixelDistance("subfolder/InvisibleTestArticle").isLowerThan(1.3);

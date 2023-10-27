@@ -44,7 +44,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     @Test
     public void testT01_CheckElementLayout() {
         UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        uiElement.expect().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
+        uiElement.expect().screenshot().pixelDistance("TestArticleElement").isLowerThan(1.3);
 
         uiElement = getUIElementQa("section/invisibleTestArticle");
         uiElement.expect().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);

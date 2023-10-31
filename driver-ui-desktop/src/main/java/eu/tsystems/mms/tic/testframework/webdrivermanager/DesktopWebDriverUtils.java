@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
-import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -39,7 +38,8 @@ import org.sikuli.api.ColorImageTarget;
 import org.sikuli.api.DefaultScreenRegion;
 import org.sikuli.api.ScreenRegion;
 
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.Color;
 import java.io.File;
 
 public final class DesktopWebDriverUtils implements Loggable {
@@ -143,17 +143,23 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     public void clickByImage(final WebDriver driver, String fileName) {
         final ScreenRegion imageRegion = getElementPositionByImage(driver, fileName);
+//        if (imageRegion == null) {
+//            return;
+//        }
         Actions action = new Actions(driver);
         action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).click().build().perform();
     }
 
     public void mouseOverByImage(final WebDriver driver, String fileName) {
         final ScreenRegion imageRegion = getElementPositionByImage(driver, fileName);
+//        if (imageRegion == null) {
+//            return;
+//        }
         Actions action = new Actions(driver);
         action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).build().perform();
     }
 
-    public ScreenRegion getElementPositionByImage(final WebDriver driver, String fileName) {
+    private ScreenRegion getElementPositionByImage(final WebDriver driver, String fileName) {
         File imageFile = FileUtils.getResourceFile(fileName);
 
         WebDriverScreen webDriverScreen;
@@ -190,9 +196,10 @@ public final class DesktopWebDriverUtils implements Loggable {
         if (elementFound) {
             return imageRegion;
         } else {
-//        Assert.assertTrue(elementFound, "Element not found similar to " + url);
-            // TODO: Replace with Optional and handle in calling methods
-            throw new ElementNotFoundException("Element not found similar to " + imageFile.getAbsolutePath());
+            throw new RuntimeException("Element not found similar to " + imageFile.getAbsolutePath());
+//            OptionalAssert.fail("Element not found similar to " + imageFile.getAbsolutePath());
+//            Assert.fail("Element not found similar to " + imageFile.getAbsolutePath());
+//            return null;
         }
     }
 }

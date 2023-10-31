@@ -19,21 +19,30 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.sikuli;
+package eu.tsystems.mms.tic.testframework.test.sikuli;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageWebDriver;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import java.net.URL;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.annotations.Test;
+
+import java.net.URL;
 
 public class SikuliBasedWebTest extends AbstractTestSitesTest {
+
+    protected UiElementFinder createFinder() {
+        return UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
+    }
 
     @Override
     protected TestPage getTestPage() {
@@ -83,4 +92,33 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         guiElement.asserts().assertAttributeContains("src", "ringo");
     }
 
+    @Test
+    public void testT04a_byImageUtils_mouseOverByImage() {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        UiElementFinder finder = createFinder();
+        driver.get("https://the-internet.herokuapp.com/hovers");
+
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+
+        String fileName = "byImage/tiHoversProfiles.png";
+        UiElement user2Tag = finder.find(By.xpath("//div[@class='example']//div[@class='figure'][2]//h5[text()='name: user2']"));
+
+        user2Tag.expect().displayed().is(false);
+        utils.mouseOverByImage(driver, fileName);
+        user2Tag.expect().displayed().is(true);
+    }
+
+    @Test
+    public void testT04b_byImageUtils_clickByImage() {
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        UiElementFinder finder = createFinder();
+        driver.get("https://the-internet.herokuapp.com/disappearing_elements");
+
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+
+        String fileName = "byImage/home_button.png";
+        utils.clickByImage(driver, fileName);
+        UiElement headline = finder.find(By.xpath("//*[@id='content']/h1"));
+        headline.expect().text().isContaining("Welcome to the-internet");
+    }
 }

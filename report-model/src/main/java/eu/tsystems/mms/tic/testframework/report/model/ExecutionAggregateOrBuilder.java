@@ -191,4 +191,19 @@ public interface ExecutionAggregateOrBuilder extends
 
   eu.tsystems.mms.tic.testframework.report.model.SessionContext getSessionContextsOrThrow(
       java.lang.String key);
+
+  /**
+   * <code>.data.TestMetrics test_metrics = 7;</code>
+   * @return Whether the testMetrics field is set.
+   */
+  boolean hasTestMetrics();
+  /**
+   * <code>.data.TestMetrics test_metrics = 7;</code>
+   * @return The testMetrics.
+   */
+  eu.tsystems.mms.tic.testframework.report.model.TestMetrics getTestMetrics();
+  /**
+   * <code>.data.TestMetrics test_metrics = 7;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.TestMetricsOrBuilder getTestMetricsOrBuilder();
 }

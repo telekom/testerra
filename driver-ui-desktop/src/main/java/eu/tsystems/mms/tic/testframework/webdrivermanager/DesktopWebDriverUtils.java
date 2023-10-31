@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
-import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
@@ -54,10 +53,6 @@ public final class DesktopWebDriverUtils implements Loggable {
         log().debug("Absolute navigation and click on: " + guiElement.toString());
         WebDriver driver = guiElement.getWebDriver();
         guiElement.findWebElement(webElement -> {
-//            utils.clickAbsolute(guiElement.getWebDriver(), webElement);
-            // Start the StopWatch for measuring the loading time of a Page
-            StopWatch.startPageLoad(driver);
-
             Point point = webElement.getLocation();
 
             Actions action = new Actions(driver);
@@ -78,7 +73,6 @@ public final class DesktopWebDriverUtils implements Loggable {
     public void mouseOverAbsolute2Axis(UiElement guiElement) {
         WebDriver driver = guiElement.getWebDriver();
         guiElement.findWebElement(webElement -> {
-//            utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), webElement);
             demoMouseOver(driver, webElement);
             Actions action = new Actions(driver);
 
@@ -98,7 +92,6 @@ public final class DesktopWebDriverUtils implements Loggable {
     public void mouseOverJS(UiElement guiElement) {
         WebDriver driver = guiElement.getWebDriver();
         guiElement.findWebElement(webElement -> {
-//            utils.mouseOver(guiElement.getWebDriver(), webElement);
             demoMouseOver(driver, webElement);
 
             final String script = "var fireOnThis = arguments[0];"

@@ -28,6 +28,8 @@ import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
@@ -36,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -44,6 +45,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -416,10 +418,10 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            StopWatch sw = new StopWatch();
-            sw.start();
+            MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
+            metricsController.start(sessionContext, MetricsType.SESSION_LOAD);
             WebDriver newRawWebDriver = webDriverFactory.createWebDriver(finalWebDriverRequest, sessionContext);
-            sw.stop();
+            metricsController.stop(sessionContext, MetricsType.SESSION_LOAD);
 
             if (!sessionContext.getActualBrowserName().isPresent()) {
                 BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newRawWebDriver);
@@ -435,13 +437,15 @@ public final class WebDriverSessionsManager {
                 sessionContext.setRemoteSessionId(sessionContext.getId());
             }
 
+            Duration diff = metricsController.getDuration(sessionContext, MetricsType.SESSION_LOAD);
             LOGGER.info(String.format(
-                    "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %s",
+                    "Started %s (sessionKey=%s, node=%s, userAgent=%s) in %02d:%02d.%03d",
                     newRawWebDriver.getClass().getSimpleName(),
                     sessionContext.getSessionKey(),
                     sessionContext.getNodeUrl().map(Object::toString).orElse("(unknown)"),
                     sessionContext.getActualBrowserName().orElse("(unknown)") + ":" + sessionContext.getActualBrowserVersion().orElse("(unknown)"),
-                    sw
+                    diff.toMinutesPart(), diff.toSecondsPart(), diff.toMillisPart()
+
             ));
             EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(newRawWebDriver);
             storeWebDriverSession(eventFiringWebDriver, sessionContext);

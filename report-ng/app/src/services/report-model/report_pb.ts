@@ -7,6 +7,7 @@ import {
   SessionContext,
   SuiteContext,
   TestContext,
+  TestMetrics,
 } from "./framework_pb";
 
 export interface ExecutionAggregate {
@@ -16,6 +17,7 @@ export interface ExecutionAggregate {
   classContexts?: { [key: string]: ClassContext } | undefined;
   methodContexts?: { [key: string]: MethodContext } | undefined;
   sessionContexts?: { [key: string]: SessionContext } | undefined;
+  testMetrics?: TestMetrics | undefined;
 }
 
 export interface ExecutionAggregate_SuiteContextsEntry {
@@ -51,6 +53,7 @@ function createBaseExecutionAggregate(): ExecutionAggregate {
     classContexts: {},
     methodContexts: {},
     sessionContexts: {},
+    testMetrics: undefined,
   };
 }
 
@@ -74,6 +77,9 @@ export const ExecutionAggregate = {
     Object.entries(message.sessionContexts || {}).forEach(([key, value]) => {
       ExecutionAggregate_SessionContextsEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
     });
+    if (message.testMetrics !== undefined) {
+      TestMetrics.encode(message.testMetrics, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -140,6 +146,13 @@ export const ExecutionAggregate = {
           if (entry6.value !== undefined) {
             message.sessionContexts![entry6.key] = entry6.value;
           }
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.testMetrics = TestMetrics.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

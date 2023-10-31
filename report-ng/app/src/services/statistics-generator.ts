@@ -208,6 +208,14 @@ export class StatisticsGenerator {
         });
     }
 
+    getSessionMetrics(): Promise<data.SessionMetric[]> {
+        return this._cacheService.getForKeyWithLoadingFunction("sessionMetrics", () => {
+            return this._dataLoader.getExecutionAggregate().then(executionAggregate => {
+                return executionAggregate.testMetrics.sessionMetrics;
+            });
+        });
+    }
+
     getScreenshotIdsFromMethodContext(methodContext: data.MethodContext): string[] {
         return methodContext.testSteps
             .flatMap(value => value.actions)

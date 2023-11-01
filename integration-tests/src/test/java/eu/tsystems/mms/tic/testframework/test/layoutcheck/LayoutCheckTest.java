@@ -47,7 +47,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         uiElement.expect().screenshot().pixelDistance("TestArticleElement").isLowerThan(1.3);
 
         uiElement = getUIElementQa("section/invisibleTestArticle");
-        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
+        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticleElement").isLowerThan(1.3);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticleElement").isLowerThan(1.3);
 
         uiElement = getUIElementQa("section/invisibleTestArticle");
-        uiElement.assertThat().screenshot().pixelDistance("subfolder/InvisibleTestArticle").isLowerThan(1.3);
+        uiElement.assertThat().screenshot().pixelDistance("subfolder/InvisibleTestArticleElement").isLowerThan(1.3);
     }
 
     @Test

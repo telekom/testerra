@@ -31,6 +31,7 @@ private static final long serialVersionUID = 0L;
     sessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     resultStatus_ = 0;
     testName_ = "";
+    layoutCheckContext_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -249,6 +250,15 @@ private static final long serialVersionUID = 0L;
             testName_ = s;
             break;
           }
+          case 314: {
+            if (!((mutable_bitField0_ & 0x00000100) != 0)) {
+              layoutCheckContext_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext>();
+              mutable_bitField0_ |= 0x00000100;
+            }
+            layoutCheckContext_.add(
+                input.readMessage(eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.parser(), extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -278,6 +288,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000010) != 0)) {
         sessionContextIds_ = sessionContextIds_.getUnmodifiableView();
+      }
+      if (((mutable_bitField0_ & 0x00000100) != 0)) {
+        layoutCheckContext_ = java.util.Collections.unmodifiableList(layoutCheckContext_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -1190,6 +1203,46 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int LAYOUT_CHECK_CONTEXT_FIELD_NUMBER = 39;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext> layoutCheckContext_;
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  @java.lang.Override
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext> getLayoutCheckContextList() {
+    return layoutCheckContext_;
+  }
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder> 
+      getLayoutCheckContextOrBuilderList() {
+    return layoutCheckContext_;
+  }
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  @java.lang.Override
+  public int getLayoutCheckContextCount() {
+    return layoutCheckContext_.size();
+  }
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext getLayoutCheckContext(int index) {
+    return layoutCheckContext_.get(index);
+  }
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder getLayoutCheckContextOrBuilder(
+      int index) {
+    return layoutCheckContext_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1281,6 +1334,9 @@ private static final long serialVersionUID = 0L;
         37);
     if (!getTestNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 38, testName_);
+    }
+    for (int i = 0; i < layoutCheckContext_.size(); i++) {
+      output.writeMessage(39, layoutCheckContext_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -1410,6 +1466,10 @@ private static final long serialVersionUID = 0L;
     if (!getTestNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(38, testName_);
     }
+    for (int i = 0; i < layoutCheckContext_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(39, layoutCheckContext_.get(i));
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1474,6 +1534,8 @@ private static final long serialVersionUID = 0L;
         other.internalGetAnnotations())) return false;
     if (!getTestName()
         .equals(other.getTestName())) return false;
+    if (!getLayoutCheckContextList()
+        .equals(other.getLayoutCheckContextList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1551,6 +1613,10 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + TEST_NAME_FIELD_NUMBER;
     hash = (53 * hash) + getTestName().hashCode();
+    if (getLayoutCheckContextCount() > 0) {
+      hash = (37 * hash) + LAYOUT_CHECK_CONTEXT_FIELD_NUMBER;
+      hash = (53 * hash) + getLayoutCheckContextList().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1710,6 +1776,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getTestStepsFieldBuilder();
+        getLayoutCheckContextFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1770,6 +1837,12 @@ private static final long serialVersionUID = 0L;
       internalGetMutableAnnotations().clear();
       testName_ = "";
 
+      if (layoutCheckContextBuilder_ == null) {
+        layoutCheckContext_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000100);
+      } else {
+        layoutCheckContextBuilder_.clear();
+      }
       return this;
     }
 
@@ -1855,6 +1928,15 @@ private static final long serialVersionUID = 0L;
       result.annotations_ = internalGetAnnotations();
       result.annotations_.makeImmutable();
       result.testName_ = testName_;
+      if (layoutCheckContextBuilder_ == null) {
+        if (((bitField0_ & 0x00000100) != 0)) {
+          layoutCheckContext_ = java.util.Collections.unmodifiableList(layoutCheckContext_);
+          bitField0_ = (bitField0_ & ~0x00000100);
+        }
+        result.layoutCheckContext_ = layoutCheckContext_;
+      } else {
+        result.layoutCheckContext_ = layoutCheckContextBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -2026,6 +2108,32 @@ private static final long serialVersionUID = 0L;
       if (!other.getTestName().isEmpty()) {
         testName_ = other.testName_;
         onChanged();
+      }
+      if (layoutCheckContextBuilder_ == null) {
+        if (!other.layoutCheckContext_.isEmpty()) {
+          if (layoutCheckContext_.isEmpty()) {
+            layoutCheckContext_ = other.layoutCheckContext_;
+            bitField0_ = (bitField0_ & ~0x00000100);
+          } else {
+            ensureLayoutCheckContextIsMutable();
+            layoutCheckContext_.addAll(other.layoutCheckContext_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.layoutCheckContext_.isEmpty()) {
+          if (layoutCheckContextBuilder_.isEmpty()) {
+            layoutCheckContextBuilder_.dispose();
+            layoutCheckContextBuilder_ = null;
+            layoutCheckContext_ = other.layoutCheckContext_;
+            bitField0_ = (bitField0_ & ~0x00000100);
+            layoutCheckContextBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getLayoutCheckContextFieldBuilder() : null;
+          } else {
+            layoutCheckContextBuilder_.addAllMessages(other.layoutCheckContext_);
+          }
+        }
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -4262,6 +4370,246 @@ private static final long serialVersionUID = 0L;
       testName_ = value;
       onChanged();
       return this;
+    }
+
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext> layoutCheckContext_ =
+      java.util.Collections.emptyList();
+    private void ensureLayoutCheckContextIsMutable() {
+      if (!((bitField0_ & 0x00000100) != 0)) {
+        layoutCheckContext_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext>(layoutCheckContext_);
+        bitField0_ |= 0x00000100;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder> layoutCheckContextBuilder_;
+
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext> getLayoutCheckContextList() {
+      if (layoutCheckContextBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(layoutCheckContext_);
+      } else {
+        return layoutCheckContextBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public int getLayoutCheckContextCount() {
+      if (layoutCheckContextBuilder_ == null) {
+        return layoutCheckContext_.size();
+      } else {
+        return layoutCheckContextBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext getLayoutCheckContext(int index) {
+      if (layoutCheckContextBuilder_ == null) {
+        return layoutCheckContext_.get(index);
+      } else {
+        return layoutCheckContextBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder setLayoutCheckContext(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext value) {
+      if (layoutCheckContextBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLayoutCheckContextIsMutable();
+        layoutCheckContext_.set(index, value);
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder setLayoutCheckContext(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder builderForValue) {
+      if (layoutCheckContextBuilder_ == null) {
+        ensureLayoutCheckContextIsMutable();
+        layoutCheckContext_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder addLayoutCheckContext(eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext value) {
+      if (layoutCheckContextBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLayoutCheckContextIsMutable();
+        layoutCheckContext_.add(value);
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder addLayoutCheckContext(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext value) {
+      if (layoutCheckContextBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureLayoutCheckContextIsMutable();
+        layoutCheckContext_.add(index, value);
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder addLayoutCheckContext(
+        eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder builderForValue) {
+      if (layoutCheckContextBuilder_ == null) {
+        ensureLayoutCheckContextIsMutable();
+        layoutCheckContext_.add(builderForValue.build());
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder addLayoutCheckContext(
+        int index, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder builderForValue) {
+      if (layoutCheckContextBuilder_ == null) {
+        ensureLayoutCheckContextIsMutable();
+        layoutCheckContext_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder addAllLayoutCheckContext(
+        java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext> values) {
+      if (layoutCheckContextBuilder_ == null) {
+        ensureLayoutCheckContextIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, layoutCheckContext_);
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder clearLayoutCheckContext() {
+      if (layoutCheckContextBuilder_ == null) {
+        layoutCheckContext_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000100);
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public Builder removeLayoutCheckContext(int index) {
+      if (layoutCheckContextBuilder_ == null) {
+        ensureLayoutCheckContextIsMutable();
+        layoutCheckContext_.remove(index);
+        onChanged();
+      } else {
+        layoutCheckContextBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder getLayoutCheckContextBuilder(
+        int index) {
+      return getLayoutCheckContextFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder getLayoutCheckContextOrBuilder(
+        int index) {
+      if (layoutCheckContextBuilder_ == null) {
+        return layoutCheckContext_.get(index);  } else {
+        return layoutCheckContextBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder> 
+         getLayoutCheckContextOrBuilderList() {
+      if (layoutCheckContextBuilder_ != null) {
+        return layoutCheckContextBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(layoutCheckContext_);
+      }
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder addLayoutCheckContextBuilder() {
+      return getLayoutCheckContextFieldBuilder().addBuilder(
+          eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder addLayoutCheckContextBuilder(
+        int index) {
+      return getLayoutCheckContextFieldBuilder().addBuilder(
+          index, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+     */
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder> 
+         getLayoutCheckContextBuilderList() {
+      return getLayoutCheckContextFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder> 
+        getLayoutCheckContextFieldBuilder() {
+      if (layoutCheckContextBuilder_ == null) {
+        layoutCheckContextBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext.Builder, eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder>(
+                layoutCheckContext_,
+                ((bitField0_ & 0x00000100) != 0),
+                getParentForChildren(),
+                isClean());
+        layoutCheckContext_ = null;
+      }
+      return layoutCheckContextBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

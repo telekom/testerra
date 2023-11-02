@@ -37,7 +37,10 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                 // https://github.com/aurelia/binding/issues/702
                 // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
                 // out-of-date dependencies on 3rd party aurelia plugins
-                'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding')
+                'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding'),
+                // Enforce single tslib, to avoid v1/v2 duplication due to
+                // out-of-date dependencies on 3rd party aurelia plugins, in this case: echarts
+                'tslib': path.resolve(__dirname, 'node_modules/tslib')
             }
         },
         entry: {
@@ -132,24 +135,20 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                     }
                 },
                 /**
-                 * Import images from source code
-                 * @see https://stackoverflow.com/questions/43638454/webpack-typescript-image-import
+                 * Replace file-loader with asset module
+                 * @see https://webpack.js.org/guides/asset-modules/#resource-assets
                  */
                 {
                     test: /\.(jpg|png)$/,
-                    use: {
-                        loader: 'file-loader'
-                    },
+                    type: 'asset/resource',
                 },
                 /**
-                 * Import font files from source with url-loader
-                 * @see https://stackoverflow.com/questions/68922912/reacterror-you-may-need-an-appropriate-loader-to-handle-this-file-type
+                 * Replace url-loader with asset module
+                 * @see https://webpack.js.org/guides/asset-modules/#inlining-assets
                  */
                 {
                     test: /\.(woff|woff2|ttf|eot)$/,
-                    use: {
-                        loader: 'url-loader'
-                    },
+                    type: 'asset/inline',
                 },
                 {
                     test: /\.css$/,
@@ -178,7 +177,10 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             ]
         },
         plugins: [
-            ...when(!tests, new DuplicatePackageCheckerPlugin()),
+            ...when(!tests, new DuplicatePackageCheckerPlugin({
+                    verbose: true
+                }
+            )),
             new AureliaPlugin(),
             ...when(production,  new webpack.NormalModuleReplacementPlugin(/config-dev/gi, (resource) => {
                 resource.request = resource.request.replace(/config-dev/, 'config-prod');

@@ -42,13 +42,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+import org.openqa.selenium.Rectangle;
 
 import java.awt.Color;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.openqa.selenium.Rectangle;
 
 /**
  * Default implementation for {@link UiElementAssertion}
@@ -323,7 +322,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
     private static void addScreenshotToReport(Screenshot screenshot) {
         report.addScreenshot(screenshot, Report.FileMode.COPY);
-        ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
+        instance.getCurrentMethodContext().ifPresent(methodContext -> methodContext.addScreenshot(screenshot));
     }
 
     @Override

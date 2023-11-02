@@ -16,6 +16,7 @@ build
 
 /license3rdparty/
 !/license3rdparty/*.md
+!/mail-connector/src/test/resources/*.zip
 /integration-tests/logs/pre-test-log4j.log
 /integration-tests/pretest-status/
 /integration-tests/report-pretest/

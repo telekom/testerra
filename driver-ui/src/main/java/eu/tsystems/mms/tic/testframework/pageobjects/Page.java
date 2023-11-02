@@ -51,7 +51,7 @@ public class Page extends AbstractPage<Page> implements TestablePage {
         this.driver = webDriver;
 
         // performance test stop timer
-        perfTestExtras();
+//        perfTestExtras();
     }
 
     /**
@@ -91,42 +91,42 @@ public class Page extends AbstractPage<Page> implements TestablePage {
         return driver;
     }
 
-    /**
-     * Execute loadtestspecific
-     */
-    private void perfTestExtras() {
-        StopWatch.stopPageLoad(getWebDriver(), this.getClass());
+//    /**
+//     * Execute loadtestspecific
+//     */
+//    private void perfTestExtras() {
+//        StopWatch.stopPageLoad(getWebDriver(), this.getClass());
+//
+//        if (Testerra.Properties.PERF_TEST.asBool()) {
+//            executeThinkTime();
+//        }
+//    }
 
-        if (Testerra.Properties.PERF_TEST.asBool()) {
-            executeThinkTime();
-        }
-    }
-
-    /**
-     * executes think time
-     */
-    private void executeThinkTime() {
-        // Thinktime in Properties
-        int thinkTime = PropertyManager.getIntProperty(TesterraProperties.PERF_PAGE_THINKTIME_MS, 0);
-        // timeOut for Threadsleep
-        int timeToWait = 0;
-        /*
-        Zufallsabweichung für Thinktimes > 0
-         */
-        if (thinkTime > 0) {
-            int randomDelta = 2000;
-            Random r = new Random();
-            int randomValue = r.nextInt(randomDelta * 2);
-
-            timeToWait = thinkTime + (randomValue - randomDelta);
-            if (timeToWait < 0) {
-                timeToWait = 0;
-            }
-        }
-        // wait Thinktime + Offset
-        log().info("Waiting a time to think of " + timeToWait + " milliseconds");
-        TimerUtils.sleep(timeToWait);
-    }
+//    /**
+//     * executes think time
+//     */
+//    private void executeThinkTime() {
+//        // Thinktime in Properties
+//        int thinkTime = PropertyManager.getIntProperty(TesterraProperties.PERF_PAGE_THINKTIME_MS, 0);
+//        // timeOut for Threadsleep
+//        int timeToWait = 0;
+//        /*
+//        Zufallsabweichung für Thinktimes > 0
+//         */
+//        if (thinkTime > 0) {
+//            int randomDelta = 2000;
+//            Random r = new Random();
+//            int randomValue = r.nextInt(randomDelta * 2);
+//
+//            timeToWait = thinkTime + (randomValue - randomDelta);
+//            if (timeToWait < 0) {
+//                timeToWait = 0;
+//            }
+//        }
+//        // wait Thinktime + Offset
+//        log().info("Waiting a time to think of " + timeToWait + " milliseconds");
+//        TimerUtils.sleep(timeToWait);
+//    }
 
     /**
      * Waits for a text to be not present.

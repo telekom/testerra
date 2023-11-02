@@ -444,4 +444,28 @@ public interface MethodContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getTestNameBytes();
+
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  java.util.List<eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext> 
+      getLayoutCheckContextList();
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContext getLayoutCheckContext(int index);
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  int getLayoutCheckContextCount();
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder> 
+      getLayoutCheckContextOrBuilderList();
+  /**
+   * <code>repeated .data.LayoutCheckContext layout_check_context = 39;</code>
+   */
+  eu.tsystems.mms.tic.testframework.report.model.LayoutCheckContextOrBuilder getLayoutCheckContextOrBuilder(
+      int index);
 }

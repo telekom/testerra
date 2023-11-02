@@ -25,16 +25,17 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.adapters.ContextExporter;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+
 import java.io.File;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class GenerateReportNgModelListener extends AbstractReportModelListener implements FinalizeExecutionEvent.Listener{
+public class GenerateReportNgModelListener extends AbstractReportModelListener implements FinalizeExecutionEvent.Listener {
     private final ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
 
     private final ContextExporter contextExporter = new ContextExporter() {
@@ -85,6 +86,9 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
             });
         });
         executionContext.readExclusiveSessionContexts().forEach(this::buildUniqueSession);
+
+        // Export all test metrics from SessionContext, MethodContext, ...
+        executionAggregateBuilder.setTestMetrics(contextExporter.buildTestMetrics());
 
         eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder executionContextBuilder = contextExporter.buildExecutionContext(executionContext);
         executionAggregateBuilder.setExecutionContext(executionContextBuilder);

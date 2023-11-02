@@ -97,6 +97,7 @@ message MethodContext {
     map<string,string> annotations = 37;
     // A custom generated test name (e.a. cucumber scenario)
     string test_name = 38;
+    repeated LayoutCheckContext layout_check_context = 39;
 }
 
 message ContextValues {
@@ -180,6 +181,7 @@ message ErrorContext {
     string description = 10 [deprecated = true];
     repeated StackTraceCause stack_trace = 11;
     bool optional = 12;
+    string id = 13;
 }
 
 message SessionContext {
@@ -196,6 +198,15 @@ message SessionContext {
     string server_url = 12;
     string node_url = 13;
     string user_agent = 14;
+}
+
+message LayoutCheckContext {
+    string image = 1;
+    double distance = 2;
+    string expected_screenshot_id = 3;
+    string actual_screenshot_id = 4;
+    string distance_screenshot_id = 5;
+    string error_context_id = 6;
 }
 
 message RunConfig {
@@ -287,4 +298,36 @@ enum ResultStatusType {
     PASSED_RETRY = 11; // passed after a retry
     MINOR_RETRY = 12 [deprecated = true]; // minor after a retry
     REPAIRED = 13; // passed with fail annotation
+}
+
+/**
+The following types define all objects for Testerra test metrics
+ */
+
+message TestMetrics {
+    repeated SessionMetric session_metrics = 1;
+    repeated MethodMetric method_metrics = 2;
+}
+
+message MetricsValue {
+    MetricType metric_type = 1;
+    int64 start_timestamp = 2;
+    int64 end_timestamp = 3;
+}
+
+message SessionMetric {
+    repeated MetricsValue metrics_values = 1;
+    string session_context_id = 2;
+}
+
+message MethodMetric {
+    repeated MetricsValue metrics_values = 1;
+    string method_context_id = 2;
+}
+
+enum MetricType {
+    BASEURL_LOAD = 0;       // time information of loading the base url
+    SESSION_LOAD = 1;       // time information of loading a new browser session
+    SESSION_DURATION = 2;   // time information of the lifetime of a browser session
+    METHOD_DURATION = 3;    // time information of the lifetime of a test method
 }

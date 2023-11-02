@@ -27,7 +27,8 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.StopWatch;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
@@ -161,13 +162,12 @@ public class DesktopWebDriverFactory implements
             WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);
         }
 
-        /*
-         start StopWatch
-          */
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
-                StopWatch.startPageLoad(eventFiringWebDriver);
+                MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
+                metricsController.start(sessionContext, MetricsType.BASEURL_LOAD);
                 eventFiringWebDriver.get(baseUrl.toString());
+                metricsController.stop(sessionContext, MetricsType.BASEURL_LOAD);
             } catch (Exception e) {
                 log().error("Unable to open baseUrl", e);
             }

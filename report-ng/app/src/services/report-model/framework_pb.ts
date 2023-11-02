@@ -77,6 +77,17 @@ export enum ResultStatusType {
   REPAIRED = 13,
 }
 
+export enum MetricType {
+  /** BASEURL_LOAD - time information of loading the base url */
+  BASEURL_LOAD = 0,
+  /** SESSION_LOAD - time information of loading a new browser session */
+  SESSION_LOAD = 1,
+  /** SESSION_DURATION - time information of the lifetime of a browser session */
+  SESSION_DURATION = 2,
+  /** METHOD_DURATION - time information of the lifetime of a test method */
+  METHOD_DURATION = 3,
+}
+
 export interface SuiteContext {
   contextValues?:
     | ContextValues
@@ -227,6 +238,7 @@ export interface MethodContext {
     | undefined;
   /** A custom generated test name (e.a. cucumber scenario) */
   testName?: string | undefined;
+  layoutCheckContext?: LayoutCheckContext[] | undefined;
 }
 
 export interface MethodContext_ParametersEntry {
@@ -332,6 +344,7 @@ export interface ErrorContext {
   description?: string | undefined;
   stackTrace?: StackTraceCause[] | undefined;
   optional?: boolean | undefined;
+  id?: string | undefined;
 }
 
 export interface SessionContext {
@@ -352,6 +365,15 @@ export interface SessionContext {
   serverUrl?: string | undefined;
   nodeUrl?: string | undefined;
   userAgent?: string | undefined;
+}
+
+export interface LayoutCheckContext {
+  image?: string | undefined;
+  distance?: number | undefined;
+  expectedScreenshotId?: string | undefined;
+  actualScreenshotId?: string | undefined;
+  distanceScreenshotId?: string | undefined;
+  errorContextId?: string | undefined;
 }
 
 export interface RunConfig {
@@ -418,6 +440,27 @@ export interface File {
 export interface File_MetaEntry {
   key: string;
   value: string;
+}
+
+export interface TestMetrics {
+  sessionMetrics?: SessionMetric[] | undefined;
+  methodMetrics?: MethodMetric[] | undefined;
+}
+
+export interface MetricsValue {
+  metricType?: MetricType | undefined;
+  startTimestamp?: number | undefined;
+  endTimestamp?: number | undefined;
+}
+
+export interface SessionMetric {
+  metricsValues?: MetricsValue[] | undefined;
+  sessionContextId?: string | undefined;
+}
+
+export interface MethodMetric {
+  metricsValues?: MetricsValue[] | undefined;
+  methodContextId?: string | undefined;
 }
 
 function createBaseSuiteContext(): SuiteContext {
@@ -931,6 +974,7 @@ function createBaseMethodContext(): MethodContext {
     customContexts: {},
     annotations: {},
     testName: "",
+    layoutCheckContext: [],
   };
 }
 
@@ -1014,6 +1058,11 @@ export const MethodContext = {
     });
     if (message.testName !== undefined && message.testName !== "") {
       writer.uint32(306).string(message.testName);
+    }
+    if (message.layoutCheckContext !== undefined && message.layoutCheckContext.length !== 0) {
+      for (const v of message.layoutCheckContext) {
+        LayoutCheckContext.encode(v!, writer.uint32(314).fork()).ldelim();
+      }
     }
     return writer;
   },
@@ -1194,6 +1243,13 @@ export const MethodContext = {
           }
 
           message.testName = reader.string();
+          continue;
+        case 39:
+          if (tag !== 314) {
+            break;
+          }
+
+          message.layoutCheckContext!.push(LayoutCheckContext.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1762,7 +1818,7 @@ export const LogMessage = {
 };
 
 function createBaseErrorContext(): ErrorContext {
-  return { scriptSource: undefined, ticketId: "", description: "", stackTrace: [], optional: false };
+  return { scriptSource: undefined, ticketId: "", description: "", stackTrace: [], optional: false, id: "" };
 }
 
 export const ErrorContext = {
@@ -1783,6 +1839,9 @@ export const ErrorContext = {
     }
     if (message.optional === true) {
       writer.uint32(96).bool(message.optional);
+    }
+    if (message.id !== undefined && message.id !== "") {
+      writer.uint32(106).string(message.id);
     }
     return writer;
   },
@@ -1828,6 +1887,13 @@ export const ErrorContext = {
           }
 
           message.optional = reader.bool();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1965,6 +2031,99 @@ export const SessionContext = {
           }
 
           message.userAgent = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseLayoutCheckContext(): LayoutCheckContext {
+  return {
+    image: "",
+    distance: 0,
+    expectedScreenshotId: "",
+    actualScreenshotId: "",
+    distanceScreenshotId: "",
+    errorContextId: "",
+  };
+}
+
+export const LayoutCheckContext = {
+  encode(message: LayoutCheckContext, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.image !== undefined && message.image !== "") {
+      writer.uint32(10).string(message.image);
+    }
+    if (message.distance !== undefined && message.distance !== 0) {
+      writer.uint32(17).double(message.distance);
+    }
+    if (message.expectedScreenshotId !== undefined && message.expectedScreenshotId !== "") {
+      writer.uint32(26).string(message.expectedScreenshotId);
+    }
+    if (message.actualScreenshotId !== undefined && message.actualScreenshotId !== "") {
+      writer.uint32(34).string(message.actualScreenshotId);
+    }
+    if (message.distanceScreenshotId !== undefined && message.distanceScreenshotId !== "") {
+      writer.uint32(42).string(message.distanceScreenshotId);
+    }
+    if (message.errorContextId !== undefined && message.errorContextId !== "") {
+      writer.uint32(50).string(message.errorContextId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LayoutCheckContext {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLayoutCheckContext();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.image = reader.string();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.distance = reader.double();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expectedScreenshotId = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.actualScreenshotId = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.distanceScreenshotId = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.errorContextId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2494,6 +2653,208 @@ export const File_MetaEntry = {
           }
 
           message.value = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseTestMetrics(): TestMetrics {
+  return { sessionMetrics: [], methodMetrics: [] };
+}
+
+export const TestMetrics = {
+  encode(message: TestMetrics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sessionMetrics !== undefined && message.sessionMetrics.length !== 0) {
+      for (const v of message.sessionMetrics) {
+        SessionMetric.encode(v!, writer.uint32(10).fork()).ldelim();
+      }
+    }
+    if (message.methodMetrics !== undefined && message.methodMetrics.length !== 0) {
+      for (const v of message.methodMetrics) {
+        MethodMetric.encode(v!, writer.uint32(18).fork()).ldelim();
+      }
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestMetrics {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestMetrics();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.sessionMetrics!.push(SessionMetric.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.methodMetrics!.push(MethodMetric.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseMetricsValue(): MetricsValue {
+  return { metricType: 0, startTimestamp: 0, endTimestamp: 0 };
+}
+
+export const MetricsValue = {
+  encode(message: MetricsValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.metricType !== undefined && message.metricType !== 0) {
+      writer.uint32(8).int32(message.metricType);
+    }
+    if (message.startTimestamp !== undefined && message.startTimestamp !== 0) {
+      writer.uint32(16).int64(message.startTimestamp);
+    }
+    if (message.endTimestamp !== undefined && message.endTimestamp !== 0) {
+      writer.uint32(24).int64(message.endTimestamp);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MetricsValue {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMetricsValue();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.metricType = reader.int32() as any;
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.startTimestamp = longToNumber(reader.int64() as Long);
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.endTimestamp = longToNumber(reader.int64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseSessionMetric(): SessionMetric {
+  return { metricsValues: [], sessionContextId: "" };
+}
+
+export const SessionMetric = {
+  encode(message: SessionMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.metricsValues !== undefined && message.metricsValues.length !== 0) {
+      for (const v of message.metricsValues) {
+        MetricsValue.encode(v!, writer.uint32(10).fork()).ldelim();
+      }
+    }
+    if (message.sessionContextId !== undefined && message.sessionContextId !== "") {
+      writer.uint32(18).string(message.sessionContextId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SessionMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSessionMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.metricsValues!.push(MetricsValue.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.sessionContextId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseMethodMetric(): MethodMetric {
+  return { metricsValues: [], methodContextId: "" };
+}
+
+export const MethodMetric = {
+  encode(message: MethodMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.metricsValues !== undefined && message.metricsValues.length !== 0) {
+      for (const v of message.metricsValues) {
+        MetricsValue.encode(v!, writer.uint32(10).fork()).ldelim();
+      }
+    }
+    if (message.methodContextId !== undefined && message.methodContextId !== "") {
+      writer.uint32(18).string(message.methodContextId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MethodMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMethodMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.metricsValues!.push(MetricsValue.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.methodContextId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

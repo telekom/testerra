@@ -31,17 +31,17 @@
 
         </mdc-layout-grid-inner>
     </mdc-layout-grid>
-        <mdc-card mdc-elevation="4"  class="mb1" repeat.for="failureAspect of _methodDetails.failureAspects" >
+        <mdc-card mdc-elevation="4"  class="mb1" repeat.for="errorDetail of _errorDetails" >
 
             <div class="p1 status-${_methodDetails.methodContext.resultStatus|statusClass} upper-rounded">
-                <div mdc-headline5><class-name-markup namespace.bind="failureAspect.relevantCause.className">:</class-name-markup><span>${failureAspect.message}</span></div>
-                <div class="mt1" if.bind="_layoutComparisonContext">
-                    <layout-comparison context.bind="_layoutComparisonContext"></layout-comparison>
+                <div mdc-headline5 class="overflow-wrap"><class-name-markup namespace.bind="errorDetail.failureAspect.relevantCause.className">:</class-name-markup><span>${errorDetail.failureAspect.message}</span></div>
+                <div class="mt1" if.bind="errorDetail.layoutCheckContext">
+                    <layout-comparison context.bind="errorDetail.layoutCheckContext"></layout-comparison>
                 </div>
             </div>
             <div class="pl1 pr1 pb1">
-                <div mdc-subtitle2 class="card-headline">Origin (${failureAspect.errorContext.scriptSource.fileName})</div>
-                <code-view source.bind="failureAspect.errorContext.scriptSource"></code-view>
+                <div mdc-subtitle2 class="card-headline">Origin (${errorDetail.failureAspect.errorContext.scriptSource.fileName})</div>
+                <code-view source.bind="errorDetail.failureAspect.errorContext.scriptSource"></code-view>
             </div>
             <mdc-list-divider class="au-target mdc-list-divider"></mdc-list-divider>
             <div class="pl1 pr1 pb1">
@@ -51,11 +51,11 @@
                             title="Copy to clipboard"
                             class="icon-button--dense"
                             style="margin-top: -6px; margin-bottom: -6px;"
-                            click.delegate="_copyStackTraceToClipboard(failureAspect.errorContext.stackTrace)"
+                            click.delegate="_copyStackTraceToClipboard(errorDetail.failureAspect.errorContext.stackTrace)"
                     ></button>
                 </div>
 
-                <mdc-expandable repeat.for="cause of failureAspect.errorContext.stackTrace"
+                <mdc-expandable repeat.for="cause of errorDetail.failureAspect.errorContext.stackTrace"
                                 class="card-expandable"
                 >
                     <div

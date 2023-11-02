@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.playground;
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
@@ -33,10 +32,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.LogInspector;
 import org.openqa.selenium.bidi.log.ConsoleLogEntry;
-import org.openqa.selenium.bidi.log.GenericLogEntry;
 import org.openqa.selenium.bidi.log.JavascriptLogEntry;
 import org.openqa.selenium.bidi.log.LogEntry;
-import org.openqa.selenium.bidi.log.LogLevel;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.Augmenter;
@@ -47,8 +44,6 @@ import org.testng.annotations.Test;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created on 2023-06-22
@@ -83,7 +78,7 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
             }
         }
         Augmenter augmenter = new Augmenter();
-        RemoteWebDriver remoteWebDriver =WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+        RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
         return new LogInspector(augmenter.augment(remoteWebDriver));
     }
 
@@ -116,11 +111,11 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         ASSERT.assertEquals(logEntryList.size(), 2, "LogEntry list");
     }
 
-
     @Test
     public void testT02_LogListener_JSLogs() throws MalformedURLException {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBrowser(Browsers.chrome);
+//        request.setBrowser(Browsers.chrome);
+        request.setBrowser(Browsers.firefox);
         request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
 

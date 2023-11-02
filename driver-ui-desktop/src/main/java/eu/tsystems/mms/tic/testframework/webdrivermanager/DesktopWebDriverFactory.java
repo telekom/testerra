@@ -356,7 +356,7 @@ public class DesktopWebDriverFactory implements
                         .address(seleniumUrl)
                         .addAlternative(capabilities)
                         .build();
-                ((RemoteWebDriver)webDriver).setFileDetector(new LocalFileDetector());
+                ((RemoteWebDriver) webDriver).setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");

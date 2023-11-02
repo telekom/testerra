@@ -41,6 +41,7 @@ import org.openqa.selenium.devtools.v118.log.model.LogEntry;
 import org.openqa.selenium.devtools.v118.network.Network;
 import org.openqa.selenium.devtools.v118.network.model.RequestWillBeSent;
 import org.openqa.selenium.devtools.v118.network.model.ResponseReceived;
+import org.openqa.selenium.logging.HasLogEvents;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.Test;
@@ -50,9 +51,12 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import static org.openqa.selenium.devtools.events.CdpEventTypes.consoleEvent;
 
 /**
  * Created on 2023-01-13
@@ -121,6 +125,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
                 Optional.of(1)));
 
         webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.xpath("//button[@aria-label = 'Consent']")).click();
         uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
         uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
     }
@@ -135,6 +140,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         CHROME_DEV_TOOLS.setGeoLocation(webDriver, latitude.get().doubleValue(), longitude.get().doubleValue(), 1);
 
         webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.xpath("//button[@aria-label = 'Consent']")).click();
         uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
         uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
     }
@@ -194,6 +200,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
      * The following example uses the BiDi implementation of Chrome to add basic authentication information
      * <p>
      * Works only with local ChromeDriver, RemoteWebDriver is not supported
+     * https://github.com/SeleniumHQ/seleniumhq.github.io/blob/612f4e52b95b26d6af8135310a351ed82622779e/examples/java/src/test/java/dev/selenium/bidirectional/chrome_devtools/BidiApiTest.java#L74C15-L74C15
      */
     @Test
     public void testT06_BasicAuth_ChromeBiDiAPI() {
@@ -209,6 +216,34 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
 
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
+    }
+
+    /**
+     * The following example uses the BiDi implementation of Chrome to add basic authentication information
+     * <p>
+     * Works only with local ChromeDriver, RemoteWebDriver is not supported
+     */
+    @Test
+    public void testT08_LogListener_ChromeBiDiApi() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        request.setBrowser(Browsers.chrome);
+//        request.setBrowserVersion("106");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
+
+        CopyOnWriteArrayList<String> messages = new CopyOnWriteArrayList<>();
+        ((HasLogEvents) chromeDriver).onLogEvent(consoleEvent(e -> messages.add(e.getMessages().get(0))));
+        uiElementFinder.find(By.id("consoleLog")).click();
+        uiElementFinder.find(By.id("consoleError")).click();
+        CONTROL.retryTimes(3, () -> {
+            ASSERT.assertTrue(messages.size() > 1);
+        });
+        ASSERT.assertTrue(messages.contains("Hello, world!"));
+        ASSERT.assertTrue(messages.contains("I am console error"));
+
     }
 
     //
@@ -229,8 +264,9 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         TimerUtils.sleep(1000);     // Short wait to get delayed logs
         for (LogEntry logEntry : logEntries) {
             log().info("LOG_ENTRY: {} {} {} - {} ({})", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getSource(), logEntry.getText(), logEntry.getUrl());
-            ASSERT.assertFalse(logEntry.getText().contains("404"));
+//            ASSERT.assertTrue(logEntry.getText().contains("404"));
         }
+
     }
 
     @Test

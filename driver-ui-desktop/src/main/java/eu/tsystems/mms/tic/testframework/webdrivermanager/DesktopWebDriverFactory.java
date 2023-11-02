@@ -351,7 +351,7 @@ public class DesktopWebDriverFactory implements
                 if (capabilities == null) {
                     throw new SystemException("Cannot start browser session with empty browser options");
                 }
-                webDriver = new RemoteWebDriver(seleniumUrl, capabilities);
+                webDriver = new RemoteWebDriver(seleniumUrl, capabilities, Testerra.Properties.SELENIUM_TRACING_ACTIVE.asBool());
                 webDriver.setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {

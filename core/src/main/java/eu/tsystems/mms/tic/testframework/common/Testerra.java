@@ -73,6 +73,8 @@ public class Testerra {
         @Deprecated
         SELENIUM_SERVER_PORT("tt.selenium.server.port", 4444),
         SELENIUM_SERVER_URL("tt.selenium.server.url", null),
+        // See more about Selenium tracing here: https://www.selenium.dev/documentation/grid/advanced_features/observability/
+        SELENIUM_TRACING_ACTIVE("tt.selenium.tracing.active", false),
         BASEURL("tt.baseurl", null),
         WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD("webdriver.timeouts.seconds.pageload", 120),
         WEBDRIVER_TIMEOUT_SECONDS_SCRIPT("webdriver.timeouts.seconds.script", 120),

@@ -40,6 +40,7 @@ import org.sikuli.api.ScreenRegion;
 import java.awt.Rectangle;
 import java.awt.Color;
 import java.io.File;
+import java.util.Optional;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
@@ -135,24 +136,31 @@ public final class DesktopWebDriverUtils implements Loggable {
     }
 
     public void clickByImage(final WebDriver driver, String fileName) {
-        final ScreenRegion imageRegion = getElementPositionByImage(driver, fileName);
-//        if (imageRegion == null) {
-//            return;
-//        }
+        final Optional<ScreenRegion> imageRegion = getElementPositionByImage(driver, fileName);
+        if (imageRegion.isEmpty()) {
+            throw new RuntimeException("Could not find element similar to image: " + fileName);
+        }
         Actions action = new Actions(driver);
-        action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).click().build().perform();
+        action
+                .moveByOffset(imageRegion.get().getCenter().getX(), imageRegion.get().getCenter().getY())
+                .click()
+                .build()
+                .perform();
     }
 
     public void mouseOverByImage(final WebDriver driver, String fileName) {
-        final ScreenRegion imageRegion = getElementPositionByImage(driver, fileName);
-//        if (imageRegion == null) {
-//            return;
-//        }
+        final Optional<ScreenRegion> imageRegion = getElementPositionByImage(driver, fileName);
+        if (imageRegion.isEmpty()) {
+            throw new RuntimeException("Could not find element similar to image: " + fileName);
+        }
         Actions action = new Actions(driver);
-        action.moveByOffset(imageRegion.getCenter().getX(), imageRegion.getCenter().getY()).build().perform();
+        action
+                .moveByOffset(imageRegion.get().getCenter().getX(), imageRegion.get().getCenter().getY())
+                .build()
+                .perform();
     }
 
-    private ScreenRegion getElementPositionByImage(final WebDriver driver, String fileName) {
+    private Optional<ScreenRegion> getElementPositionByImage(final WebDriver driver, String fileName) {
         File imageFile = FileUtils.getResourceFile(fileName);
 
         WebDriverScreen webDriverScreen;
@@ -187,12 +195,9 @@ public final class DesktopWebDriverUtils implements Loggable {
         } while (currentScrollHeight < documentHeight && !elementFound); // End loop if element was found or bottom of page is reached
 
         if (elementFound) {
-            return imageRegion;
+            return Optional.of(imageRegion);
         } else {
-            throw new RuntimeException("Element not found similar to " + imageFile.getAbsolutePath());
-//            OptionalAssert.fail("Element not found similar to " + imageFile.getAbsolutePath());
-//            Assert.fail("Element not found similar to " + imageFile.getAbsolutePath());
-//            return null;
+            return Optional.empty();
         }
     }
 }

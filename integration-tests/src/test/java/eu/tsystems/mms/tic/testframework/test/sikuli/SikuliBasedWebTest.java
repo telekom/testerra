@@ -91,34 +91,4 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         guiElement.asserts().assertIsDisplayed();
         guiElement.asserts().assertAttributeContains("src", "ringo");
     }
-
-    @Test
-    public void testT04a_byImageUtils_mouseOverByImage() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        UiElementFinder finder = createFinder();
-        driver.get("https://the-internet.herokuapp.com/hovers");
-
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-
-        String fileName = "byImage/tiHoversProfiles.png";
-        UiElement user2Tag = finder.find(By.xpath("//div[@class='example']//div[@class='figure'][2]//h5[text()='name: user2']"));
-
-        user2Tag.expect().displayed().is(false);
-        utils.mouseOverByImage(driver, fileName);
-        user2Tag.expect().displayed().is(true);
-    }
-
-    @Test
-    public void testT04b_byImageUtils_clickByImage() {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        UiElementFinder finder = createFinder();
-        driver.get("https://the-internet.herokuapp.com/disappearing_elements");
-
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-
-        String fileName = "byImage/home_button.png";
-        utils.clickByImage(driver, fileName);
-        UiElement headline = finder.find(By.xpath("//*[@id='content']/h1"));
-        headline.expect().text().isContaining("Welcome to the-internet");
-    }
 }

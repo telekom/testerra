@@ -31,16 +31,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -50,6 +40,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * JavaScript Utils.
@@ -156,7 +157,7 @@ public final class JSUtils {
         } catch (Exception e) {
             String message = String.format("Error executing Javascript\n-----\n%s\n-----", script);
             if (parameters.length > 0) {
-                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o==null?"null":o.toString())).collect(Collectors.joining("\n"));
+                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o == null ? "null" : o.toString())).collect(Collectors.joining("\n"));
                 message += "\n-----";
             }
             LOGGER.error(message, e);
@@ -220,6 +221,7 @@ public final class JSUtils {
 
     /**
      * Scrolls an element to the top of a page.
+     *
      * @param webDriver
      * @param webElement
      */
@@ -262,7 +264,7 @@ public final class JSUtils {
     /**
      * Gets the selector without frame hierarchy
      *
-     * @param guiElementData          GuiElement
+     * @param guiElementData   GuiElement
      * @param documentSelector String Current Selector
      * @return String
      */
@@ -412,11 +414,11 @@ public final class JSUtils {
     public Rectangle getViewport(WebDriver driver) {
         Object result = JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
         if (result != null) {
-            final ArrayList<String> list = (ArrayList<String>)result;
+            final ArrayList<String> list = (ArrayList<String>) result;
             List<Double> numbers = list.stream().map(Double::valueOf).collect(Collectors.toList());
             return new Rectangle(numbers.get(0).intValue(), numbers.get(1).intValue(), numbers.get(3).intValue(), numbers.get(2).intValue());
         } else {
-            return new Rectangle(-1,-1,-1,-1);
+            return new Rectangle(-1, -1, -1, -1);
         }
     }
 
@@ -491,7 +493,7 @@ public final class JSUtils {
     /**
      * Scrolls horizontally and vertically by the given values
      *
-     * @param driver {@link WebDriver}
+     * @param driver  {@link WebDriver}
      * @param scrollX the value for scrolling horizontally
      * @param scrollY the value for scrolling vertically
      */
@@ -500,20 +502,14 @@ public final class JSUtils {
     }
 
     /**
-     * Determines the height, the viewport is currently at
-     *
-     * @param driver {@link WebDriver}
-     * @return the height, the viewport is currently at
+     * Determines and returns the height, the viewport is currently at
      */
     public long getCurrentScrollHeight(final WebDriver driver) {
         return (long) JSUtils.executeScriptWOCatch(driver, "return (window.innerHeight + window.scrollY)");
     }
 
     /**
-     * Determines the height of the current page
-     *
-     * @param driver {@link WebDriver}
-     * @return the height of the page
+     * Determines and returns the height of the current page
      */
     public long getDocumentHeight(final WebDriver driver) {
         return (long) JSUtils.executeScriptWOCatch(driver, "return document.body.scrollHeight");

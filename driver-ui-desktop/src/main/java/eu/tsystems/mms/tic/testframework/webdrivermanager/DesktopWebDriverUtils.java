@@ -186,7 +186,7 @@ public final class DesktopWebDriverUtils implements Loggable {
             if (imageRegion != null) {
                 // Element is visible, break out of the loop
                 Rectangle r = imageRegion.getBounds();
-                log().info("image " + imageFile.getAbsolutePath() + " found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
+                log().info(String.format("Image \"%s\" found at (%d,%d) with dimension %dx%d", imageFile.getAbsolutePath(), r.x, r.y, r.width, r.height));
                 elementFound = true;
             } else {
                 // Scroll down to further search for the element

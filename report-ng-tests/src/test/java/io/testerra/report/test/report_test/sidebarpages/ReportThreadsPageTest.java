@@ -46,7 +46,6 @@ public class ReportThreadsPageTest extends AbstractReportTest {
         reportThreadsPage = reportThreadsPage.clickSearchBar();
         reportThreadsPage = reportThreadsPage.selectMethod(method);
 
-//        String imageFileName = "byImage/ReportThreadsPageTest/" + "test_SkippedNoStatus" + ".png";
         String imageFileName = "byImage/ReportThreadsPageTest/" + method + ".png";
         DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
         utils.mouseOverByImage(reportThreadsPage.getWebDriver(), imageFileName);

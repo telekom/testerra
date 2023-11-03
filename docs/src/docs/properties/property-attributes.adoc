@@ -54,7 +54,6 @@
 :failed_tests_if_throwable_classes:             tt.failed.tests.if.throwable.classes
 :failed_tests_if_throwable_messages:            tt.failed.tests.if.throwable.messages
 :failed_tests_max_retries:                      tt.failed.tests.max.retries
-:reuse_dataprovider_driver_by_thread:           tt.reuse.dataprovider.driver.by.thread
 :execution_omit_indevelopment:                  tt.execution.omit.indevelopment
 
 :watchdog_enable:                               tt.watchdog.enable

@@ -2,8 +2,6 @@
 
 This utility class provides some additional methods to interact with web elements.
 
-All methods using JavaScript snippets to execute an action instead the Selenium way.
-
 [IMPORTANT]
 ====
 Please consider this utility class as a fallback solution.
@@ -30,6 +28,8 @@ The following methods are supported:
 * mouseOverJS()
 * clickAbsolute()
 * mouseOverAbsolute2Axis()
+* clickByImage()
+* mouseOverByImage()
 
 See <<Mouse over>> for more details about the `mouseOverAbsolute2Axis` method.
 
@@ -45,3 +45,10 @@ image::absolute2Axis.png[]
 The standard path (green) goes over a menu with hover effects.
 This could hide your target element.
 The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
+
+== By image utils
+
+The methods `clickByImage` and `mouseOverByImage` use the image recognition technology of the sikuli-api to locate a part of the current web page using a screenshot placed in the `src/test/resources/` directory.
+After the referenced element was found, the operation is performed (either click or mouseOver) at the corresponding location using Selenium actions.
+
+These methods are useful, if some elements can not be accessed in the usual way, for example parts inside a canvas- or svg-element.

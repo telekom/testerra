@@ -66,7 +66,8 @@ class Statistics {
                 upmostStatus = status;
             }
         }
-        return (upmostStatus == 10 && this._resultStatuses.hasOwnProperty(7)) ? 7 : upmostStatus; // if there is the same failure aspect for one failed and one expected failed test, the failed class color should be displayed
+        return (upmostStatus == data.ResultStatusType.FAILED_EXPECTED && this._resultStatuses.hasOwnProperty(data.ResultStatusType.FAILED))
+            ? data.ResultStatusType.FAILED : upmostStatus; // if there is the same failure aspect for one failed and one expected failed test, the failed class color should be displayed
     }
 
     protected addStatistics(statistics: Statistics) {

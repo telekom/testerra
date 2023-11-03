@@ -26,6 +26,7 @@ import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {data} from "../../services/report-model";
 import MethodType = data.MethodType;
+import "./method.scss"
 
 @autoinject()
 export class Method {

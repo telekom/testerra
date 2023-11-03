@@ -29,13 +29,11 @@ import eu.tsystems.mms.tic.testframework.exceptions.SetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
-import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.utils.Sleepy;
@@ -76,33 +74,7 @@ public class DesktopWebDriverFactory implements
 
     @Override
     public WebDriver createWebDriver(WebDriverRequest request, SessionContext sessionContext) {
-        return startSession((DesktopWebDriverRequest) request, sessionContext);
-    }
-
-    private WebDriver startSession(DesktopWebDriverRequest desktopWebDriverRequest, SessionContext sessionContext) {
-
-        /*
-        if there is a factories entry for the requested browser, then create the new (raw) instance here and wrap it directly in EventFiringWD
-         */
-        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
-            String threadName = Thread.currentThread().getId() + "";
-            String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            WebDriver driver = DriverStorage.getDriverByTestMethodName(testMethodName, threadName);
-            if (driver != null) {
-                log().info("Re-Using WebDriver for " + testMethodName + ": " + threadName + " driver: " + driver);
-
-                // cleanup session
-                driver.manage().deleteAllCookies();
-                return driver;
-            } else {
-                return newWebDriver(desktopWebDriverRequest, sessionContext);
-            }
-        } else {
-            /*
-            regular branch to create a new web driver session
-             */
-            return newWebDriver(desktopWebDriverRequest, sessionContext);
-        }
+        return newWebDriver((DesktopWebDriverRequest) request, sessionContext);
     }
 
     @Override

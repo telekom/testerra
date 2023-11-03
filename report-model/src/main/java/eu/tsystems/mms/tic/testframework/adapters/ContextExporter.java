@@ -72,6 +72,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -593,8 +594,9 @@ public class ContextExporter implements Loggable {
             metrics.forEach((key, value) -> {
                 MetricsValue.Builder metricsBuilder = MetricsValue.newBuilder();
                 map(key, type -> MetricType.valueOf(type.name()), metricsBuilder::setMetricType);
-                apply(value.getStartTime().toEpochMilli(), metricsBuilder::setStartTimestamp);
-                apply(value.getEndTime().toEpochMilli(), metricsBuilder::setEndTimestamp);
+                map(value.getStartTime(), Instant::toEpochMilli, metricsBuilder::setStartTimestamp);
+                // There is no end time if something went wrong (e.g. an exception occurred)
+                map(value.getEndTime(), Instant::toEpochMilli, metricsBuilder::setEndTimestamp);
                 sessionMetricBuilder.addMetricsValues(metricsBuilder);
             });
 

@@ -26,9 +26,12 @@ import {ECharts, EChartsOption} from 'echarts';
 import "./session-timings.scss";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "../../../services/status-converter";
-import moment from "moment";
 import {MethodType} from "../../../services/report-model/framework_pb";
 import {ExecutionStatistics} from "../../../services/statistic-models";
+import {
+    IntlDateFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+import {Container} from "aurelia-dependency-injection";
 
 @autoinject()
 export class SessionTimings extends AbstractViewModel {
@@ -38,9 +41,9 @@ export class SessionTimings extends AbstractViewModel {
     private _option: EChartsOption;
     private _executionStatistics: ExecutionStatistics;
     private _methodDetails: MethodDetails[];
-    private _hasEnded = false;
     private _testDuration: Duration | null = null;
     private _dots: IDots[];
+    private _dateFormatter: IntlDateFormatValueConverter;
 
     constructor(
         private readonly _statusConverter: StatusConverter,
@@ -74,6 +77,9 @@ export class SessionTimings extends AbstractViewModel {
 
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
             sessionMetrics.forEach(metric => {
+                if(!metric.metricsValues[0].endTimestamp){ // if there is no endTimestamp the related metric will be skipped
+                    return;
+                }
                 const sessionContext = this._executionStatistics.executionAggregate.sessionContexts[metric.sessionContextId];
                 const methodList = this._methodDetails.filter(method => method.methodContext.sessionContextIds.includes(sessionContext.contextValues.id));
                 const sessionInformation: ISessionInformation = {
@@ -82,10 +88,10 @@ export class SessionTimings extends AbstractViewModel {
                     browserName: sessionContext.browserName,
                     browserVersion: sessionContext.browserVersion,
                     methodList: methodList,
-                    sessionDuration: this._calculateDuration(metric.metricsValues[1].startTimestamp, metric.metricsValues[1].endTimestamp),
-                    baseurlDuration: this._calculateDuration(metric.metricsValues[0].startTimestamp, metric.metricsValues[0].endTimestamp),
-                    sessionStartTime: metric.metricsValues[1].startTimestamp,
-                    baseurlStartTime: metric.metricsValues[0].startTimestamp,
+                    sessionDuration: (metric.metricsValues[0].endTimestamp - metric.metricsValues[0].startTimestamp)/1000,
+                    baseurlDuration: (metric.metricsValues[1].endTimestamp - metric.metricsValues[1].startTimestamp)/1000,
+                    sessionStartTime: metric.metricsValues[0].startTimestamp,
+                    baseurlStartTime: metric.metricsValues[1].startTimestamp,
                 }
                 sessionInformationArray.push(sessionInformation);
             })
@@ -93,6 +99,27 @@ export class SessionTimings extends AbstractViewModel {
             this._prepareData(sessionInformationArray);
             this._setChartOption();
         })
+    }
+
+    attached(){
+        this._initDateFormatter();
+    }
+
+    private _initDateFormatter() {
+        const container = new Container();
+        this._dateFormatter = container.get(IntlDateFormatValueConverter);
+        this._dateFormatter.setLocale('en-GB');
+        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
+        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
+        this._dateFormatter.setOptions('full', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: false
+        });
     }
 
     private _prepareData(sessionInformationArray: ISessionInformation[]) {
@@ -163,6 +190,7 @@ export class SessionTimings extends AbstractViewModel {
     }
 
     private _setChartOption() {
+        const dateFormatter = this._dateFormatter;
         this._option = {
             legend: {
                 data: [
@@ -201,7 +229,9 @@ export class SessionTimings extends AbstractViewModel {
                     restore: {}
                 }
             },
-
+            grid: {
+                bottom: 100,
+            },
             tooltip: {
                 textStyle: {
                     fontSize: 13,
@@ -238,11 +268,10 @@ export class SessionTimings extends AbstractViewModel {
                 type: 'time',
                 min: this._testDuration.startTime,
                 max: this._testDuration.endTime,
-                name: 'Total test duration',
-                nameTextStyle: {
-                    align: 'right',
-                    verticalAlign: 'top',
-                    padding: [8, -40, 0, 0], // prevents that data zoom slider and label overlap
+                axisLabel: {
+                    formatter: function (val) {
+                        return dateFormatter.toView(Number(val), 'time') + '\n\n' + dateFormatter.toView(Number(val), 'date');
+                    },
                 }
             },
             yAxis: {
@@ -256,16 +285,6 @@ export class SessionTimings extends AbstractViewModel {
     private _getTime(timestamp: number){
         const date = new Date(timestamp)
         return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ":" + date.getMilliseconds();
-    }
-
-    private _calculateDuration(startTime: number, endTime: number) {
-        if (!endTime) {
-            this._hasEnded = false;
-            endTime = new Date().getMilliseconds();
-        } else {
-            this._hasEnded = true;
-        }
-        return moment.duration(endTime - startTime, 'milliseconds').asSeconds();
     }
 }
 

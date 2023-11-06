@@ -26,7 +26,6 @@ import {ECharts, EChartsOption} from 'echarts';
 import "./test-timings.scss";
 import {ExecutionStatistics} from "services/statistic-models";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
-import moment from "moment";
 import {data} from "../../../services/report-model";
 import {StatusConverter} from "../../../services/status-converter";
 import MethodType = data.MethodType;
@@ -39,7 +38,6 @@ export class TestTimings extends AbstractViewModel {
     private _chart: ECharts;
     private _executionStatistics: ExecutionStatistics;
     private _option: EChartsOption;
-    private _hasEnded = false;
     private _methodDetails: MethodDetails[];
     private _labels: string[];
     private _sectionValues: number[];
@@ -138,7 +136,7 @@ export class TestTimings extends AbstractViewModel {
                 const testDurationMethod: ITestDurationMethod = {
                     id: method.methodContext.contextValues.id,
                     name: method.methodContext.contextValues.name,
-                    duration: this._calculateDuration(method.methodContext.contextValues.startTime, method.methodContext.contextValues.endTime),
+                    duration: (method.methodContext.contextValues.endTime - method.methodContext.contextValues.startTime)/1000,
                     methodType: method.methodContext.methodType
                 }
                 testDurationMethods.push(testDurationMethod)
@@ -308,16 +306,6 @@ export class TestTimings extends AbstractViewModel {
 
         this._sectionValues = resultDurations;
         this._labels = resultSections;
-    }
-
-    private _calculateDuration(startTime: number, endTime: number) {
-        if (!endTime) {
-            this._hasEnded = false;
-            endTime = new Date().getMilliseconds();
-        } else {
-            this._hasEnded = true;
-        }
-        return Math.ceil(moment.duration(endTime - startTime, 'milliseconds').asSeconds());
     }
 }
 

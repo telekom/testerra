@@ -63,6 +63,8 @@ public class ChromeDevToolsTests extends TesterraTest implements
                 1);            // accuracy
 
         webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.xpath("//button[@aria-label = 'Consent']"))
+            .click(); // Cookie disclaimer
         uiElementFinder.find(By.id("latitude"))
             .assertThat().text().isContaining("52.52084");
         uiElementFinder.find(By.id("longitude"))

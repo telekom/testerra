@@ -105,9 +105,15 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
             TimerUtils.sleepSilent(1000);
         });
 
-        for (ConsoleLogEntry logEntry : logEntryList) {
-            log().info("LOG_ENTRY: {} {} {} - {}", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getMethod(), logEntry.getText());
-        }
+        logEntryList.forEach(logEntry ->
+                log().info(
+                        "LOG_ENTRY: {} {} {} - {}",
+                        logEntry.getTimestamp(),
+                        logEntry.getLevel(),
+                        logEntry.getMethod(),
+                        logEntry.getText())
+        );
+
         ASSERT.assertEquals(logEntryList.size(), 2, "LogEntry list");
     }
 

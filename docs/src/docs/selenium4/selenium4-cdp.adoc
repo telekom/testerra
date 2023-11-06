@@ -58,9 +58,9 @@ public class ChromeDevToolsTests extends TesterraTest implements
 
         CHROME_DEV_TOOLS.setGeoLocation(
                 webDriver,
-                Optional.of(52.52084),      // latitude
-                Optional.of(13.40943),      // longitude
-                1);                         // accuracy
+                52.52084,      // latitude
+                13.40943,      // longitude
+                1);            // accuracy
 
         webDriver.get("https://my-location.org/");
         uiElementFinder.find(By.id("latitude"))

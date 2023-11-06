@@ -36,6 +36,8 @@ import {data} from "../../services/report-model";
 import {MdcSnackbarService} from '@aurelia-mdc-web/snackbar';
 import {Clipboard} from "t-systems-aurelia-components/src/utils/clipboard";
 import IStackTraceCause = data.StackTraceCause;
+import "./details.scss"
+
 
 interface ErrorDetails {
     failureAspect: FailureAspectStatistics;

@@ -43,7 +43,7 @@ public class LayoutCheckFramesTest extends AbstractTestSitesTest implements Loca
         UiElement frame = uiElementFinder.find(By.id("iframe"));
         UiElement uiElement = frame.find(LOCATE.byQa("section/layoutTestArticle"));
 
-        uiElement.expect().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
+        uiElement.expect().screenshot().pixelDistance("TestArticleElementFrame").isLowerThan(1.3);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class LayoutCheckFramesTest extends AbstractTestSitesTest implements Loca
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(getWebDriver());
         UiElement frame = uiElementFinder.find(By.id("iframe"));
         UiElement uiElement = frame.find(LOCATE.byQa("section/layoutTestArticle"));
-        uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticle").isLowerThan(1.3);
+        uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticleElementFrame").isLowerThan(1.3);
     }
 
 }

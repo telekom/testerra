@@ -30,9 +30,7 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
-import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
@@ -117,16 +115,6 @@ public final class WebDriverSessionsManager {
         WEBDRIVER_THREAD_ID_MAP.put(eventFiringWebDriver, threadId);
 
         /*
-        storing driver into driver storage, for whatever reason
-         */
-        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
-            String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            String threadName = Thread.currentThread().getId() + "";
-            LOGGER.debug("Saving driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
-            DriverStorage.saveDriverForTestMethod(eventFiringWebDriver, threadName, methodName);
-        }
-
-        /*
         store driver to session context relation
          */
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(eventFiringWebDriver, sessionContext);
@@ -142,16 +130,6 @@ public final class WebDriverSessionsManager {
         WEBDRIVER_THREAD_ID_MAP.remove(eventFiringWebDriver, threadId);
 
         executionContextController.clearCurrentSessionContext();
-
-        /*
-        storing driver into driver storage, for whatever reason
-         */
-        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
-            String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            String threadName = Thread.currentThread().getId() + "";
-            LOGGER.info("Removing driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
-            DriverStorage.removeSpecificDriver(methodName);
-        }
 
         /*
         Log something about the session handling maps

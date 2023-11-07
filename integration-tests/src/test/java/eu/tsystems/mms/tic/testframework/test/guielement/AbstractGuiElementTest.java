@@ -24,29 +24,22 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Test of GuiElement methods
  *
  * @author rnhb
  */
-public abstract class AbstractGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, LocatorFactoryProvider {
+public abstract class AbstractGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, LocatorFactoryProvider, Loggable {
 
-    @Deprecated
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
     protected static final DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-
-    private final UiElementFinder finder = UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());;
 
     /**
      * abstract methods to get specific GuiElement (e.g. FrameAwareInternalGuiElementDecorator) in a specific state
@@ -194,10 +187,6 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest imple
 
     public GuiElement getCheckBox() {
         return getGuiElementBy(By.id("9"));
-    }
-
-    public TestableUiElement getClickPosition() {
-        return finder.find(By.id("clickPosition"));
     }
 
     public GuiElement getSelectRadioButtonMitVerzoegerungButton() {

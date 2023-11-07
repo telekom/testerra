@@ -22,15 +22,19 @@
 
 package eu.tsystems.mms.tic.testframework;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractExclusiveTestSitesTest<T extends Page> extends AbstractTestSitesTest implements PageFactoryTest, PageFactoryProvider {
+public abstract class AbstractExclusiveTestSitesTest<T extends Page> extends AbstractTestSitesTest implements PageFactoryTest, PageFactoryProvider, Loggable {
     abstract public Class<T> getPageClass();
+
+    protected static final DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
 
     @Override
     public T getPage() {

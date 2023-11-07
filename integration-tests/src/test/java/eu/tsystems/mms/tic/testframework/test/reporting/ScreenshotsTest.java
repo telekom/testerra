@@ -22,35 +22,29 @@
 package eu.tsystems.mms.tic.testframework.test.reporting;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import io.testerra.test.pretest_status.TestStatusTest;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import io.testerra.test.pretest_status.TestStatusTest;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.stream.Stream;
+
 /**
  * Tests if screenshots are added to the MethodContext when a test fails.
+ *
  * @author Mike Reiche
  */
 public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest, TestStatusTest {
@@ -65,7 +59,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
         WebTestPage page = new WebTestPage(getWebDriver());
 
         for (int s = 0; s < 3; ++s) {
-            page.getOpenAgain().click();
+            page.openAgainLink.click();
         }
         Screenshot screenshot = UITestUtils.takeScreenshot(page.getWebDriver(), false);
         String screenshotSource = Files.readFile(new FileInputStream(screenshot.getPageSourceFile().get()));

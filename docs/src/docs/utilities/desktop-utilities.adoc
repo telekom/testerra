@@ -48,7 +48,7 @@ The blue path variant always goes first to the point (0,0) of the viewport, then
 
 == By image utils
 
-The methods `clickByImage` and `mouseOverByImage` use the image recognition technology of the sikuli-api to locate a part of the current web page using a screenshot placed in the `src/test/resources/` directory.
+The methods `clickByImage` and `mouseOverByImage` use the image recognition technology of sikuli-api to locate a part of the current web page using a screenshot placed in the `src/test/resources/` directory.
 After the referenced element was found, the operation is performed (either click or mouseOver) at the corresponding location using Selenium actions.
 
-These methods are useful, if some elements can not be accessed in the usual way, for example parts inside a canvas- or svg-element.
+These methods are useful, if some elements can not be accessed in the usual way, for example if they are inside a canvas- or svg-element.

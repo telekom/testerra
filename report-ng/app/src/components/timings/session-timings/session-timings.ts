@@ -26,12 +26,11 @@ import {ECharts, EChartsOption} from 'echarts';
 import "./session-timings.scss";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "../../../services/status-converter";
-import {MethodType} from "../../../services/report-model/framework_pb";
+import {MethodType, MetricType} from "../../../services/report-model/framework_pb";
 import {ExecutionStatistics} from "../../../services/statistic-models";
 import {
     IntlDateFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
-import {Container} from "aurelia-dependency-injection";
 
 @autoinject()
 export class SessionTimings extends AbstractViewModel {
@@ -43,11 +42,11 @@ export class SessionTimings extends AbstractViewModel {
     private _methodDetails: MethodDetails[];
     private _testDuration: Duration | null = null;
     private _dots: IDots[];
-    private _dateFormatter: IntlDateFormatValueConverter;
 
     constructor(
         private readonly _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private readonly _dateFormatter: IntlDateFormatValueConverter,
     ) {
         super();
         this._methodDetails = [];
@@ -77,9 +76,13 @@ export class SessionTimings extends AbstractViewModel {
 
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
             sessionMetrics.forEach(metric => {
-                if(!metric.metricsValues[0].endTimestamp){ // if there is no endTimestamp the related metric will be skipped
+                const sessionData = metric.metricsValues.find(value => value.metricType === MetricType.SESSION_LOAD);
+                const baseurlData = metric.metricsValues.find(value => value.metricType === MetricType.BASEURL_LOAD);
+
+                if (!Object.prototype.hasOwnProperty.call(baseurlData, 'endTimestamp')){ // if there is no endTimestamp the related metric will be skipped
                     return;
                 }
+
                 const sessionContext = this._executionStatistics.executionAggregate.sessionContexts[metric.sessionContextId];
                 const methodList = this._methodDetails.filter(method => method.methodContext.sessionContextIds.includes(sessionContext.contextValues.id));
                 const sessionInformation: ISessionInformation = {
@@ -88,10 +91,10 @@ export class SessionTimings extends AbstractViewModel {
                     browserName: sessionContext.browserName,
                     browserVersion: sessionContext.browserVersion,
                     methodList: methodList,
-                    sessionDuration: (metric.metricsValues[0].endTimestamp - metric.metricsValues[0].startTimestamp)/1000,
-                    baseurlDuration: (metric.metricsValues[1].endTimestamp - metric.metricsValues[1].startTimestamp)/1000,
-                    sessionStartTime: metric.metricsValues[0].startTimestamp,
-                    baseurlStartTime: metric.metricsValues[1].startTimestamp,
+                    sessionDuration: (sessionData.endTimestamp - sessionData.startTimestamp) / 1000,
+                    baseurlDuration: (baseurlData.endTimestamp - baseurlData.startTimestamp) / 1000,
+                    sessionStartTime: sessionData.startTimestamp,
+                    baseurlStartTime: baseurlData.startTimestamp,
                 }
                 sessionInformationArray.push(sessionInformation);
             })
@@ -99,27 +102,6 @@ export class SessionTimings extends AbstractViewModel {
             this._prepareData(sessionInformationArray);
             this._setChartOption();
         })
-    }
-
-    attached(){
-        this._initDateFormatter();
-    }
-
-    private _initDateFormatter() {
-        const container = new Container();
-        this._dateFormatter = container.get(IntlDateFormatValueConverter);
-        this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
-        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
-        this._dateFormatter.setOptions('full', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: false
-        });
     }
 
     private _prepareData(sessionInformationArray: ISessionInformation[]) {
@@ -247,8 +229,8 @@ export class SessionTimings extends AbstractViewModel {
                             <b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>
                             <b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>
                             <b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>
-                            <b>Start time session:</b> ${this._getTime(this._dots[seriesIndex].information.sessionStartTime)} <br>
-                            <b>Start time base URL:</b> ${this._getTime(this._dots[seriesIndex].information.baseurlStartTime)} <br>`;
+                            <b>Start time session:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.sessionStartTime), 'time')} <br>
+                            <b>Start time base URL:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.baseurlStartTime), 'time')} <br>`;
 
                         if (testNames.length > 1) {
                             tooltipString += `<b>Test case(s):</b><ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;
@@ -280,11 +262,6 @@ export class SessionTimings extends AbstractViewModel {
             },
             series: this._createSeriesForValuePairs(),
         };
-    }
-
-    private _getTime(timestamp: number){
-        const date = new Date(timestamp)
-        return date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ":" + date.getMilliseconds();
     }
 }
 

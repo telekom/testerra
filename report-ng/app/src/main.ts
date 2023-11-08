@@ -97,6 +97,17 @@ export function configure(aurelia: Aurelia) {
     formatter.setOptions('long', { dateStyle: 'full', timeStyle: 'long' });
     formatter.setOptions( 'log', {hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3, hour12: false})
     formatter.setOptions('step', { year: 'numeric', month: 'short', day: 'numeric',  hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+    formatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
+    formatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
+    formatter.setOptions('full', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false
+    });
 
     const objectStorage = aurelia.container.get(ObjectStorage);
     objectStorage.setStorage(localStorage);

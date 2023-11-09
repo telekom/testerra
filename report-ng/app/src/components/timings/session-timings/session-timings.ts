@@ -79,7 +79,7 @@ export class SessionTimings extends AbstractViewModel {
                 const sessionData = metric.metricsValues.find(value => value.metricType === MetricType.SESSION_LOAD);
                 const baseurlData = metric.metricsValues.find(value => value.metricType === MetricType.BASEURL_LOAD);
 
-                if (!Object.prototype.hasOwnProperty.call(baseurlData, 'endTimestamp')){ // if there is no endTimestamp the related metric will be skipped
+                if (!(baseurlData?.endTimestamp > 0)){ // if there is no endTimestamp the related metric will be skipped
                     return;
                 }
 

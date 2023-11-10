@@ -50,10 +50,10 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     }
 
-    public void clickAbsolute(UiElement guiElement) {
-        log().debug("Absolute navigation and click on: " + guiElement.toString());
-        WebDriver driver = guiElement.getWebDriver();
-        guiElement.findWebElement(webElement -> {
+    public void clickAbsolute(UiElement uiElement) {
+        log().debug("Absolute navigation and click on: " + uiElement.toString());
+        WebDriver driver = uiElement.getWebDriver();
+        uiElement.findWebElement(webElement -> {
             Point point = webElement.getLocation();
 
             Actions action = new Actions(driver);
@@ -71,9 +71,9 @@ public final class DesktopWebDriverUtils implements Loggable {
         });
     }
 
-    public void mouseOverAbsolute2Axis(UiElement guiElement) {
-        WebDriver driver = guiElement.getWebDriver();
-        guiElement.findWebElement(webElement -> {
+    public void mouseOverAbsolute2Axis(UiElement uiElement) {
+        WebDriver driver = uiElement.getWebDriver();
+        uiElement.findWebElement(webElement -> {
             demoMouseOver(driver, webElement);
             Actions action = new Actions(driver);
 
@@ -90,9 +90,9 @@ public final class DesktopWebDriverUtils implements Loggable {
         });
     }
 
-    public void mouseOverJS(UiElement guiElement) {
-        WebDriver driver = guiElement.getWebDriver();
-        guiElement.findWebElement(webElement -> {
+    public void mouseOverJS(UiElement uiElement) {
+        WebDriver driver = uiElement.getWebDriver();
+        uiElement.findWebElement(webElement -> {
             demoMouseOver(driver, webElement);
 
             final String script = "var fireOnThis = arguments[0];"
@@ -103,16 +103,16 @@ public final class DesktopWebDriverUtils implements Loggable {
         });
     }
 
-    public void clickJS(UiElement guiElement) {
-        WebDriver driver = guiElement.getWebDriver();
-        guiElement.findWebElement(webElement -> {
+    public void clickJS(UiElement uiElement) {
+        WebDriver driver = uiElement.getWebDriver();
+        uiElement.findWebElement(webElement -> {
             JSUtils.executeScriptWOCatch(driver, "arguments[0].click();", webElement);
         });
     }
 
-    public void rightClickJS(UiElement guiElement) {
-        WebDriver driver = guiElement.getWebDriver();
-        guiElement.findWebElement(webElement -> {
+    public void rightClickJS(UiElement uiElement) {
+        WebDriver driver = uiElement.getWebDriver();
+        uiElement.findWebElement(webElement -> {
             final String script = "var element = arguments[0];" +
                     "var e = element.ownerDocument.createEvent('MouseEvents');" +
                     "e.initMouseEvent('contextmenu', true, true, element.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,false, false, false,2, null);" +
@@ -121,10 +121,10 @@ public final class DesktopWebDriverUtils implements Loggable {
         });
     }
 
-    public void doubleClickJS(UiElement guiElement) {
-        guiElement.findWebElement(webElement -> {
+    public void doubleClickJS(UiElement uiElement) {
+        uiElement.findWebElement(webElement -> {
             Point location = webElement.getLocation();
-            JSUtils.executeJavaScriptMouseAction(guiElement.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+            JSUtils.executeJavaScriptMouseAction(uiElement.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
         });
     }
 
@@ -166,10 +166,12 @@ public final class DesktopWebDriverUtils implements Loggable {
         WebDriverScreen webDriverScreen;
         webDriverScreen = new WebDriverScreen(driver);
         ScreenRegion webdriverRegion = new DefaultScreenRegion(webDriverScreen);
-
-        ColorImageTarget target = new ColorImageTarget(imageFile);
-        ScreenRegion imageRegion;
         boolean elementFound = false;
+
+        // The pattern to search for on the web page
+        ColorImageTarget target = new ColorImageTarget(imageFile);
+        // The resulting region in the browser
+        ScreenRegion imageRegion;
 
         // Calculate the scroll height by halving the viewport height to ensure the searched image is not skipped
         int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.5);

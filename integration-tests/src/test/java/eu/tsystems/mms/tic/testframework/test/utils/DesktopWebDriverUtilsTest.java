@@ -107,7 +107,7 @@ public class DesktopWebDriverUtilsTest extends AbstractExclusiveTestSitesTest<We
         WebTestPage page = getPage();
 
         String fileName = "byImage/input_field.png";
-        desktopWebDriverUtils.mouseOverByImage(getWebDriver(), fileName);
+        desktopWebDriverUtils.mouseOverByImage(page.getWebDriver(), fileName);
         page.textOutputField.expect().text().isContaining("Input 5 Mouse over");
     }
 
@@ -119,7 +119,7 @@ public class DesktopWebDriverUtilsTest extends AbstractExclusiveTestSitesTest<We
         WebTestPage page = getPage();
 
         String fileName = "byImage/submit_button.png";
-        desktopWebDriverUtils.clickByImage(getWebDriver(), fileName);
+        desktopWebDriverUtils.clickByImage(page.getWebDriver(), fileName);
         page.textOutputField.expect().text().isContaining("Form 16 submit");
     }
 
@@ -131,7 +131,7 @@ public class DesktopWebDriverUtilsTest extends AbstractExclusiveTestSitesTest<We
         WebTestPage page = getPage();
 
         String fileName = "byImage/click_me_button.png";
-        desktopWebDriverUtils.clickByImage(getWebDriver(), fileName);
+        desktopWebDriverUtils.clickByImage(page.getWebDriver(), fileName);
         page.clickPositionInfo.expect().text().isContaining("center center");
     }
 }

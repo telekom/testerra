@@ -323,7 +323,6 @@ public class DesktopWebDriverFactory implements
                 if (capabilities == null) {
                     throw new SystemException("Cannot start browser session with empty browser options");
                 }
-//                webDriver = new RemoteWebDriver(seleniumUrl, capabilities, Testerra.Properties.SELENIUM_TRACING_ACTIVE.asBool());
                 webDriver = RemoteWebDriver.builder()
                         .address(seleniumUrl)
                         .addAlternative(capabilities)

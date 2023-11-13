@@ -75,16 +75,17 @@ export class SessionTimings extends AbstractViewModel {
         const sessionInformationArray = [];
 
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
+            sessionMetrics[0].metricsValues[1].endTimestamp = undefined
             sessionMetrics.forEach(metric => {
                 const sessionData = metric.metricsValues.find(value => value.metricType === MetricType.SESSION_LOAD);
-                let baseurlData = metric.metricsValues.find(value => value.metricType === MetricType.BASEURL_LOAD);
+
+                const baseurlData = metric.metricsValues
+                    .filter(value => value.metricType === MetricType.BASEURL_LOAD)
+                    .filter(value => value.endTimestamp > 0) // if there is no baseurl endTimestamp the baseurl data will not be displayed
+                    .find(() => true)
 
                 if (!(sessionData?.endTimestamp > 0)){ // if there is no session endTimestamp the related metric will be skipped
                     return;
-                }
-
-                if(!(baseurlData?.endTimestamp > 0)){ // if there is no baseurl endTimestamp the baseurl data will not be displayed
-                    baseurlData = undefined;
                 }
 
                 const sessionContext = this._executionStatistics.executionAggregate.sessionContexts[metric.sessionContextId];

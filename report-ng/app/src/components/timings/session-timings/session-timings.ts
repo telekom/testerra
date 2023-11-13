@@ -75,7 +75,6 @@ export class SessionTimings extends AbstractViewModel {
         const sessionInformationArray = [];
 
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
-            sessionMetrics[0].metricsValues[1].endTimestamp = undefined
             sessionMetrics.forEach(metric => {
                 const sessionData = metric.metricsValues.find(value => value.metricType === MetricType.SESSION_LOAD);
 

@@ -202,6 +202,7 @@ export class SessionTimings extends AbstractViewModel {
                     {
                         type: 'slider',
                         yAxisIndex: [0],
+                        right: "4%", // align slider with toolbox
                     },
             ],
             toolbox: {

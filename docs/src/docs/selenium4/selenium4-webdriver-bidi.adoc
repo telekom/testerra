@@ -1,0 +1,78 @@
+= Support of WebDriver BiDi API
+
+The WebDriver bidirectional protocol allows to communicate via websocket with the browser. Webdriver BiDi gives more control about your session and you are able to access to the developer tools of Chrome, Firefox or Edge.
+
+== Listen to console logs with LogInspector
+
+The browser console window shows different types of logging information. You have to know which kind of logs you need.
+
+[cols="2,^2",options="header"]
+|===
+| Type of log entries | Class for LogInspector
+| Console logs | `ConsoleLogEntry`
+| JavaScript exceptions | `JavascriptLogEntry`
+| Console logs _and_ JS exceptions | `LogEntry`
+|===
+
+IMPORTANT: The created consumer for all listeners will be executed in an additional thread. +
+If you use an `Assert` this will be no impact to the main thread.
+
+.Example for listening to simple console logs
+[source, java]
+----
+
+public class WebDriverBiDiTests extends TesterraTest implements
+        Loggable,
+        WebDriverManagerProvider,
+        UiElementFinderFactoryProvider {
+
+    @Test
+    public void testT01_LogListener_ConsoleLogs() throws MalformedURLException {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chrome);
+        request.setBaseUrl(
+                "https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html"
+        );
+        // Important to activate websocket communication
+        request.getMutableCapabilities().setCapability("webSocketUrl", true);
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+
+        UiElementFinder uiElementFinder
+            = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        // You need the RemoteWebDriver or the ChromeDriver instance
+        // Testerra generates a driver instance of type EventFiringWebDriver
+        // which does not work for LogInspector
+        Augmenter augmenter = new Augmenter();
+        RemoteWebDriver remoteWebDriver
+            = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+        WebDriver remoteDriver = augmenter.augment(remoteWebDriver);
+        LogInspector logInspector = new LogInspector(remoteDriver);
+
+        // Look for the type of log entries you want to catch
+        List<ConsoleLogEntry> logEntryList = new ArrayList<>();
+        logInspector.onConsoleEntry(logEntryList::add);
+
+        uiElementFinder.find(By.id("consoleLog")).click();
+        uiElementFinder.find(By.id("consoleError")).click();
+
+        CONTROL.retryTimes(5, () -> {
+            ASSERT.assertTrue(logEntryList.size() > 1);
+            TimerUtils.sleepSilent(1000);
+        });
+
+        logEntryList.forEach(logEntry ->
+                    log().info(
+                            "LOG_ENTRY: {} {} {} - {}",
+                            logEntry.getTimestamp(),
+                            logEntry.getLevel(),
+                            logEntry.getMethod(),
+                            logEntry.getText())
+            );
+
+        ASSERT.assertEquals(logEntryList.size(), 2, "LogEntry list");
+    }
+
+}
+
+----

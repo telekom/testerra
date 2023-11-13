@@ -87,7 +87,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         chromeOptions.addArguments("--disable-dev-shm-usage");
 
         if (browser.equalsIgnoreCase(Browsers.chromeHeadless)) {
-            chromeOptions.setHeadless(true);
+            chromeOptions.addArguments("--headless");
         }
 
         // create driver - window is open now

@@ -20,10 +20,9 @@ ext {
     core = project(':core')
     report = project(':report-ng')
 
-    seleniumVersion = '4.10.0'
-//    seleniumVersion = '4.6.0'
+    seleniumVersion = '4.14.1'
     // Must be the same like in Selenium 4
-    guavaVersion = "31.1-jre"
+    guavaVersion = "32.1.2-jre"
 
     moduleVersion = '2-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {

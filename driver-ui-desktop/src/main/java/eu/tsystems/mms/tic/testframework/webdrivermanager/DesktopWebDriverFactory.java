@@ -311,7 +311,7 @@ public class DesktopWebDriverFactory implements
         }
 
         // Finalize capabilities
-        RemoteWebDriver webDriver;
+        WebDriver webDriver;
         try {
             if (request.getServerUrl().isPresent()) {
                 final URL seleniumUrl = request.getServerUrl().get();
@@ -323,8 +323,11 @@ public class DesktopWebDriverFactory implements
                 if (capabilities == null) {
                     throw new SystemException("Cannot start browser session with empty browser options");
                 }
-                webDriver = new RemoteWebDriver(seleniumUrl, capabilities);
-                webDriver.setFileDetector(new LocalFileDetector());
+                webDriver = RemoteWebDriver.builder()
+                        .address(seleniumUrl)
+                        .addAlternative(capabilities)
+                        .build();
+                ((RemoteWebDriver) webDriver).setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
                 log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");

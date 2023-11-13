@@ -61,9 +61,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-/**
- * @todo Rename to AbstractWebDriverCore
- */
 public abstract class AbstractWebDriverCore extends AbstractGuiElementCore implements Loggable {
 
     private static final Assertion assertion = Testerra.getInjector().getInstance(InstantAssertion.class);
@@ -240,11 +237,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 } else if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
                     guiElementData.setIsFrame(true);
                 }
-
-                // proxy the web element for logging
-//                WebElementProxy webElementProxy = new WebElementProxy(webDriver, webElement);
-//                Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
-//                webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
 
                 logTimings(start, Timings.getFindCounter());
 
@@ -590,7 +582,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
             } else {
                 final Actions actions = new Actions(guiElementData.getWebDriver());
-                final Action action = actions.moveToElement(webElement).doubleClick(webElement).build();
+                final Action action = actions.doubleClick(webElement).build();
 
                 try {
                     action.perform();
@@ -645,7 +637,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     public void contextClick() {
         this.findWebElement(webElement -> {
             Actions actions = new Actions(guiElementData.getWebDriver());
-            actions.moveToElement(webElement).contextClick().build().perform();
+            actions.contextClick().build().perform();
         });
     }
 

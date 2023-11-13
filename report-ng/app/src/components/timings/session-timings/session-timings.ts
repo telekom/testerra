@@ -233,9 +233,12 @@ export class SessionTimings extends AbstractViewModel {
                         tooltipString += `<b>Session name:</b> ${this._dots[seriesIndex].information.sessionName} <br>
                             <b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>
                             <b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>
-                            <b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>
-                            <b>Start time session:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.sessionStartTime), 'time')} <br>
-                            <b>Start time base URL:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.baseurlStartTime), 'time')} <br>`;
+                            <b>Start time session:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.sessionStartTime), 'time')} <br>`
+
+                        if(this._dots[seriesIndex].information.baseurlStartTime){ // only show baseurl information if it is available
+                            tooltipString += `<b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>
+                            <b>Start time base URL:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.baseurlStartTime), 'time')} <br>`
+                        }
 
                         if (testNames.length > 1) {
                             tooltipString += `<b>Test case(s):</b><ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;

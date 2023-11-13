@@ -77,10 +77,14 @@ export class SessionTimings extends AbstractViewModel {
         this._statisticsGenerator.getSessionMetrics().then(sessionMetrics => {
             sessionMetrics.forEach(metric => {
                 const sessionData = metric.metricsValues.find(value => value.metricType === MetricType.SESSION_LOAD);
-                const baseurlData = metric.metricsValues.find(value => value.metricType === MetricType.BASEURL_LOAD);
+                let baseurlData = metric.metricsValues.find(value => value.metricType === MetricType.BASEURL_LOAD);
 
-                if (!(baseurlData?.endTimestamp > 0)){ // if there is no endTimestamp the related metric will be skipped
+                if (!(sessionData?.endTimestamp > 0)){ // if there is no session endTimestamp the related metric will be skipped
                     return;
+                }
+
+                if(!(baseurlData?.endTimestamp > 0)){ // if there is no baseurl endTimestamp the baseurl data will not be displayed
+                    baseurlData = undefined;
                 }
 
                 const sessionContext = this._executionStatistics.executionAggregate.sessionContexts[metric.sessionContextId];
@@ -92,9 +96,9 @@ export class SessionTimings extends AbstractViewModel {
                     browserVersion: sessionContext.browserVersion,
                     methodList: methodList,
                     sessionDuration: (sessionData.endTimestamp - sessionData.startTimestamp) / 1000,
-                    baseurlDuration: (baseurlData.endTimestamp - baseurlData.startTimestamp) / 1000,
+                    baseurlDuration: (baseurlData?.endTimestamp - baseurlData?.startTimestamp) / 1000,
                     sessionStartTime: sessionData.startTimestamp,
-                    baseurlStartTime: baseurlData.startTimestamp,
+                    baseurlStartTime: baseurlData?.startTimestamp,
                 }
                 sessionInformationArray.push(sessionInformation);
             })
@@ -279,9 +283,9 @@ interface ISessionInformation {
     browserVersion: string;
     methodList: MethodDetails[];
     sessionDuration: number;
-    baseurlDuration: number;
+    baseurlDuration?: number;
     sessionStartTime: number;
-    baseurlStartTime: number;
+    baseurlStartTime?: number;
 }
 
 interface Duration {

@@ -1,0 +1,82 @@
+<!--
+  ~ Testerra
+  ~
+ * (C) 2023, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <mdc-layout-grid>
+        <mdc-layout-grid-inner>
+            <mdc-layout-grid-cell span="4">
+                <mdc-select change.delegate="_filter()"
+                            class="w50"
+                            label="Number of method ranges"
+                            outlined
+                            value.bind="queryParams.rangeNum"
+                >
+                    <mdc-list>
+                        <mdc-list-item repeat.for="range of _rangeOptions"
+                                       value="${range}"
+                        >${range}
+                        </mdc-list-item>
+                    </mdc-list>
+                </mdc-select>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="4">
+                <div mdc-menu-surface-anchor>
+                    <mdc-text-field class="w100"
+                                    input.delegate="selectionChanged()"
+                                    label="Method"
+                                    outlined
+                                    ref="_methodNameInput"
+                                    value.bind="_inputValue"
+                    ></mdc-text-field>
+                    <mdc-text-field-helper-line></mdc-text-field-helper-line>
+                    <mdc-lookup display-field="name"
+                                input.bind="_methodNameInput"
+                                options.bind="_lookUpOptions"
+                                preload-options
+                                value-field="id"
+                                value.bind="selectedOptionId"
+                    >
+                        <template replace-part="option">
+                            <span innerhtml="${option.name|highlightText:_searchRegexp}"></span>
+                        </template>
+                    </mdc-lookup>
+                </div>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell class="flex" position="middle" span="4">
+                <mdc-form-field class="right-aligned">
+                    <button change.delegate="_showConfigurationChanged()"
+                            mdc-switch
+                            selected.bind="_showConfigurationMethods"></button>
+                    <label>Show configuration methods</label>
+                </mdc-form-field>
+            </mdc-layout-grid-cell>
+
+            <mdc-layout-grid-cell span="12">
+                <mdc-card>
+                    <div class="card-headline" mdc-subtitle2>Test durations</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <!--Diagram Test Duration-->
+                    <echart chart.bind="_chart" class="echart-timings" options.bind="_option"></echart>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+        </mdc-layout-grid-inner>
+    </mdc-layout-grid>
+</template>

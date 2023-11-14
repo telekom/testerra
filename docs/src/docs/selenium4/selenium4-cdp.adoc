@@ -7,6 +7,7 @@ You can find some more examples at https://www.selenium.dev/documentation/webdri
 [NOTE]
 ====
 * As the name says, it only works in Chrome browser. :-)
+* This Testerra CDP utility uses the native Chrome implementation. It is the most flexible usage of CDP, but the API could change with further Selenium versions.
 * If you're running your tests against a grid, check the CDP compatible Chrome versions in https://github.com/SeleniumHQ/selenium/blob/trunk/java/CHANGELOG[Selenium release notes]
 ====
 
@@ -58,11 +59,13 @@ public class ChromeDevToolsTests extends TesterraTest implements
 
         CHROME_DEV_TOOLS.setGeoLocation(
                 webDriver,
-                Optional.of(52.52084),      // latitude
-                Optional.of(13.40943),      // longitude
-                1);                         // accuracy
+                52.52084,      // latitude
+                13.40943,      // longitude
+                1);            // accuracy
 
         webDriver.get("https://my-location.org/");
+        uiElementFinder.find(By.xpath("//button[@aria-label = 'Consent']"))
+            .click(); // Cookie disclaimer
         uiElementFinder.find(By.id("latitude"))
             .assertThat().text().isContaining("52.52084");
         uiElementFinder.find(By.id("longitude"))
@@ -111,14 +114,13 @@ public class ChromeDevToolsTests extends TesterraTest implements
         uiElementFinder.find(By.id("consoleLog")).click();
         uiElementFinder.find(By.id("consoleError")).click();
 
-        for (ConsoleEvent event : consoleEvents) {
-            log().info(
-                    "JS_LOGS: {} {} - {}",
-                    event.getTimestamp(),
-                    event.getType(),
-                    event.getMessages().toString()
-            );
-        }
+        consoleEvents.forEach(event ->
+                log().info(
+                        "JS_LOGS: {} {} - {}",
+                        event.getTimestamp(),
+                        event.getType(),
+                        event.getMessages().toString())
+        );
     }
 }
 ----
@@ -152,13 +154,13 @@ public class ChromeDevToolsTests extends TesterraTest implements
         uiElementFinder.find(By.id("jsException")).click();
         uiElementFinder.find(By.id("logWithStacktrace")).click();
 
-        for (JavascriptException jsException : jsExceptionsList) {
-            log().info(
-                    "JS_EXCEPTION: {} {}",
-                    jsException.getMessage(),
-                    jsException.getSystemInformation()
-            );
-        }
+        jsExceptionsList.forEach(jsException ->
+                log().info(
+                        "JS_EXCEPTION: {} {}",
+                        jsException.getMessage(),
+                        jsException.getSystemInformation()
+                )
+        );
     }
 
 }
@@ -189,16 +191,16 @@ public class ChromeDevToolsTests extends TesterraTest implements
         webDriver.get("http://the-internet.herokuapp.com/broken_images");
         TimerUtils.sleep(1000);     // Short wait to get delayed logs
 
-        for (LogEntry logEntry : logEntries) {
-            log().info(
-                    "LOG_ENTRY: {} {} {} - {} ({})",
-                    logEntry.getTimestamp(),
-                    logEntry.getLevel(),
-                    logEntry.getSource(),
-                    logEntry.getText(),
-                    logEntry.getUrl()
-            );
-        }
+        logEntries.forEach(logEntry ->
+                log().info(
+                        "LOG_ENTRY: {} {} {} - {} ({})",
+                        logEntry.getTimestamp(),
+                        logEntry.getLevel(),
+                        logEntry.getSource(),
+                        logEntry.getText(),
+                        logEntry.getUrl()
+                )
+        );
     }
 
 }
@@ -226,31 +228,31 @@ public class ChromeDevToolsTests extends TesterraTest implements
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
 
         // Create lists for requests and responses
-        List<ResponseReceived> responseReceivedList = new ArrayList<>();
+        List<ResponseReceived> responseList = new ArrayList<>();
         List<RequestWillBeSent> requestList = new ArrayList<>();
 
-        devTools.addListener(Network.responseReceived(), responseReceivedList::add);
+        devTools.addListener(Network.responseReceived(), responseList::add);
         devTools.addListener(Network.requestWillBeSent(), requestList::add);
 
         webDriver.get("https://the-internet.herokuapp.com/broken_images");
 
-        for (RequestWillBeSent request : requestList) {
-            log().info(
-                    "Request: {} {} - {}",
-                    request.getRequestId().toString(),
-                    request.getRequest().getMethod(),
-                    request.getRequest().getUrl()
-            );
-        }
+        requestList.forEach(request ->
+                log().info(
+                        "Request: {} {} - {}",
+                        request.getRequestId().toString(),
+                        request.getRequest().getMethod(),
+                        request.getRequest().getUrl()
+                )
+        );
 
-        for (ResponseReceived response : responseReceivedList) {
-            log().info(
-                    "Response: {} {} - {}",
-                    response.getRequestId().toString(),
-                    response.getResponse().getStatus(),
-                    response.getResponse().getStatusText()
-            );
-        }
+        responseList.forEach(response ->
+                log().info(
+                        "Response: {} {} - {}",
+                        response.getRequestId().toString(),
+                        response.getResponse().getStatus(),
+                        response.getResponse().getStatusText()
+                )
+        );
     }
 
 }

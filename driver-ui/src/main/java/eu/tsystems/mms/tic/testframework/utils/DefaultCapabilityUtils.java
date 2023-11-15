@@ -21,14 +21,13 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,14 +62,40 @@ public class DefaultCapabilityUtils implements Loggable {
         return Collections.unmodifiableMap(clonedMap);
     }
 
-    /**
-     * For deep cloning it is needed convert it to JSON and back because Firefox options also contain some immutable map objects
-     * Note: Complex objects are simplified to key-value pairs. This is acceptable because capabilities are always simplified to a kind of Map<String, Object>
-     */
     public Map<String, Object> clone(Map<String, Object> capabilityMap) {
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(capabilityMap);
-        return (Map<String, Object>) gson.fromJson(json, Map.class);
+        return cloneMap(capabilityMap);
+    }
+
+    // Recursive method to deep clone the capability map
+    // (Firefox options also contain some immutable map objects)
+    private static Map<String, Object> cloneMap(Map<String, Object> originalMap) {
+        Map<String, Object> clonedMap = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : originalMap.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            if (value instanceof Map) {
+                Map<String, Object> nestedClone = cloneMap((Map<String, Object>) value);
+                clonedMap.put(key, nestedClone);
+            } else {
+                // Note: Non-map values are not real cloned
+                clonedMap.put(key, value);
+                // ObjectMapper to try to clone the value
+//                try {
+//                    ObjectMapper objectMapper = new ObjectMapper();
+//                    String json = objectMapper.writeValueAsString(entry);
+//                    TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
+//                    };
+//                    Map<String, Object> mappedClone = objectMapper.readValue(json, typeRef);
+//                    clonedMap.put(key, mappedClone.get(key));
+//                } catch (JsonProcessingException e) {
+//                    clonedMap.put(key, null);
+//                }
+
+            }
+        }
+        return clonedMap;
     }
 
     /**

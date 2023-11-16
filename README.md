@@ -24,7 +24,10 @@
 ## About Testerra
 
 <p align="center">
-    <img src="docs/src/images/s_Testerra_Logo_0256px.png" alt="Testerra logo">
+    <picture>
+        <source media="(prefers-color-scheme: light)" srcset="./docs/src/images/s_Testerra_Logo_0256px.png">
+        <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="./docs/src/images/w_Testerra_Logo_0256px.png">
+    </picture>
 </p>
 
 It is an integrated Java framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components.

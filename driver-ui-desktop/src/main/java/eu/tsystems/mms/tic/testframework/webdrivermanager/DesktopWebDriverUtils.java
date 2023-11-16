@@ -173,6 +173,8 @@ public final class DesktopWebDriverUtils implements Loggable {
         // The resulting region in the browser
         ScreenRegion imageRegion;
 
+        // Search the element beginning at the top of the page
+        utils.scrollToTop(driver);
         // Calculate the scroll height by halving the viewport height to ensure the searched image is not skipped
         int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.5);
         // Get the height of the page

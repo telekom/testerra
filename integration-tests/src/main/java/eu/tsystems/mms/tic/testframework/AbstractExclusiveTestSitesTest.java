@@ -38,6 +38,6 @@ public abstract class AbstractExclusiveTestSitesTest<T extends Page> extends Abs
 
     @Override
     public T getPage() {
-        return PAGE_FACTORY.createPage(getPageClass(), getClassExclusiveWebDriver());
+        return PAGE_FACTORY.createPage(getPageClass(), getWebDriver());
     }
 }

@@ -76,7 +76,7 @@ public class Testerra {
         BASEURL("tt.baseurl", null),
         WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD("webdriver.timeouts.seconds.pageload", 120),
         WEBDRIVER_TIMEOUT_SECONDS_SCRIPT("webdriver.timeouts.seconds.script", 120),
-        WEBDRIVER_TIMEOUT_SECONDS_RETRY("webdriver.timeouts.seconds.retry", 10),
+        SELENIUM_WEBDRIVER_CREATE_RETRY("tt.selenium.webdriver.create.retry", 10),
         SELENIUM_REMOTE_TIMEOUT_READ("tt.selenium.remote.timeout.read", 90),
         SELENIUM_REMOTE_TIMEOUT_CONNECTION("tt.selenium.remote.timeout.connection", 10),
         PERF_TEST("tt.perf.test", false),

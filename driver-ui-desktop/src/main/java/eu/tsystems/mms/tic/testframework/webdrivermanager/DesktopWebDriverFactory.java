@@ -269,7 +269,7 @@ public class DesktopWebDriverFactory implements
         try {
             newDriver = startNewWebDriverSession(desktopWebDriverRequest, sessionContext);
         } catch (final SetupException e) {
-            int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue() * 1000;
+            int ms = Testerra.Properties.SELENIUM_WEBDRIVER_CREATE_RETRY.asLong().intValue() * 1000;
             log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
             TimerUtils.sleep(ms);
             newDriver = startNewWebDriverSession(desktopWebDriverRequest, sessionContext);

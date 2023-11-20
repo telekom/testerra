@@ -52,8 +52,11 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.AbstractDriverOptions;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -323,10 +326,14 @@ public class DesktopWebDriverFactory implements
                 if (capabilities == null) {
                     throw new SystemException("Cannot start browser session with empty browser options");
                 }
-                webDriver = RemoteWebDriver.builder()
-                        .address(seleniumUrl)
-                        .addAlternative(capabilities)
-                        .build();
+                ClientConfig clientConfig = ClientConfig
+                        .defaultConfig()
+                        .readTimeout(Duration.ofSeconds(Testerra.Properties.WEBDRIVER_TIMEOUT_REMOTE_READ.asLong()))
+                        .connectionTimeout(Duration.ofSeconds(Testerra.Properties.WEBDRIVER_TIMEOUT_REMOTE_CONNECTION.asLong()))
+                        .baseUrl(seleniumUrl);
+                CommandExecutor commandExecutor = new HttpCommandExecutor(clientConfig);
+                webDriver = new RemoteWebDriver(commandExecutor, capabilities);
+
                 ((RemoteWebDriver) webDriver).setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {

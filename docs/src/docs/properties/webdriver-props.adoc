@@ -41,5 +41,8 @@ This setting overrides the following two properties.
 (`driver.manage().timeouts().pageLoadTimeout()`)
 | {webdriver_timeouts_seconds_script} | 120 |  Defines the Selenium timeout for execution of async scripts in seconds. +
 (`driver.manage().timeouts().setScriptTimeout()`)
+| {selenium_webdriver_create_retry} | 10 | Waiting time in seconds for a retry of creating a webdriver session in case the first attempt fails.
+| {selenium_remote_timeout_connection} | 10 | Defines the read timeout in seconds for a remote webdriver session.
+| {selenium_remote_timeout_read} | 90 | Defines the connection timeout in seconds for a remote webdriver session.
 |===
 

@@ -328,8 +328,8 @@ public class DesktopWebDriverFactory implements
                 }
                 ClientConfig clientConfig = ClientConfig
                         .defaultConfig()
-                        .readTimeout(Duration.ofSeconds(Testerra.Properties.WEBDRIVER_TIMEOUT_REMOTE_READ.asLong()))
-                        .connectionTimeout(Duration.ofSeconds(Testerra.Properties.WEBDRIVER_TIMEOUT_REMOTE_CONNECTION.asLong()))
+                        .readTimeout(Duration.ofSeconds(Testerra.Properties.SELENIUM_REMOTE_TIMEOUT_READ.asLong()))
+                        .connectionTimeout(Duration.ofSeconds(Testerra.Properties.SELENIUM_REMOTE_TIMEOUT_CONNECTION.asLong()))
                         .baseUrl(seleniumUrl);
                 CommandExecutor commandExecutor = new HttpCommandExecutor(clientConfig);
                 webDriver = new RemoteWebDriver(commandExecutor, capabilities);

@@ -112,22 +112,10 @@ public class DesktopWebDriverUtilsTest extends AbstractExclusiveTestSitesTest<We
     }
 
     /**
-     * Test the clickOverByImage method of DesktopWebDriverUtils
+     * Test the clickByImage method of DesktopWebDriverUtils
      */
     @Test
     public void testT08_clickByImage() {
-        WebTestPage page = getPage();
-
-        String fileName = "byImage/submit_button.png";
-        desktopWebDriverUtils.clickByImage(page.getWebDriver(), fileName);
-        page.textOutputField.expect().text().isContaining("Form 16 submit");
-    }
-
-    /**
-     * Test the clickOverByImage method of DesktopWebDriverUtils for an element that is not inside the current viewport
-     */
-    @Test
-    public void testT09_clickByImageWithScrolling() {
         WebTestPage page = getPage();
 
         String fileName = "byImage/click_me_button.png";

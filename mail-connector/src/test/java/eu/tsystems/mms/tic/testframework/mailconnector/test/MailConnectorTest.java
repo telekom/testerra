@@ -220,7 +220,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
      * POP3MailConnector.
      */
     @Test
-    public void testT02_sendAndWaitForMessageWithoutAttachement() throws MessagingException {
+    public void testT02_sendAndWaitForMessageWithoutAttachment() throws MessagingException {
 
         final String subject = STR_MAIL_SUBJECT + "testT02_sendAndWaitForMessage";
 
@@ -507,9 +507,9 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
      * @throws Exception Exception by mail submission
      */
     @Test
-    public void testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient() throws Exception {
+    public void testT08_sendAndWaitForMessageWithoutAttachment_SubjectSenderRecipient() throws Exception {
 
-        final String subject = "testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient"
+        final String subject = "testT08_sendAndWaitForMessageWithoutAttachment_SubjectSenderRecipient"
                 + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(new SearchTerm[]{
@@ -518,7 +518,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
                 new RecipientTerm(RecipientType.TO, new InternetAddress(RECIPIENT))
         });
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
+        sendAndWaitForMessageWithoutAttachment(subject, searchTerm);
     }
 
     /**
@@ -527,16 +527,16 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
      * @throws Exception Exception by mail submission
      */
     @Test
-    public void testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient() throws Exception {
+    public void testT09_sendAndWaitForMessageWithoutAttachment_SubjectRecipient() throws Exception {
 
-        final String subject = "testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient"
+        final String subject = "testT09_sendAndWaitForMessageWithoutAttachment_SubjectRecipient"
                 + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),
                 new FromTerm(new InternetAddress(SENDER)));
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
+        sendAndWaitForMessageWithoutAttachment(subject, searchTerm);
     }
 
     /**
@@ -545,16 +545,16 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
      * @throws Exception Exception by mail submission
      */
     @Test
-    public void testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender() throws Exception {
+    public void testT10_sendAndWaitForMessageWithoutAttachment_SubjectSender() throws Exception {
 
-        final String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender"
+        final String subject = "testT10_sendAndWaitForMessageWithoutAttachment_SubjectSender"
                 + RandomStringUtils.random(5, true, false);
 
         final SearchTerm searchTerm = new AndTerm(
                 new SubjectTerm(subject),
                 new FromTerm(new InternetAddress(SENDER)));
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
+        sendAndWaitForMessageWithoutAttachment(subject, searchTerm);
     }
 
     /**
@@ -563,9 +563,9 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
      * @throws Exception Exception by mail submission
      */
     @Test
-    public void testT12_sendAndWaitForMessageWithoutAttachement_SubjectSentDate() throws Exception {
+    public void testT12_sendAndWaitForMessageWithoutAttachment_SubjectSentDate() throws Exception {
 
-        final String subject = "testT12_sendAndWaitForMessageWithoutAttachement_SubjectSentDate";
+        final String subject = "testT12_sendAndWaitForMessageWithoutAttachment_SubjectSentDate";
 
         Date now = new Date();
         Date aMinuteBefore = new Date(now.getTime() - (1000 * 60));
@@ -576,7 +576,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
                 new SentDateTerm(ComparisonTerm.GE, aMinuteBefore)
         );
 
-        sendAndWaitForMessageWithoutAttachement(subject, searchTerm);
+        sendAndWaitForMessageWithoutAttachment(subject, searchTerm);
     }
 
     /**
@@ -619,8 +619,8 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
         deleteMessage(receivedMsg, imap, targetFolder);
     }
 
-    private void sendAndWaitForMessageWithoutAttachement(final String testname,
-                                                         final SearchTerm searchTerm) throws MessagingException, IOException {
+    private void sendAndWaitForMessageWithoutAttachment(final String testname,
+                                                        final SearchTerm searchTerm) throws MessagingException, IOException {
 
         final String subject = STR_MAIL_SUBJECT + testname;
 

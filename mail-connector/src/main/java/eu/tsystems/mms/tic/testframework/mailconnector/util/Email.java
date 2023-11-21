@@ -26,7 +26,6 @@ import jakarta.mail.Address;
 import jakarta.mail.BodyPart;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
-import jakarta.mail.Part;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.io.IOUtils;
 
@@ -235,7 +234,7 @@ public class Email implements Loggable {
      * @param fileName name of the attachment file
      * @return attachment
      */
-    public EmailAttachment getAttachment(String fileName) throws IOException {
+    public EmailAttachment getAttachment(String fileName) {
         for (EmailAttachment attachment : attachments) {
             if (attachment.getFileName().equals(fileName)) {
                 return attachment;

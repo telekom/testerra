@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import jakarta.mail.Address;
+import jakarta.mail.BodyPart;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
 import jakarta.mail.Part;
@@ -158,18 +159,20 @@ public class Email implements Loggable {
                 Multipart content = (Multipart) message.getContent();
 
                 for (int j = 0; j < content.getCount(); j++) {
-                    Part part = content.getBodyPart(j);
+                    BodyPart part = content.getBodyPart(j);
                     is = part.getInputStream();
                     encoding = part.getContentType();
                     encoding = getCharSetForEncoding(encoding);
 
-                    if (part.getDisposition().equals(Part.INLINE)) {
+                    if (j == 0) {
+                        // Message content
                         try {
                             messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
                         } catch (IllegalCharsetNameException e) {
                             log().error("Unable to encode input stream", e);
                         }
-                    } else if (part.getDisposition().equals(Part.ATTACHMENT)) {
+                    } else {
+                        // Attachment
                         String fileName = part.getFileName();
                         EmailAttachment attachment = new EmailAttachment(fileName, is, encoding);
                         attachments.add(attachment);

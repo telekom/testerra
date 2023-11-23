@@ -163,18 +163,18 @@ public class Email implements Loggable {
                     encoding = part.getContentType();
                     encoding = getCharSetForEncoding(encoding);
 
-                    if (j == 0) {
+                    if (BodyPart.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
+                        // Attachment
+                        String fileName = part.getFileName();
+                        EmailAttachment attachment = new EmailAttachment(fileName, is, encoding);
+                        attachments.add(attachment);
+                    } else {
                         // Message content
                         try {
                             messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
                         } catch (IllegalCharsetNameException e) {
                             log().error("Unable to encode input stream", e);
                         }
-                    } else {
-                        // Attachment
-                        String fileName = part.getFileName();
-                        EmailAttachment attachment = new EmailAttachment(fileName, is, encoding);
-                        attachments.add(attachment);
                     }
 
                 } // end for

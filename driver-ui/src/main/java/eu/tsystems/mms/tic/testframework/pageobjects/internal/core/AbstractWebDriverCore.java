@@ -38,12 +38,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -51,8 +53,11 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -644,10 +649,92 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     @Override
     public File takeScreenshot() {
         AtomicReference<File> atomicReference = new AtomicReference<>();
+        Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
+        final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
+        File viewPortScreenshot = driver.getScreenshotAs(OutputType.FILE);
+
+        AtomicReference<Point> elementPosition = new AtomicReference<>();
+        AtomicReference<Dimension> elementDimension = new AtomicReference<>();
         this.findWebElement(webElement -> {
-            atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
+            elementPosition.set(webElement.getLocation());
+            elementDimension.set(webElement.getSize());
         });
-        return atomicReference.get();
+
+        Point globalPosition = getGlobalElementPosition(guiElementData, elementPosition.get());
+
+        try {
+
+            BufferedImage fullImg = ImageIO.read(viewPortScreenshot);
+
+            int imageX = globalPosition.getX() - viewport.getX();
+            int imageY = globalPosition.getY() - viewport.getY();
+            int imageWidth = elementDimension.get().getWidth();
+            int imageHeight = elementDimension.get().getHeight();
+
+            if (imageX > fullImg.getWidth()) imageX = 0;
+            if (imageY > fullImg.getHeight()) imageY = 0;
+
+            // Make sure the image bounding box doesn't overflows the image dimension
+            if (imageX + imageWidth > fullImg.getWidth()) {
+                imageWidth = fullImg.getWidth() - imageX;
+            }
+            if (imageY + imageHeight > fullImg.getHeight()) {
+                imageHeight = fullImg.getHeight() - imageY;
+            }
+
+            BufferedImage eleScreenshot = fullImg.getSubimage(
+                    imageX,
+                    imageY,
+                    imageWidth,
+                    imageHeight
+            );
+            File elementScreenshot = new File(viewPortScreenshot.getPath());
+            ImageIO.write(eleScreenshot, "png", elementScreenshot);
+            return elementScreenshot;
+        } catch (IOException e) {
+            log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
+        }
+
+        return null;
+    }
+
+    // Calculate the global position of an element by going to all parent elements
+    // In case of frames/iframes its position is added to element's position
+    private Point getGlobalElementPosition(GuiElementData elementData, Point location) {
+
+        if (elementData.getParent() != null) {
+            return getGlobalElementPosition(elementData.getParent(), location);
+        }
+
+        // Needs frame/iframe position
+        if (elementData.isFrame()) {
+            AtomicReference<Point> currentLocation = new AtomicReference<>();
+            AtomicReference<Integer> borderLeftWidth = new AtomicReference<>();
+            AtomicReference<Integer> borderTopWidth = new AtomicReference<>();
+            elementData.getGuiElement().findWebElement(webElement -> {
+                currentLocation.set(webElement.getLocation());
+                // Frames/iframes can have borders, 'getCssValue' returns something like '5px'
+                borderLeftWidth.set(this.getIntFromString(webElement.getCssValue("border-left-width")));
+                borderTopWidth.set(this.getIntFromString(webElement.getCssValue("border-top-width")));
+
+            });
+
+            return new Point(
+                    location.getX() + currentLocation.get().getX() + borderLeftWidth.get(),
+                    location.getY() + currentLocation.get().getY() + borderTopWidth.get()
+            );
+        } else {
+            return location;
+        }
+    }
+
+    private int getIntFromString(String string) {
+        String value = StringUtils.getDigits(string);
+        if (StringUtils.isNotBlank(value)) {
+            return Integer.parseInt(value);
+        } else {
+            return 0;
+        }
     }
 
 }

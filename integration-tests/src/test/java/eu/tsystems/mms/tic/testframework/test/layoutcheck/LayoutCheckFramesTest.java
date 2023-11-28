@@ -51,7 +51,17 @@ public class LayoutCheckFramesTest extends AbstractTestSitesTest implements Loca
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(getWebDriver());
         UiElement frame = uiElementFinder.find(By.id("iframe"));
         UiElement uiElement = frame.find(LOCATE.byQa("section/layoutTestArticle"));
+
         uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticleElementFrame").isLowerThan(1.3);
+    }
+
+    @Test
+    public void testT03_CheckElementLayoutFrame_Invisible() {
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(getWebDriver());
+        UiElement frame = uiElementFinder.find(By.id("iframe"));
+        UiElement uiElement = frame.find(LOCATE.byQa("section/invisibleTestArticle"));
+
+        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticleElementFrame").isLowerThan(1.3);
     }
 
 }

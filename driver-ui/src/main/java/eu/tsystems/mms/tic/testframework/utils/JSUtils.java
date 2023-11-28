@@ -31,16 +31,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -50,6 +40,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * JavaScript Utils.
@@ -68,9 +69,9 @@ public final class JSUtils {
     /**
      * try to implement javascript on page
      *
-     * @param driver       .
+     * @param driver .
      * @param resourceFile .
-     * @param id           .
+     * @param id .
      * @deprecated Use {@link #addJavascriptResources(WebDriver, Stream)} instead
      */
     @Deprecated
@@ -119,8 +120,8 @@ public final class JSUtils {
     /**
      * executing async script
      *
-     * @param driver     .
-     * @param script     .
+     * @param driver .
+     * @param script .
      * @param parameters .
      * @return .
      */
@@ -132,8 +133,8 @@ public final class JSUtils {
     /**
      * Try to execute javascript. If an error occurs it will be thrown.
      *
-     * @param driver     .
-     * @param script     .
+     * @param driver .
+     * @param script .
      * @param parameters .
      * @return .
      */
@@ -145,8 +146,8 @@ public final class JSUtils {
     /**
      * Try to execute javascript. If an error occurs it will be logged only.
      *
-     * @param driver     .
-     * @param script     .
+     * @param driver .
+     * @param script .
      * @param parameters .
      * @return .
      */
@@ -156,7 +157,7 @@ public final class JSUtils {
         } catch (Exception e) {
             String message = String.format("Error executing Javascript\n-----\n%s\n-----", script);
             if (parameters.length > 0) {
-                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o==null?"null":o.toString())).collect(Collectors.joining("\n"));
+                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o == null ? "null" : o.toString())).collect(Collectors.joining("\n"));
                 message += "\n-----";
             }
             LOGGER.error(message, e);
@@ -184,11 +185,11 @@ public final class JSUtils {
     /**
      * Execute a JS MouseAction on a driver session.
      *
-     * @param driver              .
+     * @param driver .
      * @param containerWebElement .
-     * @param type                .
-     * @param x                   .
-     * @param y                   .
+     * @param type .
+     * @param x .
+     * @param y .
      */
     public static void executeJavaScriptMouseAction(
             final WebDriver driver,
@@ -220,6 +221,7 @@ public final class JSUtils {
 
     /**
      * Scrolls an element to the top of a page.
+     *
      * @param webDriver
      * @param webElement
      */
@@ -262,7 +264,7 @@ public final class JSUtils {
     /**
      * Gets the selector without frame hierarchy
      *
-     * @param guiElementData          GuiElement
+     * @param guiElementData GuiElement
      * @param documentSelector String Current Selector
      * @return String
      */
@@ -412,11 +414,11 @@ public final class JSUtils {
     public Rectangle getViewport(WebDriver driver) {
         Object result = JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
         if (result != null) {
-            final ArrayList<String> list = (ArrayList<String>)result;
+            final ArrayList<String> list = (ArrayList<String>) result;
             List<Double> numbers = list.stream().map(Double::valueOf).collect(Collectors.toList());
             return new Rectangle(numbers.get(0).intValue(), numbers.get(1).intValue(), numbers.get(3).intValue(), numbers.get(2).intValue());
         } else {
-            return new Rectangle(-1,-1,-1,-1);
+            return new Rectangle(-1, -1, -1, -1);
         }
     }
 
@@ -486,6 +488,28 @@ public final class JSUtils {
                         "window.scrollTo(center+%d, middle+%d);", offset.x, offset.y),
                 webElement
         );
+    }
+
+    /**
+     * Scrolls the element to the center of the viewport using 'element.scrollIntoView'.
+     * Also working with elements in frames/iframes
+     */
+    public void scrollToCenter(UiElement uiElement, Point offset) {
+        uiElement.findWebElement(webElement -> {
+            JSUtils.executeScript(
+                    uiElement.getWebDriver(),
+                    "arguments[0].scrollIntoView({ block: 'center', inline: 'center' });",
+                    webElement
+            );
+        });
+
+        JSUtils.executeScript(
+                uiElement.getWebDriver(),
+                "window.scrollBy(arguments[0], arguments[1]);",
+                offset != null ? offset.getX() : 0,
+                offset != null ? offset.getY() : 0
+        );
+
     }
 
 }

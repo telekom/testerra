@@ -36,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -300,10 +299,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     @Override
     public void scrollIntoView(Point offset) {
-        this.findWebElement(webElement -> {
-            JSUtils utils = new JSUtils();
-            utils.scrollToCenter(guiElementData.getWebDriver(), webElement, offset);
-        });
+        new JSUtils().scrollToCenter(guiElementData.getGuiElement(), offset);
     }
 
     @Override
@@ -460,11 +456,11 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     @Override
     public boolean isVisible(boolean fullyVisible) {
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
         this.findWebElement(webElement -> {
             if (!webElement.isDisplayed()) {
                 return;
             }
-            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             // getRect doesn't work
             Point elementLocation = webElement.getLocation();
             Dimension elementSize = webElement.getSize();
@@ -508,6 +504,15 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         AtomicReference<Point> atomicReference = new AtomicReference<>();
         this.findWebElement(webElement -> atomicReference.set(webElement.getLocation()));
         return atomicReference.get();
+    }
+
+    /**
+     * WebElement.getLocation() only returns the position within the current frame/iframe.
+     * The global position returns the location under the consideration of frames/iframes.
+     */
+    public Point getGlobalLocation() {
+        Point location = getLocation();
+        return this.getGlobalElementPosition(guiElementData, location);
     }
 
     @Override
@@ -646,21 +651,26 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         });
     }
 
+    /**
+     * This method is an extra implementation of getting a screenshot for an WebElement.
+     *
+     * Selenium offers an own method 'webElement.getScreenshotAs(OutputType.FILE)', but this cannot be used because:
+     * 1) https://github.com/SeleniumHQ/selenium/blob/36585d189b2e9f2ced136a7e6c456ffe53604141/java/src/org/openqa/selenium/remote/RemoteWebElement.java#L360
+     *      method is marked as 'Beta'
+     * 2) The behaviour between Chrome and Firefox is different: If the element is hovered and the screenshot method is called, Chrome resets the hover to
+     *      the position of the real mouse pointer.
+     *      At Firefox and at Chrome headless the hover effect keeps stable.
+     */
     @Override
     public File takeScreenshot() {
-        AtomicReference<File> atomicReference = new AtomicReference<>();
+        if (!isVisible(false)) {
+            scrollIntoView();
+        }
+        Dimension elementDimension = this.getSize();
+        Point globalPosition = this.getGlobalLocation();
         Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
         final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
         File viewPortScreenshot = driver.getScreenshotAs(OutputType.FILE);
-
-        AtomicReference<Point> elementPosition = new AtomicReference<>();
-        AtomicReference<Dimension> elementDimension = new AtomicReference<>();
-        this.findWebElement(webElement -> {
-            elementPosition.set(webElement.getLocation());
-            elementDimension.set(webElement.getSize());
-        });
-
-        Point globalPosition = getGlobalElementPosition(guiElementData, elementPosition.get());
 
         try {
 
@@ -668,8 +678,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
             int imageX = globalPosition.getX() - viewport.getX();
             int imageY = globalPosition.getY() - viewport.getY();
-            int imageWidth = elementDimension.get().getWidth();
-            int imageHeight = elementDimension.get().getHeight();
+            int imageWidth = elementDimension.getWidth();
+            int imageHeight = elementDimension.getHeight();
 
             if (imageX > fullImg.getWidth()) imageX = 0;
             if (imageY > fullImg.getHeight()) imageY = 0;

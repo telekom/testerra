@@ -25,13 +25,13 @@ package eu.tsystems.mms.tic.testframework.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
-import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
@@ -466,7 +466,7 @@ public final class JSUtils {
                     atomicPoint.set(new Point(left, top));
                     break;
                 default:
-                    throw new NotYetImplementedException("" + where);
+                    throw new NotImplementedException("" + where);
             }
         });
 
@@ -476,7 +476,10 @@ public final class JSUtils {
 
     /**
      * Scrolls the element to the center of the viewport
+     *
+     * @deprecated Use {@link #scrollToCenter(UiElement, Point)} instead
      */
+    @Deprecated
     public void scrollToCenter(WebDriver webDriver, WebElement webElement, Point offset) {
         JSUtils.executeScript(
                 webDriver,

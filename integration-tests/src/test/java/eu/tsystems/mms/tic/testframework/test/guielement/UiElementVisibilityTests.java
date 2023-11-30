@@ -94,6 +94,7 @@ public class UiElementVisibilityTests extends AbstractExclusiveTestSitesTest<Web
         page.inexistentElement().expect().displayed().is(false);
     }
 
+    // The following tests using the layout test page because of his huge height
     @Test
     public void testT07_UiElement_visible_large_page() {
         WebDriver webDriver = this.getWebDriver(TestPage.LAYOUT);

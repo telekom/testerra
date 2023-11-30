@@ -22,15 +22,14 @@
 package eu.tsystems.mms.tic.testframework.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.LayoutTestFramePage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class LayoutCheckFramesTest extends AbstractTestSitesTest implements LocatorFactoryProvider, UiElementFinderFactoryProvider {
+public class LayoutCheckFramesTest extends AbstractTestSitesTest implements LocatorFactoryProvider, PageFactoryProvider {
 
     @Override
     protected TestPage getTestPage() {
@@ -39,29 +38,20 @@ public class LayoutCheckFramesTest extends AbstractTestSitesTest implements Loca
 
     @Test
     public void testT01_CheckElementLayoutFrame() {
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(getWebDriver());
-        UiElement frame = uiElementFinder.find(By.id("iframe"));
-        UiElement uiElement = frame.find(LOCATE.byQa("section/layoutTestArticle"));
-
-        uiElement.expect().screenshot().pixelDistance("TestArticleElementFrame").isLowerThan(1.3);
+        LayoutTestFramePage page = PAGE_FACTORY.createPage(LayoutTestFramePage.class, getWebDriver());
+        page.layoutTestArticle.assertThat().screenshot().pixelDistance("TestArticleElementFrame").isLowerThan(1.3);
     }
 
     @Test
     public void testT02_CheckElementLayoutWithSubfolderFrame() {
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(getWebDriver());
-        UiElement frame = uiElementFinder.find(By.id("iframe"));
-        UiElement uiElement = frame.find(LOCATE.byQa("section/layoutTestArticle"));
-
-        uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticleElementFrame").isLowerThan(1.3);
+        LayoutTestFramePage page = PAGE_FACTORY.createPage(LayoutTestFramePage.class, getWebDriver());
+        page.layoutTestArticle.assertThat().screenshot().pixelDistance("subfolder/TestArticleElementFrame").isLowerThan(1.3);
     }
 
     @Test
     public void testT03_CheckElementLayoutFrame_Invisible() {
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(getWebDriver());
-        UiElement frame = uiElementFinder.find(By.id("iframe"));
-        UiElement uiElement = frame.find(LOCATE.byQa("section/invisibleTestArticle"));
-
-        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticleElementFrame").isLowerThan(1.3);
+        LayoutTestFramePage page = PAGE_FACTORY.createPage(LayoutTestFramePage.class, getWebDriver());
+        page.invisibleTestArticle.expect().screenshot().pixelDistance("InvisibleTestArticleElementFrame").isLowerThan(1.3);
     }
 
 }

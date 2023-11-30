@@ -653,13 +653,13 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     /**
      * This method is an extra implementation of getting a screenshot for an WebElement.
-     *
+     * <p>
      * Selenium offers an own method 'webElement.getScreenshotAs(OutputType.FILE)', but this cannot be used because:
      * 1) https://github.com/SeleniumHQ/selenium/blob/36585d189b2e9f2ced136a7e6c456ffe53604141/java/src/org/openqa/selenium/remote/RemoteWebElement.java#L360
-     *      method is marked as 'Beta'
+     * method is marked as 'Beta'
      * 2) The behaviour between Chrome and Firefox is different: If the element is hovered and the screenshot method is called, Chrome resets the hover to
-     *      the position of the real mouse pointer.
-     *      At Firefox and at Chrome headless the hover effect keeps stable.
+     * the position of the real mouse pointer.
+     * At Firefox and at Chrome headless the hover effect keeps stable.
      */
     @Override
     public File takeScreenshot() {
@@ -667,7 +667,12 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
             scrollIntoView();
         }
         Dimension elementDimension = this.getSize();
+
         Point globalPosition = this.getGlobalLocation();
+        // There is a difference of element position between viewport screenshot
+        // and webElement.getLocation() of 1 pixel in Y position. Don't ask why...
+        globalPosition = new Point(globalPosition.getX(), globalPosition.getY() + 1);
+
         Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
         final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
         File viewPortScreenshot = driver.getScreenshotAs(OutputType.FILE);

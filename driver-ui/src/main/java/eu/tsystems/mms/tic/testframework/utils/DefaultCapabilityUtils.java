@@ -48,12 +48,8 @@ public class DefaultCapabilityUtils implements Loggable {
      * @return Map
      */
     public Map<String, Object> clean(Capabilities capabilities) {
-        return clean(capabilities.asMap());
-    }
-
-    public Map<String, Object> clean(Map<String, Object> capabilityMap) {
         // 1. clone and make map modifiable.
-        Map<String, Object> clonedMap = this.clone(capabilityMap);
+        Map<String, Object> clonedMap = this.clone(capabilities.asMap());
 
         // 2. do all the operations
         shortMapValues(clonedMap);
@@ -79,20 +75,8 @@ public class DefaultCapabilityUtils implements Loggable {
                 Map<String, Object> nestedClone = cloneMap((Map<String, Object>) value);
                 clonedMap.put(key, nestedClone);
             } else {
-                // Note: Non-map values are not real cloned
+                // Note: Non-map values are not cloned, just copied
                 clonedMap.put(key, value);
-                // ObjectMapper to try to clone the value
-//                try {
-//                    ObjectMapper objectMapper = new ObjectMapper();
-//                    String json = objectMapper.writeValueAsString(entry);
-//                    TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
-//                    };
-//                    Map<String, Object> mappedClone = objectMapper.readValue(json, typeRef);
-//                    clonedMap.put(key, mappedClone.get(key));
-//                } catch (JsonProcessingException e) {
-//                    clonedMap.put(key, null);
-//                }
-
             }
         }
         return clonedMap;

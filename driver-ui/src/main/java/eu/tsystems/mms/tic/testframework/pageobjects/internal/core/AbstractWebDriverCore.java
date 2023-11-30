@@ -668,7 +668,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         }
 
         // Note: Values of location and dimensions of elements could be long and double. There could be something like top=10.875px.
-        // Selenium's `element.getDimensions()` rounds correctly, `element.getLocation()` does not
+        // Selenium's `element.getSize()` rounds correctly, `element.getLocation()` does not
         // --> Using JS function to get the correct location
         Dimension elementDimension = this.getSize();
         Point innerLocation = new JSUtils().getElementLocationInParent(this.guiElementData.getGuiElement());

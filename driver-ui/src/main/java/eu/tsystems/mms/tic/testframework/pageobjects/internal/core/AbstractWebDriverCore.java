@@ -666,12 +666,13 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         if (!isVisible(false)) {
             scrollIntoView();
         }
-        Dimension elementDimension = this.getSize();
 
-        Point globalPosition = this.getGlobalLocation();
-        // There is a difference of element position between viewport screenshot
-        // and webElement.getLocation() of 1 pixel in Y position. Don't ask why...
-        globalPosition = new Point(globalPosition.getX(), globalPosition.getY() + 1);
+        // Note: Values of location and dimensions of elements could be long and double. There could be something like top=10.875px.
+        // Selenium's `element.getDimensions()` rounds correctly, `element.getLocation()` does not
+        // --> Using JS function to get the correct location
+        Dimension elementDimension = this.getSize();
+        Point innerLocation = new JSUtils().getElementLocationInParent(this.guiElementData.getGuiElement());
+        Point globalPosition = this.getGlobalElementPosition(guiElementData, innerLocation);
 
         Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
         final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
@@ -723,20 +724,18 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
         // Needs frame/iframe position
         if (elementData.isFrame()) {
-            AtomicReference<Point> currentLocation = new AtomicReference<>();
             AtomicReference<Integer> borderLeftWidth = new AtomicReference<>();
             AtomicReference<Integer> borderTopWidth = new AtomicReference<>();
+            Point currentLocation = new JSUtils().getElementLocationInParent(elementData.getGuiElement());
             elementData.getGuiElement().findWebElement(webElement -> {
-                currentLocation.set(webElement.getLocation());
                 // Frames/iframes can have borders, 'getCssValue' returns something like '5px'
                 borderLeftWidth.set(this.getIntFromString(webElement.getCssValue("border-left-width")));
                 borderTopWidth.set(this.getIntFromString(webElement.getCssValue("border-top-width")));
-
             });
 
             return new Point(
-                    location.getX() + currentLocation.get().getX() + borderLeftWidth.get(),
-                    location.getY() + currentLocation.get().getY() + borderTopWidth.get()
+                    location.getX() + currentLocation.getX() + borderLeftWidth.get(),
+                    location.getY() + currentLocation.getY() + borderTopWidth.get()
             );
         } else {
             return location;

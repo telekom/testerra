@@ -25,13 +25,12 @@ package eu.tsystems.mms.tic.testframework.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
-import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
@@ -58,7 +57,7 @@ import java.util.stream.Stream;
  * @author pele
  * // TODO Move this class to driver-ui-desktop
  */
-public final class JSUtils {
+public final class JSUtils implements Loggable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JSUtils.class);
 
@@ -422,56 +421,38 @@ public final class JSUtils {
         }
     }
 
-    private static int getJSValueAsInt(Object in) {
+    /**
+     * Get the element position via element.getBoundingClientRect().
+     * Note, that values can be double like top: 10.876 -> rounded to 11 px
+     */
+    public Point getElementLocationInParent(UiElement uiElement) {
+        AtomicReference<Point> atomicPoint = new AtomicReference<>();
+
+        uiElement.findWebElement(webElement -> {
+            Object o = JSUtils.executeScript(uiElement.getWebDriver(), "return arguments[0].getBoundingClientRect();", webElement);
+
+            if (o instanceof Map) {
+                Map<String, Object> boundingRect = (Map<String, Object>) o;
+                int left = getJSValueAsInt(boundingRect.get("left"));
+                int top = getJSValueAsInt(boundingRect.get("top"));
+                atomicPoint.set(new Point(left, top));
+            } else {
+                atomicPoint.set(new Point(-1, -1));
+            }
+
+        });
+        return atomicPoint.get();
+    }
+
+    private int getJSValueAsInt(Object in) {
         if (in instanceof Double) {
-            return (int) (double) (Double) in;
+            return Math.toIntExact(Math.round((Double) in));
         }
         if (in instanceof Long) {
-            return (int) (long) (Long) in;
+            return Math.toIntExact((Long) in);
         }
-
-        LOGGER.error("Cannot cast JS value into int: " + in);
-        if (in == null) {
-            return 0;
-        }
+        log().error("Cannot cast JS value into int: " + in);
         return 0;
-    }
-
-    enum Where {
-        CENTER,
-        TOP_LEFT
-    }
-
-    public static Point getElementLocationInParent(UiElement guiElement, Where where) {
-        AtomicReference<Point> atomicPoint = new AtomicReference<>();
-        guiElement.findWebElement(webElement -> {
-            Object o = executeScript(guiElement.getWebDriver(), "return arguments[0].getBoundingClientRect();", webElement);
-
-            if (o == null) {
-                throw new SystemException("Could not get information about web element, please see the logs");
-            }
-
-            Map m = (Map) o;
-
-            int left = getJSValueAsInt(m.get("left"));
-            int width = getJSValueAsInt(m.get("width"));
-            int height = getJSValueAsInt(m.get("height"));
-            int top = getJSValueAsInt(m.get("top"));
-
-            switch (where) {
-                case CENTER:
-                    atomicPoint.set(new Point(left + width / 2, top + height / 2));
-                    break;
-                case TOP_LEFT:
-                    atomicPoint.set(new Point(left, top));
-                    break;
-                default:
-                    throw new NotImplementedException("" + where);
-            }
-        });
-
-        return atomicPoint.get();
-
     }
 
     /**

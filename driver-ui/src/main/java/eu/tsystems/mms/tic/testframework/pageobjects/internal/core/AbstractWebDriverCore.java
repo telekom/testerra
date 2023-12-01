@@ -674,7 +674,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         Point innerLocation = new JSUtils().getElementLocationInParent(this.guiElementData.getGuiElement());
         Point globalPosition = this.getGlobalElementPosition(guiElementData, innerLocation);
 
-        Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
         final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
         File viewPortScreenshot = driver.getScreenshotAs(OutputType.FILE);
 
@@ -682,8 +681,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
             BufferedImage fullImg = ImageIO.read(viewPortScreenshot);
 
-            int imageX = globalPosition.getX() - viewport.getX();
-            int imageY = globalPosition.getY() - viewport.getY();
+            int imageX = globalPosition.getX();
+            int imageY = globalPosition.getY();
             int imageWidth = elementDimension.getWidth();
             int imageHeight = elementDimension.getHeight();
 

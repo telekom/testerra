@@ -7,12 +7,6 @@
 </head>
 <body>
 <h1>Layout test within frames</h1>
-<iframe src="index.html" style="width: 100%; border-top-width: 5px; border-left-width: 2px; border-style: solid" id="iframe"></iframe>
-<script>
-    let frame = document.getElementById("iframe");
-    frame.onload = function () {
-        frame.style.height = frame.contentWindow.document.body.scrollHeight + 40 + 'px';
-    }
-</script>
+<iframe src="index.html" style="width: 100%; height: 600px; border-top-width: 5px; border-left-width: 2px; border-style: solid;" id="iframe"></iframe>
 </body>
 </html>

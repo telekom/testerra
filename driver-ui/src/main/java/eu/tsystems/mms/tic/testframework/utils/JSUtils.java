@@ -446,7 +446,8 @@ public final class JSUtils implements Loggable {
 
     private int getJSValueAsInt(Object in) {
         if (in instanceof Double) {
-            return Math.toIntExact(Math.round((Double) in));
+            // Always round up, because partly pixels became full pixel in a screenshot
+            return Double.valueOf(Math.ceil((Double) in)).intValue();
         }
         if (in instanceof Long) {
             return Math.toIntExact((Long) in);

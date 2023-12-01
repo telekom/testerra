@@ -456,16 +456,17 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     @Override
     public boolean isVisible(boolean fullyVisible) {
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        Point globalLocation = this.getLocationInViewport();
         Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
         this.findWebElement(webElement -> {
             if (!webElement.isDisplayed()) {
                 return;
             }
             // getRect doesn't work
-            Point elementLocation = webElement.getLocation();
+//            Point elementLocation = webElement.getLocation();
             Dimension elementSize = webElement.getSize();
             java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
-            java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+            java.awt.Rectangle elementRect = new java.awt.Rectangle(globalLocation.getX(), globalLocation.getY(), elementSize.width, elementSize.height);
             atomicBoolean.set(((fullyVisible && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect)));
         });
         return atomicBoolean.get();
@@ -499,6 +500,9 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         return selectionStatusChanged;
     }
 
+    /**
+     * Please note that 'webElement.getLocation()' return the location only in the current frame.
+     */
     @Override
     public Point getLocation() {
         AtomicReference<Point> atomicReference = new AtomicReference<>();
@@ -508,10 +512,11 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     /**
      * WebElement.getLocation() only returns the position within the current frame/iframe.
-     * The global position returns the location under the consideration of frames/iframes.
+     * The location in viewport returns the location under the consideration of frames/iframes in the current viewport.
+     * For example: If point.y > viewport.height -> element is outside of the viewport
      */
-    public Point getGlobalLocation() {
-        Point location = getLocation();
+    public Point getLocationInViewport() {
+        Point location = new JSUtils().getElementLocationInParent(this.guiElementData.getGuiElement());
         return this.getGlobalElementPosition(guiElementData, location);
     }
 
@@ -671,9 +676,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         // Selenium's `element.getSize()` rounds correctly, `element.getLocation()` does not
         // --> Using JS function to get the correct location
         Dimension elementDimension = this.getSize();
-        Point innerLocation = new JSUtils().getElementLocationInParent(this.guiElementData.getGuiElement());
-        Point globalPosition = this.getGlobalElementPosition(guiElementData, innerLocation);
-
+        Point locationInViewport = this.getLocationInViewport();
         final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
         File viewPortScreenshot = driver.getScreenshotAs(OutputType.FILE);
 
@@ -681,8 +684,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
             BufferedImage fullImg = ImageIO.read(viewPortScreenshot);
 
-            int imageX = globalPosition.getX();
-            int imageY = globalPosition.getY();
+            int imageX = locationInViewport.getX();
+            int imageY = locationInViewport.getY();
             int imageWidth = elementDimension.getWidth();
             int imageHeight = elementDimension.getHeight();
 

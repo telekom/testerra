@@ -463,9 +463,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 return;
             }
             // getRect doesn't work
-//            Point elementLocation = webElement.getLocation();
             Dimension elementSize = webElement.getSize();
-            java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
+            java.awt.Rectangle viewportRect = new java.awt.Rectangle(0, 0, viewport.width, viewport.height);
             java.awt.Rectangle elementRect = new java.awt.Rectangle(globalLocation.getX(), globalLocation.getY(), elementSize.width, elementSize.height);
             atomicBoolean.set(((fullyVisible && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect)));
         });

@@ -26,6 +26,13 @@ import ExecutionAggregate = data.ExecutionAggregate;
 import File = data.File;
 
 /**
+ * Generic interface representing what we need of any Proto message interface in report-model.ts
+ */
+export interface ProtobufMessage<T> {
+    decode(reader: Uint8Array, length?: number): T
+}
+
+/**
  * Data backend service for retrieving and caching data backend responses
  * @author Mike Reiche <mike.reiche@t-systems.com>
  */
@@ -58,20 +65,18 @@ export class DataLoader {
         });
     }
 
-    protected responseToProtobufJSMessage(response: Response, messageClass) {
-        return response.arrayBuffer().then(buffer => {
-            return messageClass.decode(new Uint8Array(buffer))
-        });
+    protected responseToProtobufJSMessage<T>(response: Response, protobufMessageType: ProtobufMessage<T>){
+        return response.arrayBuffer().then(buffer => protobufMessageType.decode(new Uint8Array(buffer)))
     }
 
-    getExecutionAggregate(): Promise<ExecutionAggregate> {
+    getExecutionAggregate(){
         return this.get("model/execution")
             .then(response => {
                 return this.responseToProtobufJSMessage(response, ExecutionAggregate)
             })
     }
 
-    getFile(id: string): Promise<File> {
+    getFile(id: string){
         return this.get("model/files/" + id)
             .then(response => {
                 return this.responseToProtobufJSMessage(response, File)

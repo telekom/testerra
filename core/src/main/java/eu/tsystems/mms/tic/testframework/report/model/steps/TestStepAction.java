@@ -19,16 +19,11 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.model.steps;
+package eu.tsystems.mms.tic.testframework.report.model.steps;
 
 import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import org.apache.logging.log4j.core.LogEvent;
@@ -99,7 +94,7 @@ public class TestStepAction implements Serializable {
     }
 
     /**
-     * @deprecated  Use {@link #readEntries()} instead
+     * @deprecated Use {@link #readEntries()} instead
      * Used in methodDetailsStep.vm
      */
     public Collection<LogMessage> getLogMessages() {

@@ -6,7 +6,10 @@ dependencies {
     implementation 'org.xmlunit:xmlunit-core:2.5.0'
     // </XML
 
-    api 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
+    // ResponsiveClassFinder tests
+    implementation 'org.reflections:reflections:0.9.12'
+
+    api 'org.eclipse.jetty:jetty-server:9.4.3.v20170317'
 }
 
 // Deactivate JAR publishing
@@ -15,12 +18,12 @@ project.afterEvaluate {
     project.tasks.each { t ->
         if (t.name.startsWith("publish")) {
             t.enabled = false
-//            println "Task " + t.name + " - " + t.enabled
         }
     }
 }
 
 test {
+
     String[] s = [
             'src/test/resources/Integration.xml',
     ]
@@ -35,6 +38,10 @@ test {
         s = ['src/test/resources/Pretest_Tests.xml']
     }
 
+    def pg = findProperty("pg")
+    if (pg) {
+        s = ['src/test/resources/Smoke.xml']
+    }
 
     useTestNG() {
         suites s

@@ -98,7 +98,6 @@ public class DefaultPageFactory implements PageFactory, MethodEndEvent.Listener,
     }
 
     @Override
-    @Deprecated
     public <T extends Page> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
         T page;
         try {

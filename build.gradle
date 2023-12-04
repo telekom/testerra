@@ -20,8 +20,9 @@ ext {
     core = project(':core')
     report = project(':report-ng')
 
-    seleniumVersion = '3.141.59'
-    guavaVersion = "28.1-jre"
+    seleniumVersion = '4.14.1'
+    // Must be the same like in Selenium 4
+    guavaVersion = "32.1.2-jre"
 
     moduleVersion = '2-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {
@@ -35,8 +36,8 @@ allprojects {
 
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = "UTF-8"
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
 }
 
@@ -54,9 +55,8 @@ subprojects {
 
     // important!
     repositories {
-        mavenLocal()
+//        mavenLocal()
         mavenCentral()
-        jcenter()
     }
 
     jacoco {

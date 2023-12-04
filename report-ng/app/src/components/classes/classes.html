@@ -51,7 +51,7 @@
                         <mdc-list-item>(All)</mdc-list-item>
                         <mdc-list-item value.bind="classStatistic.classIdentifier"
                                        repeat.for="classStatistic of _executionStatistics.classStatistics"
-                        >${classStatistic.classIdentifier}</mdc-list-item>
+                        >${classStatistic.classIdentifier|className:1}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
@@ -85,32 +85,84 @@
 
                     <thead>
                         <th class="status-column centered-text">Status (${_uniqueStatuses})</th>
-                        <th>Class (${_uniqueClasses})</th>
-                        <th class="run-index-column">#</th>
-                        <th>Method (${_filteredMethodDetails.length})</th>
-<!--                        <th>Failure Aspect (${_uniqueFailureAspects})</th>-->
-                    </thead>
-                    <tbody>
+                        <th class="mdc-data-table__header-cell" click.delegate="_sortByRunIndex()">
+                            <div class="mdc-data-table__header-cell-wrapper" >
+                                <div class="mdc-data-table__header-cell-label" >Run index</div>
+                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+                            </div>
+                        </th>
+                        <th class="mdc-data-table__header-cell" click.delegate="_sortByClass()">
+                            <div class="mdc-data-table__header-cell-wrapper">
+                                <div class="mdc-data-table__header-cell-label">Class (${_uniqueClasses})</div>
+                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+                            </div>
+                        </th>
+                        <th class="mdc-data-table__header-cell" click.delegate="_sortByMethod()">
+                            <div class="mdc-data-table__header-cell-wrapper">
+                                <div class="mdc-data-table__header-cell-label">Method (${_filteredMethodDetails.length})</div>
+                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
+                            </div>
+                        </th>
+                        <!--                        <th>Failure Aspect (${_uniqueFailureAspects})</th>-->
+                        </thead>
+                        <tbody>
                         <tr repeat.for="methodDetails of _filteredMethodDetails">
                             <td class="p1 centered-text">
                                 <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus|statusName}</a>
                             </td>
+                            <td class="run-index-cell">${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"
-                                >${methodDetails.classStatistics.classIdentifier}</a>
+                                >${methodDetails.classStatistics.classIdentifier|className:1}</a>
                             </td>
-                            <td>${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable" mdc-body1>
+
+                                <!-- Method name -->
                                 <div class="vcenter">
                                     <mdc-icon class="sr1">read_more</mdc-icon>
                                     <a route-href="route: method; params.bind: {methodId: methodDetails.methodContext.contextValues.id}"
                                        innerhtml.bind="methodDetails.identifier|highlightText:_searchRegexp"
                                     ></a><method-tags class="sl1" details.bind="methodDetails"></method-tags>
                                 </div>
+
+                                <!-- Failure aspect -->
                                 <div repeat.for="failureAspect of methodDetails.failureAspects"
                                      mdc-body2
                                      class="st1"
-                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml="${failureAspect.message|html|highlightText:_searchRegexp}"></span></div>
+                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml.bind="failureAspect.message|htmlEscape|highlightText:_searchRegexp"></span></div>
+
+                                <!-- List of @Fails details -->
+                                <div class="flex vcenter"
+                                     if.bind="methodDetails.failsAnnotation.description || methodDetails.failsAnnotation.ticketString"
+                                >
+                                    <mdc-icon class="colored-icon status-${methodDetails.methodContext.resultStatus|statusClass}">highlight_off</mdc-icon>
+                                    <ul class="mdc-list mdc-list--dense"  mdc-caption>
+                                        <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.description&&7!= methodDetails.methodContext.resultStatus">
+                                            <span innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:_searchRegexp"></span>
+                                        </li>
+                                        <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.ticketString&&7!= methodDetails.methodContext.resultStatus">
+                                            Ticket:&nbsp;<a href="${methodDetails.failsAnnotation.ticketString}" innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchRegexp"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- List of prompted messages -->
+                                <div class="flex vcenter"
+                                     if.bind="methodDetails.promptLogs.length > 0"
+                                >
+                                    <mdc-icon>speaker_notes</mdc-icon>
+                                    <ul class="mdc-list mdc-list--dense"  mdc-caption>
+                                        <li class="mdc-custom-list-item" repeat.for="logMessage of methodDetails.promptLogs">
+                                            <span innerhtml.bind="logMessage.message|html|highlightText:_searchRegexp"></span>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <div mdc-body2 repeat.for="logMessage of methodDetails.promptLogs">
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                     </tbody>

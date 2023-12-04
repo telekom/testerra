@@ -104,4 +104,16 @@ public interface ErrorContextOrBuilder extends
    * @return The optional.
    */
   boolean getOptional();
+
+  /**
+   * <code>string id = 13;</code>
+   * @return The id.
+   */
+  java.lang.String getId();
+  /**
+   * <code>string id = 13;</code>
+   * @return The bytes for id.
+   */
+  com.google.protobuf.ByteString
+      getIdBytes();
 }

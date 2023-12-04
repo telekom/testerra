@@ -12,15 +12,22 @@ Although, manual inspection can never be pixel-accurate. An inspection of perhap
 
 At this point an automatic comparison of reference screenshots can help. This test is to be seen in addition to the functional tests, but cannot replace them. In a test case, it would also be conceivable to combine the check of function and layout.
 
-== Description
+== How it works
 
 A layout test with the Testerra utilities is actually a comparison between a reference and the actual state. This is done via the screenshot functionality of Selenium, in which both screenshots (reference and actual) are compared pixel by pixel from top to bottom. In this comparison, a third image is created in which differences (ReferencePixel != ActualPixel) are marked in red.
+
+image::layoutcheck_comparison.png[alt="Visualization of a layout check",width=920,height=233]
+
+In case that one image has a different size than the other Testerra reports this as an <<#_optional_assertions, Optional assertion>>. Testerra considers only the common pixels of both images as 100%. Pixels that are outside of one or the other image are not included in the error calculation. In the comparison, those Pixels are marked in blue.
+
+image::layoutcheck_diffsize_comparison.png[alt="Visualization of a layout check with different sized images",width=920,height=233]
+
 
 === Prerequisites
 The following prerequisites must be met
 
 . Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
-** Size of browser window: Define fixed size to exclude different sizes of the images at different VM resolutions
+** Size of browser window: Define fixed size to exclude different sizes of the images at different screen resolutions
 ** Screen resolution and scaling: Make sure you have the same screen resolution and scaling on each presentation device.
 
 == Configuration
@@ -42,10 +49,6 @@ In order to get the layout check to work, you need at least a reference image an
 The directory for reference image may result in `src/test/resources/layout-references/chrome/WelcomePage.png` for example.
 
 The comparison is generally carried out over the entire reference image. In this case, it is a prerequisite that the reference screenshot and the screenshot created during the test runtime have the same resolution (height and width are identical).
-
-The property `{layoutcheck_pixel_rgb_deviation_percent}` controls, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
-
-To validate the layout, you can check the whole page or a single <<UiElements,UiElement>>.
 
 == Check the whole page
 
@@ -70,6 +73,18 @@ float pixelDistanceToleranceThresholdPercent = 10.0;
 
 uiElement.expect().screenshot().pixelDistance("HeaderComponent").isLowerThan(pixelDistanceToleranceThresholdPercent);
 ----
+
+== Check images with RGB deviation
+
+The property `{layoutcheck_pixel_rgb_deviation_percent}` controls, which color difference in percentage of a single pixel is count as a match. You can use that value to handle slightly changes in color or alpha values.
+
+Especially for photo checks it should be helpful in case of different kinds of image formats and compression algorithms.
+
+[cols="1a,1a",options="header"]
+|===
+| `{layoutcheck_pixel_rgb_deviation_percent}=0.0` | `{layoutcheck_pixel_rgb_deviation_percent}=2.0`
+| image::layoutcheck_rgb_deviation01.png[alt="Screenshot of the report visualization of a layout check"] | image::layoutcheck_rgb_deviation02.png[alt="Screenshot of the report visualization of a layout check"]
+|===
 
 == Take reference screenshots on first run
 

@@ -29,20 +29,21 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultOptionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.SortMethodsByPriorityMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
+import eu.tsystems.mms.tic.testframework.internal.metrics.DefaultMetricsController;
+import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
 import eu.tsystems.mms.tic.testframework.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.ExecutionEndListener;
 import eu.tsystems.mms.tic.testframework.report.FailsAnnotationConverter;
@@ -81,6 +82,7 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         bind(IExecutionContextController.class).to(DefaultExecutionContextController.class).in(Scopes.SINGLETON);
         bind(ExecutionUtils.class).to(DefaultExecutionUtils.class).in(Scopes.SINGLETON);
         bind(ITestStatusController.class).to(TestStatusController.class).in(Scopes.SINGLETON);
+        bind(MetricsController.class).to(DefaultMetricsController.class).in(Scopes.SINGLETON);
     }
 
     @Override
@@ -95,7 +97,6 @@ public class CoreHook extends AbstractModule implements ModuleHook, PropertyMana
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
         eventBus.register(new MethodContextUpdateWorker());
-        eventBus.register(new OmitInDevelopmentMethodInterceptor());
         eventBus.register(new SortMethodsByPriorityMethodInterceptor());
         eventBus.register(new ExecutionEndListener());
         eventBus.register(PROPERTY_MANAGER);

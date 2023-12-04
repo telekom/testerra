@@ -119,6 +119,7 @@ export class StatusConverter {
             case ResultStatusType.PASSED:
             case ResultStatusType.PASSED_RETRY:
             case ResultStatusType.MINOR_RETRY:
+            case ResultStatusType.REPAIRED:
             case ResultStatusType.MINOR:
                 return GraphColors.PASSED;
             case ResultStatusType.FAILED_MINOR:
@@ -182,7 +183,7 @@ export class StatusConverter {
     }
 
     createRegexpFromSearchString(searchQuery:string) {
-        const specialCharacters = new RegExp("([\\[\\]])", "g");
+        const specialCharacters = new RegExp("([\\[\\]\(\)\.])", "g");
         searchQuery = searchQuery.replace(specialCharacters, "\\$1");
         return new RegExp("(" + searchQuery + ")", "ig");
     }

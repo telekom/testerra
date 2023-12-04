@@ -149,8 +149,9 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT13_WebDriverKeepAliveRemovedByDriverShutdown() {
-        WEB_DRIVER_MANAGER.getConfig().reset();
-        WebDriver driver = getWebDriver();
+//        WEB_DRIVER_MANAGER.getConfig().reset();
+//        WebDriver driver = getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
         TimerUtils.sleep(3_000);
 

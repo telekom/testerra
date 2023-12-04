@@ -1,6 +1,4 @@
-= UITest Utilities (*deprecated*)
-
-NOTE: This class is marked as `@deprecated` and should not be used anymore.
+= UITest Utilities
 
 The `UITestUtils` supports you to generate additional screenshots.
 
@@ -24,6 +22,20 @@ class ExamplePage extends Page {
     }
 }
 ----
+
+.Take screenshots of all WebDriver instances of current test.
+[source, java]
+----
+@Test
+public void testDemo() {
+    WEB_DRIVER_MANAGER.getWebDriver("session1");
+    WEB_DRIVER_MANAGER.getWebDriver("session2");
+    // Screenshots from 'session1' and 'session2' are created
+    UITestUtils.takeScreenshots();
+}
+----
+
+NOTE: `UITestUtils.takeScreenshots()` takes only screenshot from WebDriver instances you have used in your current test.
 
 You can also store a simple screenshot to your project directory.
 

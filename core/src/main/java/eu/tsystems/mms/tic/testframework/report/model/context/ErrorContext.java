@@ -20,16 +20,18 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
 import java.util.Optional;
 
 public class ErrorContext {
+
+    private String id;
     private transient Throwable throwable = null;
     private ScriptSource scriptSource;
-    private ScriptSource executionObjectSource;
     private boolean optional;
 
     public ErrorContext(Throwable throwable, boolean optional) {
@@ -55,17 +57,6 @@ public class ErrorContext {
         return Optional.ofNullable(this.scriptSource);
     }
 
-    /**
-     * The page object source triggering this assertion
-     */
-    @Deprecated
-    public Optional<ScriptSource> getExecutionObjectSource() {
-        if (this.executionObjectSource == null) {
-            this.executionObjectSource = TestEvidenceCollector.getSourceFor(getThrowable());
-        }
-        return Optional.ofNullable(this.executionObjectSource);
-    }
-
     public Throwable getThrowable() {
         return throwable;
     }
@@ -82,5 +73,12 @@ public class ErrorContext {
         } else {
             return null;
         }
+    }
+
+    public String getId() {
+        if (this.id == null) {
+            this.id = Testerra.getInjector().getInstance(IdGenerator.class).generate().toString();
+        }
+        return this.id;
     }
 }

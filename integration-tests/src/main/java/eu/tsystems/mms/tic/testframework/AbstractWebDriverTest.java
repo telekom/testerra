@@ -24,13 +24,13 @@ package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -38,26 +38,23 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
+import java.lang.reflect.Method;
+
 /**
  * Abstract test class for tests using a WebDriver
  */
-public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer, WebDriverManagerProvider, Loggable {
-
-
-    //    static {
-    //        WebDriverManager.config().closeWindowsAfterTestMethod = false;
-    //    }
-    //
-    //    @AfterTest(alwaysRun = true)
-    //    public void resetWDCloseWindowsMode() {
-    //        WebDriverManager.config().closeWindowsAfterTestMethod = true;
-    //    }
+public abstract class AbstractWebDriverTest extends TesterraTest implements
+        WebDriverRetainer,
+        WebDriverManagerProvider,
+        Loggable,
+        UiElementFinderFactoryProvider,
+        AssertProvider {
 
     private String exclusiveSessionId;
 
     @AfterSuite(alwaysRun = true)
     private void closeBrowsers() {
-        WebDriverManager.forceShutdownAllThreads();
+        WEB_DRIVER_MANAGER.shutdownAllSessions();
     }
 
     /**
@@ -75,22 +72,13 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
         });
     }
 
-    /**
-     * Sets the unsupportedBrowser=true flag for the @Fails annotation
-     */
-    protected static void setUnsupportedBrowserFlag() {
-        if (Browsers.phantomjs.equals(WEB_DRIVER_MANAGER.getConfig().getBrowser())) {
-            System.setProperty("unsupportedBrowser", "true");
-        }
-    }
-
     protected AbstractWebDriverRequest getWebDriverRequest() {
         return null;
     }
 
     private WebDriver _getWebDriver() {
         WebDriver webDriver;
-        AbstractWebDriverRequest request =  getWebDriverRequest();
+        AbstractWebDriverRequest request = getWebDriverRequest();
         if (request != null) {
             webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         } else {
@@ -126,7 +114,4 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
         return this._getWebDriver();
     }
 
-    static {
-        setUnsupportedBrowserFlag();
-    }
 }

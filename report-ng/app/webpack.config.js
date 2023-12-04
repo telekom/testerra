@@ -37,7 +37,10 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                 // https://github.com/aurelia/binding/issues/702
                 // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
                 // out-of-date dependencies on 3rd party aurelia plugins
-                'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding')
+                'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding'),
+                // Enforce single tslib, to avoid v1/v2 duplication due to
+                // out-of-date dependencies on 3rd party aurelia plugins, in this case: echarts
+                'tslib': path.resolve(__dirname, 'node_modules/tslib')
             }
         },
         entry: {
@@ -51,9 +54,9 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
         output: {
             path: outDir,
             publicPath: baseUrl,
-            filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
-            sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
-            chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
+            filename: production ? '[name].[chunkhash].bundle.js' : '[name].[fullhash].bundle.js',
+            sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[fullhash].bundle.map',
+            chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[fullhash].chunk.js'
         },
         optimization: {
             runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
@@ -132,14 +135,20 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                     }
                 },
                 /**
-                 * Import images from source code
-                 * @see https://stackoverflow.com/questions/43638454/webpack-typescript-image-import
+                 * Replace file-loader with asset module
+                 * @see https://webpack.js.org/guides/asset-modules/#resource-assets
                  */
                 {
                     test: /\.(jpg|png)$/,
-                    use: {
-                        loader: 'file-loader'
-                    },
+                    type: 'asset/resource',
+                },
+                /**
+                 * Replace url-loader with asset module
+                 * @see https://webpack.js.org/guides/asset-modules/#inlining-assets
+                 */
+                {
+                    test: /\.(woff|woff2|ttf|eot)$/,
+                    type: 'asset/inline',
                 },
                 {
                     test: /\.css$/,
@@ -168,7 +177,10 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             ]
         },
         plugins: [
-            ...when(!tests, new DuplicatePackageCheckerPlugin()),
+            ...when(!tests, new DuplicatePackageCheckerPlugin({
+                    verbose: true
+                }
+            )),
             new AureliaPlugin(),
             ...when(production,  new webpack.NormalModuleReplacementPlugin(/config-dev/gi, (resource) => {
                 resource.request = resource.request.replace(/config-dev/, 'config-prod');
@@ -181,8 +193,8 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
                 }
             }),
             new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
-                filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[hash].bundle.css',
-                chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
+                filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[fullhash].bundle.css',
+                chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[fullhash].chunk.css'
             }),
             /**
              * Optimized moment

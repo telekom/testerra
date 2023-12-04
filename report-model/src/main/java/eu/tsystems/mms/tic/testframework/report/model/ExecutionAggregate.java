@@ -127,6 +127,19 @@ private static final long serialVersionUID = 0L;
                 sessionContexts__.getKey(), sessionContexts__.getValue());
             break;
           }
+          case 58: {
+            eu.tsystems.mms.tic.testframework.report.model.TestMetrics.Builder subBuilder = null;
+            if (testMetrics_ != null) {
+              subBuilder = testMetrics_.toBuilder();
+            }
+            testMetrics_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TestMetrics.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(testMetrics_);
+              testMetrics_ = subBuilder.buildPartial();
+            }
+
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -610,6 +623,32 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
+  public static final int TEST_METRICS_FIELD_NUMBER = 7;
+  private eu.tsystems.mms.tic.testframework.report.model.TestMetrics testMetrics_;
+  /**
+   * <code>.data.TestMetrics test_metrics = 7;</code>
+   * @return Whether the testMetrics field is set.
+   */
+  @java.lang.Override
+  public boolean hasTestMetrics() {
+    return testMetrics_ != null;
+  }
+  /**
+   * <code>.data.TestMetrics test_metrics = 7;</code>
+   * @return The testMetrics.
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.TestMetrics getTestMetrics() {
+    return testMetrics_ == null ? eu.tsystems.mms.tic.testframework.report.model.TestMetrics.getDefaultInstance() : testMetrics_;
+  }
+  /**
+   * <code>.data.TestMetrics test_metrics = 7;</code>
+   */
+  @java.lang.Override
+  public eu.tsystems.mms.tic.testframework.report.model.TestMetricsOrBuilder getTestMetricsOrBuilder() {
+    return getTestMetrics();
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -657,6 +696,9 @@ private static final long serialVersionUID = 0L;
         internalGetSessionContexts(),
         SessionContextsDefaultEntryHolder.defaultEntry,
         6);
+    if (testMetrics_ != null) {
+      output.writeMessage(7, getTestMetrics());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -720,6 +762,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, sessionContexts__);
     }
+    if (testMetrics_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(7, getTestMetrics());
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -750,6 +796,11 @@ private static final long serialVersionUID = 0L;
         other.internalGetMethodContexts())) return false;
     if (!internalGetSessionContexts().equals(
         other.internalGetSessionContexts())) return false;
+    if (hasTestMetrics() != other.hasTestMetrics()) return false;
+    if (hasTestMetrics()) {
+      if (!getTestMetrics()
+          .equals(other.getTestMetrics())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -784,6 +835,10 @@ private static final long serialVersionUID = 0L;
     if (!internalGetSessionContexts().getMap().isEmpty()) {
       hash = (37 * hash) + SESSION_CONTEXTS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetSessionContexts().hashCode();
+    }
+    if (hasTestMetrics()) {
+      hash = (37 * hash) + TEST_METRICS_FIELD_NUMBER;
+      hash = (53 * hash) + getTestMetrics().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -967,6 +1022,12 @@ private static final long serialVersionUID = 0L;
       internalGetMutableClassContexts().clear();
       internalGetMutableMethodContexts().clear();
       internalGetMutableSessionContexts().clear();
+      if (testMetricsBuilder_ == null) {
+        testMetrics_ = null;
+      } else {
+        testMetrics_ = null;
+        testMetricsBuilder_ = null;
+      }
       return this;
     }
 
@@ -1009,6 +1070,11 @@ private static final long serialVersionUID = 0L;
       result.methodContexts_.makeImmutable();
       result.sessionContexts_ = internalGetSessionContexts();
       result.sessionContexts_.makeImmutable();
+      if (testMetricsBuilder_ == null) {
+        result.testMetrics_ = testMetrics_;
+      } else {
+        result.testMetrics_ = testMetricsBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -1070,6 +1136,9 @@ private static final long serialVersionUID = 0L;
           other.internalGetMethodContexts());
       internalGetMutableSessionContexts().mergeFrom(
           other.internalGetSessionContexts());
+      if (other.hasTestMetrics()) {
+        mergeTestMetrics(other.getTestMetrics());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -1857,6 +1926,125 @@ private static final long serialVersionUID = 0L;
       internalGetMutableSessionContexts().getMutableMap()
           .putAll(values);
       return this;
+    }
+
+    private eu.tsystems.mms.tic.testframework.report.model.TestMetrics testMetrics_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.TestMetrics, eu.tsystems.mms.tic.testframework.report.model.TestMetrics.Builder, eu.tsystems.mms.tic.testframework.report.model.TestMetricsOrBuilder> testMetricsBuilder_;
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     * @return Whether the testMetrics field is set.
+     */
+    public boolean hasTestMetrics() {
+      return testMetricsBuilder_ != null || testMetrics_ != null;
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     * @return The testMetrics.
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.TestMetrics getTestMetrics() {
+      if (testMetricsBuilder_ == null) {
+        return testMetrics_ == null ? eu.tsystems.mms.tic.testframework.report.model.TestMetrics.getDefaultInstance() : testMetrics_;
+      } else {
+        return testMetricsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     */
+    public Builder setTestMetrics(eu.tsystems.mms.tic.testframework.report.model.TestMetrics value) {
+      if (testMetricsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        testMetrics_ = value;
+        onChanged();
+      } else {
+        testMetricsBuilder_.setMessage(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     */
+    public Builder setTestMetrics(
+        eu.tsystems.mms.tic.testframework.report.model.TestMetrics.Builder builderForValue) {
+      if (testMetricsBuilder_ == null) {
+        testMetrics_ = builderForValue.build();
+        onChanged();
+      } else {
+        testMetricsBuilder_.setMessage(builderForValue.build());
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     */
+    public Builder mergeTestMetrics(eu.tsystems.mms.tic.testframework.report.model.TestMetrics value) {
+      if (testMetricsBuilder_ == null) {
+        if (testMetrics_ != null) {
+          testMetrics_ =
+            eu.tsystems.mms.tic.testframework.report.model.TestMetrics.newBuilder(testMetrics_).mergeFrom(value).buildPartial();
+        } else {
+          testMetrics_ = value;
+        }
+        onChanged();
+      } else {
+        testMetricsBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     */
+    public Builder clearTestMetrics() {
+      if (testMetricsBuilder_ == null) {
+        testMetrics_ = null;
+        onChanged();
+      } else {
+        testMetrics_ = null;
+        testMetricsBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.TestMetrics.Builder getTestMetricsBuilder() {
+      
+      onChanged();
+      return getTestMetricsFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     */
+    public eu.tsystems.mms.tic.testframework.report.model.TestMetricsOrBuilder getTestMetricsOrBuilder() {
+      if (testMetricsBuilder_ != null) {
+        return testMetricsBuilder_.getMessageOrBuilder();
+      } else {
+        return testMetrics_ == null ?
+            eu.tsystems.mms.tic.testframework.report.model.TestMetrics.getDefaultInstance() : testMetrics_;
+      }
+    }
+    /**
+     * <code>.data.TestMetrics test_metrics = 7;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        eu.tsystems.mms.tic.testframework.report.model.TestMetrics, eu.tsystems.mms.tic.testframework.report.model.TestMetrics.Builder, eu.tsystems.mms.tic.testframework.report.model.TestMetricsOrBuilder> 
+        getTestMetricsFieldBuilder() {
+      if (testMetricsBuilder_ == null) {
+        testMetricsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            eu.tsystems.mms.tic.testframework.report.model.TestMetrics, eu.tsystems.mms.tic.testframework.report.model.TestMetrics.Builder, eu.tsystems.mms.tic.testframework.report.model.TestMetricsOrBuilder>(
+                getTestMetrics(),
+                getParentForChildren(),
+                isClean());
+        testMetrics_ = null;
+      }
+      return testMetricsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

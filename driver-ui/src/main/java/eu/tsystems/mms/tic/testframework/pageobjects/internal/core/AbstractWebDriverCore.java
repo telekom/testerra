@@ -32,15 +32,27 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -48,25 +60,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import javax.imageio.ImageIO;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.Rectangle;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-/**
- * @todo Rename to AbstractWebDriverCore
- */
 public abstract class AbstractWebDriverCore extends AbstractGuiElementCore implements Loggable {
 
     private static final Assertion assertion = Testerra.getInjector().getInstance(InstantAssertion.class);
@@ -128,12 +122,13 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     /**
      * Tries to find elements from a given {@link WebDriver}.
+     *
      * @throws ElementNotFoundException with the internal selenium exception cause.
      */
     private List<WebElement> findElementsFromWebDriver(WebDriver webDriver, By by) {
         // Prevent finding EventFiringWebDriver$EventFiringWebElement
         if (webDriver instanceof EventFiringWebDriver) {
-            webDriver = ((EventFiringWebDriver)webDriver).getWrappedDriver();
+            webDriver = ((EventFiringWebDriver) webDriver).getWrappedDriver();
         }
         try {
             return webDriver.findElements(by);
@@ -145,6 +140,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     /**
      * Tries to find sub elements from a given {@link WebElement}.
+     *
      * @throws ElementNotFoundException with the internal selenium exception cause.
      */
     private List<WebElement> findElementsFromWebElement(WebElement webElement, By by) {
@@ -199,7 +195,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
      * Finds the {@link WebElement} from a list of web elements
      * according to it's selector index in {@link GuiElementData#getIndex()}.
      * Also prepares shadow roots by {@link GuiElementData#isShadowRoot()}
-     * and wraps its around an {@link WebElementProxy}.
      * More information see {@link WebElementRetainer#findWebElement(Consumer)}
      */
     @Override
@@ -239,14 +234,9 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                     } catch (Exception e) {
                         log().error("Could not detect shadow root for " + guiElementData.toString() + ": " + e.getMessage());
                     }
-                } else if (webElement.getTagName().equals("frame") || webElement.getTagName().equals("iframe")) {
+                } else if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
                     guiElementData.setIsFrame(true);
                 }
-
-                // proxy the web element for logging
-//                WebElementProxy webElementProxy = new WebElementProxy(webDriver, webElement);
-//                Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
-//                webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
 
                 logTimings(start, Timings.getFindCounter());
 
@@ -259,7 +249,12 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 }
 
             } else {
-                throwNotFoundException(new AssertionError(assertion.formatExpectGreaterEqualThan(assertion.toBigDecimal(0), assertion.toBigDecimal(1), formatLocateSubject(locate, numElementsBeforeFilter))));
+                throwNotFoundException(
+                        new AssertionError(assertion.formatExpectGreaterEqualThan(
+                                assertion.toBigDecimal(0),
+                                assertion.toBigDecimal(1),
+                                formatLocateSubject(locate, numElementsBeforeFilter)))
+                );
             }
         });
 //        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
@@ -288,7 +283,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
             final long limit = Timings.LARGE_LIMIT;
             if (ms >= limit) {
-                log().warn(String.format("find() #%d of %s took %.2fs of %.0fs", findCounter, this, ms/1000f, limit/1000f));
+                log().warn(String.format("find() #%d of %s took %.2fs of %.0fs", findCounter, this, ms / 1000f, limit / 1000f));
             }
         }
     }
@@ -374,7 +369,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 }
             } else {
                 log().warn("Cannot perform value check after type() because " + this.toString() +
-                    " doesn't have a value property. Consider using sendKeys() instead.");
+                        " doesn't have a value property. Consider using sendKeys() instead.");
             }
         });
     }
@@ -462,8 +457,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         this.findWebElement(webElement -> {
             if (!webElement.isDisplayed()) {
-            return;
-        }
+                return;
+            }
             Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             // getRect doesn't work
             Point elementLocation = webElement.getLocation();
@@ -503,7 +498,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         return selectionStatusChanged;
     }
 
-
     @Override
     public Point getLocation() {
         AtomicReference<Point> atomicReference = new AtomicReference<>();
@@ -531,8 +525,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     }
 
     protected void highlightWebElement(WebElement webElement, Color color) {
-        JSUtils utils = new JSUtils();
-        utils.highlight(guiElementData.getWebDriver(), webElement, color);
+        UiElementHighlighter instance = Testerra.getInjector().getInstance(UiElementHighlighter.class);
+        instance.highlight(guiElementData.getWebDriver(), webElement, color);
     }
 
     /**
@@ -550,7 +544,8 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     @Override
     public boolean isPresent() {
         try {
-            this.findWebElement(webElement -> {});
+            this.findWebElement(webElement -> {
+            });
         } catch (Exception e) {
             return false;
         }
@@ -587,7 +582,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
             } else {
                 final Actions actions = new Actions(guiElementData.getWebDriver());
-                final Action action = actions.moveToElement(webElement).doubleClick(webElement).build();
+                final Action action = actions.doubleClick(webElement).build();
 
                 try {
                     action.perform();
@@ -642,59 +637,17 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     public void contextClick() {
         this.findWebElement(webElement -> {
             Actions actions = new Actions(guiElementData.getWebDriver());
-            actions.moveToElement(webElement).contextClick().build().perform();
+            actions.contextClick().build().perform();
         });
     }
 
     @Override
     public File takeScreenshot() {
-        final boolean isSelenium4 = false;
-        if (isSelenium4) {
-            return super.takeScreenshot();
-        }
-
         AtomicReference<File> atomicReference = new AtomicReference<>();
         this.findWebElement(webElement -> {
-            if (!isVisible(false)) {
-                scrollToTop();
-            }
-            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
-            try {
-                final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
-
-                File screenshot = driver.getScreenshotAs(OutputType.FILE);
-                BufferedImage fullImg = ImageIO.read(screenshot);
-
-                Point elementPosition = webElement.getLocation();
-                Dimension elementSize = webElement.getSize();
-                int imageX = elementPosition.getX() - viewport.getX();
-                int imageY = elementPosition.getY() - viewport.getY();
-                int imageWidth = elementSize.getWidth();
-                int imageHeight = elementSize.getHeight();
-
-                if (imageX > fullImg.getWidth()) imageX = 0;
-                if (imageY > fullImg.getHeight()) imageY = 0;
-
-                // Make sure the image bounding box doesn't overflows the image dimension
-                if (imageX + imageWidth > fullImg.getWidth()) {
-                    imageWidth = fullImg.getWidth() - imageX;
-                }
-                if (imageY + imageHeight > fullImg.getHeight()) {
-                    imageHeight = fullImg.getHeight() - imageY;
-                }
-
-                BufferedImage eleScreenshot = fullImg.getSubimage(
-                        imageX,
-                        imageY,
-                        imageWidth,
-                        imageHeight
-                );
-                ImageIO.write(eleScreenshot, "png", screenshot);
-                atomicReference.set(screenshot);
-            } catch (IOException e) {
-                log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
-            }
+            atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
         });
         return atomicReference.get();
     }
+
 }

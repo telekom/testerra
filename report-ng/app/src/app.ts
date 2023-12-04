@@ -28,7 +28,7 @@ import {MdcDrawer} from "@aurelia-mdc-web/drawer";
 import "./app.scss"
 import {StatisticsGenerator} from "./services/statistics-generator";
 import Logo from 'assets/logo.png'
-import IExecutionContext = data.IExecutionContext;
+import IExecutionContext = data.ExecutionContext;
 
 @autoinject()
 export class App {
@@ -80,12 +80,6 @@ export class App {
                 name: "tests",
                 title: 'Tests'
             },
-            // {
-            //     route: 'threads',
-            //     moduleId: PLATFORM.moduleName('components/threads'),
-            //     nav: true,
-            //     title: 'Threads'
-            // },
             {
                 route: 'failure-aspects',
                 moduleId: PLATFORM.moduleName('components/failure-aspects/failure-aspects'),
@@ -126,6 +120,13 @@ export class App {
                 moduleId: PLATFORM.moduleName('components/threads/threads'),
                 nav: true,
                 title: 'Threads'
+            },
+            {
+                route: 'timings',
+                name: 'timings',
+                moduleId: PLATFORM.moduleName('components/timings/timings'),
+                nav: true,
+                title: 'Timings'
             },
             // {
             //     route: 'timings',

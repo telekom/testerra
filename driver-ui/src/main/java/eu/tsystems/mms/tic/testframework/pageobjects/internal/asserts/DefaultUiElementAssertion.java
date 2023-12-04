@@ -42,11 +42,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+import org.openqa.selenium.Rectangle;
+
 import java.awt.Color;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
-import org.openqa.selenium.Rectangle;
 
 /**
  * Default implementation for {@link UiElementAssertion}
@@ -90,6 +91,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
         /**
          * Gets the actual value ignoring {@link ElementNotFoundException}.
+         *
          * @return NULL if the exception occurs.
          */
         public T getSafeActual() {
@@ -102,18 +104,18 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     public DefaultUiElementAssertion(UiElement uiElement, PropertyAssertionConfig config) {
-        this.guiElement = (GuiElement)uiElement;
+        this.guiElement = (GuiElement) uiElement;
         this.core = this.guiElement.getCore();
         this.propertyAssertionConfig = config;
     }
 
     /**
-     * @deprecated This is only required for {@link LegacyGuiElementAssertWrapper}
      * @param uiElement
      * @param useAssertion
+     * @deprecated This is only required for {@link LegacyGuiElementAssertWrapper}
      */
     public DefaultUiElementAssertion(UiElement uiElement, Assertion useAssertion) {
-        this.guiElement = (GuiElement)uiElement;
+        this.guiElement = (GuiElement) uiElement;
         this.core = this.guiElement.getCore();
         this.propertyAssertionConfig = new PropertyAssertionConfig();
         this.propertyAssertionConfig.throwErrors = true;
@@ -130,7 +132,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), "tagName="+Format.param(getSafeActual()));
+                return Format.separate(guiElement.toString(), "tagName=" + Format.param(getSafeActual()));
             }
         });
     }
@@ -145,7 +147,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), "text="+Format.shortString(getSafeActual()));
+                return Format.separate(guiElement.toString(), "text=" + Format.shortString(getSafeActual()));
             }
         });
     }
@@ -160,7 +162,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), attribute+"="+Format.param(getSafeActual()));
+                return Format.separate(guiElement.toString(), attribute + "=" + Format.param(getSafeActual()));
             }
         });
     }
@@ -175,7 +177,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(),"css { "+Format.label(property, getSafeActual()) + " }");
+                return Format.separate(guiElement.toString(), "css { " + Format.label(property, getSafeActual()) + " }");
             }
         });
     }
@@ -205,9 +207,19 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
             @Override
             public String createSubject() {
-                return Format.separate(guiElement.toString(), (fullyVisible ?"complete ":"")+"visible");
+                return Format.separate(guiElement.toString(), (fullyVisible ? "complete " : "") + "visible");
             }
         });
+    }
+
+    @Override
+    public BinaryAssertion<Boolean> visiblePartial() {
+        return visible(false);
+    }
+
+    @Override
+    public BinaryAssertion<Boolean> visibleFull() {
+        return visible(true);
     }
 
     @Override
@@ -221,6 +233,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
                     return false;
                 }
             }
+
             @Override
             public String createSubject() {
                 return Format.separate(guiElement.toString(), "displayed");
@@ -309,7 +322,8 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
 
     private static void addScreenshotToReport(Screenshot screenshot) {
         report.addScreenshot(screenshot, Report.FileMode.COPY);
-        ExecutionContextController.getCurrentMethodContext().addScreenshot(screenshot);
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
+        instance.getCurrentMethodContext().ifPresent(methodContext -> methodContext.addScreenshot(screenshot));
     }
 
     @Override

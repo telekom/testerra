@@ -148,7 +148,7 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
                 t += "T";
             }
         }
-        this.guiElement.sendKeys(t).expect().value().length().isBetween(length-1, length+1);
+        this.guiElement.sendKeys(t).expect().value().length().isBetween(length - 1, length + 1);
     }
 
     @Override
@@ -173,11 +173,15 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
 
     @Override
     public void assertVisible(boolean complete) {
-        this.uiElementAssertion.visible(complete).is(true);
+        if (complete) {
+            this.uiElementAssertion.visibleFull(true);
+        } else {
+            this.uiElementAssertion.visiblePartial(true);
+        }
     }
 
     @Override
     public void assertNotVisible() {
-        this.uiElementAssertion.visible(false).is(false);
+        this.uiElementAssertion.visiblePartial(false);
     }
 }

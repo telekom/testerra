@@ -28,7 +28,5 @@ public class Browsers {
     public static final String ie = "ie";
     public static final String edge = "edge";
     public static final String safari = "safari";
-    public static final String phantomjs = "phantomjs";
-    public static final String htmlunit = "htmlunit";
     public static final String chromeHeadless = "chromeHeadless";
 }

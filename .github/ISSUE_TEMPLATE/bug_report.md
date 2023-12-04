@@ -34,11 +34,5 @@ If applicable, add a simple testcase to show us how to target the bug by code.
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
-**Hardware (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
 **Additional context**
 Add any other context about the problem here.

@@ -6,23 +6,41 @@
 [source,java]
 ----
 WebDriver driver = WebDriverManager.getWebDriver();
-Optional<SessionContext> sessionContext = WebDriverSessionsManager.getSessionContext(driver);
+Optional<SessionContext> sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver);
 ----
 
-== Switching windows
+== Switching windows or tabs
 
-Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
+In some cases you need to switch to a new browser window or tab which was opened by the application.
 
 [source,java]
 ----
-// Switch to a window by matching title
+// Switch to a window by matching title with 'equals()'
 WEB_DRIVER_MANAGER.switchToWindowTitle(WebDriver webDriver, String windowTitle);
 
 // Switch to a given window handle
 WEB_DRIVER_MANAGER.switchToWindowHandle(WebDriver webDriver, String windowHandle);
 
 // Switch to a window by a custom condition
-boolean switched = WEB_DRIVER_MANAGER.switchToWindow(WebDriver webDriver, webDriver -> webDriver.getCurrentUrl().contains("login"));
+boolean switched = WEB_DRIVER_MANAGER
+        .switchToWindow(WebDriver webDriver, webDriver -> webDriver.getCurrentUrl().contains("login"));
 
 Assert.assertTrue(switched, "Login window not found");
+----
+
+You can also handle a delayed switch of a window by using `CONTROL`.
+
+[source,java]
+----
+int secondsForRetry = 6;
+CONTROL.retryFor(secondsForRetry, () -> {
+    WEB_DRIVER_MANAGER.switchToWindowTitle(webDriver, "MyWindowTitle");
+});
+
+// Using a predicate you have to check the result of switching
+CONTROL.retryFor(secondsForRetry, () -> {
+    boolean result = WEB_DRIVER_MANAGER
+            .switchToWindow(webDriver, driver -> driver.getTitle().contains("MyWindowTitle"));
+    Assert.assertTrue(result);
+});
 ----

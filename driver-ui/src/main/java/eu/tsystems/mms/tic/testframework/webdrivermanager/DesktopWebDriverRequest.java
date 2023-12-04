@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements Loggable, Serializable, PropertyManagerProvider {
+public class DesktopWebDriverRequest extends SeleniumWebDriverRequest implements Serializable, PropertyManagerProvider {
 
     /*
     Default values for the size of a browser window.

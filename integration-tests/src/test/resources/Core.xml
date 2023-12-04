@@ -5,6 +5,7 @@
         <groups>
             <run>
                 <exclude name="SEQUENTIAL"/>
+                <exclude name="SEQUENTIAL_SINGLE"/>
             </run>
         </groups>
         <packages>

@@ -28,23 +28,23 @@ import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 /**
  * Replacement for static {@link WebDriverManager}
+ *
  * @todo Rename to {@link WebDriverManager}
  */
-public interface IWebDriverManager extends WebDriverRetainer, Loggable {
+public interface IWebDriverManager extends
+        WebDriverRetainer,
+        Loggable {
 
     enum Properties implements IProperties {
         BROWSER("tt.browser", ""),
@@ -137,7 +137,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         return WebDriverSessionsManager.getWebDriver(sessionContext);
     }
 
-    default Optional<String>getRequestedBrowser(WebDriver webDriver) {
+    default Optional<String> getRequestedBrowser(WebDriver webDriver) {
         return WebDriverSessionsManager.getRequestedBrowser(webDriver);
     }
 
@@ -161,7 +161,6 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
     default Stream<EventFiringWebDriver> readWebDrivers() {
         return WebDriverSessionsManager.readWebDrivers();
     }
-
 
     default IWebDriverManager setUserAgentConfig(String browser, UserAgentConfig configurator) {
         WebDriverManager.setUserAgentConfig(browser, configurator);
@@ -224,21 +223,30 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
         WebDriverUtils.removeKeepAliveForWebDriver(webDriver);
     }
 
+    /**
+     * @deprecated Use {@link #setUserAgentConfig(String, UserAgentConfig)} or {@link DesktopWebDriverRequest#getMutableCapabilities()} for custom capabilities instead
+     */
+    @Deprecated
     default void setGlobalCapability(String key, Object value) {
         WebDriverManager.setGlobalExtraCapability(key, value);
     }
+
+    /**
+     * @deprecated Use {@link #setUserAgentConfig(String, UserAgentConfig)} or {@link DesktopWebDriverRequest#getMutableCapabilities()} instead.
+     */
+    @Deprecated
     default void removeGlobalCapability(String key) {
         WebDriverManager.removeGlobalExtraCapability(key);
     }
 
     /**
-     * Unwraps the raw {@link WebDriver} from {@link EventFiringWebDriver} and {@link WebDriverProxy}
+     * Unwraps the raw {@link WebDriver} from {@link EventFiringWebDriver}
      * and tries to cast it to the target class implementation.
      */
     default <WEBDRIVER> Optional<WEBDRIVER> unwrapWebDriver(WebDriver webDriver, Class<WEBDRIVER> targetWebDriverClass) {
         WebDriver lowestWebDriver = WebDriverUtils.getLowestWebDriver(webDriver);
         if (targetWebDriverClass.isInstance(lowestWebDriver)) {
-            return Optional.of((WEBDRIVER)lowestWebDriver);
+            return Optional.of((WEBDRIVER) lowestWebDriver);
         } else {
             return Optional.empty();
         }
@@ -246,6 +254,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
 
     /**
      * Sets the locale for a specified session
+     *
      * @param webDriver
      * @param locale
      * @return TRUE if locale has been set
@@ -256,6 +265,7 @@ public interface IWebDriverManager extends WebDriverRetainer, Loggable {
 
     /**
      * Returns the session locale
+     *
      * @param webDriver
      */
     default Optional<Locale> getSessionLocale(WebDriver webDriver) {

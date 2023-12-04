@@ -44,7 +44,7 @@ UiElement element = find(By.id("select"));
 
 // Get the Select WebElement of a UiElement
 element.findWebElement(webElement -> {
-    Select selectElement = new Select(webElement);
+    Select select = new Select(webElement);
 
     // You can use all Selenium Select methods to interact.
     select.selectByIndex(2);

@@ -2,7 +2,7 @@
 include::../properties/property-attributes.adoc[]
 
 == Demo mode
-In the demo mode actions on pages are marked with distinctive coloured frames around the element of the action. This mechanism is set by a property
+In the demo mode actions on pages are marked with distinctive coloured frames around the element of the action. This mechanism is set by a property:
 
 .test.properties
 [source, properties,subs="attributes"]
@@ -16,3 +16,14 @@ The following colours are used for highlighting
 * [green]#green#: successful visibility checks and asserts
 * [yellow]#yellow#: mouseOver
 * [blue]#blue#: click
+
+The highlighting is removed after a timeout of 2000 ms. You can set a custom timeout:
+
+.test.properties
+[source, properties,subs="attributes"]
+----
+# Set a custom timeout in ms
+# 0 -> infinite timeout
+# default is 2000
+{demomode_timeout}=5000
+----

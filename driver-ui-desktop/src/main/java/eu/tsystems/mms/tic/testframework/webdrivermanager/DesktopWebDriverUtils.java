@@ -21,13 +21,20 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+import java.awt.Color;
 
 public final class DesktopWebDriverUtils implements Loggable {
-
-    JSUtils utils = new JSUtils();
 
     public DesktopWebDriverUtils() {
 
@@ -35,26 +42,86 @@ public final class DesktopWebDriverUtils implements Loggable {
 
     public void clickAbsolute(UiElement guiElement) {
         log().debug("Absolute navigation and click on: " + guiElement.toString());
-        guiElement.findWebElement(webElement -> utils.clickAbsolute(guiElement.getWebDriver(), webElement));
+        WebDriver driver = guiElement.getWebDriver();
+        guiElement.findWebElement(webElement -> {
+            Point point = webElement.getLocation();
+
+            Actions action = new Actions(driver);
+
+            // goto 0,0
+            action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY());
+
+            // move y, then x
+            action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0);
+
+            // move to webElement
+            action.moveToElement(webElement);
+            action.moveByOffset(1, 1);
+            action.click().perform();
+        });
     }
 
     public void mouseOverAbsolute2Axis(UiElement guiElement) {
-        guiElement.findWebElement(webElement -> utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), webElement));
+        WebDriver driver = guiElement.getWebDriver();
+        guiElement.findWebElement(webElement -> {
+            demoMouseOver(driver, webElement);
+            Actions action = new Actions(driver);
+
+            Point point = webElement.getLocation();
+
+            // goto 0,0
+            action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY()).perform();
+
+            // move y, then x
+            action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0).perform();
+
+            // move to webElement
+            action.moveToElement(webElement).perform();
+        });
     }
 
     public void mouseOverJS(UiElement guiElement) {
-        guiElement.findWebElement(webElement -> utils.mouseOver(guiElement.getWebDriver(), webElement));
+        WebDriver driver = guiElement.getWebDriver();
+        guiElement.findWebElement(webElement -> {
+            demoMouseOver(driver, webElement);
+
+            final String script = "var fireOnThis = arguments[0];"
+                    + "var evObj = document.createEvent('MouseEvents');"
+                    + "evObj.initEvent( 'mouseover', true, true );"
+                    + "fireOnThis.dispatchEvent(evObj);";
+            JSUtils.executeScriptWOCatch(driver, script, webElement);
+        });
     }
 
     public void clickJS(UiElement guiElement) {
-        guiElement.findWebElement(webElement -> utils.click(guiElement.getWebDriver(), webElement));
+        WebDriver driver = guiElement.getWebDriver();
+        guiElement.findWebElement(webElement -> {
+            JSUtils.executeScriptWOCatch(driver, "arguments[0].click();", webElement);
+        });
     }
 
     public void rightClickJS(UiElement guiElement) {
-        guiElement.findWebElement(webElement -> utils.rightClick(guiElement.getWebDriver(), webElement));
+        WebDriver driver = guiElement.getWebDriver();
+        guiElement.findWebElement(webElement -> {
+            final String script = "var element = arguments[0];" +
+                    "var e = element.ownerDocument.createEvent('MouseEvents');" +
+                    "e.initMouseEvent('contextmenu', true, true, element.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,false, false, false,2, null);" +
+                    "return !element.dispatchEvent(e);";
+            JSUtils.executeScriptWOCatch(driver, script, webElement);
+        });
     }
 
     public void doubleClickJS(UiElement guiElement) {
-        guiElement.findWebElement(webElement -> utils.doubleClick(guiElement.getWebDriver(), webElement));
+        guiElement.findWebElement(webElement -> {
+            Point location = webElement.getLocation();
+            JSUtils.executeJavaScriptMouseAction(guiElement.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+        });
+    }
+
+    private void demoMouseOver(final WebDriver webDriver, final WebElement webElement) {
+        if (Testerra.Properties.DEMO_MODE.asBool()) {
+            UiElementHighlighter elementHighlighter = Testerra.getInjector().getInstance(UiElementHighlighter.class);
+            elementHighlighter.highlight(webDriver, webElement, new Color(255, 255, 0));
+        }
     }
 }

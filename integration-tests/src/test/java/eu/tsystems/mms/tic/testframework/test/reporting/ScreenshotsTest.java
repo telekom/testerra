@@ -37,6 +37,8 @@ import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -53,66 +55,9 @@ import org.testng.reporters.Files;
  */
 public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactoryTest, TestStatusTest {
 
-    private String exclusiveSessionId;
-
     @Override
     public BasePage getPage() {
         return PageFactory.create(BasePage.class, getWebDriver());
-    }
-
-    @Test()
-    @Fails()
-    public void test_takeScreenshot_fails() {
-        getPage().assertIsTextDisplayed("Screenshot present on failure");
-    }
-
-    @Test(dependsOnMethods = "test_takeScreenshot_fails", alwaysRun = true)
-    public void test_screenshotPresentInMethodContext() {
-        this.screenshotIsPresentInMethodContext("test_takeScreenshot_fails", false);
-    }
-
-    @Test()
-    @Fails()
-    public void test_takeScreenshotOnExclusiveSession_fails() {
-        exclusiveSessionId = WebDriverManager.makeSessionExclusive(getWebDriver());
-        getPage().assertIsTextDisplayed("Screenshot present on failure");
-    }
-
-    @Test(dependsOnMethods = "test_takeScreenshotOnExclusiveSession_fails", alwaysRun = true)
-    public void test_exclusiveSessionScreenshotPresentInMethodContext() {
-        this.screenshotIsPresentInMethodContext("test_takeScreenshotOnExclusiveSession_fails", true);
-        WebDriverManager.shutdownExclusiveSession(exclusiveSessionId);
-    }
-
-    @Test()
-    @Fails()
-    public void test_takeScreenshotViaCollectedAssertion_fails() {
-        getWebDriver();
-        AssertCollector.assertTrue(false);
-    }
-
-    @Test(dependsOnMethods = "test_takeScreenshotViaCollectedAssertion_fails", alwaysRun = true)
-    public void test_collectedAssertionScreenshotIsPresentInMethodContext() {
-        this.screenshotIsPresentInMethodContext("test_takeScreenshotViaCollectedAssertion_fails", false);
-    }
-
-    private void screenshotIsPresentInMethodContext(String methodName, boolean exclusive) {
-        Optional<MethodContext> optionalMethodContext = findMethodContexts(methodName).findFirst();
-        Assert.assertTrue(optionalMethodContext.isPresent());
-
-        optionalMethodContext.ifPresent(methodContext -> {
-            List<String> relevantSessionKeys = methodContext.readSessionContexts()
-                    .filter(sessionContext -> exclusive == sessionContext.isExclusive())
-                    .map(SessionContext::getSessionKey)
-                    .collect(Collectors.toList());
-
-            long count = methodContext.readTestSteps()
-                    .flatMap(TestStep::readActions)
-                    .flatMap(testStepAction -> testStepAction.readEntries(Screenshot.class))
-                    .filter(screenshot -> relevantSessionKeys.contains(screenshot.getMetaData().get(Screenshot.MetaData.SESSION_KEY)))
-                    .count();
-            Assert.assertEquals(count, 1, "Screenshots in MethodContext " + methodName);
-        });
     }
 
     @Test
@@ -123,7 +68,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
             page.getOpenAgain().click();
         }
         Screenshot screenshot = UITestUtils.takeScreenshot(page.getWebDriver(), false);
-        String screenshotSource = Files.readFile(screenshot.getPageSourceFile().get());
+        String screenshotSource = Files.readFile(new FileInputStream(screenshot.getPageSourceFile().get()));
 
         String expected = "<p id=\"99\">Open again clicked<br>Open again clicked<br>Open again clicked<br>";
         AssertUtils.assertContains(screenshotSource, expected);

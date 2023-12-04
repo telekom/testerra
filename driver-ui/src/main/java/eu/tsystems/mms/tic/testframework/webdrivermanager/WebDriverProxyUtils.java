@@ -22,15 +22,11 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Proxy;
 
 import java.net.URL;
-
-import org.openqa.selenium.Proxy;
 
 public class WebDriverProxyUtils {
 

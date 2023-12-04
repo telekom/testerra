@@ -28,12 +28,12 @@ import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.RunConfig;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import org.testng.ITestResult;
 import org.testng.SkipException;
+
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
@@ -73,7 +73,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
         }
         methodContext.updateEndTimeRecursive(new Date());
 
-        // Only add status count for tests, not config methds
+        // Only add status count for tests, not config methods
         if (methodContext.isTestMethod()) {
             statusCounter.increment(methodContext);
 
@@ -105,6 +105,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
         String logMessage = runConfig.getReportName() + " " + runConfig.RUNCFG + ": " + getCounterInfoMessage();
         log().info(logMessage);
     }
+
     @Override
     public int getTestsFailed() {
         return statusCounter.get(Status.FAILED);
@@ -140,7 +141,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
     public void onTestStatusUpdate(TestStatusUpdateEvent event) {
         MethodContext methodContext = event.getMethodContext();
         finalizeMethod(methodContext);
-        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
+        Testerra.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
     }
 
     @Override

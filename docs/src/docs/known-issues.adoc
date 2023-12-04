@@ -1,4 +1,5 @@
 = Known issues
+include::properties/property-attributes.adoc[]
 
 Because we depend on other frameworks and tools like TestNG and Selenium we may encounter issues that we want to fix, but are bound to releases and fixes in our dependencies.
 
@@ -9,5 +10,9 @@ Every known issue in our dependencies that will lead to an error, an unexpected 
 === Close WebDriver sessions without WebDriverManager
 
 CAUTION: Never close WebDriver sessions calling `WebDriver.quit()`. This may encounter problems or some kind of unexpected issues, because the session is not marked as closed in `WebDriverManager` 's session store.
+
+=== Selenium 4 and browser version
+
+Using a standalone Selenium 4 server (no grid) you must not set browser version via `{browser_setting}` or `{browser_version}`. Your local Selenium 4 server has no information about the versions of your installed browsers and cannot handle version information in your Webdriver request.
 
 

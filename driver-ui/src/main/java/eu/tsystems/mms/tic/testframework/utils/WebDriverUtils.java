@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
@@ -28,15 +28,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
@@ -45,6 +38,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Provides some utilities for handling the Selenium {@link WebDriver}
@@ -78,7 +74,6 @@ public final class WebDriverUtils {
         String finalMainWindowHandle = executionUtils.getFailsafe(mainWebDriver::getWindowHandle).orElse("");
 
         return mainWebDriver.getWindowHandles().stream()
-                .filter(windowHandle -> !windowHandle.equals(finalMainWindowHandle))
                 .map(windowHandle -> mainWebDriver.switchTo().window(windowHandle))
                 .anyMatch(webDriver -> {
                     boolean valid = predicate.test(webDriver);
@@ -103,8 +98,8 @@ public final class WebDriverUtils {
     /**
      * Finds a window by matching title and will switch to it.
      *
-     * @param windowTitle          {@link String} Title of the window to switch to.
-     * @param driver               {@link WebDriver} object or null (then the default session will be used)
+     * @param windowTitle {@link String} Title of the window to switch to.
+     * @param driver {@link WebDriver} object or null (then the default session will be used)
      * @param excludeWindowHandles {@link String} array of window handles that should not be switch to.
      * @return true if switching was successful.
      * @deprecated Use {@link IWebDriverManager#switchToWindow(Predicate)} instead
@@ -117,8 +112,8 @@ public final class WebDriverUtils {
     /**
      * Finds a window by matching title and will switch to it.
      *
-     * @param windowTitle          {@link String}Title of the window to switch to.
-     * @param driver               {@link WebDriver} object or null (then the default session will be used)
+     * @param windowTitle {@link String}Title of the window to switch to.
+     * @param driver {@link WebDriver} object or null (then the default session will be used)
      * @param excludeWindowHandles {@link String} array of window handles that should not be switch to.
      * @return true if switching was successful.
      * @deprecated Use {@link IWebDriverManager#switchToWindow(Predicate)} instead
@@ -191,8 +186,8 @@ public final class WebDriverUtils {
      * Finds an element by it's location using  Selenium features and utilities
      *
      * @param driver {@link WebDriver}
-     * @param x      int - coordinate
-     * @param y      int - coordinate
+     * @param x int - coordinate
+     * @param y int - coordinate
      * @return org.openqa.selenium.WebElement
      */
     public static WebElement findElementByLocation(WebDriver driver, int x, int y) {
@@ -258,14 +253,6 @@ public final class WebDriverUtils {
             driver = efWd.getWrappedDriver();
         }
 
-        if (driver instanceof Proxy) {
-            InvocationHandler invocationHandler = Proxy.getInvocationHandler(driver);
-            if (invocationHandler instanceof WebDriverProxy) {
-                WebDriverProxy webDriverProxy = (WebDriverProxy) invocationHandler;
-                driver = webDriverProxy.getWrappedWebDriver();
-            }
-        }
-
         return driver;
     }
 
@@ -294,15 +281,14 @@ public final class WebDriverUtils {
         return new JSUtils().getViewport(webDriver);
     }
 
-
     /**
      * Initialize a {@link WebDriverKeepAliveSequence} and runs it with {@link Timer} in given interval.
      * This will keep the {@link WebDriver} alive, when acting with another driver in same test or waiting for something to happen in main thread.
      * NOTE: Please use this method with care AND clean up your Sequence by calling {@link WebDriverUtils#removeKeepAliveForWebDriver(WebDriver)}
      *
-     * @param driver                     {@link WebDriver}
+     * @param driver {@link WebDriver}
      * @param intervalSleepTimeInSeconds int
-     * @param durationInSeconds          int
+     * @param durationInSeconds int
      * @return WebDriverKeepAliveSequence
      */
     public static WebDriverKeepAliveSequence keepWebDriverAlive(final WebDriver driver, final int intervalSleepTimeInSeconds, int durationInSeconds) {

@@ -19,11 +19,12 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.model.steps;
+package eu.tsystems.mms.tic.testframework.report.model.steps;
 
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.LogMessage;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;

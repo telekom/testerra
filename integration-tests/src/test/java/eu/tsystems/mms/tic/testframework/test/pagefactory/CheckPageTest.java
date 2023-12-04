@@ -26,11 +26,13 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheck
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsNotDisplayed;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsNotPresent;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCheckRuleIsPresent;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithCollectedAndOptionalElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNonCheckableCheck;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithNullElement;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithOptionalElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.testng.annotations.Test;
@@ -80,6 +82,25 @@ public class CheckPageTest extends AbstractTestSitesTest implements PageFactoryP
     @Test()
     public void testT09_checkCheckRule_IsNotPresent() {
         PAGE_FACTORY.createPage(PageWithCheckRuleIsNotPresent.class, getClassExclusiveWebDriver());
+    }
+
+    @Test
+    public void testT10_checkOptionalElement_IsNotPresent() {
+        PAGE_FACTORY.createPage(PageWithOptionalElement.class, getClassExclusiveWebDriver());
+    }
+
+    // Cannot checked with 'expectedException' because TestNG test result is changed by Testerra
+    // {@link eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker}
+//    @Test(expectedExceptions = UiElementAssertionError.class)
+//    public void testT11_checkCollectedElement() {
+//        PAGE_FACTORY.createPage(PageWithCollectedElement.class, getClassExclusiveWebDriver());
+//    }
+
+    @Test
+    public void testT12_checkCollectedAndOptionalElements_IsNotPresent() {
+        // The used page is bad practice, but possible:
+        // In case of 'optional' AND 'collected' elements the 'optional' wins.
+        PAGE_FACTORY.createPage(PageWithCollectedAndOptionalElement.class, getClassExclusiveWebDriver());
     }
 
 }

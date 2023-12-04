@@ -53,7 +53,7 @@ public final class Report {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014report.proto\022\004data\032\017framework.proto\"\232\006" +
+      "\n\014report.proto\022\004data\032\017framework.proto\"\303\006" +
       "\n\022ExecutionAggregate\0221\n\021execution_contex" +
       "t\030\001 \001(\0132\026.data.ExecutionContext\022C\n\016suite" +
       "_contexts\030\002 \003(\0132+.data.ExecutionAggregat" +
@@ -64,18 +64,19 @@ public final class Report {
       "method_contexts\030\005 \003(\0132,.data.ExecutionAg" +
       "gregate.MethodContextsEntry\022G\n\020session_c" +
       "ontexts\030\006 \003(\0132-.data.ExecutionAggregate." +
-      "SessionContextsEntry\032H\n\022SuiteContextsEnt" +
-      "ry\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\0132\022.data.Su" +
-      "iteContext:\0028\001\032F\n\021TestContextsEntry\022\013\n\003k" +
-      "ey\030\001 \001(\t\022 \n\005value\030\002 \001(\0132\021.data.TestConte" +
-      "xt:\0028\001\032H\n\022ClassContextsEntry\022\013\n\003key\030\001 \001(" +
-      "\t\022!\n\005value\030\002 \001(\0132\022.data.ClassContext:\0028\001" +
-      "\032J\n\023MethodContextsEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005" +
-      "value\030\002 \001(\0132\023.data.MethodContext:\0028\001\032L\n\024" +
-      "SessionContextsEntry\022\013\n\003key\030\001 \001(\t\022#\n\005val" +
-      "ue\030\002 \001(\0132\024.data.SessionContext:\0028\001B2\n.eu" +
-      ".tsystems.mms.tic.testframework.report.m" +
-      "odelP\001b\006proto3"
+      "SessionContextsEntry\022\'\n\014test_metrics\030\007 \001" +
+      "(\0132\021.data.TestMetrics\032H\n\022SuiteContextsEn" +
+      "try\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\0132\022.data.S" +
+      "uiteContext:\0028\001\032F\n\021TestContextsEntry\022\013\n\003" +
+      "key\030\001 \001(\t\022 \n\005value\030\002 \001(\0132\021.data.TestCont" +
+      "ext:\0028\001\032H\n\022ClassContextsEntry\022\013\n\003key\030\001 \001" +
+      "(\t\022!\n\005value\030\002 \001(\0132\022.data.ClassContext:\0028" +
+      "\001\032J\n\023MethodContextsEntry\022\013\n\003key\030\001 \001(\t\022\"\n" +
+      "\005value\030\002 \001(\0132\023.data.MethodContext:\0028\001\032L\n" +
+      "\024SessionContextsEntry\022\013\n\003key\030\001 \001(\t\022#\n\005va" +
+      "lue\030\002 \001(\0132\024.data.SessionContext:\0028\001B2\n.e" +
+      "u.tsystems.mms.tic.testframework.report." +
+      "modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -87,7 +88,7 @@ public final class Report {
     internal_static_data_ExecutionAggregate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ExecutionAggregate_descriptor,
-        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", "SessionContexts", });
+        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", "SessionContexts", "TestMetrics", });
     internal_static_data_ExecutionAggregate_SuiteContextsEntry_descriptor =
       internal_static_data_ExecutionAggregate_descriptor.getNestedTypes().get(0);
     internal_static_data_ExecutionAggregate_SuiteContextsEntry_fieldAccessorTable = new

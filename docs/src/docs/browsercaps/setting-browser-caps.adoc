@@ -1,0 +1,83 @@
+= User agent configuration
+
+The user agent configuration is most precise, because it provides explicit browser options based on the Selenium driver.
+
+The setting applies to all created sessions for a browser type (_global_).
+
+[source, java]
+----
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
+
+WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+    options.addPreference("intl.accept_languages", "de-DE");
+});
+----
+
+Non-standard capabilities need a vendor prefix and can be set as follows:
+
+[source,java]
+----
+Map<String, Object> customCaps = new HashMap<>();
+customCaps.put("foo", "bar");
+
+WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+    options.setCapability("custom:caps", customCaps);
+});
+----
+
+[NOTE]
+====
+* Have a look into <<Browser specific knowledge>> for specific browser options.
+* See https://www.w3.org/TR/webdriver1/#capabilities[here] a list of W3C conform capabilities.
+====
+
+= Request capabilities
+
+Some WebDriverRequests support setting capabilities, like the `DesktopWebDriverRequest`. It's used to specify a single WebDriver session.
+
+.Set capabilities to a DesktopWebDriverRequest object
+[source,java]
+----
+DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+MutableCapabilities caps = request.getMutableCapabilities();
+caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+
+// Start your session with the DesktopWebDriverRequest object
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+----
+
+[NOTE]
+=====
+* Have a look into <<Browser specific knowledge>> for specific browser options.
+* Find some more details for `DesktopWebDriverRequest` at <<_request_configuration>>.
+* Since Selenium 4 browser options should use instead of `DesiredCapabilties` (https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4). +
+Therefore `request.getDesiredCapabilities()` is deprecated.
+=====
+
+= Global capabilities with `WEB_DRIVER_MANAGER` (*@deprecated*)
+
+NOTE: This feature is deprecated, please use <<User agent configuration>>
+
+You can customize your browser session by setting capabilities for every browser type.
+
+Be in mind that not every browser could handle all types of capabilities.
+
+[source,java]
+----
+WEB_DRIVER_MANAGER.setGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+WEB_DRIVER_MANAGER.removeGlobalCapability(CapabilityType.ACCEPT_INSECURE_CERTS);
+----
+
+[IMPORTANT]
+====
+Do NOT set browser capabilities with WebDriverManager. This will added to the capabilities to all browser types!
+
+[source, java]
+----
+FirefoxOptions options = new FirefoxOptions();
+options.addPreference("intl.accept_languages", "de-DE");
+// This cannot be merged correctly!
+WEB_DRIVER_MANAGER.setGlobalCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
+----
+
+====

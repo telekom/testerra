@@ -1,0 +1,6 @@
+= Selenium 4
+
+include::selenium4/selenium4-common.adoc[leveloffset=+1]
+include::selenium4/selenium4-changes.adoc[leveloffset=+1]
+include::selenium4/selenium4-webdriver-bidi.adoc[leveloffset=+1]
+include::selenium4/selenium4-cdp.adoc[leveloffset=+1]

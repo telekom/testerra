@@ -26,20 +26,23 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Scopes;
 import com.google.inject.util.Modules;
 import eu.tsystems.mms.tic.testframework.events.ModulesInitializedEvent;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
-import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
-import eu.tsystems.mms.tic.testframework.internal.SequenceIdGenerator;
 import eu.tsystems.mms.tic.testframework.logging.MethodContextLogAppender;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.DefaultTestNGContextGenerator;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -51,17 +54,11 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.DefaultConfiguration;
-import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This is the core main class where everything begins.
  * Using this method will initialize Testerra and all its modules.
+ *
  * @author Mike Reiche <mike.reiche@t-systems.com>
  */
 public class Testerra {
@@ -69,7 +66,8 @@ public class Testerra {
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
         MONITOR_MEMORY("tt.monitor.memory", true),
-        DEMO_MODE("tt.demomode",false),
+        DEMO_MODE("tt.demomode", false),
+        DEMO_MODE_TIMEOUT("tt.demomode.timeout", 2000),
         @Deprecated
         SELENIUM_SERVER_HOST("tt.selenium.server.host", null),
         @Deprecated
@@ -78,10 +76,11 @@ public class Testerra {
         BASEURL("tt.baseurl", null),
         WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD("webdriver.timeouts.seconds.pageload", 120),
         WEBDRIVER_TIMEOUT_SECONDS_SCRIPT("webdriver.timeouts.seconds.script", 120),
-        WEBDRIVER_TIMEOUT_SECONDS_RETRY("webdriver.timeouts.seconds.retry", 10),
+        SELENIUM_WEBDRIVER_CREATE_RETRY("tt.selenium.webdriver.create.retry", 10),
+        SELENIUM_REMOTE_TIMEOUT_READ("tt.selenium.remote.timeout.read", 90),
+        SELENIUM_REMOTE_TIMEOUT_CONNECTION("tt.selenium.remote.timeout.connection", 10),
         PERF_TEST("tt.perf.test", false),
         PERF_GENERATE_STATISTICS("tt.perf.generate.statistics", false),
-        REUSE_DATAPROVIDER_DRIVER_BY_THREAD("tt.reuse.dataprovider.driver.by.thread", false),
         /**
          * @deprecated Use {@link WebDriverRequest#getServerUrl()} instead
          */
@@ -161,14 +160,18 @@ public class Testerra {
     }
 
     /**
-     * We initialize the IoC modules in class name order,
+     * We initialize the IoC modules in a custom class name order,
      * and override each previously configured module with the next.
+     * <p>
+     * The custom comparator is needed to prevent that custom modules are initialized before
+     * the Testerra core modules 'CoreHook', 'DriverUiHook', 'DriverUi_Desktop'. So Testerra core modules cannot
+     * overwrite custom implementations (of factories, providers etc.) but custom modules can do this to inject their own behaviour.
      */
     private static Injector initIoc() {
-        Reflections reflections = new Reflections(TesterraListener.DEFAULT_PACKAGE);
+        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFAULT_PACKAGES));
         Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-        TreeMap<String, Module> sortedModules = new TreeMap<>();
+        TreeMap<String, Module> sortedModules = new TreeMap<>(new ModuleComparator());
 
         // Override each module with next
         Module prevModule = null;
@@ -182,9 +185,9 @@ public class Testerra {
             LOGGER.info(String.format("Register IoC modules: %s", String.join(", ", sortedModules.keySet())));
             for (Module overrideModule : sortedModules.values()) {
                 if (overrideModule instanceof ModuleHook) {
-                    moduleHooks.add((ModuleHook)overrideModule);
+                    moduleHooks.add((ModuleHook) overrideModule);
                 }
-                if (prevModule!=null) {
+                if (prevModule != null) {
                     overrideModule = Modules.override(prevModule).with(overrideModule);
                 }
                 prevModule = overrideModule;

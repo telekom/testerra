@@ -23,9 +23,11 @@
 :wdm_timeouts_window_switch:                    tt.wdm.timeouts.seconds.window.switch.duration
 :webdriver_timeouts_seconds_pageload:           webdriver.timeouts.seconds.pageload
 :webdriver_timeouts_seconds_script:             webdriver.timeouts.seconds.script
+:selenium_webdriver_create_retry:               tt.selenium.webdriver.create.retry
+:selenium_remote_timeout_read:                  tt.selenium.remote.timeout.read
+:selenium_remote_timeout_connection:            tt.selenium.remote.timeout.connection
 
 // pagefactory
-:project_package:                               tt.project.package
 :page_factory_loops:                            tt.page.factory.loops
 
 // guielement
@@ -41,7 +43,6 @@
 :list_tests:                                    tt.report.list.tests
 :runcfg:                                        tt.runcfg
 :screenshotter_active:                          tt.screenshotter.active
-:report_screenshots_preview:                    tt.screenshots.preview
 :screenshot_on_pageload:                        tt.screenshot.on.pageload
 :screencaster_active:                           tt.screencaster.active
 :screencaster_active_on_failed:                 tt.screencaster.active.on.failed
@@ -50,12 +51,12 @@
 // execution
 :dryrun:                                        tt.dryrun
 :demomode:                                      tt.demomode
+:demomode_timeout:                              tt.demomode.timeout
 :on_state_testfailed_skip_shutdown:             tt.on.state.testfailed.skip.shutdown
 :on_state_testfailed_skip_following_tests:      tt.on.state.testfailed.skip.following.tests
 :failed_tests_if_throwable_classes:             tt.failed.tests.if.throwable.classes
 :failed_tests_if_throwable_messages:            tt.failed.tests.if.throwable.messages
 :failed_tests_max_retries:                      tt.failed.tests.max.retries
-:reuse_dataprovider_driver_by_thread:           tt.reuse.dataprovider.driver.by.thread
 :execution_omit_indevelopment:                  tt.execution.omit.indevelopment
 
 :watchdog_enable:                               tt.watchdog.enable
@@ -77,7 +78,7 @@
 :layoutcheck_distance_template:                 tt.layoutcheck.distance.nametemplate
 :layoutcheck_distance_path:                     tt.layoutcheck.distance.path
 :layoutcheck_actual_path:                       tt.layoutcheck.actual.path
-:layoutcheck_pixel_rgb_deviation_percent:       tt.layout.pixel.rgb.deviation.percent
+:layoutcheck_pixel_rgb_deviation_percent:       tt.layoutcheck.pixel.rgb.deviation.percent
 
 :layoutcheck_match_threshold:                   tt.layoutcheck.match.threshold
 :layoutcheck_displacement_threshold:            tt.layoutcheck.displacement.threshold
@@ -105,8 +106,9 @@
 // :layoutcheck_assert_info_mode:                  tt.layoutcheck.assert.info.mode
 
 // source utils
-:source_utils_root:                             tt.module.source.root
-:source_utils_line_prefetch:                    tt.source.lines.prefetch
+:source_utils_root:                             tt.report.source.root
+:source_utils_line_prefetch:                    tt.report.source.lines.prefetch
+:source_exclusion_regex:                        tt.report.source.exclusion.regex
 :source_utils_activate_sources:                 tt.report.activate.sources
 
 // perf

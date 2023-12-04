@@ -1,7 +1,6 @@
 test-report
 **/report-testsundertest-*
 .gradle
-gradle
 *.iml
 .idea
 target
@@ -9,7 +8,6 @@ licenses
 *.zip
 out
 build
-gradlew
 /bin/
 /.classpath
 /.project
@@ -18,7 +16,13 @@ gradlew
 
 /license3rdparty/
 !/license3rdparty/*.md
+!/mail-connector/src/test/resources/*.zip
 /integration-tests/logs/pre-test-log4j.log
 /integration-tests/pretest-status/
 /integration-tests/report-pretest/
 /integration-tests/chromedriver.exe
+/report-ng/app/static/assets/model/
+/report-ng-tests/src/test/resources/reports/report-generated-status/
+/report-ng-tests/src/test/resources/reports/report-extended-status/
+/report-ng-tests/src/test/resources/screenreferences/distance/
+/report-ng-tests/src/test/resources/screenreferences/actual/

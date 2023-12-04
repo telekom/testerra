@@ -25,11 +25,9 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFactoryProvider {
@@ -39,10 +37,6 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
         return TestPage.LAYOUT;
     }
 
-    private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(getWebDriver(), LOCATE.byQa(qaTag));
-    }
-
     private UiElement getUIElementQa(final String qaTag) {
         return new DefaultUiElementFactory().createWithWebDriver(getWebDriver(), LOCATE.byQa(qaTag));
     }
@@ -50,61 +44,52 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFac
     @Test
     public void testT01_CheckElementLayout() {
         UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        uiElement.expect().screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
+        uiElement.expect().screenshot().pixelDistance("TestArticleElement").isLowerThan(1.3);
 
         uiElement = getUIElementQa("section/invisibleTestArticle");
-        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
+        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticleElement").isLowerThan(1.3);
     }
 
     @Test
     public void testT02_CheckElementLayoutWithSubfolder() {
-        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertScreenshot("subfolder/TestArticle", 1.3);
+        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
+        uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticleElement").isLowerThan(1.3);
 
-        guiElement = getGuiElementQa("section/invisibleTestArticle");
-        guiElement.asserts().assertScreenshot("subfolder/InvisibleTestArticle", 1.3);
+        uiElement = getUIElementQa("section/invisibleTestArticle");
+        uiElement.assertThat().screenshot().pixelDistance("subfolder/InvisibleTestArticleElement").isLowerThan(1.3);
     }
 
     @Test
     public void testT03_CheckElementVisibility() {
-        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        Page helperPage = new Page(guiElement.getWebDriver());
+        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
+        Page helperPage = new Page(uiElement.getWebDriver());
         int top = helperPage.expect().viewport().top().getActual();
 
-        guiElement.asserts().assertVisible(true);
-        Assert.assertTrue(guiElement.isVisible(true));
+        uiElement.assertThat().visibleFull().is(true);
 
-        guiElement = getGuiElementQa("section/invisibleTestArticle");
-        guiElement.asserts().assertNotVisible();
-        Assert.assertFalse(guiElement.isVisible(true));
+        uiElement = getUIElementQa("section/invisibleTestArticle");
+        uiElement.assertThat().visibleFull().is(false);
 
-        // Scroll to offset doesn't work
-        //guiElement.scrollToElement(300);
-        //Assert.assertFalse(guiElement.isVisible(true));
-
-        guiElement.scrollIntoView();
-
+        uiElement.scrollIntoView();
         helperPage.expect().viewport().top().isGreaterThan(top);
 
-        Assert.assertTrue(guiElement.isVisible(true));
-        guiElement.asserts().assertVisible(true);
+        uiElement.assertThat().visibleFull().is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT04_CheckElementLayoutDistance_fails() {
-        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
+        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
+        uiElement.assertThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT05_CheckElementLayoutSize_fails() {
-        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertScreenshot("TestArticle-90-percent-width", 1);
+        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
+        uiElement.assertThat().screenshot().pixelDistance("TestArticle-90-percent-width").isLowerThan(1);
     }
 
     @Test
     public void testT06_CheckPageLayout() {
         LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
     }
-
 }

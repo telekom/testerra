@@ -24,14 +24,17 @@
 ## About Testerra
 
 <p align="center">
-    <img src="docs/src/images/s_Testerra_Logo_0256px.png" alt="Testerra logo">
+    <picture>
+        <source media="(prefers-color-scheme: light)" srcset="./docs/src/images/s_Testerra_Logo_0256px.png">
+        <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="./docs/src/images/w_Testerra_Logo_0256px.png">
+    </picture>
 </p>
 
 It is an integrated Java framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components.
 
 You may see Testerra as an open source test automation library for web frontend testing. It provides a tool suite for many use cases: a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), enhanced reporting functionality, a utility collection and some additional helpful modules.
 
-Testerra is developed by our Test Automation Experts at T-Systems MMS in Dresden. In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
+Testerra is developed by our Test Automation Experts at Telekom MMS in Dresden. In numerous projects Testerra is used as the standard test automation framework and includes the experience of more then 10 years of test automation.
 
 **This is the branch of Testerra 2. For Testerra 1 go to https://github.com/telekom/testerra/tree/testerra1** 
 
@@ -42,8 +45,8 @@ Include the following dependency in your project.
 Gradle:
 ```groovy
 dependencies {
-    implementation 'io.testerra:driver-ui-desktop:2.0'
-    implementation 'io.testerra:report-ng:2.0'
+    implementation 'io.testerra:driver-ui-desktop:2.6'
+    implementation 'io.testerra:report-ng:2.6'
 }
 ```
 
@@ -53,15 +56,17 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2.0</version>
+        <version>2.6</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.0</version>
+        <version>2.6</version>
     </dependency>
 </dependencies>
 ```
+
+Testerra requires **JDK11** or later and uses **Selenium 4**.
 
 ### Using Testerra functionality
 
@@ -85,7 +90,7 @@ public class MyTest extends TesterraTest implements UiElementFinderFactoryProvid
 
 * Check out our comprehensive [Testerra 2 documentation](https://docs.testerra.io/testerra/2-latest/index.html)!
 * Feel free to try out our ready-to-use [Skeleton project][testerra-skeleton].
-* Some more Testerra features can be found [here][testerra-demo].
+* Some more features can be found [in the Testerra demo project][testerra-demo].
 
 ## Extras
 
@@ -168,7 +173,7 @@ The following channels are available for discussions, feedback, and support requ
 
 [testerra]: https://github.com/telekom/testerra
 [testerra-skeleton]: https://github.com/telekom/testerra-skeleton
-[testerra-demo]: https://github.com/T-Systems-MMS/testerra-demo
+[testerra-demo]: https://github.com/telekom-mms/testerra-demo
 [testerra-selenoid-connector]: https://github.com/telekom/testerra-selenoid-connector
 [testerra-hpqc-connector]: https://github.com/telekom/testerra-hpqc-connector
 [testerra-teamcity-connector]: https://github.com/telekom/testerra-teamcity-connector

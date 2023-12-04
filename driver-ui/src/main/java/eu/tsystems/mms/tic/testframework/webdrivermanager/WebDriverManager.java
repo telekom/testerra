@@ -19,21 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -41,6 +33,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Provides threadsafe WebDriver and Selenium objects. These objects are needed for correct logging and reporting.
@@ -56,11 +54,6 @@ public final class WebDriverManager {
     static {
         UITestUtils.initializePerfTest();
     }
-
-    /**
-     * @deprecated Use {@link WebDriverRequest#DEFAULT_SESSION_KEY} instead
-     */
-    public static final String DEFAULT_SESSION_KEY = WebDriverRequest.DEFAULT_SESSION_KEY;
 
     /**
      * WebDriverManager configuration set. Modify by config() call!
@@ -80,10 +73,11 @@ public final class WebDriverManager {
     /**
      * Adds extra capability to desired capabilities.
      *
-     * @param key   The key of the capability to set.
+     * @param key The key of the capability to set.
      * @param value The value of the capability to set.
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     public static void setGlobalExtraCapability(final String key, final Object value) {
         addGlobalCapability(key, value);
     }
@@ -102,9 +96,9 @@ public final class WebDriverManager {
     /**
      * Get all set extra capabilities (not the DesiredCapabilities that are set automatically
      *
-     * @return
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     public static Map<String, Object> getGlobalExtraCapabilities() {
         return WebDriverCapabilities.getGlobalExtraCapabilities();
     }
@@ -112,10 +106,11 @@ public final class WebDriverManager {
     /**
      * Adds a capability.
      *
-     * @param key   The key of the capability to set.
+     * @param key The key of the capability to set.
      * @param value The value of the capability to set.
      * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     private static void addGlobalCapability(String key, Object value) {
         WebDriverCapabilities.addGlobalCapability(key, value);
     }
@@ -124,7 +119,9 @@ public final class WebDriverManager {
      * Remove extra capability from capabilities.
      *
      * @param key The key of the capability to remove.
+     * @deprecated Configure capabilities on your {@link WebDriverRequest}
      */
+    @Deprecated
     public static void removeGlobalExtraCapability(final String key) {
         WebDriverCapabilities.removeGlobalExtraCapability(key);
     }
@@ -135,7 +132,7 @@ public final class WebDriverManager {
      * @return instance of WebDriver object.
      */
     public static WebDriver getWebDriver() {
-        return getWebDriver(DEFAULT_SESSION_KEY);
+        return getWebDriver(WebDriverRequest.DEFAULT_SESSION_KEY);
     }
 
     /**
@@ -160,13 +157,13 @@ public final class WebDriverManager {
      * @param driver .
      */
     public static void introduceWebDriver(final WebDriver driver) {
-        introduceWebDriver(DEFAULT_SESSION_KEY, driver);
+        introduceWebDriver(WebDriverRequest.DEFAULT_SESSION_KEY, driver);
     }
 
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
-     * @param driver     .
+     * @param driver .
      * @param sessionKey .
      */
     public static void introduceWebDriver(final String sessionKey, final WebDriver driver) {
@@ -184,19 +181,17 @@ public final class WebDriverManager {
 
     /**
      * Closes all windows and active Selenium and/or WebDriver instances.
+     *
      * @deprecated Use {@link IWebDriverManager#shutdownAllThreadSessions()} instead
      */
     public static void forceShutdown() {
         WebDriverSessionsManager.shutdownAllThreadSessions();
-        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
-            String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-            DriverStorage.removeSpecificDriver(testMethodName);
-        }
     }
 
     /**
      * @deprecated Use {@link IWebDriverManager#shutdownAllThreadSessions()} instead
      */
+    @Deprecated
     public static void shutdown() {
         forceShutdown();
     }
@@ -229,7 +224,6 @@ public final class WebDriverManager {
      * @return true is js is activated, false otherwise
      */
     public static boolean isJavaScriptActivated(final WebDriver driver) {
-
 
         return pIsJavaScriptActivated(driver);
     }
@@ -275,23 +269,11 @@ public final class WebDriverManager {
 
     /**
      * Are you sure you want do that?? This action quits all browser sessions in all threads.
-     * Does not close windows when executeCloseWindows == false.
-     *
-     * @deprecated Use forceShotDownAllThreads, does the same thing, but sounds more dangerous.
-     */
-//    @Deprecated
-//    public static void shutdownAllThreads() {
-//        pRealShutdownAllThreads(false);
-//    }
-
-    /**
-     * Are you sure you want do that?? This action quits all browser sessions in all threads.
      */
     @Deprecated
     public static void forceShutdownAllThreads() {
         LOGGER.info("Forcing all WebDrivers to shutdown (close all windows)");
         WebDriverSessionsManager.shutdownAllSessions();
-        WDInternal.cleanupDriverReferencesInCurrentThread();
     }
 
     /**
@@ -333,6 +315,7 @@ public final class WebDriverManager {
 
     /**
      * Sets the locale for a specified session
+     *
      * @param webDriver
      * @param locale
      * @return TRUE if locale has been set
@@ -347,11 +330,12 @@ public final class WebDriverManager {
 
     /**
      * Returns the session locale
+     *
      * @param webDriver
      */
     public static Optional<Locale> getSessionLocale(WebDriver webDriver) {
         return WebDriverSessionsManager.getSessionContext(webDriver)
                 .map(SessionContext::getMetaData)
-                .map(map -> (Locale)map.get(SESSION_LOCALE));
+                .map(map -> (Locale) map.get(SESSION_LOCALE));
     }
 }

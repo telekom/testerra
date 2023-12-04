@@ -25,13 +25,15 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
+import jakarta.mail.Flags;
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.NoSuchProviderException;
+import jakarta.mail.Store;
+
 import java.util.Properties;
-import javax.mail.Flags.Flag;
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Store;
+
 
 /**
  * MailConnector using the IMAP Protocol. Creates a session with values from mailconnection.properties.
@@ -103,7 +105,7 @@ public class ImapMailConnector extends AbstractInboxConnector implements Loggabl
             folder.open(Folder.READ_WRITE);
             final Message[] messages = folder.getMessages();
             for (Message message : messages) {
-                message.setFlag(Flag.SEEN, true);
+                message.setFlag(Flags.Flag.SEEN, true);
             }
             store.close();
         } catch (final NoSuchProviderException e) {

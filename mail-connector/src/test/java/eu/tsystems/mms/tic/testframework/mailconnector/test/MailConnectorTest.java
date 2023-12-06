@@ -34,8 +34,8 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.EmailAttachment;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.EmailQuery;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import jakarta.mail.Address;
 import jakarta.mail.Message.RecipientType;
@@ -80,7 +80,7 @@ import java.util.stream.Stream;
  *
  * @author mrgi, tbmi
  */
-public class MailConnectorTest extends TesterraTest implements Loggable {
+public class MailConnectorTest extends TesterraTest implements Loggable, AssertProvider {
 
     // CONSTANTS
     /**
@@ -650,7 +650,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
      * Creates a default test message.
      *
      * @param mailSession Session to be used for Mail.
-     * @param subject     Subject of mail.
+     * @param subject Subject of mail.
      * @return MimeMessage object.
      */
     private MimeMessage createDefaultMessage(Session mailSession, String subject) {
@@ -718,7 +718,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
      *
-     * @param msg                    the TesterraMail-message to delete
+     * @param msg the TesterraMail-message to delete
      * @param abstractInboxConnector mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message
      */
@@ -768,6 +768,6 @@ public class MailConnectorTest extends TesterraTest implements Loggable {
         Assert.assertEquals(emails.count(), 0);
         long endTime = System.currentTimeMillis() - startTime;
 
-        AssertUtils.assertGreaterEqualThan(new BigDecimal(endTime), new BigDecimal(initPause * initRetry), "Invalid polling time");
+        ASSERT.assertGreaterEqualThan(new BigDecimal(endTime), new BigDecimal(initPause * initRetry), "Invalid polling time");
     }
 }

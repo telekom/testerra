@@ -145,10 +145,10 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
 
     }
 
-    @Override
-    public void assertLayout(ILayout layout) {
-
-    }
+//    @Override
+//    public void assertLayout(ILayout layout) {
+//
+//    }
 
     @Override
     public void assertCssClassIsPresent(String className) {

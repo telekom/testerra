@@ -151,10 +151,10 @@ public class LegacyGuiElementAssertWrapper implements GuiElementAssert {
         this.guiElement.sendKeys(t).expect().value().length().isBetween(length - 1, length + 1);
     }
 
-    @Override
-    public void assertLayout(ILayout layout) {
-        layout.checkOn(this.guiElement, this.useAssertion);
-    }
+//    @Override
+//    public void assertLayout(ILayout layout) {
+//        layout.checkOn(this.guiElement, this.useAssertion);
+//    }
 
     @Override
     public void assertCssClassIsPresent(final String className) {

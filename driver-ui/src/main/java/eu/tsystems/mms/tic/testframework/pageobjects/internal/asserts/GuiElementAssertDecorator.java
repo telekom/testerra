@@ -283,17 +283,17 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert, Log
         handleAfterAssertion("assertInputFieldLength = " + length, thrownAssertionError);
     }
 
-    @Override
-    public void assertLayout(ILayout layout) {
-        callBeforeAssertion();
-        AssertionError thrownAssertionError = null;
-        try {
-            decoratedAssert.assertLayout(layout);
-        } catch (AssertionError e) {
-            thrownAssertionError = e;
-        }
-        handleAfterAssertion("assertLayout " + layout, thrownAssertionError);
-    }
+//    @Override
+//    public void assertLayout(ILayout layout) {
+//        callBeforeAssertion();
+//        AssertionError thrownAssertionError = null;
+//        try {
+//            decoratedAssert.assertLayout(layout);
+//        } catch (AssertionError e) {
+//            thrownAssertionError = e;
+//        }
+//        handleAfterAssertion("assertLayout " + layout, thrownAssertionError);
+//    }
 
     @Override
     public void assertCssClassIsPresent(final String className) {

@@ -27,9 +27,6 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-/**
- * @todo Incomplete
- */
 public class AssertionsTest extends TesterraTest implements AssertProvider {
 
     @Test

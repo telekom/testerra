@@ -27,18 +27,11 @@ import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.UiElementShad
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.net.MalformedURLException;
 
 public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiElementShadowRootPage> implements PageFactoryTest, UiElementFinderFactoryProvider {
 
@@ -83,17 +76,15 @@ public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiEl
         page.shadowContentInput.assertThat().value().isContaining(expectedText);
     }
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test(expectedExceptions = UiElementAssertionError.class)
     public void testT03_ShadowRoot_find_byClassName_fails() {
         UiElement shadowRootElement = getPage().shadowRootElement;
-        Assert.assertTrue(shadowRootElement.find(XPath.from("div").classes("shadow-content")).waitFor().displayed(true));
         shadowRootElement.find(By.className("shadow-content")).expect().present(true);
     }
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test(expectedExceptions = UiElementAssertionError.class)
     public void testT04_ShadowRoot_findById_fails() {
         UiElement shadowRootElement = getPage().shadowRootElement;
-        Assert.assertTrue(shadowRootElement.find(XPath.from("div").attribute("id", "shadow-content")).waitFor().displayed(true));
         shadowRootElement.findById("shadow-content").expect().present(true);
     }
 }

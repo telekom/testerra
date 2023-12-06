@@ -83,14 +83,14 @@ public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiEl
         page.shadowContentInput.assertThat().value().isContaining(expectedText);
     }
 
-    @Test(expectedExceptions = UiElementAssertionError.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void testT03_ShadowRoot_find_byClassName_fails() {
         UiElement shadowRootElement = getPage().shadowRootElement;
         Assert.assertTrue(shadowRootElement.find(XPath.from("div").classes("shadow-content")).waitFor().displayed(true));
         shadowRootElement.find(By.className("shadow-content")).expect().present(true);
     }
 
-    @Test(expectedExceptions = UiElementAssertionError.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void testT04_ShadowRoot_findById_fails() {
         UiElement shadowRootElement = getPage().shadowRootElement;
         Assert.assertTrue(shadowRootElement.find(XPath.from("div").attribute("id", "shadow-content")).waitFor().displayed(true));

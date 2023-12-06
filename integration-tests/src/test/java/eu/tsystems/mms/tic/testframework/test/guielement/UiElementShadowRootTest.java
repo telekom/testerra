@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -23,26 +23,24 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.UiElementShadowDomMenuPage;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.UiElementShadowDomWeatherPage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.UiElementShadowRootPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 
-public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiElementShadowRootPage> implements PageFactoryTest {
+public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiElementShadowRootPage> implements PageFactoryTest, UiElementFinderFactoryProvider {
 
     @Override
     protected TestPage getTestPage() {
@@ -61,7 +59,13 @@ public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiEl
         final UiElementShadowRootPage page = getPage();
 
         TestStep.begin("Step 2 - Assert correct visibility");
-        page.assertShadowRootVisibility();
+
+        // shadow root is never displayed but present
+        page.shadowRootElement.assertThat().present(true);
+        // sub elements from shadow root are displayed
+        page.shadowContent.assertThat().displayed(true);
+        // shadowContentInput.assertThat().displayed(true);
+        page.shadowContentParagraph.assertThat().displayed(true);
     }
 
     @Test
@@ -76,7 +80,7 @@ public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiEl
         page.typeText(expectedText);
 
         TestStep.begin("Step 3 - assert '" + expectedText + "' is in displayed in shadow root input");
-        page.assertInputText(expectedText);
+        page.shadowContentInput.assertThat().value().isContaining(expectedText);
     }
 
     @Test(expectedExceptions = UiElementAssertionError.class)
@@ -91,47 +95,5 @@ public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiEl
         UiElement shadowRootElement = getPage().shadowRootElement;
         Assert.assertTrue(shadowRootElement.find(XPath.from("div").attribute("id", "shadow-content")).waitFor().displayed(true));
         shadowRootElement.findById("shadow-content").expect().present(true);
-    }
-
-    @Test
-    public void testT05_ShadowRoot_external_page() throws MalformedURLException {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBaseUrl("https://examples.code-fever.de/2020/selenium-shadow-root/demosite/");
-        request.setServerUrl("http://grid3.testauto.mms-at-work.de:4444/wd/hub");
-        request.setBrowser(Browsers.firefox);
-        request.setBrowserVersion("99");
-        request.getDesiredCapabilities().setCapability("enableVNC", true);
-
-        UiElementShadowRootPage page = PAGE_FACTORY.createPage(UiElementShadowRootPage.class, WEB_DRIVER_MANAGER.getWebDriver(request));
-        page.assertShadowRootVisibility();
-        log().info(page.shadowContentParagraph.waitFor().text().getActual());
-    }
-
-    @Test
-    public void testT05_ShadowRoot_external_weather_page() throws MalformedURLException {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBaseUrl("https://react-shadow.herokuapp.com/Berlin");
-        request.setBrowser(Browsers.chrome);
-        request.setWindowSize(new Dimension(1200, 800));
-        request.setBrowserVersion("99");
-//        request.getDesiredCapabilities().setCapability("enableVNC", true);
-
-        UiElementShadowDomWeatherPage page = PAGE_FACTORY.createPage(UiElementShadowDomWeatherPage.class, WEB_DRIVER_MANAGER.getWebDriver(request));
-        page.changeCity("Munich");
-        log().info(page.getWeather());
-        page.getTemperature().assertThat().text().contains("°C");
-    }
-
-    @Test
-    public void testT05_ShadowRoot_external_menu_page() throws MalformedURLException {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBaseUrl("https://www.htmlelements.com/demos/menu/shadow-dom/index.htm");
-        request.setBrowser(Browsers.chrome);
-        request.setWindowSize(new Dimension(1200, 800));
-        request.setBrowserVersion("99");
-//        request.getDesiredCapabilities().setCapability("enableVNC", true);
-
-        UiElementShadowDomMenuPage page = PAGE_FACTORY.createPage(UiElementShadowDomMenuPage.class, WEB_DRIVER_MANAGER.getWebDriver(request));
-        page.openMenu("Encoding");
     }
 }

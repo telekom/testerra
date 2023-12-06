@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2022, Martin Großmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -22,32 +22,25 @@
 
 package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class UiElementShadowRootPage extends Page {
+public class UiElementShadowRoot2Page extends Page {
 
-    @Check
-    public final UiElement container = find(By.cssSelector("#container"));
-    @Check
-    public final UiElement normalContent = container.find(By.cssSelector("#normal-content p"));
+    // shadow root elements
+    public final UiElement shadowRootElement1 = find(By.id("shadow_host")).shadowRoot();
+    // Nested shadow root
+    public final UiElement shadowRootElement2 = shadowRootElement1.find(By.cssSelector("#nested_shadow_host")).shadowRoot();
 
-    // shadow root element
-    public final UiElement shadowRootElement = find(By.id("shadow-host")).shadowRoot();
+    public UiElement text1 = shadowRootElement1.find(By.cssSelector("#shadow_content"));
+    public UiElement textInput = shadowRootElement1.find(By.cssSelector("#textinput"));
 
-    public final UiElement shadowContent = shadowRootElement.find(By.cssSelector("#shadow-content"));
+    public UiElement nestedShadowContent = shadowRootElement2.find(By.cssSelector("#nested_shadow_content"));
+    public UiElement text2 = nestedShadowContent.find(By.tagName("div"));
 
-    public final UiElement shadowContentParagraph = shadowContent.find(By.xpath("//p"));
-    public final UiElement shadowContentInput = shadowContent.find(By.xpath("//input"));
-
-    public UiElementShadowRootPage(WebDriver driver) {
+    public UiElementShadowRoot2Page(WebDriver driver) {
         super(driver);
-    }
-
-    public void typeText(final String text) {
-        shadowContentInput.type(text);
     }
 }

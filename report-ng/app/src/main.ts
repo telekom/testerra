@@ -55,6 +55,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/typography'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/lookup'))
         .plugin(PLATFORM.moduleName('aurelia-ui-virtualization'))
+        .plugin(PLATFORM.moduleName('aurelia-resize'))
         .globalResources([
             PLATFORM.moduleName('components/apex-chart/apex-chart'),
             PLATFORM.moduleName('components/class-name-markup/class-name-markup'),

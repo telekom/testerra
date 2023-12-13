@@ -56,9 +56,6 @@ export class Logs extends AbstractViewModel {
     private _search($event:KeyboardEvent) {
         //console.log($event.key);
         this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
-        if (window.scrollY === 0) {
-            this._logView.resetSearch();
-        }
 
         if ($event.key == "Enter") {
             if (this._prevSearch != this.queryParams.q) {

@@ -22,58 +22,40 @@
 import {AbstractLogView} from "./abstract-log-view";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
-import {customElement} from "aurelia-framework";
+import {autoinject, customElement} from "aurelia-framework";
+import {ILogEntry} from "../../services/statistics-generator";
+import "./virtual-log-view.scss"
 
 /**
  * A virtual log view with search support
  */
+@autoinject()
 @customElement("virtual-log-view")
 export class VirtualLogView extends AbstractLogView {
 
+    private static readonly SCROLL_OFFSET = 500;
     @bindable({defaultBindingMode: bindingMode.fromView})
-    readonly logView:VirtualLogView = this;
-
+    readonly logView: VirtualLogView = this;
     private _lastFoundIndex = -1;
-    private _initialScrollOffset:number;
-    private _logView:HTMLDivElement;
+    private _logView: HTMLDivElement;
+    private _visibleMessages: ILogEntry[] = []; // array of messages that are visible in the DOM
+    private _reloadSize = 200; // number of messages that are reloaded
 
-    private _scrollToNextFound() {
-        if (this.searchRegexp && this._logView) {
-            const firstItem = this._logView.children.item(1) as HTMLDivElement;
-            const logMessagesToSearch = this.logMessages.slice(this._lastFoundIndex+1, -1);
-
-            const foundLogMessage = logMessagesToSearch.find(logMessage => {
-                const foundInMessage = logMessage.message.match(this.searchRegexp);
-                const foundInStackTrace = logMessage.stackTrace
-                    .flatMap(stackTrace => stackTrace.stackTraceElements)
-                    .filter(line => line.match(this.searchRegexp));
-                const foundInLoggerName = logMessage.loggerName.match(this.searchRegexp);
-
-                if (foundInStackTrace.length>0) {
-                    this.open(logMessage);
-                }
-
-                return foundInMessage || foundInStackTrace.length>0 || foundInLoggerName;
-            });
-
-            if (foundLogMessage) {
-                this._lastFoundIndex = this.logMessages.indexOf(foundLogMessage);
-                // console.log("found at index", this._lastFoundIndex);
-                const scrollY = this._initialScrollOffset + (firstItem.clientHeight * this._lastFoundIndex);
-                // console.log(this._initialScrollOffset);
-                // console.log("scroll to ", this._initialScrollOffset, " + found index", this._lastFoundIndex, " * ", firstItem.clientHeight);
-                const options = {top: scrollY};
-
-                window.setTimeout(() => {
-                    window.scroll(options);
-                }, 1);
-            }
-        }
+    bind() {
+        // initialize visible messages
+        const endIndex = Math.min(this._visibleMessages.length + 2 * this._reloadSize, this.logMessages.length);
+        this._visibleMessages = this.logMessages.slice(0, endIndex);
     }
 
+    handleScrollEvent() {
+        const isAtTop = this._logView.scrollTop < VirtualLogView.SCROLL_OFFSET;
+        const isAtBottom = this._logView.scrollHeight - this._logView.scrollTop <= this._logView.clientHeight + 1;
 
-    attached() {
-        this._initialScrollOffset = this._logView.getBoundingClientRect().top;
+        if (isAtTop) {
+            this._getMoreUp();
+        } else if (isAtBottom && this._visibleMessages[this._visibleMessages.length - 1] != this.logMessages[this.logMessages.length - 1]) { // check if we already reached end of logMessages
+            this._getMoreDown();
+        }
     }
 
     searchNext() {
@@ -83,5 +65,71 @@ export class VirtualLogView extends AbstractLogView {
     resetSearch() {
         // console.log("reset search");
         this._lastFoundIndex = -1;
+    }
+
+    private _scrollToNextFound() {
+        if (this.searchRegexp && this._logView) {
+            const logMessagesToSearch = this.logMessages.slice(this._lastFoundIndex + 1, -1);
+
+            const foundLogMessage = logMessagesToSearch.find(logMessage => {
+                const foundInMessage = logMessage.message.match(this.searchRegexp);
+                const foundInStackTrace = logMessage.stackTrace
+                    .flatMap(stackTrace => stackTrace.stackTraceElements)
+                    .filter(line => line.match(this.searchRegexp));
+                const foundInLoggerName = logMessage.loggerName.match(this.searchRegexp);
+
+                if (foundInStackTrace.length > 0) {
+                    this.open(logMessage);
+                }
+
+                return foundInMessage || foundInStackTrace.length > 0 || foundInLoggerName;
+            });
+
+            if (foundLogMessage) {
+                this._lastFoundIndex = this.logMessages.indexOf(foundLogMessage);
+
+                const start = Math.max(this._lastFoundIndex - this._reloadSize / 2, 0);
+                const end = this._lastFoundIndex > this._reloadSize / 2 ? this._lastFoundIndex + this._reloadSize / 2 : this._lastFoundIndex + this._reloadSize;
+
+                this._visibleMessages = this.logMessages.slice(start, end);
+
+                window.setTimeout(() => {
+                    // getting the DOM element that we found in logMessages
+                    const element = document.getElementById(`id-${foundLogMessage.message}-${foundLogMessage.timestamp}-${foundLogMessage.type}-${foundLogMessage.loggerName}-${foundLogMessage.stackTrace}-${foundLogMessage.threadName}`)
+                    element.scrollIntoView();
+                }, 1);
+
+            } else {
+                console.log("no message found")
+            }
+        }
+    }
+
+    private _getMoreDown() {
+        if (this._visibleMessages.length < this.logMessages.length) {
+            // add next block of messages from logMessages to visibleMessages
+            const index = this.logMessages.indexOf(this._visibleMessages[this._visibleMessages.length - 1])
+            this._visibleMessages.push(...this.logMessages.slice(index, index + this._reloadSize))
+        }
+
+        // remove messages that are not displayed anymore
+        if (this._visibleMessages.length > 2 * this._reloadSize) {
+            this._visibleMessages.splice(0, this._reloadSize)
+        }
+    }
+
+    private _getMoreUp() {
+        if (this._visibleMessages.length < this.logMessages.length) {
+
+            // add next block of messages from logMessages to visibleMessages
+            const index = this.logMessages.indexOf(this._visibleMessages[0])
+            const start = index - this._reloadSize < 0 ? 0 : index - this._reloadSize;
+            this._visibleMessages.unshift(...this.logMessages.slice(start, index))
+        }
+
+        // remove messages that are not displayed anymore
+        if (this._visibleMessages.length > 2 * this._reloadSize) {
+            this._visibleMessages.splice(-this._reloadSize, this._reloadSize)
+        }
     }
 }

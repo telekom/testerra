@@ -92,8 +92,7 @@ public final class WebDriverManagerUtils {
                 driver.close();
             });
         } catch (final Throwable e) {
-            LOGGER.debug("Current browser window could not be closed.");
-            LOGGER.debug("", e);
+            LOGGER.debug("Current browser window could not be closed.", e);
         }
         try {
             driver.quit();

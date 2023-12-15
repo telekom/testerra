@@ -83,6 +83,19 @@ public final class WebDriverManagerUtils {
      */
     protected static void quitWebDriverSession(final WebDriver driver) {
         try {
+            // With 'driver.quit()' sometimes some Chrome processes are left on host machine, take much of CPU resources
+            // If all current windows/tabs are closed before, 'driver.quit()' definitely shutdown the current browser
+            final int count = driver.getWindowHandles().size();
+            LOGGER.info("Closing all tabs ({}) of current session", count);
+            driver.getWindowHandles().forEach(handle -> {
+                driver.switchTo().window(handle);
+                driver.close();
+            });
+        } catch (final Throwable e) {
+            LOGGER.debug("Current browser window could not be closed.");
+            LOGGER.debug("", e);
+        }
+        try {
             driver.quit();
         } catch (final Throwable e) {
             LOGGER.warn("WebDriver could not be quit. May someone did before.", e);

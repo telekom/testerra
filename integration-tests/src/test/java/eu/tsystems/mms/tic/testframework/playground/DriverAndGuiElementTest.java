@@ -57,6 +57,11 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
 
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(driver);
         UiElement element = uiElementFinder.find(By.id("1"));
+        element.click();
+        element.findWebElement(webElement -> {
+            webElement.sendKeys("foobar");
+        });
+//        element.sendKeys("foo");
         element.waitFor().attribute("href").getActual();
         element.waitFor().tagName().getActual();
         element.waitFor().classes().getActual();

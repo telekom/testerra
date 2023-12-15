@@ -59,7 +59,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
 
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -164,19 +165,26 @@ public class DesktopWebDriverFactory implements
         if (!desktopWebDriverRequest.getBaseUrl().isPresent()) {
             WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);
         }
+        VisualEventDriverListener visualListener = new VisualEventDriverListener();
+        WebDriver decoratedDriver = eventFiringWebDriver = new EventFiringDecorator(
+                new EventLoggingDriverListener(),
+                new VisualEventDriverListener()
+        ).decorate(eventFiringWebDriver);
+
+        visualListener.driver = decoratedDriver;
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
                 MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
                 metricsController.start(sessionContext, MetricsType.BASEURL_LOAD);
-                eventFiringWebDriver.get(baseUrl.toString());
+                decoratedDriver.get(baseUrl.toString());
                 metricsController.stop(sessionContext, MetricsType.BASEURL_LOAD);
             } catch (Exception e) {
                 log().error("Unable to open baseUrl", e);
             }
         });
 
-        WebDriver.Window window = eventFiringWebDriver.manage().window();
+        WebDriver.Window window = decoratedDriver.manage().window();
         /*
          Maximize
          */
@@ -221,12 +229,12 @@ public class DesktopWebDriverFactory implements
             int pageLoadTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD.asLong().intValue();
             int scriptTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT.asLong().intValue();
             try {
-                eventFiringWebDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
+                decoratedDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
             } catch (Exception e) {
                 log().error("Could not set Page Load Timeout", e);
             }
             try {
-                eventFiringWebDriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(scriptTimeout));
+                decoratedDriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(scriptTimeout));
             } catch (Exception e) {
                 log().error("Could not set Script Timeout", e);
             }

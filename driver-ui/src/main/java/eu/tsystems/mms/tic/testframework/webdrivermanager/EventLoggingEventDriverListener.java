@@ -30,6 +30,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 
+@Deprecated
 public class EventLoggingEventDriverListener implements WebDriverEventListener, Loggable {
 
     private static final ExecutionUtils executionUtils = Testerra.getInjector().getInstance(ExecutionUtils.class);

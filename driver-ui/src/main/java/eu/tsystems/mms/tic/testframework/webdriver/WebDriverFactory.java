@@ -39,7 +39,7 @@ public interface WebDriverFactory {
      * This method get called after the WebDriver has been accepted by the {@link IWebDriverManager}
      * Use it to perform initial session setups like calling the base URL, maximize or rotate windows.
      */
-    default void setupNewWebDriverSession(EventFiringWebDriver webDriver, SessionContext sessionContext) {
+    default void setupNewWebDriverSession(WebDriver webDriver, SessionContext sessionContext) {
 
     }
 

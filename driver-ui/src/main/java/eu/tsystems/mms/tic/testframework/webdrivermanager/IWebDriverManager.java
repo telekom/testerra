@@ -121,11 +121,11 @@ public interface IWebDriverManager extends
         WebDriverManager.forceShutdownAllThreads();
     }
 
-    default EventFiringWebDriver getWebDriver(String sessionKey) {
+    default WebDriver getWebDriver(String sessionKey) {
         return WebDriverManager.getWebDriver(sessionKey);
     }
 
-    default EventFiringWebDriver getWebDriver(WebDriverRequest request) {
+    default WebDriver getWebDriver(WebDriverRequest request) {
         return WebDriverManager.getWebDriver(request);
     }
 
@@ -133,7 +133,7 @@ public interface IWebDriverManager extends
         return WebDriverSessionsManager.getSessionContext(webDriver);
     }
 
-    default Optional<EventFiringWebDriver> getWebDriver(SessionContext sessionContext) {
+    default Optional<WebDriver> getWebDriver(SessionContext sessionContext) {
         return WebDriverSessionsManager.getWebDriver(sessionContext);
     }
 
@@ -150,15 +150,15 @@ public interface IWebDriverManager extends
         return WebDriverManager.getConfig();
     }
 
-    default Stream<EventFiringWebDriver> readWebDriversFromCurrentThread() {
+    default Stream<WebDriver> readWebDriversFromCurrentThread() {
         return WebDriverSessionsManager.getWebDriversFromCurrentThread();
     }
 
-    default Stream<EventFiringWebDriver> readExclusiveWebDrivers() {
+    default Stream<WebDriver> readExclusiveWebDrivers() {
         return WebDriverSessionsManager.readExclusiveWebDrivers();
     }
 
-    default Stream<EventFiringWebDriver> readWebDrivers() {
+    default Stream<WebDriver> readWebDrivers() {
         return WebDriverSessionsManager.readWebDrivers();
     }
 

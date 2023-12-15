@@ -149,17 +149,17 @@ public class DesktopWebDriverFactory implements
     }
 
     @Override
-    public void setupNewWebDriverSession(EventFiringWebDriver eventFiringWebDriver, SessionContext sessionContext) {
+    public void setupNewWebDriverSession(WebDriver eventFiringWebDriver, SessionContext sessionContext) {
 
         DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
         final String browser = desktopWebDriverRequest.getBrowser();
 
-        // add event listeners
+        // TODO add event listeners
         if (Testerra.Properties.DEMO_MODE.asBool()) {
-            eventFiringWebDriver.register(new VisualEventDriverListener());
+//            eventFiringWebDriver.register(new VisualEventDriverListener());
         }
-
-        eventFiringWebDriver.register(new EventLoggingEventDriverListener());
+        // TODO add logging listener
+//        eventFiringWebDriver.register(new EventLoggingEventDriverListener());
 
         if (!desktopWebDriverRequest.getBaseUrl().isPresent()) {
             WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);

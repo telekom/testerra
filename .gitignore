@@ -26,3 +26,4 @@ build
 /report-ng-tests/src/test/resources/reports/report-extended-status/
 /report-ng-tests/src/test/resources/screenreferences/distance/
 /report-ng-tests/src/test/resources/screenreferences/actual/
+/integration-tests/geckodriver.exe

@@ -141,13 +141,13 @@ public final class WebDriverManager {
      * @param sessionKey The storedSessionId to get the webDriver instance from map.
      * @return instance of WebDriver object.
      */
-    public static EventFiringWebDriver getWebDriver(final String sessionKey) {
+    public static WebDriver getWebDriver(final String sessionKey) {
         UnspecificWebDriverRequest webDriverRequest = new UnspecificWebDriverRequest();
         webDriverRequest.setSessionKey(sessionKey);
         return getWebDriver(webDriverRequest);
     }
 
-    public static EventFiringWebDriver getWebDriver(WebDriverRequest webDriverRequest) {
+    public static WebDriver getWebDriver(WebDriverRequest webDriverRequest) {
         return WebDriverSessionsManager.getWebDriver(webDriverRequest);
     }
 
@@ -292,7 +292,7 @@ public final class WebDriverManager {
         WebDriverSessionsManager.shutdownSessionKey(key);
     }
 
-    public static Stream<EventFiringWebDriver> getWebDriversFromThread(final long threadId) {
+    public static Stream<WebDriver> getWebDriversFromThread(final long threadId) {
         return WebDriverSessionsManager.getWebDriversFromThread(threadId);
     }
 

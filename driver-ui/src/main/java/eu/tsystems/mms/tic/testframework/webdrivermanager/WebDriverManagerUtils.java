@@ -83,6 +83,16 @@ public final class WebDriverManagerUtils {
      */
     protected static void quitWebDriverSession(final WebDriver driver) {
         try {
+            final int count = driver.getWindowHandles().size();
+            LOGGER.debug("Closing all tabs ({}) of current session", count);
+            for (int i = 0; i < count; i++) {
+                driver.close();
+            }
+        } catch (final Throwable e) {
+            LOGGER.debug("Current browser window could not be closed.");
+            LOGGER.debug("", e);
+        }
+        try {
             driver.quit();
         } catch (final Throwable e) {
             LOGGER.warn("WebDriver could not be quit. May someone did before.", e);

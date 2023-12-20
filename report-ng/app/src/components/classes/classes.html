@@ -35,7 +35,7 @@
                         <mdc-list-item repeat.for="status of _availableStatuses"
                                        value.bind="status"
                         >
-                            <span class="badge status-${status|statusClass}">${status|statusName}</span>
+                            <span class="badge status-${status|statusClass}">${status | statusName}</span>
                         </mdc-list-item>
                     </mdc-list>
                 </mdc-select>
@@ -83,11 +83,11 @@
                 >
                     <table>
 
-                    <thead>
+                        <thead>
                         <th class="status-column centered-text">Status (${_uniqueStatuses})</th>
                         <th class="mdc-data-table__header-cell" click.delegate="_sortByRunIndex()">
-                            <div class="mdc-data-table__header-cell-wrapper" >
-                                <div class="mdc-data-table__header-cell-label" >Run index</div>
+                            <div class="mdc-data-table__header-cell-wrapper">
+                                <div class="mdc-data-table__header-cell-label">Run index</div>
                                 <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">arrow_upward</button>
                             </div>
                         </th>
@@ -108,7 +108,7 @@
                         <tbody>
                         <tr repeat.for="methodDetails of _filteredMethodDetails">
                             <td class="p1 centered-text">
-                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus|statusName}</a>
+                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus | statusName}</a>
                             </td>
                             <td class="run-index-cell">${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable">
@@ -136,12 +136,13 @@
                                      if.bind="methodDetails.failsAnnotation.description || methodDetails.failsAnnotation.ticketString"
                                 >
                                     <mdc-icon class="colored-icon status-${methodDetails.methodContext.resultStatus|statusClass}">highlight_off</mdc-icon>
-                                    <ul class="mdc-list mdc-list--dense"  mdc-caption>
+                                    <ul class="mdc-list mdc-list--dense" mdc-caption>
                                         <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.description&&7!= methodDetails.methodContext.resultStatus">
                                             <span innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:_searchRegexp"></span>
                                         </li>
                                         <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.ticketString&&7!= methodDetails.methodContext.resultStatus">
-                                            Ticket:&nbsp;<a href="${methodDetails.failsAnnotation.ticketString}" innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchRegexp"></a>
+                                            Ticket:&nbsp;<a href="${methodDetails.failsAnnotation.ticketString}"
+                                                            innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchRegexp"></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -151,7 +152,7 @@
                                      if.bind="methodDetails.promptLogs.length > 0"
                                 >
                                     <mdc-icon>speaker_notes</mdc-icon>
-                                    <ul class="mdc-list mdc-list--dense"  mdc-caption>
+                                    <ul class="mdc-list mdc-list--dense" mdc-caption>
                                         <li class="mdc-custom-list-item" repeat.for="logMessage of methodDetails.promptLogs">
                                             <span innerhtml.bind="logMessage.message|html|highlightText:_searchRegexp"></span>
                                         </li>
@@ -165,12 +166,17 @@
 
                             </td>
                         </tr>
-                    </tbody>
+                        </tbody>
                     </table>
                 </mdc-data-table>
                 <alert if.bind="!_loading && !_filteredMethodDetails.length">
-                    <mdc-icon class="big-icon sr1">find_in_page</mdc-icon>
-                    <div mdc-headline4>No methods matching this criteria</div>
+                    <div style="display: grid;">
+                        <div class="flex">
+                            <mdc-icon class="big-icon sr1">find_in_page</mdc-icon>
+                            <div mdc-headline4>No methods matching this criteria</div>
+                        </div>
+                        <div class="mt1" mdc-subtitle1 if.bind="!_showConfigurationMethods">Note, that your filter criteria could only match to configuration methods.</div>
+                    </div>
                 </alert>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

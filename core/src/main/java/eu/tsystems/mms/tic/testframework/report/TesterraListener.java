@@ -46,6 +46,7 @@ import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
 import org.testng.IConfigureCallBack;
 import org.testng.IDataProviderListener;
+import org.testng.IDataProviderMethod;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.IInvokedMethod;
@@ -309,7 +310,6 @@ public class TesterraListener implements
      * @param testResult result of invoked method.
      * @param testContext steps of test.
      */
-    // CHECKSTYLE:OFF
     private void pAfterInvocation(
             IInvokedMethod invokedMethod,
             ITestResult testResult,
@@ -326,7 +326,6 @@ public class TesterraListener implements
 //            testClassName = testResult.getTestClass().getName();
 //        }
 
-        // CHECKSTYLE:ON
 //        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
 //            return;
 //        }
@@ -484,11 +483,59 @@ public class TesterraListener implements
     }
 
     @Override
+    public void beforeDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
+        /**
+         * TestNG calls the data provider initialization for every thread.
+         * Added a semaphore to prevent adding multiple method contexts.
+         */
+        log().info("Before data provider execution");
+//        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
+            // TODO: Creates here a new method context
+
+//            TestNGMethod dpMethod = new TestNGMethod(dataProviderMethod.getMethod(), null, testNGMethod.getXmlTest(), dataProviderMethod);
+////            testNGMethod.getDataProviderMethod().getMethod();
+//            TestResult testResult = TestResult.newContextAwareTestResult(dpMethod, testContext);
+//
+//
+//
+//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//
+//            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
+
+
+
+//            dataProviderSemaphore.put(testNGMethod, true);
+//        }
+    }
+
+    @Override
+    public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
+        log().info("After dataprovider execution");
+        TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+        pAfterInvocation(invokedMethod, testResult, testContext);
+        // not implemented
+    }
+
+    @Override
     public void onDataProviderFailure(ITestNGMethod testNGMethod, ITestContext testContext, RuntimeException exception) {
         /**
          * TestNG calls the data provider initialization for every thread.
          * Added a semaphore to prevent adding multiple method contexts.
          */
+//        Optional<MethodContext> methodContext = ExecutionContextController.getMethodContextForThread();
+//        methodContext.ifPresent(context -> {
+//            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//            if (exception.getCause() != null) {
+//                context.addError(exception.getCause());
+//            } else {
+//                context.addError(exception);
+//            }
+//
+//            pAfterInvocation(invokedMethod, testResult, testContext);
+//
+//        });
         if (!dataProviderSemaphore.containsKey(testNGMethod)) {
             TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
             InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);

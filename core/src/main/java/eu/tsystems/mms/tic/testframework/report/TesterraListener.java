@@ -62,8 +62,14 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
+import org.testng.internal.ConfigurationMethod;
+import org.testng.internal.ConstructorOrMethod;
+import org.testng.internal.TestNGMethod;
 import org.testng.internal.TestResult;
+import org.testng.internal.annotations.DefaultAnnotationTransformer;
+import org.testng.internal.annotations.JDK15AnnotationFinder;
 import org.testng.internal.invokers.InvokedMethod;
+import org.testng.internal.objects.DefaultTestObjectFactory;
 import org.testng.xml.XmlSuite;
 
 import java.util.Date;
@@ -248,6 +254,7 @@ public class TesterraListener implements
          * store testresult, create method context
          */
         MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
+
         methodContext.getTestStep(TestStep.SETUP);
 
 //        final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
@@ -315,20 +322,6 @@ public class TesterraListener implements
             ITestResult testResult,
             ITestContext testContext
     ) {
-
-//        final String methodName;
-//        final String testClassName;
-//        if (invokedMethod != null) {
-//            methodName = invokedMethod.getTestMethod().getMethodName();
-//            testClassName = invokedMethod.getTestMethod().getTestClass().getName();
-//        } else {
-//            methodName = testResult.getMethod().getConstructorOrMethod().getName();
-//            testClassName = testResult.getTestClass().getName();
-//        }
-
-//        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
-//            return;
-//        }
 
         final String methodName = getMethodName(testResult);
 
@@ -490,31 +483,69 @@ public class TesterraListener implements
          */
         log().info("Before data provider execution");
 //        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
-            // TODO: Creates here a new method context
+        // TODO: Creates here a new method context
+        // This is not possible because TestNG tries to find the current annotation witch matches to default annotations
+//        java.lang.IllegalArgumentException: Java @Annotation class for 'interface org.testng.annotations.IConfigurationAnnotation' not found.
+//              at org.testng.internal.annotations.JDK15AnnotationFinder.findAnnotation(JDK15AnnotationFinder.java:109) ~[testng-7.8.0.jar:7.8.0]
+        ITestNGMethod dpConfigMethod = new ConfigurationMethod(
+                new DefaultTestObjectFactory(),
+                new ConstructorOrMethod(dataProviderMethod.getMethod()),
+                new JDK15AnnotationFinder(new DefaultAnnotationTransformer()),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                new String[]{},
+                new String[]{},
+                testNGMethod.getXmlTest(),
+                dataProviderMethod
+        );
+        // This is a default test method with 'isTestMethod=true' --> no
+//            TestNGMethod dpMethod = new TestNGMethod(
+//                    new DefaultTestObjectFactory(),
+//                    dataProviderMethod.getMethod(),
+//                    new JDK15AnnotationFinder(new DefaultAnnotationTransformer()),
+//                    testNGMethod.getXmlTest(),
+//                    dataProviderMethod
+//            );
+        dpConfigMethod.setTestClass(testNGMethod.getTestClass());
 
-//            TestNGMethod dpMethod = new TestNGMethod(dataProviderMethod.getMethod(), null, testNGMethod.getXmlTest(), dataProviderMethod);
-////            testNGMethod.getDataProviderMethod().getMethod();
-//            TestResult testResult = TestResult.newContextAwareTestResult(dpMethod, testContext);
-//
-//
-//
-//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-//
-//            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
+        // Need full qualified TestResult
+        TestResult testResult = TestResult.newContextAwareTestResult(dpConfigMethod, testContext);
+//            TestResult testResult = TestResult.newEmptyTestResult();
+//            testResult.setContext(testContext);
+//            testResult.setTestName(dataProviderMethod.getName());
 
+        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//
+        MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
 
-
-//            dataProviderSemaphore.put(testNGMethod, true);
+        dataProviderSemaphore.put(testNGMethod, true);
 //        }
     }
 
     @Override
     public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
         log().info("After dataprovider execution");
-        TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+//        TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+//        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+
+        TestNGMethod dpMethod = new TestNGMethod(
+                new DefaultTestObjectFactory(),
+                dataProviderMethod.getMethod(),
+                new JDK15AnnotationFinder(new DefaultAnnotationTransformer()),
+                testNGMethod.getXmlTest(),
+                dataProviderMethod
+        );
+        TestResult testResult = TestResult.newContextAwareTestResult(dpMethod, testContext);
         InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+
         pAfterInvocation(invokedMethod, testResult, testContext);
-        // not implemented
     }
 
     @Override

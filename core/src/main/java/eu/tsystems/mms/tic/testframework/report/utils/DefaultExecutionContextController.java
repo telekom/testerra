@@ -39,10 +39,10 @@ public class DefaultExecutionContextController implements IExecutionContextContr
         return Optional.ofNullable(ExecutionContextController.getCurrentMethodContext());
     }
 
-    @Override
-    public Optional<ITestResult> getCurrentTestResult() {
-        return Optional.ofNullable(ExecutionContextController.getCurrentTestResult());
-    }
+//    @Override
+//    public Optional<ITestResult> getCurrentTestResult() {
+//        return Optional.ofNullable(ExecutionContextController.getCurrentTestResult());
+//    }
 
     @Override
     public ExecutionContext getExecutionContext() {

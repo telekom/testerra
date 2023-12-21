@@ -53,8 +53,6 @@ public class DataProviderFailedTests extends TesterraTest implements Loggable {
 
     }
 
-
-
     @DataProvider(name = "dpOptionalAssertFailed")
     public Object[][] dpOptionalAssertFailed() {
         Object[][] objects = new Object[1][1];

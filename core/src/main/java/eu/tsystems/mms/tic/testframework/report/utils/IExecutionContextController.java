@@ -30,7 +30,7 @@ import org.testng.ITestResult;
 public interface IExecutionContextController {
     Optional<SessionContext> getCurrentSessionContext();
     Optional<MethodContext> getCurrentMethodContext();
-    Optional<ITestResult> getCurrentTestResult();
+//    Optional<ITestResult> getCurrentTestResult();
     ExecutionContext getExecutionContext();
     void clearCurrentSessionContext();
     void setCurrentSessionContext(SessionContext sessionContext);

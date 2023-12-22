@@ -199,7 +199,8 @@ public class AbstractWebDriverRequest implements WebDriverRequest, Loggable {
      * -> We have to backup the current caps and clone WebDriverRequest without caps. After cloning the original caps are added again.
      * -> org.apache.commons.lang3.SerializationUtils cannot used because not all objects are serializable (e.g. Proxy)
      * -> merge()-Method does not clone capability values like Maps (e.g. goog:chromeOptions, no deep copy)
-     * --> used Gson lib
+     * -> Gson or Jackson wrapper to convert it to json and back can destroy special objects
+     * --> used recursive clone method in DefaultCapabilityUtils.clone()
      */
     public AbstractWebDriverRequest clone() throws CloneNotSupportedException {
         AbstractWebDriverRequest clone = (AbstractWebDriverRequest) super.clone();

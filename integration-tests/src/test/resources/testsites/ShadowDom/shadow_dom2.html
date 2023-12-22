@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shadow dom</title>
+    <meta aria-description="Example of a shadow dom elements - based on https://github.com/saucelabs/the-internet">
+</head>
+<body>
+
+    <h1>Shadow dom</h1>
+
+    <script>
+        customElements.define('my-paragraph',
+            class extends HTMLElement {
+                constructor() {
+                    super();
+
+                    const template = document.getElementById('my-paragraph');
+                    const templateContent = template.content;
+
+                    this.attachShadow({mode: 'open'}).appendChild(
+                        templateContent.cloneNode(true)
+                    );
+                }
+            }
+        );
+
+        const slottedSpan = document.querySelector('my-paragraph span');
+
+    </script>
+
+    <template id="my-paragraph">
+        <style>
+            p {
+                color: white;
+                background-color: #666;
+                padding: 5px;
+            }
+        </style>
+        <p>
+            <slot name="my-text">My default text</slot>
+        </p>
+    </template>
+
+    <my-paragraph>
+        <span slot="my-text">Let's have some different text!</span>
+    </my-paragraph>
+
+    <my-paragraph>
+        <div slot="my-text">
+            <label>Here is an input element:</label>
+            <input id="input" type="text" placeholder="Input something">
+        </div>
+    </my-paragraph>
+
+</body>
+</html>

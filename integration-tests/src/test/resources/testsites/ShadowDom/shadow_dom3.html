@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Shadow DOM</title>
+</head>
+<body>
+<h1>Shadow dom with nested shadow dom</h1>
+<div id="shadow_host">
+    <template shadowrootmode="open">
+        <span id="shadow_content"></span>
+        <div id="nested_shadow_host">
+            <template shadowrootmode="open">
+                <div id="nested_shadow_content"></div>
+            </template>
+        </div>
+    </template>
+</div>
+<script>
+    let shadowRoot = document.getElementById('shadow_host').attachShadow({mode: 'open'});
+    shadowRoot.innerHTML = `
+              <span id="shadow_content">Text as shadow content</span>
+              <div id="nested_shadow_host"></div>
+              <input type="text" id="textinput" placeholder="Enter something here"/>
+              <input type="checkbox" id="checkboxinput" />
+            `;
+
+    let nestedShadowRoot = shadowRoot.getElementById('nested_shadow_host').attachShadow({mode: 'open'});
+    nestedShadowRoot.innerHTML = `
+              <div id="nested_shadow_content"><div>Text in nested shadow dom</div></div>
+            `;
+</script>
+
+
+</body>
+</html>

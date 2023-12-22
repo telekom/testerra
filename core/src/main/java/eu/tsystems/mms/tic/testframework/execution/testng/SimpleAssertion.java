@@ -141,6 +141,8 @@ public interface SimpleAssertion {
     }
 
     void assertEquals(Object actual, Object expected, Object subject);
+    void assertEquals(long actual, long expected, String subject);
+    void assertEquals(double actual, double expected, String subject);
     void assertEquals(Collection<?> actual, Collection<?> expected, Object subject);
     void assertEquals(Iterator<?> actual, Iterator<?> expected, Object subject);
     void assertEquals(Iterable<?> actual, Iterable<?> expected, Object subject);
@@ -154,6 +156,9 @@ public interface SimpleAssertion {
         assertEquals(actual, expected, null);
     }
     default void assertEquals(int actual, int expected) {
+        assertEquals(actual, expected, null);
+    }
+    default void assertEquals(double actual, double expected) {
         assertEquals(actual, expected, null);
     }
     default void assertEquals(Object actual, Object expected) {

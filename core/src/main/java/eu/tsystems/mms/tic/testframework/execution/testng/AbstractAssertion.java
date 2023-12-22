@@ -313,6 +313,24 @@ public abstract class AbstractAssertion implements Assertion {
     }
 
     @Override
+    public void assertEquals(long actual, long expected, String message) {
+        try {
+            Assert.assertEquals(actual, expected);
+        } catch (AssertionError e) {
+            fail(formatExpectEquals(actual, expected, message));
+        }
+    }
+
+    @Override
+    public void assertEquals(double actual, double expected, String message) {
+        try {
+            Assert.assertEquals(actual, expected);
+        } catch (AssertionError e) {
+            fail(formatExpectEquals(actual, expected, message));
+        }
+    }
+
+    @Override
     public void assertEquals(Collection<?> actual, Collection<?> expected, Object subject) {
         try {
             Assert.assertEquals(actual, expected);

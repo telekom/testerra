@@ -29,15 +29,18 @@ import java.util.Set;
 
 /**
  * Provides common useful assertions
+ *
  * @author Mike Reiche
  */
 public interface SimpleAssertion {
     default void fail(String message, Throwable cause) {
         fail(new AssertionError(message, cause));
     }
+
     default void fail(String message) {
         fail(message, null);
     }
+
     void fail(Error error);
 
     default BigDecimal toBigDecimal(Object number) {
@@ -45,145 +48,189 @@ public interface SimpleAssertion {
     }
 
     void assertTrue(boolean actual, Object subject);
+
     default void assertTrue(boolean actual) {
         assertTrue(actual, null);
     }
 
     void assertFalse(boolean actual, Object subject);
+
     default void assertFalse(boolean actual) {
         assertFalse(actual, null);
     }
 
     void assertSame(Object actual, Object expected, Object subject);
+
     default void assertSame(Object actual, Object expected) {
         assertSame(actual, expected, null);
     }
 
     void assertNotSame(Object actual, Object expected, Object subject);
+
     default void assertNotSame(Object actual, Object expected) {
         assertNotSame(actual, expected, null);
     }
 
     void assertNull(Object actual, Object subject);
+
     default void assertNull(Object actual) {
         assertNull(actual, null);
     }
 
     void assertNotNull(Object actual, Object subject);
+
     default void assertNotNull(Object actual) {
         assertNotNull(actual, null);
     }
 
     void assertContains(String actual, String expected, Object subject);
+
     default void assertContains(String actual, String expected) {
         assertContains(actual, expected, null);
     }
 
     void assertContainsNot(String actual, String expected, Object subject);
+
     default void assertContainsNot(String actual, String expected) {
         assertContainsNot(actual, expected, null);
     }
 
     void assertGreaterThan(BigDecimal actual, BigDecimal expected, Object subject);
+
     default void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
         assertGreaterThan(actual, expected, null);
     }
+
     default void assertGreaterThan(Object actual, Object expected, Object subject) {
         assertGreaterThan(toBigDecimal(actual), toBigDecimal(expected), subject);
     }
+
     default void assertGreaterThan(Object actual, Object expected) {
         assertGreaterThan(actual, expected, null);
     }
 
 
     void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
+
     default void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
         assertGreaterEqualThan(actual, expected, null);
     }
+
     default void assertGreaterEqualThan(Object actual, Object expected) {
         assertGreaterEqualThan(actual, expected, null);
     }
+
     default void assertGreaterEqualThan(Object actual, Object expected, Object subject) {
         assertGreaterEqualThan(toBigDecimal(actual), toBigDecimal(expected), subject);
     }
 
     void assertLowerThan(BigDecimal actual, BigDecimal expected, Object subject);
+
     default void assertLowerThan(BigDecimal actual, BigDecimal expected) {
         assertLowerThan(actual, expected, null);
     }
+
     default void assertLowerThan(Object actual, Object expected, Object subject) {
         assertLowerThan(toBigDecimal(actual), toBigDecimal(expected), subject);
     }
+
     default void assertLowerThan(Object actual, Object expected) {
         assertLowerThan(actual, expected, null);
     }
 
     void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
+
     default void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
         assertLowerEqualThan(actual, expected, null);
     }
+
     default void assertLowerEqualThan(Object actual, Object expected) {
         assertLowerEqualThan(actual, expected, null);
     }
+
     default void assertLowerEqualThan(Object actual, Object expected, Object subject) {
         assertLowerEqualThan(this.toBigDecimal(actual), this.toBigDecimal(expected), subject);
     }
 
     void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object subject);
+
     default void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher) {
         assertBetween(actual, lower, higher, null);
     }
+
     default void assertBetween(Object actual, Object lower, Object higher) {
         assertBetween(actual, lower, higher, null);
     }
+
     default void assertBetween(Object actual, Object lower, Object higher, Object subject) {
         assertBetween(toBigDecimal(actual), toBigDecimal(lower), toBigDecimal(higher), subject);
     }
 
     void assertEquals(Object actual, Object expected, Object subject);
-    void assertEquals(long actual, long expected, String subject);
-    void assertEquals(double actual, double expected, String subject);
+
+    void assertEquals(long actual, long expected, Object subject);
+
+    void assertEquals(double actual, double expected, Object subject);
+
     void assertEquals(Collection<?> actual, Collection<?> expected, Object subject);
+
     void assertEquals(Iterator<?> actual, Iterator<?> expected, Object subject);
+
     void assertEquals(Iterable<?> actual, Iterable<?> expected, Object subject);
+
     void assertEquals(Object[] actual, Object[] expected, Object subject);
+
     void assertEquals(Set<?> actual, Set<?> expected, Object subject);
+
     void assertEquals(Map<?, ?> actual, Map<?, ?> expected, Object subject);
+
     void assertEqualsDeep(Set<?> actual, Set<?> expected, Object subject);
+
     void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, Object subject);
+
     void assertEqualsNoOrder(Object[] actual, Object[] expected, Object subject);
+
     default void assertEquals(long actual, long expected) {
         assertEquals(actual, expected, null);
     }
+
     default void assertEquals(int actual, int expected) {
         assertEquals(actual, expected, null);
     }
+
     default void assertEquals(double actual, double expected) {
         assertEquals(actual, expected, null);
     }
+
     default void assertEquals(Object actual, Object expected) {
         assertEquals(actual, expected, null);
     }
 
 
     void assertNotEquals(Object actual1, Object actual2, Object subject);
+
     void assertNotEquals(Set<?> actual, Set<?> expected, Object subject);
+
     void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, Object subject);
+
     default void assertNotEquals(Object actual1, Object actual2) {
         assertNotEquals(actual1, actual2, null);
     }
 
     void assertStartsWith(Object actual, Object expected, Object subject);
+
     default void assertStartsWith(Object actual, Object expected) {
         assertStartsWith(actual, expected, null);
     }
 
     void assertEndsWith(Object actual, Object expected, Object subject);
+
     default void assertEndsWith(Object actual, Object expected) {
         assertEndsWith(actual, expected, null);
     }
 
     void assertInstanceOf(Object actual, Class expected, Object subject);
+
     default void assertInstanceOf(Object actual, Class expected) {
         assertInstanceOf(actual, expected, null);
     }

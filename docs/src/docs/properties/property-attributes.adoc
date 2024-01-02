@@ -23,6 +23,9 @@
 :wdm_timeouts_window_switch:                    tt.wdm.timeouts.seconds.window.switch.duration
 :webdriver_timeouts_seconds_pageload:           webdriver.timeouts.seconds.pageload
 :webdriver_timeouts_seconds_script:             webdriver.timeouts.seconds.script
+:selenium_webdriver_create_retry:               tt.selenium.webdriver.create.retry
+:selenium_remote_timeout_read:                  tt.selenium.remote.timeout.read
+:selenium_remote_timeout_connection:            tt.selenium.remote.timeout.connection
 
 // pagefactory
 :page_factory_loops:                            tt.page.factory.loops

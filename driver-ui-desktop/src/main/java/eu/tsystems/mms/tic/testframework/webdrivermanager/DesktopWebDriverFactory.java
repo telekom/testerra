@@ -52,8 +52,11 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.AbstractDriverOptions;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -266,7 +269,7 @@ public class DesktopWebDriverFactory implements
         try {
             newDriver = startNewWebDriverSession(desktopWebDriverRequest, sessionContext);
         } catch (final SetupException e) {
-            int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue() * 1000;
+            int ms = Testerra.Properties.SELENIUM_WEBDRIVER_CREATE_RETRY.asLong().intValue() * 1000;
             log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms / 1000)), e);
             TimerUtils.sleep(ms);
             newDriver = startNewWebDriverSession(desktopWebDriverRequest, sessionContext);
@@ -315,18 +318,24 @@ public class DesktopWebDriverFactory implements
         try {
             if (request.getServerUrl().isPresent()) {
                 final URL seleniumUrl = request.getServerUrl().get();
-                // The old HttpClientFactory reduced timeouts of Selenium 3 because of very long timeouts
-                // Selenium 4 uses JDK 11 HttpClient: connectionTimeout=10sec, readTimeout=180 sec, seems to be ok
-                // see {@link org.openqa.selenium.remote.http.ClientConfig#defaultConfig()}
-//                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), seleniumUrl, new HttpClientFactory());
+
                 Capabilities capabilities = request.getCapabilities();
                 if (capabilities == null) {
                     throw new SystemException("Cannot start browser session with empty browser options");
                 }
-                webDriver = RemoteWebDriver.builder()
-                        .address(seleniumUrl)
-                        .addAlternative(capabilities)
-                        .build();
+                // Selenium default timeouts are
+                // read timeout: 180 sec
+                // connection timeout: 10 sec
+                // see {@link org.openqa.selenium.remote.http.ClientConfig#defaultConfig()}
+                // Testerra: read timeout reduced to 90 sec
+                ClientConfig clientConfig = ClientConfig
+                        .defaultConfig()
+                        .readTimeout(Duration.ofSeconds(Testerra.Properties.SELENIUM_REMOTE_TIMEOUT_READ.asLong()))
+                        .connectionTimeout(Duration.ofSeconds(Testerra.Properties.SELENIUM_REMOTE_TIMEOUT_CONNECTION.asLong()))
+                        .baseUrl(seleniumUrl);
+                CommandExecutor commandExecutor = new HttpCommandExecutor(clientConfig);
+                webDriver = new RemoteWebDriver(commandExecutor, capabilities);
+
                 ((RemoteWebDriver) webDriver).setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {

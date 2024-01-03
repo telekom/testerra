@@ -45,6 +45,10 @@
                 >
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
                 </mdc-text-field>
+                <mdc-helper-line>
+                    <mdc-text-field-helper-text if.bind="queryParams.q" persistent>${_helperText}
+                    </mdc-text-field-helper-text>
+                </mdc-helper-line>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="4"></mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12" >
@@ -54,6 +58,7 @@
                           log-view.bind="_logView"
                           log-messages.bind="_logMessages"
                           search-regexp.bind="_searchRegexp"
+                          helper-text.bind="_helperText"
                 ></virtual-log-view>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

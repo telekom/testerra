@@ -41,6 +41,11 @@ export class VirtualLogView extends AbstractLogView {
     private _visibleMessages: ILogEntry[] = []; // array of messages that are visible in the DOM
     private _reloadSize = 200; // number of messages that are reloaded
 
+    // variables for search helper text
+    @bindable({defaultBindingMode: bindingMode.twoWay}) helperText: string;
+    @bindable searchRegexp: RegExp;
+    private _occurrences: number;
+
     bind() {
         // initialize visible messages
         const endIndex = Math.min(this._visibleMessages.length + 2 * this._reloadSize, this.logMessages.length);
@@ -58,13 +63,40 @@ export class VirtualLogView extends AbstractLogView {
         }
     }
 
-    searchNext() {
-        this._scrollToNextFound();
-    }
-
     resetSearch() {
         // console.log("reset search");
         this._lastFoundIndex = -1;
+        this._occurrences = 0;
+    }
+
+    searchRegexpChanged() {
+        this._scrollToNextFound();
+        this._calculateOccurrences();
+    }
+
+    private _calculateOccurrences() {
+        if (this.searchRegexp) {
+            let totalOccurrences = 0;
+
+            this.logMessages.forEach(logMessage => {
+                const foundInMessage = logMessage.message.match(this.searchRegexp);
+                const foundInStackTrace = logMessage.stackTrace
+                    .flatMap(stackTrace => stackTrace.stackTraceElements)
+                    .filter(line => line.match(this.searchRegexp));
+                const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
+
+                if(foundInMessage || foundInStackTrace.length > 0 || foundInLoggerName) {
+                    if (foundInStackTrace.length > 0) {
+                        this.open(logMessage);
+                    }
+                    totalOccurrences += 1;
+                }
+            });
+
+            this.helperText = (this._occurrences == 0 && totalOccurrences == 0)
+            ? "No results found"
+            : "Results found: " + this._occurrences + "/" + totalOccurrences;
+        }
     }
 
     private _scrollToNextFound() {
@@ -76,7 +108,7 @@ export class VirtualLogView extends AbstractLogView {
                 const foundInStackTrace = logMessage.stackTrace
                     .flatMap(stackTrace => stackTrace.stackTraceElements)
                     .filter(line => line.match(this.searchRegexp));
-                const foundInLoggerName = logMessage.loggerName.match(this.searchRegexp);
+                const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 
                 if (foundInStackTrace.length > 0) {
                     this.open(logMessage);
@@ -86,6 +118,7 @@ export class VirtualLogView extends AbstractLogView {
             });
 
             if (foundLogMessage) {
+                this._occurrences += 1;
                 this._lastFoundIndex = this.logMessages.indexOf(foundLogMessage);
 
                 const start = Math.max(this._lastFoundIndex - this._reloadSize / 2, 0);
@@ -99,8 +132,6 @@ export class VirtualLogView extends AbstractLogView {
                     element.scrollIntoView();
                 }, 1);
 
-            } else {
-                console.log("no message found")
             }
         }
     }

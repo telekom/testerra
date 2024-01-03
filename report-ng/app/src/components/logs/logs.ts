@@ -53,21 +53,20 @@ export class Logs extends AbstractViewModel {
         this._filter();
     }
 
-    private _search($event:KeyboardEvent) {
-        //console.log($event.key);
-        this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
+    private _search() {
+        if (this.queryParams.q) {
+            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
 
-        if ($event.key == "Enter") {
             if (this._prevSearch != this.queryParams.q) {
                 this._logView.resetSearch();
             }
             this._prevSearch = this.queryParams.q;
-            if (this.queryParams.q.trim().length > 0) {
-                this._logView.searchNext();
-            } else {
+            if (this.queryParams.q.trim().length <= 0) {
                 delete this.queryParams.q;
             }
             this.updateUrl(this.queryParams);
+        } else {
+            this._searchRegexp = undefined;
         }
     }
 

@@ -31,9 +31,12 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.LogInspector;
+import org.openqa.selenium.bidi.Network;
 import org.openqa.selenium.bidi.log.ConsoleLogEntry;
 import org.openqa.selenium.bidi.log.JavascriptLogEntry;
 import org.openqa.selenium.bidi.log.LogEntry;
+import org.openqa.selenium.bidi.network.BeforeRequestSent;
+import org.openqa.selenium.bidi.network.ResponseDetails;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.Augmenter;
@@ -172,6 +175,48 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         });
 
         ASSERT.assertEquals(logEntryList.size(), 4, "LogEntry list");
+    }
+
+    @Test
+    public void testT04_demo() throws MalformedURLException {
+        DesktopWebDriverRequest dwdRequest = new DesktopWebDriverRequest();
+        dwdRequest.setBrowser(Browsers.chrome);
+//        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(dwdRequest);
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+
+        List<BeforeRequestSent> requestSentList = new ArrayList<>();
+        List<ResponseDetails> responseList1 = new ArrayList<>();
+        List<ResponseDetails> responseList2 = new ArrayList<>();
+
+        Network network = new Network(new Augmenter().augment(WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get()));
+        network.onBeforeRequestSent(requestSentList::add);
+        network.onResponseCompleted(responseList1::add);
+        network.onResponseStarted(responseList2::add);
+
+        webDriver.get("https://the-internet.herokuapp.com/broken_images");
+//        webDriver.get("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+
+        TimerUtils.sleep(1000);
+
+        // In progress
+        // JSON Exception while processing GET request for JS resource and others --> Unable to create instance of class org.openqa.selenium.bidi.network.RequestData --> Selenium bug
+
+        for (BeforeRequestSent request : requestSentList) {
+            log().info("Request: {} {} - {}", request.getRequest().getRequestId(), request.getRequest().getMethod(), request.getRequest().getUrl());
+        }
+
+        // In progress
+        // Responses does not work
+
+        for (ResponseDetails response : responseList1) {
+            log().info("Response1: {} - [{}] {}", response.getRequest().getRequestId(), response.getResponseData().getStatus(), response.getResponseData().getStatusText());
+        }
+
+        for (ResponseDetails response : responseList2) {
+            log().info("Response2: {} - [{}] {}", response.getRequest().getRequestId(), response.getResponseData().getStatus(), response.getResponseData().getStatusText());
+        }
     }
 
 

@@ -31,6 +31,8 @@ import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
+import org.openqa.selenium.bidi.browsingcontext.BrowsingContext;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
@@ -217,6 +219,26 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
     }
+
+    // Does not work.
+    // webdriver.get runs into infinity page loading
+//    @Test
+//    public void testT06a_BasicAuth_ChromeBiDiAPI_remote() {
+//        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+//        request.setBrowser(Browsers.chrome);
+////        request.setBrowserVersion("106");
+//
+//        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+//        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+//        Predicate<URI> uriPredicate = uri -> uri.getHost().contains("the-internet.herokuapp.com");
+//
+//        RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
+//        WebDriver augmentedDriver = new Augmenter().augment(remoteWebDriver);
+//        ((HasAuthentication) augmentedDriver).register(uriPredicate, UsernameAndPassword.of("admin", "admin"));
+//
+//        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
+//         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
+//    }
 
     /**
      * The following example uses the BiDi implementation of Chrome to add basic authentication information

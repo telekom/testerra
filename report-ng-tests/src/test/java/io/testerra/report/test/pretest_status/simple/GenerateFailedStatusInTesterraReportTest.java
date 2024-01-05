@@ -66,4 +66,12 @@ public class GenerateFailedStatusInTesterraReportTest extends AbstractTestSitesT
         TestStep.begin("click on headline");
         overlayInterceptionPage.clickButton();
     }
+
+    public static class InnerClassFailureTests {
+
+        @Test(groups = {Groups.EXT})
+        public void test_failInInnerClass() {
+            Assert.fail("Expected fail in inner class");
+        }
+    }
 }

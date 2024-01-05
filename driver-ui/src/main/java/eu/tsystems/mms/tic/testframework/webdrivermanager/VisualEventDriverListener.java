@@ -36,10 +36,9 @@ public class VisualEventDriverListener implements WebDriverListener {
 
     private UiElementHighlighter elementHighlighter = Testerra.getInjector().getInstance(UiElementHighlighter.class);
 
+    // Current driver is additional needed because WebDriverListener methods of before/after element actions only get WebElement, but no current driver.
     public WebDriver driver;
     private boolean isDemo = Testerra.Properties.DEMO_MODE.asBool();
-
-    // TODO: before methods does not work with Testerra...
 
     @Override
     public void beforeClick(WebElement element) {

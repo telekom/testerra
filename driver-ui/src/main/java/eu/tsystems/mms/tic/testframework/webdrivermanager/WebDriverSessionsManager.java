@@ -429,11 +429,12 @@ public final class WebDriverSessionsManager {
             ));
 //            EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(newRawWebDriver);
 //            WebDriver eventFiringWebDriver = new EventFiringDecorator().decorate(newRawWebDriver);
-            WebDriver eventFiringWebDriver = newRawWebDriver;
+//            WebDriver eventFiringWebDriver = newRawWebDriver;
+
+            WebDriver eventFiringWebDriver = webDriverFactory.setupNewWebDriverSession(newRawWebDriver, sessionContext);
 
             storeWebDriverSession(eventFiringWebDriver, sessionContext);
 
-            webDriverFactory.setupNewWebDriverSession(eventFiringWebDriver, sessionContext);
             Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             String sessionIdentifier = createSessionIdentifier(newRawWebDriver, sessionKey);
             /*

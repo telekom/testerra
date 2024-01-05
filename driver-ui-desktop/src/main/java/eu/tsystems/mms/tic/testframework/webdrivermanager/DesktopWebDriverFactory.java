@@ -60,7 +60,6 @@ import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringDecorator;
-import org.openqa.selenium.support.events.WebDriverListener;
 
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -150,16 +149,15 @@ public class DesktopWebDriverFactory implements
     }
 
     @Override
-    public void setupNewWebDriverSession(WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+    public WebDriver setupNewWebDriverSession(WebDriver eventFiringWebDriver, SessionContext sessionContext) {
 
         DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
         final String browser = desktopWebDriverRequest.getBrowser();
 
-        // TODO add event listeners
-        if (Testerra.Properties.DEMO_MODE.asBool()) {
+//        if (Testerra.Properties.DEMO_MODE.asBool()) {
 //            eventFiringWebDriver.register(new VisualEventDriverListener());
-        }
-        // TODO add logging listener
+//        }
+
 //        eventFiringWebDriver.register(new EventLoggingEventDriverListener());
 
         if (!desktopWebDriverRequest.getBaseUrl().isPresent()) {
@@ -168,10 +166,10 @@ public class DesktopWebDriverFactory implements
         VisualEventDriverListener visualListener = new VisualEventDriverListener();
         WebDriver decoratedDriver = eventFiringWebDriver = new EventFiringDecorator(
                 new EventLoggingDriverListener(),
-                new VisualEventDriverListener()
+                visualListener
         ).decorate(eventFiringWebDriver);
 
-        visualListener.driver = decoratedDriver;
+        visualListener.driver = decoratedDriver;    // Needed to interact with current session
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
@@ -241,6 +239,8 @@ public class DesktopWebDriverFactory implements
         } else {
             log().warn("Not setting timeouts for Safari.");
         }
+
+        return decoratedDriver;
     }
 
     private void setWindowSize(WebDriver.Window window, Dimension dimension) {

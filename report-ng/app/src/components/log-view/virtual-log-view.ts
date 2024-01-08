@@ -82,7 +82,9 @@ export class VirtualLogView extends AbstractLogView {
             this.logMessages.forEach(logMessage => {
                 const foundInMessage = logMessage.message.match(this.searchRegexp);
                 const foundInStackTrace = logMessage.stackTrace
-                    .flatMap(stackTrace => stackTrace.stackTraceElements)
+                    .flatMap(stackTrace => [
+                        ...(stackTrace.stackTraceElements || []),
+                        stackTrace.message])
                     .filter(line => line.match(this.searchRegexp));
                 const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 
@@ -107,7 +109,9 @@ export class VirtualLogView extends AbstractLogView {
             const foundLogMessage = logMessagesToSearch.find(logMessage => {
                 const foundInMessage = logMessage.message.match(this.searchRegexp);
                 const foundInStackTrace = logMessage.stackTrace
-                    .flatMap(stackTrace => stackTrace.stackTraceElements)
+                    .flatMap(stackTrace => [
+                        ...(stackTrace.stackTraceElements || []),//keep stackTraceElements and message
+                        stackTrace.message])
                     .filter(line => line.match(this.searchRegexp));
                 const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 

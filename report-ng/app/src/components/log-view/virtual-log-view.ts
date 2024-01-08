@@ -22,7 +22,7 @@
 import {AbstractLogView} from "./abstract-log-view";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
-import {autoinject, customElement} from "aurelia-framework";
+import {autoinject, customElement, observable} from "aurelia-framework";
 import {ILogEntry} from "../../services/statistics-generator";
 import "./virtual-log-view.scss"
 
@@ -40,6 +40,7 @@ export class VirtualLogView extends AbstractLogView {
     private _logView: HTMLDivElement;
     private _visibleMessages: ILogEntry[] = []; // array of messages that are visible in the DOM
     private _reloadSize = 200; // number of messages that are reloaded
+    @observable logMessages: ILogEntry[];
 
     // variables for search helper text
     @bindable({defaultBindingMode: bindingMode.twoWay}) helperText: string;
@@ -94,14 +95,14 @@ export class VirtualLogView extends AbstractLogView {
             });
 
             this.helperText = (this._occurrences == 0 && totalOccurrences == 0)
-            ? "No results found"
-            : "Results found: " + this._occurrences + "/" + totalOccurrences;
+            ? "No messages found"
+            : "Messages found: " + this._occurrences + "/" + totalOccurrences;
         }
     }
 
     private _scrollToNextFound() {
         if (this.searchRegexp && this._logView) {
-            const logMessagesToSearch = this.logMessages.slice(this._lastFoundIndex + 1, -1);
+            const logMessagesToSearch = this.logMessages.slice(this._lastFoundIndex + 1);
 
             const foundLogMessage = logMessagesToSearch.find(logMessage => {
                 const foundInMessage = logMessage.message.match(this.searchRegexp);
@@ -162,5 +163,11 @@ export class VirtualLogView extends AbstractLogView {
         if (this._visibleMessages.length > 2 * this._reloadSize) {
             this._visibleMessages.splice(-this._reloadSize, this._reloadSize)
         }
+    }
+
+    logMessagesChanged() {
+        this._occurrences = 0;
+        this._lastFoundIndex = -1;
+        this._calculateOccurrences();
     }
 }

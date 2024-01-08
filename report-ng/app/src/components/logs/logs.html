@@ -46,7 +46,7 @@
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
                 </mdc-text-field>
                 <mdc-helper-line>
-                    <mdc-text-field-helper-text if.bind="queryParams.q" persistent>${_helperText}
+                    <mdc-text-field-helper-text class="secondary ${queryParams.q ? '' : 'invisible'}" persistent>${_helperText}
                     </mdc-text-field-helper-text>
                 </mdc-helper-line>
             </mdc-layout-grid-cell>

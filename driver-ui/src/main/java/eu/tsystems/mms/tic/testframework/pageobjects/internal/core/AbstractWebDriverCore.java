@@ -250,22 +250,11 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 WebElement webElement = webElements.get(Math.max(0, guiElementData.getIndex()));
                 WebDriver webDriver = guiElementData.getWebDriver();
 
-                // check for shadowRoot
-                if (guiElementData.isShadowRoot()) {
-                    // 14.01.2021: Gheckodriver throw an internal exception when using the command above,
-                    // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
-                    // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
-//                    try {
-//                        final Object shadowedWebElement = JSUtils.executeScriptWOCatch(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
-//                        if (shadowedWebElement instanceof WebElement) {
-//                            webElement = (WebElement) shadowedWebElement;
-//                        }
-//                        SearchContext searchContext =  webElement.getShadowRoot();
-//                    } catch (Exception e) {
-//                        log().error("Could not detect shadow root for " + guiElementData.toString() + ": " + e.getMessage());
-//                    }
-                } else if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
-                    guiElementData.setIsFrame(true);
+                // Handling of shadow root elements was moved to 'findWebElements(Consumer<List<WebElement>> consumer)'
+                if (!guiElementData.isShadowRoot()) {
+                    if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
+                        guiElementData.setIsFrame(true);
+                    }
                 }
 
                 logTimings(start, Timings.getFindCounter());

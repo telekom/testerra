@@ -33,25 +33,26 @@ import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.Map;
-
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class DriverAndGuiElementTest extends AbstractTestSitesTest implements UiElementFinderFactoryProvider, PageFactoryProvider {
 
     @Test
-    public void testUiElement()  {
+    public void testUiElement() {
         WebDriver driver = getWebDriver();
 
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(driver);
@@ -132,5 +133,22 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
 //        PAGE_FACTORY.createPage(PageWithNotExistingElement.class);
         PAGE_FACTORY.createPage(PageWithExistingElement.class, webDriver);
         UITestUtils.takeScreenshot(webDriver, true);
+    }
+
+    @Test
+    public void test_specialCaps() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--browser.download.folderList=2");
+        options.addArguments("--browser.helperApps.neverAsk.saveToDisk=text/csv, application/pdf,application/pdf,application/x-pdf,application/zip,application/x-zip-compressed,multipart/x-zip");
+        LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+        options.setCapability("goog:loggingPrefs", logPrefs);
+        final Map<String, Object> prefs = new HashMap<>();
+        prefs.put("intl.accept_languages", "de-DE");
+        options.setExperimentalOption("prefs", prefs);
+        request.getMutableCapabilities().setCapability(ChromeOptions.CAPABILITY, options);
+
+        WEB_DRIVER_MANAGER.getWebDriver(request);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -23,18 +23,17 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementShadowRootPage;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.UiElementShadowRootPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
-import org.testng.Assert;
 
-public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<GuiElementShadowRootPage> implements PageFactoryTest {
+public class UiElementShadowRootTest extends AbstractExclusiveTestSitesTest<UiElementShadowRootPage> implements PageFactoryTest, UiElementFinderFactoryProvider {
 
     @Override
     protected TestPage getTestPage() {
@@ -42,46 +41,50 @@ public class GuiElementShadowRootTest extends AbstractExclusiveTestSitesTest<Gui
     }
 
     @Override
-    public Class<GuiElementShadowRootPage> getPageClass() {
-        return GuiElementShadowRootPage.class;
+    public Class<UiElementShadowRootPage> getPageClass() {
+        return UiElementShadowRootPage.class;
     }
 
     @Test
-    public void testShadowRootVisibility() {
+    public void testT01_ShadowRootVisibility() {
 
         TestStep.begin("Step 1 - Call shadow root page");
-        final GuiElementShadowRootPage page = getPage();
+        final UiElementShadowRootPage page = getPage();
 
         TestStep.begin("Step 2 - Assert correct visibility");
-        page.assertShadowRootVisibility();
+
+        // shadow root is never displayed but present
+        page.shadowRootElement.assertThat().present(true);
+        // sub elements from shadow root are displayed
+        page.shadowContent.assertThat().displayed(true);
+        // shadowContentInput.assertThat().displayed(true);
+        page.shadowContentParagraph.assertThat().displayed(true);
     }
 
     @Test
-    public void testShadowRootInput() {
+    public void testT02_ShadowRootInput() {
 
         final String expectedText = "asserting your shadow";
 
         TestStep.begin("Step 1 - Call shadow root page");
-        final GuiElementShadowRootPage page = getPage();
+        final UiElementShadowRootPage page = getPage();
 
         TestStep.begin("Step 2 - type '" + expectedText + "' to shadow root input");
         page.typeText(expectedText);
 
         TestStep.begin("Step 3 - assert '" + expectedText + "' is in displayed in shadow root input");
-        page.assertInputText(expectedText);
+        page.shadowContentInput.assertThat().value().isContaining(expectedText);
     }
 
     @Test(expectedExceptions = UiElementAssertionError.class)
-    public void test_ShadowRoot_find_byClassName_fails() {
-        GuiElement shadowRootElement = getPage().shadowRootElement;
-        Assert.assertTrue(shadowRootElement.find(XPath.from("div").classes("shadow-content")).waitFor().displayed(true));
+    public void testT03_ShadowRoot_find_byClassName_fails() {
+        UiElement shadowRootElement = getPage().shadowRootElement;
         shadowRootElement.find(By.className("shadow-content")).expect().present(true);
     }
 
     @Test(expectedExceptions = UiElementAssertionError.class)
-    public void test_ShadowRoot_findById_fails() {
-        GuiElement shadowRootElement = getPage().shadowRootElement;
-        Assert.assertTrue(shadowRootElement.find(XPath.from("div").attribute("id", "shadow-content")).waitFor().displayed(true));
+    public void testT04_ShadowRoot_findById_fails() {
+        UiElement shadowRootElement = getPage().shadowRootElement;
         shadowRootElement.findById("shadow-content").expect().present(true);
     }
 }

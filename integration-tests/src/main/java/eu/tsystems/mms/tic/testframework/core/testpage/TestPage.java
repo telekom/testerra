@@ -36,7 +36,9 @@ public enum TestPage {
     LAYOUT_IMAGE("LayoutImage/index.html"),
     LIST("GuiElementList/index.html"),
     IMG("Img/logo", INPUT_TEST_PAGE),
-    SHADOW_ROOT("GuiElementShadowRoot/shadow_root.html"),
+    SHADOW_ROOT("ShadowDom/shadow_dom1.html"),
+    SHADOW_ROOT2("ShadowDom/shadow_dom2.html"),
+    SHADOW_ROOT3("ShadowDom/shadow_dom3.html"),
     SWITCH_WINDOW("Multiwindow/index.html");
 
     private String path;

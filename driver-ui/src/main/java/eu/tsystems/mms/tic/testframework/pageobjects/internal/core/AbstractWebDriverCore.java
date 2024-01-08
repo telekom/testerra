@@ -44,6 +44,7 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -114,8 +115,9 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
             if (corrected) {
                 by = By.xpath(xpath);
             }
-        } else if (parentData.isShadowRoot()) {
-            throw new UiElementException(this.guiElementData.getGuiElement(), "Finding sub elements on shadowRoot() only supports " + By.ByXPath.class.getSimpleName());
+        }
+        if (parentData.isShadowRoot() && !abstractLocatorString.toLowerCase().contains("cssselector")) {
+            throw new UiElementException(this.guiElementData.getGuiElement(), "Finding sub elements on shadowRoot() only supports " + By.ByCssSelector.class.getSimpleName());
         }
         return by;
     }
@@ -157,6 +159,21 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     }
 
     /**
+     * Tries to find sub elements from a given {@link WebElement} as a shadow root.
+     *
+     * @throws ElementNotFoundException with the internal selenium exception cause.
+     */
+    private List<WebElement> findElementsFromShadowRoot(WebElement webElement, By by) {
+        try {
+            SearchContext shadowRoot = webElement.getShadowRoot();
+            return shadowRoot.findElements(by);
+        } catch (Throwable throwable) {
+            throwNotFoundException(throwable);
+        }
+        return null;
+    }
+
+    /**
      * Calls the {@link WebElement#findElements(By)} and passes the results to the consumer.
      * Throws an {@link ElementNotFoundException} when no element has been found
      */
@@ -172,7 +189,15 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                     switchToFrame(webDriver, parentWebElement);
                     consumer.accept(findElementsFromWebDriver(webDriver, by));
                 } else {
-                    consumer.accept(findElementsFromWebElement(parentWebElement, correctToRelativeXPath(parentData, by)));
+                    List<WebElement> elementsFromWebElement;
+                    By correctXpath = correctToRelativeXPath(parentData, by);
+                    if (parentData.isShadowRoot()) {
+                        elementsFromWebElement = findElementsFromShadowRoot(parentWebElement, correctXpath);
+                    } else {
+                        elementsFromWebElement = findElementsFromWebElement(parentWebElement, correctXpath);
+                    }
+
+                    consumer.accept(elementsFromWebElement);
                 }
             });
         } else {
@@ -230,14 +255,15 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                     // 14.01.2021: Gheckodriver throw an internal exception when using the command above,
                     // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
                     // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
-                    try {
-                        final Object shadowedWebElement = JSUtils.executeScriptWOCatch(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
-                        if (shadowedWebElement instanceof WebElement) {
-                            webElement = (WebElement) shadowedWebElement;
-                        }
-                    } catch (Exception e) {
-                        log().error("Could not detect shadow root for " + guiElementData.toString() + ": " + e.getMessage());
-                    }
+//                    try {
+//                        final Object shadowedWebElement = JSUtils.executeScriptWOCatch(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
+//                        if (shadowedWebElement instanceof WebElement) {
+//                            webElement = (WebElement) shadowedWebElement;
+//                        }
+//                        SearchContext searchContext =  webElement.getShadowRoot();
+//                    } catch (Exception e) {
+//                        log().error("Could not detect shadow root for " + guiElementData.toString() + ": " + e.getMessage());
+//                    }
                 } else if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
                     guiElementData.setIsFrame(true);
                 }

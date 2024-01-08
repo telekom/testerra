@@ -121,6 +121,13 @@ export class App {
                 nav: true,
                 title: 'Threads'
             },
+            {
+                route: 'timings',
+                name: 'timings',
+                moduleId: PLATFORM.moduleName('components/timings/timings'),
+                nav: true,
+                title: 'Timings'
+            },
             // {
             //     route: 'timings',
             //     name: 'Timings',

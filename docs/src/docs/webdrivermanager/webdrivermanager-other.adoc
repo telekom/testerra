@@ -9,9 +9,9 @@ WebDriver driver = WebDriverManager.getWebDriver();
 Optional<SessionContext> sessionContext = WEB_DRIVER_MANAGER.getSessionContext(driver);
 ----
 
-== Switching windows
+== Switching windows or tabs
 
-Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
+In some cases you need to switch to a new browser window or tab which was opened by the application.
 
 [source,java]
 ----

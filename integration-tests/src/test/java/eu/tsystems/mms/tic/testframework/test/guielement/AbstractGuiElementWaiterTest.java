@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLayoutsTest {
+public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementStandardFunctionsTest {
 
     private void pre_hideText(boolean hide) {
         getTimeOutInput().type("1");

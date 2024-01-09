@@ -46,7 +46,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -323,86 +322,86 @@ public final class JSUtils implements Loggable {
         return selector.toString().replaceFirst("By.*:", "").trim();
     }
 
-    /**
-     * @deprecated Use by deprecated {@link Layout}
-     */
-    @Deprecated
-    public static Map<String, Long> getElementInnerBorders(UiElement guiElement) {
-        String cmd = "el = arguments[0];" +
-                "bl = window.getComputedStyle(el, null).getPropertyValue('border-left-width');" +
-                "br = window.getComputedStyle(el, null).getPropertyValue('border-right-width');" +
-                "bt = window.getComputedStyle(el, null).getPropertyValue('border-top-width');" +
-                "bb = window.getComputedStyle(el, null).getPropertyValue('border-bottom-width');" +
-                "" +
-                "pl = window.getComputedStyle(el, null).getPropertyValue('padding-left');" +
-                "pr = window.getComputedStyle(el, null).getPropertyValue('padding-right');" +
-                "pt = window.getComputedStyle(el, null).getPropertyValue('padding-top');" +
-                "pb = window.getComputedStyle(el, null).getPropertyValue('padding-bottom');" +
-                "" +
-                "bl = bl.replace('px','');" +
-                "br = br.replace('px','');" +
-                "bt = bt.replace('px','');" +
-                "bb = bb.replace('px','');" +
-                "" +
-                "pl = pl.replace('px','');" +
-                "pr = pr.replace('px','');" +
-                "pt = pt.replace('px','');" +
-                "pb = pb.replace('px','');" +
-                "" +
-                "l = el.getBoundingClientRect().x;" +
-                "w = el.getBoundingClientRect().width;" +
-                "t = el.getBoundingClientRect().y;" +
-                "h = el.getBoundingClientRect().height;" +
-                "" +
-                "il = parseInt(l);" +
-                "iw = parseInt(w);" +
-                "it = parseInt(t);" +
-                "ih = parseInt(h);" +
-                "" +
-                "ibl = parseInt(bl);" +
-                "ibr = parseInt(br);" +
-                "ibt = parseInt(bt);" +
-                "ibb = parseInt(bb);" +
-                "" +
-                "ipl = parseInt(pl);" +
-                "ipr = parseInt(pr);" +
-                "ipt = parseInt(pt);" +
-                "ipb = parseInt(pb);" +
-                "" +
-                "x = il + ipl + ibl;" +
-                "xx = il + iw - ibr - ipr;" +
-                "y = it + ipt + ibt;" +
-                "yy = it + ih - ibb - ipb;" +
-                "" +
-                "return {left:x, right:xx, top:y, bottom:yy};";
-
-        WebDriver driver = guiElement.getWebDriver();
-        Map<String, Long> out = new ConcurrentHashMap<>();
-        guiElement.findWebElement(webElement -> {
-            try {
-                Object o = executeScript(driver, cmd, webElement);
-                if (o != null && o instanceof Map) {
-                    Map map = (Map) o;
-                    for (Object key : map.keySet()) {
-                        Object value = map.get(key);
-                        if (key instanceof String && value instanceof Long) {
-                            out.put((String) key, (Long) value);
-                        }
-                    }
-
-                    out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
-                    if (out.keySet().size() != 4) {
-                        throw new RuntimeException("Could not get element border via JS call");
-                    }
-
-                }
-            } catch (Exception e) {
-                LOGGER.error("Could not determine element inner left position", e);
-            }
-        });
-
-        return out;
-    }
+//    /**
+//     * @deprecated Use by deprecated {@link Layout}
+//     */
+//    @Deprecated
+//    public static Map<String, Long> getElementInnerBorders(UiElement guiElement) {
+//        String cmd = "el = arguments[0];" +
+//                "bl = window.getComputedStyle(el, null).getPropertyValue('border-left-width');" +
+//                "br = window.getComputedStyle(el, null).getPropertyValue('border-right-width');" +
+//                "bt = window.getComputedStyle(el, null).getPropertyValue('border-top-width');" +
+//                "bb = window.getComputedStyle(el, null).getPropertyValue('border-bottom-width');" +
+//                "" +
+//                "pl = window.getComputedStyle(el, null).getPropertyValue('padding-left');" +
+//                "pr = window.getComputedStyle(el, null).getPropertyValue('padding-right');" +
+//                "pt = window.getComputedStyle(el, null).getPropertyValue('padding-top');" +
+//                "pb = window.getComputedStyle(el, null).getPropertyValue('padding-bottom');" +
+//                "" +
+//                "bl = bl.replace('px','');" +
+//                "br = br.replace('px','');" +
+//                "bt = bt.replace('px','');" +
+//                "bb = bb.replace('px','');" +
+//                "" +
+//                "pl = pl.replace('px','');" +
+//                "pr = pr.replace('px','');" +
+//                "pt = pt.replace('px','');" +
+//                "pb = pb.replace('px','');" +
+//                "" +
+//                "l = el.getBoundingClientRect().x;" +
+//                "w = el.getBoundingClientRect().width;" +
+//                "t = el.getBoundingClientRect().y;" +
+//                "h = el.getBoundingClientRect().height;" +
+//                "" +
+//                "il = parseInt(l);" +
+//                "iw = parseInt(w);" +
+//                "it = parseInt(t);" +
+//                "ih = parseInt(h);" +
+//                "" +
+//                "ibl = parseInt(bl);" +
+//                "ibr = parseInt(br);" +
+//                "ibt = parseInt(bt);" +
+//                "ibb = parseInt(bb);" +
+//                "" +
+//                "ipl = parseInt(pl);" +
+//                "ipr = parseInt(pr);" +
+//                "ipt = parseInt(pt);" +
+//                "ipb = parseInt(pb);" +
+//                "" +
+//                "x = il + ipl + ibl;" +
+//                "xx = il + iw - ibr - ipr;" +
+//                "y = it + ipt + ibt;" +
+//                "yy = it + ih - ibb - ipb;" +
+//                "" +
+//                "return {left:x, right:xx, top:y, bottom:yy};";
+//
+//        WebDriver driver = guiElement.getWebDriver();
+//        Map<String, Long> out = new ConcurrentHashMap<>();
+//        guiElement.findWebElement(webElement -> {
+//            try {
+//                Object o = executeScript(driver, cmd, webElement);
+//                if (o != null && o instanceof Map) {
+//                    Map map = (Map) o;
+//                    for (Object key : map.keySet()) {
+//                        Object value = map.get(key);
+//                        if (key instanceof String && value instanceof Long) {
+//                            out.put((String) key, (Long) value);
+//                        }
+//                    }
+//
+//                    out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
+//                    if (out.keySet().size() != 4) {
+//                        throw new RuntimeException("Could not get element border via JS call");
+//                    }
+//
+//                }
+//            } catch (Exception e) {
+//                LOGGER.error("Could not determine element inner left position", e);
+//            }
+//        });
+//
+//        return out;
+//    }
 
     /**
      * Will get the viewport by executing JavaScript to determine innerwith and offsets

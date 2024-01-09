@@ -30,17 +30,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -50,6 +39,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * JavaScript Utils.
@@ -68,9 +67,9 @@ public final class JSUtils {
     /**
      * try to implement javascript on page
      *
-     * @param driver       .
+     * @param driver .
      * @param resourceFile .
-     * @param id           .
+     * @param id .
      * @deprecated Use {@link #addJavascriptResources(WebDriver, Stream)} instead
      */
     @Deprecated
@@ -119,8 +118,8 @@ public final class JSUtils {
     /**
      * executing async script
      *
-     * @param driver     .
-     * @param script     .
+     * @param driver .
+     * @param script .
      * @param parameters .
      * @return .
      */
@@ -132,8 +131,8 @@ public final class JSUtils {
     /**
      * Try to execute javascript. If an error occurs it will be thrown.
      *
-     * @param driver     .
-     * @param script     .
+     * @param driver .
+     * @param script .
      * @param parameters .
      * @return .
      */
@@ -145,8 +144,8 @@ public final class JSUtils {
     /**
      * Try to execute javascript. If an error occurs it will be logged only.
      *
-     * @param driver     .
-     * @param script     .
+     * @param driver .
+     * @param script .
      * @param parameters .
      * @return .
      */
@@ -156,7 +155,7 @@ public final class JSUtils {
         } catch (Exception e) {
             String message = String.format("Error executing Javascript\n-----\n%s\n-----", script);
             if (parameters.length > 0) {
-                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o==null?"null":o.toString())).collect(Collectors.joining("\n"));
+                message += "\nwith parameters:\n" + Arrays.stream(parameters).map(o -> (o == null ? "null" : o.toString())).collect(Collectors.joining("\n"));
                 message += "\n-----";
             }
             LOGGER.error(message, e);
@@ -184,11 +183,11 @@ public final class JSUtils {
     /**
      * Execute a JS MouseAction on a driver session.
      *
-     * @param driver              .
+     * @param driver .
      * @param containerWebElement .
-     * @param type                .
-     * @param x                   .
-     * @param y                   .
+     * @param type .
+     * @param x .
+     * @param y .
      */
     public static void executeJavaScriptMouseAction(
             final WebDriver driver,
@@ -220,6 +219,7 @@ public final class JSUtils {
 
     /**
      * Scrolls an element to the top of a page.
+     *
      * @param webDriver
      * @param webElement
      */
@@ -262,7 +262,7 @@ public final class JSUtils {
     /**
      * Gets the selector without frame hierarchy
      *
-     * @param guiElementData          GuiElement
+     * @param guiElementData GuiElement
      * @param documentSelector String Current Selector
      * @return String
      */
@@ -322,86 +322,86 @@ public final class JSUtils {
         return selector.toString().replaceFirst("By.*:", "").trim();
     }
 
-    /**
-     * @deprecated Use by deprecated {@link Layout}
-     */
-    @Deprecated
-    public static Map<String, Long> getElementInnerBorders(UiElement guiElement) {
-        String cmd = "el = arguments[0];" +
-                "bl = window.getComputedStyle(el, null).getPropertyValue('border-left-width');" +
-                "br = window.getComputedStyle(el, null).getPropertyValue('border-right-width');" +
-                "bt = window.getComputedStyle(el, null).getPropertyValue('border-top-width');" +
-                "bb = window.getComputedStyle(el, null).getPropertyValue('border-bottom-width');" +
-                "" +
-                "pl = window.getComputedStyle(el, null).getPropertyValue('padding-left');" +
-                "pr = window.getComputedStyle(el, null).getPropertyValue('padding-right');" +
-                "pt = window.getComputedStyle(el, null).getPropertyValue('padding-top');" +
-                "pb = window.getComputedStyle(el, null).getPropertyValue('padding-bottom');" +
-                "" +
-                "bl = bl.replace('px','');" +
-                "br = br.replace('px','');" +
-                "bt = bt.replace('px','');" +
-                "bb = bb.replace('px','');" +
-                "" +
-                "pl = pl.replace('px','');" +
-                "pr = pr.replace('px','');" +
-                "pt = pt.replace('px','');" +
-                "pb = pb.replace('px','');" +
-                "" +
-                "l = el.getBoundingClientRect().x;" +
-                "w = el.getBoundingClientRect().width;" +
-                "t = el.getBoundingClientRect().y;" +
-                "h = el.getBoundingClientRect().height;" +
-                "" +
-                "il = parseInt(l);" +
-                "iw = parseInt(w);" +
-                "it = parseInt(t);" +
-                "ih = parseInt(h);" +
-                "" +
-                "ibl = parseInt(bl);" +
-                "ibr = parseInt(br);" +
-                "ibt = parseInt(bt);" +
-                "ibb = parseInt(bb);" +
-                "" +
-                "ipl = parseInt(pl);" +
-                "ipr = parseInt(pr);" +
-                "ipt = parseInt(pt);" +
-                "ipb = parseInt(pb);" +
-                "" +
-                "x = il + ipl + ibl;" +
-                "xx = il + iw - ibr - ipr;" +
-                "y = it + ipt + ibt;" +
-                "yy = it + ih - ibb - ipb;" +
-                "" +
-                "return {left:x, right:xx, top:y, bottom:yy};";
-
-        WebDriver driver = guiElement.getWebDriver();
-        Map<String, Long> out = new ConcurrentHashMap<>();
-        guiElement.findWebElement(webElement -> {
-            try {
-                Object o = executeScript(driver, cmd, webElement);
-                if (o != null && o instanceof Map) {
-                    Map map = (Map) o;
-                    for (Object key : map.keySet()) {
-                        Object value = map.get(key);
-                        if (key instanceof String && value instanceof Long) {
-                            out.put((String) key, (Long) value);
-                        }
-                    }
-
-                    out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
-                    if (out.keySet().size() != 4) {
-                        throw new RuntimeException("Could not get element border via JS call");
-                    }
-
-                }
-            } catch (Exception e) {
-                LOGGER.error("Could not determine element inner left position", e);
-            }
-        });
-
-        return out;
-    }
+//    /**
+//     * @deprecated Use by deprecated {@link Layout}
+//     */
+//    @Deprecated
+//    public static Map<String, Long> getElementInnerBorders(UiElement guiElement) {
+//        String cmd = "el = arguments[0];" +
+//                "bl = window.getComputedStyle(el, null).getPropertyValue('border-left-width');" +
+//                "br = window.getComputedStyle(el, null).getPropertyValue('border-right-width');" +
+//                "bt = window.getComputedStyle(el, null).getPropertyValue('border-top-width');" +
+//                "bb = window.getComputedStyle(el, null).getPropertyValue('border-bottom-width');" +
+//                "" +
+//                "pl = window.getComputedStyle(el, null).getPropertyValue('padding-left');" +
+//                "pr = window.getComputedStyle(el, null).getPropertyValue('padding-right');" +
+//                "pt = window.getComputedStyle(el, null).getPropertyValue('padding-top');" +
+//                "pb = window.getComputedStyle(el, null).getPropertyValue('padding-bottom');" +
+//                "" +
+//                "bl = bl.replace('px','');" +
+//                "br = br.replace('px','');" +
+//                "bt = bt.replace('px','');" +
+//                "bb = bb.replace('px','');" +
+//                "" +
+//                "pl = pl.replace('px','');" +
+//                "pr = pr.replace('px','');" +
+//                "pt = pt.replace('px','');" +
+//                "pb = pb.replace('px','');" +
+//                "" +
+//                "l = el.getBoundingClientRect().x;" +
+//                "w = el.getBoundingClientRect().width;" +
+//                "t = el.getBoundingClientRect().y;" +
+//                "h = el.getBoundingClientRect().height;" +
+//                "" +
+//                "il = parseInt(l);" +
+//                "iw = parseInt(w);" +
+//                "it = parseInt(t);" +
+//                "ih = parseInt(h);" +
+//                "" +
+//                "ibl = parseInt(bl);" +
+//                "ibr = parseInt(br);" +
+//                "ibt = parseInt(bt);" +
+//                "ibb = parseInt(bb);" +
+//                "" +
+//                "ipl = parseInt(pl);" +
+//                "ipr = parseInt(pr);" +
+//                "ipt = parseInt(pt);" +
+//                "ipb = parseInt(pb);" +
+//                "" +
+//                "x = il + ipl + ibl;" +
+//                "xx = il + iw - ibr - ipr;" +
+//                "y = it + ipt + ibt;" +
+//                "yy = it + ih - ibb - ipb;" +
+//                "" +
+//                "return {left:x, right:xx, top:y, bottom:yy};";
+//
+//        WebDriver driver = guiElement.getWebDriver();
+//        Map<String, Long> out = new ConcurrentHashMap<>();
+//        guiElement.findWebElement(webElement -> {
+//            try {
+//                Object o = executeScript(driver, cmd, webElement);
+//                if (o != null && o instanceof Map) {
+//                    Map map = (Map) o;
+//                    for (Object key : map.keySet()) {
+//                        Object value = map.get(key);
+//                        if (key instanceof String && value instanceof Long) {
+//                            out.put((String) key, (Long) value);
+//                        }
+//                    }
+//
+//                    out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
+//                    if (out.keySet().size() != 4) {
+//                        throw new RuntimeException("Could not get element border via JS call");
+//                    }
+//
+//                }
+//            } catch (Exception e) {
+//                LOGGER.error("Could not determine element inner left position", e);
+//            }
+//        });
+//
+//        return out;
+//    }
 
     /**
      * Will get the viewport by executing JavaScript to determine innerwith and offsets
@@ -412,11 +412,11 @@ public final class JSUtils {
     public Rectangle getViewport(WebDriver driver) {
         Object result = JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
         if (result != null) {
-            final ArrayList<String> list = (ArrayList<String>)result;
+            final ArrayList<String> list = (ArrayList<String>) result;
             List<Double> numbers = list.stream().map(Double::valueOf).collect(Collectors.toList());
             return new Rectangle(numbers.get(0).intValue(), numbers.get(1).intValue(), numbers.get(3).intValue(), numbers.get(2).intValue());
         } else {
-            return new Rectangle(-1,-1,-1,-1);
+            return new Rectangle(-1, -1, -1, -1);
         }
     }
 

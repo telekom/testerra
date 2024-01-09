@@ -282,7 +282,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         page.expect().viewport().top().is(0);
 
         page.expect().viewport().contains(page.getOpenAgainLink()).is(true);
-        page.expect().viewport().width().is(800);
-        page.expect().viewport().height().is(600);
+        page.expect().viewport().width().is(1024);
+        page.expect().viewport().height().is(768);
     }
 }

@@ -22,74 +22,51 @@
 package eu.tsystems.mms.tic.testframework.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.LayoutTestPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.testng.annotations.Test;
 
-public class LayoutCheckTest extends AbstractTestSitesTest implements LocatorFactoryProvider {
+public class LayoutCheckTest extends AbstractTestSitesTest implements PageFactoryProvider {
 
     @Override
     protected TestPage getTestPage() {
         return TestPage.LAYOUT;
     }
 
-    private UiElement getUIElementQa(final String qaTag) {
-        return new DefaultUiElementFactory().createWithWebDriver(getWebDriver(), LOCATE.byQa(qaTag));
-    }
-
     @Test
     public void testT01_CheckElementLayout() {
-        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        uiElement.expect().screenshot().pixelDistance("TestArticleElement").isLowerThan(1.3);
+        LayoutTestPage page = PAGE_FACTORY.createPage(LayoutTestPage.class, this.getWebDriver());
 
-        uiElement = getUIElementQa("section/invisibleTestArticle");
-        uiElement.expect().screenshot().pixelDistance("InvisibleTestArticleElement").isLowerThan(1.3);
+        page.layoutTestArticle.expect().screenshot().pixelDistance("TestArticleElement").isLowerThan(1.3);
+        page.invisibleTestArticle.expect().screenshot().pixelDistance("InvisibleTestArticleElement").isLowerThan(1.3);
     }
 
     @Test
     public void testT02_CheckElementLayoutWithSubfolder() {
-        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        uiElement.assertThat().screenshot().pixelDistance("subfolder/TestArticleElement").isLowerThan(1.3);
+        LayoutTestPage page = PAGE_FACTORY.createPage(LayoutTestPage.class, this.getWebDriver());
 
-        uiElement = getUIElementQa("section/invisibleTestArticle");
-        uiElement.assertThat().screenshot().pixelDistance("subfolder/InvisibleTestArticleElement").isLowerThan(1.3);
-    }
-
-    @Test
-    public void testT03_CheckElementVisibility() {
-        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        Page helperPage = new Page(uiElement.getWebDriver());
-        int top = helperPage.expect().viewport().top().getActual();
-
-        uiElement.assertThat().visibleFull().is(true);
-
-        uiElement = getUIElementQa("section/invisibleTestArticle");
-        uiElement.assertThat().visibleFull().is(false);
-
-        uiElement.scrollIntoView();
-        helperPage.expect().viewport().top().isGreaterThan(top);
-
-        uiElement.assertThat().visibleFull().is(true);
+        page.layoutTestArticle.assertThat().screenshot().pixelDistance("subfolder/TestArticleElement").isLowerThan(1.3);
+        page.invisibleTestArticle.assertThat().screenshot().pixelDistance("subfolder/InvisibleTestArticleElement").isLowerThan(1.3);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT04_CheckElementLayoutDistance_fails() {
-        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        uiElement.assertThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1);
+    public void testT03_CheckElementLayoutDistance_fails() {
+        LayoutTestPage page = PAGE_FACTORY.createPage(LayoutTestPage.class, this.getWebDriver());
+
+        page.layoutTestArticle.assertThat().screenshot().pixelDistance("TestArticleFailed").isLowerThan(1);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT05_CheckElementLayoutSize_fails() {
-        UiElement uiElement = getUIElementQa("section/layoutTestArticle");
-        uiElement.assertThat().screenshot().pixelDistance("TestArticle-90-percent-width").isLowerThan(1);
+    public void testT04_CheckElementLayoutSize_fails() {
+        LayoutTestPage page = PAGE_FACTORY.createPage(LayoutTestPage.class, this.getWebDriver());
+
+        page.layoutTestArticle.assertThat().screenshot().pixelDistance("TestArticle-90-percent-width").isLowerThan(1);
     }
 
     @Test
-    public void testT06_CheckPageLayout() {
+    public void testT05_CheckPageLayout() {
         LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
     }
 }

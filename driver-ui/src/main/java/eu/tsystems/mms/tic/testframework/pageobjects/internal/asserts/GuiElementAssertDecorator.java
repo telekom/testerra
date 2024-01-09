@@ -18,13 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
+
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Deprecated
 public abstract class GuiElementAssertDecorator implements GuiElementAssert, Loggable {
@@ -283,17 +281,17 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert, Log
         handleAfterAssertion("assertInputFieldLength = " + length, thrownAssertionError);
     }
 
-    @Override
-    public void assertLayout(ILayout layout) {
-        callBeforeAssertion();
-        AssertionError thrownAssertionError = null;
-        try {
-            decoratedAssert.assertLayout(layout);
-        } catch (AssertionError e) {
-            thrownAssertionError = e;
-        }
-        handleAfterAssertion("assertLayout " + layout, thrownAssertionError);
-    }
+//    @Override
+//    public void assertLayout(ILayout layout) {
+//        callBeforeAssertion();
+//        AssertionError thrownAssertionError = null;
+//        try {
+//            decoratedAssert.assertLayout(layout);
+//        } catch (AssertionError e) {
+//            thrownAssertionError = e;
+//        }
+//        handleAfterAssertion("assertLayout " + layout, thrownAssertionError);
+//    }
 
     @Override
     public void assertCssClassIsPresent(final String className) {

@@ -36,15 +36,14 @@ export class VirtualLogView extends AbstractLogView {
     private static readonly SCROLL_OFFSET = 500;
     @bindable({defaultBindingMode: bindingMode.fromView})
     readonly logView: VirtualLogView = this;
+    @observable logMessages: ILogEntry[];
+    // variables for search helper text
+    @bindable({defaultBindingMode: bindingMode.twoWay}) helperText: string;
+    @bindable searchRegexp: RegExp;
     private _lastFoundIndex = -1;
     private _logView: HTMLDivElement;
     private _visibleMessages: ILogEntry[] = []; // array of messages that are visible in the DOM
     private _reloadSize = 200; // number of messages that are reloaded
-    @observable logMessages: ILogEntry[];
-
-    // variables for search helper text
-    @bindable({defaultBindingMode: bindingMode.twoWay}) helperText: string;
-    @bindable searchRegexp: RegExp;
     private _occurrences: number;
 
     bind() {
@@ -65,13 +64,18 @@ export class VirtualLogView extends AbstractLogView {
     }
 
     resetSearch() {
-        // console.log("reset search");
         this._lastFoundIndex = -1;
         this._occurrences = 0;
     }
 
     searchRegexpChanged() {
         this._scrollToNextFound();
+        this._calculateOccurrences();
+    }
+
+    logMessagesChanged() {
+        this._occurrences = 0;
+        this._lastFoundIndex = -1;
         this._calculateOccurrences();
     }
 
@@ -88,7 +92,7 @@ export class VirtualLogView extends AbstractLogView {
                     .filter(line => line.match(this.searchRegexp));
                 const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 
-                if(foundInMessage || foundInStackTrace.length > 0 || foundInLoggerName) {
+                if (foundInMessage || foundInStackTrace.length > 0 || foundInLoggerName) {
                     if (foundInStackTrace.length > 0) {
                         this.open(logMessage);
                     }
@@ -97,8 +101,8 @@ export class VirtualLogView extends AbstractLogView {
             });
 
             this.helperText = (this._occurrences == 0 && totalOccurrences == 0)
-            ? "No messages found"
-            : "Messages found: " + this._occurrences + "/" + totalOccurrences;
+                ? "No messages found"
+                : "Messages found: " + this._occurrences + "/" + totalOccurrences;
         }
     }
 
@@ -110,7 +114,7 @@ export class VirtualLogView extends AbstractLogView {
                 const foundInMessage = logMessage.message.match(this.searchRegexp);
                 const foundInStackTrace = logMessage.stackTrace
                     .flatMap(stackTrace => [
-                        ...(stackTrace.stackTraceElements || []),//keep stackTraceElements and message
+                        ...(stackTrace.stackTraceElements || []),       // keep stackTraceElements and message
                         stackTrace.message])
                     .filter(line => line.match(this.searchRegexp));
                 const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
@@ -167,11 +171,5 @@ export class VirtualLogView extends AbstractLogView {
         if (this._visibleMessages.length > 2 * this._reloadSize) {
             this._visibleMessages.splice(-this._reloadSize, this._reloadSize)
         }
-    }
-
-    logMessagesChanged() {
-        this._occurrences = 0;
-        this._lastFoundIndex = -1;
-        this._calculateOccurrences();
     }
 }

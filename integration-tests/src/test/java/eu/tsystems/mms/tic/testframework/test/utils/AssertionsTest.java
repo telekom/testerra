@@ -80,6 +80,34 @@ public class AssertionsTest extends TesterraTest implements AssertProvider {
     }
 
     @Test
+    public void test_assertEquals_int_long() {
+        int a = 1;
+        long b = 1L;
+        ASSERT.assertEquals(a, b);
+    }
+
+    @Test
+    public void test_assertEquals_int_long_subject() {
+        int a = 1;
+        long b = 1L;
+        ASSERT.assertEquals(a, b, "Test");
+    }
+
+    @Test
+    public void test_assertEquals_float_double() {
+        float a = 1.0f;
+        double b = 1.0;
+        ASSERT.assertEquals(a, b);
+    }
+
+    @Test
+    public void test_assertEquals_float_double_subject() {
+        float a = 1.0f;
+        double b = 1.0;
+        ASSERT.assertEquals(a, b, "Test");
+    }
+
+    @Test
     public void test_StringEquals() {
         ASSERT.assertEquals("Hallo Welt", "Hallo Welt");
     }

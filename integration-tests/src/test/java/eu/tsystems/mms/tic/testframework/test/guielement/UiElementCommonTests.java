@@ -21,9 +21,9 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError;
 import eu.tsystems.mms.tic.testframework.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -85,8 +85,8 @@ public class UiElementCommonTests extends AbstractExclusiveTestSitesTest<WebTest
         String msg = null;
         try {
             page.inexistentElement().expect().screenshot().file().exists().is(true);
-        } catch (ElementNotFoundException e) {
-            msg = e.getMessage();
+        } catch (TimeoutException e) {
+            msg = e.getCause().getMessage();
         }
         ASSERT.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
     }

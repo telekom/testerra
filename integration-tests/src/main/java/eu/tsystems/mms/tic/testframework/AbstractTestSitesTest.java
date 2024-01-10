@@ -51,6 +51,12 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
         }
     }
 
+    public WebDriver getWebDriver(TestPage testPage) {
+        WebDriver webDriver = super.getWebDriver();
+        visitTestPage(webDriver, testPage);
+        return webDriver;
+    }
+
     @Override
     public WebDriver getWebDriver() {
         WebDriver webDriver = super.getWebDriver();

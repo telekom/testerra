@@ -1,7 +1,7 @@
-/*!
+/*
  * Testerra
  *
- * (C) 2021, Mike Reiche,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -20,9 +20,21 @@
  */
 
 .logs {
-    white-space: pre-wrap;
-}
+    white-space: pre;
+    width: 100%;
+    overflow: scroll;
 
-.invisible {
-    visibility: hidden;
+    // breakpoints according to: https://getbootstrap.com/docs/5.0/layout/breakpoints/
+
+    @media (max-height: 1199.98px) {
+        height: 700px;
+    }
+
+    @media (max-height: 991.98px) {
+        height: 500px;
+    }
+
+    @media (max-height: 767.98px) {
+        height: 300px;
+    }
 }

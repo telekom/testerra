@@ -38,3 +38,11 @@
         height: 300px;
     }
 }
+
+.one-line{
+    display: flex;
+}
+
+span[class*="status"]{
+    padding-left: 7.5px;
+}

@@ -21,8 +21,8 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.pop3;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
+
 import java.util.Properties;
 
 /**
@@ -44,15 +44,15 @@ public class POP3MailConnector extends AbstractInboxConnector {
      * Called from constructor. Initializes the ImapMailConnector.
      */
     private void init() {
-        setServer(PropertyManager.getProperty("POP3_SERVER", null));
-        setPort(PropertyManager.getProperty("POP3_SERVER_PORT", null));
-        setInboxFolder(PropertyManager.getProperty("POP3_FOLDER_INBOX", null));
-        setUsername(PropertyManager.getProperty("POP3_USERNAME", null));
-        setPassword(PropertyManager.getProperty("POP3_PASSWORD", null));
+        setServer(PROPERTY_MANAGER.getProperty("POP3_SERVER", null));
+        setPort(PROPERTY_MANAGER.getProperty("POP3_SERVER_PORT", null));
+        setInboxFolder(PROPERTY_MANAGER.getProperty("POP3_FOLDER_INBOX", null));
+        setUsername(PROPERTY_MANAGER.getProperty("POP3_USERNAME", null));
+        setPassword(PROPERTY_MANAGER.getProperty("POP3_PASSWORD", null));
 
         // Password may needs to be encoded
-        setDebug(PropertyManager.getBooleanProperty("DEBUG_SETTING", false));
-        setSslEnabled(PropertyManager.getBooleanProperty("POP3_SSL_ENABLED", true));
+        setDebug(PROPERTY_MANAGER.getBooleanProperty("DEBUG_SETTING", false));
+        setSslEnabled(PROPERTY_MANAGER.getBooleanProperty("POP3_SSL_ENABLED", true));
     }
 
     /**

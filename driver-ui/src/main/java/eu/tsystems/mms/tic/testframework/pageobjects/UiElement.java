@@ -21,27 +21,25 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UiElementBase;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 
 /**
  * GuiElement with new fluent API support
+ *
  * @author Mike Reiche
  */
 public interface UiElement extends
-    UiElementBase,
+        UiElementBase,
         InteractiveUiElement,
         PageObject<UiElement>,
         WebDriverRetainer,
-        UiElementFinder
-{
+        UiElementFinder {
     enum Properties implements IProperties {
         @Deprecated
         DEFAULT_ASSERT_IS_COLLECTOR("tt.guielement.default.assertcollector", false),
-        DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis",0),
+        DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis", 0),
         DELAY_AFTER_ACTION_MILLIS("tt.delay.after.guielement.action.millis", 0),
         CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name()),
         ELEMENT_TIMEOUT_SECONDS("tt.element.timeout.seconds", 8),
@@ -68,6 +66,11 @@ public interface UiElement extends
     }
 
     UiElementList<UiElement> list();
+
     UiElement shadowRoot();
+
+    @Deprecated
     UiElement sensibleData();
+
+    UiElement sensitiveData();
 }

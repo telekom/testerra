@@ -32,10 +32,10 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfi
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.LegacyGuiElementAssertWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.LegacyGuiElementAssertWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
@@ -49,18 +49,19 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
-import java.awt.Color;
-import java.io.File;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
+import java.awt.*;
+import java.io.File;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -76,8 +77,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     /**
      * Get lazy initialized by {@link #asserts()}
      * Is one of:
-     *  {@link #collectableAssert}
-     *  {@link #instantAssert}
+     * {@link #collectableAssert}
+     * {@link #instantAssert}
      */
     private GuiElementAssert defaultAssert;
     /**
@@ -104,10 +105,10 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     private final GuiElementData guiElementData;
     /**
      * This facade contains
-     *  {@link #core}
-     *  {@link GuiElementCoreSequenceDecorator}
-     *  {@link UiElementLogger}
-     *  {@link DelayActionsGuiElementFacade}
+     * {@link #core}
+     * {@link GuiElementCoreSequenceDecorator}
+     * {@link UiElementLogger}
+     * {@link DelayActionsGuiElementFacade}
      */
     private GuiElementCore decoratedCore;
     private GuiElementWait decoratedWait;
@@ -150,7 +151,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      */
     GuiElement(GuiElementCore core) {
         this.core = core;
-        AbstractGuiElementCore realCore = (AbstractGuiElementCore)core;
+        AbstractGuiElementCore realCore = (AbstractGuiElementCore) core;
         guiElementData = realCore.guiElementData;
         guiElementData.setGuiElement(this);
         createDecorators();
@@ -213,7 +214,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * Different filters can be applied in conjunction (and).
      *
      * @param filter Filters to be applied
-     *
      * @return The same GuiElement
      * @deprecated Use {@link DefaultLocator} instead
      */
@@ -227,7 +227,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * Add a Decorator to log every action performed on this element with addition to a short description of it.
      *
      * @param description A very short description of this GuiElement, for example "Continue Shopping Button"
-     *
      * @deprecated Use {@link #setName(String)} instead
      */
     @Deprecated
@@ -241,7 +240,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * given locator. It does not wait for the subelement if the parent has been found!
      *
      * @param by Locator of new element.
-     *
      * @return GuiElement
      */
     @Deprecated
@@ -253,9 +251,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * Get sub element by locator. Using this executes a find on the parent element and the parent.findElement for the
      * given locator. It does not wait for the subelement if the parent has been found!
      *
-     * @param by   Locator of new element.
+     * @param by          Locator of new element.
      * @param description Description for GuiElement
-     *
      * @return GuiElement
      */
     @Deprecated
@@ -267,7 +264,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     @Deprecated
     public GuiElement getSubElement(Locator locator) {
-        return (GuiElement)find(locator);
+        return (GuiElement) find(locator);
     }
 
     @Override
@@ -292,6 +289,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         decoratedCore.scrollToElement();
         return this;
     }
+
     @Deprecated
     public UiElement scrollToElement(int yOffset) {
         decoratedCore.scrollToElement(yOffset);
@@ -343,10 +341,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 //    }
 
     /**
-     * @deprecated
-     * This method is no longer acceptable as a part of GuiElement.
+     * @deprecated This method is no longer acceptable as a part of GuiElement.
      * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickAbsolute()} instead
-     *
      */
     @Override
     public UiElement clear() {
@@ -355,10 +351,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     /**
-     * @deprecated
-     * This method is no longer acceptable as a part of GuiElement.
+     * @deprecated This method is no longer acceptable as a part of GuiElement.
      * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverAbsolute2Axis()} instead
-     *
      */
     @Override
     public InteractiveUiElement hover() {
@@ -439,15 +433,14 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     /**
-     * @deprecated
-     * This method is no longer acceptable as a part of GuiElement.
+     * @deprecated This method is no longer acceptable as a part of GuiElement.
      * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverJS()} instead
-     *
      */
     @Deprecated
     public String getCssValue(String cssIdentifier) {
         return decoratedCore.getCssValue(cssIdentifier);
     }
+
     @Deprecated
     public UiElement mouseOver() {
         decoratedCore.mouseOver();
@@ -531,10 +524,8 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
     }
 
     /**
-     * @deprecated
-     * This method is no longer acceptable as a part of GuiElement.
+     * @deprecated This method is no longer acceptable as a part of GuiElement.
      * Use {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#doubleClickJS()} instead
-     *
      */
     @Override
     public UiElement contextClick() {
@@ -549,6 +540,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     /**
      * Sets the abstract parent
+     *
      * @param parent {@link UiElement} or {@link PageObject}
      */
     public UiElement setParent(Nameable parent) {
@@ -558,6 +550,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     /**
      * Retrieves the nameable parent.
+     *
      * @return Can be {@link UiElement} or {@link PageObject}
      */
     @Override
@@ -585,9 +578,20 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return guiElementData.hasSensibleData();
     }
 
+    public boolean hasSensitiveData() {
+        return guiElementData.hasSensitiveData();
+    }
+
+    @Deprecated
     @Override
     public GuiElement sensibleData() {
         guiElementData.setHasSensibleData(true);
+        return this;
+    }
+
+    @Override
+    public GuiElement sensitiveData() {
+        guiElementData.setHasSensitiveData(true);
         return this;
     }
 
@@ -624,7 +628,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * instead of the technical cause like an isDisplayed error.
      *
      * @param errorMessage Cause returned on assertion error.
-     *
      * @return GuiElementAssert object for functional assertions
      */
     @Deprecated
@@ -642,7 +645,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      */
     @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
-        if (nonFunctionalAssert==null) {
+        if (nonFunctionalAssert == null) {
             OptionalAssertion assertion = Testerra.getInjector().getInstance(OptionalAssertion.class);
             nonFunctionalAssert = createAssertDecorators(assertion);
         }
@@ -665,7 +668,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * given as cause, instead of the technical cause like an isDisplayed error.
      *
      * @param errorMessage Cause returned on assertion error.
-     *
      * @return GuiElementAssert object for non-functional assertions
      * @deprecated Use {@link #optionalAsserts(String)} instead
      */
@@ -689,7 +691,9 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * Provides access to optional assert methods
      */
     @Deprecated
-    public GuiElementAssert optionalAsserts() { return nonFunctionalAsserts(); }
+    public GuiElementAssert optionalAsserts() {
+        return nonFunctionalAsserts();
+    }
 
     /**
      * Provides access to optional assert methods
@@ -707,7 +711,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      */
     @Deprecated
     public GuiElementAssert assertCollector() {
-        if (collectableAssert==null) {
+        if (collectableAssert == null) {
             CollectedAssertion assertion = Testerra.getInjector().getInstance(CollectedAssertion.class);
             collectableAssert = createAssertDecorators(assertion);
         }
@@ -719,7 +723,6 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
      * instead of the technical cause like an isDisplayed error.
      *
      * @param errorMessage Cause returned on assertion error.
-     *
      * @return GuiElementAssert object for functional assertions
      */
     @Deprecated
@@ -730,7 +733,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     @Deprecated
     public List<GuiElement> getList() {
-        return list().stream().map(uiElement -> (GuiElement)uiElement).collect(Collectors.toList());
+        return list().stream().map(uiElement -> (GuiElement) uiElement).collect(Collectors.toList());
     }
 
     @Deprecated
@@ -771,7 +774,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         do {
             String elementPath = XPath.byToXPath(guiElementData.getLocate().getBy());
             if (guiElementData.getIndex() >= 0) {
-                elementPath += "["+guiElementData.getIndex()+"]";
+                elementPath += "[" + guiElementData.getIndex() + "]";
             }
             sb.insert(0, elementPath);
             guiElementData = guiElementData.getParent();

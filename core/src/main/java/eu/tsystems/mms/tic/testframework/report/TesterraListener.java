@@ -246,14 +246,8 @@ public class TesterraListener implements
     ) {
         final String methodName = getMethodName(testResult);
 
-//        if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {
-//            return null;
-//        }
-
-        /*
-         * store testresult, create method context
-         */
-        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
+        // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentMethodContext(testResult);
 
         methodContext.getTestStep(TestStep.SETUP);
 
@@ -398,9 +392,15 @@ public class TesterraListener implements
      * This is only a fallback when 'afterInvocation was not called.' This could happen when TestNG runs into an exception, e.g.
      * the Test method points to a non-existing dataprovider.
      * Therefor the events will only post if the corresponding MethodContext has no status.
+     * <p>
+     * This method is also called when data provider failed. This is excluded, see {@link #onDataProviderFailure(ITestNGMethod, ITestContext, RuntimeException)}
      */
     @Override
     public void onTestFailure(ITestResult iTestResult) {
+        if (dataProviderSemaphore.containsKey(iTestResult.getMethod())) {
+            return;
+        }
+
         InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), iTestResult);
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
 
@@ -420,10 +420,9 @@ public class TesterraListener implements
     public void onTestSkipped(ITestResult testResult) {
         /**
          * This method gets not only called when a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException},
-         * but also when a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}
-         * or when a test fails for another reason like {@link #onDataProviderFailure(ITestNGMethod, ITestContext, RuntimeException)}
+         * but also when a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}.
          */
-        if (!testResult.wasRetried() && !dataProviderSemaphore.containsKey(testResult.getMethod())) {
+        if (!testResult.wasRetried()) {
             MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
             methodContext.setStatus(Status.SKIPPED);
             Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
@@ -556,26 +555,31 @@ public class TesterraListener implements
 //        });
         // aktuell noch kein Method context
 
+        // Finalize method context for data provider
         IInvokedMethod dpIinvokedMethod = DP_INVOKED_METHODS.get(testNGMethod.getDataProviderMethod().getMethod().toString());
         ITestResult dpTestResult = DP_TEST_RESULT.get(testNGMethod.getDataProviderMethod().getMethod().toString());
         dpTestResult.setStatus(ITestResult.FAILURE);
         pAfterInvocation(dpIinvokedMethod, dpTestResult, testContext);
 
-        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
-//            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
+
+        // For the called test method a new method context is created
+        ITestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+        IInvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
 //            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
-//            if (exception.getCause() != null) {
-//                methodContext.addError(exception.getCause());
-//            } else {
-//                methodContext.addError(exception);
-//            }
-//            // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
-//            methodContext.setStatus(Status.SKIPPED);
-//            testResult.setStatus(ITestResult.SKIP);
-//            pAfterInvocation(invokedMethod, testResult, testContext);
-//
-//            dataProviderSemaphore.put(testNGMethod, true);
+        if (exception.getCause() != null) {
+            methodContext.addError(exception.getCause());
+        } else {
+            methodContext.addError(exception);
         }
+//            // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
+        methodContext.setStatus(Status.SKIPPED);
+        testResult.setStatus(ITestResult.SKIP);
+        pAfterInvocation(invokedMethod, testResult, testContext);
+//
+        // To prevent double method context, this map is needed
+        dataProviderSemaphore.put(testNGMethod, true);
+//        }
     }
 }

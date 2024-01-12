@@ -133,12 +133,11 @@ public class ExecutionContextController {
     }
 
     /**
-     * // TODO: Rename to 'setCurrentMethodContext' if testResult will be removed
      * Set currently active test.
      *
      * @param iTestResult TestNg testResult representing current test.
      */
-    public static MethodContext setCurrentTestResult(ITestResult iTestResult) {
+    public static MethodContext setCurrentMethodContext(ITestResult iTestResult) {
 //        CURRENT_TEST_RESULT.set(iTestResult);
         MethodContext methodContext = getMethodContextFromTestResult(iTestResult);
         CURRENT_METHOD_CONTEXT.set(methodContext);

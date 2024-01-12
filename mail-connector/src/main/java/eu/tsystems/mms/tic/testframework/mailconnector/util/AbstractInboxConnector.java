@@ -309,9 +309,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * @param recipientType The type of the recipient.
      * @param subject       The subject of the mail. Can be null if mail has no subject.
      * @param messageId     The id of the message. Can be null.
-     *
+     * @deprecated Use {@link #deleteMessage(SearchTerm)} instead
      * @return true if message was deleted, else false
      */
+    @Deprecated
     public boolean deleteMessage(
             final String recipient,
             final Message.RecipientType recipientType,
@@ -530,8 +531,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                 messages = folder.getMessages();
             }
 
-            final String logMessageSearchTerm = String.format("Checking messages from '%s' for MessageID: '%s'", getInboxFolder(), searchTerm);
-            log().info(logMessageSearchTerm);
+            log().info("Checking messages from '{}'", getInboxFolder());
 
             if (messages.length > 0) {
                 String msg = "Message found, DELETING";

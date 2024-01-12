@@ -600,7 +600,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable, Propert
         Assert.assertTrue(pop3.getMessageCount() > 1 , "Mail box contains mails for deletion");
 
         // delete all messages
-        pop3.deleteMessage(null, null, null, null);
+        pop3.deleteAllMessages();
 
         // verify empty inbox
         final boolean inboxEmpty = (pop3.getMessageCount() == 0);
@@ -714,23 +714,15 @@ public class MailConnectorTest extends TesterraTest implements Loggable, Propert
     }
 
     private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError {
-        Email receivedMsg = null;
 
         // TEST - Fail, if no message was received.
-        try {
-            final EmailQuery query = new EmailQuery()
-                    .setSearchTerm(searchTerm)
-                    .setFolderName(folderName);
-            final List<Email> emailList = abstractInboxConnector.query(query).collect(Collectors.toList());
-            if (emailList.isEmpty()) {
-                throw new RuntimeException("No messages found ");
-            }
-            receivedMsg = emailList.get(0);
-        } catch (Exception e) {
-            Assert.fail(ERR_NO_MSG_RECEIVED);
-        }
+        final EmailQuery query = new EmailQuery()
+                .setSearchTerm(searchTerm)
+                .setFolderName(folderName);
+        final List<Email> emailList = abstractInboxConnector.query(query).collect(Collectors.toList());
+        ASSERT.assertTrue(!emailList.isEmpty(), "messages found.");
 
-        return receivedMsg;
+        return emailList.get(0);
     }
 
     private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector) throws AssertionError {

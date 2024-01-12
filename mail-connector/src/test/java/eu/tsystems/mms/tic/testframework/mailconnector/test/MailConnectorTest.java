@@ -665,7 +665,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable, Propert
      * Creates a default test message.
      *
      * @param mailSession Session to be used for Mail.
-     * @param subject     Subject of mail.
+     * @param subject Subject of mail.
      * @return MimeMessage object.
      */
     private MimeMessage createDefaultMessage(Session mailSession, String subject) {
@@ -740,7 +740,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable, Propert
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
      *
-     * @param msg                    the TesterraMail-message to delete
+     * @param msg the TesterraMail-message to delete
      * @param abstractInboxConnector mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message
      */

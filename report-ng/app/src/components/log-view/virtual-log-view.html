@@ -19,12 +19,14 @@
   ~ under the License.
   -->
 <template>
-    <div class="code-view"
+    <div class="code-view logs"
          class.bind="class"
          ref="_logView"
+         scroll.trigger="handleScrollEvent()"
     >
-        <div virtual-repeat.for="logMessage of logMessages"
+        <div repeat.for="logMessage of _visibleMessages"
              class="line"
+             id="id-${logMessage.message}-${logMessage.timestamp}-${logMessage.type}-${logMessage.loggerName}-${logMessage.stackTrace}-${logMessage.threadName}"
              class.bind="(logMessage.type==1?'error':(logMessage.type==2?'warn':''))"
         >
             <compose view="components/log-view/log-line.html"></compose>

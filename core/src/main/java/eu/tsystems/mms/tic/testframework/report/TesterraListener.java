@@ -42,6 +42,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
 import org.testng.IConfigureCallBack;
@@ -64,16 +65,16 @@ import org.testng.SkipException;
 import org.testng.annotations.Test;
 import org.testng.internal.ConfigurationMethod;
 import org.testng.internal.ConstructorOrMethod;
-import org.testng.internal.TestNGMethod;
 import org.testng.internal.TestResult;
 import org.testng.internal.annotations.DefaultAnnotationTransformer;
-import org.testng.internal.annotations.JDK15AnnotationFinder;
+import org.testng.internal.annotations.IAnnotationFinder;
 import org.testng.internal.invokers.InvokedMethod;
 import org.testng.internal.objects.DefaultTestObjectFactory;
 import org.testng.xml.XmlSuite;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -475,29 +476,33 @@ public class TesterraListener implements
         return instances > 0;
     }
 
+    /**
+     * Generated data provider objects are stored for use in 'afterDataProviderExecutionÄ
+     */
+    private static final Map<String, IInvokedMethod> DP_INVOKED_METHODS = new ConcurrentHashMap<>();
+    private static final Map<String, ITestResult> DP_TEST_RESULT = new ConcurrentHashMap<>();
+
     @Override
     public void beforeDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
         /**
          * TestNG calls the data provider initialization for every thread.
          * Added a semaphore to prevent adding multiple method contexts.
          */
-        log().info("Before data provider execution");
 //        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
-        // TODO: Creates here a new method context
-        // This is not possible because TestNG tries to find the current annotation witch matches to default annotations
-//        java.lang.IllegalArgumentException: Java @Annotation class for 'interface org.testng.annotations.IConfigurationAnnotation' not found.
-//              at org.testng.internal.annotations.JDK15AnnotationFinder.findAnnotation(JDK15AnnotationFinder.java:109) ~[testng-7.8.0.jar:7.8.0]
+
+        // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
+        IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());
         ITestNGMethod dpConfigMethod = new ConfigurationMethod(
                 new DefaultTestObjectFactory(),
                 new ConstructorOrMethod(dataProviderMethod.getMethod()),
-                new JDK15AnnotationFinder(new DefaultAnnotationTransformer()),
+                annoFinder,
                 false,
                 false,
                 false,
                 false,
                 false,
                 false,
-                false,
+                true,
                 false,
                 false,
                 new String[]{},
@@ -505,24 +510,15 @@ public class TesterraListener implements
                 testNGMethod.getXmlTest(),
                 dataProviderMethod
         );
-        // This is a default test method with 'isTestMethod=true' --> no
-//            TestNGMethod dpMethod = new TestNGMethod(
-//                    new DefaultTestObjectFactory(),
-//                    dataProviderMethod.getMethod(),
-//                    new JDK15AnnotationFinder(new DefaultAnnotationTransformer()),
-//                    testNGMethod.getXmlTest(),
-//                    dataProviderMethod
-//            );
+
         dpConfigMethod.setTestClass(testNGMethod.getTestClass());
 
         // Need full qualified TestResult
         TestResult testResult = TestResult.newContextAwareTestResult(dpConfigMethod, testContext);
-//            TestResult testResult = TestResult.newEmptyTestResult();
-//            testResult.setContext(testContext);
-//            testResult.setTestName(dataProviderMethod.getName());
-
         InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-//
+        DP_TEST_RESULT.put(dataProviderMethod.getMethod().toString(), testResult);
+        DP_INVOKED_METHODS.put(dataProviderMethod.getMethod().toString(), invokedMethod);
+
         MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
 
         dataProviderSemaphore.put(testNGMethod, true);
@@ -532,19 +528,9 @@ public class TesterraListener implements
     @Override
     public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
         log().info("After dataprovider execution");
-//        TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-//        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
 
-        TestNGMethod dpMethod = new TestNGMethod(
-                new DefaultTestObjectFactory(),
-                dataProviderMethod.getMethod(),
-                new JDK15AnnotationFinder(new DefaultAnnotationTransformer()),
-                testNGMethod.getXmlTest(),
-                dataProviderMethod
-        );
-        TestResult testResult = TestResult.newContextAwareTestResult(dpMethod, testContext);
-        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-
+        IInvokedMethod invokedMethod = DP_INVOKED_METHODS.get(dataProviderMethod.getMethod().toString());
+        ITestResult testResult = DP_TEST_RESULT.get(dataProviderMethod.getMethod().toString());
         pAfterInvocation(invokedMethod, testResult, testContext);
     }
 

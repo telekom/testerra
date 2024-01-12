@@ -16,7 +16,8 @@ public class DataProviderPassedTests extends TesterraTest implements Loggable {
 
     @DataProvider(name = "dpAssertPassed", parallel = true)
     public Object[][] dpAssertPassedMethod() {
-        int size = 2;
+        int size = 5;
+        log().info("I'm in a DataProvider, object size is {}", size);
         Object[][] objects = new Object[size][1];
         for (int i = 0; i < size; i++) {
             objects[i][0] = "" + (i + 1);

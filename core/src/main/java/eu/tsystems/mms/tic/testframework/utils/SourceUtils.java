@@ -103,7 +103,9 @@ public final class SourceUtils {
 
     private static Optional<File> findClassFile(String className) {
         String sourceRoot = Report.Properties.SOURCE_ROOT.asString();
-        if(className.contains("$")) className = className.substring(0,className.indexOf("$")); //this is needed for inner classes
+        if (className.contains("$")) {
+            className = className.substring(0, className.indexOf("$")); //this is needed for inner classes
+        }
         String filePath = className.replace(".", "/").concat(".java");
         File file = new File(sourceRoot + "/main/java/" + filePath);
         if (file.exists()) {

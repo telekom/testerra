@@ -42,7 +42,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.logging.log4j.core.LoggerContext;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
 import org.testng.IConfigureCallBack;
@@ -489,6 +488,8 @@ public class TesterraListener implements
          * Added a semaphore to prevent adding multiple method contexts.
          */
 //        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
+//            dataProviderSemaphore.put(testNGMethod, true);
+//        }
 
         // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
         IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());
@@ -521,8 +522,7 @@ public class TesterraListener implements
 
         MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
 
-        dataProviderSemaphore.put(testNGMethod, true);
-//        }
+
     }
 
     @Override
@@ -531,6 +531,7 @@ public class TesterraListener implements
 
         IInvokedMethod invokedMethod = DP_INVOKED_METHODS.get(dataProviderMethod.getMethod().toString());
         ITestResult testResult = DP_TEST_RESULT.get(dataProviderMethod.getMethod().toString());
+        testResult.setStatus(ITestResult.SUCCESS);
         pAfterInvocation(invokedMethod, testResult, testContext);
     }
 
@@ -553,21 +554,28 @@ public class TesterraListener implements
 //            pAfterInvocation(invokedMethod, testResult, testContext);
 //
 //        });
-        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
-            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
-            if (exception.getCause() != null) {
-                methodContext.addError(exception.getCause());
-            } else {
-                methodContext.addError(exception);
-            }
-            // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
-            methodContext.setStatus(Status.SKIPPED);
-            testResult.setStatus(ITestResult.SKIP);
-            pAfterInvocation(invokedMethod, testResult, testContext);
+        // aktuell noch kein Method context
 
-            dataProviderSemaphore.put(testNGMethod, true);
+        IInvokedMethod dpIinvokedMethod = DP_INVOKED_METHODS.get(testNGMethod.getDataProviderMethod().getMethod().toString());
+        ITestResult dpTestResult = DP_TEST_RESULT.get(testNGMethod.getDataProviderMethod().getMethod().toString());
+        dpTestResult.setStatus(ITestResult.FAILURE);
+        pAfterInvocation(dpIinvokedMethod, dpTestResult, testContext);
+
+        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
+//            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+//            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
+//            if (exception.getCause() != null) {
+//                methodContext.addError(exception.getCause());
+//            } else {
+//                methodContext.addError(exception);
+//            }
+//            // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
+//            methodContext.setStatus(Status.SKIPPED);
+//            testResult.setStatus(ITestResult.SKIP);
+//            pAfterInvocation(invokedMethod, testResult, testContext);
+//
+//            dataProviderSemaphore.put(testNGMethod, true);
         }
     }
 }

@@ -559,6 +559,7 @@ public class TesterraListener implements
         IInvokedMethod dpIinvokedMethod = DP_INVOKED_METHODS.get(testNGMethod.getDataProviderMethod().getMethod().toString());
         ITestResult dpTestResult = DP_TEST_RESULT.get(testNGMethod.getDataProviderMethod().getMethod().toString());
         dpTestResult.setStatus(ITestResult.FAILURE);
+        dpTestResult.setThrowable(exception);
         pAfterInvocation(dpIinvokedMethod, dpTestResult, testContext);
 
 //        if (!dataProviderSemaphore.containsKey(testNGMethod)) {

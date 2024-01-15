@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,24 +19,28 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.testdata.model.impl;
+package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
-import eu.tsystems.mms.tic.testframework.testdata.model.DataElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import org.openqa.selenium.WebDriver;
 
 /**
- * Checkbox data element.
+ * Created on 2023-11-29
  *
- * @author pele
- *
+ * @author mgn
  */
-public class CheckboxDataElement extends DataElement<Boolean> {
+public class LayoutTestPage extends BasePage {
+
+    public UiElement layoutTestArticle = find(LOCATE.byQa("section/layoutTestArticle"));
+
+    public UiElement invisibleTestArticle = find(LOCATE.byQa("section/invisibleTestArticle"));
 
     /**
-     * Constructor.
+     * Constructor for existing sessions.
      *
-     * @param checked .
+     * @param driver The web driver.
      */
-    public CheckboxDataElement(Boolean checked) {
-        super(checked);
+    public LayoutTestPage(WebDriver driver) {
+        super(driver);
     }
 }

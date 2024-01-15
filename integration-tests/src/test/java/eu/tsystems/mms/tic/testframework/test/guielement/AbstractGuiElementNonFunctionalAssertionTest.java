@@ -23,27 +23,25 @@
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public abstract class AbstractGuiElementNonFunctionalAssertionTest extends AbstractGuiElementWaiterTest {
 
-    @Test
-    public void testT1_GuiElement_NonFunctionalAssertLayout() throws Exception {
-        GuiElement e1 = getGuiElementBy(By.id("1"));
-        e1.isDisplayed();
-        GuiElement e2 = getGuiElementBy(By.id("11"));
-        boolean exceptionWasThrown = false;
-        try {
-            e1.nonFunctionalAsserts().assertLayout(Layout.inner().sameRight(e2, 0));
-        } catch (AssertionError e) {
-            exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
-        }
-        Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
-    }
+//    @Test
+//    public void testT1_GuiElement_NonFunctionalAssertLayout() throws Exception {
+//        GuiElement e1 = getGuiElementBy(By.id("1"));
+//        e1.isDisplayed();
+//        GuiElement e2 = getGuiElementBy(By.id("11"));
+//        boolean exceptionWasThrown = false;
+//        try {
+//            e1.nonFunctionalAsserts().assertLayout(Layout.inner().sameRight(e2, 0));
+//        } catch (AssertionError e) {
+//            exceptionWasThrown = true;
+//            logger.error("Thrown Error", e);
+//        }
+//        Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
+//    }
 
     @Test
     public void testT2_GuiElement_nonFunctionalAssertIsPresent() {

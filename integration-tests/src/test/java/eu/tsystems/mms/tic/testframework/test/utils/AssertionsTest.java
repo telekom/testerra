@@ -25,123 +25,200 @@ import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.Test;
 
-/**
- * @todo Incomplete
- */
+import java.math.BigDecimal;
+
 public class AssertionsTest extends TesterraTest implements AssertProvider {
 
     @Test
-    public void testIsTrue() {
+    public void test_IsTrue() {
         ASSERT.assertTrue(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testIsTrue_fails() {
+    public void test_IsTrue_fails() {
         ASSERT.assertTrue(false);
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that should be true \\[false\\] equals \\[true\\]")
-    public void testIsTrue_fails_message() {
+    public void test_IsTrue_fails_message() {
         ASSERT.assertTrue(false, "should be true");
     }
 
     @Test
-    public void testIsFalse() {
+    public void test_IsFalse() {
         ASSERT.assertFalse(false);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testIsFalse_fails() {
+    public void test_IsFalse_fails() {
         ASSERT.assertFalse(true);
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that should be false \\[true\\] equals \\[false\\]")
-    public void testIsFalse_fails_message() {
+    public void test_IsFalse_fails_message() {
         ASSERT.assertFalse(true, "should be false");
     }
 
     @Test
-    public void testIsNull() {
+    public void test_IsNull() {
         ASSERT.assertNull(null);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testIsNull_fails() {
+    public void test_IsNull_fails() {
         ASSERT.assertNull(ASSERT);
     }
 
     @Test
-    public void testIsNotNull() {
+    public void test_IsNotNull() {
         ASSERT.assertNotNull(ASSERT);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testIsNotNull_fails() {
+    public void test_IsNotNull_fails() {
         ASSERT.assertNotNull(null);
     }
 
     @Test
-    public void testStringEquals() {
+    public void test_assertEquals_int_long() {
+        int a = 1;
+        long b = 1L;
+        ASSERT.assertEquals(a, b);
+    }
+
+    @Test
+    public void test_assertEquals_int_long_subject() {
+        int a = 1;
+        long b = 1L;
+        ASSERT.assertEquals(a, b, "Test");
+    }
+
+    @Test
+    public void test_assertEquals_float_double() {
+        float a = 1.0f;
+        double b = 1.0;
+        ASSERT.assertEquals(a, b);
+    }
+
+    @Test
+    public void test_assertEquals_float_double_subject() {
+        float a = 1.0f;
+        double b = 1.0;
+        ASSERT.assertEquals(a, b, "Test");
+    }
+
+    @Test
+    public void test_StringEquals() {
         ASSERT.assertEquals("Hallo Welt", "Hallo Welt");
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testStringEquals_fails() {
+    public void test_StringEquals_fails() {
         ASSERT.assertEquals("Hello World", "Hallo Welt");
     }
 
     @Test
-    public void testStringNotEquals() {
+    public void test_StringNotEquals() {
         ASSERT.assertNotEquals("Hello World", "Hallo Welt");
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testStringNotEquals_fails() {
+    public void test_StringNotEquals_fails() {
         ASSERT.assertNotEquals("Hallo Welt", "Hallo Welt");
     }
 
     @Test
-    public void testStartsWith() {
+    public void test_StartsWith() {
         ASSERT.assertStartsWith("a long time ago", "a long");
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testStartsWith_fails() {
+    public void test_StartsWith_fails() {
         ASSERT.assertStartsWith("a long time ago", "in the end");
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp="Expected that a fairytale \\[a long time ago\\] starts with \\[in the end\\]")
-    public void testStartsWith_fails_message() {
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that a fairytale \\[a long time ago\\] starts with \\[in the end\\]")
+    public void test_StartsWith_fails_message() {
         ASSERT.assertStartsWith("a long time ago", "in the end", "a fairytale");
     }
 
     @Test
-    public void testEndsWith() {
+    public void test_EndsWith() {
         ASSERT.assertEndsWith("this is the end", "the end");
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testEndsWith_fails() {
+    public void test_EndsWith_fails() {
         ASSERT.assertEndsWith("this is the end", "the beginning");
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that the sentence \\[this is the end\\] ends with \\[the beginning\\]")
-    public void testEndsWith_fails_message() {
+    public void test_EndsWith_fails_message() {
         ASSERT.assertEndsWith("this is the end", "the beginning", "the sentence");
     }
 
     @Test
-    public void testContains() {
+    public void test_Contains() {
         ASSERT.assertContains("Hello world", "world");
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testContains_fails() {
+    public void test_Contains_fails() {
         ASSERT.assertContains("Hello world", "planet");
     }
 
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that the greeting \\[Hello world\\] contains \\[planet\\]")
-    public void testContains_fails_subject() {
+    public void test_Contains_fails_subject() {
         ASSERT.assertContains("Hello world", "planet", "the greeting");
+    }
+
+    @Test
+    public void test_LowerThan() {
+        ASSERT.assertLowerEqualThan(new BigDecimal(1), new BigDecimal(2));
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_LowerThanFails() {
+        ASSERT.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
+    }
+
+    @Test
+    public void test_GreaterThan() {
+        ASSERT.assertGreaterThan(new BigDecimal(2), new BigDecimal(1));
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_GreaterThanFails() {
+        ASSERT.assertGreaterThan(new BigDecimal(1), new BigDecimal(2));
+    }
+
+    @Test
+    public void test_LowerEqualThan() {
+        ASSERT.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(2));
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_LowerEqualThanFails() {
+        ASSERT.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
+    }
+
+    @Test
+    public void test_GreaterEqualThan() {
+        ASSERT.assertGreaterEqualThan(new BigDecimal(2), new BigDecimal(2));
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_GreaterEqualThanFails() {
+        ASSERT.assertGreaterEqualThan(new BigDecimal(1), new BigDecimal(2));
+    }
+
+    @Test
+    public void test_ContainsNot() {
+        ASSERT.assertContainsNot("affe", "haus");
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_ContainsNotFails() {
+        ASSERT.assertContainsNot("affe", "affe");
     }
 }

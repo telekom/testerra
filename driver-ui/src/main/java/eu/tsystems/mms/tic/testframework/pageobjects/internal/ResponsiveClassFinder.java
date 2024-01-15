@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
@@ -34,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
@@ -378,7 +378,7 @@ final public class ResponsiveClassFinder {
             String leftValue = split[1];
             String rightValue = split[2];
             if (KEYWORD_RES.equals(leftValue)) {
-                throw new NotYetImplementedException();
+                throw new NotImplementedException("Invalid keyword: " + KEYWORD_RES);
             } else {
                 if (!KEYWORD_MIN.equals(leftValue)) {
                     resLowerLimit = Integer.valueOf(leftValue.replace(KEYWORD_PIXEL, ""));

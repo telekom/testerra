@@ -24,20 +24,21 @@ package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
 
-public class FileUtilsTest extends TesterraTest {
+public class FileUtilsTest extends TesterraTest implements AssertProvider {
 
     private static final String testfile = "testfiles/Test.txt";
     private static final String testWithWhiteSpace = "test with whitespace/test.txt";
@@ -56,7 +57,7 @@ public class FileUtilsTest extends TesterraTest {
     /**
      * checks if method gets the absolute file path
      *
-     * @throws IOException           .
+     * @throws IOException .
      * @throws FileNotFoundException .
      */
     @Test
@@ -69,19 +70,19 @@ public class FileUtilsTest extends TesterraTest {
     /**
      * reads content from resource file and checks it
      *
-     * @throws IOException           .
+     * @throws IOException .
      * @throws FileNotFoundException .
      */
     @Test
     public void testT02_readResourceFile() throws IOException, FileNotFoundException {
         String content = FileUtils.readFromResourceFile(testfile);
-        AssertUtils.assertContains(content, "Huhu");
+        ASSERT.assertContains(content, "Huhu");
     }
 
     /**
      * reads content from file and checks it
      *
-     * @throws IOException           .
+     * @throws IOException .
      * @throws FileNotFoundException .
      */
     @Test
@@ -89,7 +90,7 @@ public class FileUtilsTest extends TesterraTest {
 
         String absoluteFilePath = FileUtils.getAbsoluteFilePath(testfile);
         String content = FileUtils.readFromFile(absoluteFilePath);
-        AssertUtils.assertContains(content, "Huhu");
+        ASSERT.assertContains(content, "Huhu");
     }
 
     @Test

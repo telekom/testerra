@@ -209,7 +209,7 @@ export class TestTimings extends AbstractViewModel {
                         } else {
                             const remainingTestCount = this._bars[dataIndex].methodList.length - TestTimings.TEST_NUMBER_LIMIT;
 
-                            this._bars[dataIndex].methodList.slice(0,TestTimings.TEST_NUMBER_LIMIT-1).map(method => {
+                            this._bars[dataIndex].methodList.slice(0,TestTimings.TEST_NUMBER_LIMIT).map(method => {
                                 tooltipString += `<div class="mb1">
                                                     <span class="ml1 mr1 badge__dense tag__dense status-${this._statusConverter.getClassForStatus(method.status)}">
                                                     ${this._statusConverter.getClassForStatus(method.status)} </span>`

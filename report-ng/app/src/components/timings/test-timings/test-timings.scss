@@ -39,10 +39,12 @@
     }
 }
 
-.one-line{
-    display: flex;
-}
+// in tooltip badge titles are not centered anymore => has to be fixed manually:
 
 span[class*="status"]{
     padding-left: 7.5px;
+}
+
+span, :not([class*="status"]){
+    padding-right: 7.5px;
 }

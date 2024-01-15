@@ -230,6 +230,7 @@ export class SessionTimings extends AbstractViewModel {
                             this._dots[seriesIndex].information.browserVersion + '</div> <br>';
                         tooltipString += `<b>Session name:</b> ${this._dots[seriesIndex].information.sessionName} <br>
                             <b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>
+                            <hr>
                             <b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>
                             <b>Session start time:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.sessionStartTime), 'time')} <br>`
 
@@ -239,13 +240,19 @@ export class SessionTimings extends AbstractViewModel {
                         }
 
                         if (testNames.length > 1) {
-                            tooltipString += `<b>Test case(s):</b><ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;
+                            tooltipString += `
+                                <hr>
+                                <b>Test case(s):</b>
+                                <ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;
+
                             testNames.forEach(testName => {
                                 tooltipString += `<li style="margin-bottom: 2px;">${testName}</li>`;
                             });
                             tooltipString += '</ul>';
                         } else {
-                            tooltipString += `<b>Test case(s):</b> ${testNames}`;
+                            tooltipString += `
+                                <hr>
+                                <b>Test case(s):</b> ${testNames}`;
                         }
                         return tooltipString;
                     }

@@ -198,12 +198,12 @@ export class TestTimings extends AbstractViewModel {
                         if (testNumber < TestTimings.TEST_NUMBER_LIMIT) {
                             this._bars[dataIndex].methodList.map(method => {
                                 tooltipString += `<div class="mb1"> 
-                                                    <span class="ml1 mr1 badge__dense tag__dense status-${this._statusConverter.getClassForStatus(method.status)}">
+                                                    <span class="ml1 mr1 status-badge badge__dense tag__dense status-${this._statusConverter.getClassForStatus(method.status)}">
                                                     ${this._statusConverter.getClassForStatus(method.status)} </span>`
 
                                 tooltipString += `${method.name}`
 
-                                if(method.methodType==2) tooltipString += `<span class="ml1 mr1 badge__dense tag tag__dense"> Configuration </span>`;
+                                if(method.methodType==2) tooltipString += `<span class="ml1 mr1 config-badge badge__dense tag tag__dense"> Configuration </span>`;
                                 tooltipString += `</div>`
                             });
                         } else {
@@ -211,12 +211,12 @@ export class TestTimings extends AbstractViewModel {
 
                             this._bars[dataIndex].methodList.slice(0,TestTimings.TEST_NUMBER_LIMIT).map(method => {
                                 tooltipString += `<div class="mb1">
-                                                    <span class="ml1 mr1 badge__dense tag__dense status-${this._statusConverter.getClassForStatus(method.status)}">
+                                                    <span class="ml1 mr1 status-badge badge__dense tag__dense status-${this._statusConverter.getClassForStatus(method.status)}">
                                                     ${this._statusConverter.getClassForStatus(method.status)} </span>`
 
                                 tooltipString += `${method.name}`
 
-                                if(method.methodType==2) tooltipString += `<span class="ml1 mr1 badge__dense tag tag__dense"> Configuration </span>`;
+                                if(method.methodType==2) tooltipString += `<span class="ml1 mr1 config-badge badge__dense tag tag__dense"> Configuration </span>`;
                                 tooltipString += `</div>`
                             });
                             tooltipString += ` and ${remainingTestCount} more`;

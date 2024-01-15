@@ -41,10 +41,10 @@
 
 // in tooltip badge titles are not centered anymore => has to be fixed manually:
 
-span[class*="status"]{
+.status-badge{
     padding-left: 7.5px;
 }
 
-span, :not([class*="status"]){
+.config-badge {
     padding-right: 7.5px;
 }

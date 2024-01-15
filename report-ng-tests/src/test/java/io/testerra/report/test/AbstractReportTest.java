@@ -59,7 +59,7 @@ public abstract class AbstractReportTest extends AbstractTest implements Propert
     }
 
     public synchronized ReportDashBoardPage gotoDashBoardOnAdditionalReport(WebDriver driver) {
-        return visitReportPage(ReportDashBoardPage.class, driver, new DefaultPropertyManager().getProperty("file.path.extend.pretest.root"));
+        return visitReportPage(ReportDashBoardPage.class, driver, PROPERTY_MANAGER.getProperty("file.path.extend.pretest.root"));
     }
 
     private <T extends AbstractReportPage> T visitPageOnGeneralReport(final Class<T> reportPageClass, WebDriver driver) {

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,39 +17,24 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- package eu.tsystems.mms.tic.testframework.testdata.model;
 
-/**
- * Data element.
- *
- * @author pele
- *
- * @param <T> Generic type.
- */
-public abstract class DataElement<T> {
+.logs {
+    white-space: pre;
+    width: 100%;
+    overflow: scroll;
 
-    /**
-     * Data element value based on type.
-     */
-    private T value;
+    // breakpoints according to: https://getbootstrap.com/docs/5.0/layout/breakpoints/
 
-    /**
-     * Creates a data element with specific type value.
-     *
-     * @param value .
-     */
-    public DataElement(T value) {
-        this.value = value;
+    @media (max-height: 1199.98px) {
+        height: 700px;
     }
 
-    public T getValue() {
-        return value;
+    @media (max-height: 991.98px) {
+        height: 500px;
     }
 
-    @Override
-    public String toString() {
-        return value.toString();
+    @media (max-height: 767.98px) {
+        height: 300px;
     }
 }

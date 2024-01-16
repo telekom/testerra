@@ -24,14 +24,11 @@ package eu.tsystems.mms.tic.testframework.test.reporting;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import io.testerra.test.pretest_status.TestStatusTest;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -51,7 +48,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
 
     @Override
     public BasePage getPage() {
-        return PageFactory.create(BasePage.class, getWebDriver());
+        return PAGE_FACTORY.createPage(BasePage.class, getWebDriver());
     }
 
     @Test
@@ -65,13 +62,13 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
         String screenshotSource = Files.readFile(new FileInputStream(screenshot.getPageSourceFile().get()));
 
         String expected = "<p id=\"99\">Open again clicked<br>Open again clicked<br>Open again clicked<br>";
-        AssertUtils.assertContains(screenshotSource, expected);
+        ASSERT.assertContains(screenshotSource, expected);
     }
 
     @Test
     public void testT01_takeScreenshotTwice() {
 
-        WebDriver webDriver = WebDriverManager.getWebDriver();
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
 
         UITestUtils.takeScreenshot(webDriver, true);
         UITestUtils.takeScreenshot(webDriver, true);

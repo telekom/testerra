@@ -25,6 +25,7 @@ package eu.tsystems.mms.tic.testframework;
 import eu.tsystems.mms.tic.testframework.core.server.StaticServer;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.net.BindException;
 import org.openqa.selenium.WebDriver;
@@ -33,7 +34,7 @@ import org.testng.annotations.BeforeTest;
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
+public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable, AssertProvider {
 
     protected static StaticServer staticServer = new StaticServer(FileUtils.getResourceFile("testsites"));
 
@@ -48,6 +49,12 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
         } catch (BindException e) {
             log().warn("Use already running WebServer: " + e.getMessage());
         }
+    }
+
+    public WebDriver getWebDriver(TestPage testPage) {
+        WebDriver webDriver = super.getWebDriver();
+        visitTestPage(webDriver, testPage);
+        return webDriver;
     }
 
     @Override

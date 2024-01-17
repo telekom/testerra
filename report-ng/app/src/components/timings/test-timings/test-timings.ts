@@ -200,7 +200,7 @@ export class TestTimings extends AbstractViewModel {
                         this._bars[dataIndex].methodList.slice(0,TestTimings.TEST_NUMBER_LIMIT).map(method => {     // if methodList has less than TEST_NUMBER_LIMIT entries it remains unchanged
                             tooltipString += `<div class="mb1"> 
                                                 <span class="ml1 mr1 badge status-${this._statusConverter.getClassForStatus(method.status)}">
-                                                ${this._statusConverter.getClassForStatus(method.status)} </span>`
+                                                ${this._statusConverter.getLabelForStatus(method.status)} </span>`
 
                             tooltipString += `${method.name}`
 

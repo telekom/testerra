@@ -22,16 +22,20 @@
 
 package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractExclusiveTestSitesTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.testng.annotations.Test;
 
-public class DesktopWebDriverUtilsTest extends AbstractExclusiveTestSitesTest<WebTestPage> {
+import static eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider.PAGE_FACTORY;
 
-    @Override
-    public Class<WebTestPage> getPageClass() {
-        return WebTestPage.class;
+public class DesktopWebDriverUtilsTest extends AbstractTestSitesTest {
+
+    protected WebTestPage getPage() {
+        return PAGE_FACTORY.createPage(WebTestPage.class, getWebDriver());
     }
+
+    protected static final DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
 
     /**
      * Test the clickJS method of DesktopWebDriverUtils

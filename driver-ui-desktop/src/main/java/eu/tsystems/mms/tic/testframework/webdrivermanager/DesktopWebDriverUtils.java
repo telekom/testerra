@@ -44,8 +44,6 @@ import java.util.Optional;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
-    JSUtils utils = new JSUtils();
-
     public DesktopWebDriverUtils() {
 
     }
@@ -173,14 +171,15 @@ public final class DesktopWebDriverUtils implements Loggable {
         // The resulting region in the browser
         ScreenRegion imageRegion;
 
+        JSUtils utils = new JSUtils();
         // Search the element beginning at the top of the page
         utils.scrollToTop(driver);
         // Calculate the scroll height by halving the viewport height to ensure the searched image is not skipped
         int scrollHeight = (int) (driver.manage().window().getSize().getHeight() * 0.5);
         // Get the height of the page
-        long documentHeight = utils.getDocumentHeight(driver);
+        int documentHeight = utils.getDocumentHeight(driver);
         // The current scroll height in the browser
-        long currentScrollHeight;
+        int currentScrollHeight;
 
         do {
             currentScrollHeight = utils.getCurrentScrollHeight(driver);
@@ -190,11 +189,11 @@ public final class DesktopWebDriverUtils implements Loggable {
             if (imageRegion != null) {
                 // Element is visible, break out of the loop
                 Rectangle r = imageRegion.getBounds();
-                log().info(String.format("Image \"%s\" found at (%d,%d) with dimension %dx%d", imageFile.getAbsolutePath(), r.x, r.y, r.width, r.height));
+                log().info("Image \"{}\" found at ({},{}) with dimension {}x{}", imageFile.getAbsolutePath(), r.x, r.y, r.width, r.height);
                 elementFound = true;
             } else {
                 // Scroll down to further search for the element
-                utils.scrollByValues(driver, 0, scrollHeight);
+                utils.scrollByOffset(driver, new Point(0, scrollHeight));
             }
         } while (currentScrollHeight < documentHeight && !elementFound); // End loop if element was found or bottom of page is reached
 

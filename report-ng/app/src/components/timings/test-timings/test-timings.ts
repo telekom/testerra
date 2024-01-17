@@ -65,7 +65,9 @@ export class TestTimings extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        if (!this.queryParams.rangeNum) this.queryParams.rangeNum = '10';// only set range 10 if there is no range at all (e.g. when navigation from another view)
+        if (!this.queryParams.rangeNum){
+            this.queryParams.rangeNum = '10';   // only set range 10 if there is no range at all (e.g. when navigation from another view)
+        }
         if (params.config) {
             this._showConfigurationMethods = !!params.config.toLowerCase();
         }
@@ -195,31 +197,22 @@ export class TestTimings extends AbstractViewModel {
 
                         let tooltipString = `${testNumber} test case(s): <br/><br/>`;
 
-                        if (testNumber < TestTimings.TEST_NUMBER_LIMIT) {
-                            this._bars[dataIndex].methodList.map(method => {
-                                tooltipString += `<div class="mb1"> 
-                                                    <span class="ml1 mr1 status-badge badge__dense tag__dense status-${this._statusConverter.getClassForStatus(method.status)}">
-                                                    ${this._statusConverter.getClassForStatus(method.status)} </span>`
+                        this._bars[dataIndex].methodList.slice(0,TestTimings.TEST_NUMBER_LIMIT).map(method => {     // if methodList has less than TEST_NUMBER_LIMIT entries it remains unchanged
+                            tooltipString += `<div class="mb1"> 
+                                                <span class="ml1 mr1 badge status-${this._statusConverter.getClassForStatus(method.status)}">
+                                                ${this._statusConverter.getClassForStatus(method.status)} </span>`
 
-                                tooltipString += `${method.name}`
+                            tooltipString += `${method.name}`
 
-                                if(method.methodType==2) tooltipString += `<span class="ml1 mr1 config-badge badge__dense tag tag__dense"> Configuration </span>`;
-                                tooltipString += `</div>`
-                            });
-                        } else {
+                            if(method.methodType==MethodType.CONFIGURATION_METHOD){
+                                tooltipString += `<span class="ml1 mr1 config-badge badge__dense tag tag__dense"> Configuration </span>`;
+                            }
+                            tooltipString += `</div>`
+                        });
+
+                        if (testNumber > TestTimings.TEST_NUMBER_LIMIT) {
                             const remainingTestCount = this._bars[dataIndex].methodList.length - TestTimings.TEST_NUMBER_LIMIT;
-
-                            this._bars[dataIndex].methodList.slice(0,TestTimings.TEST_NUMBER_LIMIT).map(method => {
-                                tooltipString += `<div class="mb1">
-                                                    <span class="ml1 mr1 status-badge badge__dense tag__dense status-${this._statusConverter.getClassForStatus(method.status)}">
-                                                    ${this._statusConverter.getClassForStatus(method.status)} </span>`
-
-                                tooltipString += `${method.name}`
-
-                                if(method.methodType==2) tooltipString += `<span class="ml1 mr1 config-badge badge__dense tag tag__dense"> Configuration </span>`;
-                                tooltipString += `</div>`
-                            });
-                            tooltipString += ` and ${remainingTestCount} more`;
+                            tooltipString += ` and ${remainingTestCount} more`
                         }
 
                         return tooltipString;

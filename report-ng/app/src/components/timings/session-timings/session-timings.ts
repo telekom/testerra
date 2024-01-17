@@ -26,7 +26,7 @@ import {ECharts, EChartsOption} from 'echarts';
 import "./session-timings.scss";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "../../../services/status-converter";
-import {MethodType, MetricType} from "../../../services/report-model/framework_pb";
+import {MetricType} from "../../../services/report-model/framework_pb";
 import {ExecutionStatistics} from "../../../services/statistic-models";
 import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
 
@@ -64,7 +64,6 @@ export class SessionTimings extends AbstractViewModel {
 
             executionStatistics.classStatistics.forEach(classStatistic => {
                 const filteredMethodDetails = classStatistic.methodContexts
-                    .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD || methodContext.methodType == MethodType.CONFIGURATION_METHOD)
                     .map(methodContext => new MethodDetails(methodContext, classStatistic));
                 this._methodDetails.push(...filteredMethodDetails);
             })

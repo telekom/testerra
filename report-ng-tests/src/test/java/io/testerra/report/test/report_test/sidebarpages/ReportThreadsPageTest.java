@@ -23,20 +23,17 @@
 package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-
-import org.testng.annotations.Test;
-
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
+import org.testng.annotations.Test;
 
 public class ReportThreadsPageTest extends AbstractReportTest {
 
-    // Deactivated testcase due to renewed threads view (echarts) since it is not that easy possible
-    // to access elements such as the specific testcases inside the canvas element of echarts
-/*    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestMethodForEachStatus")
     public void testT01_checkSearchForMethodsSelectionWorksCorrectly(String method) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
@@ -48,7 +45,11 @@ public class ReportThreadsPageTest extends AbstractReportTest {
 
         reportThreadsPage = reportThreadsPage.clickSearchBar();
         reportThreadsPage = reportThreadsPage.selectMethod(method);
-        reportThreadsPage.assertMethodBoxIsSelected(method);
-    }*/
+
+        String imageFileName = "byImage/ReportThreadsPageTest/" + method + ".png";
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), imageFileName);
+        reportThreadsPage.assertTooltipShown(method);
+    }
 
 }

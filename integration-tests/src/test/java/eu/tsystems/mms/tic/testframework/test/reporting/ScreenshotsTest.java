@@ -56,7 +56,7 @@ public class ScreenshotsTest extends AbstractTestSitesTest implements PageFactor
         WebTestPage page = new WebTestPage(getWebDriver());
 
         for (int s = 0; s < 3; ++s) {
-            page.getOpenAgain().click();
+            page.openAgainLink.click();
         }
         Screenshot screenshot = UITestUtils.takeScreenshot(page.getWebDriver(), false);
         String screenshotSource = Files.readFile(new FileInputStream(screenshot.getPageSourceFile().get()));

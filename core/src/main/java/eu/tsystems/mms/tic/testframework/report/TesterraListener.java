@@ -536,24 +536,6 @@ public class TesterraListener implements
 
     @Override
     public void onDataProviderFailure(ITestNGMethod testNGMethod, ITestContext testContext, RuntimeException exception) {
-        /**
-         * TestNG calls the data provider initialization for every thread.
-         * Added a semaphore to prevent adding multiple method contexts.
-         */
-//        Optional<MethodContext> methodContext = ExecutionContextController.getMethodContextForThread();
-//        methodContext.ifPresent(context -> {
-//            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-//            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-//            if (exception.getCause() != null) {
-//                context.addError(exception.getCause());
-//            } else {
-//                context.addError(exception);
-//            }
-//
-//            pAfterInvocation(invokedMethod, testResult, testContext);
-//
-//        });
-        // aktuell noch kein Method context
 
         // Finalize method context for data provider
         IInvokedMethod dpIinvokedMethod = DP_INVOKED_METHODS.get(testNGMethod.getDataProviderMethod().getMethod().toString());
@@ -568,17 +550,15 @@ public class TesterraListener implements
         ITestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
         IInvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
-//            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
-        if (exception.getCause() != null) {
-            methodContext.addError(exception.getCause());
-        } else {
-            methodContext.addError(exception);
-        }
-//            // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
+
+        Throwable nestedThrowable = exception.getCause() != null ? exception.getCause() : exception;
+        methodContext.addError(new SkipException("Method skipped because of failed data provider", nestedThrowable));
+
+        // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
         methodContext.setStatus(Status.SKIPPED);
         testResult.setStatus(ITestResult.SKIP);
         pAfterInvocation(invokedMethod, testResult, testContext);
-//
+
         // To prevent double method context, this map is needed
         dataProviderSemaphore.put(testNGMethod, true);
 //        }

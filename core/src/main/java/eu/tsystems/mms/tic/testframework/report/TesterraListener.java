@@ -64,6 +64,7 @@ import org.testng.SkipException;
 import org.testng.annotations.Test;
 import org.testng.internal.ConfigurationMethod;
 import org.testng.internal.ConstructorOrMethod;
+import org.testng.internal.NoOpTestClass;
 import org.testng.internal.TestResult;
 import org.testng.internal.annotations.DefaultAnnotationTransformer;
 import org.testng.internal.annotations.IAnnotationFinder;
@@ -511,7 +512,10 @@ public class TesterraListener implements
                 dataProviderMethod
         );
 
-        dpConfigMethod.setTestClass(testNGMethod.getTestClass());
+        // A data provider could also defined in a specific data provider class
+        NoOpTestClass dpTestClass = new NoOpTestClass(testNGMethod.getTestClass());
+        dpTestClass.setTestClass(dataProviderMethod.getMethod().getDeclaringClass());
+        dpConfigMethod.setTestClass(dpTestClass);
 
         // Need full qualified TestResult
         TestResult testResult = TestResult.newContextAwareTestResult(dpConfigMethod, testContext);
@@ -519,9 +523,7 @@ public class TesterraListener implements
         DP_TEST_RESULT.put(dataProviderMethod.getMethod().toString(), testResult);
         DP_INVOKED_METHODS.put(dataProviderMethod.getMethod().toString(), invokedMethod);
 
-        MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
-
-
+        pBeforeInvocation(invokedMethod, testResult, testContext);
     }
 
     @Override

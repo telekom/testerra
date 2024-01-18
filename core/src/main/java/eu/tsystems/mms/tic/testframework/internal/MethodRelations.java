@@ -28,6 +28,7 @@ import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
@@ -38,11 +39,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MethodRelations {
 
     private static final Map<Long, List<MethodContext>> EXECUTION_CONTEXT = Collections.synchronizedMap(new HashMap<>());
     private static final ThreadLocal<Boolean> TEST_WAS_HERE = new ThreadLocal<>();
+
+    private static final Map<String, MethodContext> dataProviderMap = new ConcurrentHashMap<>();
 
     private MethodRelations() {
 
@@ -111,23 +115,34 @@ public class MethodRelations {
                         })
                         .forEach(methodContext::addDependsOnMethod);
             }
+
+            if (methodContext.getTestNgResult().get().getMethod().isDataDriven()) {
+                String dpMethod = methodContext.getTestNgResult().get().getMethod().getDataProviderMethod().getMethod().toString();
+                MethodContext dpContext = dataProviderMap.get(dpMethod);
+                if (dpContext != null) {
+                    dpContext.addRelatedMethodContext(methodContext);
+                    methodContext.addRelatedMethodContext(dpContext);
+                }
+            }
         }
     }
 
     private static void handleCurrentContext(Method method, MethodContext methodContext) {
         boolean addToList = true;
         boolean isTestMethod = !methodContext.isConfigMethod();
+        boolean isDataProvider = method.getAnnotation(DataProvider.class) != null;
+
+        if (isDataProvider) {
+            dataProviderMap.put(method.toString(), methodContext);
+            return;
+        }
 
         if (TEST_WAS_HERE.get() != null) {
             if (isTestMethod) {
-                /*
-                 test method means new context
-                */
+                // test method means new context
                 addToList = false;
             } else {
-                /*
-                config method: beforeXX methods will announce a new context
-                 */
+                // config method: beforeXX methods will announce a new context
                 if (isBeforeXXMethod(method)) {
                     addToList = false;
                 }
@@ -135,9 +150,7 @@ public class MethodRelations {
         }
 
         if (!addToList) {
-            /*
-            flush first
-             */
+            // flush first
             flush();
         }
         EXECUTION_CONTEXT.get(getThreadId()).add(methodContext);

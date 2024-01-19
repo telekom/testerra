@@ -420,7 +420,7 @@ public class TesterraListener implements
     /**
      * This method gets not only called when
      * - a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException},
-     * - a data provider failed (not needed)
+     * - a data provider failed
      * - a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}.
      */
     @Override
@@ -429,7 +429,6 @@ public class TesterraListener implements
             return;
         }
 
-        log().info("On Test skipped {}", iTestResult.getMethod().getMethodName());
         if (!iTestResult.wasRetried()) {
             MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
             methodContext.setStatus(Status.SKIPPED);

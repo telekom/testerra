@@ -21,10 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.test;
 
-import com.icegreen.greenmail.util.DummySSLSocketFactory;
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.ServerSetupTest;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.imap.ImapMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
@@ -37,6 +34,29 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.security.Security;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import com.icegreen.greenmail.util.DummySSLSocketFactory;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.Address;
 import jakarta.mail.Message.RecipientType;
 import jakarta.mail.MessagingException;
@@ -55,32 +75,13 @@ import jakarta.mail.search.RecipientTerm;
 import jakarta.mail.search.SearchTerm;
 import jakarta.mail.search.SentDateTerm;
 import jakarta.mail.search.SubjectTerm;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.security.Security;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Integration Tests for TesterraMailConnector.
  *
  * @author mrgi, tbmi
  */
-public class MailConnectorTest extends TesterraTest implements Loggable, AssertProvider {
+public class MailConnectorTest extends TesterraTest implements Loggable, PropertyManagerProvider, AssertProvider {
 
     // CONSTANTS
     /**
@@ -174,11 +175,11 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
     @BeforeClass
     public void initProperties() {
 
-        PropertyManager.loadProperties("mailconnection.properties");
+        PROPERTY_MANAGER.loadProperties("mailconnection.properties");
 
         Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
         mailServerAll = new GreenMail(ServerSetupTest.ALL);
-        mailServerAll.setUser(RECIPIENT, PropertyManager.getProperty("SMTP_USERNAME"), PropertyManager.getProperty("SMTP_PASSWORD"));
+        mailServerAll.setUser(RECIPIENT, PROPERTY_MANAGER.getProperty("SMTP_USERNAME"), PROPERTY_MANAGER.getProperty("SMTP_PASSWORD"));
         mailServerAll.start();
 
         pop3 = new POP3MailConnector();
@@ -281,15 +282,13 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
     }
 
     @DataProvider(name = "binaryAttachmentFiles")
-    public Iterator<String> dataProvider() {
-
-        List<String> files = new ArrayList<>();
-        files.add("attachment.pdf");
-        files.add("attachment.jpg");
-        files.add("attachment.png");
-        files.add("attachment.zip");
-
-        return files.iterator();
+    public Object[][] dataProvider() {
+        return new Object[][] {
+                {"attachment.pdf"},
+                {"attachment.jpg"},
+                {"attachment.png"},
+                {"attachment.zip"}
+        };
     }
 
     /**
@@ -420,8 +419,8 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
     public void testT06_sendAndWaitFromSSLMessage() throws MessagingException {
 
         final String subject = STR_MAIL_SUBJECT + "testT06_sendAndWaitForSSLMessage";
-        final String sslPortPop3 = PropertyManager.getProperty("POP3_SERVER_PORT_SSL", null);
-        final String sslPortSmtp = PropertyManager.getProperty("SMTP_SERVER_PORT_SSL", null);
+        final String sslPortPop3 = PROPERTY_MANAGER.getProperty("POP3_SERVER_PORT_SSL", null);
+        final String sslPortSmtp = PROPERTY_MANAGER.getProperty("SMTP_SERVER_PORT_SSL", null);
 
         // SETUP 1 - Create SSL connectors and message.
         final SMTPMailConnector smtpSSL = new SMTPMailConnector();
@@ -586,8 +585,24 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
      */
     @Test
     public void testT11_deleteAllMessages() {
+        final String subjectFirstMessage = STR_MAIL_SUBJECT + "testT11_deleteAllMessages_FirstMail";
+        final String subjectSecondMessage = STR_MAIL_SUBJECT + "testT11_deleteAllMessages_SecondMail";
 
-        pop3.deleteMessage(null, null, null, null);
+        // create messages
+        final MimeMessage msg1 = this.createDefaultMessage(session, subjectFirstMessage);
+        final MimeMessage msg2 = this.createDefaultMessage(session, subjectSecondMessage);
+
+        // send messages
+        smtp.sendMessage(msg1);
+        smtp.sendMessage(msg2);
+
+        // verify Mail Box contains 2 Mails for deletion
+        Assert.assertTrue(pop3.getMessageCount() > 1 , "Mail box contains mails for deletion");
+
+        // delete all messages
+        pop3.deleteAllMessages();
+
+        // verify empty inbox
         final boolean inboxEmpty = (pop3.getMessageCount() == 0);
         Assert.assertTrue(inboxEmpty, "Mail box is empty");
     }
@@ -699,16 +714,15 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
     }
 
     private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError {
-        Email receivedMsg = null;
 
         // TEST - Fail, if no message was received.
-        try {
-            receivedMsg = abstractInboxConnector.waitForMails(searchTerm, folderName).get(0);
-        } catch (Exception e) {
-            Assert.fail(ERR_NO_MSG_RECEIVED);
-        }
+        final EmailQuery query = new EmailQuery()
+                .setSearchTerm(searchTerm)
+                .setFolderName(folderName);
+        final List<Email> emailList = abstractInboxConnector.query(query).collect(Collectors.toList());
+        ASSERT.assertTrue(!emailList.isEmpty(), "messages found.");
 
-        return receivedMsg;
+        return emailList.get(0);
     }
 
     private Email waitForMessage(final SearchTerm searchTerm, final AbstractInboxConnector abstractInboxConnector) throws AssertionError {
@@ -731,10 +745,8 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
                 new SubjectTerm(subject),
                 new RecipientTerm(RecipientType.TO, new InternetAddress(recipient)));
 
-        abstractInboxConnector.deleteMessage(searchTerm);
-
-        final boolean inboxEmpty = (abstractInboxConnector.getMessageCount() == 0);
-        Assert.assertTrue(inboxEmpty, "Mail box is empty");
+        final boolean messageDeleted = abstractInboxConnector.deleteMessage(searchTerm);
+        Assert.assertTrue(messageDeleted, "Message deleted");
     }
 
     private void deleteMessage(final Email msg, final AbstractInboxConnector abstractInboxConnector, final String folderName) throws AssertionError, AddressException {
@@ -745,10 +757,8 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
                 new SubjectTerm(subject),
                 new RecipientTerm(RecipientType.TO, new InternetAddress(recipient)));
 
-        abstractInboxConnector.deleteMessage(searchTerm, folderName);
-
-        final boolean inboxEmpty = (abstractInboxConnector.getMessageCount() == 0);
-        Assert.assertTrue(inboxEmpty, "Mail box is empty");
+        final boolean messageDeleted = abstractInboxConnector.deleteMessage(searchTerm, folderName);
+        Assert.assertTrue(messageDeleted, "Message deleted");
     }
 
     @Test
@@ -768,6 +778,7 @@ public class MailConnectorTest extends TesterraTest implements Loggable, AssertP
         Assert.assertEquals(emails.count(), 0);
         long endTime = System.currentTimeMillis() - startTime;
 
-        ASSERT.assertGreaterEqualThan(new BigDecimal(endTime), new BigDecimal(initPause * initRetry), "Invalid polling time");
+        ASSERT.assertGreaterEqualThan(new BigDecimal(endTime),
+                new BigDecimal(initPause * initRetry), "Invalid polling time");
     }
 }

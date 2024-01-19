@@ -41,7 +41,7 @@ public class EmailQuery implements PropertyManagerProvider {
      */
     private static final String MAX_READ_TRIES_PROPERTY = "MAX_READ_TRIES";
 
-    private int retryCount = Integer.parseInt(PROPERTY_MANAGER.getProperty(MAX_READ_TRIES_PROPERTY, "20"));
+    private int retryCount = Long.valueOf(PROPERTY_MANAGER.getLongProperty(MAX_READ_TRIES_PROPERTY, 20L)).intValue();
     private long pauseMs = PROPERTY_MANAGER.getLongProperty(POLLING_TIMER_SECONDS_PROPERTY, 10L) * 1000;
 
     private SearchTerm searchTerm;

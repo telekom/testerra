@@ -417,14 +417,21 @@ public class TesterraListener implements
         }
     }
 
+    /**
+     * This method gets not only called when
+     * - a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException},
+     * - a data provider failed (not needed)
+     * - a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}.
+     */
     @Override
-    public void onTestSkipped(ITestResult testResult) {
-        /**
-         * This method gets not only called when a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException},
-         * but also when a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}.
-         */
-        if (!testResult.wasRetried()) {
-            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+    public void onTestSkipped(ITestResult iTestResult) {
+        if (dataProviderSemaphore.containsKey(iTestResult.getMethod())) {
+            return;
+        }
+
+        log().info("On Test skipped {}", iTestResult.getMethod().getMethodName());
+        if (!iTestResult.wasRetried()) {
+            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
             methodContext.setStatus(Status.SKIPPED);
             Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }

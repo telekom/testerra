@@ -82,7 +82,7 @@ export class Classes extends AbstractViewModel {
         this._filter();
     }
 
-    private _filter() {
+    private async _filter() {
         this._loading = true;
 
         if (this.queryParams.q?.length > 0) {
@@ -103,108 +103,108 @@ export class Classes extends AbstractViewModel {
         this._filteredMethodDetails = [];
         this._availableStatuses = [];
 
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._availableStatuses = executionStatistics.availableStatuses;
-            // this._availableStatuses = Object.keys();
-            // this._statusConverter.relevantStatuses
-            //     .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
-            //     .forEach(status => {
-            //         if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
-            //             this._availableStatuses.push(status)
-            //         }
-            //     });
+        const executionStatistics = await this._statisticsGenerator.getExecutionStatistics()
+        this._availableStatuses = executionStatistics.availableStatuses;
+        // this._availableStatuses = Object.keys();
+        // this._statusConverter.relevantStatuses
+        //     .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
+        //     .forEach(status => {
+        //         if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
+        //             this._availableStatuses.push(status)
+        //         }
+        //     });
 
-            let relevantFailureAspect: FailureAspectStatistics;
-            let filterByFailureAspect = false;
-            if (this.queryParams.failureAspect > 0) {
-                relevantFailureAspect = executionStatistics.uniqueFailureAspects[this.queryParams.failureAspect - 1];
-                filterByFailureAspect = true;
-            }
-            this._executionStatistics = executionStatistics;
+        let relevantFailureAspect: FailureAspectStatistics;
+        let filterByFailureAspect = false;
+        if (this.queryParams.failureAspect > 0) {
+            relevantFailureAspect = executionStatistics.uniqueFailureAspects[this.queryParams.failureAspect - 1];
+            filterByFailureAspect = true;
+        }
+        this._executionStatistics = executionStatistics;
 
-            executionStatistics.classStatistics
-                .map(classStatistics => {
-                    // Determine if we need to enable showing config methods by default if there has any error occured
-                    if (this._showConfigurationMethods === null) {
-                        this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
-                    }
-                    return classStatistics;
-                })
-                .filter(classStatistic => {
-                    return !this.queryParams.class
-                        || (
-                            this.queryParams.class == this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.simpleName)
-                            || this.queryParams.class == classStatistic.classIdentifier
-                            );
-                })
-                .forEach(classStatistic => {
-                    let methodContexts = classStatistic.methodContexts;
+        const filteredClassStatistics = executionStatistics.classStatistics
+            .map(classStatistics => {
+                // Determine if we need to enable showing config methods by default if there has any error occured
+                if (this._showConfigurationMethods === null) {
+                    this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
+                }
+                return classStatistics;
+            })
+            .filter(classStatistic => {
+                return !this.queryParams.class
+                    || (
+                        this.queryParams.class == this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.simpleName)
+                        || this.queryParams.class == classStatistic.classIdentifier
+                    );
+            })
 
-                    if (this._selectedStatus > 0) {
-                        const selectedStatusGroup = this._statusConverter.groupStatus(this._statusConverter.normalizeStatus(this._selectedStatus));
-                        methodContexts = methodContexts.filter(methodContext => {
-                            return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0
-                        });
-                    }
+        for (const classStatistic of filteredClassStatistics) {
+            let methodContexts = classStatistic.methodContexts;
 
-                    if (filterByFailureAspect) {
-                        methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
-                    }
-
-                    if (this._showConfigurationMethods === false) {
-                        methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-                    }
-
-                    let methodDetails = methodContexts.map(methodContext => {
-                        return new MethodDetails(methodContext, classStatistic);
-                    });
-
-                    if (this._searchRegexp) {
-                        methodDetails = methodDetails.filter(methodDetails => {
-                            return (
-                                methodDetails.identifier.match(this._searchRegexp)
-                                || methodDetails.failureAspects.find(failureAspect => failureAspect.identifier.match(this._searchRegexp))
-                                || methodDetails.failsAnnotation?.description?.match(this._searchRegexp)
-                                || methodDetails.failsAnnotation?.ticketString?.match(this._searchRegexp)
-                                || methodDetails.promptLogs.find(logMessage => logMessage.message.match(this._searchRegexp))
-                            )
-                        });
-                    }
-
-                    methodDetails.forEach(methodDetails => {
-                        uniqueClasses[classStatistic.classContext.fullClassName] = true;
-                        uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
-                        this._filteredMethodDetails.push(methodDetails);
-                    });
-
+            if (this._selectedStatus > 0) {
+                const selectedStatusGroup = this._statusConverter.groupStatus(this._statusConverter.normalizeStatus(this._selectedStatus));
+                methodContexts = methodContexts.filter(methodContext => {
+                    return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0
                 });
-
-            switch (this._sortBy) {
-                case SortBy.Method :
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a,b) => a.identifier.localeCompare(b.identifier));
-                    break;
-                case SortBy.RunIndex :  // Sort by run index
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex-b.methodContext.methodRunIndex);
-                    break;
-                case SortBy.Class :
-                default:
-                    // Sort by class and method name
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort(
-                        (a, b) => a.classStatistics.classIdentifier === b.classStatistics.classIdentifier ?
-                            a.identifier.localeCompare(b.identifier) : a.classStatistics.classIdentifier.localeCompare(b.classStatistics.classIdentifier));
             }
 
-            this._uniqueClasses = Object.keys(uniqueClasses).length;
-            this._uniqueStatuses = Object.keys(uniqueStatuses).length;
-            if (this._showConfigurationMethods) {
-                this.queryParams.config = this._showConfigurationMethods;
-            } else {
-                delete this.queryParams.config;
+            if (filterByFailureAspect) {
+                methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
             }
 
-            this.updateUrl(this.queryParams);
-            this._loading = false;
-        });
+            if (this._showConfigurationMethods === false) {
+                methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
+            }
+
+            let methodDetails = await Promise.all(methodContexts.map(methodContext => {
+                return this._statisticsGenerator.getMethodDetails(methodContext.contextValues.id)
+            }))
+
+
+            if (this._searchRegexp) {
+                methodDetails = methodDetails.filter(methodDetails => {
+                    return (
+                        methodDetails.identifier.match(this._searchRegexp)
+                        || methodDetails.failureAspects.find(failureAspect => failureAspect.identifier.match(this._searchRegexp))
+                        || methodDetails.failsAnnotation?.description?.match(this._searchRegexp)
+                        || methodDetails.failsAnnotation?.ticketString?.match(this._searchRegexp)
+                        || methodDetails.promptLogs.find(logMessage => logMessage.message.match(this._searchRegexp))
+                    )
+                });
+            }
+
+            methodDetails.forEach(methodDetails => {
+                uniqueClasses[classStatistic.classContext.fullClassName] = true;
+                uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
+                this._filteredMethodDetails.push(methodDetails);
+            });
+        }
+
+        switch (this._sortBy) {
+            case SortBy.Method :
+                this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.identifier.localeCompare(b.identifier));
+                break;
+            case SortBy.RunIndex :  // Sort by run index
+                this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex - b.methodContext.methodRunIndex);
+                break;
+            case SortBy.Class :
+            default:
+                // Sort by class and method name
+                this._filteredMethodDetails = this._filteredMethodDetails.sort(
+                    (a, b) => a.classStatistics.classIdentifier === b.classStatistics.classIdentifier ?
+                        a.identifier.localeCompare(b.identifier) : a.classStatistics.classIdentifier.localeCompare(b.classStatistics.classIdentifier));
+        }
+
+        this._uniqueClasses = Object.keys(uniqueClasses).length;
+        this._uniqueStatuses = Object.keys(uniqueStatuses).length;
+        if (this._showConfigurationMethods) {
+            this.queryParams.config = this._showConfigurationMethods;
+        } else {
+            delete this.queryParams.config;
+        }
+
+        this.updateUrl(this.queryParams);
+        this._loading = false;
     }
 
     private _filterOnce() {

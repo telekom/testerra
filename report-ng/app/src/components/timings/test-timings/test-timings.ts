@@ -20,7 +20,7 @@
  */
 
 import {autoinject, observable} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
+import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
 import {ECharts, EChartsOption} from 'echarts';
 import "./test-timings.scss";
@@ -29,13 +29,14 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import {data} from "../../../services/report-model";
 import {StatusConverter} from "../../../services/status-converter";
 import MethodType = data.MethodType;
+import * as echarts from "echarts";
 
 @autoinject()
 export class TestTimings extends AbstractViewModel {
     private static readonly TEST_NUMBER_LIMIT = 20;
     private static readonly TEST_COLOR = '#6897EA';
     private static readonly TEST_COLOR_PALE = '#c8d4f4';
-    private _chart: ECharts;
+    @observable() private _chart: ECharts;
     private _executionStatistics: ExecutionStatistics;
     private _option: EChartsOption;
     private _methodDetails: MethodDetails[];
@@ -55,6 +56,7 @@ export class TestTimings extends AbstractViewModel {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _router: Router
     ) {
         super();
         this._bars = [];
@@ -64,6 +66,8 @@ export class TestTimings extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
+        this._router = navInstruction.router;
+
         if (!this.queryParams.rangeNum) this.queryParams.rangeNum = '10';// only set range 10 if there is no range at all (e.g. when navigation from another view)
         if (params.config) {
             this._showConfigurationMethods = !!params.config.toLowerCase();
@@ -306,6 +310,15 @@ export class TestTimings extends AbstractViewModel {
 
         this._sectionValues = resultDurations;
         this._labels = resultSections;
+    }
+
+    private _chartChanged() {
+        this._chart.on('click', event => this._handleClickEvent(event));
+    }
+
+    private _handleClickEvent(event: echarts.ECElementEvent) {
+        const methodList = this._bars[event.dataIndex].methodList.map(method => method.id);
+        this._router.navigateToRoute('tests',  {methods: methodList});
     }
 }
 

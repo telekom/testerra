@@ -179,6 +179,12 @@ export class Classes extends AbstractViewModel {
 
                 });
 
+            if (this.queryParams.methods) {
+                this._filteredMethodDetails = this._filteredMethodDetails.filter(method => {
+                    return this.queryParams.methods.includes(method.methodContext.contextValues.id);
+                });
+            }
+
             switch (this._sortBy) {
                 case SortBy.Method :
                     this._filteredMethodDetails = this._filteredMethodDetails.sort((a,b) => a.identifier.localeCompare(b.identifier));

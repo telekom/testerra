@@ -40,7 +40,7 @@ enum SortBy {
 @autoinject()
 export class Classes extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
-    private _selectedStatus: data.ResultStatusType;
+    private _selectedStatus: string; // string because value.bind in mdc-select coerces to string
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _filteredMethodDetails: MethodDetails[];
     private _showConfigurationMethods: boolean = null;
@@ -67,7 +67,7 @@ export class Classes extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
 
         if (params.status) {
-            this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+            this._selectedStatus = this._statusConverter.getStatusForClass(params.status)?.toString();
         } else {
             this._selectedStatus = null;
         }
@@ -79,7 +79,7 @@ export class Classes extends AbstractViewModel {
                 this._showConfigurationMethods = false;
             }
         }
-        this._filter();
+        return this._filter();
     }
 
     private async _filter() {
@@ -92,7 +92,7 @@ export class Classes extends AbstractViewModel {
             delete this.queryParams.q;
         }
 
-        if (this._selectedStatus > 0) {
+        if (this._selectedStatus) {
             this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
         } else {
             delete this.queryParams.status;
@@ -141,7 +141,7 @@ export class Classes extends AbstractViewModel {
         for (const classStatistic of filteredClassStatistics) {
             let methodContexts = classStatistic.methodContexts;
 
-            if (this._selectedStatus > 0) {
+            if (this._selectedStatus) {
                 const selectedStatusGroup = this._statusConverter.groupStatus(this._statusConverter.normalizeStatus(this._selectedStatus));
                 methodContexts = methodContexts.filter(methodContext => {
                     return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0

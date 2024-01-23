@@ -1,0 +1,11 @@
+= Timings View
+
+== Tests tab pane
+// Text
+
+image::report-ng-timings-view_1.png[align="center", alt="Tests"]
+
+== Sessions tab pane
+// Text
+
+image::report-ng-timings-view_2.png[align="center", alt="Sessions"]

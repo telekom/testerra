@@ -50,7 +50,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getDisplayedElement().nonFunctionalAsserts().assertIsPresent();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -62,7 +62,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getDisplayedElement().nonFunctionalAsserts().assertIsNotPresent();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -74,7 +74,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getDisplayedElement().nonFunctionalAsserts().assertIsPresentFast();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -86,7 +86,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getDisplayedElement().nonFunctionalAsserts().assertIsNotPresentFast();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -98,7 +98,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getDisplayedElement().nonFunctionalAsserts().assertIsDisplayed();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -110,7 +110,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getDisplayedElement().nonFunctionalAsserts().assertIsNotDisplayed();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -122,7 +122,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
            getDisplayedElement().nonFunctionalAsserts().assertIsDisplayedFromWebElement();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -134,7 +134,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getDisplayedElement().nonFunctionalAsserts().assertIsNotDisplayedFromWebElement();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -146,7 +146,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getSelectableElement().nonFunctionalAsserts().assertIsSelectable();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -158,7 +158,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getSelectableElement().nonFunctionalAsserts().assertIsNotSelectable();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -172,7 +172,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             g.nonFunctionalAsserts().assertIsSelected();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -186,7 +186,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             g.nonFunctionalAsserts().assertIsNotSelected();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -198,7 +198,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
              getElementWithText().nonFunctionalAsserts().assertText("Open again");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -210,7 +210,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getElementWithText().nonFunctionalAsserts().assertText("Peter");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -222,7 +222,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getElementWithText().nonFunctionalAsserts().assertContainsText("Open");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -234,7 +234,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getElementWithText().nonFunctionalAsserts().assertContainsText("Pete");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }
@@ -246,7 +246,7 @@ public abstract class AbstractGuiElementNonFunctionalAssertionTest extends Abstr
             getElementWithAttribute().nonFunctionalAsserts().assertContainsText("Open");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
-            logger.error("Thrown Error", e);
+            log().error("Thrown Error", e);
         }
         Assert.assertFalse(exceptionWasThrown, "Assertion is thrown");
     }

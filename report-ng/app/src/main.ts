@@ -33,6 +33,7 @@ export function configure(aurelia: Aurelia) {
         .standardConfiguration()
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/base'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/card'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/chips'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/data-table'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/dialog'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/drawer'))

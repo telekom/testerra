@@ -10,6 +10,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@aurelia-mdc-web/card": "^7.1.3",
+        "@aurelia-mdc-web/chips": "^7.1.3",
         "@aurelia-mdc-web/data-table": "^7.1.3",
         "@aurelia-mdc-web/dialog": "^7.1.3",
         "@aurelia-mdc-web/drawer": "^7.1.3",

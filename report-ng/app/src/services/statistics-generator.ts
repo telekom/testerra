@@ -188,8 +188,8 @@ export class StatisticsGenerator {
                 .flatMap(value => value.entries)
                 .filter(value => value.logMessageId)
                 .map(value => value.logMessageId)
-            const logMessageAggregate = await this._dataLoader.getLogMessages()
-            return Object.values(logMessageAggregate.logMessages).filter(logMessage => logMessage.prompt && logMessageIds.includes(logMessage.id))
+            const logMessages = await this.getLogs()
+            return Object.values(logMessages).filter(logMessage => logMessage.prompt && logMessageIds.includes(logMessage.id))
         })
     }
 

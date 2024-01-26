@@ -493,9 +493,11 @@ public class TesterraListener implements
          * TestNG calls the data provider initialization for every thread.
          * Added a semaphore to prevent adding multiple method contexts.
          */
-//        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
-//            dataProviderSemaphore.put(testNGMethod, true);
-//        }
+        if (dataProviderSemaphore.containsKey(testNGMethod)) {
+            return;
+        } else {
+            dataProviderSemaphore.put(testNGMethod, true);
+        }
 
         // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
         IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());

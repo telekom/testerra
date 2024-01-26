@@ -200,6 +200,7 @@ public class TesterraListener implements
     @Override
     public void beforeInvocation(final IInvokedMethod method, final ITestResult testResult) {
         // we don't need that-
+        log().warn("beforeInvocation which is not needed on {}", method.getTestMethod().getMethodName());
     }
 
     /**
@@ -330,10 +331,10 @@ public class TesterraListener implements
                  */
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult);
                 methodContext = classContext.safeAddSkipMethod(testResult);
+            } else {
+                log().error("INTERNAL ERROR. Could not create methodContext for {} with result {}", methodName, testResult);
+                throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
-//            else {
-//                throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
-//            }
         } else {
             methodContext = optionalMethodContext.get();
         }

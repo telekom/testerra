@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import org.testng.IDataProviderMethod;
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeGroups;
@@ -117,11 +118,15 @@ public class MethodRelations {
             }
 
             if (methodContext.getTestNgResult().get().getMethod().isDataDriven()) {
-                String dpMethod = methodContext.getTestNgResult().get().getMethod().getDataProviderMethod().getMethod().toString();
-                MethodContext dpContext = dataProviderMap.get(dpMethod);
-                if (dpContext != null) {
-                    dpContext.addRelatedMethodContext(methodContext);
-                    methodContext.addRelatedMethodContext(dpContext);
+                IDataProviderMethod dataProviderMethod = methodContext.getTestNgResult().get().getMethod().getDataProviderMethod();
+                // Can be null if test methods points to a non-existent data provider
+                if (dataProviderMethod != null) {
+                    String dpMethod = dataProviderMethod.getMethod().toString();
+                    MethodContext dpContext = dataProviderMap.get(dpMethod);
+                    if (dpContext != null) {
+                        dpContext.addRelatedMethodContext(methodContext);
+                        methodContext.addRelatedMethodContext(dpContext);
+                    }
                 }
             }
         }

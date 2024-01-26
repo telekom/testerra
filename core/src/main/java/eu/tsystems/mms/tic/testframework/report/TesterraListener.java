@@ -330,9 +330,10 @@ public class TesterraListener implements
                  */
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult);
                 methodContext = classContext.safeAddSkipMethod(testResult);
-            } else {
-                throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
+//            else {
+//                throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
+//            }
         } else {
             methodContext = optionalMethodContext.get();
         }
@@ -495,9 +496,8 @@ public class TesterraListener implements
          */
         if (dataProviderSemaphore.containsKey(testNGMethod)) {
             return;
-        } else {
-            dataProviderSemaphore.put(testNGMethod, true);
         }
+        dataProviderSemaphore.put(testNGMethod, true);
 
         // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
         IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());

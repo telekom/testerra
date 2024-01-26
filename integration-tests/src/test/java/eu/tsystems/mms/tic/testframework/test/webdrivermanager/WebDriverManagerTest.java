@@ -207,20 +207,20 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
     @Test
     public void testT07_WindowSize() {
-        assertNewWebDriverWindowSize(new Dimension(800, 600));
+        assertNewWebDriverWindowSize(new Dimension(1024, 768));
 
-        String newScreenSize = "1024x768";
+        String newScreenSize = "1280x1024";
 
         PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, newScreenSize);
         String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, newScreenSize);
 
-        assertNewWebDriverWindowSize(new Dimension(1024, 768));
+        assertNewWebDriverWindowSize(new Dimension(1280, 1024));
     }
 
     @Test
     public void testT07a_WindowSizeRequest() {
-        Dimension expected = new Dimension(1024, 768);
+        Dimension expected = new Dimension(1280, 1024);
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setWindowSize(expected);
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);

@@ -22,27 +22,31 @@
 
 package eu.tsystems.mms.tic.testframework.test.utils;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locator;
-import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
+import static eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider.PAGE_FACTORY;
+
+public class DesktopWebDriverUtilsTest extends AbstractTestSitesTest {
+
+    protected WebTestPage getPage() {
+        return PAGE_FACTORY.createPage(WebTestPage.class, getWebDriver());
+    }
+
+    protected static final DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
 
     /**
      * Test the clickJS method of DesktopWebDriverUtils
      */
     @Test
     public void testT01_DesktopWebDriverUtils_clickJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        GuiElement element = getClickableElement();
-        GuiElement out = getLoggerTableElement();
+        WebTestPage page = getPage();
 
-        element.mouseOver();
-        utils.clickJS(element);
-        out.asserts().assertTextContains("Form 16 submit");
+        page.submitButton.hover();
+        desktopWebDriverUtils.clickJS(page.submitButton);
+        page.textOutputField.expect().text().isContaining("Form 16 submit");
     }
 
     /**
@@ -50,11 +54,10 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT02_DesktopWebDriverUtils_doubleClickJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        final GuiElement element = getSelectableElement();
+        WebTestPage page = getPage();
 
-        utils.doubleClickJS(element);
-        getLoggerTableElement().asserts().assertTextContains("Input 3 Double clicked");
+        desktopWebDriverUtils.doubleClickJS(page.checkbox);
+        page.textOutputField.expect().text().isContaining("Input 3 Double clicked");
     }
 
     /**
@@ -62,10 +65,9 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT03_DesktopWebDriverUtils_rightClickJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        GuiElement element = getClickableElement();
+        WebTestPage page = getPage();
 
-        utils.rightClickJS(element);    // How can we assert a right click?
+        desktopWebDriverUtils.rightClickJS(page.submitButton);    // How can we assert a right click?
     }
 
     /**
@@ -73,12 +75,10 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT04_DesktopWebDriverUtils_mouseOverJS() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        GuiElement element = getTextBoxElement();
-        GuiElement out = getLoggerTableElement();
+        WebTestPage page = getPage();
 
-        utils.mouseOverJS(element);
-        out.asserts().assertTextContains("Input 5 Mouse over");
+        desktopWebDriverUtils.mouseOverJS(page.textbox);
+        page.textOutputField.expect().text().isContaining("Input 5 Mouse over");
     }
 
     /**
@@ -86,13 +86,11 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT05_DesktopWebDriverUtils_clickAbsolute() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        GuiElement element = getClickableElement();
-        GuiElement out = getLoggerTableElement();
+        WebTestPage page = getPage();
 
-        element.mouseOver();
-        utils.clickAbsolute(element);
-        out.asserts().assertTextContains("Form 16 submit");
+        page.submitButton.hover();
+        desktopWebDriverUtils.clickAbsolute(page.submitButton);
+        page.textOutputField.expect().text().isContaining("Form 16 submit");
     }
 
     /**
@@ -100,16 +98,32 @@ public class DesktopWebDriverUtilsTest extends AbstractGuiElementTest {
      */
     @Test
     public void testT06_DesktopWebDriverUtils_mouseOverAbsolute2Axis() {
-        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
-        GuiElement element = getTextBoxElement();
-        GuiElement out = getLoggerTableElement();
+        WebTestPage page = getPage();
 
-        utils.mouseOverAbsolute2Axis(element);      // How can we assert this special mouse over?
+        desktopWebDriverUtils.mouseOverAbsolute2Axis(page.textbox);      // How can we assert this special mouse over?
     }
 
-    public GuiElement getGuiElementBy(Locator locator) {
-        WebDriver driver = getWebDriver();
-        return new GuiElement(driver, locator);
+    /**
+     * Test the mouseOverByImage method of DesktopWebDriverUtils
+     */
+    @Test
+    public void testT07_mouseOverByImage() {
+        WebTestPage page = getPage();
+
+        String fileName = "byImage/input_field.png";
+        desktopWebDriverUtils.mouseOverByImage(page.getWebDriver(), fileName);
+        page.textOutputField.expect().text().isContaining("Input 5 Mouse over");
     }
 
+    /**
+     * Test the clickByImage method of DesktopWebDriverUtils
+     */
+    @Test
+    public void testT08_clickByImage() {
+        WebTestPage page = getPage();
+
+        String fileName = "byImage/click_me_button.png";
+        desktopWebDriverUtils.clickByImage(page.getWebDriver(), fileName);
+        page.clickPositionInfo.expect().text().isContaining("center center");
+    }
 }

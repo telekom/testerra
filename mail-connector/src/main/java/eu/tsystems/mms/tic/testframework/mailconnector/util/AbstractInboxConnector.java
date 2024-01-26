@@ -21,9 +21,11 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +34,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
@@ -43,7 +48,6 @@ import jakarta.mail.Store;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-
 import jakarta.mail.search.AndTerm;
 import jakarta.mail.search.ComparisonTerm;
 import jakarta.mail.search.FromTerm;
@@ -52,71 +56,13 @@ import jakarta.mail.search.RecipientTerm;
 import jakarta.mail.search.SearchTerm;
 import jakarta.mail.search.SentDateTerm;
 import jakarta.mail.search.SubjectTerm;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * abstract class to handle mail connector
  *
  * @author sepr
  */
-public abstract class AbstractInboxConnector extends AbstractMailConnector implements Loggable {
-    /**
-     * Wait until messages with search criteria are received.
-     *
-     * @param searchCriterias The subject which message should contain.
-     * @return The message.
-     *
-     * @throws AddressException thrown if an error by waiting for the message occurs.
-     * @deprecated Use {@link #query(EmailQuery)} instead
-     */
-    @Deprecated
-    public List<Email> waitForMails(List<SearchCriteria> searchCriterias) throws AddressException {
-        EmailQuery query = new EmailQuery();
-        return waitForMails(searchCriterias, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
-    }
-
-    /**
-     * Wait until messages with search term are received.
-     *
-     * @param searchTerm The criterias which the message should contain.
-     * @return The message.
-     * @deprecated Use {@link #query(EmailQuery)} instead
-     */
-    @Deprecated
-    public List<Email> waitForMails(final SearchTerm searchTerm) {
-        EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f));
-    }
-
-    /**
-     * Wait until messages with search term are received in the given folder.
-     * @param searchTerm
-     * @param folderName
-     * @return
-     * @deprecated Use {@link #query(EmailQuery)} instead
-     */
-    @Deprecated
-    public List<Email> waitForMails(final SearchTerm searchTerm, final String folderName) {
-        EmailQuery query = new EmailQuery();
-        return waitForMails(searchTerm, query.getRetryCount(), Math.round(query.getPauseMs()/1000f), folderName);
-    }
-
-    /**
-     * Wait until messages with search criteria are received.
-     *
-     * @param searchCriterias     The subject which message should contain.
-     * @param maxReadTries
-     * @param pollingTimerSeconds
-     * @return The message.
-     *
-     * @throws AddressException thrown if an error by waiting for the message occurs.
-     * @deprecated Use {@link #query(EmailQuery)} instead
-     */
-    @Deprecated
-    public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws AddressException {
-        final SearchTerm searchTerm = translateSearchCriterias(searchCriterias);
-        return waitForMails(searchTerm, maxReadTries, pollingTimerSeconds);
-    }
+public abstract class AbstractInboxConnector extends AbstractMailConnector implements Loggable, PropertyManagerProvider {
 
     /**
      * translate Array of SearchCriteria to Array of SearchTerms
@@ -205,6 +151,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * @return The message.
      * @deprecated Use {@link #query(EmailQuery)} instead
      */
+    @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds) {
         return waitForMails(searchTerm, maxReadTries, pollingTimerSeconds, getInboxFolder());
     }
@@ -219,11 +166,12 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * @deprecated Use {@link #query(EmailQuery)} instead
      * @throws RuntimeException When there are no emails present.
      */
+    @Deprecated
     public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds, final String folderName) {
         EmailQuery query = new EmailQuery()
                 .setSearchTerm(searchTerm)
                 .setRetryCount(maxReadTries)
-                .setPauseMs(pollingTimerSeconds*1000)
+                .setPauseMs(pollingTimerSeconds*1000L)
                 .setFolderName(folderName);
 
         List<Email> emailList = query(query).collect(Collectors.toList());
@@ -315,14 +263,14 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     /**
      * Get the message count from {@link #getInboxFolder()}.
      */
-    public long getMessageCount() {
+    public int getMessageCount() {
         return this.pGetMessageCount(getInboxFolder());
     }
 
     /**
      * Get the message count from a specified folder name.
      */
-    public long getMessageCount(String folderName) {
+    public int getMessageCount(String folderName) {
         return this.pGetMessageCount(folderName);
     }
 
@@ -361,9 +309,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      * @param recipientType The type of the recipient.
      * @param subject       The subject of the mail. Can be null if mail has no subject.
      * @param messageId     The id of the message. Can be null.
-     *
+     * @deprecated Use {@link #deleteMessage(SearchTerm)} instead
      * @return true if message was deleted, else false
      */
+    @Deprecated
     public boolean deleteMessage(
             final String recipient,
             final Message.RecipientType recipientType,
@@ -387,29 +336,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     /**
      * deletes messages by given search criterias
      *
-     * @param messagesCriterias List of search criteria list - inner list represents searchcriterias to identify one
-     *            message
-     *
-     * @return true if messages were deleted
-     *
-     * @throws AddressException thrown if an error occurred in the translation of the searchCriterias to SearchTerm.
-     */
-    @Deprecated
-    public boolean deleteMessage(List<List<SearchCriteria>> messagesCriterias) throws AddressException {
-
-        boolean isDeleted = false;
-
-        for (List<SearchCriteria> messageCriterias : messagesCriterias) {
-            final SearchTerm searchTerm = translateSearchCriterias(messageCriterias);
-            isDeleted = deleteMessage(searchTerm);
-
-        }
-        return isDeleted;
-    }
-
-    /**
-     * deletes messages by given search criterias
-     *
      * @param searchTerms List of search criteria list - inner list represents searchcriterias to identify one
      *            message
      *
@@ -424,6 +350,49 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
         }
 
         return isDeleted;
+    }
+
+    /**
+     * Deletes a message.
+     *
+     * @param recipient     The recipient String. Can be null.
+     * @param recipientType The type of the recipient.
+     * @param subject       The subject of the mail. Can be null if mail has no subject.
+     * @param messageId     The id of the message. Can be null.
+     *
+     * @return true if message was deleted, else false
+     */
+    @Deprecated
+    private boolean pDeleteMessage(final String recipient, final Message.RecipientType recipientType,
+                                   final String subject, final String messageId) {
+
+        boolean deleted = false;
+
+        Store store;
+        try {
+            store = getSession().getStore();
+            store.connect();
+            final Folder folder = store.getFolder(getInboxFolder());
+            folder.open(Folder.READ_WRITE);
+            final Message[] messages = folder.getMessages();
+            log().info("Checking messages from " + getInboxFolder() + " for MessageID:");
+
+            if (messages.length > 0) {
+                for (final Message message : messages) {
+                    deleted = compareMessageAndDelete(message, recipient, recipientType, subject, messageId);
+                }
+            } else {
+                log().info("None.");
+            }
+            // leads to error "folder not open" when reading message content
+            folder.close(true);
+            store.close();
+
+        } catch (final MessagingException e) {
+            log().error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return deleted;
     }
 
     /**
@@ -479,9 +448,10 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
      *            message
      *
      * @return count of moved mails.
-     *
+     * @deprecated Use {@link #moveMessage(String, SearchTerm...)} instead
      * @throws AddressException thrown if an error occurred in the translation of the searchCriterias to SearchTerm.
      */
+    @Deprecated
     public int moveMessage(String targetFolder, SearchCriteria... searchCriterias) throws AddressException {
 
         final SearchTerm[] searchTerms = getSearchTermsFromSearchCriterias(searchCriterias);
@@ -531,54 +501,6 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
     }
 
     /**
-     * deletes messages with fitting parameters
-     *
-     * @param deleteCriteriaValues String List containing the desired values
-     * @param deleteCriteriaType   Delete Criteria Type - Recipient, Subject or MessageID
-     *
-     * @return boolean - true if messages were deleted
-     */
-    @Deprecated
-    public boolean deleteMessages(List<String> deleteCriteriaValues, DeleteCriteriaType deleteCriteriaType) {
-
-        List<Boolean> booleanValues = new ArrayList<>();
-
-        for (String deleteCriteriaValue : deleteCriteriaValues) {
-            boolean isDeleted;
-            switch (deleteCriteriaType) {
-                case RECIPIENT:
-                    isDeleted = deleteMessage(deleteCriteriaValue, Message.RecipientType.TO, null, null);
-                    break;
-                case SUBJECT:
-                    isDeleted = deleteMessage(null, Message.RecipientType.TO, deleteCriteriaValue, null);
-                    break;
-                case MESSAGEID:
-                    isDeleted = deleteMessage(null, Message.RecipientType.TO, null, deleteCriteriaValue);
-                    break;
-                default:
-                    throw new SystemException("Not supported: " + deleteCriteriaType);
-            }
-            booleanValues.add(isDeleted);
-        }
-
-        for (Boolean booleanValue : booleanValues) {
-            if (!booleanValue) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @deprecated Use {@link #deleteMessage(SearchTerm)} instead
-     */
-    @Deprecated
-    public boolean deleteMessage(List<String> deleteCriteriaValues, DeleteCriteriaType deleteCriteriaType) {
-        return deleteMessages(deleteCriteriaValues, deleteCriteriaType);
-    }
-
-    /**
      * delete all message in the InboxFolder
      * @return
      */
@@ -609,7 +531,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                 messages = folder.getMessages();
             }
 
-            log().info("Checking messages from " + getInboxFolder() + " for MessageID:");
+            log().info("Checking messages from '{}'", getInboxFolder());
 
             if (messages.length > 0) {
                 String msg = "Message found, DELETING";
@@ -620,49 +542,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector imple
                     }
                     log().info(msg);
                     message.setFlag(Flags.Flag.DELETED, true);
-                }
-            } else {
-                log().info("None.");
-            }
-            // leads to error "folder not open" when reading message content
-            folder.close(true);
-            store.close();
-
-        } catch (final MessagingException e) {
-            log().error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return deleted;
-    }
-
-    /**
-     * Deletes a message.
-     *
-     * @param recipient     The recipient String. Can be null.
-     * @param recipientType The type of the recipient.
-     * @param subject       The subject of the mail. Can be null if mail has no subject.
-     * @param messageId     The id of the message. Can be null.
-     *
-     * @return true if message was deleted, else false
-     */
-    @Deprecated
-    private boolean pDeleteMessage(final String recipient, final Message.RecipientType recipientType,
-                                   final String subject, final String messageId) {
-
-        boolean deleted = false;
-
-        Store store;
-        try {
-            store = getSession().getStore();
-            store.connect();
-            final Folder folder = store.getFolder(getInboxFolder());
-            folder.open(Folder.READ_WRITE);
-            final Message[] messages = folder.getMessages();
-            log().info("Checking messages from " + getInboxFolder() + " for MessageID:");
-
-            if (messages.length > 0) {
-                for (final Message message : messages) {
-                    deleted = compareMessageAndDelete(message, recipient, recipientType, subject, messageId);
+                    deleted = true;
                 }
             } else {
                 log().info("None.");

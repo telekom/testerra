@@ -25,7 +25,11 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.LayoutTestPage;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements PageFactoryProvider {
@@ -68,5 +72,21 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements PageFactor
     @Test
     public void testT05_CheckPageLayout() {
         LayoutCheck.assertScreenshot(getWebDriver(), "LayoutTestPage", 5);
+    }
+
+    @Test
+    public void testT06_CheckElement_HugeContainer_X() {
+        WebDriver webDriver = this.getWebDriver(TestPage.LAYOUT_EXT_CSS_X);
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        UiElement hugeContainer = uiElementFinder.find(By.id("huge-container"));
+        hugeContainer.assertThat().screenshot().pixelDistance("ContainerElementHugeCssX").isLowerEqualThan(1.0);
+    }
+
+    @Test
+    public void testT07_CheckElement_HugeContainer_Y() {
+        WebDriver webDriver = this.getWebDriver(TestPage.LAYOUT_EXT_CSS_Y);
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        UiElement hugeContainer = uiElementFinder.find(By.id("huge-container"));
+        hugeContainer.assertThat().screenshot().pixelDistance("ContainerElementHugeCssY").isLowerEqualThan(1.0);
     }
 }

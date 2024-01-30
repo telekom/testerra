@@ -2,9 +2,6 @@ package io.testerra.report.test;
 
 import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
 import eu.tsystems.mms.tic.testframework.report.Status;
-
-import org.testng.annotations.DataProvider;
-
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
@@ -16,6 +13,7 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import io.testerra.report.test.pages.utils.FailureAspectType;
 import io.testerra.report.test.pages.utils.LogLevel;
 import io.testerra.report.test.pages.utils.TestData;
+import org.testng.annotations.DataProvider;
 
 public class TestDataProvider {
 
@@ -34,7 +32,7 @@ public class TestDataProvider {
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForTestStates() {
         return new Object[][]{
-                { Status.PASSED},
+                {Status.PASSED},
                 {Status.SKIPPED},
                 {Status.FAILED_EXPECTED},
                 {Status.FAILED},
@@ -61,7 +59,8 @@ public class TestDataProvider {
                 {4, Status.FAILED_EXPECTED},
                 {4, Status.SKIPPED},
                 {5, Status.PASSED}
-        };    }
+        };
+    }
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestClasses() {
@@ -89,14 +88,14 @@ public class TestDataProvider {
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForLogLevel() {
         return new Object[][]{
-                { LogLevel.INFO}, {LogLevel.WARN}, {LogLevel.ERROR}
+                {LogLevel.INFO}, {LogLevel.WARN}, {LogLevel.ERROR}
         };
     }
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForFailureAspectsTypes() {
         return new Object[][]{
-                { FailureAspectType.MAJOR},
+                {FailureAspectType.MAJOR},
                 {FailureAspectType.MINOR}
         };
     }
@@ -150,7 +149,7 @@ public class TestDataProvider {
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForNavigationBetweenDifferentPages() {
         return new Object[][]{
-                { ReportSidebarPageType.TESTS, ReportTestsPage.class},
+                {ReportSidebarPageType.TESTS, ReportTestsPage.class},
                 {ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class},
                 {ReportSidebarPageType.LOGS, ReportLogsPage.class},
                 {ReportSidebarPageType.THREADS, ReportThreadsPage.class}
@@ -246,7 +245,7 @@ public class TestDataProvider {
                 {new TestData("AssertionError: Creating TestStatus 'Failed'", new Status[]{Status.FAILED, Status.FAILED})},
                 {new TestData("AssertionError: failed1", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
                 {new TestData("AssertionError: failed2", new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
-                {new TestData(String.format("PageFactoryException: Could not create instance of %s",NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
+                {new TestData(String.format("PageFactoryException: Could not create instance of %s", NonExistingPage.class.getSimpleName()), new Status[]{Status.FAILED, Status.FAILED_EXPECTED})},
                 {new TestData("AssertionError: Error in @BeforeMethod", new Status[]{Status.SKIPPED, Status.FAILED})}
         };
     }
@@ -277,11 +276,11 @@ public class TestDataProvider {
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderMultipleScreenShotTests() {
-        return new Object[][] {
-                {"test_takeScreenshotOnErrorWithMultipleActiveSessionsError", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class },
+        return new Object[][]{
+                {"test_takeScreenshotOnErrorWithMultipleActiveSessionsError", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
                 {"test_takeScreenshotOnErrorWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
-                { "test_takeScreenshotsWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class },
-                { "test_takeScreenshotWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
+                {"test_takeScreenshotsWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
+                {"test_takeScreenshotWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
         };
     }
 
@@ -299,7 +298,7 @@ public class TestDataProvider {
         return new Object[][]{
                 // Failed Expected
                 {"test_expectedFailedWithValidator_isValid", "GenerateExpectedFailedStatusInTesterraReportTest", new String[]{
-                "AssertionError: Expected Fail - validator is: " + true}, Status.FAILED_EXPECTED},
+                        "AssertionError: Expected Fail - validator is: " + true}, Status.FAILED_EXPECTED},
                 // Failed
                 {"test_expectedFailedWithValidator_isNotValid", "GenerateExpectedFailedStatusInTesterraReportTest", new String[]{
                         "AssertionError: Expected Fail - validator is: " + false}, Status.FAILED},

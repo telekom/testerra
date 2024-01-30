@@ -19,21 +19,27 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.sikuli;
+package eu.tsystems.mms.tic.testframework.test.sikuli;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageWebDriver;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import java.net.URL;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import java.net.URL;
+
 public class SikuliBasedWebTest extends AbstractTestSitesTest {
+
+    protected UiElementFinder createFinder() {
+        return UI_ELEMENT_FINDER_FACTORY.create(WEB_DRIVER_MANAGER.getWebDriver());
+    }
 
     @Override
     protected TestPage getTestPage() {
@@ -82,5 +88,4 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         guiElement.asserts().assertIsDisplayed();
         guiElement.asserts().assertAttributeContains("src", "ringo");
     }
-
 }

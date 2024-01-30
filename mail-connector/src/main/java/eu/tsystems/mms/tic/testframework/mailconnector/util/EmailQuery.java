@@ -21,16 +21,17 @@
 
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import jakarta.mail.search.AndTerm;
-import jakarta.mail.search.SearchTerm;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 
 import java.util.List;
+
+import jakarta.mail.search.AndTerm;
+import jakarta.mail.search.SearchTerm;
 
 /**
  * EMail query object
  */
-public class EmailQuery {
+public class EmailQuery implements PropertyManagerProvider {
     /**
      * Key for pollingfrequency Property.
      */
@@ -40,8 +41,9 @@ public class EmailQuery {
      */
     private static final String MAX_READ_TRIES_PROPERTY = "MAX_READ_TRIES";
 
-    private int retryCount = Integer.parseInt(PropertyManager.getProperty(MAX_READ_TRIES_PROPERTY, "20"));
-    private long pauseMs = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, "10")) * 1000;
+    private int retryCount = Long.valueOf(PROPERTY_MANAGER.getLongProperty(MAX_READ_TRIES_PROPERTY, 20L)).intValue();
+    private long pauseMs = PROPERTY_MANAGER.getLongProperty(POLLING_TIMER_SECONDS_PROPERTY, 10L) * 1000;
+
     private SearchTerm searchTerm;
     private String folderName;
 

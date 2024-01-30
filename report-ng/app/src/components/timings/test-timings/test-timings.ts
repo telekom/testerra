@@ -29,10 +29,11 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import {data} from "../../../services/report-model";
 import {StatusConverter} from "../../../services/status-converter";
 import MethodType = data.MethodType;
+import {ResultStatusType} from "../../../services/report-model/framework_pb";
 
 @autoinject()
 export class TestTimings extends AbstractViewModel {
-    private static readonly TEST_NUMBER_LIMIT = 20;
+    private static readonly TEST_NUMBER_LIMIT = 10;
     private static readonly TEST_COLOR = '#6897EA';
     private static readonly TEST_COLOR_PALE = '#c8d4f4';
     private _chart: ECharts;
@@ -64,7 +65,9 @@ export class TestTimings extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        if (!this.queryParams.rangeNum) this.queryParams.rangeNum = '10';// only set range 10 if there is no range at all (e.g. when navigation from another view)
+        if (!this.queryParams.rangeNum){
+            this.queryParams.rangeNum = '10';   // only set range 10 if there is no range at all (e.g. when navigation from another view)
+        }
         if (params.config) {
             this._showConfigurationMethods = !!params.config.toLowerCase();
         }
@@ -137,7 +140,8 @@ export class TestTimings extends AbstractViewModel {
                     id: method.methodContext.contextValues.id,
                     name: method.methodContext.contextValues.name,
                     duration: (method.methodContext.contextValues.endTime - method.methodContext.contextValues.startTime)/1000,
-                    methodType: method.methodContext.methodType
+                    methodType: method.methodContext.methodType,
+                    status: method.methodContext.resultStatus
                 }
                 testDurationMethods.push(testDurationMethod)
             })
@@ -178,9 +182,6 @@ export class TestTimings extends AbstractViewModel {
     private _setChartOption() {
         this._option = {
             tooltip: {
-                position: function (point) {
-                    return {top: 0, left: point[0]};
-                },
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
@@ -194,25 +195,24 @@ export class TestTimings extends AbstractViewModel {
                             return "";
                         }
 
-                        const testNames = this._bars[dataIndex].methodList.map(method => method.name);
-                        let tooltipString = `${testNumber} test case(s): <br>`;
+                        let tooltipString = `${testNumber} test case(s): <br/><br/>`;
 
-                        if (testNumber < TestTimings.TEST_NUMBER_LIMIT) {
-                            tooltipString += "<ul>";
-                            testNames.forEach(testCase => {
-                                tooltipString += `<li>${testCase}</li>`;
-                            });
-                            tooltipString += "</ul>";
-                        } else {
-                            const displayedTestNames = testNames.slice(0, 19);
-                            const remainingTestCount = testNames.length - 20;
+                        this._bars[dataIndex].methodList.slice(0,TestTimings.TEST_NUMBER_LIMIT).map(method => {     // if methodList has less than TEST_NUMBER_LIMIT entries it remains unchanged
+                            tooltipString += `<div class="mb1"> 
+                                                <span class="ml1 mr1 badge status-${this._statusConverter.getClassForStatus(method.status)}">
+                                                ${this._statusConverter.getLabelForStatus(method.status)} </span>`
 
-                            tooltipString += "<ul>";
-                            displayedTestNames.forEach(testCase => {
-                                tooltipString += `<li>${testCase}</li>`;
-                            });
-                            tooltipString += "</ul>";
-                            tooltipString += ` and ${remainingTestCount} more`;
+                            tooltipString += `${method.name}`
+
+                            if(method.methodType==MethodType.CONFIGURATION_METHOD){
+                                tooltipString += `<span class="ml1 mr1 config-badge badge__dense tag tag__dense"> Configuration </span>`;
+                            }
+                            tooltipString += `</div>`
+                        });
+
+                        if (testNumber > TestTimings.TEST_NUMBER_LIMIT) {
+                            const remainingTestCount = this._bars[dataIndex].methodList.length - TestTimings.TEST_NUMBER_LIMIT;
+                            tooltipString += ` and ${remainingTestCount} more`
                         }
 
                         return tooltipString;
@@ -320,6 +320,7 @@ interface ITestDurationMethod {
     name: string;
     duration: number;
     methodType: MethodType;
+    status: ResultStatusType;
 }
 
 

@@ -19,25 +19,26 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.testdata;
+package eu.tsystems.mms.tic.testframework.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import java.io.File;
-import java.util.List;
-import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Test for reading data out of excel sheets.
  *
  * @author pele/expanded by pimi
  */
-public class XLSReaderTest extends TesterraTest {
+public class XLSReaderTest extends TesterraTest implements AssertProvider {
 
     /**
      * Data provider for reading multiple documents from resources.
@@ -46,7 +47,7 @@ public class XLSReaderTest extends TesterraTest {
      */
     @DataProvider(name = "FileType")
     public Object[][] createData1() {
-        return new Object[][] {
+        return new Object[][]{
                 {"testfiles/TestXLSReader.xls"},
                 {"testfiles/TestXLSReader.xlsx"},
         };
@@ -177,7 +178,6 @@ public class XLSReaderTest extends TesterraTest {
 
     /**
      * Negativ test case for a not existing file in resources.
-     *
      */
     @Test
     public void testT09F_XlsReader_FileNotFoundInResources() {
@@ -191,7 +191,7 @@ public class XLSReaderTest extends TesterraTest {
         } catch (SystemException e) {
             String msg = "Cannot read xls(x) file: " + file;
             String message = e.getMessage();
-            AssertUtils.assertContains(message, msg);
+            ASSERT.assertContains(message, msg);
             return;
         }
         Assert.fail("No exception for not existing files");
@@ -199,7 +199,6 @@ public class XLSReaderTest extends TesterraTest {
 
     /**
      * Negativ test case for a not existing file in any location.
-     *
      */
     @Test
     public void testT10F_XlsReader_FileNotFoundAbsolutePath() {
@@ -215,7 +214,7 @@ public class XLSReaderTest extends TesterraTest {
         } catch (SystemException e) {
             String msg = "Cannot read xls(x) file:";
             String message = e.getMessage();
-            AssertUtils.assertContains(message, msg);
+            ASSERT.assertContains(message, msg);
             return;
         }
         Assert.fail("No exception for not existing files");

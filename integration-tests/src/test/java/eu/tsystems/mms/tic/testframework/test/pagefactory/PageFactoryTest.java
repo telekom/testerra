@@ -102,10 +102,10 @@ public class PageFactoryTest extends AbstractTestSitesTest implements PageFactor
         }
     }
 
-    @DataProvider(name = "LoopDetectionInDataProvider", parallel = false)
+    @DataProvider(name = "LoopDetectionInDataProvider")
     public Object[][] testT12_Dataprovider() {
         return new Object[][]{
-                {"Test_1"}, {"Test_2"}
+                {"Test_1"}, {"Test_2"}, {"Test_3"}
         };
     }
 

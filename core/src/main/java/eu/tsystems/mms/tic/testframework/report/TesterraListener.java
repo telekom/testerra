@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
@@ -320,11 +321,13 @@ public class TesterraListener implements
     ) {
 
         final String methodName = getMethodName(testResult);
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
-        Optional<MethodContext> optionalMethodContext = ExecutionContextController.getMethodContextForThread();
+//        Optional<MethodContext> optionalMethodContext = Optional.of(ExecutionContextController.getMethodContextFromTestResult(testResult));
+        Optional<MethodContext> optionalMethodContext = instance.getCurrentMethodContext();
         MethodContext methodContext;
 
-        if (!optionalMethodContext.isPresent()) {
+        if (optionalMethodContext.isEmpty()) {
             if (testResult.getStatus() == ITestResult.CREATED || testResult.getStatus() == ITestResult.SKIP) {
                 /*
                  * TestNG bug or whatever ?!?!
@@ -494,8 +497,10 @@ public class TesterraListener implements
         /**
          * TestNG calls the data provider initialization for every thread.
          * Added a semaphore to prevent adding multiple method contexts.
+         * ?? - https://github.com/testng-team/testng/issues/3045
          */
         if (dataProviderSemaphore.containsKey(testNGMethod)) {
+            log().info("Duplicate call of beforeDataProviderExecution of {}", dataProviderMethod.getMethod().getName());
             return;
         }
         dataProviderSemaphore.put(testNGMethod, true);
@@ -537,8 +542,6 @@ public class TesterraListener implements
 
     @Override
     public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
-        log().info("After dataprovider execution");
-
         IInvokedMethod invokedMethod = DP_INVOKED_METHODS.get(dataProviderMethod.getMethod().toString());
         ITestResult testResult = DP_TEST_RESULT.get(dataProviderMethod.getMethod().toString());
         testResult.setStatus(ITestResult.SUCCESS);

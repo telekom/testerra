@@ -148,8 +148,10 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     /**
      * The following example set basic authentication via driver augumentation. This solution works only remote, not local.
      * A more flexible solution is implemented in SeleniumChromeDevTools
+     *
+     * Update: With Selenium 4.17 this example does not work anymore.
      */
-    @Test
+    @Test(enabled = false)
     public void testT04_BasicAuth_remoteDriver() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);

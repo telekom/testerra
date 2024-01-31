@@ -39,7 +39,9 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.decorators.Decorated;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -336,6 +338,28 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 2, "Current method context should have 2 sessions.");
 
         WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
+    }
+
+    @Test
+    public void testT14_UnwrapFromDecorated() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chromeHeadless);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        Assert.assertTrue(driver instanceof Decorated);
+
+        Optional<ChromeDriver> chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(driver, ChromeDriver.class);
+        Assert.assertTrue(chromeDriver.isPresent());
+    }
+
+    @Test
+    public void testT15_UnwrapWrongTypeFromDecorated() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chromeHeadless);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        Assert.assertTrue(driver instanceof Decorated);
+
+        Optional<FirefoxDriver> chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(driver, FirefoxDriver.class);
+        Assert.assertTrue(chromeDriver.isEmpty());
     }
 
     private Stream<SessionContext> readSessionContextFromMethodContext() {

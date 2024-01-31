@@ -83,8 +83,7 @@ public class WebDriverKeepAliveSequence extends Timer.Sequence<WebDriverKeepAliv
 
         // add to active sessions
         currentKeepAliveSessions.add(this);
-        log().info(String.format("Initialized a WebDriverKeepAliveSequence for driver with session id %s and session key %s.",
-                WebDriverUtils.getSessionId(this.driver),
+        log().info(String.format("Initialized a WebDriverKeepAliveSequence for driver with session key %s.",
                 WebDriverManagerUtils.getSessionKey(this.driver)));
     }
 

@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.decorators.Decorated;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -239,17 +240,27 @@ public interface IWebDriverManager extends
     }
 
     /**
-     * Unwraps the raw {@link WebDriver} from EventFiringWebDriver -> Removed in Selenium 4.17
+     * Returns the orignal {@link WebDriver} from the decorated WebDriver instance.
      * and tries to cast it to the target class implementation.
-     * TODO: Now all WebDriver are decorated WebDriver, should be already the the 'lowest' webdriver?
      */
     default <WEBDRIVER> Optional<WEBDRIVER> unwrapWebDriver(WebDriver webDriver, Class<WEBDRIVER> targetWebDriverClass) {
-        WebDriver lowestWebDriver = WebDriverUtils.getLowestWebDriver(webDriver);
-        if (targetWebDriverClass.isInstance(lowestWebDriver)) {
-            return Optional.of((WEBDRIVER) lowestWebDriver);
+        WebDriver originalDriver = this.getOriginalFromDecorated(webDriver);
+
+        if (targetWebDriverClass.isInstance(originalDriver)) {
+            return Optional.of((WEBDRIVER) originalDriver);
         } else {
             return Optional.empty();
         }
+    }
+
+    /**
+     * Returns the original WebDriver instance from a decorated.
+     */
+    default WebDriver getOriginalFromDecorated(WebDriver decoratedWebDriver) {
+        if (decoratedWebDriver instanceof Decorated) {
+            return ((Decorated<WebDriver>) decoratedWebDriver).getOriginal();
+        }
+        return decoratedWebDriver;
     }
 
     /**

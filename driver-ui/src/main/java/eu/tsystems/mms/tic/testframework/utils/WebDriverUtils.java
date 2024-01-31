@@ -34,7 +34,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -240,38 +240,37 @@ public final class WebDriverUtils {
         driver.manage().deleteAllCookies();
     }
 
-    /**
-     * Will search for the deepest {@link WebDriver} in the Wrapped-WebDriver-Chain
-     *
-     * @param driver {@link WebDriver}
-     * @return WebDriver
-     */
-    public static WebDriver getLowestWebDriver(WebDriver driver) {
-//        if (driver instanceof EventFiringWebDriver) {
-//            EventFiringWebDriver efWd = (EventFiringWebDriver) driver;
-//            driver = efWd.getWrappedDriver();
+//    /**
+//     * Will search for the deepest {@link WebDriver} in the Wrapped-WebDriver-Chain
+//     *
+//     * @param driver {@link WebDriver}
+//     * @return WebDriver
+//     */
+//    public static WebDriver getLowestWebDriver(WebDriver driver) {
+//        if (driver instanceof Decorated) {
+//            return ((Decorated<WebDriver>) driver).getOriginal();
 //        }
-        LOGGER.warn("You already have the lowest WebDriver, but it's decorated.");
-        return driver;
-    }
+//        LOGGER.warn("You already have the lowest WebDriver, but it's decorated.");
+//        return driver;
+//    }
 
-    /**
-     * Will return Selenium session UUID of {@link WebDriver} session
-     *
-     * @param driver {@link WebDriver}
-     * @return String
-     * @deprecated Use {@link WebDriverSessionsManager#getSessionContext(WebDriver)} instead
-     * // TODO Should be package private
-     */
-    public static String getSessionId(WebDriver driver) {
-        driver = getLowestWebDriver(driver);
-        if (driver instanceof RemoteWebDriver) {
-            RemoteWebDriver remoteWebDriver = (RemoteWebDriver) driver;
-            return remoteWebDriver.getSessionId().toString();
-        }
-
-        return null;
-    }
+//    /**
+//     * Will return Selenium session UUID of {@link WebDriver} session
+//     *
+//     * @param driver {@link WebDriver}
+//     * @return String
+//     * @deprecated Use {@link WebDriverSessionsManager#getSessionContext(WebDriver)} instead
+//     * // TODO Should be package private
+//     */
+//    public static String getSessionId(WebDriver driver) {
+//        driver = getLowestWebDriver(driver);
+//        if (driver instanceof RemoteWebDriver) {
+//            RemoteWebDriver remoteWebDriver = (RemoteWebDriver) driver;
+//            return remoteWebDriver.getSessionId().toString();
+//        }
+//
+//        return null;
+//    }
 
     /**
      * @deprecated Use {@link JSUtils#getViewport(WebDriver)} instead

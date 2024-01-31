@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
  * Allows string based assertions
  * @author Mike Reiche
  */
-public interface StringAssertion<T> extends ObjectAssertion<T> {
+public interface StringAssertion<TYPE> extends ObjectAssertion<TYPE> {
     BinaryAssertion <Boolean> contains(String expected);
     BinaryAssertion <Boolean> startsWith(String expected);
     BinaryAssertion <Boolean> endsWith(String expected);
@@ -54,4 +55,6 @@ public interface StringAssertion<T> extends ObjectAssertion<T> {
     default boolean isNotContaining(String text) {
         return contains(text).is(false);
     }
+
+    <MAPPED_TYPE> QuantityAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction);
 }

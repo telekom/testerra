@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -33,9 +34,9 @@ import java.util.stream.Collectors;
  *
  * @author Mike Reiche
  */
-public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
+public class DefaultStringAssertion<TYPE> extends DefaultQuantityAssertion<TYPE> implements StringAssertion<TYPE>, Loggable {
 
-    public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<TYPE> provider) {
         super(parentAssertion, provider);
     }
 
@@ -139,6 +140,26 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             @Override
             public String createSubject() {
                 return "length";
+            }
+        });
+    }
+
+    @Override
+    public <MAPPED_TYPE> QuantityAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction) {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
+            @Override
+            public MAPPED_TYPE getActual() {
+                TYPE actual = provider.getActual();
+                if (actual == null) {
+                    return null;
+                } else {
+                    return mapFunction.apply(provider.getActual());
+                }
+            }
+
+            @Override
+            public String createSubject() {
+                return "mapped to " + Format.shortString(getActual());
             }
         });
     }

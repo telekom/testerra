@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
-public interface ObjectAssertion<TYPE> extends BinaryAssertion<TYPE> {
+public interface ObjectAssertion<T> extends BinaryAssertion<T> {
     default boolean is(Object expected) {
         return is(expected, null);
     }

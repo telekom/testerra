@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * Allows string based assertions
  * @author Mike Reiche
  */
-public interface StringAssertion<TYPE> extends ObjectAssertion<TYPE> {
+public interface StringAssertion extends ObjectAssertion<String> {
     BinaryAssertion <Boolean> contains(String expected);
     BinaryAssertion <Boolean> startsWith(String expected);
     BinaryAssertion <Boolean> endsWith(String expected);
@@ -56,5 +56,5 @@ public interface StringAssertion<TYPE> extends ObjectAssertion<TYPE> {
         return contains(text).is(false);
     }
 
-    <MAPPED_TYPE> QuantityAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction);
+    StringAssertion map(Function<String, String> mapFunction);
 }

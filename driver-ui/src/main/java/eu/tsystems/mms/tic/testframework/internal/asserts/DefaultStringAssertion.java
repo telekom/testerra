@@ -34,9 +34,9 @@ import java.util.stream.Collectors;
  *
  * @author Mike Reiche
  */
-public class DefaultStringAssertion<TYPE> extends DefaultQuantityAssertion<TYPE> implements StringAssertion<TYPE>, Loggable {
+public class DefaultStringAssertion extends DefaultObjectAssertion<String> implements StringAssertion, Loggable {
 
-    public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<TYPE> provider) {
+    public DefaultStringAssertion(AbstractPropertyAssertion<String> parentAssertion, AssertionProvider<String> provider) {
         super(parentAssertion, provider);
     }
 
@@ -111,7 +111,7 @@ public class DefaultStringAssertion<TYPE> extends DefaultQuantityAssertion<TYPE>
                 .collect(Collectors.joining("|"));
         final Pattern wordsPattern = Pattern.compile(wordsList, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
-        final String wordsListWithoutRegex = String.join("|", words);
+        final String wordsListWithoutRegex = java.lang.String.join("|", words);
 
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
@@ -145,11 +145,11 @@ public class DefaultStringAssertion<TYPE> extends DefaultQuantityAssertion<TYPE>
     }
 
     @Override
-    public <MAPPED_TYPE> QuantityAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction) {
-        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
+    public StringAssertion map(Function<String, String> mapFunction) {
+        return propertyAssertionFactory.createWithParent(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
             @Override
-            public MAPPED_TYPE getActual() {
-                TYPE actual = provider.getActual();
+            public String getActual() {
+                String actual = provider.getActual();
                 if (actual == null) {
                     return null;
                 } else {
@@ -158,7 +158,7 @@ public class DefaultStringAssertion<TYPE> extends DefaultQuantityAssertion<TYPE>
             }
 
             @Override
-            public String createSubject() {
+            public java.lang.String createSubject() {
                 return "mapped to " + Format.shortString(getActual());
             }
         });

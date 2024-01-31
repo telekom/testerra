@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -240,8 +239,9 @@ public interface IWebDriverManager extends
     }
 
     /**
-     * Unwraps the raw {@link WebDriver} from {@link EventFiringWebDriver}
+     * Unwraps the raw {@link WebDriver} from EventFiringWebDriver -> Removed in Selenium 4.17
      * and tries to cast it to the target class implementation.
+     * TODO: Now all WebDriver are decorated WebDriver, should be already the the 'lowest' webdriver?
      */
     default <WEBDRIVER> Optional<WEBDRIVER> unwrapWebDriver(WebDriver webDriver, Class<WEBDRIVER> targetWebDriverClass) {
         WebDriver lowestWebDriver = WebDriverUtils.getLowestWebDriver(webDriver);

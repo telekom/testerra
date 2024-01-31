@@ -25,13 +25,10 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
-import eu.tsystems.mms.tic.testframework.sikuli.ImageWebDriver;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.net.URL;
 
@@ -57,17 +54,17 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
     }
 
 //    @Test
-    public void testT01_ByImage_Directly() throws Exception {
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+//    public void testT01_ByImage_Directly() throws Exception {
+//        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+//
+//        URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
+//
+//        ImageWebDriver sikuliWebDriver = (ImageWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
+//        ImageElement imageElement = sikuliWebDriver.findImageElement(resourceURL);
+//        imageElement.click();
+//    }
 
-        URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
-
-        ImageWebDriver sikuliWebDriver = (ImageWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
-        ImageElement imageElement = sikuliWebDriver.findImageElement(resourceURL);
-        imageElement.click();
-    }
-
-//    @Test
+    //    @Test
     public void testT03a_ByImage_InFrames_FindElementInFrame() throws Exception {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
@@ -77,7 +74,7 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         guiElement.asserts().assertAttributeContains("src", "ringo");
     }
 
-//    @Test
+    //    @Test
     public void testT03b_ByImage_InFrames_FindElementInFrame_withObsoleteGuiElementFrame() throws Exception {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         GuiElement frame = new GuiElement(driver, By.id("draggableNodes"));

@@ -149,7 +149,7 @@ public class DesktopWebDriverFactory implements
     }
 
     @Override
-    public WebDriver setupNewWebDriverSession(WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+    public WebDriver setupNewWebDriverSession(WebDriver webDriver, SessionContext sessionContext) {
 
         DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
         final String browser = desktopWebDriverRequest.getBrowser();
@@ -164,10 +164,10 @@ public class DesktopWebDriverFactory implements
             WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);
         }
         VisualEventDriverListener visualListener = new VisualEventDriverListener();
-        WebDriver decoratedDriver = eventFiringWebDriver = new EventFiringDecorator(
+        WebDriver decoratedDriver = new EventFiringDecorator(
                 new EventLoggingDriverListener(),
                 visualListener
-        ).decorate(eventFiringWebDriver);
+        ).decorate(webDriver);
 
         visualListener.driver = decoratedDriver;    // Needed to interact with current session
 

@@ -35,7 +35,6 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -248,11 +247,11 @@ public final class WebDriverUtils {
      * @return WebDriver
      */
     public static WebDriver getLowestWebDriver(WebDriver driver) {
-        if (driver instanceof EventFiringWebDriver) {
-            EventFiringWebDriver efWd = (EventFiringWebDriver) driver;
-            driver = efWd.getWrappedDriver();
-        }
-
+//        if (driver instanceof EventFiringWebDriver) {
+//            EventFiringWebDriver efWd = (EventFiringWebDriver) driver;
+//            driver = efWd.getWrappedDriver();
+//        }
+        LOGGER.warn("You already have the lowest WebDriver, but it's decorated.");
         return driver;
     }
 

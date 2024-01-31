@@ -39,9 +39,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
-import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import org.openqa.selenium.support.events.EventFiringDecorator;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,14 +167,22 @@ public final class WebDriverSessionsManager {
 
         // create new session context
         SessionContext sessionContext = new SessionContext(request);
-        EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(webDriver);
+//        EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(webDriver);
+
+        VisualEventDriverListener visualListener = new VisualEventDriverListener();
+        WebDriver decoratedDriver = new EventFiringDecorator(
+                new EventLoggingDriverListener(),
+                visualListener
+        ).decorate(webDriver);
+
+        visualListener.driver = decoratedDriver;
 
         // store to method context
         executionContextController.getCurrentMethodContext().ifPresent(methodContext -> {
             methodContext.addSessionContext(sessionContext);
             executionContextController.setCurrentSessionContext(sessionContext);
         });
-        storeWebDriverSession(eventFiringWebDriver, sessionContext);
+        storeWebDriverSession(decoratedDriver, sessionContext);
     }
 
     public static void registerWebDriverBeforeShutdownHandler(Consumer<WebDriver> beforeQuit) {
@@ -427,13 +433,10 @@ public final class WebDriverSessionsManager {
                     diff.toMinutesPart(), diff.toSecondsPart(), diff.toMillisPart()
 
             ));
-//            EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(newRawWebDriver);
-//            WebDriver eventFiringWebDriver = new EventFiringDecorator().decorate(newRawWebDriver);
-//            WebDriver eventFiringWebDriver = newRawWebDriver;
 
-            WebDriver eventFiringWebDriver = webDriverFactory.setupNewWebDriverSession(newRawWebDriver, sessionContext);
+            WebDriver decoratedDriver = webDriverFactory.setupNewWebDriverSession(newRawWebDriver, sessionContext);
 
-            storeWebDriverSession(eventFiringWebDriver, sessionContext);
+            storeWebDriverSession(decoratedDriver, sessionContext);
 
             Testerra.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             String sessionIdentifier = createSessionIdentifier(newRawWebDriver, sessionKey);
@@ -442,12 +445,12 @@ public final class WebDriverSessionsManager {
              */
             WEBDRIVER_STARTUP_HANDLERS.forEach(webDriverConsumer -> {
                 try {
-                    webDriverConsumer.accept(eventFiringWebDriver);
+                    webDriverConsumer.accept(decoratedDriver);
                 } catch (Exception e) {
                     LOGGER.error("Failed executing handler after starting up " + sessionIdentifier, e);
                 }
             });
-            return eventFiringWebDriver;
+            return decoratedDriver;
         } else {
             throw new SystemException(String.format("No %s registered for browser '%s'", WebDriverFactory.class.getSimpleName(), browser));
         }

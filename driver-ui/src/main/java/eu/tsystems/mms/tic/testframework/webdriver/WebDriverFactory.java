@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public interface WebDriverFactory {
     WebDriverRequest prepareWebDriverRequest(WebDriverRequest webDriverRequest);

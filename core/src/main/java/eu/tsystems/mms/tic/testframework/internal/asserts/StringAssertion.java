@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * Allows string based assertions
  * @author Mike Reiche
  */
-public interface StringAssertion<T> extends QuantityAssertion<T> {
+public interface StringAssertion<T> extends ObjectAssertion<T> {
     BinaryAssertion <Boolean> contains(String expected);
     BinaryAssertion <Boolean> startsWith(String expected);
     BinaryAssertion <Boolean> endsWith(String expected);

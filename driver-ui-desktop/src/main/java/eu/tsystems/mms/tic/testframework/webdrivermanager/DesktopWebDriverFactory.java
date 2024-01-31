@@ -152,7 +152,6 @@ public class DesktopWebDriverFactory implements
     public void setupNewWebDriverSession(EventFiringWebDriver eventFiringWebDriver, SessionContext sessionContext) {
 
         DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
-        final String browser = desktopWebDriverRequest.getBrowser();
 
         // add event listeners
         if (Testerra.Properties.DEMO_MODE.asBool()) {
@@ -217,7 +216,7 @@ public class DesktopWebDriverFactory implements
             setWindowSizeBasedOnDisplayResolution(window, desktopWebDriverRequest);
         }
 
-        if (!Browsers.safari.equalsIgnoreCase(browser)) {
+        if (!Browsers.safari.equalsIgnoreCase(desktopWebDriverRequest.getBrowser())) {
             int pageLoadTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD.asLong().intValue();
             int scriptTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT.asLong().intValue();
             try {

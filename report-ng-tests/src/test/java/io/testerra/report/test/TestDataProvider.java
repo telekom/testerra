@@ -270,7 +270,11 @@ public class TestDataProvider {
                 // expected Failed
                 {new TestData("test_expectedFailedAssertCollector", Status.FAILED_EXPECTED)},
                 // retried
-                {new TestData("test_PassedAfterRetry", Status.RETRIED)}
+                {new TestData("test_PassedAfterRetry", Status.RETRIED)},
+                // failed data provider method
+                {new TestData( "dataProviderWithError", Status.FAILED)},
+                // failed before method
+                {new TestData("beforeMethodFailing", Status.FAILED)}
         };
     }
 

@@ -201,7 +201,6 @@ public class TesterraListener implements
     @Override
     public void beforeInvocation(final IInvokedMethod method, final ITestResult testResult) {
         // we don't need that-
-        log().warn("beforeInvocation which is not needed on {}", method.getTestMethod().getMethodName());
     }
 
     /**
@@ -445,6 +444,7 @@ public class TesterraListener implements
     public void onConfigurationSkip(ITestResult testResult) {
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
         methodContext.setStatus(Status.SKIPPED);
+        methodContext.addError(new SkipException("Setup method was skipped because of another failed setup method."));
     }
 
     @Override

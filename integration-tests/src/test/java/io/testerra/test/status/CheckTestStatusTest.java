@@ -66,6 +66,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"testT06_AfterMethodWithException", Status.PASSED},
                 {"beforeClassSetup01", Status.FAILED},
                 {"beforeClassSetup02", Status.FAILED},
+                {"beforeClassSetup03", Status.FAILED},
                 {"beforeMethodSetup01", Status.FAILED},
                 {"beforeMethodSetup02", Status.FAILED},
                 {"afterMethodSetup01", Status.FAILED},
@@ -77,6 +78,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"dataProviderThrowingAssertion", Status.FAILED},
                 {"dataProviderThrowingException", Status.FAILED},
                 {"dataProviderInClassThrowingException", Status.FAILED},
+                {"beforeClassBeforeMethodSetup03", Status.NO_RUN},
         };
     }
 
@@ -90,7 +92,9 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"testT03_AssertFailedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
                 {"testT01_BeforeClassWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
                 {"testT02_BeforeClassWithException", Status.NO_RUN, "java.lang.RuntimeException"},
+//                {"beforeClassBeforeMethodSetup03", Status.NO_RUN, ""},    // Cannot test here, because skipped setup method has no exception
                 {"testT03_BeforeMethodWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
+                {"testT03_BeforeClassWithException", Status.NO_RUN, "java.lang.AssertionError"},
                 {"testT04_BeforeMethodWithException", Status.NO_RUN, "java.lang.RuntimeException"}
         };
     }
@@ -122,13 +126,13 @@ public class CheckTestStatusTest extends TesterraTest {
         return new Object[][]{
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
-                {"*** Stats: ClassContexts:  15", "ClassContext"},
-                {"*** Stats: MethodContexts: 80", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 59 (48 relevant)", "Test methods"},
+                {"*** Stats: ClassContexts:  16", "ClassContext"},
+                {"*** Stats: MethodContexts: 83", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 60 (49 relevant)", "Test methods"},
                 {"*** Stats: Failed: 10", "Failed tests"},
                 {"*** Stats: Retried: 11", "Retried tests"},
                 {"*** Stats: Expected Failed: 7", "Expected failed tests"},
-                {"*** Stats: Skipped: 9", "Skipped tests"},
+                {"*** Stats: Skipped: 10", "Skipped tests"},
                 {"*** Stats: Passed: 22 ⊃ Recovered: 5 ⊃ Repaired: 1", "Passed tests"}
         };
     }

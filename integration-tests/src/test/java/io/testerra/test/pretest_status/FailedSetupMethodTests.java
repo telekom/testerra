@@ -61,6 +61,24 @@ public class FailedSetupMethodTests extends TesterraTest implements AssertProvid
         }
     }
 
+    public static class BeforeClassBeforeMethodExceptionTests {
+
+        @BeforeClass
+        public void beforeClassSetup03() {
+            throw new RuntimeException("BeforeClass setup fails");
+        }
+
+        @BeforeMethod
+        public void beforeClassBeforeMethodSetup03() {
+
+        }
+
+        @Test
+        public void testT03_BeforeClassWithException() {
+
+        }
+    }
+
     public static class BeforeMethodAssertionTests {
         @BeforeMethod
         public void beforeMethodSetup01() {

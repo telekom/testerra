@@ -94,7 +94,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"testT02_BeforeClassWithException", Status.NO_RUN, "java.lang.RuntimeException"},
 //                {"beforeClassBeforeMethodSetup03", Status.NO_RUN, ""},    // Cannot test here, because skipped setup method has no exception
                 {"testT03_BeforeMethodWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
-                {"testT03_BeforeClassWithException", Status.NO_RUN, "java.lang.AssertionError"},
+                {"testT03_BeforeClassWithException", Status.NO_RUN, "java.lang.RuntimeException"},
                 {"testT04_BeforeMethodWithException", Status.NO_RUN, "java.lang.RuntimeException"}
         };
     }

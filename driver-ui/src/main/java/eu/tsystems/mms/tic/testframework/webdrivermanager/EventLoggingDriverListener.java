@@ -41,7 +41,7 @@ public class EventLoggingDriverListener implements WebDriverListener, Loggable {
         log().info("Refresh");
     }
 
-    // TODO: There is no more method for the switchTo event in current WebDriverListener :-(
+    // TODO: Wait for Selenium 4.18: https://github.com/SeleniumHQ/selenium/pull/13210
 //    @Override
 //    public void afterSwitchToWindow(String s, WebDriver webDriver) {
 //        log().info(

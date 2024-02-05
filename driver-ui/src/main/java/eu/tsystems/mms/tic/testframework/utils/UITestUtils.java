@@ -191,12 +191,12 @@ public class UITestUtils implements WebDriverManagerProvider {
         return result;
     }
 
-    private static Screenshot takeScreenshot(WebDriver eventFiringWebDriver, String originalWindowHandle) {
+    private static Screenshot takeScreenshot(WebDriver decoratedWebDriver, String originalWindowHandle) {
         Screenshot screenshot = new Screenshot();
-        takeScreenshot(eventFiringWebDriver, screenshot);
+        takeScreenshot(decoratedWebDriver, screenshot);
 
         if (StringUtils.isNotBlank(originalWindowHandle)) {
-            String windowHandle = eventFiringWebDriver.getWindowHandle();
+            String windowHandle = decoratedWebDriver.getWindowHandle();
             if (windowHandle.equals(originalWindowHandle)) {
                 screenshot.getMetaData().put(Screenshot.MetaData.DRIVER_FOCUS, "true");
             } else {

@@ -105,29 +105,29 @@ public final class WebDriverSessionsManager {
                 });
     }
 
-    private static void storeWebDriverSession(WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+    private static void storeWebDriverSession(WebDriver decoratedWebDriver, SessionContext sessionContext) {
         WebDriverRequest webDriverRequest = sessionContext.getWebDriverRequest();
         final String sessionKey = webDriverRequest.getSessionKey();
         final String threadSessionKey = getThreadSessionKey(sessionKey);
-        THREAD_SESSION_KEY_WEBDRIVER_MAP.put(threadSessionKey, eventFiringWebDriver);
+        THREAD_SESSION_KEY_WEBDRIVER_MAP.put(threadSessionKey, decoratedWebDriver);
 
         final long threadId = Thread.currentThread().getId();
-        WEBDRIVER_THREAD_ID_MAP.put(eventFiringWebDriver, threadId);
+        WEBDRIVER_THREAD_ID_MAP.put(decoratedWebDriver, threadId);
 
         /*
         store driver to session context relation
          */
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(eventFiringWebDriver, sessionContext);
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.put(decoratedWebDriver, sessionContext);
     }
 
-    private static void unlinkFromThread(String sessionKey, WebDriver eventFiringWebDriver) {
-        final String sessionIdentifier = createSessionIdentifier(eventFiringWebDriver, sessionKey);
+    private static void unlinkFromThread(String sessionKey, WebDriver decoratedWebDriver) {
+        final String sessionIdentifier = createSessionIdentifier(decoratedWebDriver, sessionKey);
         LOGGER.trace("Unlink from thread: " + sessionIdentifier);
         String threadSessionKey = getThreadSessionKey(sessionKey);
-        THREAD_SESSION_KEY_WEBDRIVER_MAP.remove(threadSessionKey, eventFiringWebDriver);
+        THREAD_SESSION_KEY_WEBDRIVER_MAP.remove(threadSessionKey, decoratedWebDriver);
 
         final long threadId = Thread.currentThread().getId();
-        WEBDRIVER_THREAD_ID_MAP.remove(eventFiringWebDriver, threadId);
+        WEBDRIVER_THREAD_ID_MAP.remove(decoratedWebDriver, threadId);
 
         executionContextController.clearCurrentSessionContext();
 
@@ -160,14 +160,12 @@ public final class WebDriverSessionsManager {
         }
 
         LOGGER.info("Introducing webdriver object");
-        //EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
 
         UnspecificWebDriverRequest request = new UnspecificWebDriverRequest();
         request.setSessionKey(sessionKey);
 
         // create new session context
         SessionContext sessionContext = new SessionContext(request);
-//        EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(webDriver);
 
         VisualEventDriverListener visualListener = new VisualEventDriverListener();
         WebDriver decoratedDriver = new EventFiringDecorator(
@@ -206,31 +204,31 @@ public final class WebDriverSessionsManager {
     }
 
     public static void shutdownWebDriver(WebDriver webDriver) {
-        WebDriver eventFiringWebDriver = checkForWrappedWebDriver(webDriver);
-        String sessionKey = getSessionKey(eventFiringWebDriver);
-        String sessionIdentifier = createSessionIdentifier(eventFiringWebDriver, sessionKey);
+        WebDriver decoratedWebDriver = checkForWrappedWebDriver(webDriver);
+        String sessionKey = getSessionKey(decoratedWebDriver);
+        String sessionIdentifier = createSessionIdentifier(decoratedWebDriver, sessionKey);
 
         beforeQuitActions.forEach(webDriverConsumer -> {
             try {
                 LOGGER.trace("Call before shutdown handler");
-                webDriverConsumer.accept(eventFiringWebDriver);
+                webDriverConsumer.accept(decoratedWebDriver);
             } catch (Exception e) {
                 LOGGER.error("Failed executing before shutdown handler", e);
             }
         });
         LOGGER.info("Shutting down " + sessionIdentifier);
-        WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
+        WebDriverManagerUtils.quitWebDriverSession(decoratedWebDriver);
 
         afterQuitActions.forEach(webDriverConsumer -> {
             try {
                 LOGGER.trace("Call after shutdown handler");
-                webDriverConsumer.accept(eventFiringWebDriver);
+                webDriverConsumer.accept(decoratedWebDriver);
             } catch (Exception e) {
                 LOGGER.error("Failed executing after shutdown handler", e);
             }
         });
-        unlinkFromThread(sessionKey, eventFiringWebDriver);
-        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(eventFiringWebDriver);
+        unlinkFromThread(sessionKey, decoratedWebDriver);
+        WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(decoratedWebDriver);
         if (sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
             EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.remove(sessionKey);
         }
@@ -276,21 +274,21 @@ public final class WebDriverSessionsManager {
     }
 
     static synchronized String makeSessionExclusive(final WebDriver webDriver) {
-        WebDriver eventFiringWebDriver = checkForWrappedWebDriver(webDriver);
+        WebDriver decoratedWebDriver = checkForWrappedWebDriver(webDriver);
 
-        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(eventFiringWebDriver)) {
+        if (EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.containsValue(decoratedWebDriver)) {
             LOGGER.error("Session already set exclusive.");
             return null;
         }
 
-        SessionContext sessionContext = getSessionContext(eventFiringWebDriver).get();
+        SessionContext sessionContext = getSessionContext(decoratedWebDriver).get();
         String sessionKey = sessionContext.getSessionKey();
-        unlinkFromThread(sessionKey, eventFiringWebDriver);
+        unlinkFromThread(sessionKey, decoratedWebDriver);
         /*
         Add session to exclusive map.
          */
         String exclusiveSessionKey = SessionContext.EXCLUSIVE_PREFIX + UUID.randomUUID().toString();
-        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.put(exclusiveSessionKey, eventFiringWebDriver);
+        EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.put(exclusiveSessionKey, decoratedWebDriver);
 
         /*
         introduce session context to execution context
@@ -486,7 +484,7 @@ public final class WebDriverSessionsManager {
         if (!(webDriver instanceof WebDriver)) {
             throw new IllegalArgumentException(webDriver.getClass().getSimpleName() + " is no instance of " + WebDriver.class.getSimpleName());
         }
-        return (WebDriver) webDriver;
+        return webDriver;
     }
 
     public static boolean isExclusiveSession(WebDriver webDriver) {

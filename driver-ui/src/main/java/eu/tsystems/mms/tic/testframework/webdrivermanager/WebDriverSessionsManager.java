@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsController;
 import eu.tsystems.mms.tic.testframework.internal.metrics.MetricsType;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.utils.DefaultCapabilityUtils;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
@@ -62,7 +63,7 @@ import java.util.stream.Stream;
  * @todo Migrate to {@link DefaultWebDriverManager}
  */
 @Deprecated
-public final class WebDriverSessionsManager {
+public final class WebDriverSessionsManager implements WebDriverManagerProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
 
@@ -200,7 +201,8 @@ public final class WebDriverSessionsManager {
     }
 
     private static String createSessionIdentifier(WebDriver webDriver, String sessionKey) {
-        return String.format("%s (sessionKey=%s)", webDriver.getClass().getSimpleName(), sessionKey);
+        WebDriver originalDriver = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
+        return String.format("%s (sessionKey=%s)", originalDriver.getClass().getSimpleName(), sessionKey);
     }
 
     public static void shutdownWebDriver(WebDriver webDriver) {

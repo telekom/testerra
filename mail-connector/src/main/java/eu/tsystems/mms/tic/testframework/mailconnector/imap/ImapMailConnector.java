@@ -21,18 +21,16 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
+
+import java.util.Properties;
+
 import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
-import jakarta.mail.NoSuchProviderException;
 import jakarta.mail.Store;
-
-import java.util.Properties;
 
 
 /**
@@ -40,7 +38,7 @@ import java.util.Properties;
  *
  * @author mibu
  */
-public class ImapMailConnector extends AbstractInboxConnector implements Loggable {
+public class ImapMailConnector extends AbstractInboxConnector {
 
     /**
      * Constructor, creates a ImapMailConnector object.
@@ -54,14 +52,14 @@ public class ImapMailConnector extends AbstractInboxConnector implements Loggabl
      * Called from constructor. Initializes the ImapMailConnector.
      */
     private void init() {
-        setServer(PropertyManager.getProperty("IMAP_SERVER", null));
-        setPort(PropertyManager.getProperty("IMAP_SERVER_PORT", null));
-        setInboxFolder(PropertyManager.getProperty("IMAP_FOLDER_INBOX", null));
-        setUsername(PropertyManager.getProperty("IMAP_USERNAME", null));
-        setPassword(PropertyManager.getProperty("IMAP_PASSWORD", null));
-        setSslEnabled(PropertyManager.getBooleanProperty("IMAP_SSL_ENABLED", true));
+        setServer(PROPERTY_MANAGER.getProperty("IMAP_SERVER", null));
+        setPort(PROPERTY_MANAGER.getProperty("IMAP_SERVER_PORT", null));
+        setInboxFolder(PROPERTY_MANAGER.getProperty("IMAP_FOLDER_INBOX", null));
+        setUsername(PROPERTY_MANAGER.getProperty("IMAP_USERNAME", null));
+        setPassword(PROPERTY_MANAGER.getProperty("IMAP_PASSWORD", null));
+        setSslEnabled(PROPERTY_MANAGER.getBooleanProperty("IMAP_SSL_ENABLED", true));
 
-        setDebug(PropertyManager.getBooleanProperty("DEBUG_SETTING", false));
+        setDebug(PROPERTY_MANAGER.getBooleanProperty("DEBUG_SETTING", false));
     }
 
     /**
@@ -108,9 +106,6 @@ public class ImapMailConnector extends AbstractInboxConnector implements Loggabl
                 message.setFlag(Flags.Flag.SEEN, true);
             }
             store.close();
-        } catch (final NoSuchProviderException e) {
-            log().error(e.getMessage());
-            throw new SystemException(e);
         } catch (final MessagingException e) {
             log().error(e.getMessage());
             throw new SystemException(e);

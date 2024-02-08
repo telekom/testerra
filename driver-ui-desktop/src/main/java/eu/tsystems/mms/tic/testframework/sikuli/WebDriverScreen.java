@@ -21,15 +21,15 @@
  */
  package eu.tsystems.mms.tic.testframework.sikuli;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.sikuli.api.Screen;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -37,9 +37,8 @@ import java.io.IOException;
 /**
  *
  */
-public class WebDriverScreen implements Screen {
+public class WebDriverScreen implements Screen, Loggable {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final WebDriver driver;
 
     /**
@@ -70,12 +69,12 @@ public class WebDriverScreen implements Screen {
                     BufferedImage cropped = crop(full, x, y, width, height);
                     return cropped;
                 } catch (IOException e) {
-                    logger.warn("Error getting screenshot", e);
+                    log().warn("Error getting screenshot", e);
                 } finally {
                     try {
                         bais.close();
                     } catch (IOException e) {
-                        logger.trace("Cannot close stream.", e);
+                        log().trace("Cannot close stream.", e);
                     }
                 }
 

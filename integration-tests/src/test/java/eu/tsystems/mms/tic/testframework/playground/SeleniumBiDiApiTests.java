@@ -33,6 +33,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.LogInspector;
 import org.openqa.selenium.bidi.Network;
 import org.openqa.selenium.bidi.log.ConsoleLogEntry;
+import org.openqa.selenium.bidi.log.GenericLogEntry;
 import org.openqa.selenium.bidi.log.JavascriptLogEntry;
 import org.openqa.selenium.bidi.log.LogEntry;
 import org.openqa.selenium.bidi.network.BeforeRequestSent;
@@ -47,6 +48,7 @@ import org.testng.annotations.Test;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created on 2023-06-22
@@ -175,6 +177,21 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         });
 
         ASSERT.assertEquals(logEntryList.size(), 4, "LogEntry list");
+
+        logEntryList.forEach(logEntry -> {
+            AtomicReference<GenericLogEntry> genericLogEntry = new AtomicReference<>();
+            logEntry.getConsoleLogEntry().ifPresent(genericLogEntry::set);
+            logEntry.getJavascriptLogEntry().ifPresent(genericLogEntry::set);
+
+            log().info("LOG_ENTRY: {} {} {} {} - {}",
+                    genericLogEntry.get().getTimestamp(),
+                    genericLogEntry.get().getType(),
+                    genericLogEntry.get().getLevel(),
+                    genericLogEntry.get().getType(),
+                    genericLogEntry.get().getText()
+            );
+        });
+
     }
 
     @Test

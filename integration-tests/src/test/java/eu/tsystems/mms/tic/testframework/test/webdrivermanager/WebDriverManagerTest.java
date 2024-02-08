@@ -39,7 +39,9 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.decorators.Decorated;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -207,20 +209,20 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
 
     @Test
     public void testT07_WindowSize() {
-        assertNewWebDriverWindowSize(new Dimension(800, 600));
+        assertNewWebDriverWindowSize(new Dimension(1024, 768));
 
-        String newScreenSize = "1024x768";
+        String newScreenSize = "1280x1024";
 
         PROPERTY_MANAGER.setTestLocalProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, newScreenSize);
         String property = PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.WINDOW_SIZE, PROPERTY_MANAGER.getProperty(DesktopWebDriverRequest.Properties.DISPLAY_RESOLUTION));
         Assert.assertEquals(property, newScreenSize);
 
-        assertNewWebDriverWindowSize(new Dimension(1024, 768));
+        assertNewWebDriverWindowSize(new Dimension(1280, 1024));
     }
 
     @Test
     public void testT07a_WindowSizeRequest() {
-        Dimension expected = new Dimension(1024, 768);
+        Dimension expected = new Dimension(1280, 1024);
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setWindowSize(expected);
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
@@ -336,6 +338,28 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 2, "Current method context should have 2 sessions.");
 
         WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
+    }
+
+    @Test
+    public void testT14_UnwrapFromDecorated() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chromeHeadless);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        Assert.assertTrue(driver instanceof Decorated);
+
+        Optional<ChromeDriver> chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(driver, ChromeDriver.class);
+        Assert.assertTrue(chromeDriver.isPresent());
+    }
+
+    @Test
+    public void testT15_UnwrapWrongTypeFromDecorated() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.setBrowser(Browsers.chromeHeadless);
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        Assert.assertTrue(driver instanceof Decorated);
+
+        Optional<FirefoxDriver> chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(driver, FirefoxDriver.class);
+        Assert.assertTrue(chromeDriver.isEmpty());
     }
 
     private Stream<SessionContext> readSessionContextFromMethodContext() {

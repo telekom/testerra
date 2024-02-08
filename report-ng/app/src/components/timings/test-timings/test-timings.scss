@@ -23,4 +23,24 @@
     width: 100%;
     height: 30em;
     margin: auto;
+
+    // breakpoints according to: https://getbootstrap.com/docs/5.0/layout/breakpoints/
+
+    @media (max-height: 1199.98px) {
+        height: 700px;
+    }
+
+    @media (max-height: 991.98px) {
+        height: 500px;
+    }
+
+    @media (max-height: 767.98px) {
+        height: 300px;
+    }
+}
+
+// in tooltip badge titles are not centered anymore => has to be fixed manually:
+
+.config-badge {
+    padding-right: 7.5px;
 }

@@ -36,8 +36,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
@@ -45,15 +45,18 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -128,10 +131,6 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
      * @throws ElementNotFoundException with the internal selenium exception cause.
      */
     private List<WebElement> findElementsFromWebDriver(WebDriver webDriver, By by) {
-        // Prevent finding EventFiringWebDriver$EventFiringWebElement
-        if (webDriver instanceof EventFiringWebDriver) {
-            webDriver = ((EventFiringWebDriver) webDriver).getWrappedDriver();
-        }
         try {
             return webDriver.findElements(by);
         } catch (Throwable throwable) {
@@ -246,22 +245,11 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
                 WebElement webElement = webElements.get(Math.max(0, guiElementData.getIndex()));
                 WebDriver webDriver = guiElementData.getWebDriver();
 
-                // check for shadowRoot
-                if (guiElementData.isShadowRoot()) {
-                    // 14.01.2021: Gheckodriver throw an internal exception when using the command above,
-                    // therefore the result in the JS snippet "return arguments[0].shadowRoot" will be null.
-                    // To handle firefox shadow roots we decided to handle it this way and implement an automatic resolver in getSubElement
-//                    try {
-//                        final Object shadowedWebElement = JSUtils.executeScriptWOCatch(webDriver, "return arguments[0].shadowRoot.firstChild", webElement);
-//                        if (shadowedWebElement instanceof WebElement) {
-//                            webElement = (WebElement) shadowedWebElement;
-//                        }
-//                        SearchContext searchContext =  webElement.getShadowRoot();
-//                    } catch (Exception e) {
-//                        log().error("Could not detect shadow root for " + guiElementData.toString() + ": " + e.getMessage());
-//                    }
-                } else if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
-                    guiElementData.setIsFrame(true);
+                // Handling of shadow root elements was moved to 'findWebElements(Consumer<List<WebElement>> consumer)'
+                if (!guiElementData.isShadowRoot()) {
+                    if ("frame".equals(webElement.getTagName()) || "iframe".equals(webElement.getTagName())) {
+                        guiElementData.setIsFrame(true);
+                    }
                 }
 
                 logTimings(start, Timings.getFindCounter());
@@ -321,10 +309,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
     @Override
     public void scrollIntoView(Point offset) {
-        this.findWebElement(webElement -> {
-            JSUtils utils = new JSUtils();
-            utils.scrollToCenter(guiElementData.getWebDriver(), webElement, offset);
-        });
+        new JSUtils().scrollToCenter(guiElementData.getGuiElement(), offset);
     }
 
     @Override
@@ -481,16 +466,16 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
     @Override
     public boolean isVisible(boolean fullyVisible) {
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        Point globalLocation = this.getLocationInViewport();
+        Rectangle viewport = new JSUtils().getViewport(guiElementData.getWebDriver());
         this.findWebElement(webElement -> {
             if (!webElement.isDisplayed()) {
                 return;
             }
-            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             // getRect doesn't work
-            Point elementLocation = webElement.getLocation();
             Dimension elementSize = webElement.getSize();
-            java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
-            java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+            java.awt.Rectangle viewportRect = new java.awt.Rectangle(0, 0, viewport.width, viewport.height);
+            java.awt.Rectangle elementRect = new java.awt.Rectangle(globalLocation.getX(), globalLocation.getY(), elementSize.width, elementSize.height);
             atomicBoolean.set(((fullyVisible && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect)));
         });
         return atomicBoolean.get();
@@ -524,11 +509,24 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         return selectionStatusChanged;
     }
 
+    /**
+     * Please note that 'webElement.getLocation()' return the location only in the current frame.
+     */
     @Override
     public Point getLocation() {
         AtomicReference<Point> atomicReference = new AtomicReference<>();
         this.findWebElement(webElement -> atomicReference.set(webElement.getLocation()));
         return atomicReference.get();
+    }
+
+    /**
+     * WebElement.getLocation() only returns the position within the current frame/iframe.
+     * The location in viewport returns the location under the consideration of frames/iframes in the current viewport.
+     * For example: If point.y > viewport.height -> element is outside of the viewport
+     */
+    public Point getLocationInViewport() {
+        Point location = new JSUtils().getElementLocationInParent(this.guiElementData.getGuiElement());
+        return this.getGlobalElementPosition(guiElementData, location);
     }
 
     @Override
@@ -667,13 +665,101 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         });
     }
 
+    /**
+     * This method is an extra implementation of getting a screenshot for an WebElement.
+     * <p>
+     * Selenium offers an own method 'webElement.getScreenshotAs(OutputType.FILE)', but this cannot be used because:
+     * 1) https://github.com/SeleniumHQ/selenium/blob/36585d189b2e9f2ced136a7e6c456ffe53604141/java/src/org/openqa/selenium/remote/RemoteWebElement.java#L360
+     * method is marked as 'Beta'
+     * 2) The behaviour between Chrome and Firefox is different: If the element is hovered and the screenshot method is called, Chrome resets the hover to
+     * the position of the real mouse pointer.
+     * At Firefox and at Chrome headless the hover effect keeps stable.
+     */
     @Override
     public File takeScreenshot() {
-        AtomicReference<File> atomicReference = new AtomicReference<>();
-        this.findWebElement(webElement -> {
-            atomicReference.set(webElement.getScreenshotAs(OutputType.FILE));
-        });
-        return atomicReference.get();
+        if (!isVisible(false)) {
+            scrollIntoView();
+        }
+
+        // Note: Values of location and dimensions of elements could be long and double. There could be something like top=10.875px.
+        // Selenium's `element.getSize()` rounds correctly, `element.getLocation()` does not
+        // --> Using JS function to get the correct location
+        Dimension elementDimension = this.getSize();
+        Point locationInViewport = this.getLocationInViewport();
+        final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
+        File viewPortScreenshot = driver.getScreenshotAs(OutputType.FILE);
+
+        try {
+
+            BufferedImage fullImg = ImageIO.read(viewPortScreenshot);
+
+            int imageX = locationInViewport.getX();
+            int imageY = locationInViewport.getY();
+            int imageWidth = elementDimension.getWidth();
+            int imageHeight = elementDimension.getHeight();
+
+            if (imageX > fullImg.getWidth()) imageX = 0;
+            if (imageY > fullImg.getHeight()) imageY = 0;
+
+            // Make sure the image bounding box doesn't overflows the image dimension
+            if (imageX + imageWidth > fullImg.getWidth()) {
+                imageWidth = fullImg.getWidth() - imageX;
+            }
+            if (imageY + imageHeight > fullImg.getHeight()) {
+                imageHeight = fullImg.getHeight() - imageY;
+            }
+
+            BufferedImage eleScreenshot = fullImg.getSubimage(
+                    imageX,
+                    imageY,
+                    imageWidth,
+                    imageHeight
+            );
+            File elementScreenshot = new File(viewPortScreenshot.getPath());
+            ImageIO.write(eleScreenshot, "png", elementScreenshot);
+            return elementScreenshot;
+        } catch (IOException e) {
+            log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
+        }
+
+        return null;
+    }
+
+    // Calculate the global position of an element by going to all parent elements
+    // In case of frames/iframes its position is added to element's position
+    private Point getGlobalElementPosition(GuiElementData elementData, Point location) {
+
+        if (elementData.getParent() != null) {
+            return getGlobalElementPosition(elementData.getParent(), location);
+        }
+
+        // Needs frame/iframe position
+        if (elementData.isFrame()) {
+            AtomicReference<Integer> borderLeftWidth = new AtomicReference<>();
+            AtomicReference<Integer> borderTopWidth = new AtomicReference<>();
+            Point currentLocation = new JSUtils().getElementLocationInParent(elementData.getGuiElement());
+            elementData.getGuiElement().findWebElement(webElement -> {
+                // Frames/iframes can have borders, 'getCssValue' returns something like '5px'
+                borderLeftWidth.set(this.getIntFromString(webElement.getCssValue("border-left-width")));
+                borderTopWidth.set(this.getIntFromString(webElement.getCssValue("border-top-width")));
+            });
+
+            return new Point(
+                    location.getX() + currentLocation.getX() + borderLeftWidth.get(),
+                    location.getY() + currentLocation.getY() + borderTopWidth.get()
+            );
+        } else {
+            return location;
+        }
+    }
+
+    private int getIntFromString(String string) {
+        String value = StringUtils.getDigits(string);
+        if (StringUtils.isNotBlank(value)) {
+            return Integer.parseInt(value);
+        } else {
+            return 0;
+        }
     }
 
 }

@@ -28,137 +28,139 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.events.WebDriverEventListener;
+//import org.openqa.selenium.support.events.WebDriverEventListener;
 
-public class EventLoggingEventDriverListener implements WebDriverEventListener, Loggable {
+@Deprecated
+public class EventLoggingEventDriverListener implements Loggable {
 
     private static final ExecutionUtils executionUtils = Testerra.getInjector().getInstance(ExecutionUtils.class);
 
-    @Override
+    //    //    @Override
     public void beforeAlertAccept(WebDriver webDriver) {
 
     }
 
-    @Override
+    //    //    @Override
     public void afterAlertAccept(WebDriver webDriver) {
 
     }
 
-    @Override
+    //    //    @Override
     public void afterAlertDismiss(WebDriver webDriver) {
 
     }
 
-    @Override
+    //    //    @Override
     public void beforeAlertDismiss(WebDriver webDriver) {
 
     }
 
-    @Override
+    //    //    @Override
     public void beforeNavigateTo(String s, WebDriver webDriver) {
         log().info("Open " + s + " on " + webDriver);
     }
 
-    @Override
+    //    //    @Override
     public void afterNavigateTo(String s, WebDriver webDriver) {
 
     }
 
-    @Override
+    //    @Override
     public void beforeNavigateBack(WebDriver webDriver) {
         log().info("Back");
     }
 
-    @Override
+    //    @Override
     public void afterNavigateBack(WebDriver webDriver) {
 
     }
 
-    @Override
+    //    @Override
     public void beforeNavigateForward(WebDriver webDriver) {
         log().info("Forward");
     }
 
-    @Override
+    //    @Override
     public void afterNavigateForward(WebDriver webDriver) {
 
     }
 
-    @Override
+    //    @Override
     public void beforeNavigateRefresh(WebDriver webDriver) {
         log().info("Refresh");
     }
 
-    @Override
+    //    @Override
     public void afterNavigateRefresh(WebDriver webDriver) {
 
     }
 
-    @Override
+    //    @Override
     public void beforeFindBy(By by, WebElement webElement, WebDriver webDriver) {
     }
 
-    @Override
+    //    @Override
     public void afterFindBy(By by, WebElement webElement, WebDriver webDriver) {
     }
 
-    @Override
+    //    @Override
     public void beforeClickOn(WebElement webElement, WebDriver webDriver) {
     }
 
-    @Override
+    //    @Override
     public void afterClickOn(WebElement webElement, WebDriver webDriver) {
     }
 
-    @Override
+    //    @Override
     public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
     }
 
-    @Override
+    //    @Override
     public void afterChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
 
     }
 
-    @Override
+    //    @Override
     public void beforeScript(String s, WebDriver webDriver) {
 
     }
 
-    @Override
+    //    @Override
     public void afterScript(String s, WebDriver webDriver) {
 
     }
 
-    @Override
+    //    @Override
     public void beforeSwitchToWindow(String s, WebDriver webDriver) {
     }
 
-    @Override
+    //    @Override
     public void afterSwitchToWindow(String s, WebDriver webDriver) {
-        log().info(String.format("Switched to window \"%s\" (%s)", executionUtils.getFailsafe(webDriver::getTitle).orElse("(na)"), executionUtils.getFailsafe(webDriver::getCurrentUrl).orElse("(na)")));
+        log().info(
+                String.format("Switched to window \"%s\" (%s)", executionUtils.getFailsafe(webDriver::getTitle).orElse("(na)"), executionUtils.getFailsafe(webDriver::getCurrentUrl).orElse("(na)")));
     }
 
-    @Override
+    //    @Override
     public void onException(Throwable throwable, WebDriver webDriver) {
 
     }
 
-    @Override
+    //    @Override
     public <X> void beforeGetScreenshotAs(OutputType<X> target) {
 
     }
 
-    @Override
+    //    @Override
     public <X> void afterGetScreenshotAs(OutputType<X> target, X screenshot) {
 
     }
 
-    @Override
+    //    @Override
     public void beforeGetText(WebElement element, WebDriver driver) {
 
     }
 
-    @Override
+    //    @Override
     public void afterGetText(WebElement element, WebDriver driver, String text) {
 
     }

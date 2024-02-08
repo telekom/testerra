@@ -37,12 +37,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
-import org.openqa.selenium.devtools.v118.emulation.Emulation;
-import org.openqa.selenium.devtools.v118.log.Log;
-import org.openqa.selenium.devtools.v118.log.model.LogEntry;
-import org.openqa.selenium.devtools.v118.network.Network;
-import org.openqa.selenium.devtools.v118.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v118.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v121.emulation.Emulation;
+import org.openqa.selenium.devtools.v121.log.Log;
+import org.openqa.selenium.devtools.v121.log.model.LogEntry;
+import org.openqa.selenium.devtools.v121.network.Network;
+import org.openqa.selenium.devtools.v121.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v121.network.model.ResponseReceived;
 import org.openqa.selenium.logging.HasLogEvents;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -150,8 +150,10 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     /**
      * The following example set basic authentication via driver augumentation. This solution works only remote, not local.
      * A more flexible solution is implemented in SeleniumChromeDevTools
+     *
+     * Update: With Selenium 4.17 this example does not work anymore.
      */
-    @Test
+    @Test(enabled = false)
     public void testT04_BasicAuth_remoteDriver() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);

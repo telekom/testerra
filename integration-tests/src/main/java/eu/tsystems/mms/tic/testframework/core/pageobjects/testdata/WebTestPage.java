@@ -19,10 +19,9 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
+package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
-import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
@@ -40,25 +39,37 @@ import org.openqa.selenium.WebDriver;
 public class WebTestPage extends BasePage {
 
     @Check
-    protected final GuiElement openAgainLink = new GuiElement(getWebDriver(), By.id("11"));
+    public final UiElement openAgainLink = find(By.id("11"));
 
-    private final GuiElement input1 = new GuiElement(this.getWebDriver(), By.id("1"));
-    /** A button on the page. */
+    private final UiElement input1 = find(By.id("1"));
+    /**
+     * A button on the page.
+     */
     @Check(optional = true)
-    private final GuiElement button1 = new GuiElement(this.getWebDriver(), By.id("4"));
+    private final UiElement button1 = find(By.id("4"));
 
     @Check
     private final InputForm inputForm = createComponent(InputForm.class, find(By.className("box")));
 
-    /** The output text field. */
+    /**
+     * The output text field.
+     */
     @Check
-    private final GuiElement textOutputField = new GuiElement(this.getWebDriver(), By.id("99"));
+    public final UiElement textOutputField = find(By.id("99"));
 
     public UiElement getRadioBtn() {
         return radioBtn;
     }
 
     private final UiElement radioBtn = findById(7);
+
+    public final UiElement submitButton = find(By.xpath("//input[@type='submit']"));
+
+    public final UiElement checkbox = find(By.id("3"));
+
+    public final UiElement textbox = find(By.id("5"));
+
+    public final UiElement clickPositionInfo = find(By.id("clickPosition"));
 
     public WebTestPage(WebDriver driver) {
         super(driver);
@@ -67,14 +78,15 @@ public class WebTestPage extends BasePage {
     public UiElement getOpenAgainLink() {
         return openAgainLink;
     }
+
     /**
-     * Test if button works as aspected.
+     * Test if button works as expected.
      */
     public void assertFunctionalityOfButton1() {
         final String something = "some";
         input1.type(something);
         button1.click();
-        textOutputField.asserts().assertTextContains(something);
+        textOutputField.expect().text().contains(something);
     }
 
     /**
@@ -87,22 +99,16 @@ public class WebTestPage extends BasePage {
         return new WebTestPage(this.getWebDriver());
     }
 
-    public GuiElement getOpenAgain() {
-        return this.openAgainLink;
-    }
-
     /**
      * Click on not existing element
-     *
      */
     public void gotoHell() {
-        GuiElement guiElement = new GuiElement(this.getWebDriver(), By.xpath("id('surely_not_existing')"));
-        guiElement.click();
+        UiElement element = find(By.xpath("id('surely_not_existing')"));
+        element.click();
     }
 
     /**
-     * Proof whether non existing element is present
-     *
+     * Proof whether non-existing element is present
      */
     public void nonfunctionalAssert() {
         GuiElement guiElement = new GuiElement(this.getWebDriver(), By.xpath("id('surely_not_existing')"));

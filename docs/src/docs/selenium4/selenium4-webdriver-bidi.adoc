@@ -17,7 +17,7 @@ The browser console window shows different types of logging information. You hav
 IMPORTANT: The created consumer for all listeners will be executed in an additional thread. +
 If you use an `Assert` this will be no impact to the main thread.
 
-.Example for listening to simple console logs
+.Example for listening to all console logs
 [source, java]
 ----
 
@@ -50,27 +50,36 @@ public class WebDriverBiDiTests extends TesterraTest implements
         LogInspector logInspector = new LogInspector(remoteDriver);
 
         // Look for the type of log entries you want to catch
-        List<ConsoleLogEntry> logEntryList = new ArrayList<>();
+        List<LogEntry> logEntryList = new ArrayList<>();
         logInspector.onConsoleEntry(logEntryList::add);
 
         uiElementFinder.find(By.id("consoleLog")).click();
         uiElementFinder.find(By.id("consoleError")).click();
+        uiElementFinder.find(By.id("jsException")).click();
+        uiElementFinder.find(By.id("logWithStacktrace")).click();
 
+        // To make sure we have at least 4 elements in our list
         CONTROL.retryTimes(5, () -> {
-            ASSERT.assertTrue(logEntryList.size() > 1);
+            ASSERT.assertTrue(logEntryList.size() >= 4);
             TimerUtils.sleepSilent(1000);
         });
 
-        logEntryList.forEach(logEntry ->
-                    log().info(
-                            "LOG_ENTRY: {} {} {} - {}",
-                            logEntry.getTimestamp(),
-                            logEntry.getLevel(),
-                            logEntry.getMethod(),
-                            logEntry.getText())
-            );
+        logEntryList.forEach(logEntry -> {
+            AtomicReference<GenericLogEntry> genericLogEntry = new AtomicReference<>();
+            // 'LogEntry' is only a container for different types of logs.
+            logEntry.getConsoleLogEntry().ifPresent(genericLogEntry::set);
+            logEntry.getJavascriptLogEntry().ifPresent(genericLogEntry::set);
 
-        ASSERT.assertEquals(logEntryList.size(), 2, "LogEntry list");
+            log().info("LOG_ENTRY: {} {} {} {} - {}",
+                    genericLogEntry.get().getTimestamp(),
+                    genericLogEntry.get().getType(),
+                    genericLogEntry.get().getLevel(),
+                    genericLogEntry.get().getType(),
+                    genericLogEntry.get().getText()
+            );
+        });
+
+        ASSERT.assertEquals(logEntryList.size(), 4, "LogEntry list");
     }
 
 }

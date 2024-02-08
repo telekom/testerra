@@ -12,9 +12,9 @@ ext {
     gitHttpsUrl = 'https://github.com/telekom/testerra'
 
     developerId = 'MMS'
-    developerName = 'Testerra Team T-Systems MMS'
-    developerEmail = 'testerra@t-systems-mms.com'
-    developerOrganization = 'T-Systems MMS'
+    developerName = 'Testerra Team MMS'
+    developerEmail = 'testerra@telekom-mms.com'
+    developerOrganization = 'Deutsche Telekom MMS GmbH'
     developerOrganizationUrl = 'https://www.t-systems-mms.com/'
 
 

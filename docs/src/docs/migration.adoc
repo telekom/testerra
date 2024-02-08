@@ -320,7 +320,7 @@ To check if a element is beside another element
 UiElement left = find(By.id("left"));
 UiElement right = find(By.id("right"));
 
-left.expect().bounds().leftOf(right).is(true); <1>
+left.expect().bounds().leftOf(right).is(true);
 left.expect().bounds().intersects(right).is(false);
 ```
 Elements aligned to the same right
@@ -328,7 +328,7 @@ Elements aligned to the same right
 UiElement top = find(By.id("top"));
 UiElement bottom = find(By.id("bottom"));
 
-top.expect().bounds().fromRight().toRightOf(bottom).is(0); <2>
+top.expect().bounds().fromRight().toRightOf(bottom).is(0);
 ```
 Element contains another element
 ```java
@@ -337,14 +337,6 @@ UiElement nav = parent.find(By.tagName("nav"));
 
 body.expect().bounds().contains(nav).is(true);
 ```
-[NOTE]
-.Using the `assertLayout()` method is now `@deprecated`
-====
-```java
-left.asserts().assertLayout(Layout.outer().leftOf(right)); <1>
-top.asserts().assertLayout(Layout.outer().sameRight(bottom, 0)); <2>
-```
-====
 
 == New Control API
 
@@ -524,6 +516,12 @@ import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 public class MyModuleHook extends AbstractModule implements ModuleHook {
 }
 ----
+
+== Removed features
+
+* The `CSVTestDataReader` module was removed. Please use http://opencsv.sourceforge.net/#reading_into_beans[OpenCSV library] instead. It is more flexible as `CSVTestDataReader` could ever be.
+* `AssertUtils` were removed. Please use `ASSERT` from `AssertProvider`
+* From old `GuiElement` the `assertLayout()` was removed. Please use `uiElement.expects().bounds()...`
 
 == The internals
 

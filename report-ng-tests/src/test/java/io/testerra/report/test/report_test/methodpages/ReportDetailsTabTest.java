@@ -152,4 +152,21 @@ public class ReportDetailsTabTest extends AbstractReportTest {
         TestStep.begin("verify stack trace");
         reportDetailsTab.assertStacktraceContainsExpectedFailureAspects(expectedFailureAspect);
     }
+
+    @Test
+    public void testT07_failedTestInInnerClass() {
+        final String method = "test_failInInnerClass";
+
+        TestStep.begin("navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("navigate to tests page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+
+        TestStep.begin("verify page is complete");
+        reportTestsPage = reportTestsPage.selectTestStatus(Status.FAILED);
+        final ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
+
+        reportDetailsTab.assertPageIsValid();
+    }
 }

@@ -49,6 +49,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * Created on 2023-06-22
@@ -195,10 +196,35 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
     }
 
     @Test
-    public void testT04_demo() throws MalformedURLException {
+    public void testT04_BrokenImages() {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+//        request.setBrowser(Browsers.chrome);
+        request.setBrowserVersion("120");
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
+
+        List<ResponseDetails> responseList = new ArrayList<>();
+        Network network = new Network(new Augmenter().augment(WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get()));
+        network.onResponseCompleted(responseList::add);
+
+        webDriver.get("https://the-internet.herokuapp.com/broken_images");
+
+        CONTROL.retryTimes(3, () -> {
+            ASSERT.assertTrue(responseList.stream().filter(response -> response.getResponseData().getStatus() == 404).count() == 2);
+            TimerUtils.sleepSilent(1000);
+        });
+
+        List<ResponseDetails> list404 = responseList.stream().filter(response -> response.getResponseData().getStatus() == 404).collect(Collectors.toList());
+        ASSERT.assertEquals(list404.size(), 2);
+
+        for (ResponseDetails response : list404) {
+            log().info("Broken image: {} - [{}] {}", response.getRequest().getUrl(), response.getResponseData().getStatus(), response.getResponseData().getStatusText());
+        }
+    }
+
+    @Test
+    public void testT05_AllNetworkListener() {
         DesktopWebDriverRequest dwdRequest = new DesktopWebDriverRequest();
         dwdRequest.setBrowser(Browsers.chrome);
-//        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(dwdRequest);
 
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
@@ -212,20 +238,14 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         network.onResponseCompleted(responseList1::add);
         network.onResponseStarted(responseList2::add);
 
-        webDriver.get("https://the-internet.herokuapp.com/broken_images");
-//        webDriver.get("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+//        webDriver.get("https://the-internet.herokuapp.com/broken_images");
+        webDriver.get("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
 
         TimerUtils.sleep(1000);
-
-        // In progress
-        // JSON Exception while processing GET request for JS resource and others --> Unable to create instance of class org.openqa.selenium.bidi.network.RequestData --> Selenium bug
 
         for (BeforeRequestSent request : requestSentList) {
             log().info("Request: {} {} - {}", request.getRequest().getRequestId(), request.getRequest().getMethod(), request.getRequest().getUrl());
         }
-
-        // In progress
-        // Responses does not work
 
         for (ResponseDetails response : responseList1) {
             log().info("Response1: {} - [{}] {}", response.getRequest().getRequestId(), response.getResponseData().getStatus(), response.getResponseData().getStatusText());

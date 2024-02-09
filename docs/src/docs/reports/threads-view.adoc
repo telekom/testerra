@@ -1,7 +1,7 @@
 = Threads View
 
 The Threads View displays all activities on the individual worker threads in a gantt chart.
-For details hover over a testcase to view a tooltip showing the name, its Run-Index, Start- and End-time and the duration.
+For details hover over a test case to view a tooltip showing the name, its Run-Index, Start- and End-time and the duration.
 
 Navigation:
 
@@ -13,7 +13,7 @@ You can then move the slider along the time axis by dragging it.
 
 Filter:
 
-* Use the status filter to focus on all testcases with the selected status.
-* Use the method input field to zoom in on a specific testcase.
+* Use the status filter to focus on all test cases with the selected status.
+* Use the method input field to zoom in on a specific test case.
 
 image::report-ng-threads-view.png[align="center", alt="Threads View"]

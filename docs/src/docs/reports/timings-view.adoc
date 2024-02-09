@@ -1,21 +1,23 @@
 = Timings View
 
 == Tests tab pane
-All executed testcases are shown in a bar chart.
-By hovering over a bar the testcases within this range are listed in a tooltip.
+All executed test cases are included in a bar chart grouped in ranges by their execution time.
+By hovering over a bar the methods within this range are listed in a tooltip.
 
 It is possible to adjust the number of method ranges by selecting a value of 5, 10, 15 or 20 in the corresponding drop-down menu.
 This way you can adjust the resolution of the chart.
 
-You can also search for a specific method by entering the name of the testcase in the searchbar.
+You can also search for a specific method by entering the name of the test case in the searchbar.
 The corresponding bar is then highlighted.
+
+By default, only the methods themselves are included; however, it's also possible to incorporate the configuration methods by toggling the switch located in the top right corner of the view.
 
 image::report-ng-timings-view_tests.png[align="center", alt="Tests"]
 
 == Sessions tab pane
 In the chart you can see when every session was started and how long the loading time was.
 
-Hovering over one of the dots shows a tooltip with information about the browser and its version, the session name and its id and the testcases executed in this session.
+When hovering over any of the dots, a tooltip appears providing details regarding the browser and its version, the session name and ID, along with the test cases executed within that session.
 
 Navigation:
 

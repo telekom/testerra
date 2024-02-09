@@ -691,6 +691,21 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
         // --> Using JS function to get the correct location
         Dimension elementDimension = this.getSize();
         Point locationInViewport = this.getLocationInViewport();
+        Point finalLocation = locationInViewport;
+        Dimension finalDimension = elementDimension;
+
+        // If element location is left of current viewport (x < 0) the location is reset to 'x=0' and the dimension is cut off
+        if (locationInViewport.getX() < 0) {
+            finalLocation = new Point(0, locationInViewport.getY());
+            finalDimension = new Dimension(elementDimension.getWidth() + locationInViewport.getX(), elementDimension.getHeight());
+        }
+
+        // If element location is top of current viewport (y < 0) the location is reset to 'y=0' and the dimension is cut off
+        if (locationInViewport.getY() < 0) {
+            finalLocation = new Point(finalLocation.getX(), 0);
+            finalDimension = new Dimension(finalDimension.getWidth(), elementDimension.getHeight() + locationInViewport.getY());
+        }
+
         final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
         File viewPortScreenshot = driver.getScreenshotAs(OutputType.FILE);
 
@@ -698,13 +713,17 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
 
             BufferedImage fullImg = ImageIO.read(viewPortScreenshot);
 
-            int imageX = locationInViewport.getX();
-            int imageY = locationInViewport.getY();
-            int imageWidth = elementDimension.getWidth();
-            int imageHeight = elementDimension.getHeight();
+            int imageX = finalLocation.getX();
+            int imageY = finalLocation.getY();
+            int imageWidth = finalDimension.getWidth();
+            int imageHeight = finalDimension.getHeight();
 
-            if (imageX > fullImg.getWidth()) imageX = 0;
-            if (imageY > fullImg.getHeight()) imageY = 0;
+            if (imageX > fullImg.getWidth()) {
+                imageX = 0;
+            }
+            if (imageY > fullImg.getHeight()) {
+                imageY = 0;
+            }
 
             // Make sure the image bounding box doesn't overflows the image dimension
             if (imageX + imageWidth > fullImg.getWidth()) {

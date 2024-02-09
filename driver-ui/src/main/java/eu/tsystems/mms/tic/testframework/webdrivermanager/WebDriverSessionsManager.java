@@ -443,7 +443,7 @@ public final class WebDriverSessionsManager {
             });
             return eventFiringWebDriver;
         } else {
-            throw new SystemException(String.format("No %s registered for browser '%s'", WebDriverFactory.class.getSimpleName(), browser));
+            throw new SystemException(String.format("Your requested browser %s is unknown. Please check your configuration.", browser));
         }
     }
 

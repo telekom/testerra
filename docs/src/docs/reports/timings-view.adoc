@@ -1,11 +1,28 @@
 = Timings View
 
 == Tests tab pane
-// Text
+All executed testcases are shown in a bar chart.
+By hovering over a bar the testcases within this range are listed in a tooltip.
 
-image::report-ng-timings-view_1.png[align="center", alt="Tests"]
+It is possible to adjust the number of method ranges by selecting a value of 5, 10, 15 or 20 in the corresponding drop-down menu.
+This way you can adjust the resolution of the chart.
+
+You can also search for a specific method by entering the name of the testcase in the searchbar.
+The corresponding bar is then highlighted.
+
+image::report-ng-timings-view_tests.png[align="center", alt="Tests"]
 
 == Sessions tab pane
-// Text
+In the chart you can see when every session was started and how long the loading time was.
 
-image::report-ng-timings-view_2.png[align="center", alt="Sessions"]
+Hovering over one of the dots shows a tooltip with information about the browser and its version, the session name and its id and the testcases executed in this session.
+
+Navigation:
+
+* Use the mouse wheel to zoom in or out on the y-axis.
+* Move the mouse while holding the left button to scroll vertically.
+* Use the zoom bars on the right and at the bottom to zoom into a specific area by moving the start and end of the slider or drawing on an area by holding and releasing the left mouse button on the slider bar.
+You can then move the sliders along the axis by dragging it.
+* It is also possible to use the buttons in the upper right corner to zoom into a specific area, reset the zoom and restore the chart.
+
+image::report-ng-timings-view_sessions.png[align="center", alt="Sessions"]

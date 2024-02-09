@@ -45,7 +45,7 @@ public class DefaultStringAssertion extends DefaultObjectAssertion<String> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().contains(expected);
+                return provider.getActual().contains(expected);
             }
 
             @Override
@@ -60,7 +60,7 @@ public class DefaultStringAssertion extends DefaultObjectAssertion<String> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().startsWith(expected);
+                return provider.getActual().startsWith(expected);
             }
 
             @Override
@@ -75,7 +75,7 @@ public class DefaultStringAssertion extends DefaultObjectAssertion<String> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().endsWith(expected);
+                return provider.getActual().endsWith(expected);
             }
 
             @Override
@@ -90,7 +90,7 @@ public class DefaultStringAssertion extends DefaultObjectAssertion<String> imple
         return propertyAssertionFactory.createWithParent(DefaultPatternAssertion.class, this, new AssertionProvider<Matcher>() {
             @Override
             public Matcher getActual() {
-                return pattern.matcher(provider.getActual().toString());
+                return pattern.matcher(provider.getActual());
             }
 
             @Override
@@ -111,13 +111,13 @@ public class DefaultStringAssertion extends DefaultObjectAssertion<String> imple
                 .collect(Collectors.joining("|"));
         final Pattern wordsPattern = Pattern.compile(wordsList, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
-        final String wordsListWithoutRegex = java.lang.String.join("|", words);
+        final String wordsListWithoutRegex = String.join("|", words);
 
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 int found = 0;
-                Matcher matcher = wordsPattern.matcher(provider.getActual().toString());
+                Matcher matcher = wordsPattern.matcher(provider.getActual());
                 while (matcher.find()) found++;
                 return found == words.size();
             }
@@ -134,7 +134,7 @@ public class DefaultStringAssertion extends DefaultObjectAssertion<String> imple
         return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                return provider.getActual().toString().length();
+                return provider.getActual().length();
             }
 
             @Override

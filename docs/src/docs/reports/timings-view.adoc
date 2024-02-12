@@ -10,7 +10,7 @@ This way you can adjust the resolution of the chart.
 You can also search for a specific method by entering the name of the test case in the searchbar.
 The corresponding bar is then highlighted.
 
-By default, only the methods themselves are included; however, it's also possible to incorporate the configuration methods by toggling the switch located in the top right corner of the view.
+By default, only the test methods themselves are included. However, it is possible to incorporate the configuration methods by toggling the switch located in the top right corner of the view.
 
 image::report-ng-timings-view_tests.png[align="center", alt="Tests"]
 
@@ -23,8 +23,6 @@ Navigation:
 
 * Use the mouse wheel to zoom in or out on the y-axis.
 * Move the mouse while holding the left button to scroll vertically.
-* Use the zoom bars on the right and at the bottom to zoom into a specific area by moving the start and end of the slider or drawing on an area by holding and releasing the left mouse button on the slider bar.
-You can then move the sliders along the axis by dragging it.
 * It is also possible to use the buttons in the upper right corner to zoom into a specific area, reset the zoom and restore the chart.
 
 image::report-ng-timings-view_sessions.png[align="center", alt="Sessions"]

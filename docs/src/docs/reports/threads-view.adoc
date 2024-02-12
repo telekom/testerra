@@ -1,6 +1,8 @@
 = Threads View
 
 The Threads View displays all activities on the individual worker threads in a gantt chart.
+The y-axis delineates the thread names, while the x-axis portrays the timeline.
+Test cases are visualized within the respective threads where they were executed.
 For details hover over a test case to view a tooltip showing the name, its Run-Index, Start- and End-time and the duration.
 
 Navigation:
@@ -8,8 +10,6 @@ Navigation:
 * Use the mouse wheel to zoom in or out on the time axis.
 * Click the left button while moving the mouse to scroll horizontally.
 * Use the scroll bar on the right to scroll vertically.
-* Use the zoom bar at the bottom to zoom into a specific area by moving the start and end of the slider or drawing on an area by holding and releasing the left mouse button on the slider bar.
-You can then move the slider along the time axis by dragging it.
 
 Filter:
 

@@ -84,7 +84,7 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         if (expectedStatusTitleFormatted.equals(Status.FAILED_EXPECTED.title.toLowerCase(Locale.ROOT)))
             expectedStatusTitleFormatted = "failed-expected";
 
-        final StringAssertion<String> attributeClass = testFailureAspect.expect().attribute("class");
+        final StringAssertion attributeClass = testFailureAspect.expect().attribute("class");
         attributeClass.contains(expectedStatusTitleFormatted).is(true,
                 String.format("Failure Aspect status [%s] should correspond to method state [%s]",
                         attributeClass.getActual(),

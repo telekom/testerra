@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2024, YOUR_NAME, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2024, Sebastian Kiehne, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -18,3 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+package eu.tsystems.mms.tic.testframework.internal.asserts;
+
+public interface ObjectAssertion<T> extends BinaryAssertion<T> {
+    default boolean is(Object expected) {
+        return is(expected, null);
+    }
+
+    boolean is(Object expected, String subject);
+
+    default boolean isNot(Object expected) {
+        return isNot(expected, null);
+    }
+
+    boolean isNot(Object expected, String subject);
+}

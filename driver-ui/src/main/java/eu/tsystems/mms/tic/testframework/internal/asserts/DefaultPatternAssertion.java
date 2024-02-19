@@ -29,7 +29,7 @@ import java.util.regex.Matcher;
  */
 public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Matcher> implements PatternAssertion {
 
-    public DefaultPatternAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<Matcher> provider) {
+    public DefaultPatternAssertion(AbstractPropertyAssertion<Matcher> parentAssertion, AssertionProvider<Matcher> provider) {
         super(parentAssertion, provider);
     }
 

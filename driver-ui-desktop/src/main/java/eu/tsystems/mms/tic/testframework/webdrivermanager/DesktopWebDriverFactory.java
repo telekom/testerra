@@ -154,12 +154,6 @@ public class DesktopWebDriverFactory implements
         DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
         final String browser = desktopWebDriverRequest.getBrowser();
 
-//        if (Testerra.Properties.DEMO_MODE.asBool()) {
-//            eventFiringWebDriver.register(new VisualEventDriverListener());
-//        }
-
-//        eventFiringWebDriver.register(new EventLoggingEventDriverListener());
-
         if (!desktopWebDriverRequest.getBaseUrl().isPresent()) {
             WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);
         }

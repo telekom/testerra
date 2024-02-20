@@ -4,7 +4,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.ExecutionUtils;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverListener;
 
 /**
@@ -41,11 +40,12 @@ public class EventLoggingDriverListener implements WebDriverListener, Loggable {
         log().info("Refresh");
     }
 
-    // TODO: Wait for Selenium 4.18: https://github.com/SeleniumHQ/selenium/pull/13210
-//    @Override
-//    public void afterSwitchToWindow(String s, WebDriver webDriver) {
-//        log().info(
-//                String.format("Switched to window \"%s\" (%s)", executionUtils.getFailsafe(webDriver::getTitle).orElse("(na)"), executionUtils.getFailsafe(webDriver::getCurrentUrl).orElse("(na)")));
-//    }
+    @Override
+    public void afterWindow(WebDriver.TargetLocator targetLocator, String nameOrHandle, WebDriver driver) {
+        log().info(
+                "Switched to window \"{}\" ({})",
+                executionUtils.getFailsafe(driver::getTitle).orElse("(na)"),
+                executionUtils.getFailsafe(driver::getCurrentUrl).orElse("(na)"));
+    }
 
 }

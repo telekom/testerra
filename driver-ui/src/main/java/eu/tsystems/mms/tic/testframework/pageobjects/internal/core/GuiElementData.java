@@ -45,7 +45,6 @@ public class GuiElementData implements
     private GuiElement guiElement;
     private String name;
     private boolean shadowRoot = false;
-    private boolean sensibleData = false;
     private boolean sensitiveData = false;
     private boolean isFrame = false;
 
@@ -114,19 +113,8 @@ public class GuiElementData implements
         return this;
     }
 
-    @Deprecated
-    public boolean hasSensibleData() {
-        return sensibleData;
-    }
-
     public boolean hasSensitiveData() {
         return sensitiveData;
-    }
-
-    @Deprecated
-    public GuiElementData setHasSensibleData(boolean sensibleData) {
-        this.sensibleData = sensibleData;
-        return this;
     }
 
     public GuiElementData setHasSensitiveData(boolean sensitiveData) {

@@ -10,7 +10,8 @@ This way you can adjust the resolution of the chart.
 You can also search for a specific method by entering the name of the test case in the searchbar.
 The corresponding bar is then highlighted.
 
-By default, only the test methods themselves are included. However, it is possible to incorporate the configuration methods by toggling the switch located in the top right corner of the view.
+By default, only the test methods themselves are included.
+However, it is possible to incorporate the configuration methods by toggling the switch located in the top right corner of the view.
 
 image::report-ng-timings-view_tests.png[align="center", alt="Tests"]
 
@@ -19,6 +20,11 @@ In the scatter chart you can see every session that was started in the test exec
 On the x-axis, the starting time of session is indicated, while the loading duration is represented on the y-axis.
 
 When hovering over any of the dots, a tooltip appears providing details regarding the browser and its version, the session name and ID, along with the test cases executed within that session.
+
+If a base URL is configured, the load duration and timestamp of the base URL are also displayed.
+In this scenario, the two dots are linked, as the base URL is consistently loaded at session startup.
+Note that setting up a base URL is optional.
+If both dots exist, the hover effect will clarify which base URL dot corresponds to each session dot.
 
 Navigation:
 

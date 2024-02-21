@@ -69,6 +69,9 @@ public interface UiElement extends
 
     UiElement shadowRoot();
 
+    /**
+     * @deprecated Use {@link UiElement#sensitiveData()}} instead
+     */
     @Deprecated
     UiElement sensibleData();
 

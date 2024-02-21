@@ -573,19 +573,25 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         return getWebDriver();
     }
 
+    /**
+     * @deprecated Use {@link GuiElement#hasSensitiveData()}} instead
+     */
     @Deprecated
     public boolean hasSensibleData() {
-        return guiElementData.hasSensibleData();
+        return guiElementData.hasSensitiveData();
     }
 
     public boolean hasSensitiveData() {
         return guiElementData.hasSensitiveData();
     }
 
+    /**
+     * @deprecated Use {@link GuiElement#sensitiveData()}} instead
+     */
     @Deprecated
     @Override
     public GuiElement sensibleData() {
-        guiElementData.setHasSensibleData(true);
+        guiElementData.setHasSensitiveData(true);
         return this;
     }
 

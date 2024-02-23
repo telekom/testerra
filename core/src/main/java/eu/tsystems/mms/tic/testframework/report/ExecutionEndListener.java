@@ -57,8 +57,9 @@ public final class ExecutionEndListener implements
     @Override
     @Subscribe
     public void onExecutionAbort(ExecutionAbortEvent event) {
-        contextController.getExecutionContext().setCrashed(true);
+        contextController.getExecutionContext().setCrashed();
         finalizeExecutionContext();
+        log().info("Report generated after unexpected abortion of test execution.");
     }
 
     @Override
@@ -66,6 +67,9 @@ public final class ExecutionEndListener implements
     public void onExecutionFinish(ExecutionFinishEvent event) {
         // set the testRunFinished flag
         finalizeExecutionContext();
+        log().info("Report generated after successful test execution.");
+        // set the reportGenerated flag
+        contextController.getExecutionContext().setReportModelGenerated();
     }
 
     private void finalizeExecutionContext() {

@@ -39,25 +39,23 @@ public class VisualEventDriverListener implements WebDriverListener {
     // Current driver is additional needed because WebDriverListener methods of before/after element actions only get WebElement, but no current driver.
     public WebDriver driver;
 
-    private boolean isDemo = Testerra.Properties.DEMO_MODE.asBool();
-
     @Override
     public void beforeClick(WebElement element) {
-        if (element != null && isDemo) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
             elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }
 
     @Override
     public void beforeClear(WebElement element) {
-        if (element != null && isDemo) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
             elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }
 
     @Override
     public void beforeSendKeys(WebElement element, CharSequence... keysToSend) {
-        if (element != null && isDemo) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
             elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }

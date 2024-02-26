@@ -15,14 +15,14 @@ import org.testng.annotations.Test;
 public class GuiElementAdditional2Tests extends AbstractTestSitesTest {
 
     @Test
-    public void testGuiElement_Create_SensibleData() {
+    public void testGuiElement_Create_SensitiveData() {
 
         final WebDriver driver = getWebDriver();
-        GuiElement input = new GuiElement(driver, By.id("1")).sensibleData();
+        GuiElement input = new GuiElement(driver, By.id("1")).sensitiveData();
         input.assertThat().displayed().is(true);
-        Assert.assertTrue(input.hasSensibleData());
+        Assert.assertTrue(input.hasSensitiveData());
 
-        input.type("testT02_SensibleData");
+        input.type("testT02_SensitiveData");
     }
 
 }

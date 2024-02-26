@@ -195,13 +195,13 @@ UiElement empty = createEmpty(Locator);
 All interactive operations on this element will do nothing, all wait methods will be false and all assertions will fail.
 
 
-== Sensible Data
+== Sensitive Data
 
-Sensible data, such as passwords, can be displayed obfuscated in the logs during the actions type and sendKeys.
+Sensitive data, such as passwords, can be displayed obfuscated in the logs during the actions type and sendKeys.
 
 [source,java]
 ----
-UiElement sensibleElement = findById("secret").sensibleData();
+UiElement sensitiveElement = findById("secret").sensitiveData();
 ----
 Only the placeholder * is logged in the report instead of the real value.
 

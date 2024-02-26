@@ -19,12 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCoreDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -40,13 +41,13 @@ public class UiElementLogger extends AbstractGuiElementCoreDecorator implements 
         this.guiElement = guiElement;
     }
 
-    protected void beforeDelegation(String method, Object ... params) {
-        log().info(method + "("+ Arrays.stream(params).map(Object::toString).collect(Collectors.joining(", "))+") on " + this.guiElement.toString(false));
+    protected void beforeDelegation(String method, Object... params) {
+        log().info(method + "(" + Arrays.stream(params).map(Object::toString).collect(Collectors.joining(", ")) + ") on " + this.guiElement.toString(false));
     }
 
     @Override
     public void type(String text) {
-        beforeDelegation("type", "\""+(guiElement.hasSensibleData()?"*****************":text)+"\"");
+        beforeDelegation("type", "\"" + (guiElement.hasSensitiveData() ? "*****************" : text) + "\"");
         decoratedCore.type(text);
         afterDelegation();
     }

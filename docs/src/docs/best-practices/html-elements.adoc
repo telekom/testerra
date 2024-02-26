@@ -11,12 +11,12 @@ Since radio buttons share the same name, as the following example shows
 ----
 
 It's not a good practice to select it `By.name`.
-Its better to select both options separately.
+It's better to select both options separately.
 
 [source,java]
 ----
 // Good practice
-PreparedLocator locator = LOCATE.prepare("//input[@name='%s' and @value='%s']").unique();
+PreparedLocator locator = LOCATE.prepare("//input[@name='%s' and @value='%s']");
 UiElement teeOption = find(locator.with("beverage", "tee"));
 UiElement coffeeOption = find(locator.with("beverage", "coffee"));
 

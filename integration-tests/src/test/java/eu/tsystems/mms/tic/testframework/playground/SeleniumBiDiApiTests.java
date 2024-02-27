@@ -42,7 +42,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  */
 public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
 
-    @BeforeClass
+    @BeforeMethod
     public void initBrowser() {
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {
             options.setCapability("webSocketUrl", true);
@@ -202,7 +202,7 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
     public void testT04_BrokenImages() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
 //        request.setBrowser(Browsers.chrome);
-        request.setBrowserVersion("120");
+//        request.setBrowserVersion("120");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
 
         List<ResponseDetails> responseList = new ArrayList<>();

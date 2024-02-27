@@ -43,7 +43,8 @@ public enum TestPage {
     SHADOW_ROOT3("ShadowDom/shadow_dom3.html"),
     SWITCH_WINDOW("Multiwindow/index.html"),
 
-    BIDI_JS_LOGS("Bidi/log-entries.html");
+    BIDI_JS_LOGS("Bidi/log-entries.html"),
+    BIDI_BROKEN_IMAGE("Bidi/broken-image.html");
 
     private String path;
     private String elementText;

@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementListPage;
@@ -65,7 +66,7 @@ public class PageFactoryTest extends AbstractTestSitesTest implements PageFactor
     @Test
     public void testT08_CheckPage_ScreenshotOnLoad() {
 
-        final File reportScreenshotDirectory = TesterraListener.getReport().getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+        final File reportScreenshotDirectory = Testerra.getInjector().getInstance(Report.class).getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
 
         final WebDriver driver = getWebDriver();
@@ -101,10 +102,10 @@ public class PageFactoryTest extends AbstractTestSitesTest implements PageFactor
         }
     }
 
-    @DataProvider(name = "LoopDetectionInDataProvider", parallel = false)
+    @DataProvider(name = "LoopDetectionInDataProvider")
     public Object[][] testT12_Dataprovider() {
         return new Object[][]{
-                {"Test_1"}, {"Test_2"}
+                {"Test_1"}, {"Test_2"}, {"Test_3"}
         };
     }
 

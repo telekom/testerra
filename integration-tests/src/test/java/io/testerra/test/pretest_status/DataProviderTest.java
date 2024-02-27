@@ -34,7 +34,7 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
     /**
      * This test uses an external data provider throwing an exception
      */
-    @Test(dataProviderClass = MyDataProvider.class, dataProvider = "dataProviderThrowingException")
+    @Test(dataProviderClass = MyDataProvider.class, dataProvider = "dataProviderInClassThrowingException")
     public void testT01_interceptCrashedDataProvider() {
     }
 

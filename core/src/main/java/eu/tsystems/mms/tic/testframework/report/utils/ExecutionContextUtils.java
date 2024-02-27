@@ -23,23 +23,26 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 
 public class ExecutionContextUtils {
 
-    /**
-     * gets the current method name from test results
-     *
-     * @return method name or nukk
-     */
-    public static String getMethodNameFromCurrentTestResult() {
-        return getMethodNameFromCurrentTestResult(false);
-    }
+    // Update: Only usage in ExceptionUtils was replanced with 'currentMethodContext'
 
-    public static String getMethodNameFromCurrentTestResult(boolean withClassName) {
-        return ExecutionContextController.getTestResultForThread().map(testResult -> {
-            String methodName = "";
-            if (withClassName) {
-                methodName += testResult.getTestClass().getRealClass().getSimpleName() + ".";
-            }
-            methodName += testResult.getMethod().getMethodName();
-            return methodName;
-        }).orElse("");
-    }
+//    /**
+//     * gets the current method name from test results
+//     *
+//     * @return method name or nukk
+//     */
+//    public static String getMethodNameFromCurrentTestResult() {
+//        return getMethodNameFromCurrentTestResult(false);
+//    }
+//
+//    public static String getMethodNameFromCurrentTestResult(boolean withClassName) {
+////        ExecutionContextController.getCurrentMethodContext().g
+//        return ExecutionContextController.getTestResultForThread().map(testResult -> {
+//            String methodName = "";
+//            if (withClassName) {
+//                methodName += testResult.getTestClass().getRealClass().getSimpleName() + ".";
+//            }
+//            methodName += testResult.getMethod().getMethodName();
+//            return methodName;
+//        }).orElse("");
+//    }
 }

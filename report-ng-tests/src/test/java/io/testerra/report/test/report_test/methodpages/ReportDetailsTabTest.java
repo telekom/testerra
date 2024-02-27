@@ -51,6 +51,7 @@ public class ReportDetailsTabTest extends AbstractReportTest {
 
         TestStep.begin("Check whether the displayed test state corresponds to each method");
         reportTestsPage = reportTestsPage.selectTestStatus(status);
+        reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
 
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method, status);
         reportDetailsTab.assertPageIsValid();

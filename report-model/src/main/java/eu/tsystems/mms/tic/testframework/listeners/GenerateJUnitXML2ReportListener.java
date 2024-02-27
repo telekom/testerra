@@ -23,6 +23,7 @@
 package eu.tsystems.mms.tic.testframework.listeners;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
@@ -78,7 +79,7 @@ public class GenerateJUnitXML2ReportListener implements
 
     private ITestContext testngTestContext = null;
 
-    private Report report = TesterraListener.getReport();
+    private Report report = Testerra.getInjector().getInstance(Report.class);
 
     static {
         ATTR_ESCAPES.put("&lt;", LESS);

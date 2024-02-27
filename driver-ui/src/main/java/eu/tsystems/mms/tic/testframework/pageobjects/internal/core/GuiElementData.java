@@ -32,12 +32,12 @@ import org.openqa.selenium.WebDriver;
 /**
  * Contains the intersecting information of {@link GuiElement} and {@link GuiElementCore}
  * required for communication or creating new elements.
+ *
  * @todo We don't need that actually, when we can have everything in the core
  */
 public class GuiElementData implements
-    Nameable<GuiElementData>,
-    WebDriverRetainer
-{
+        Nameable<GuiElementData>,
+        WebDriverRetainer {
     private final DefaultLocator locate;
     private final WebDriver webDriver;
     private GuiElementData parent;
@@ -45,7 +45,7 @@ public class GuiElementData implements
     private GuiElement guiElement;
     private String name;
     private boolean shadowRoot = false;
-    private boolean sensibleData = false;
+    private boolean sensitiveData = false;
     private boolean isFrame = false;
 
     /**
@@ -92,7 +92,7 @@ public class GuiElementData implements
 
     @Override
     public boolean hasOwnName() {
-        return name!=null;
+        return name != null;
     }
 
     public DefaultLocator getLocate() {
@@ -113,12 +113,12 @@ public class GuiElementData implements
         return this;
     }
 
-    public boolean hasSensibleData() {
-        return sensibleData;
+    public boolean hasSensitiveData() {
+        return sensitiveData;
     }
 
-    public GuiElementData setHasSensibleData(boolean sensibleData) {
-        this.sensibleData = sensibleData;
+    public GuiElementData setHasSensitiveData(boolean sensitiveData) {
+        this.sensitiveData = sensitiveData;
         return this;
     }
 
@@ -141,7 +141,7 @@ public class GuiElementData implements
         if (!hasName || detailed) {
             sb.append("(").append(locate);
             if (index != -1) {
-                sb.append("[").append(index+1).append("]");
+                sb.append("[").append(index + 1).append("]");
             }
             sb.append(")");
         }
@@ -162,6 +162,7 @@ public class GuiElementData implements
     public int getIndex() {
         return index;
     }
+
     public boolean isFrame() {
         return isFrame;
     }

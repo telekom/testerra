@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2024, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -38,35 +38,26 @@ public class VisualEventDriverListener implements WebDriverListener {
 
     // Current driver is additional needed because WebDriverListener methods of before/after element actions only get WebElement, but no current driver.
     public WebDriver driver;
-    private boolean isDemo = Testerra.Properties.DEMO_MODE.asBool();
 
     @Override
     public void beforeClick(WebElement element) {
-        if (element != null && isDemo) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
             elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }
 
     @Override
     public void beforeClear(WebElement element) {
-        if (element != null && isDemo) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
             elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }
 
     @Override
     public void beforeSendKeys(WebElement element, CharSequence... keysToSend) {
-        if (element != null && isDemo) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
             elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }
-
-//    @Override
-//    public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
-//        if (webElement != null) {
-//            elementHighlighter.highlight(webDriver, webElement, new Color(0, 0, 255));
-//        }
-//    }
-
 
 }

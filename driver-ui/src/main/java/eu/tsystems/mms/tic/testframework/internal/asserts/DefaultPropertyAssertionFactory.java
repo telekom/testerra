@@ -31,10 +31,10 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory, Loggable {
 
-    public <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION createAssertion(
+    public <ASSERTION extends AbstractPropertyAssertion, T> ASSERTION createAssertion(
             Class<ASSERTION> assertionClass,
             AbstractPropertyAssertion parentAssertion,
-            AssertionProvider<TYPE> provider
+            AssertionProvider<T> provider
     ) {
         ASSERTION assertion;
         try {
@@ -48,10 +48,10 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
     }
 
     @Override
-    public <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION createWithParent(
+    public <ASSERTION extends AbstractPropertyAssertion, T> ASSERTION createWithParent(
         Class<ASSERTION> assertionClass,
         AbstractPropertyAssertion parentAssertion,
-        AssertionProvider<TYPE> provider
+        AssertionProvider<T> provider
     ) {
         ASSERTION assertion = createAssertion(assertionClass, parentAssertion, provider);
         assertion.config = parentAssertion.config;

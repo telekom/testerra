@@ -209,7 +209,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         UiElement e1 = page.getFinder().findById(1);
         UiElement e2 = page.getFinder().findById(3);
         QuantityAssertion<Integer> integerQuantityAssertion = e1.expect().bounds().fromLeft().toLeftOf(e2);
-        integerQuantityAssertion.map(integer -> Math.abs(integer)).isLowerEqualThan(20);
+        integerQuantityAssertion.map(Math::abs).isLowerEqualThan(20);
         integerQuantityAssertion.absolute().isLowerEqualThan(20);
     }
 

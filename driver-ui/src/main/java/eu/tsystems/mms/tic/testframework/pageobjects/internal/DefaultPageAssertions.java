@@ -60,7 +60,7 @@ public class DefaultPageAssertions implements PageAssertions {
     }
 
     @Override
-    public StringAssertion<String> title() {
+    public StringAssertion title() {
         return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -75,7 +75,7 @@ public class DefaultPageAssertions implements PageAssertions {
     }
 
     @Override
-    public StringAssertion<String> url() {
+    public StringAssertion url() {
         return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new AssertionProvider<String>() {
             @Override
             public String getActual() {

@@ -44,7 +44,7 @@ public class UiElementExpectAttributeTests extends AbstractExclusiveTestSitesTes
     public void testT01_UiElement_disabled_attribute_present() {
         WebTestPage page = getPage();
         UiElementAssertion expect = page.getRadioBtn().expect();
-        StringAssertion<String> disabled = expect.attribute(Attribute.DISABLED);
+        StringAssertion disabled = expect.attribute(Attribute.DISABLED);
         disabled.isNot(null);
         disabled.isNot(false);
         disabled.isNot(Boolean.FALSE);

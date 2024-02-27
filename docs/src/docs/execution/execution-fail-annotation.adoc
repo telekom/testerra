@@ -71,7 +71,7 @@ public void testSomething() {
 }
 ----
 
-Or as a class
+Or as a class:
 
 [source, java]
 ----
@@ -91,6 +91,28 @@ public void testSomething() {
 }
 ----
 
+Example for expected fails on a specific Exceptions:
+
+[source, java]
+----
+public class FailsValidator {
+    public boolean expectedFailOnCertainException(MethodContext methodContext) {
+        // of course it's possible to check for more things inside the throwable
+        return methodContext.getTestNgResult().isPresent()
+                && methodContext.getTestNgResult().get().getThrowable()
+                   instanceof CertainException;
+    }
+}
+----
+
+[source, java]
+----
+@Test
+@Fails(validatorClass = FailsValidator.class, validator = "expectedFailOnCertainException")
+public void test_customFails() throws CertainException {
+    throw new CertainException();
+}
+----
 
 == Define conditions (`@deprecated`)
 

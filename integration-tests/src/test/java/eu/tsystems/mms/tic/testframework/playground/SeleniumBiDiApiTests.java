@@ -63,6 +63,9 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {
             options.setCapability("webSocketUrl", true);
         });
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless, (ChromeConfig) options -> {
+            options.setCapability("webSocketUrl", true);
+        });
 
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
             options.setCapability("webSocketUrl", true);
@@ -91,7 +94,7 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
     @Test
     public void testT01_LogListener_ConsoleLogs() throws MalformedURLException {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBrowser(Browsers.chrome);
+        request.setBrowser(Browsers.chromeHeadless);
         request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
 

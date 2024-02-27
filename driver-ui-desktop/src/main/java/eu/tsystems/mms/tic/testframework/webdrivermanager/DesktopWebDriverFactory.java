@@ -59,7 +59,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.http.ClientConfig;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
 
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -149,33 +149,33 @@ public class DesktopWebDriverFactory implements
     }
 
     @Override
-    public void setupNewWebDriverSession(EventFiringWebDriver eventFiringWebDriver, SessionContext sessionContext) {
+    public WebDriver setupNewWebDriverSession(WebDriver webDriver, SessionContext sessionContext) {
 
         DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest) sessionContext.getWebDriverRequest();
-
-        // add event listeners
-        if (Testerra.Properties.DEMO_MODE.asBool()) {
-            eventFiringWebDriver.register(new VisualEventDriverListener());
-        }
-
-        eventFiringWebDriver.register(new EventLoggingEventDriverListener());
 
         if (!desktopWebDriverRequest.getBaseUrl().isPresent()) {
             WebDriverManager.getConfig().getBaseUrl().ifPresent(desktopWebDriverRequest::setBaseUrl);
         }
+        VisualEventDriverListener visualListener = new VisualEventDriverListener();
+        WebDriver decoratedDriver = new EventFiringDecorator(
+                new EventLoggingDriverListener(),
+                visualListener
+        ).decorate(webDriver);
+
+        visualListener.driver = decoratedDriver;    // Needed to interact with current session
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
                 MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
                 metricsController.start(sessionContext, MetricsType.BASEURL_LOAD);
-                eventFiringWebDriver.get(baseUrl.toString());
+                decoratedDriver.get(baseUrl.toString());
                 metricsController.stop(sessionContext, MetricsType.BASEURL_LOAD);
             } catch (Exception e) {
                 log().error("Unable to open baseUrl", e);
             }
         });
 
-        WebDriver.Window window = eventFiringWebDriver.manage().window();
+        WebDriver.Window window = decoratedDriver.manage().window();
         /*
          Maximize
          */
@@ -220,18 +220,20 @@ public class DesktopWebDriverFactory implements
             int pageLoadTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD.asLong().intValue();
             int scriptTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT.asLong().intValue();
             try {
-                eventFiringWebDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
+                decoratedDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
             } catch (Exception e) {
                 log().error("Could not set Page Load Timeout", e);
             }
             try {
-                eventFiringWebDriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(scriptTimeout));
+                decoratedDriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(scriptTimeout));
             } catch (Exception e) {
                 log().error("Could not set Script Timeout", e);
             }
         } else {
             log().warn("Not setting timeouts for Safari.");
         }
+
+        return decoratedDriver;
     }
 
     private void setWindowSize(WebDriver.Window window, Dimension dimension) {

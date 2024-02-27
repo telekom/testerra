@@ -21,32 +21,59 @@
 
 <template>
     <mdc-layout-grid class="pt0">
-        <mdc-layout-grid-inner repeat.for="sessionContext of _sessionContexts">
-            <mdc-layout-grid-cell span="4">
-                <div mdc-headline5>Session: ${sessionContext.contextValues.name}</div>
-                <ul class="mdc-list mdc-list--dense" mdc-caption>
-                    <li class="mdc-custom-list-item">
-                        <span class="secondary sr1">ID</span>${sessionContext.contextValues.id}
-                    </li>
-                    <li class="mdc-custom-list-item">
-                        <span class="secondary sr1">Browser</span>${sessionContext.browserName}:${sessionContext.browserVersion}
-                    </li>
-                    <li class="mdc-custom-list-item">
-                        <span class="secondary sr1">User&nbsp;agent</span>${sessionContext.userAgent}
-                    </li>
-                    <li class="mdc-custom-list-item" if.bind="sessionContext.serverUrl.length>0">
-                        <span class="secondary sr1">Server</span><a href="${sessionContext.serverUrl}">${sessionContext.serverUrl}</a>
-                    </li>
-                    <li class="mdc-custom-list-item" if.bind="sessionContext.nodeUrl.length>0">
-                        <span class="secondary sr1">Node</span><a href="${sessionContext.nodeUrl}">${sessionContext.nodeUrl}</a>
-                    </li>
-                </ul>
-                <div mdc-subtitle2>Capabilities</div>
-                <div class="code-view capabilities-view">${sessionContext.capabilities|json}</div>
-            </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="8" if.bind="sessionContext.videoId">
-                <lazy-video file-id.bind="sessionContext.videoId"></lazy-video>
-            </mdc-layout-grid-cell>
-        </mdc-layout-grid-inner>
+        <mdc-card class="mb1" repeat.for="session of _sessionInformationArray" mdc-body1>
+            <div mdc-subtitle2 class="card-headline">Session: ${session.sessionName}</div>
+            <mdc-list-divider></mdc-list-divider>
+            <div class="card-content">
+                <mdc-layout-grid-inner>
+                    <mdc-layout-grid-cell span="6">
+                        <ul class="mdc-list mdc-list--dense" mdc-caption>
+                            <div mdc-subtitle2>General information</div>
+                            <li class="mdc-custom-list-item">
+                                <span class="secondary sr1">ID</span>${session.sessionId}
+                            </li>
+                            <li class="mdc-custom-list-item">
+                                <span class="secondary sr1">Browser</span>${session.browserName}:${session.browserVersion}
+                            </li>
+                            <li class="mdc-custom-list-item">
+                                <span class="secondary sr1">User&nbsp;agent</span>${session.userAgent}
+                            </li>
+                            <li class="mdc-custom-list-item" if.bind="session.serverUrl.length>0">
+                                <span class="secondary sr1">Server</span><a href="${session.serverUrl}">${session.serverUrl}</a>
+                            </li>
+                            <li class="mdc-custom-list-item" if.bind="session.nodeUrl.length>0">
+                                <span class="secondary sr1">Node</span><a href="${session.nodeUrl}">${session.nodeUrl}</a>
+                            </li>
+                            <li class="mdc-custom-list-item" if.bind="session.videoId">
+                                <span class="secondary sr1">Video ID</span><a route-href="route: video">${session.videoId}</a>
+                            </li>
+
+                            <div mdc-subtitle2 class="mt1">Session metrics</div>
+                            <li class="mdc-custom-list-item" if.bind="session.sessionStartDuration>0">
+                                <span class="secondary sr1">Session start duration</span>${session.sessionStartDuration}s
+                            </li>
+                            <li class="mdc-custom-list-item" if.bind="session.sessionStartTime>0">
+                                <span class="secondary sr1">Session start time</span>${_dateFormatter.toView(Number(session.sessionStartTime))}
+                            </li>
+                            <li class="mdc-custom-list-item" if.bind="session.sessionStartTime>0 && session.sessionDuration>0">
+                                <span class="secondary sr1">Session start time</span>${session.sessionStartTime}
+                            </li>
+
+                            <div mdc-subtitle2 class="mt1">Base URL metrics</div>
+                            <li class="mdc-custom-list-item" if.bind="session.baseurlStartDuration>0">
+                                <span class="secondary sr1">Base URL start duration</span>${session.baseurlStartDuration}s
+                            </li>
+                            <li class="mdc-custom-list-item" if.bind="session.baseurlStartTime>0">
+                                <span class="secondary sr1">Base URL start time</span>${_dateFormatter.toView(Number(session.baseurlStartTime))}
+                            </li>
+                        </ul>
+                    </mdc-layout-grid-cell>
+                    <mdc-layout-grid-cell span="6">
+                        <div mdc-subtitle2>Capabilities</div>
+                        <div class="code-view capabilities-view">${session.capabilities|json}</div>
+                    </mdc-layout-grid-cell>
+                </mdc-layout-grid-inner>
+            </div>
+        </mdc-card>
     </mdc-layout-grid>
 </template>

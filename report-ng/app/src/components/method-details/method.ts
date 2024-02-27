@@ -94,6 +94,16 @@ export class Method {
                 }
             },
             {
+                route: 'video',
+                moduleId: PLATFORM.moduleName('./video'),
+                nav: true,
+                name: "video",
+                title: 'Video',
+                settings: {
+                    icon: "videocam"
+                }
+            },
+            {
                 route: 'dependencies',
                 moduleId: PLATFORM.moduleName('./dependency-network'),
                 nav: true,
@@ -148,6 +158,15 @@ export class Method {
                     case "sessions": {
                         if (methodDetails.sessionContexts.length > 0) {
                             routeConfig.settings.count = methodDetails.sessionContexts.length;
+                            routeConfig.nav = true;
+                        } else {
+                            disableRoute(routeConfig);
+                        }
+                        break;
+                    }
+                    case "video":{
+                        if(methodDetails.sessionContexts.map(context => context.videoId).length > 0){
+                            routeConfig.settings.count = methodDetails.sessionContexts.map(context => context.videoId).length;
                             routeConfig.nav = true;
                         } else {
                             disableRoute(routeConfig);

@@ -21,27 +21,99 @@
 
 import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {data} from "../../services/report-model";
-import ISessionContext = data.SessionContext;
 import "./sessions.scss"
+import {MetricType} from "../../services/report-model/framework_pb";
+import {ExecutionStatistics} from "../../services/statistic-models";
+import {
+    IntlDateFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+import ISessionContext = data.SessionContext;
 
 @autoinject()
 export class Sessions {
     private _sessionContexts:ISessionContext[];
+    private _executionStatistics: ExecutionStatistics;
+    private _sessionInformationArray: ISessionInformation[];
 
     constructor(
         private _statistics: StatisticsGenerator,
+        private readonly _dateFormatter: IntlDateFormatValueConverter,
     ) {
+        this._sessionInformationArray = [];
     }
 
     activate(
         params: any,
-        routeConfig: RouteConfig,
-        navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._sessionContexts = methodDetails.sessionContexts;
+            console.log("sessionContexts", methodDetails.sessionContexts)
+
         });
+
+        this._statistics.getExecutionStatistics().then(executionStatistics => {
+            this._executionStatistics = executionStatistics;
+            console.log("executionStatistics", executionStatistics)
+        })
+
+        this._statistics.getSessionMetrics().then(sessionMetrics => {
+            console.log("sessionMetrics", sessionMetrics)
+
+            sessionMetrics = sessionMetrics.filter(metric => this._sessionContexts.map(context => context.contextValues.id).includes(metric.sessionContextId))
+            sessionMetrics.forEach(metric => {
+                const sessionData = metric.metricsValues.find(value => value.metricType === MetricType.SESSION_LOAD);
+
+                const baseurlData = metric.metricsValues
+                    .filter(value => value.metricType === MetricType.BASEURL_LOAD)
+                    .filter(value => value.endTimestamp > 0)    // if there is no baseurl endTimestamp the baseurl data will not be displayed
+                    .find(() => true)
+
+                const sessionDurationData = metric.metricsValues.filter(value => value.metricType === MetricType.SESSION_DURATION);
+                sessionDurationData.forEach(data => console.log("type", data.metricType));
+
+                if (!(sessionData?.endTimestamp > 0)){      // if there is no session endTimestamp the related metric will be skipped
+                    return;
+                }
+
+                const sessionContext = this._executionStatistics.executionAggregate.sessionContexts[metric.sessionContextId];
+                const sessionInformation: ISessionInformation = {
+                    sessionName: sessionContext.contextValues.name,
+                    sessionId: sessionContext.contextValues.id,
+                    browserName: sessionContext.browserName,
+                    browserVersion: sessionContext.browserVersion,
+                    userAgent: sessionContext.userAgent,
+                    serverUrl: sessionContext.serverUrl,
+                    nodeUrl: sessionContext.nodeUrl,
+                    baseUrl: "",
+                    sessionDuration: 0,
+                    sessionStartDuration: (sessionData.endTimestamp - sessionData.startTimestamp) / 1000,
+                    baseurlStartDuration: (baseurlData?.endTimestamp - baseurlData?.startTimestamp) / 1000,
+                    sessionStartTime: sessionData.startTimestamp,
+                    baseurlStartTime: baseurlData?.startTimestamp,
+                    capabilities: sessionContext.capabilities,
+                    videoId: sessionContext.videoId
+                }
+                this._sessionInformationArray.push(sessionInformation);
+            })
+        })
     }
+}
+
+interface ISessionInformation {
+    sessionName: string,
+    sessionId: string,
+    browserName: string,
+    browserVersion: string,
+    userAgent,
+    serverUrl,
+    nodeUrl,
+    baseUrl,
+    sessionDuration: number,
+    sessionStartDuration: number,
+    baseurlStartDuration?: number,
+    sessionStartTime: number,
+    baseurlStartTime?: number,
+    capabilities?,
+    videoId?,
 }

@@ -57,6 +57,7 @@ public final class ExecutionEndListener implements
     @Override
     @Subscribe
     public void onExecutionAbort(ExecutionAbortEvent event) {
+        log().warn("Test execution was aborted. Test results may be incomplete.", Loggable.prompt);
         contextController.getExecutionContext().setCrashed();
         finalizeExecutionContext();
         log().info("Report generated after unexpected abortion of test execution.");

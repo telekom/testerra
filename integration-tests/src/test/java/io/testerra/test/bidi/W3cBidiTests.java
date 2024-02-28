@@ -142,29 +142,4 @@ public class W3cBidiTests extends AbstractTestSitesTest implements SeleniumBidiT
         ASSERT.assertTrue(any.isPresent(), String.format("%s is in log list", entry));
     }
 
-//    private LogInspector getLogInspector(WebDriver webDriver) throws MalformedURLException {
-//        WebDriver originalFromDecorated = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
-//        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
-//
-//        // Check for RemoteWebDriver
-//        if (webDriverRequest.getServerUrl().isPresent()) {
-//            Augmenter augmenter = new Augmenter();
-//            return new LogInspector(augmenter.augment(originalFromDecorated));
-//        }
-//        return new LogInspector(originalFromDecorated);
-//    }
-
-//    private Network getNetwork(WebDriver webDriver) {
-//        WebDriver originalFromDecorated = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
-//        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
-//
-//        // Check for RemoteWebDriver
-//        if (webDriverRequest.getServerUrl().isPresent()) {
-//            Augmenter augmenter = new Augmenter();
-//            return new Network(augmenter.augment(originalFromDecorated));
-//        }
-//        return new Network(originalFromDecorated);
-//    }
-
-
 }

@@ -25,9 +25,11 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.testing.SeleniumBidiToolsProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
+import eu.tsystems.mms.tic.testframework.useragents.EdgeConfig;
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.LogInspector;
@@ -36,9 +38,6 @@ import org.openqa.selenium.bidi.log.ConsoleLogEntry;
 import org.openqa.selenium.bidi.log.GenericLogEntry;
 import org.openqa.selenium.bidi.log.JavascriptLogEntry;
 import org.openqa.selenium.bidi.network.ResponseDetails;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.Augmenter;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -53,7 +52,7 @@ import java.util.stream.Collectors;
  *
  * @author mgn
  */
-public class W3cBidiTests extends AbstractTestSitesTest {
+public class W3cBidiTests extends AbstractTestSitesTest implements SeleniumBidiToolsProvider {
 
     @BeforeMethod
     public void initBrowser() {
@@ -65,16 +64,20 @@ public class W3cBidiTests extends AbstractTestSitesTest {
             options.addArguments("--disable-dev-shm-usage");
         });
 
-//        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
-//            options.setCapability("webSocketUrl", true);
-//        });
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+            options.setCapability("webSocketUrl", true);
+        });
+
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.edge, (EdgeConfig) options -> {
+            options.setCapability("webSocketUrl", true);
+        });
     }
 
     @Test
     public void testT01_LogListener_ConsoleLogs() throws MalformedURLException {
         WebDriver webDriver = getWebDriver(TestPage.BIDI_JS_LOGS);
 
-        LogInspector logInspector = getLogInspector(webDriver);
+        LogInspector logInspector = SELENIUM_BIDI_TOOLS.getLogInsepctor(webDriver);
         List<ConsoleLogEntry> logEntryList = new ArrayList<>();
         logInspector.onConsoleEntry(logEntryList::add);
 
@@ -96,7 +99,7 @@ public class W3cBidiTests extends AbstractTestSitesTest {
     public void testT02_LogListener_JSLogs() throws MalformedURLException {
         WebDriver webDriver = getWebDriver(TestPage.BIDI_JS_LOGS);
 
-        LogInspector logInspector = getLogInspector(webDriver);
+        LogInspector logInspector = SELENIUM_BIDI_TOOLS.getLogInsepctor(webDriver);
         List<JavascriptLogEntry> logEntryList = new ArrayList<>();
         logInspector.onJavaScriptLog(logEntryList::add);
 
@@ -118,7 +121,7 @@ public class W3cBidiTests extends AbstractTestSitesTest {
     public void testT03_Response_BrokenImages() {
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
 
-        Network network = getNetwork(webDriver);
+        Network network = SELENIUM_BIDI_TOOLS.getNetwork(webDriver);
         List<ResponseDetails> responseList = new ArrayList<>();
         network.onResponseCompleted(responseList::add);
 
@@ -134,35 +137,34 @@ public class W3cBidiTests extends AbstractTestSitesTest {
         ASSERT.assertTrue(list404.get(0).getRequest().getUrl().contains("not-found-image"));
     }
 
-
     private void assertEntryInList(List<? extends GenericLogEntry> list, String entry) {
         Optional<GenericLogEntry> any = (Optional<GenericLogEntry>) list.stream().filter(elem -> elem.getText().contains(entry)).findAny();
         ASSERT.assertTrue(any.isPresent(), String.format("%s is in log list", entry));
     }
 
-    private LogInspector getLogInspector(WebDriver webDriver) throws MalformedURLException {
-        WebDriver originalFromDecorated = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
-        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
+//    private LogInspector getLogInspector(WebDriver webDriver) throws MalformedURLException {
+//        WebDriver originalFromDecorated = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
+//        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
+//
+//        // Check for RemoteWebDriver
+//        if (webDriverRequest.getServerUrl().isPresent()) {
+//            Augmenter augmenter = new Augmenter();
+//            return new LogInspector(augmenter.augment(originalFromDecorated));
+//        }
+//        return new LogInspector(originalFromDecorated);
+//    }
 
-        // Check for RemoteWebDriver
-        if (webDriverRequest.getServerUrl().isPresent()) {
-            Augmenter augmenter = new Augmenter();
-            return new LogInspector(augmenter.augment(originalFromDecorated));
-        }
-        return new LogInspector(originalFromDecorated);
-    }
-
-    private Network getNetwork(WebDriver webDriver) {
-        WebDriver originalFromDecorated = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
-        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
-
-        // Check for RemoteWebDriver
-        if (webDriverRequest.getServerUrl().isPresent()) {
-            Augmenter augmenter = new Augmenter();
-            return new Network(augmenter.augment(originalFromDecorated));
-        }
-        return new Network(originalFromDecorated);
-    }
+//    private Network getNetwork(WebDriver webDriver) {
+//        WebDriver originalFromDecorated = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
+//        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
+//
+//        // Check for RemoteWebDriver
+//        if (webDriverRequest.getServerUrl().isPresent()) {
+//            Augmenter augmenter = new Augmenter();
+//            return new Network(augmenter.augment(originalFromDecorated));
+//        }
+//        return new Network(originalFromDecorated);
+//    }
 
 
 }

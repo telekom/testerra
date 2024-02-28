@@ -185,3 +185,7 @@ mdc-drawer-app-content {
     white-space: normal;
 }
 
+// fix styling of mdc-action-chips: https://aurelia-ui-toolkits.github.io/aurelia-mdc-web/#/chips/examples
+button[mdc-chip-action]{
+    padding-right: 12px;
+}

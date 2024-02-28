@@ -20,6 +20,9 @@
   -->
 
 <template>
+    <require from="../../value-converters/chip-name-value-converter"></require>
+    <require from="../../value-converters/chip-class-value-converter"></require>
+
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="2">
@@ -42,15 +45,15 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
                 <mdc-select label="Class"
-                            value.bind="queryParams.class"
+                            value.bind="_selectedClass"
                             change.delegate="_classChanged()"
                             outlined
                             class="w100"
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
-                        <mdc-list-item value.bind="classStatistic.classIdentifier"
-                                       repeat.for="classStatistic of _executionStatistics.classStatistics"
+                        <mdc-list-item repeat.for="classStatistic of _filteredClassStatistics"
+                            value.bind="classStatistic.classIdentifier"
                         >${classStatistic.classIdentifier|className:1}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
@@ -59,9 +62,9 @@
                 <mdc-text-field
                     label="Search"
                     outlined
-                    value.bind="queryParams.q"
-                    keydown.delegate="_searchQueryChanged() & debounce:300"
-                    change.delegate="_searchQueryChanged()"
+                    value.bind="_searchInput"
+                    keydown.delegate="_searchQueryChanged($event) & debounce:300"
+                    change.delegate="_searchQueryChanged($event)"
                     class="w100"
                 >
                     <mdc-icon mdc-text-field-icon leading>search</mdc-icon>
@@ -76,6 +79,20 @@
                     <label>Show configuration methods</label>
                 </mdc-form-field>
             </mdc-layout-grid-cell>
+
+            <!-- Chip List -->
+            <mdc-layout-grid-cell span="12">
+                <mdc-chip-set>
+                    <mdc-chip repeat.for="chip of _chipList"
+                              class="chip-${chip.chipType|chipClass} mr1"
+                              mdc-tooltip="value.bind:_chipNameValueConverter.toView(chip.chipType, chip.chipElement, 0)"
+                              click.delegate="_removeFilter(chip.chipType, chip.chipElement)">
+                        <span>${chip.chipType|chipName:chip.chipElement:1}</span>
+                        <button mdc-chip-action trailing icon="cancel" tabindex="-1"></button>
+                    </mdc-chip>
+                </mdc-chip-set>
+            </mdc-layout-grid-cell>
+
             <mdc-layout-grid-cell span="12">
                 <mdc-linear-progress if.bind="_loading"></mdc-linear-progress>
                 <mdc-data-table class="w100"
@@ -113,7 +130,8 @@
                             <td class="run-index-cell">${methodDetails.methodContext.methodRunIndex}</td>
                             <td class="p1 wrapable">
                                 <a route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"
-                                >${methodDetails.classStatistics.classIdentifier|className:1}</a>
+                                   innerhtml.bind="methodDetails.classStatistics.classIdentifier|className:1|highlightText:_searchInput"
+                                ></a>
                             </td>
                             <td class="p1 wrapable" mdc-body1>
 
@@ -121,7 +139,7 @@
                                 <div class="vcenter">
                                     <mdc-icon class="sr1">read_more</mdc-icon>
                                     <a route-href="route: method; params.bind: {methodId: methodDetails.methodContext.contextValues.id}"
-                                       innerhtml.bind="methodDetails.identifier|highlightText:_searchRegexp"
+                                       innerhtml.bind="methodDetails.identifier|highlightText:_searchInput"
                                     ></a><method-tags class="sl1" details.bind="methodDetails"></method-tags>
                                 </div>
 
@@ -129,7 +147,7 @@
                                 <div repeat.for="failureAspect of methodDetails.failureAspects"
                                      mdc-body2
                                      class="st1"
-                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup><span innerhtml.bind="failureAspect.message|htmlEscape|highlightText:_searchRegexp"></span></div>
+                                ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchInput">:</class-name-markup><span innerhtml.bind="failureAspect.message|htmlEscape|highlightText:_searchInput"></span></div>
 
                                 <!-- List of @Fails details -->
                                 <div class="flex vcenter"
@@ -138,11 +156,11 @@
                                     <mdc-icon class="colored-icon status-${methodDetails.methodContext.resultStatus|statusClass}">highlight_off</mdc-icon>
                                     <ul class="mdc-list mdc-list--dense" mdc-caption>
                                         <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.description&&7!= methodDetails.methodContext.resultStatus">
-                                            <span innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:_searchRegexp"></span>
+                                            <span innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:_searchInput"></span>
                                         </li>
                                         <li class="mdc-custom-list-item" if.bind="methodDetails.failsAnnotation.ticketString&&7!= methodDetails.methodContext.resultStatus">
                                             Ticket:&nbsp;<a href="${methodDetails.failsAnnotation.ticketString}"
-                                                            innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchRegexp"></a>
+                                                            innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchInput"></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -154,7 +172,7 @@
                                     <mdc-icon>speaker_notes</mdc-icon>
                                     <ul class="mdc-list mdc-list--dense" mdc-caption>
                                         <li class="mdc-custom-list-item" repeat.for="logMessage of methodDetails.promptLogs">
-                                            <span innerhtml.bind="logMessage.message|html|highlightText:_searchRegexp"></span>
+                                            <span innerhtml.bind="logMessage.message|html|highlightText:_searchInput"></span>
                                         </li>
                                     </ul>
                                     <div>

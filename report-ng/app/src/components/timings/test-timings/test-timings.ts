@@ -318,7 +318,7 @@ export class TestTimings extends AbstractViewModel {
 
     private _handleClickEvent(event: echarts.ECElementEvent) {
         const methodList = this._bars[event.dataIndex].methodList.map(method => method.id);
-        this._router.navigateToRoute('tests',  {methods: methodList});
+        this._router.navigateToRoute('tests',  {config: this._showConfigurationMethods, methods: methodList.join("~")});
     }
 }
 

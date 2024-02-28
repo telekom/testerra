@@ -23,13 +23,17 @@ import {DataLoader} from "../../services/data-loader";
 import {StatusConverter} from "../../services/status-converter";
 import {autoinject} from "aurelia-framework";
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
-import {ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
+import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "../../services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import MethodType = data.MethodType;
 import "./classes.scss"
 import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
+import {ChipType} from "../../services/common-models";
+import {ChipNameValueConverter} from "../../value-converters/chip-name-value-converter";
+import {bindable} from "aurelia-templating";
+import {bindingMode} from "aurelia-binding";
+import MethodType = data.MethodType;
 
 enum SortBy {
     Class = "CLASS",
@@ -41,18 +45,22 @@ enum SortBy {
 export class Classes extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
     private _selectedStatus: data.ResultStatusType;
+    private _selectedClass: string;
+    @bindable({defaultBindingMode: bindingMode.twoWay}) _searchInput: string;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _filteredMethodDetails: MethodDetails[];
     private _showConfigurationMethods: boolean = null;
-    private _searchRegexp: RegExp;
     private _uniqueStatuses = 0;
     private _uniqueClasses = 0;
     private _loading = false;
     private _sortBy = SortBy.Class;
+    private _chipList: IChip[] = [];
+    private _filteredClassStatistics: ClassStatistics[] = [];
 
     constructor(
         private _dataLoader: DataLoader,
         private _statusConverter: StatusConverter,
+        private _chipNameValueConverter: ChipNameValueConverter,
         private _statisticsGenerator: StatisticsGenerator,
         private _classNameValueConverter: ClassNameValueConverter,
     ) {
@@ -66,10 +74,36 @@ export class Classes extends AbstractViewModel {
     ) {
         super.activate(params, routeConfig, navInstruction);
 
+        this._chipList = []
+        this._filteredClassStatistics = [];
+
         if (params.status) {
-            this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
-        } else {
-            this._selectedStatus = null;
+            this._fillChipList(ChipType.STATUS, this._convertQueryParams(params.status, true));
+        }
+
+        if(params.class){
+            this._fillChipList(ChipType.CLASS, this._convertQueryParams(params.class, true));
+        }
+
+        if(params.q){
+            this._fillChipList(ChipType.CUSTOM_TEXT, this._convertQueryParams(params.q, true));
+        }
+
+        // only add one chip for all methods when navigating here from timings view
+        if(params.methods){
+            const chip: IChip = {
+                chipType: ChipType.CUSTOM_FILTER_TIMINGS,
+                chipElement: this._convertQueryParams(params.methods, true),
+            }
+            this._chipList.unshift(chip);
+        }
+
+        if(params.failureAspect){
+            this._fillChipList(ChipType.CUSTOM_FILTER_FAILURE_ASPECTS, params.failureAspect);
+        }
+
+        if(this._chipList.length > 0){
+            this._fillChipList(ChipType.CLEAR_ALL);
         }
 
         if (params.config) {
@@ -82,20 +116,48 @@ export class Classes extends AbstractViewModel {
         this._filter();
     }
 
+    private _fillChipList(chipType: ChipType, chipParam?: any){
+        if(Array.isArray(chipParam)){
+            chipParam.forEach(param => {
+                const chip: IChip = {
+                    chipType: chipType,
+                    chipElement: param
+                }
+                this._chipList.push(chip);
+            })
+        } else {
+            const chip: IChip = {
+                chipType: chipType,
+                chipElement: chipParam,
+            }
+            if(chipType == ChipType.CLEAR_ALL || chipType == ChipType.CUSTOM_FILTER_FAILURE_ASPECTS || chipType == ChipType.CUSTOM_FILTER_TIMINGS){
+                this._chipList.unshift(chip);   // Clear all and Custom chips should be displayed at the beginning of the chip list
+            } else {
+                this._chipList.push(chip);
+            }
+        }
+    }
+
     private _filter() {
         this._loading = true;
 
-        if (this.queryParams.q?.length > 0) {
-            this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);
+        if (this._chipList.find(chip => chip.chipType === ChipType.CUSTOM_TEXT)){
+            this.queryParams.q = this._convertQueryParams(this._chipList.filter(chip => chip.chipType === ChipType.CUSTOM_TEXT).map(chip => chip.chipElement), false);
         } else {
-            this._searchRegexp = null;
+            delete this._searchInput;
             delete this.queryParams.q;
         }
 
-        if (this._selectedStatus > 0) {
-            this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
+        if (this._chipList.find(chip => chip.chipType === ChipType.STATUS)){
+            this.queryParams.status = this._convertQueryParams(this._chipList.filter(chip => chip.chipType === ChipType.STATUS).map(chip => chip.chipElement), false);
         } else {
             delete this.queryParams.status;
+        }
+
+        if (this._chipList.find(chip => chip.chipType === ChipType.CLASS)){
+            this.queryParams.class = this._convertQueryParams(this._chipList.filter(chip => chip.chipType === ChipType.CLASS).map(chip => chip.chipElement), false);
+        } else {
+            delete this.queryParams.class;
         }
 
         const uniqueClasses = {};
@@ -116,11 +178,24 @@ export class Classes extends AbstractViewModel {
 
             let relevantFailureAspect: FailureAspectStatistics;
             let filterByFailureAspect = false;
-            if (this.queryParams.failureAspect > 0) {
-                relevantFailureAspect = executionStatistics.uniqueFailureAspects[this.queryParams.failureAspect - 1];
+            if (this._chipList.find(chip => chip.chipType == ChipType.CUSTOM_FILTER_FAILURE_ASPECTS)?.chipElement > 0) {
+                relevantFailureAspect = executionStatistics.uniqueFailureAspects[this._chipList.find(chip => chip.chipType == ChipType.CUSTOM_FILTER_FAILURE_ASPECTS).chipElement - 1];
                 filterByFailureAspect = true;
             }
             this._executionStatistics = executionStatistics;
+            this._executionStatistics.classStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier));
+
+            if(this._filteredClassStatistics.length <= 0){      // create array for class select options that can be manipulated
+                this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier))];
+
+                // remove selected classes from options in select box
+                this._chipList.filter(chip => chip.chipType == ChipType.CLASS).forEach(chipClass => {
+                    const index = this._filteredClassStatistics.map(stat => stat.classIdentifier).indexOf(chipClass.chipElement, 0);
+                    if (index > -1) {
+                        this._filteredClassStatistics.splice(index, 1);
+                    }
+                })
+            }
 
             executionStatistics.classStatistics
                 .map(classStatistics => {
@@ -131,19 +206,24 @@ export class Classes extends AbstractViewModel {
                     return classStatistics;
                 })
                 .filter(classStatistic => {
-                    return !this.queryParams.class
-                        || (
-                            this.queryParams.class == this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.simpleName)
-                            || this.queryParams.class == classStatistic.classIdentifier
-                            );
+                    return !this._chipList.filter(chip => chip.chipType === ChipType.CLASS).length ||
+                    this._chipList.some(chip => {
+                        const className = this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.full);
+                        return chip.chipElement === className || chip.chipElement == classStatistic.classIdentifier;
+                    });
                 })
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
 
-                    if (this._selectedStatus > 0) {
-                        const selectedStatusGroup = this._statusConverter.groupStatus(this._statusConverter.normalizeStatus(this._selectedStatus));
+                    if (this._chipList.filter(chip => chip.chipType === ChipType.STATUS).length > 0) {
+                        const selectedStatusGroups = this._chipList.filter(chip => chip.chipType === ChipType.STATUS).map(chip => {
+                            return this._statusConverter.groupStatus(this._statusConverter.normalizeStatus(chip.chipElement));
+                        });
+
                         methodContexts = methodContexts.filter(methodContext => {
-                            return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0
+                            return selectedStatusGroups.some(selectedStatusGroup => {
+                                return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0;
+                            });
                         });
                     }
 
@@ -159,15 +239,17 @@ export class Classes extends AbstractViewModel {
                         return new MethodDetails(methodContext, classStatistic);
                     });
 
-                    if (this._searchRegexp) {
-                        methodDetails = methodDetails.filter(methodDetails => {
-                            return (
-                                methodDetails.identifier.match(this._searchRegexp)
-                                || methodDetails.failureAspects.find(failureAspect => failureAspect.identifier.match(this._searchRegexp))
-                                || methodDetails.failsAnnotation?.description?.match(this._searchRegexp)
-                                || methodDetails.failsAnnotation?.ticketString?.match(this._searchRegexp)
-                                || methodDetails.promptLogs.find(logMessage => logMessage.message.match(this._searchRegexp))
-                            )
+                    if (this._chipList.filter(chip => chip.chipType == ChipType.CUSTOM_TEXT).length > 0) {
+                        methodDetails = methodDetails.filter(methodDetail => {
+                            return this._chipList.filter(chip => chip.chipType == ChipType.CUSTOM_TEXT).map(chip => chip.chipElement).some(searchTerm => {
+                                searchTerm = this._statusConverter.createRegexpFromSearchString(searchTerm);
+                                return methodDetail.identifier.match(searchTerm)
+                                || methodDetail.failureAspects.some(failureAspect => failureAspect.identifier.match(searchTerm))
+                                || methodDetail.failsAnnotation?.description?.match(searchTerm)
+                                || methodDetail.failsAnnotation?.ticketString?.match(searchTerm)
+                                || methodDetail.promptLogs.some(logMessage => logMessage.message.match(searchTerm))
+                                || methodDetail.classStatistics.classIdentifier.match(searchTerm)
+                            })
                         });
                     }
 
@@ -179,9 +261,10 @@ export class Classes extends AbstractViewModel {
 
                 });
 
-            if (this.queryParams.methods) {
+            if (this._chipList.filter(chip => chip.chipType == ChipType.CUSTOM_FILTER_TIMINGS).length > 0) {
                 this._filteredMethodDetails = this._filteredMethodDetails.filter(method => {
-                    return this.queryParams.methods.includes(method.methodContext.contextValues.id);
+                    return this._chipList.filter(chip => chip.chipType == ChipType.CUSTOM_FILTER_TIMINGS).flatMap(chip => chip.chipElement)
+                        .includes(method.methodContext.contextValues.id);
                 });
             }
 
@@ -235,20 +318,110 @@ export class Classes extends AbstractViewModel {
     }
 
     private _statusChanged() {
-        this._filterOnce();
+        this._addFilter(this._selectedStatus, ChipType.STATUS);
+        this._selectedStatus = undefined;
     }
 
     private _classChanged() {
-        this._filterOnce();
-    }
+        // remove selected classes from options in select box
+        const index = this._filteredClassStatistics.map(stat => stat.classIdentifier).indexOf(this._selectedClass, 0);
+        if (index > -1) {
+            this._filteredClassStatistics.splice(index, 1);
+        }
 
+        this._addFilter(this._selectedClass, ChipType.CLASS);
+        this._selectedClass = undefined;
+    }
 
     private _showConfigurationChanged() {
         this._filterOnce();
     }
 
-    private _searchQueryChanged() {
+    private _searchQueryChanged($event) {
+        if($event.key == "Enter"){
+            this._addFilter(this._searchInput, ChipType.CUSTOM_TEXT);
+            this._searchInput = undefined;
+        }
+    }
+
+    private _addFilter(element, chipType: ChipType){
+        if(element){
+            if(this._chipList.length <= 0){     // if it is the first chip to appear, the "Clear All" chip has to appear as well
+                const chip = {
+                    chipType: ChipType.CLEAR_ALL,
+                }
+                this._chipList.unshift(chip);
+            }
+            if(!this._chipList.filter(chip => chip.chipType === chipType).map(chip => chip.chipElement).includes(element)){
+                const chip: IChip = {
+                    chipType: chipType,
+                    chipElement: element
+                }
+                this._chipList.push(chip);
+            }
+        }
+
         this._filterOnce();
     }
+
+    private _removeFilter(chipType: ChipType, filterObject){
+        if(chipType == ChipType.CLEAR_ALL){
+            this._chipList = [];
+
+            delete this.queryParams.methods;
+            delete this.queryParams.q;
+            delete this.queryParams.status;
+            delete this.queryParams.class;
+            delete this.queryParams.config;
+            delete this.queryParams.failureAspect;
+            this.updateUrl(this.queryParams);
+
+            // reset class filter select options
+            this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier))];
+
+        } else {
+
+            const index = this._chipList.map(chip => chip.chipElement).indexOf(filterObject)
+            this._chipList.splice(index, 1);
+
+            if(chipType == ChipType.CUSTOM_FILTER_TIMINGS || chipType == ChipType.CUSTOM_FILTER_FAILURE_ASPECTS){
+                // since the Custom Filter Chip only appears when navigating from another view to the tests view,
+                // we can use it for failureAspects and Methods,because they never appear together
+                delete this.queryParams.methods;
+                delete this.queryParams.failureAspect;
+            }
+
+            // insert classes that are not selected as filter anymore back into filter class select options
+            if(chipType == ChipType.CLASS && !this._filteredClassStatistics.some(stat => stat.classIdentifier == filterObject)){
+                this._filteredClassStatistics.push(this._executionStatistics.classStatistics.find(stat => stat.classIdentifier == filterObject));
+                this._filteredClassStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier))
+            }
+
+            this.queryParams.q = this._convertQueryParams(this._chipList.filter(chip => chip.chipType === ChipType.CUSTOM_TEXT).map(chip => chip.chipElement), false);
+            this.updateUrl(this.queryParams);
+
+            if(this._chipList.length == 1){     // if there is only one chip left, it has to be removed because the last one will be the Clear All chip
+                this._chipList = [];
+            }
+        }
+        this._filter()
+    }
+
+    private _convertQueryParams(params, toArray: boolean){
+        // use "~" as separator because it is not used in id or class names and is not reserved in urls
+        if(toArray){
+            return params.split("~");
+        } else {
+            if(params == ""){
+                return;
+            }
+            return params.join("~");
+        }
+    }
+}
+
+interface IChip {
+    chipElement?: any;
+    chipType: ChipType;
 }
 

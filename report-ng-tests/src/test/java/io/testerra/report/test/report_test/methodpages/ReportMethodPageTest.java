@@ -24,10 +24,7 @@ package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.ReportSidebarPageType;
@@ -38,6 +35,8 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportThreadsPage;
 import io.testerra.report.test.pages.utils.DateTimeUtils;
 import io.testerra.report.test.pages.utils.TestData;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class ReportMethodPageTest extends AbstractReportTest {
 
@@ -59,9 +58,11 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
         reportStepsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportStepsTab.clickThreadLink();
-        // Deactivated test step due to renewed threads view (echarts) since it is not that easy possible
-        // to access elements such as the specific testcases inside the canvas element of echarts
-//        reportThreadsPage.assertMethodBoxIsSelected(method);
+
+        String imageFileName = "byImage/ReportMethodPageTest/" + method + ".png";
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), imageFileName);
+        reportThreadsPage.assertTooltipShown(method);
     }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForPreTestMethods_Classes_States_ForDetailsType")
@@ -81,9 +82,11 @@ public class ReportMethodPageTest extends AbstractReportTest {
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(method);
         reportDetailsTab.assertMethodOverviewContainsCorrectContent(methodClass, status.title, method);
         ReportThreadsPage reportThreadsPage = reportDetailsTab.clickThreadLink();
-        // Deactivated test step due to renewed threads view (echarts) since it is not that easy possible
-        // to access elements such as the specific testcases inside the canvas element of echarts
-//        reportThreadsPage.assertMethodBoxIsSelected(method);
+
+        String imageFileName = "byImage/ReportThreadsPageTest/" + method + ".png";
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+        utils.mouseOverByImage(reportThreadsPage.getWebDriver(), imageFileName);
+        reportThreadsPage.assertTooltipShown(method);
     }
 
     @Test

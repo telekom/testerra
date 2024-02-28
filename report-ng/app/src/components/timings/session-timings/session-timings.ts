@@ -26,11 +26,9 @@ import {ECharts, EChartsOption} from 'echarts';
 import "./session-timings.scss";
 import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
 import {StatusConverter} from "../../../services/status-converter";
-import {MethodType, MetricType} from "../../../services/report-model/framework_pb";
+import {MetricType} from "../../../services/report-model/framework_pb";
 import {ExecutionStatistics} from "../../../services/statistic-models";
-import {
-    IntlDateFormatValueConverter
-} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
+import {IntlDateFormatValueConverter} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
 
 @autoinject()
 export class SessionTimings extends AbstractViewModel {
@@ -66,7 +64,6 @@ export class SessionTimings extends AbstractViewModel {
 
             executionStatistics.classStatistics.forEach(classStatistic => {
                 const filteredMethodDetails = classStatistic.methodContexts
-                    .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
                     .map(methodContext => new MethodDetails(methodContext, classStatistic));
                 this._methodDetails.push(...filteredMethodDetails);
             })
@@ -232,22 +229,29 @@ export class SessionTimings extends AbstractViewModel {
                             this._dots[seriesIndex].information.browserVersion + '</div> <br>';
                         tooltipString += `<b>Session name:</b> ${this._dots[seriesIndex].information.sessionName} <br>
                             <b>Session id:</b> ${this._dots[seriesIndex].information.sessionId} <br>
+                            <hr>
                             <b>Session start duration:</b> ${this._dots[seriesIndex].information.sessionDuration}s <br>
-                            <b>Start time session:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.sessionStartTime), 'time')} <br>`
+                            <b>Session start time:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.sessionStartTime), 'time')} <br>`
 
                         if(this._dots[seriesIndex].information.baseurlStartTime){ // only show baseurl information if it is available
                             tooltipString += `<b>Base URL start duration:</b> ${this._dots[seriesIndex].information.baseurlDuration}s <br>
-                            <b>Start time base URL:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.baseurlStartTime), 'time')} <br>`
+                            <b>Base URL start time:</b> ${this._dateFormatter.toView(Number(this._dots[seriesIndex].information.baseurlStartTime), 'time')} <br>`
                         }
 
                         if (testNames.length > 1) {
-                            tooltipString += `<b>Test case(s):</b><ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;
+                            tooltipString += `
+                                <hr>
+                                <b>Test case(s):</b>
+                                <ul style="margin-top: 4px; margin-bottom: 4px; padding-left: 20px;">`;
+
                             testNames.forEach(testName => {
                                 tooltipString += `<li style="margin-bottom: 2px;">${testName}</li>`;
                             });
                             tooltipString += '</ul>';
                         } else {
-                            tooltipString += `<b>Test case(s):</b> ${testNames}`;
+                            tooltipString += `
+                                <hr>
+                                <b>Test case(s):</b> ${testNames}`;
                         }
                         return tooltipString;
                     }

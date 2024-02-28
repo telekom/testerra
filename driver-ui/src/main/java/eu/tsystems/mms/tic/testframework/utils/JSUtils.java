@@ -495,4 +495,28 @@ public final class JSUtils implements Loggable {
 
     }
 
+    /**
+     * Scrolls horizontally and vertically by the given values
+     *
+     * @param driver {@link WebDriver}
+     * @param offset the values of x and y for scrolling horizontally and vertically
+     */
+    public void scrollByOffset(final WebDriver driver, Point offset) {
+        JSUtils.executeScript(driver, "window.scrollBy(" + offset.getX() + ", " + offset.getY() + ");");
+    }
+
+    /**
+     * Determines and returns the height, the viewport is currently at
+     */
+    public int getCurrentScrollHeight(final WebDriver driver) {
+        return ((Long) JSUtils.executeScriptWOCatch(driver, "return (window.innerHeight + window.scrollY)")).intValue();
+    }
+
+    /**
+     * Determines and returns the height of the current page
+     */
+    public int getDocumentHeight(final WebDriver driver) {
+        return ((Long) JSUtils.executeScriptWOCatch(driver, "return document.body.scrollHeight")).intValue();
+    }
+
 }

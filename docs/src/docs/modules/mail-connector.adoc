@@ -92,7 +92,8 @@ The `POP3MailConnector` provides access to a POP3 server. Emails are read and pr
 POP3MailConnector pop3MailConnector = new POP3MailConnector();
 
 // wait until the email with subject 'test' arrived in the InboxFolder
-EmailQuery query = new EmailQuery().setSearchTerm(new SubjectTerm(subject));
+SubjectTerm subjectTerm = new SubjectTerm(subject);
+EmailQuery query = new EmailQuery().setSearchTerm(subjectTerm);
 Email email = pop3MailConnector.query(query).findFirst().get();
 
 // delete all emails with this subject from the server while setting timeout and max number of polls explicitly
@@ -103,10 +104,13 @@ Email email = pop3MailConnector.query(query).findFirst().get();
 
 // delete mails matching the given criteria
 String recipient = email.getRecipients().get(0));
-String subject = email.getSubject();
-String messageId = null;
 
-pop3MailConnector.deleteMessage(recipient, RecipientType.TO, subject, messageId);
+SearchTerm searchTerm = new AndTerm(new SearchTerm[]{
+        subjectTerm,
+        new RecipientTerm(RecipientType.TO, new InternetAddress(recipient))
+});
+
+pop3MailConnector.deleteMessage(searchTerm);
 ----
 
 .Working with attachments
@@ -286,7 +290,7 @@ connector.query(query)
 ----
 
 == MailUtils
-This helper class contains methods which facilitate reoccurring tasks when working with mails, e.g. encrypting, decrypting, and comparing mails.
+This helper class contains methods which facilitate reoccurring tasks when working with mails, e.g. encrypting, decrypting and comparing mails.
 
 .Encryption, Decryption and Comparison
 [source,java]

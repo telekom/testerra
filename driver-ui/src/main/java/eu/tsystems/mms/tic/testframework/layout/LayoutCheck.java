@@ -139,9 +139,9 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     ) {
         final MatchStep step = new MatchStep();
 
-        Path referenceImagesDir = getDir(PROPERTY_MANAGER.getProperty(Properties.REFERENCE_PATH, "src/test/resources/screenreferences/reference"));
-        Path actualImagesDir = getDir(PROPERTY_MANAGER.getProperty(Properties.ACTUAL_PATH, "src/test/resources/screenreferences/actual"));
-        Path distanceImagesDir = getDir(PROPERTY_MANAGER.getProperty(Properties.DISTANCE_PATH, "src/test/resources/screenreferences/distance"));
+        Path referenceImagesDir = getDir(Properties.REFERENCE_PATH.asString());
+        Path actualImagesDir = getDir(Properties.ACTUAL_PATH.asString());
+        Path distanceImagesDir = getDir(Properties.DISTANCE_PATH.asString());
 
         step.referenceFileName = referenceImagesDir.resolve(String.format(
                 PROPERTY_MANAGER.getProperty(Properties.REFERENCE_NAMETEMPLATE, "Reference%s.png"),

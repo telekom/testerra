@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2024, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -23,158 +23,41 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementHighlighter;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.events.WebDriverEventListener;
+import org.openqa.selenium.support.events.WebDriverListener;
 
 import java.awt.Color;
 
 /**
  * Highlights some WebDriver events in Demo Mode
  */
-public class VisualEventDriverListener implements WebDriverEventListener {
+public class VisualEventDriverListener implements WebDriverListener {
 
-    UiElementHighlighter elementHighlighter = Testerra.getInjector().getInstance(UiElementHighlighter.class);
+    private UiElementHighlighter elementHighlighter = Testerra.getInjector().getInstance(UiElementHighlighter.class);
 
-    @Override
-    public void beforeAlertAccept(WebDriver webDriver) {
-
-    }
+    // Current driver is additional needed because WebDriverListener methods of before/after element actions only get WebElement, but no current driver.
+    public WebDriver driver;
 
     @Override
-    public void afterAlertAccept(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void afterAlertDismiss(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void beforeAlertDismiss(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void beforeNavigateTo(String s, WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void afterNavigateTo(String s, WebDriver webDriver) {
-    }
-
-    @Override
-    public void beforeNavigateBack(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void afterNavigateBack(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void beforeNavigateForward(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void afterNavigateForward(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void beforeNavigateRefresh(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void afterNavigateRefresh(WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void beforeFindBy(By by, WebElement webElement, WebDriver webDriver) {
-//        if (webElement != null) {
-//            if (POConfig.isDemoMode()) {
-//                JSUtils.highlightWebElement(webDriver, webElement, 0, 255, 255); // yellow
-//            }
-//        }
-    }
-
-    @Override
-    public void afterFindBy(By by, WebElement webElement, WebDriver webDriver) {
-    }
-
-    @Override
-    public void beforeClickOn(WebElement webElement, WebDriver webDriver) {
-        if (webElement != null) {
-            elementHighlighter.highlight(webDriver, webElement, new Color(0, 0, 255));
+    public void beforeClick(WebElement element) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
+            elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }
 
     @Override
-    public void afterClickOn(WebElement webElement, WebDriver webDriver) {
-    }
-
-    @Override
-    public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
-        if (webElement != null) {
-            elementHighlighter.highlight(webDriver, webElement, new Color(0, 0, 255));
+    public void beforeClear(WebElement element) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
+            elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
         }
     }
 
     @Override
-    public void afterChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
-
+    public void beforeSendKeys(WebElement element, CharSequence... keysToSend) {
+        if (element != null && Testerra.Properties.DEMO_MODE.asBool()) {
+            elementHighlighter.highlight(driver, element, new Color(0, 0, 255));
+        }
     }
 
-    @Override
-    public void beforeScript(String s, WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void afterScript(String s, WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void beforeSwitchToWindow(String s, WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void afterSwitchToWindow(String s, WebDriver webDriver) {
-
-    }
-
-    @Override
-    public void onException(Throwable throwable, WebDriver webDriver) {
-
-    }
-
-    @Override
-    public <X> void beforeGetScreenshotAs(OutputType<X> target) {
-
-    }
-
-    @Override
-    public <X> void afterGetScreenshotAs(OutputType<X> target, X screenshot) {
-
-    }
-
-    @Override
-    public void beforeGetText(WebElement element, WebDriver driver) {
-
-    }
-
-    @Override
-    public void afterGetText(WebElement element, WebDriver driver, String text) {
-
-    }
 }

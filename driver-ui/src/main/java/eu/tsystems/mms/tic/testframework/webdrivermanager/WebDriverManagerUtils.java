@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +53,6 @@ public final class WebDriverManagerUtils {
 
         BrowserInformation browserInformation;
         WebDriver realDriver = driver;
-        if (EventFiringWebDriver.class.isAssignableFrom(driver.getClass())) {
-            realDriver = ((EventFiringWebDriver) driver).getWrappedDriver();
-        }
 
         if (ProvidesBrowserInformation.class.isAssignableFrom(realDriver.getClass())) {
             browserInformation = ((ProvidesBrowserInformation) realDriver).getBrowserInformation();

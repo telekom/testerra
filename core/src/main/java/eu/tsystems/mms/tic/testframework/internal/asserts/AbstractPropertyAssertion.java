@@ -40,7 +40,7 @@ public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> 
     protected final AbstractPropertyAssertion<T> parent;
     protected PropertyAssertionConfig config;
 
-    public AbstractPropertyAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public AbstractPropertyAssertion(AbstractPropertyAssertion<T> parentAssertion, AssertionProvider<T> provider) {
         this.parent = parentAssertion;
         this.provider = provider;
     }

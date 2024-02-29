@@ -23,25 +23,22 @@ package eu.tsystems.mms.tic.testframework.playground;
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.testing.SeleniumBidiToolsProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
+import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.LogInspector;
 import org.openqa.selenium.bidi.Network;
-import org.openqa.selenium.bidi.log.ConsoleLogEntry;
 import org.openqa.selenium.bidi.log.GenericLogEntry;
-import org.openqa.selenium.bidi.log.JavascriptLogEntry;
 import org.openqa.selenium.bidi.log.LogEntry;
+import org.openqa.selenium.bidi.network.AddInterceptParameters;
 import org.openqa.selenium.bidi.network.BeforeRequestSent;
+import org.openqa.selenium.bidi.network.InterceptPhase;
 import org.openqa.selenium.bidi.network.ResponseDetails;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.Augmenter;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -49,14 +46,13 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 /**
  * Created on 2023-06-22
  *
  * @author mgn
  */
-public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
+public class SeleniumBiDiApiTests extends AbstractWebDriverTest implements SeleniumBidiToolsProvider {
 
     @BeforeMethod
     public void initBrowser() {
@@ -69,92 +65,8 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
 
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
             options.setCapability("webSocketUrl", true);
+            options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
         });
-    }
-
-    private LogInspector getLogInspector(WebDriver webDriver) throws MalformedURLException {
-        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
-        final String browser = webDriverRequest.getBrowser();
-        if (webDriverRequest.getServerUrl().isEmpty()) {
-            switch (browser) {
-                case Browsers.chrome:
-                case Browsers.chromeHeadless:
-                    return new LogInspector(WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get());
-                case Browsers.firefox:
-                    return new LogInspector(WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, FirefoxDriver.class).get());
-                default:
-                    ASSERT.fail("Unsupported browser: " + browser);
-            }
-        }
-        Augmenter augmenter = new Augmenter();
-        RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
-        return new LogInspector(augmenter.augment(remoteWebDriver));
-    }
-
-    @Test
-    public void testT01_LogListener_ConsoleLogs() throws MalformedURLException {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBrowser(Browsers.chromeHeadless);
-        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-
-        LogInspector logInspector = getLogInspector(webDriver);
-        List<ConsoleLogEntry> logEntryList = new ArrayList<>();
-        logInspector.onConsoleEntry(logEntryList::add);
-
-        uiElementFinder.find(By.id("consoleLog")).click();      // --> working
-        uiElementFinder.find(By.id("consoleError")).click();    // --> working
-//        uiElementFinder.find(By.id("jsException")).click();     // --> not working
-//        uiElementFinder.find(By.id("logWithStacktrace")).click(); // --> not working
-
-        CONTROL.retryTimes(5, () -> {
-            ASSERT.assertTrue(logEntryList.size() > 1);
-            TimerUtils.sleepSilent(1000);
-        });
-
-        logEntryList.forEach(logEntry ->
-                log().info(
-                        "LOG_ENTRY: {} {} {} - {}",
-                        logEntry.getTimestamp(),
-                        logEntry.getLevel(),
-                        logEntry.getMethod(),
-                        logEntry.getText())
-        );
-
-        ASSERT.assertEquals(logEntryList.size(), 2, "LogEntry list");
-    }
-
-    @Test
-    public void testT02_LogListener_JSLogs() throws MalformedURLException {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-//        request.setBrowser(Browsers.chrome);
-        request.setBrowser(Browsers.firefox);
-        request.setBaseUrl("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-
-        LogInspector logInspector = getLogInspector(webDriver);
-        List<JavascriptLogEntry> logEntryList = new ArrayList<>();
-        logInspector.onJavaScriptLog(logEntryList::add);
-//        logInspector.onJavaScriptException(logEntryList::add);    --> has the same result
-
-//        uiElementFinder.find(By.id("consoleLog")).click();      // --> not working
-//        uiElementFinder.find(By.id("consoleError")).click();    // --> not working
-        uiElementFinder.find(By.id("jsException")).click();     // --> working
-        uiElementFinder.find(By.id("logWithStacktrace")).click(); // --> working
-
-        CONTROL.retryTimes(5, () -> {
-            ASSERT.assertTrue(logEntryList.size() > 1);
-            TimerUtils.sleepSilent(1000);
-        });
-
-        for (JavascriptLogEntry logEntry : logEntryList) {
-            log().info("LOG_ENTRY: {} {} {} - {}", logEntry.getTimestamp(), logEntry.getLevel(), logEntry.getText(), logEntry.getStackTrace().toString());
-        }
-        ASSERT.assertEquals(logEntryList.size(), 2, "JS LogEntry list");
     }
 
     @Test
@@ -166,7 +78,7 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
 
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
-        LogInspector logInspector = getLogInspector(webDriver);
+        LogInspector logInspector = SELENIUM_BIDI_TOOLS.getLogInsepctor(webDriver);
         List<LogEntry> logEntryList = new ArrayList<>();
         logInspector.onLog(logEntryList::add);
 
@@ -199,50 +111,22 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
     }
 
     @Test
-    public void testT04_BrokenImages() {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-//        request.setBrowser(Browsers.chrome);
-//        request.setBrowserVersion("120");
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-
-        List<ResponseDetails> responseList = new ArrayList<>();
-        Network network = new Network(new Augmenter().augment(WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get()));
-        network.onResponseCompleted(responseList::add);
-
-        webDriver.get("https://the-internet.herokuapp.com/broken_images");
-
-        CONTROL.retryTimes(3, () -> {
-            ASSERT.assertTrue(responseList.stream().filter(response -> response.getResponseData().getStatus() == 404).count() == 2);
-            TimerUtils.sleepSilent(1000);
-        });
-
-        List<ResponseDetails> list404 = responseList.stream().filter(response -> response.getResponseData().getStatus() == 404).collect(Collectors.toList());
-        ASSERT.assertEquals(list404.size(), 2);
-
-        for (ResponseDetails response : list404) {
-            log().info("Broken image: {} - [{}] {}", response.getRequest().getUrl(), response.getResponseData().getStatus(), response.getResponseData().getStatusText());
-        }
-    }
-
-    @Test
     public void testT05_AllNetworkListener() {
         DesktopWebDriverRequest dwdRequest = new DesktopWebDriverRequest();
         dwdRequest.setBrowser(Browsers.chrome);
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(dwdRequest);
 
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-
         List<BeforeRequestSent> requestSentList = new ArrayList<>();
         List<ResponseDetails> responseList1 = new ArrayList<>();
         List<ResponseDetails> responseList2 = new ArrayList<>();
 
-        Network network = new Network(new Augmenter().augment(WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get()));
+        Network network = SELENIUM_BIDI_TOOLS.getNetwork(webDriver);
         network.onBeforeRequestSent(requestSentList::add);
         network.onResponseCompleted(responseList1::add);
         network.onResponseStarted(responseList2::add);
 
-//        webDriver.get("https://the-internet.herokuapp.com/broken_images");
-        webDriver.get("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
+        webDriver.get("https://the-internet.herokuapp.com/broken_images");
+//        webDriver.get("https://www.selenium.dev/selenium/web/bidi/logEntryAdded.html");
 
         TimerUtils.sleep(1000);
 
@@ -257,6 +141,27 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest {
         for (ResponseDetails response : responseList2) {
             log().info("Response2: {} - [{}] {}", response.getRequest().getRequestId(), response.getResponseData().getStatus(), response.getResponseData().getStatusText());
         }
+    }
+
+    /**
+     * Does not work
+     * https://github.com/SeleniumHQ/seleniumhq.github.io/issues/1593
+     *
+     * Seems to be not fully supported by Chrome and Firefox
+     */
+    @Test(enabled = false)
+    public void testT06_BasicAuthentication() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        Network network = SELENIUM_BIDI_TOOLS.getNetwork(webDriver);
+
+        network.addIntercept(new AddInterceptParameters(InterceptPhase.AUTH_REQUIRED));
+        network.onAuthRequired(responseDetails ->
+                network.continueWithAuth(responseDetails.getRequest().getRequestId(), new UsernameAndPassword("admin", "admin")));
+
+        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
     }
 
 

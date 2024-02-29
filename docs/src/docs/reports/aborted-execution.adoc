@@ -1,0 +1,16 @@
+[#ExecutionAbortion]
+= Report of aborted test runs
+
+In case of unexpected abortion of a test execution the report is generated, too. . Due to abortion of still running test methods
+some information can be missing, like result states or execution time.
+
+Testerra additionally provides a mechanism to implicitly create a test report when an unexpected exit of the current execution occurred. All existing information created until the moment of the abortion are collected to generate a report.
+This might lead to missing as information like the execution time, result states and screenshots might be abandoned if running test methods have been interrupted.
+
+image::report-ng-24.png[align="center", alt="Report-NG states missing"]
+image::report-ng-25.png[align="center", alt="Report-NG execution time missing"]
+
+A hint indicating the possibly incomplete state of the report is shown as a warning in the section 'priority messages'.
+The report generation in case of abortion of the test execution is described in detail in the paragraph <<#JvmExitHook, JVMExitHook>>.
+
+image::report-ng-23.png[align="center", alt="Report-NG Aborted Exection"]

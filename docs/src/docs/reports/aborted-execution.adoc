@@ -1,7 +1,7 @@
 [#ExecutionAbortion]
 = Report of aborted test runs
 
-In case of unexpected abortion of a test execution the report is generated, too. . Due to abortion of still running test methods
+In case of unexpected abortion of a test execution the report is generated, too. Due to abortion of still running test methods
 some information can be missing, like result states or execution time.
 
 Testerra additionally provides a mechanism to implicitly create a test report when an unexpected exit of the current execution occurred. All existing information created until the moment of the abortion are collected to generate a report.

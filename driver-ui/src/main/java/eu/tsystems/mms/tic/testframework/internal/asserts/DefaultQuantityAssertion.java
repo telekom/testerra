@@ -29,37 +29,10 @@ import java.util.function.Function;
  *
  * @author Mike Reiche
  */
-public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE> implements QuantityAssertion<TYPE> {
+public class DefaultQuantityAssertion<TYPE> extends DefaultObjectAssertion<TYPE> implements QuantityAssertion<TYPE> {
 
     public DefaultQuantityAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<TYPE> provider) {
         super(parentAssertion, provider);
-    }
-
-    @Override
-    public boolean is(Object expected, String failMessage) {
-        if (expected instanceof Boolean) {
-            boolean expectedBoolean = (Boolean) expected;
-            return this.is(expectedBoolean, failMessage);
-        }
-        return testSequence(
-                provider,
-                (actual) -> assertionImpl.equals(actual, expected),
-                (actual) -> assertionImpl.formatExpectEquals(null, expected, createFailMessage(failMessage))
-        );
-    }
-
-    @Override
-    public boolean isNot(Object expected, String failMessage) {
-        if (expected instanceof Boolean) {
-            boolean expectedBoolean = (Boolean) expected;
-            return this.is(!expectedBoolean, failMessage);
-        } else {
-            return testSequence(
-                    provider,
-                    (actual) -> assertionImpl.notEquals(actual, expected),
-                    (actual) -> assertionImpl.formatExpectNotEquals(null, expected, createFailMessage(failMessage))
-            );
-        }
     }
 
     private BigDecimal toBigDecimal(Object given) {
@@ -116,8 +89,8 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     }
 
     @Override
-    public <MAPPED_TYPE> StringAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction) {
-        return propertyAssertionFactory.createWithParent(DefaultStringAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
+    public <MAPPED_TYPE> QuantityAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction) {
+        return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
             @Override
             public MAPPED_TYPE getActual() {
                 TYPE actual = provider.getActual();

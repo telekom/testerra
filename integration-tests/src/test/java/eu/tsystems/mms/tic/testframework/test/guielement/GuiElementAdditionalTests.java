@@ -54,17 +54,19 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
         input.sendKeys(absoluteFilePath);
     }
 
-    /** Needs pretest {@link GuiElementAdditional2Tests#testGuiElement_Create_SensibleData}. */
+    /**
+     * Needs pretest {@link GuiElementAdditional2Tests#testGuiElement_Create_SensitiveData}.
+     */
     @Test
-    public void testT02_SensibleData() {
-        final String searchStringSensibleData = "facade.UiElementLogger - type(\"*****************\") on UiElement(By.id: 1)";
-        final String searchStringNotExisits = "type \"testT02_SensibleData\" on By.id: 1";
+    public void testT02_SensitiveData() {
+        final String searchStringSensitiveData = "facade.UiElementLogger - type(\"*****************\") on UiElement(By.id: 1)";
+        final String searchStringNotExists = "type \"testT02_SensitiveData\" on By.id: 1";
 
-        List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringSensibleData);
-        Assert.assertEquals(foundEntries.size(), 1, String.format("Log should contains string '%s'", searchStringSensibleData));
+        List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringSensitiveData);
+        Assert.assertEquals(foundEntries.size(), 1, String.format("Log should contains string '%s'", searchStringSensitiveData));
 
-        foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringNotExisits);
-        Assert.assertEquals(foundEntries.size(), 0, String.format("Log should not contain string '%s'", searchStringNotExisits));
+        foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringNotExists);
+        Assert.assertEquals(foundEntries.size(), 0, String.format("Log should not contain string '%s'", searchStringNotExists));
     }
 
     @Test

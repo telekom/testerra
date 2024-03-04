@@ -35,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
@@ -68,7 +67,7 @@ import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -487,7 +486,7 @@ public class ContextExporter implements Loggable {
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
 
-        ITestStatusController testStatusController = TesterraListener.getTestStatusController();
+        ITestStatusController testStatusController = Testerra.getInjector().getInstance(ITestStatusController.class);
         Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
             int count = testStatusController.getFailureCorridorCount(failureCorridorClass);
             if (count > 0) {
@@ -534,6 +533,8 @@ public class ContextExporter implements Loggable {
     }
 
     public SessionContext.Builder buildSessionContext(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext) {
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
+
         SessionContext.Builder builder = SessionContext.newBuilder();
 
         apply(buildContextValues(sessionContext), builder::setContextValues);
@@ -544,14 +545,14 @@ public class ContextExporter implements Loggable {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
             optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));
         });
-        builder.setExecutionContextId(ExecutionContextController.getCurrentExecutionContext().getId());
-
+        apply(instance.getExecutionContext().getId(), builder::setExecutionContextId);
         sessionContext.getActualBrowserName().ifPresent(builder::setBrowserName);
         sessionContext.getActualBrowserVersion().ifPresent(builder::setBrowserVersion);
         sessionContext.getUserAgent().ifPresent(builder::setUserAgent);
-        builder.setCapabilities(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()));
+        apply(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()), builder::setCapabilities);
         sessionContext.getWebDriverRequest().getServerUrl().ifPresent(url -> builder.setServerUrl(url.toString()));
         sessionContext.getNodeInfo().ifPresent(nodeInfo -> builder.setNodeUrl(nodeInfo.toString()));
+        apply(sessionContext.getBaseUrl(), builder::setBaseUrl);
         return builder;
     }
 

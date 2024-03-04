@@ -26,8 +26,8 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.ScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 
 public interface PageAssertions extends ScreenshotAssertion {
-    StringAssertion<String> title();
-    StringAssertion<String> url();
+    StringAssertion title();
+    StringAssertion url();
     BinaryAssertion<Boolean> displayed();
 
     default boolean displayed(boolean bool) {

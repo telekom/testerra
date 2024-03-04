@@ -28,16 +28,7 @@ import java.util.function.Function;
  * Allows numeric range based assertions
  * @author Mike Reiche
  */
-public interface QuantityAssertion<TYPE> extends BinaryAssertion<TYPE> {
-    default boolean is(Object expected) {
-        return is(expected, null);
-    }
-    boolean is(Object expected, String subject);
-
-    default boolean isNot(Object expected) {
-        return isNot(expected, null);
-    }
-    boolean isNot(Object expected, String subject);
+public interface QuantityAssertion<TYPE> extends ObjectAssertion<TYPE> {
 
     default boolean isGreaterThan(long expected) {
         return isGreaterThan(new BigDecimal(expected));
@@ -124,7 +115,7 @@ public interface QuantityAssertion<TYPE> extends BinaryAssertion<TYPE> {
     }
     boolean isBetween(BigDecimal lower, BigDecimal higher, String subject);
 
-    <MAPPED_TYPE> StringAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction);
+    <MAPPED_TYPE> QuantityAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction);
 
     QuantityAssertion<BigDecimal> absolute();
 }

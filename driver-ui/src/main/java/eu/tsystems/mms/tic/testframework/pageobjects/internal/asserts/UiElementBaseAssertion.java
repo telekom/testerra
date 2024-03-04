@@ -64,7 +64,7 @@ public interface UiElementBaseAssertion extends ScreenshotAssertion {
         return visibleFull().is(expected);
     }
 
-    StringAssertion<String> tagName();
+    StringAssertion tagName();
 
     RectAssertion bounds();
 }

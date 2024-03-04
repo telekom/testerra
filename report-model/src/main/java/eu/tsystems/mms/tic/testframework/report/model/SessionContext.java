@@ -25,6 +25,7 @@ private static final long serialVersionUID = 0L;
     serverUrl_ = "";
     nodeUrl_ = "";
     userAgent_ = "";
+    baseUrl_ = "";
   }
 
   @java.lang.Override
@@ -122,6 +123,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             userAgent_ = s;
+            break;
+          }
+          case 122: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            baseUrl_ = s;
             break;
           }
           default: {
@@ -536,6 +543,44 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int BASE_URL_FIELD_NUMBER = 15;
+  private volatile java.lang.Object baseUrl_;
+  /**
+   * <code>string base_url = 15;</code>
+   * @return The baseUrl.
+   */
+  @java.lang.Override
+  public java.lang.String getBaseUrl() {
+    java.lang.Object ref = baseUrl_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      baseUrl_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string base_url = 15;</code>
+   * @return The bytes for baseUrl.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getBaseUrlBytes() {
+    java.lang.Object ref = baseUrl_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      baseUrl_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -580,6 +625,9 @@ private static final long serialVersionUID = 0L;
     if (!getUserAgentBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 14, userAgent_);
     }
+    if (!getBaseUrlBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 15, baseUrl_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -620,6 +668,9 @@ private static final long serialVersionUID = 0L;
     if (!getUserAgentBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, userAgent_);
     }
+    if (!getBaseUrlBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, baseUrl_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -658,6 +709,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getNodeUrl())) return false;
     if (!getUserAgent()
         .equals(other.getUserAgent())) return false;
+    if (!getBaseUrl()
+        .equals(other.getBaseUrl())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -691,6 +744,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getNodeUrl().hashCode();
     hash = (37 * hash) + USER_AGENT_FIELD_NUMBER;
     hash = (53 * hash) + getUserAgent().hashCode();
+    hash = (37 * hash) + BASE_URL_FIELD_NUMBER;
+    hash = (53 * hash) + getBaseUrl().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -848,6 +903,8 @@ private static final long serialVersionUID = 0L;
 
       userAgent_ = "";
 
+      baseUrl_ = "";
+
       return this;
     }
 
@@ -888,6 +945,7 @@ private static final long serialVersionUID = 0L;
       result.serverUrl_ = serverUrl_;
       result.nodeUrl_ = nodeUrl_;
       result.userAgent_ = userAgent_;
+      result.baseUrl_ = baseUrl_;
       onBuilt();
       return result;
     }
@@ -973,6 +1031,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getUserAgent().isEmpty()) {
         userAgent_ = other.userAgent_;
+        onChanged();
+      }
+      if (!other.getBaseUrl().isEmpty()) {
+        baseUrl_ = other.baseUrl_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -1833,6 +1895,82 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       userAgent_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object baseUrl_ = "";
+    /**
+     * <code>string base_url = 15;</code>
+     * @return The baseUrl.
+     */
+    public java.lang.String getBaseUrl() {
+      java.lang.Object ref = baseUrl_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        baseUrl_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string base_url = 15;</code>
+     * @return The bytes for baseUrl.
+     */
+    public com.google.protobuf.ByteString
+        getBaseUrlBytes() {
+      java.lang.Object ref = baseUrl_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        baseUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string base_url = 15;</code>
+     * @param value The baseUrl to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBaseUrl(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      baseUrl_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string base_url = 15;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearBaseUrl() {
+      
+      baseUrl_ = getDefaultInstance().getBaseUrl();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string base_url = 15;</code>
+     * @param value The bytes for baseUrl to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBaseUrlBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      baseUrl_ = value;
       onChanged();
       return this;
     }

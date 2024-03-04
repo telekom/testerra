@@ -4,4 +4,4 @@
 The `JVMExitHook` was integrated to achieve the generation of a report with Report-NG in case an <<#ExecutionAbortion, aborted test run>>. With the start of a test execution the `JVMExitHook` is added as a shutdown hook to the JVM.
 
 When the JVM is about to stop, shutdown hooks are always called by default. This includes cases of abortion, all other system errors and normal finish. In the latter case a flag indicating an already created report is set true once in the process of the report generation.
-To avoid overriding the already existing report, the `JVMExitHook` only triggers when this flag is false, as this is the only indicator of an unexpected exit and a missing report. It then sends the <<#ExecutionAbortEvent, ExecutionAbortEvent>>, which is then caught by the corresponding listeners creating a report.
+To avoid overriding the already existing report, the `JVMExitHook` only triggers when this flag is false, as this is the only indicator of an unexpected exit and a missing report. It then sends the <<Events and Listeners, ExecutionAbortEvent>>, which is then caught by the corresponding listeners creating a report.

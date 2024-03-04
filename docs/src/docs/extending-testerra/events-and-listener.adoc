@@ -18,7 +18,7 @@ This event can be used to send test results to a test management system or issue
 
 | `ExecutionFinishEvent`
 |Called at the end of test run to trigger report generation and other output worker.
-[#ExecutionAbortEvent]
+
 |`ExecutionAbortEvent`
 |Called on test run abortion due to unclear circumstances like hanging sessions, JVM exit or other. Used to create report with existing execution information.
 

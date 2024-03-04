@@ -1,6 +1,7 @@
 plugins {
     id "io.codearte.nexus-staging" version "0.30.0"
     id 'com.github.jk1.dependency-license-report' version '1.16'
+    id 'org.cyclonedx.bom' version '1.8.2' apply false
 }
 
 // Plugin dependency-license-report
@@ -42,7 +43,6 @@ allprojects {
 }
 
 subprojects {
-
     group 'io.testerra'
     version moduleVersion
     archivesBaseName = "testerra"
@@ -52,6 +52,8 @@ subprojects {
     apply plugin: 'signing'
 
     apply plugin: 'com.github.jk1.dependency-license-report'
+
+    apply plugin: 'org.cyclonedx.bom'
 
     // important!
     repositories {
@@ -106,6 +108,13 @@ subprojects {
 //        renderers = [new CsvReportRenderer("${project.name}.csv"), new InventoryMarkdownReportRenderer("${project.name}.md"), new TextReportRenderer("${project.name.toUpperCase()}.txt") ]
         renderers = [new InventoryMarkdownReportRenderer("${project.name}.md")]
         outputDir = "$rootDir/license3rdparty"
+    }
+
+    cyclonedxBom {
+        skipProjects = ["docs", "integration-tests", "report-ng", "app", "report-ng-tests"]
+        outputFormat = "json"
+        outputName = "sbom_" + project.name
+        destination = file("../build/sbom")
     }
 }
 

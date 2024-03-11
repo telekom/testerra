@@ -113,7 +113,7 @@ subprojects {
     cyclonedxBom {
         skipProjects = ["docs", "integration-tests", "report-ng", "app", "report-ng-tests"]
         outputFormat = "json"
-        outputName = "sbom_" + project.name
+        outputName = project.name
         destination = file("../build/sbom")
     }
 }

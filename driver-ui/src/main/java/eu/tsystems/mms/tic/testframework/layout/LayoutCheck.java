@@ -461,10 +461,21 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     }
 
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
-        LayoutCheck.MatchStep matchStep = null;
         final String assertMessage = String.format("pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
+
+        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
+        assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);
+    }
+
+    public static void assertImage(File screenshot, String targetImageName, double confidenceThreshold) {
+        final String assertMessage = String.format("pixel distance (%%) of pdf-page-screenshot '%s' to image '%s'", screenshot.getName(), targetImageName);
+
+        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(screenshot, targetImageName);
+        assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);
+    }
+
+    public static void assertWithLayoutCheck(MatchStep matchStep, double confidenceThreshold, String assertMessage) {
         try {
-            matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
             // Check for 2 decimals of % value is enough --> Readable assertion message
             ASSERT.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
             // In case of optional or collected assertions

@@ -52,11 +52,6 @@ public final class PdfUtils {
     private static final Logger LOG = LoggerFactory.getLogger(PdfUtils.class);
 
     /**
-     * Dpi value for image rendering.
-     */
-    private static final int dpi = 150;
-
-    /**
      * Hide constructor.
      */
     private PdfUtils() {
@@ -144,14 +139,14 @@ public final class PdfUtils {
      * Create an image for each page from pdf file in the given path
      *
      * @param pdfFileLocation Absolute path of file
-     * @return A list of image files with one image per page of the pdf TODO: improve javadoc
+     * @return A list of rendered image files
      */
-    public static List<File> pdfToImage(String pdfFileLocation) {
+    public static List<File> pdfToImage(String pdfFileLocation, int dpi) {
         File pdfFile = new File(pdfFileLocation);
         PdfUtils.checkFile(pdfFile);
 
         try {
-            return PdfUtils.pdfToImage(new FileInputStream(pdfFile));
+            return PdfUtils.pdfToImage(new FileInputStream(pdfFile), dpi);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Error reading pdf file", e);
         }
@@ -161,9 +156,9 @@ public final class PdfUtils {
      * Create an image for each page from pdf file in the given url
      *
      * @param stream File stream
-     * @return A list of image files with one image per page of the pdf TODO: improve javadoc
+     * @return A list of rendered image files
      */
-    public static List<File> pdfToImage(InputStream stream) {
+    public static List<File> pdfToImage(InputStream stream, int dpi) {
         List<File> files = new ArrayList<>();
 
         PDDocument pdDoc = getPdDocument(stream);
@@ -173,7 +168,7 @@ public final class PdfUtils {
         String fileName = PdfUtils.getParsedDocumentName(pdDoc);
 
         for (int i = 1; i <= numberOfPages; i++) {
-            files.add(PdfUtils.renderImage(renderer, i, fileName));
+            files.add(PdfUtils.renderImage(renderer, dpi, i, fileName));
         }
 
         return files;
@@ -184,14 +179,14 @@ public final class PdfUtils {
      *
      * @param pdfFileLocation Absolute path of file
      * @param pageNumber The number of the page
-     * @return A list of image files with one image per page of the pdf TODO: improve javadoc
+     * @return A list of rendered image files
      */
-    public static File pdfToImage(String pdfFileLocation, int pageNumber) {
+    public static File pdfToImage(String pdfFileLocation, int dpi, int pageNumber) {
         File pdfFile = new File(pdfFileLocation);
         PdfUtils.checkFile(pdfFile);
 
         try {
-            return pdfToImage(new FileInputStream(pdfFile), pageNumber);
+            return pdfToImage(new FileInputStream(pdfFile), dpi, pageNumber);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Error reading pdf file", e);
         }
@@ -202,16 +197,16 @@ public final class PdfUtils {
      *
      * @param stream File stream
      * @param pageNumber The number of the page
-     * @return A list of image files with one image per page of the pdf TODO: improve javadoc
+     * @return A list of rendered image files
      */
-    public static File pdfToImage(InputStream stream, int pageNumber) {
+    public static File pdfToImage(InputStream stream, int dpi, int pageNumber) {
         PDDocument pdDoc = getPdDocument(stream);
         PdfUtils.checkPageIndex(pdDoc, pageNumber);
 
         PDFRenderer renderer = new PDFRenderer(pdDoc);
         String fileName = PdfUtils.getParsedDocumentName(pdDoc);
 
-        return PdfUtils.renderImage(renderer, pageNumber, fileName);
+        return PdfUtils.renderImage(renderer, dpi, pageNumber, fileName);
     }
 
     /**
@@ -264,11 +259,11 @@ public final class PdfUtils {
             pdDoc = Loader.loadPDF(IOUtils.toByteArray(stream));
             return pdDoc;
         } catch (IOException e) {
-            throw new RuntimeException("File cannot be loaded: It is not a valid PDF document.", e);
+            throw new RuntimeException("File cannot be loaded: Not a valid PDF document.", e);
         }
     }
 
-    private static File renderImage(PDFRenderer renderer, int pageNumber, String fileName) {
+    private static File renderImage(PDFRenderer renderer, int dpi, int pageNumber, String fileName) {
         BufferedImage actualImage;
         try {
             actualImage = renderer.renderImageWithDPI(pageNumber - 1, dpi);

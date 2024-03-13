@@ -95,7 +95,7 @@ public final class PdfUtils {
     }
 
     /**
-     * Get content of one page of the pdf as string.
+     * Get content of one specific page of pdf as string.
      *
      * @param pdfFileLocation Absolute path of file
      * @param pageNumber The number of the page
@@ -112,7 +112,7 @@ public final class PdfUtils {
     }
 
     /**
-     * Get content of one page of the pdf as string.
+     * Get content of one specific page of pdf as string.
      *
      * @param stream File stream
      * @param pageNumber The number of the page
@@ -136,7 +136,7 @@ public final class PdfUtils {
     }
 
     /**
-     * Create an image for each page from pdf file in the given path
+     * Create an image for each page of pdf.
      *
      * @param pdfFileLocation Absolute path of file
      * @return A list of rendered image files
@@ -153,7 +153,7 @@ public final class PdfUtils {
     }
 
     /**
-     * Create an image for each page from pdf file in the given url
+     * Create an image for each page of pdf.
      *
      * @param stream File stream
      * @return A list of rendered image files
@@ -175,7 +175,7 @@ public final class PdfUtils {
     }
 
     /**
-     * Create an image for a specific page from pdf file in the given path
+     * Create an image for one specific page of pdf.
      *
      * @param pdfFileLocation Absolute path of file
      * @param pageNumber The number of the page
@@ -193,7 +193,7 @@ public final class PdfUtils {
     }
 
     /**
-     * Create an image for a specific page from the given input stream
+     * Create an image for one specific page of pdf.
      *
      * @param stream File stream
      * @param pageNumber The number of the page
@@ -209,12 +209,6 @@ public final class PdfUtils {
         return PdfUtils.renderImage(renderer, dpi, pageNumber, fileName);
     }
 
-    /**
-     * Get the number of pages from pdf.
-     *
-     * @param pdfFileLocation Absolute path of file
-     * @return Amount of pages the pdf file has
-     */
     public static int getNumberOfPages(String pdfFileLocation) {
         File pdfFile = new File(pdfFileLocation);
         PdfUtils.checkFile(pdfFile);
@@ -226,12 +220,6 @@ public final class PdfUtils {
         }
     }
 
-    /**
-     * Get the number of pages from pdf.
-     *
-     * @param stream File stream
-     * @return Amount of pages the pdf file has
-     */
     public static int getNumberOfPages(InputStream stream) {
         PDDocument pdDoc = getPdDocument(stream);
         int numberOfPages = pdDoc.getNumberOfPages();
@@ -240,6 +228,12 @@ public final class PdfUtils {
         return numberOfPages;
     }
 
+    /**
+     * Check if the page exists inside the pdf document.
+     *
+     * @param pdDoc The pdf document to check
+     * @param pageNumber The page that should exist in the pdf
+     */
     private static void checkPageIndex(PDDocument pdDoc, int pageNumber) {
         int numberOfPages = pdDoc.getNumberOfPages();
         if (pageNumber > numberOfPages || pageNumber < 1) {
@@ -253,6 +247,12 @@ public final class PdfUtils {
         }
     }
 
+    /**
+     * Uses the loader class to create the PDDocument.
+     *
+     * @param stream The content of the pdf file as an InputStream
+     * @return The loaded pdf document
+     */
     private static PDDocument getPdDocument(InputStream stream) {
         PDDocument pdDoc;
         try {
@@ -263,6 +263,15 @@ public final class PdfUtils {
         }
     }
 
+    /**
+     * Uses the renderer to generate an image and save it to a file.
+     *
+     * @param renderer The renderer that should be used
+     * @param dpi The amount of dots per inch the image should be rendered with
+     * @param pageNumber The page that should be saved as an Image
+     * @param fileName The name under which the image is saved
+     * @return The loaded pdf document
+     */
     private static File renderImage(PDFRenderer renderer, int dpi, int pageNumber, String fileName) {
         BufferedImage actualImage;
         try {

@@ -460,6 +460,13 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         return step.actualFileDimension.equals(step.referenceFileDimension);
     }
 
+    /**
+     * Check the layout of the current browser window using a reference image.
+     *
+     * @param webDriver The actual image file
+     * @param targetImageName The name of the reference image
+     * @param confidenceThreshold A value that defines a threshold for the layout check
+     */
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
         final String assertMessage = String.format("pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
 
@@ -467,6 +474,13 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);
     }
 
+    /**
+     * Check the layout of an image file using a reference image.
+     *
+     * @param screenshot The actual image file
+     * @param targetImageName The name of the reference image
+     * @param confidenceThreshold A value that defines a threshold for the layout check
+     */
     public static void assertImage(File screenshot, String targetImageName, double confidenceThreshold) {
         final String assertMessage = String.format("pixel distance (%%) of pdf-page-screenshot '%s' to image '%s'", screenshot.getName(), targetImageName);
 

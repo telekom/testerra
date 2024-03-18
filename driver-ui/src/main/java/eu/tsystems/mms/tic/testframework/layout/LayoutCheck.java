@@ -159,14 +159,14 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
         step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();
         if (step.takeReferenceOnly) {
-            // take reference screenshot
+            // create reference image
             try {
                 FileUtils.copyFile(screenshot, step.referenceFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new SystemException("Error when saving reference screenshot.", e);
+                throw new SystemException("Error when saving reference image.", e);
             }
-            LOGGER.info(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
+            LOGGER.info(String.format("Saved reference image at '%s'.", step.referenceFileName.toString()));
         } else {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
 
@@ -178,9 +178,9 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
                 FileUtils.copyFile(screenshot, step.actualFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new SystemException("Error when saving screenshot.", e);
+                throw new SystemException("Error when saving image.", e);
             }
-            LOGGER.debug(String.format("Saved actual screenshot at '%s'.", step.actualFileName.toString()));
+            LOGGER.debug(String.format("Saved actual image at '%s'.", step.actualFileName.toString()));
 
             // create distance file name
             step.distanceFileName = distanceImagesDir.resolve(
@@ -463,7 +463,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     /**
      * Check the layout of the current browser window using a reference image.
      *
-     * @param webDriver The actual image file
+     * @param webDriver WebDriver instance
      * @param targetImageName The name of the reference image
      * @param confidenceThreshold A value that defines a threshold for the layout check
      */
@@ -477,18 +477,18 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     /**
      * Check the layout of an image file using a reference image.
      *
-     * @param screenshot The actual image file
+     * @param image The actual image file
      * @param targetImageName The name of the reference image
      * @param confidenceThreshold A value that defines a threshold for the layout check
      */
-    public static void assertImage(File screenshot, String targetImageName, double confidenceThreshold) {
-        final String assertMessage = String.format("pixel distance (%%) of pdf-page-screenshot '%s' to image '%s'", screenshot.getName(), targetImageName);
+    public static void assertImage(File image, String targetImageName, double confidenceThreshold) {
+        final String assertMessage = String.format("pixel distance (%%) of image '%s' to image '%s'", image.getName(), targetImageName);
 
-        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(screenshot, targetImageName);
+        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(image, targetImageName);
         assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);
     }
 
-    public static void assertWithLayoutCheck(MatchStep matchStep, double confidenceThreshold, String assertMessage) {
+    private static void assertWithLayoutCheck(MatchStep matchStep, double confidenceThreshold, String assertMessage) {
         try {
             // Check for 2 decimals of % value is enough --> Readable assertion message
             ASSERT.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);

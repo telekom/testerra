@@ -117,27 +117,28 @@ public class MethodRelations {
                         .forEach(methodContext::addDependsOnMethod);
             }
 
-            if (methodContext.getTestNgResult().get().getMethod().isDataDriven()) {
-                IDataProviderMethod dataProviderMethod = methodContext.getTestNgResult().get().getMethod().getDataProviderMethod();
-                // Can be null if test methods points to a non-existent data provider
-                if (dataProviderMethod != null) {
-                    String dpMethod = dataProviderMethod.getMethod().toString();
-                    MethodContext dpContext = dataProviderMap.get(dpMethod);
-                    if (dpContext != null) {
-                        dpContext.addRelatedMethodContext(methodContext);
-                        methodContext.addRelatedMethodContext(dpContext);
+            methodContext.getTestNgResult().ifPresent(testNgResult -> {
+                if (testNgResult.getMethod().isDataDriven()) {
+                    IDataProviderMethod dataProviderMethod = testNgResult.getMethod().getDataProviderMethod();
+                    // Can be null if test methods points to a non-existent data provider
+                    if (dataProviderMethod != null) {
+                        String dpMethod = dataProviderMethod.getMethod().toString();
+                        MethodContext dpContext = dataProviderMap.get(dpMethod);
+                        if (dpContext != null) {
+                            dpContext.addRelatedMethodContext(methodContext);
+                            methodContext.addRelatedMethodContext(dpContext);
+                        }
                     }
                 }
-            }
+            });
         }
     }
 
     private static void handleCurrentContext(Method method, MethodContext methodContext) {
         boolean addToList = true;
         boolean isTestMethod = !methodContext.isConfigMethod();
-        boolean isDataProvider = method.getAnnotation(DataProvider.class) != null;
 
-        if (isDataProvider) {
+        if (method.getAnnotation(DataProvider.class) != null) {
             dataProviderMap.put(method.toString(), methodContext);
             return;
         }

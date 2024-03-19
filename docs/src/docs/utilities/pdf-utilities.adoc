@@ -1,6 +1,10 @@
 = PDF Utilities
 
-This is an utility class for extracting text content of PDF documents for verifications.
+This is an utility class for handling and retrieving information from PDF files, such as text content or the amount of pages.
+
+== Extracting text
+
+It is possible to extract text content of whole PDF documents or just one specific page for verifications.
 
 [source,java]
 ----
@@ -10,6 +14,11 @@ String textFromPdf = PdfUtils.getStringFromPdf(String pdfFileLocation);
 
 [source,java]
 ----
-//reads text from a pdf given as input steam.
-String textFromPdf = PdfUtils.getStringFromPdf(InputStream stream);
+//reads text from only one page of a pdf given as input steam.
+String textFromPdf = PdfUtils.getStringFromPdf(InputStream stream, int pageIndex);
 ----
+
+== Exporting images
+
+It is also possible to use methods of this class to render an image for one specific page of the PDF or export the entire document to multiple images.
+That way you can save reference images and use them for visual comparison of PDF files by using the `assertImage` method of <<#_layout_check, Layout Check>>.

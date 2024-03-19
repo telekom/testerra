@@ -482,7 +482,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
      * @param confidenceThreshold A value that defines a threshold for the layout check
      */
     public static void assertImage(File image, String targetImageName, double confidenceThreshold) {
-        final String assertMessage = String.format("pixel distance (%%) of image '%s' to image '%s'", image.getName(), targetImageName);
+        final String assertMessage = String.format("pixel distance (%%) of '%s' to image '%s'", image.getName(), targetImageName);
 
         LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(image, targetImageName);
         assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);

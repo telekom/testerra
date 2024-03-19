@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Class for Reading Pdfs
@@ -95,30 +94,29 @@ public final class PdfUtils {
      * Get content of one specific page of pdf as string.
      *
      * @param pdfFileLocation Absolute path of file
-     * @param pageIndex The index of the page
+     * @param pageNumber The number of the page
      * @return PDF page content as String
      */
-    public static String getStringFromPdf(String pdfFileLocation, int pageIndex) {
+    public static String getStringFromPdf(String pdfFileLocation, int pageNumber) {
         File pdfFile = new File(pdfFileLocation);
         FileInputStream stream = PdfUtils.getFileInputStream(pdfFile);
-        return getStringFromPdf(stream, pageIndex);
+        return getStringFromPdf(stream, pageNumber);
     }
 
     /**
      * Get content of one specific page of pdf as string.
      *
      * @param stream File stream
-     * @param pageIndex The index of the page
+     * @param pageNumber The number of the page
      * @return PDF page content as String
      */
-    public static String getStringFromPdf(InputStream stream, int pageIndex) {
+    public static String getStringFromPdf(InputStream stream, int pageNumber) {
         PDDocument pdDoc = getPdDocument(stream);
-        PdfUtils.checkPageIndex(pdDoc, pageIndex);
+        PdfUtils.checkPageNumber(pdDoc, pageNumber);
 
         PDFTextStripper stripper = new PDFTextStripper();
-        // PDFTextStripper doesn't use the index of a page but rather the actual number of the page
-        stripper.setStartPage(pageIndex + 1);
-        stripper.setEndPage(pageIndex + 1);
+        stripper.setStartPage(pageNumber);
+        stripper.setEndPage(pageNumber);
         try {
             return stripper.getText(pdDoc);
         } catch (IOException e) {
@@ -154,13 +152,13 @@ public final class PdfUtils {
         List<File> files = new ArrayList<>();
 
         PDDocument pdDoc = getPdDocument(stream);
-        int maxPageIndex = pdDoc.getNumberOfPages() - 1;
+        int maxPageNumber = pdDoc.getNumberOfPages();
         PDFRenderer renderer = new PDFRenderer(pdDoc);
 
         String filesPath = PdfUtils.getParsedDocumentPath(fileName);
 
-        for (int index = 0; index <= maxPageIndex; index++) {
-            files.add(PdfUtils.renderImage(renderer, dpi, index, filesPath));
+        for (int pageNumber = 1; pageNumber <= maxPageNumber; pageNumber++) {
+            files.add(PdfUtils.renderImage(renderer, dpi, pageNumber, filesPath));
         }
 
         return files;
@@ -171,14 +169,14 @@ public final class PdfUtils {
      *
      * @param pdfFileLocation Absolute path of file
      * @param dpi The resolution of the rendered image
-     * @param pageIndex The index of the page
+     * @param pageNumber The number of the page
      * @return A list of rendered image files
      */
-    public static File pdfToImage(String pdfFileLocation, int dpi, int pageIndex) {
+    public static File pdfToImage(String pdfFileLocation, int dpi, int pageNumber) {
         File pdfFile = new File(pdfFileLocation);
         FileInputStream stream = PdfUtils.getFileInputStream(pdfFile);
         String fileName = pdfFile.getName();
-        return pdfToImage(stream, dpi, fileName, pageIndex);
+        return pdfToImage(stream, dpi, fileName, pageNumber);
     }
 
     /**
@@ -187,17 +185,17 @@ public final class PdfUtils {
      * @param stream File stream
      * @param dpi The resolution of the rendered image
      * @param fileName The designated filename for saving the rendered images
-     * @param pageIndex The index of the page
+     * @param pageNumber The number of the page
      * @return A list of rendered image files
      */
-    public static File pdfToImage(InputStream stream, int dpi, String fileName, int pageIndex) {
+    public static File pdfToImage(InputStream stream, int dpi, String fileName, int pageNumber) {
         PDDocument pdDoc = getPdDocument(stream);
-        PdfUtils.checkPageIndex(pdDoc, pageIndex);
+        PdfUtils.checkPageNumber(pdDoc, pageNumber);
 
         PDFRenderer renderer = new PDFRenderer(pdDoc);
         String filePath = PdfUtils.getParsedDocumentPath(fileName);
 
-        return PdfUtils.renderImage(renderer, dpi, pageIndex, filePath);
+        return PdfUtils.renderImage(renderer, dpi, pageNumber, filePath);
     }
 
     public static int getNumberOfPages(String pdfFileLocation) {
@@ -218,16 +216,16 @@ public final class PdfUtils {
      * Check if the page exists inside the pdf document.
      *
      * @param pdDoc The pdf document to check
-     * @param pageIndex The page that should exist in the pdf
+     * @param pageNumber The page that should exist in the pdf
      */
-    private static void checkPageIndex(PDDocument pdDoc, int pageIndex) {
-        int maxPageIndex = pdDoc.getNumberOfPages() - 1;
-        if (pageIndex > maxPageIndex || pageIndex < 0) {
-            String errorMessage = "Page with index [" + pageIndex + "] does not exist in document.";
-            if (maxPageIndex == 0) {
+    private static void checkPageNumber(PDDocument pdDoc, int pageNumber) {
+        int maxPageNumber = pdDoc.getNumberOfPages();
+        if (pageNumber > maxPageNumber || pageNumber < 1) {
+            String errorMessage = "Page " + pageNumber + " does not exist in document.";
+            if (maxPageNumber == 1) {
                 errorMessage = errorMessage + " Pdf file only contains one page.";
             } else {
-                errorMessage = errorMessage + " Choose a page index in range [0," + maxPageIndex + "].";
+                errorMessage = errorMessage + " Choose a page number in range [1," + maxPageNumber + "].";
             }
             throw new RuntimeException(errorMessage);
         }
@@ -254,18 +252,19 @@ public final class PdfUtils {
      *
      * @param renderer The renderer that should be used
      * @param dpi The amount of dots per inch the image should be rendered with
-     * @param pageIndex The index of the page that should be saved as an Image
+     * @param pageNumber The number of the page that should be saved as an Image
      * @param documentPath The path and name under which the image is saved
      * @return The loaded pdf document
      */
-    private static File renderImage(PDFRenderer renderer, int dpi, int pageIndex, String documentPath) {
+    private static File renderImage(PDFRenderer renderer, int dpi, int pageNumber, String documentPath) {
         BufferedImage actualImage;
         try {
-            actualImage = renderer.renderImageWithDPI(pageIndex, dpi);
+            // PDFRenderer doesn't use the number of a page but rather the index starting at 0
+            actualImage = renderer.renderImageWithDPI(pageNumber - 1, dpi);
         } catch (IOException e) {
             throw new RuntimeException("Error rendering image", e);
         }
-        String imagePath = documentPath + "_" + pageIndex + ".png";
+        String imagePath = documentPath + "_page" + pageNumber + ".png";
         File imageFile = new File(imagePath);
         try {
             ImageIO.write(actualImage, "png", imageFile);
@@ -276,15 +275,14 @@ public final class PdfUtils {
     }
 
     private static String getParsedDocumentPath(String fileName) {
-        if (fileName != null) {
-            fileName = fileName.toLowerCase().replace(" ", "_");
-        } else {
+        if (fileName == null) {
             fileName = "pdf_document";
         }
 
-        File dir = new File(System.getProperty("java.io.tmpdir") + "/" + UUID.randomUUID());
-        dir.mkdirs();
-        return dir.getAbsolutePath() + "/" + fileName;
+        FileUtils utils = new FileUtils();
+        File tempDir = utils.createTempDir(fileName);
+
+        return tempDir.getAbsolutePath() + File.separator + fileName;
     }
 
     private static void closeDocument(PDDocument pdDoc) {

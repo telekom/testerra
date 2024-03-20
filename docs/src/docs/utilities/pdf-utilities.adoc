@@ -22,3 +22,23 @@ String textFromPdf = PdfUtils.getStringFromPdf(InputStream stream, int pageIndex
 
 It is also possible to use methods of this class to render an image for one specific page of the PDF or export the entire document to multiple images.
 That way you can save reference images and use them for visual comparison of PDF files by using the `assertImage` method of <<#_layout_check, Layout Check>>.
+
+
+In the following example all pages of the locally saved PDF "TestDocument.pdf" are testet with a layout check.
+[source,java]
+----
+int dpi = 150;
+int confidenceThreshold = 5;
+String absoluteFilePath = FileUtils.getAbsoluteFilePath("testfiles/TestDocument.pdf");
+
+List<File> actualImages = PdfUtils.pdfToImage(absoluteFilePath, dpi);
+
+for (File image : actualImages) {
+    String referenceName = FilenameUtils.removeExtension(image.getName());
+    LayoutCheck.assertImage(image, referenceName, confidenceThreshold);
+}
+----
+
+Using the `PdfUtils`, images of all pages are rendered with a resolution of 150 dpi.
+The received list of files allows to iterate through it and call the `assertImage` method to visually check each page.
+In this case, the reference images are named in the same way as the actual images, so that the whole document can be easily checked in a simple loop.

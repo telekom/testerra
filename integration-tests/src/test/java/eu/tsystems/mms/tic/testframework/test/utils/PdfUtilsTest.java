@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
+package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
@@ -31,12 +31,12 @@ import org.testng.annotations.Test;
 
 /**
  * @author wakr
- *
  */
 public class PdfUtilsTest extends TesterraTest {
 
     private final String errorMessage = "Error while opening pdf and reading the target text";
     private final String testfile = "testfiles/Test.pdf";
+    private final String testDocument = "testfiles/TestDocument.pdf";
 
     /**
      * Test of pdf-conversion
@@ -78,8 +78,17 @@ public class PdfUtilsTest extends TesterraTest {
         Assert.assertFalse(content.contains("13"), errorMessage);
     }
 
+    @Test
+    public void testT05_PdfConverting_ContentOnPageFound() throws FileNotFoundException {
+        String absoluteFilePath = FileUtils.getAbsoluteFilePath(testDocument);
+        String content = PdfUtils.getStringFromPdf(absoluteFilePath, 2);
+        Assert.assertTrue(content.contains("This is page 2 of 2"), errorMessage);
+    }
+
+    @Test
+    public void testT06_PdfConverting_ContentOnPageNotFound() throws FileNotFoundException {
+        String absoluteFilePath = FileUtils.getAbsoluteFilePath(testDocument);
+        String content = PdfUtils.getStringFromPdf(absoluteFilePath, 2);
+        Assert.assertFalse(content.contains("This is page 1 of 2"), errorMessage);
+    }
 }
-
-
-
-

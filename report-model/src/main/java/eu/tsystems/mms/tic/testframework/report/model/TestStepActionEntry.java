@@ -110,6 +110,12 @@ private static final long serialVersionUID = 0L;
             entryCase_ = 5;
             break;
           }
+          case 50: {
+            java.lang.String s = input.readStringRequireUtf8();
+            entryCase_ = 6;
+            entry_ = s;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -149,9 +155,10 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     CLICK_PATH_EVENT(1),
     SCREENSHOT_ID(2),
-    LOG_MESSAGE(3),
+    @java.lang.Deprecated LOG_MESSAGE(3),
     @java.lang.Deprecated ASSERTION(4),
     ERROR_CONTEXT(5),
+    LOG_MESSAGE_ID(6),
     ENTRY_NOT_SET(0);
     private final int value;
     private EntryCase(int value) {
@@ -174,6 +181,7 @@ private static final long serialVersionUID = 0L;
         case 3: return LOG_MESSAGE;
         case 4: return ASSERTION;
         case 5: return ERROR_CONTEXT;
+        case 6: return LOG_MESSAGE_ID;
         case 0: return ENTRY_NOT_SET;
         default: return null;
       }
@@ -267,29 +275,29 @@ private static final long serialVersionUID = 0L;
 
   public static final int LOG_MESSAGE_FIELD_NUMBER = 3;
   /**
-   * <code>.data.LogMessage log_message = 3;</code>
+   * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
    * @return Whether the logMessage field is set.
    */
   @java.lang.Override
-  public boolean hasLogMessage() {
+  @java.lang.Deprecated public boolean hasLogMessage() {
     return entryCase_ == 3;
   }
   /**
-   * <code>.data.LogMessage log_message = 3;</code>
+   * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
    * @return The logMessage.
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage() {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage() {
     if (entryCase_ == 3) {
        return (eu.tsystems.mms.tic.testframework.report.model.LogMessage) entry_;
     }
     return eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance();
   }
   /**
-   * <code>.data.LogMessage log_message = 3;</code>
+   * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder() {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder() {
     if (entryCase_ == 3) {
        return (eu.tsystems.mms.tic.testframework.report.model.LogMessage) entry_;
     }
@@ -358,6 +366,51 @@ private static final long serialVersionUID = 0L;
     return eu.tsystems.mms.tic.testframework.report.model.ErrorContext.getDefaultInstance();
   }
 
+  public static final int LOG_MESSAGE_ID_FIELD_NUMBER = 6;
+  /**
+   * <code>string log_message_id = 6;</code>
+   * @return The logMessageId.
+   */
+  public java.lang.String getLogMessageId() {
+    java.lang.Object ref = "";
+    if (entryCase_ == 6) {
+      ref = entry_;
+    }
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (entryCase_ == 6) {
+        entry_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <code>string log_message_id = 6;</code>
+   * @return The bytes for logMessageId.
+   */
+  public com.google.protobuf.ByteString
+      getLogMessageIdBytes() {
+    java.lang.Object ref = "";
+    if (entryCase_ == 6) {
+      ref = entry_;
+    }
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      if (entryCase_ == 6) {
+        entry_ = b;
+      }
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -387,6 +440,9 @@ private static final long serialVersionUID = 0L;
     if (entryCase_ == 5) {
       output.writeMessage(5, (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_);
     }
+    if (entryCase_ == 6) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, entry_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -414,6 +470,9 @@ private static final long serialVersionUID = 0L;
     if (entryCase_ == 5) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, (eu.tsystems.mms.tic.testframework.report.model.ErrorContext) entry_);
+    }
+    if (entryCase_ == 6) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, entry_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -452,6 +511,10 @@ private static final long serialVersionUID = 0L;
         if (!getErrorContext()
             .equals(other.getErrorContext())) return false;
         break;
+      case 6:
+        if (!getLogMessageId()
+            .equals(other.getLogMessageId())) return false;
+        break;
       case 0:
       default:
     }
@@ -486,6 +549,10 @@ private static final long serialVersionUID = 0L;
       case 5:
         hash = (37 * hash) + ERROR_CONTEXT_FIELD_NUMBER;
         hash = (53 * hash) + getErrorContext().hashCode();
+        break;
+      case 6:
+        hash = (37 * hash) + LOG_MESSAGE_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getLogMessageId().hashCode();
         break;
       case 0:
       default:
@@ -682,6 +749,9 @@ private static final long serialVersionUID = 0L;
           result.entry_ = errorContextBuilder_.build();
         }
       }
+      if (entryCase_ == 6) {
+        result.entry_ = entry_;
+      }
       result.entryCase_ = entryCase_;
       onBuilt();
       return result;
@@ -752,6 +822,12 @@ private static final long serialVersionUID = 0L;
         }
         case ERROR_CONTEXT: {
           mergeErrorContext(other.getErrorContext());
+          break;
+        }
+        case LOG_MESSAGE_ID: {
+          entryCase_ = 6;
+          entry_ = other.entry_;
+          onChanged();
           break;
         }
         case ENTRY_NOT_SET: {
@@ -1035,19 +1111,19 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> logMessageBuilder_;
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      * @return Whether the logMessage field is set.
      */
     @java.lang.Override
-    public boolean hasLogMessage() {
+    @java.lang.Deprecated public boolean hasLogMessage() {
       return entryCase_ == 3;
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      * @return The logMessage.
      */
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage() {
       if (logMessageBuilder_ == null) {
         if (entryCase_ == 3) {
           return (eu.tsystems.mms.tic.testframework.report.model.LogMessage) entry_;
@@ -1061,9 +1137,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      */
-    public Builder setLogMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
+    @java.lang.Deprecated public Builder setLogMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessageBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1077,9 +1153,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      */
-    public Builder setLogMessage(
+    @java.lang.Deprecated public Builder setLogMessage(
         eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessageBuilder_ == null) {
         entry_ = builderForValue.build();
@@ -1091,9 +1167,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      */
-    public Builder mergeLogMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
+    @java.lang.Deprecated public Builder mergeLogMessage(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessageBuilder_ == null) {
         if (entryCase_ == 3 &&
             entry_ != eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance()) {
@@ -1113,9 +1189,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      */
-    public Builder clearLogMessage() {
+    @java.lang.Deprecated public Builder clearLogMessage() {
       if (logMessageBuilder_ == null) {
         if (entryCase_ == 3) {
           entryCase_ = 0;
@@ -1132,16 +1208,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessageBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessageBuilder() {
       return getLogMessageFieldBuilder().getBuilder();
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      */
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder() {
       if ((entryCase_ == 3) && (logMessageBuilder_ != null)) {
         return logMessageBuilder_.getMessageOrBuilder();
       } else {
@@ -1152,7 +1228,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.LogMessage log_message = 3;</code>
+     * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
@@ -1453,6 +1529,95 @@ private static final long serialVersionUID = 0L;
       entryCase_ = 5;
       onChanged();;
       return errorContextBuilder_;
+    }
+
+    /**
+     * <code>string log_message_id = 6;</code>
+     * @return The logMessageId.
+     */
+    @java.lang.Override
+    public java.lang.String getLogMessageId() {
+      java.lang.Object ref = "";
+      if (entryCase_ == 6) {
+        ref = entry_;
+      }
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (entryCase_ == 6) {
+          entry_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string log_message_id = 6;</code>
+     * @return The bytes for logMessageId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getLogMessageIdBytes() {
+      java.lang.Object ref = "";
+      if (entryCase_ == 6) {
+        ref = entry_;
+      }
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        if (entryCase_ == 6) {
+          entry_ = b;
+        }
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string log_message_id = 6;</code>
+     * @param value The logMessageId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setLogMessageId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  entryCase_ = 6;
+      entry_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string log_message_id = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearLogMessageId() {
+      if (entryCase_ == 6) {
+        entryCase_ = 0;
+        entry_ = null;
+        onChanged();
+      }
+      return this;
+    }
+    /**
+     * <code>string log_message_id = 6;</code>
+     * @param value The bytes for logMessageId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setLogMessageIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      entryCase_ = 6;
+      entry_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

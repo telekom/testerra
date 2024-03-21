@@ -76,6 +76,13 @@ export class DataLoader {
             })
     }
 
+    getLogMessages() {
+        return this.get("model/logMessages")
+            .then(response => {
+                return this.responseToProtobufJSMessage(response, data.LogMessageAggregate)
+            })
+    }
+
     getFile(id: string){
         return this.get("model/files/" + id)
             .then(response => {

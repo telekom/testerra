@@ -155,11 +155,15 @@ export interface ExecutionContext {
   jobId?: string | undefined;
   runId?: string | undefined;
   taskId?: string | undefined;
-  exclusiveSessionContextIds?: string[] | undefined;
+  exclusiveSessionContextIds?:
+    | string[]
+    | undefined;
+  /** @deprecated */
   logMessages?: LogMessage[] | undefined;
   estimatedTestsCount?: number | undefined;
   failureCorridorLimits?: { [key: number]: number } | undefined;
   failureCorridorCounts?: { [key: number]: number } | undefined;
+  logMessageIds?: string[] | undefined;
 }
 
 export interface ExecutionContext_FailureCorridorLimitsEntry {
@@ -297,13 +301,17 @@ export interface TestStepAction {
 
 export interface TestStepActionEntry {
   clickPathEvent?: ClickPathEvent | undefined;
-  screenshotId?: string | undefined;
+  screenshotId?:
+    | string
+    | undefined;
+  /** @deprecated */
   logMessage?:
     | LogMessage
     | undefined;
   /** @deprecated */
   assertion?: ErrorContext | undefined;
   errorContext?: ErrorContext | undefined;
+  logMessageId?: string | undefined;
 }
 
 export interface ClickPathEvent {
@@ -320,6 +328,7 @@ export interface LogMessage {
   threadName?: string | undefined;
   stackTrace?: StackTraceCause[] | undefined;
   prompt?: boolean | undefined;
+  id?: string | undefined;
 }
 
 export interface ErrorContext {
@@ -698,6 +707,7 @@ function createBaseExecutionContext(): ExecutionContext {
     estimatedTestsCount: 0,
     failureCorridorLimits: {},
     failureCorridorCounts: {},
+    logMessageIds: [],
   };
 }
 
@@ -747,6 +757,11 @@ export const ExecutionContext = {
       ExecutionContext_FailureCorridorCountsEntry.encode({ key: key as any, value }, writer.uint32(138).fork())
         .ldelim();
     });
+    if (message.logMessageIds !== undefined && message.logMessageIds.length !== 0) {
+      for (const v of message.logMessageIds) {
+        writer.uint32(146).string(v!);
+      }
+    }
     return writer;
   },
 
@@ -846,6 +861,13 @@ export const ExecutionContext = {
           if (entry17.value !== undefined) {
             message.failureCorridorCounts![entry17.key] = entry17.value;
           }
+          continue;
+        case 18:
+          if (tag !== 146) {
+            break;
+          }
+
+          message.logMessageIds!.push(reader.string());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1588,6 +1610,7 @@ function createBaseTestStepActionEntry(): TestStepActionEntry {
     logMessage: undefined,
     assertion: undefined,
     errorContext: undefined,
+    logMessageId: undefined,
   };
 }
 
@@ -1607,6 +1630,9 @@ export const TestStepActionEntry = {
     }
     if (message.errorContext !== undefined) {
       ErrorContext.encode(message.errorContext, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.logMessageId !== undefined) {
+      writer.uint32(50).string(message.logMessageId);
     }
     return writer;
   },
@@ -1652,6 +1678,13 @@ export const TestStepActionEntry = {
           }
 
           message.errorContext = ErrorContext.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.logMessageId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1720,7 +1753,7 @@ export const ClickPathEvent = {
 };
 
 function createBaseLogMessage(): LogMessage {
-  return { type: 0, loggerName: "", message: "", timestamp: 0, threadName: "", stackTrace: [], prompt: false };
+  return { type: 0, loggerName: "", message: "", timestamp: 0, threadName: "", stackTrace: [], prompt: false, id: "" };
 }
 
 export const LogMessage = {
@@ -1747,6 +1780,9 @@ export const LogMessage = {
     }
     if (message.prompt === true) {
       writer.uint32(56).bool(message.prompt);
+    }
+    if (message.id !== undefined && message.id !== "") {
+      writer.uint32(66).string(message.id);
     }
     return writer;
   },
@@ -1806,6 +1842,13 @@ export const LogMessage = {
           }
 
           message.prompt = reader.bool();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

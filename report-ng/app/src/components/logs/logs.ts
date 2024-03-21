@@ -70,58 +70,41 @@ export class Logs extends AbstractViewModel {
         }
     }
 
-    private _filter() {
+    private async _filter() {
         this._loading = true;
-        this._statistics.getExecutionStatistics().then(executionStatistics => {
-            const logMessages:ILogEntry[] = [];
-            const logLevels = {};
+        const logMessages: ILogEntry[] = [];
+        const logLevels = {};
 
-            const filterPredicate = (this._selectedLogLevel ? (logMessage: data.LogMessage) => this._selectedLogLevel == logMessage.type : (logMessage: data.LogMessage) => logMessage);
+        const filterPredicate = (this._selectedLogLevel ? (logMessage: data.LogMessage) => this._selectedLogLevel == logMessage.type : (logMessage: data.LogMessage) => logMessage);
 
-            const collectLogLevel = (logMessage: data.LogMessage) => {
-                logLevels[logMessage.type] = 1;
-                return logMessage;
-            }
+        const collectLogLevel = (logMessage: data.LogMessage) => {
+            logLevels[logMessage.type] = 1;
+            return logMessage;
+        }
 
-            const add = (logEntry:ILogEntry) => {
-                logMessages.push(logEntry)
-            }
+        const add = (logEntry:ILogEntry) => {
+            logMessages.push(logEntry)
+        }
 
-            executionStatistics.executionAggregate.executionContext.logMessages
-                .map(collectLogLevel)
-                .filter(filterPredicate)
-                .forEach(add)
+        const logs = await this._statistics.getLogs()
+        Object.values(logs)
+            .map(collectLogLevel)
+            .filter(filterPredicate)
+            .forEach(add)
 
-            Object.values(executionStatistics.executionAggregate.methodContexts)
-                .forEach(methodContext => {
-                    methodContext.testSteps
-                        .flatMap(value => value.actions)
-                        .flatMap(value => value.entries)
-                        .filter(value => value.logMessage)
-                        .map(value => {
-                            const logEntry: ILogEntry = value.logMessage;
-                            logEntry.methodContext = methodContext;
-                            return logEntry;
-                        })
-                        .map(collectLogLevel)
-                        .filter(filterPredicate)
-                        .forEach(add)
+        this._logMessages = logMessages.sort((a, b) => a.timestamp - b.timestamp);
+
+        if (!this._availableLogLevels) {
+            this._availableLogLevels = [];
+            for (const level in logLevels) {
+                this._availableLogLevels.push({
+                    level: Number.parseInt(level),
                 });
-
-            this._logMessages = logMessages.sort((a, b) => a.timestamp-b.timestamp);
-
-            if (!this._availableLogLevels) {
-                this._availableLogLevels = [];
-                for (const level in logLevels) {
-                    this._availableLogLevels.push({
-                        level: Number.parseInt(level),
-                    });
-                }
             }
+        }
 
-            this._loading = false;
-            this.updateUrl(this.queryParams);
-        });
+        this._loading = false;
+        this.updateUrl(this.queryParams);
     }
 
     private _logLevelChanged() {

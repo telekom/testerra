@@ -15,3 +15,7 @@ message ExecutionAggregate {
     map<string, SessionContext> session_contexts = 6;
     TestMetrics test_metrics = 7;
 }
+
+message LogMessageAggregate {
+    map<string, LogMessage> log_messages = 1;
+}

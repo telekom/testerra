@@ -35,19 +35,19 @@ public interface TestStepActionEntryOrBuilder extends
       getScreenshotIdBytes();
 
   /**
-   * <code>.data.LogMessage log_message = 3;</code>
+   * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
    * @return Whether the logMessage field is set.
    */
-  boolean hasLogMessage();
+  @java.lang.Deprecated boolean hasLogMessage();
   /**
-   * <code>.data.LogMessage log_message = 3;</code>
+   * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
    * @return The logMessage.
    */
-  eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage();
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessage();
   /**
-   * <code>.data.LogMessage log_message = 3;</code>
+   * <code>.data.LogMessage log_message = 3 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder();
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessageOrBuilder();
 
   /**
    * <code>.data.ErrorContext assertion = 4 [deprecated = true];</code>
@@ -78,6 +78,18 @@ public interface TestStepActionEntryOrBuilder extends
    * <code>.data.ErrorContext error_context = 5;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getErrorContextOrBuilder();
+
+  /**
+   * <code>string log_message_id = 6;</code>
+   * @return The logMessageId.
+   */
+  java.lang.String getLogMessageId();
+  /**
+   * <code>string log_message_id = 6;</code>
+   * @return The bytes for logMessageId.
+   */
+  com.google.protobuf.ByteString
+      getLogMessageIdBytes();
 
   public eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry.EntryCase getEntryCase();
 }

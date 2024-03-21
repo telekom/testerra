@@ -160,27 +160,27 @@ public interface ExecutionContextOrBuilder extends
       getExclusiveSessionContextIdsBytes(int index);
 
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
-  java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> 
+  @java.lang.Deprecated java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> 
       getLogMessagesList();
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index);
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index);
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
-  int getLogMessagesCount();
+  @java.lang.Deprecated int getLogMessagesCount();
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
-  java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
+  @java.lang.Deprecated java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
       getLogMessagesOrBuilderList();
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
+  @java.lang.Deprecated eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
       int index);
 
   /**
@@ -256,4 +256,29 @@ public interface ExecutionContextOrBuilder extends
 
   int getFailureCorridorCountsOrThrow(
       int key);
+
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @return A list containing the logMessageIds.
+   */
+  java.util.List<java.lang.String>
+      getLogMessageIdsList();
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @return The count of logMessageIds.
+   */
+  int getLogMessageIdsCount();
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @param index The index of the element to return.
+   * @return The logMessageIds at the given index.
+   */
+  java.lang.String getLogMessageIds(int index);
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the logMessageIds at the given index.
+   */
+  com.google.protobuf.ByteString
+      getLogMessageIdsBytes(int index);
 }

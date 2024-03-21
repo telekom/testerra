@@ -20,6 +20,8 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.logging.Prompt;
 import java.util.Arrays;
@@ -42,6 +44,7 @@ public class LogMessage implements Serializable, Loggable {
     private final String message;
     private final Level level;
     private final boolean prompt;
+    private String id;
 
     /**
      * Creates a log message based on a Log4J log event
@@ -87,5 +90,12 @@ public class LogMessage implements Serializable, Loggable {
 
     public boolean isPrompt() {
         return prompt;
+    }
+
+    public String getId() {
+        if (this.id == null) {
+            this.id = Testerra.getInjector().getInstance(IdGenerator.class).generate().toString();
+        }
+        return this.id;
     }
 }

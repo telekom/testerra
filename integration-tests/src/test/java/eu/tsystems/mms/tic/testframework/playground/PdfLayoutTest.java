@@ -38,7 +38,7 @@ public class PdfLayoutTest extends TesterraTest {
         int dpi = 150;
         String absoluteFilePath = FileUtils.getAbsoluteFilePath("testfiles/TestDocument.pdf");
 
-        File actualImage = PdfUtils.pdfToImage(absoluteFilePath, dpi, 2);
+        File actualImage = PdfUtils.getImageFromPdf(absoluteFilePath, dpi, 2);
         String referenceName = "TestDocument.pdf_page2";
 
         LayoutCheck.assertImage(actualImage, referenceName, 5);
@@ -49,7 +49,7 @@ public class PdfLayoutTest extends TesterraTest {
         int dpi = 150;
         String absoluteFilePath = FileUtils.getAbsoluteFilePath("testfiles/TestDocument.pdf");
 
-        List<File> actualImages = PdfUtils.pdfToImage(absoluteFilePath, dpi);
+        List<File> actualImages = PdfUtils.getImageFromPdf(absoluteFilePath, dpi);
 
         for (File image : actualImages) {
             String referenceName = FilenameUtils.removeExtension(image.getName());

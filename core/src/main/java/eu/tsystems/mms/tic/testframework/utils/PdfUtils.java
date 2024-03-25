@@ -133,11 +133,11 @@ public final class PdfUtils {
      * @param dpi The resolution of the rendered image
      * @return A list of rendered image files
      */
-    public static List<File> pdfToImage(String pdfFileLocation, int dpi) {
+    public static List<File> getImageFromPdf(String pdfFileLocation, int dpi) {
         File pdfFile = new File(pdfFileLocation);
         FileInputStream stream = PdfUtils.getFileInputStream(pdfFile);
         String fileName = pdfFile.getName();
-        return PdfUtils.pdfToImage(stream, dpi, fileName);
+        return PdfUtils.getImageFromPdf(stream, dpi, fileName);
     }
 
     /**
@@ -148,7 +148,7 @@ public final class PdfUtils {
      * @param fileName The designated filename for saving the rendered images
      * @return A list of rendered image files
      */
-    public static List<File> pdfToImage(InputStream stream, int dpi, String fileName) {
+    public static List<File> getImageFromPdf(InputStream stream, int dpi, String fileName) {
         List<File> files = new ArrayList<>();
 
         PDDocument pdDoc = getPdDocument(stream);
@@ -172,11 +172,11 @@ public final class PdfUtils {
      * @param pageNumber The number of the page
      * @return A list of rendered image files
      */
-    public static File pdfToImage(String pdfFileLocation, int dpi, int pageNumber) {
+    public static File getImageFromPdf(String pdfFileLocation, int dpi, int pageNumber) {
         File pdfFile = new File(pdfFileLocation);
         FileInputStream stream = PdfUtils.getFileInputStream(pdfFile);
         String fileName = pdfFile.getName();
-        return pdfToImage(stream, dpi, fileName, pageNumber);
+        return getImageFromPdf(stream, dpi, fileName, pageNumber);
     }
 
     /**
@@ -188,7 +188,7 @@ public final class PdfUtils {
      * @param pageNumber The number of the page
      * @return A list of rendered image files
      */
-    public static File pdfToImage(InputStream stream, int dpi, String fileName, int pageNumber) {
+    public static File getImageFromPdf(InputStream stream, int dpi, String fileName, int pageNumber) {
         PDDocument pdDoc = getPdDocument(stream);
         PdfUtils.checkPageNumber(pdDoc, pageNumber);
 

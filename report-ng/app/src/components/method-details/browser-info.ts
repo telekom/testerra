@@ -22,7 +22,7 @@
 import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
-import "./sessions.scss"
+import "./browser-info.scss"
 import {MetricType} from "../../services/report-model/framework_pb";
 import {ExecutionStatistics} from "../../services/statistic-models";
 import {
@@ -31,7 +31,7 @@ import {
 import ISessionContext = data.SessionContext;
 
 @autoinject()
-export class Sessions {
+export class BrowserInfo {
     private _sessionContexts:ISessionContext[];
     private _executionStatistics: ExecutionStatistics;
     private _sessionInformationArray: ISessionInformation[];
@@ -48,18 +48,13 @@ export class Sessions {
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._sessionContexts = methodDetails.sessionContexts;
-            console.log("sessionContexts", methodDetails.sessionContexts)
-
         });
 
         this._statistics.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
-            console.log("executionStatistics", executionStatistics)
         })
 
         this._statistics.getSessionMetrics().then(sessionMetrics => {
-            console.log("sessionMetrics", sessionMetrics)
-
             sessionMetrics = sessionMetrics.filter(metric => this._sessionContexts.map(context => context.contextValues.id).includes(metric.sessionContextId))
             sessionMetrics.forEach(metric => {
                 const sessionData = metric.metricsValues.find(value => value.metricType === MetricType.SESSION_LOAD);
@@ -68,9 +63,6 @@ export class Sessions {
                     .filter(value => value.metricType === MetricType.BASEURL_LOAD)
                     .filter(value => value.endTimestamp > 0)    // if there is no baseurl endTimestamp the baseurl data will not be displayed
                     .find(() => true)
-
-                const sessionDurationData = metric.metricsValues.filter(value => value.metricType === MetricType.SESSION_DURATION);
-                sessionDurationData.forEach(data => console.log("type", data.metricType));
 
                 if (!(sessionData?.endTimestamp > 0)){      // if there is no session endTimestamp the related metric will be skipped
                     return;
@@ -85,8 +77,8 @@ export class Sessions {
                     userAgent: sessionContext.userAgent,
                     serverUrl: sessionContext.serverUrl,
                     nodeUrl: sessionContext.nodeUrl,
-                    baseUrl: "",
-                    sessionDuration: 0,
+                    baseUrl: sessionContext.baseUrl,
+                    sessionDuration: (sessionContext.contextValues.endTime - sessionContext.contextValues.startTime) / 1000,
                     sessionStartDuration: (sessionData.endTimestamp - sessionData.startTimestamp) / 1000,
                     baseurlStartDuration: (baseurlData?.endTimestamp - baseurlData?.startTimestamp) / 1000,
                     sessionStartTime: sessionData.startTimestamp,
@@ -97,6 +89,14 @@ export class Sessions {
                 this._sessionInformationArray.push(sessionInformation);
             })
         })
+
+        if(params.id){
+            window.setTimeout(() => {
+                // getting the DOM element that we found in logMessages
+                const element = document.getElementById(params.id);
+                element.scrollIntoView();
+            }, 1);
+        }
     }
 }
 

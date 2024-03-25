@@ -23,7 +23,6 @@ import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {data} from "../../services/report-model";
 import ISessionContext = data.SessionContext;
-import "./sessions.scss"
 
 @autoinject()
 export class Video {
@@ -40,5 +39,13 @@ export class Video {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._sessionContexts = methodDetails.sessionContexts;
         });
+
+        if(params.id){
+            window.setTimeout(() => {
+                // getting the DOM element that we found in logMessages
+                const element = document.getElementById(params.id);
+                element.scrollIntoView();
+            }, 1);
+        }
     }
 }

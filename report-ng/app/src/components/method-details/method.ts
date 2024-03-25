@@ -84,11 +84,11 @@ export class Method {
                 }
             },
             {
-                route: 'sessions',
-                moduleId: PLATFORM.moduleName('./sessions'),
+                route: 'browser-info',
+                moduleId: PLATFORM.moduleName('./browser-info'),
                 nav: true,
-                name: "sessions",
-                title: 'Sessions',
+                name: "browser-info",
+                title: 'Browser Info',
                 settings: {
                     icon: "devices"
                 }
@@ -155,7 +155,7 @@ export class Method {
                         }
                         break;
                     }
-                    case "sessions": {
+                    case "browser-info": {
                         if (methodDetails.sessionContexts.length > 0) {
                             routeConfig.settings.count = methodDetails.sessionContexts.length;
                             routeConfig.nav = true;

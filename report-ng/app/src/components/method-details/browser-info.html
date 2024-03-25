@@ -21,7 +21,7 @@
 
 <template>
     <mdc-layout-grid class="pt0">
-        <mdc-card class="mb1" repeat.for="session of _sessionInformationArray" mdc-body1>
+        <mdc-card class="mb1" repeat.for="session of _sessionInformationArray" mdc-body1 id="${session.sessionId}">
             <div mdc-subtitle2 class="card-headline">Session: ${session.sessionName}</div>
             <mdc-list-divider></mdc-list-divider>
             <div class="card-content">
@@ -45,21 +45,24 @@
                                 <span class="secondary sr1">Node</span><a href="${session.nodeUrl}">${session.nodeUrl}</a>
                             </li>
                             <li class="mdc-custom-list-item" if.bind="session.videoId">
-                                <span class="secondary sr1">Video ID</span><a route-href="route: video">${session.videoId}</a>
+                                <span class="secondary sr1">Video ID</span><a route-href="route: video; params.bind: {id: session.sessionId}">${session.videoId}</a>
                             </li>
 
                             <div mdc-subtitle2 class="mt1">Session metrics</div>
+                            <li class="mdc-custom-list-item" if.bind="session.sessionDuration>0">
+                                <span class="secondary sr1">Session duration</span>${session.sessionDuration}s
+                            </li>
                             <li class="mdc-custom-list-item" if.bind="session.sessionStartDuration>0">
                                 <span class="secondary sr1">Session start duration</span>${session.sessionStartDuration}s
                             </li>
                             <li class="mdc-custom-list-item" if.bind="session.sessionStartTime>0">
                                 <span class="secondary sr1">Session start time</span>${_dateFormatter.toView(Number(session.sessionStartTime))}
                             </li>
-                            <li class="mdc-custom-list-item" if.bind="session.sessionStartTime>0 && session.sessionDuration>0">
-                                <span class="secondary sr1">Session start time</span>${session.sessionStartTime}
-                            </li>
 
-                            <div mdc-subtitle2 class="mt1">Base URL metrics</div>
+                            <div mdc-subtitle2 class="mt1" if.bind="session.baseUrl">Base URL metrics</div>
+                            <li class="mdc-custom-list-item" if.bind="session.baseUrl">
+                                <span class="secondary sr1">Base URL</span><a href="${session.baseUrl}">${session.baseUrl}</a>
+                            </li>
                             <li class="mdc-custom-list-item" if.bind="session.baseurlStartDuration>0">
                                 <span class="secondary sr1">Base URL start duration</span>${session.baseurlStartDuration}s
                             </li>

@@ -26,7 +26,8 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.PdfUtils;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.Test;import java.io.File;
+import java.util.List;
 
 
 /**
@@ -78,6 +79,9 @@ public class PdfUtilsTest extends TesterraTest {
         Assert.assertFalse(content.contains("13"), errorMessage);
     }
 
+    /**
+     * gets only the second page of the pdf, converts it into a string and checks the content
+     */
     @Test
     public void testT05_PdfConverting_ContentOnPageFound() throws FileNotFoundException {
         String absoluteFilePath = FileUtils.getAbsoluteFilePath(testDocument);
@@ -85,10 +89,49 @@ public class PdfUtilsTest extends TesterraTest {
         Assert.assertTrue(content.contains("This is page 2 of 2"), errorMessage);
     }
 
+    /**
+     * gets only the second page of the pdf, converts it into a string and checks the content
+     */
     @Test
     public void testT06_PdfConverting_ContentOnPageNotFound() throws FileNotFoundException {
         String absoluteFilePath = FileUtils.getAbsoluteFilePath(testDocument);
         String content = PdfUtils.getStringFromPdf(absoluteFilePath, 2);
         Assert.assertFalse(content.contains("This is page 1 of 2"), errorMessage);
+    }
+
+    /**
+     * gets only the second page of the pdf, exports it to an image and checks the file
+     */
+    @Test
+    public void testT07_PdfConverting_PageToImage() throws FileNotFoundException {
+        String absoluteFilePath = FileUtils.getAbsoluteFilePath(testDocument);
+        int pageNumber = 2;
+        File savedImage = PdfUtils.getImageFromPdf(absoluteFilePath, 150, pageNumber);
+        // Check that the image files exist
+        Assert.assertTrue(savedImage.exists());
+        // Check the name of the files
+        Assert.assertEquals(savedImage.getName(), "TestDocument.pdf_page" + pageNumber + ".png");
+    }
+
+    /**
+     * gets pdf, exports it to images and checks the files
+     */
+    @Test
+    public void testT08_PdfConverting_DocumentToImages() throws FileNotFoundException {
+        String absoluteFilePath = FileUtils.getAbsoluteFilePath(testDocument);
+        int numberOfPages = PdfUtils.getNumberOfPages(absoluteFilePath);
+        List<File> savedImages = PdfUtils.getImageFromPdf(absoluteFilePath, 150);
+
+        // Check the amount of saved files
+        Assert.assertEquals(savedImages.size(), numberOfPages);
+
+        int pageNumber = 1;
+        for (File savedImage : savedImages) {
+            // Check that the image files exist
+            Assert.assertTrue(savedImage.exists());
+            // Check the name of the files
+            Assert.assertEquals(savedImage.getName(), "TestDocument.pdf_page" + pageNumber + ".png");
+            pageNumber++;
+        }
     }
 }

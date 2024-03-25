@@ -251,67 +251,67 @@ public final class Framework {
       "(\0132\022.data.ScriptSource\022\024\n\010ticketId\030\t \001(\t" +
       "B\002\030\001\022\027\n\013description\030\n \001(\tB\002\030\001\022*\n\013stack_t" +
       "race\030\013 \003(\0132\025.data.StackTraceCause\022\020\n\010opt" +
-      "ional\030\014 \001(\010\022\n\n\002id\030\r \001(\t\"\200\002\n\016SessionConte" +
+      "ional\030\014 \001(\010\022\n\n\002id\030\r \001(\t\"\222\002\n\016SessionConte" +
       "xt\022+\n\016context_values\030\001 \001(\0132\023.data.Contex" +
       "tValues\022\022\n\nsession_id\030\006 \001(\t\022\020\n\010video_id\030" +
       "\007 \001(\t\022\034\n\024execution_context_id\030\010 \001(\t\022\024\n\014b" +
       "rowser_name\030\t \001(\t\022\027\n\017browser_version\030\n \001" +
       "(\t\022\024\n\014capabilities\030\013 \001(\t\022\022\n\nserver_url\030\014" +
       " \001(\t\022\020\n\010node_url\030\r \001(\t\022\022\n\nuser_agent\030\016 \001" +
-      "(\t\"\255\001\n\022LayoutCheckContext\022\r\n\005image\030\001 \001(\t" +
-      "\022\020\n\010distance\030\002 \001(\001\022\036\n\026expected_screensho" +
-      "t_id\030\003 \001(\t\022\034\n\024actual_screenshot_id\030\004 \001(\t" +
-      "\022\036\n\026distance_screenshot_id\030\005 \001(\t\022\030\n\020erro" +
-      "r_context_id\030\006 \001(\t\"c\n\tRunConfig\022\016\n\006runcf" +
-      "g\030\001 \001(\t\0221\n\021build_information\030\002 \001(\0132\026.dat" +
-      "a.BuildInformation\022\023\n\013report_name\030\003 \001(\t\"" +
-      "\250\001\n\020BuildInformation\022\032\n\022build_java_versi" +
-      "on\030\001 \001(\t\022\025\n\rbuild_os_name\030\002 \001(\t\022\030\n\020build" +
-      "_os_version\030\003 \001(\t\022\027\n\017build_user_name\030\004 \001" +
-      "(\t\022\025\n\rbuild_version\030\005 \001(\t\022\027\n\017build_times" +
-      "tamp\030\006 \001(\t\"T\n\017StackTraceCause\022\022\n\nclass_n" +
-      "ame\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\022\034\n\024stack_trac" +
-      "e_elements\030\003 \003(\t\"k\n\014ScriptSource\022\021\n\tfile" +
-      "_name\030\001 \001(\t\022\023\n\013method_name\030\002 \001(\t\022%\n\005line" +
-      "s\030\003 \003(\0132\026.data.ScriptSourceLine\022\014\n\004mark\030" +
-      "\004 \001(\005\"5\n\020ScriptSourceLine\022\014\n\004line\030\001 \001(\t\022" +
-      "\023\n\013line_number\030\002 \001(\005\"\253\002\n\004File\022\n\n\002id\030\001 \001(" +
-      "\t\022\014\n\004size\030\002 \001(\003\022\020\n\010mimetype\030\003 \001(\t\022\025\n\rrel" +
-      "ative_path\030\004 \001(\t\022\031\n\021created_timestamp\030\005 " +
-      "\001(\003\022\025\n\rsha1_checksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\013" +
-      "2\024.data.File.MetaEntry\022\025\n\rlast_modified\030" +
-      "\t \001(\003\022\022\n\nproject_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(" +
-      "\t\022\024\n\014is_directory\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n" +
-      "\tMetaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\002" +
-      "8\001\"g\n\013TestMetrics\022,\n\017session_metrics\030\001 \003" +
-      "(\0132\023.data.SessionMetric\022*\n\016method_metric" +
-      "s\030\002 \003(\0132\022.data.MethodMetric\"e\n\014MetricsVa" +
-      "lue\022%\n\013metric_type\030\001 \001(\0162\020.data.MetricTy" +
-      "pe\022\027\n\017start_timestamp\030\002 \001(\003\022\025\n\rend_times" +
-      "tamp\030\003 \001(\003\"W\n\rSessionMetric\022*\n\016metrics_v" +
-      "alues\030\001 \003(\0132\022.data.MetricsValue\022\032\n\022sessi" +
-      "on_context_id\030\002 \001(\t\"U\n\014MethodMetric\022*\n\016m" +
-      "etrics_values\030\001 \003(\0132\022.data.MetricsValue\022" +
-      "\031\n\021method_context_id\030\002 \001(\t*t\n\022ClickPathE" +
-      "ventType\022\020\n\014CPET_NOT_SET\020\000\022\017\n\013CPET_WINDO" +
-      "W\020\001\022\016\n\nCPET_CLICK\020\002\022\016\n\nCPET_VALUE\020\003\022\r\n\tC" +
-      "PET_PAGE\020\004\022\014\n\010CPET_URL\020\005*W\n\016LogMessageTy" +
-      "pe\022\013\n\007LMT_OFF\020\000\022\r\n\tLMT_ERROR\020\001\022\014\n\010LMT_WA" +
-      "RN\020\002\022\014\n\010LMT_INFO\020\003\022\r\n\tLMT_DEBUG\020\004*O\n\024Fai" +
-      "lureCorridorValue\022\017\n\013FCV_NOT_SET\020\000\022\014\n\010FC" +
-      "V_HIGH\020\001\022\013\n\007FCV_MID\020\002\022\013\n\007FCV_LOW\020\003*G\n\nMe" +
-      "thodType\022\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD\020" +
-      "\001\022\030\n\024CONFIGURATION_METHOD\020\002*\345\001\n\020ResultSt" +
-      "atusType\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020\001\022\014\n" +
-      "\004INFO\020\002\032\002\010\001\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\r\n\005" +
-      "MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020\007\022\024\n\014FAILED_MINOR\020" +
-      "\010\032\002\010\001\022\022\n\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXPE" +
-      "CTED\020\n\022\020\n\014PASSED_RETRY\020\013\022\023\n\013MINOR_RETRY\020" +
-      "\014\032\002\010\001\022\014\n\010REPAIRED\020\r*[\n\nMetricType\022\020\n\014BAS" +
-      "EURL_LOAD\020\000\022\020\n\014SESSION_LOAD\020\001\022\024\n\020SESSION" +
-      "_DURATION\020\002\022\023\n\017METHOD_DURATION\020\003B2\n.eu.t" +
-      "systems.mms.tic.testframework.report.mod" +
-      "elP\001b\006proto3"
+      "(\t\022\020\n\010base_url\030\017 \001(\t\"\255\001\n\022LayoutCheckCont" +
+      "ext\022\r\n\005image\030\001 \001(\t\022\020\n\010distance\030\002 \001(\001\022\036\n\026" +
+      "expected_screenshot_id\030\003 \001(\t\022\034\n\024actual_s" +
+      "creenshot_id\030\004 \001(\t\022\036\n\026distance_screensho" +
+      "t_id\030\005 \001(\t\022\030\n\020error_context_id\030\006 \001(\t\"c\n\t" +
+      "RunConfig\022\016\n\006runcfg\030\001 \001(\t\0221\n\021build_infor" +
+      "mation\030\002 \001(\0132\026.data.BuildInformation\022\023\n\013" +
+      "report_name\030\003 \001(\t\"\250\001\n\020BuildInformation\022\032" +
+      "\n\022build_java_version\030\001 \001(\t\022\025\n\rbuild_os_n" +
+      "ame\030\002 \001(\t\022\030\n\020build_os_version\030\003 \001(\t\022\027\n\017b" +
+      "uild_user_name\030\004 \001(\t\022\025\n\rbuild_version\030\005 " +
+      "\001(\t\022\027\n\017build_timestamp\030\006 \001(\t\"T\n\017StackTra" +
+      "ceCause\022\022\n\nclass_name\030\001 \001(\t\022\017\n\007message\030\002" +
+      " \001(\t\022\034\n\024stack_trace_elements\030\003 \003(\t\"k\n\014Sc" +
+      "riptSource\022\021\n\tfile_name\030\001 \001(\t\022\023\n\013method_" +
+      "name\030\002 \001(\t\022%\n\005lines\030\003 \003(\0132\026.data.ScriptS" +
+      "ourceLine\022\014\n\004mark\030\004 \001(\005\"5\n\020ScriptSourceL" +
+      "ine\022\014\n\004line\030\001 \001(\t\022\023\n\013line_number\030\002 \001(\005\"\253" +
+      "\002\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\003\022\020\n\010mim" +
+      "etype\030\003 \001(\t\022\025\n\rrelative_path\030\004 \001(\t\022\031\n\021cr" +
+      "eated_timestamp\030\005 \001(\003\022\025\n\rsha1_checksum\030\006" +
+      " \001(\014\022\"\n\004meta\030\007 \003(\0132\024.data.File.MetaEntry" +
+      "\022\025\n\rlast_modified\030\t \001(\003\022\022\n\nproject_id\030\n " +
+      "\001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014is_directory\030\014 \001(" +
+      "\010\022\014\n\004name\030\r \001(\t\032+\n\tMetaEntry\022\013\n\003key\030\001 \001(" +
+      "\t\022\r\n\005value\030\002 \001(\t:\0028\001\"g\n\013TestMetrics\022,\n\017s" +
+      "ession_metrics\030\001 \003(\0132\023.data.SessionMetri" +
+      "c\022*\n\016method_metrics\030\002 \003(\0132\022.data.MethodM" +
+      "etric\"e\n\014MetricsValue\022%\n\013metric_type\030\001 \001" +
+      "(\0162\020.data.MetricType\022\027\n\017start_timestamp\030" +
+      "\002 \001(\003\022\025\n\rend_timestamp\030\003 \001(\003\"W\n\rSessionM" +
+      "etric\022*\n\016metrics_values\030\001 \003(\0132\022.data.Met" +
+      "ricsValue\022\032\n\022session_context_id\030\002 \001(\t\"U\n" +
+      "\014MethodMetric\022*\n\016metrics_values\030\001 \003(\0132\022." +
+      "data.MetricsValue\022\031\n\021method_context_id\030\002" +
+      " \001(\t*t\n\022ClickPathEventType\022\020\n\014CPET_NOT_S" +
+      "ET\020\000\022\017\n\013CPET_WINDOW\020\001\022\016\n\nCPET_CLICK\020\002\022\016\n" +
+      "\nCPET_VALUE\020\003\022\r\n\tCPET_PAGE\020\004\022\014\n\010CPET_URL" +
+      "\020\005*W\n\016LogMessageType\022\013\n\007LMT_OFF\020\000\022\r\n\tLMT" +
+      "_ERROR\020\001\022\014\n\010LMT_WARN\020\002\022\014\n\010LMT_INFO\020\003\022\r\n\t" +
+      "LMT_DEBUG\020\004*O\n\024FailureCorridorValue\022\017\n\013F" +
+      "CV_NOT_SET\020\000\022\014\n\010FCV_HIGH\020\001\022\013\n\007FCV_MID\020\002\022" +
+      "\013\n\007FCV_LOW\020\003*G\n\nMethodType\022\016\n\nMT_NOT_SET" +
+      "\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONFIGURATION_MET" +
+      "HOD\020\002*\345\001\n\020ResultStatusType\022\017\n\013RST_NOT_SE" +
+      "T\020\000\022\n\n\006NO_RUN\020\001\022\014\n\004INFO\020\002\032\002\010\001\022\013\n\007SKIPPED" +
+      "\020\003\022\n\n\006PASSED\020\004\022\r\n\005MINOR\020\005\032\002\010\001\022\n\n\006FAILED\020" +
+      "\007\022\024\n\014FAILED_MINOR\020\010\032\002\010\001\022\022\n\016FAILED_RETRIE" +
+      "D\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020\n\014PASSED_RETRY" +
+      "\020\013\022\023\n\013MINOR_RETRY\020\014\032\002\010\001\022\014\n\010REPAIRED\020\r*[\n" +
+      "\nMetricType\022\020\n\014BASEURL_LOAD\020\000\022\020\n\014SESSION" +
+      "_LOAD\020\001\022\024\n\020SESSION_DURATION\020\002\022\023\n\017METHOD_" +
+      "DURATION\020\003B2\n.eu.tsystems.mms.tic.testfr" +
+      "amework.report.modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -424,7 +424,7 @@ public final class Framework {
     internal_static_data_SessionContext_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_SessionContext_descriptor,
-        new java.lang.String[] { "ContextValues", "SessionId", "VideoId", "ExecutionContextId", "BrowserName", "BrowserVersion", "Capabilities", "ServerUrl", "NodeUrl", "UserAgent", });
+        new java.lang.String[] { "ContextValues", "SessionId", "VideoId", "ExecutionContextId", "BrowserName", "BrowserVersion", "Capabilities", "ServerUrl", "NodeUrl", "UserAgent", "BaseUrl", });
     internal_static_data_LayoutCheckContext_descriptor =
       getDescriptor().getMessageTypes().get(13);
     internal_static_data_LayoutCheckContext_fieldAccessorTable = new

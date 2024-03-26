@@ -34,10 +34,10 @@ export class Timings {
                 moduleId: PLATFORM.moduleName('t-systems-aurelia-components/src/components/empty/empty'),
             },
             {
-                route: 'tests',
+                route: 'tests-timings',
                 moduleId: PLATFORM.moduleName('./test-timings/test-timings'),
                 nav: true,
-                name: "tests",
+                name: "tests-timings",
                 title: 'Tests',
                 settings: {
                     icon: "read_more"

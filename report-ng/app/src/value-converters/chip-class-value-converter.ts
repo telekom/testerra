@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2023, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2023, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,20 +19,20 @@
  * under the License.
  */
 
-.virtual-log-view {
-    white-space: pre;
-    width: 100%;
-    overflow: scroll;
+import {autoinject} from "aurelia-framework";
+import {ChipType} from "../services/common-models";
 
-    @media (max-height: 1199px) {
-        height: 700px;
-    }
-
-    @media (max-height: 991px) {
-        height: 500px;
-    }
-
-    @media (max-height: 767px) {
-        height: 300px;
+@autoinject()
+export class ChipClassValueConverter {
+    // all other Chip types use the default class configurations for Chips from mdc
+    toView(chipType: ChipType) {
+        switch (chipType) {
+            case ChipType.STATUS:
+                return "status";
+            case ChipType.CLASS:
+                return "class";
+            case ChipType.CUSTOM_TEXT:
+                return "text";
+        }
     }
 }

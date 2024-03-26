@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2023, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2023, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,20 +19,11 @@
  * under the License.
  */
 
-.virtual-log-view {
-    white-space: pre;
-    width: 100%;
-    overflow: scroll;
-
-    @media (max-height: 1199px) {
-        height: 700px;
-    }
-
-    @media (max-height: 991px) {
-        height: 500px;
-    }
-
-    @media (max-height: 767px) {
-        height: 300px;
-    }
+export enum ChipType {
+    STATUS,
+    CLASS,
+    CUSTOM_TEXT,
+    CUSTOM_FILTER_TIMINGS,
+    CUSTOM_FILTER_FAILURE_ASPECTS,
+    CLEAR_ALL,
 }

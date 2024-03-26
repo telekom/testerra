@@ -80,7 +80,7 @@
                                 <td>
                                     <div repeat.for="status of failureAspect.availableStatuses" class="mt1 mb1">
                                         <a class="badge status-${status|statusClass}"
-                                           route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1, status: _statusConverter.getClassForStatus(status)}"
+                                           route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1, status: _statusConverter.normalizeStatus(status)}"
                                         >${failureAspect.getStatusCount(status)} ${status|statusName}</a>
                                     </div>
                                 </td>

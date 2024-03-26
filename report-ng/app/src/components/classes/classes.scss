@@ -19,6 +19,10 @@
  * under the License.
  */
 
+$status-color: #0085FF;
+$class-color: #3F8488;
+$text-color: #884AB9;
+
 .status-column {
     width: 160px;
 }
@@ -26,4 +30,32 @@
 .run-index-cell {
     padding-right: 5em;
     text-align: right;
+}
+
+.chip-status {
+    background-color: rgba($status-color, 0.08);
+
+    span {
+        color: rgba($status-color, 0.87);
+    }
+}
+
+.chip-class {
+    background-color: rgba($class-color, 0.08);
+
+    span {
+        color: rgba($class-color, 0.87);
+    }
+}
+
+.chip-text {
+    background-color: rgba($text-color, 0.08);
+
+    span {
+        color: rgba($text-color, 0.87);
+    }
+}
+
+.mdc-evolution-chip .mdc-evolution-chip__icon {
+    color: inherit;     // inherits icon color from font color
 }

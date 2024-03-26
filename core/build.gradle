@@ -16,7 +16,7 @@ dependencies {
     api 'org.apache.commons:commons-lang3:3.9'
 
     // <PdfUtils>
-    implementation 'org.apache.pdfbox:pdfbox:2.0.29'
+    implementation 'org.apache.pdfbox:pdfbox:3.0.1'
     // </PdfUtils>
 
     api "com.google.guava:guava:${guavaVersion}"

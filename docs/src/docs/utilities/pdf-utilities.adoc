@@ -1,6 +1,10 @@
 = PDF Utilities
 
-This is an utility class for extracting text content of PDF documents for verifications.
+This is a utility class for handling and retrieving information from PDF files, such as text content or the amount of pages.
+
+== Extracting text
+
+It is possible to extract text content of whole PDF documents or just one specific page for verifications.
 
 [source,java]
 ----
@@ -10,6 +14,45 @@ String textFromPdf = PdfUtils.getStringFromPdf(String pdfFileLocation);
 
 [source,java]
 ----
-//reads text from a pdf given as input steam.
-String textFromPdf = PdfUtils.getStringFromPdf(InputStream stream);
+//reads text from only one page of a pdf given as input steam.
+String textFromPdf = PdfUtils.getStringFromPdf(InputStream stream, int pageNumber);
 ----
+
+== Exporting images
+
+It is also possible to use methods of this class to render an image for one specific page of the PDF or export the entire document to multiple images.
+That way you can save reference images and use them for visual comparison of PDF files by using the `assertImage` method of <<#_layout_check, Layout Check>>.
+
+.A short example of how to export a single page from a pdf file as an image
+[source,java]
+----
+int dpi = 150;
+String absoluteFilePath = FileUtils.getAbsoluteFilePath("testfiles/TestDocument.pdf");
+int pageNumber = 2;
+
+/*
+ The image files are saved under the name of the PDF-document with the corresponding page number appended,
+ in this case the second page will be saved as "TestDocument.pdf_page2.png"
+*/
+File savedImage = PdfUtils.getImageFromPdf(absoluteFilePath, dpi, confidenceThreshold);
+----
+
+In the following example all pages of the locally saved PDF "TestDocument.pdf" are testet with a layout check.
+
+[source,java]
+----
+int dpi = 150;
+int confidenceThreshold = 5;
+String absoluteFilePath = FileUtils.getAbsoluteFilePath("testfiles/TestDocument.pdf");
+
+List<File> actualImages = PdfUtils.getImageFromPdf(absoluteFilePath, dpi);
+
+for (File image : actualImages) {
+    String referenceName = FilenameUtils.removeExtension(image.getName());
+    LayoutCheck.assertImage(image, referenceName, confidenceThreshold);
+}
+----
+
+Using the `PdfUtils`, images of all pages are rendered with a resolution of 150 dpi.
+The received list of files allows to iterate through it and call the `assertImage` method to visually check each page.
+In this case, the reference images are named in the same way as the actual images, so that the whole document can be easily checked in a simple loop.

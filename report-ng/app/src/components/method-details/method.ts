@@ -165,7 +165,8 @@ export class Method {
                         break;
                     }
                     case "video":{
-                        if(methodDetails.sessionContexts.map(context => context.videoId).length > 0){
+                        const contextsWithVideos = methodDetails.sessionContexts.filter(context => context.videoId?.length > 0)
+                        if(contextsWithVideos.length > 0){
                             routeConfig.settings.count = methodDetails.sessionContexts.map(context => context.videoId).length;
                             routeConfig.nav = true;
                         } else {

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2023, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -21,13 +21,11 @@
 
 import {autoinject} from 'aurelia-framework';
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {data} from "../../services/report-model";
 import ISessionContext = data.SessionContext;
-import "./sessions.scss"
 
 @autoinject()
-export class Sessions {
+export class Video {
     private _sessionContexts:ISessionContext[];
 
     constructor(
@@ -37,11 +35,17 @@ export class Sessions {
 
     activate(
         params: any,
-        routeConfig: RouteConfig,
-        navInstruction: NavigationInstruction
     ) {
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._sessionContexts = methodDetails.sessionContexts;
         });
+
+        if(params.id){
+            window.setTimeout(() => {
+                // getting the DOM element that we found in logMessages
+                const element = document.getElementById(params.id);
+                element.scrollIntoView();
+            }, 1);
+        }
     }
 }

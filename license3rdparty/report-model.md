@@ -1,7 +1,7 @@
 
 #report-model
 ##Dependency License Report
-_2022-04-06 13:49:38 MESZ_
+_2024-03-05 07:59:05 MEZ_
 ## 3-Clause BSD License
 
 **1** **Group:** `com.google.protobuf` **Name:** `protobuf-java` **Version:** `3.14.0` 

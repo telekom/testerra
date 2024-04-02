@@ -167,7 +167,7 @@ export class Method {
                     case "video":{
                         const contextsWithVideos = methodDetails.sessionContexts.filter(context => context.videoId?.length > 0)
                         if(contextsWithVideos.length > 0){
-                            routeConfig.settings.count = methodDetails.sessionContexts.map(context => context.videoId).length;
+                            routeConfig.settings.count = contextsWithVideos.length;
                             routeConfig.nav = true;
                         } else {
                             disableRoute(routeConfig);

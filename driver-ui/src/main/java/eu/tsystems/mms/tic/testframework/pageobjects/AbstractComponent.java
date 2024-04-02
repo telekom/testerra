@@ -26,20 +26,21 @@ import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertion;
-import java.awt.Color;
-import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.awt.Color;
+import java.util.function.Consumer;
+
 /**
  * Components are wrappers for HTML elements like WebComponents
  * that acts like a {@link UiElement} and {@link PageObject}
+ *
  * @author Mike Reiche
  */
-public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage<SELF> implements Component<SELF>
-{
+public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage<SELF> implements Component<SELF> {
     protected static final UiElementFactory uiElementFactory = Testerra.getInjector().getInstance(UiElementFactory.class);
 
     protected final UiElement rootElement;
@@ -76,12 +77,12 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public UiElementList<SELF> list() {
-        return new DefaultComponentList<>((SELF)this);
+        return new DefaultComponentList<>((SELF) this);
     }
 
     @Override
     protected UiElement find(Locator locator) {
-        GuiElement subElement = (GuiElement)uiElementFactory.createFromParent(rootElement, locator);
+        GuiElement subElement = (GuiElement) uiElementFactory.createFromParent(rootElement, locator);
         /**
          * We change the parent from its {@link #rootElement} to this {@link Nameable}
          */
@@ -111,7 +112,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     public SELF setName(String name) {
         this.name = name;
-        return (SELF)this;
+        return (SELF) this;
     }
 
     @Override
@@ -120,10 +121,10 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
             return this.name;
         }
 
-        String name = this.name;
-        if (StringUtils.isBlank(name)) {
+        if (StringUtils.isBlank(this.name)) {
             this.name = getClass().getSimpleName();
         }
+        String name = this.name;
         return String.format("%s(%s)", name, rootElement.getName(detailed));
     }
 

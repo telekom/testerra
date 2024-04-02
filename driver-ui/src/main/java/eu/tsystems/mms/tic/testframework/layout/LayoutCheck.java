@@ -72,6 +72,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
         PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0.0),
+        PIXEL_COUNT("pixel.count", "optional"),
 
         ;
         private final String property;
@@ -271,8 +272,10 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         // for counting the pixels that are different
         int pixelsInError = 0;
         int noOfIgnoredPixels = 0;
+        // for counting the pixels that are just in one image
+        int noOfExclusivePixels = 0;
         // calculate the size of the distance image and create an empty image
-        final Dimension distanceImageSize = calculateMinImageSize(expectedImage, actualImage);
+        final Dimension distanceImageSize = calculateMaxImageSize(expectedImage, actualImage);
         final BufferedImage distanceImage = new BufferedImage(
                 distanceImageSize.width, distanceImageSize.height,
                 expectedImage.getType());
@@ -309,6 +312,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
                     }
                 } else {
                     // this pixel is not inside one or the other image - mark it, but not as error
+                    noOfExclusivePixels++;
                     distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
                 }
             }
@@ -334,20 +338,29 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
         int totalPixels = distanceImageSize.width * distanceImageSize.height;
 
+        // TODO: calculation
         // calculate and return the percentage number of pixels in error
-        double result = ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+        double result_rgb = ((double) pixelsInError / (totalPixels - noOfExclusivePixels - noOfIgnoredPixels)) * 100;
+        double result_size = ((double) noOfExclusivePixels / totalPixels) * 100;
+        double result = result_rgb;
+
+        if (Properties.PIXEL_COUNT.asString().equalsIgnoreCase("hard")) {
+            result += result_size;
+        }
 
         // Just for debug log
         Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
-        LOGGER.debug("Raw results of pixel check: \n" +
+        LOGGER.info("Raw results of pixel check: \n" +
                         "Dimension actual image: {}\n" +
                         "Dimension expected image: {}\n" +
                         "Number of total pixel: {}\n" +
                         "Number of ignored pixel: {}\n" +
                         "Number of pixel in errors: {}\n" +
+                        "Result of matching pixels: {}\n" +
+                        "Result of matching size: {}\n" +
                         "Result of matching: {}"
-                , actualImageDimension, expectedImageDimension, totalPixels, noOfIgnoredPixels, pixelsInError, result);
+                , actualImageDimension, expectedImageDimension, totalPixels, noOfIgnoredPixels, pixelsInError, result_rgb, result_size, result);
         return result;
     }
 
@@ -376,19 +389,19 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     }
 
     /**
-     * Calculates the sizes that result from the minimum sizes of both pictures.
+     * Calculates the sizes that result from the maximum sizes of both pictures.
      *
      * @param expectedImage The expected image
      * @param actualImage The actual image
-     * @return Calculated minimum size of the images
+     * @return Calculated maximum size of the images
      */
-    private static Dimension calculateMinImageSize(
+    private static Dimension calculateMaxImageSize(
             final BufferedImage expectedImage,
             final BufferedImage actualImage
     ) {
         return new Dimension(
-                Math.min(expectedImage.getWidth(), actualImage.getWidth()),
-                Math.min(expectedImage.getHeight(), actualImage.getHeight())
+                Math.max(expectedImage.getWidth(), actualImage.getWidth()),
+                Math.max(expectedImage.getHeight(), actualImage.getHeight())
         );
     }
 
@@ -439,6 +452,8 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
                 // LayoutCheckContext (for dimension check and for pixel check) is working with identical objects
                 methodContext.addLayoutCheckContext(context.clone());
             });
+
+            // TODO: assertion
             OptionalAssert.fail(
                     String.format(
                             "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",

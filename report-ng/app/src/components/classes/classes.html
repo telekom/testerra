@@ -90,6 +90,9 @@
                         <span>${chip.chipType|chipName:chip.chipElement:1}</span>
                         <button mdc-chip-action trailing icon="cancel" tabindex="-1"></button>
                     </mdc-chip>
+                    <button class="mdc-button">
+                        <span if.bind="_chipList.length > 0" class="mdc-button__label" mdc-tooltip="Remove all filters" click.delegate="_removeFilter(5)">Clear All</span>
+                    </button>
                 </mdc-chip-set>
             </mdc-layout-grid-cell>
 

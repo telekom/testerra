@@ -102,10 +102,6 @@ export class Classes extends AbstractViewModel {
             this._fillChipList(ChipType.CUSTOM_FILTER_FAILURE_ASPECTS, params.failureAspect);
         }
 
-        if(this._chipList.length > 0){
-            this._fillChipList(ChipType.CLEAR_ALL);
-        }
-
         if (params.config) {
             if (params.config.toLowerCase() == "true") {
                 this._showConfigurationMethods = true;
@@ -130,8 +126,8 @@ export class Classes extends AbstractViewModel {
                 chipType: chipType,
                 chipElement: chipParam,
             }
-            if(chipType == ChipType.CLEAR_ALL || chipType == ChipType.CUSTOM_FILTER_FAILURE_ASPECTS || chipType == ChipType.CUSTOM_FILTER_TIMINGS){
-                this._chipList.unshift(chip);   // Clear all and Custom chips should be displayed at the beginning of the chip list
+            if(chipType == ChipType.CUSTOM_FILTER_FAILURE_ASPECTS || chipType == ChipType.CUSTOM_FILTER_TIMINGS){
+                this._chipList.unshift(chip);   // Custom chips should be displayed at the beginning of the chip list
             } else {
                 this._chipList.push(chip);
             }
@@ -217,7 +213,7 @@ export class Classes extends AbstractViewModel {
 
                     if (this._chipList.filter(chip => chip.chipType === ChipType.STATUS).length > 0) {
                         const selectedStatusGroups = this._chipList.filter(chip => chip.chipType === ChipType.STATUS).map(chip => {
-                            return this._statusConverter.groupStatus(this._statusConverter.normalizeStatus(chip.chipElement));
+                            return this._statusConverter.groupStatus(this._statusConverter.getStatusForClass(chip.chipElement));
                         });
 
                         methodContexts = methodContexts.filter(methodContext => {
@@ -318,8 +314,10 @@ export class Classes extends AbstractViewModel {
     }
 
     private _statusChanged() {
-        this._addFilter(this._selectedStatus, ChipType.STATUS);
-        this._selectedStatus = undefined;
+        if(this._selectedStatus){
+            this._addFilter(this._statusConverter.getClassForStatus(this._selectedStatus), ChipType.STATUS);
+            this._selectedStatus = undefined;
+        }
     }
 
     private _classChanged() {
@@ -346,12 +344,6 @@ export class Classes extends AbstractViewModel {
 
     private _addFilter(element, chipType: ChipType){
         if(element){
-            if(this._chipList.length <= 0){     // if it is the first chip to appear, the "Clear All" chip has to appear as well
-                const chip = {
-                    chipType: ChipType.CLEAR_ALL,
-                }
-                this._chipList.unshift(chip);
-            }
             if(!this._chipList.filter(chip => chip.chipType === chipType).map(chip => chip.chipElement).includes(element)){
                 const chip: IChip = {
                     chipType: chipType,
@@ -364,7 +356,7 @@ export class Classes extends AbstractViewModel {
         this._filterOnce();
     }
 
-    private _removeFilter(chipType: ChipType, filterObject){
+    private _removeFilter(chipType: ChipType, filterObject?){
         if(chipType == ChipType.CLEAR_ALL){
             this._chipList = [];
 
@@ -399,10 +391,6 @@ export class Classes extends AbstractViewModel {
 
             this.queryParams.q = this._convertQueryParams(this._chipList.filter(chip => chip.chipType === ChipType.CUSTOM_TEXT).map(chip => chip.chipElement), false);
             this.updateUrl(this.queryParams);
-
-            if(this._chipList.length == 1){     // if there is only one chip left, it has to be removed because the last one will be the Clear All chip
-                this._chipList = [];
-            }
         }
         this._filter()
     }

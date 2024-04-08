@@ -56,7 +56,7 @@ export class ChipNameValueConverter {
 
             switch (chipType) {
                 case ChipType.STATUS:
-                    return this._statusConverter.getLabelForStatus(element);
+                    return this._statusConverter.getLabelForStatus(this._statusConverter.getStatusForClass(element));
                 case ChipType.CLASS:
                     return this._classNameValueConverter.toView(String(element), ClassName.simpleName);
                 case ChipType.CUSTOM_TEXT:

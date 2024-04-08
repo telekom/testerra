@@ -27,11 +27,14 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 
 /**
  * Default implementation of {@link ThreadLocal} {@link TestController.Overrides}
+ *
  * @author Mike Reiche
  */
 public class DefaultTestControllerOverrides implements TestController.Overrides {
 
     private final ThreadLocal<Integer> threadLocalTimeout = new ThreadLocal<>();
+    private final ThreadLocal<Integer> threadLocalDelayBeforeAction = new ThreadLocal<>();
+    private final ThreadLocal<Integer> threadLocalDelayAfterAction = new ThreadLocal<>();
     private final ThreadLocal<Assertion> threadLocalAssertionImpl = new ThreadLocal<>();
 
     DefaultTestControllerOverrides() {
@@ -39,7 +42,17 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
 
     @Override
     public boolean hasTimeout() {
-        return threadLocalTimeout.get()!=null;
+        return threadLocalTimeout.get() != null;
+    }
+
+    @Override
+    public boolean hasDelayBeforeAction() {
+        return threadLocalDelayBeforeAction.get()!=null;
+    }
+
+    @Override
+    public boolean hasDelayAfterAction() {
+        return threadLocalDelayAfterAction.get() != null;
     }
 
     @Override
@@ -59,6 +72,44 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
             threadLocalTimeout.set(seconds);
         }
         return prevTimeout;
+    }
+
+    @Override
+    public int getDelayBeforeAction() {
+        Integer integer = threadLocalDelayBeforeAction.get();
+        if (integer == null) return -1;
+        else return integer;
+    }
+
+    @Override
+    public int setDelayBeforeAction(int millis) {
+        Integer prevDelay = getDelayBeforeAction();
+        if (millis < 0) {
+            // Back to default
+            threadLocalDelayBeforeAction.remove();
+        } else {
+            threadLocalDelayBeforeAction.set(millis);
+        }
+        return prevDelay;
+    }
+
+    @Override
+    public int getDelayAfterAction() {
+        Integer integer = threadLocalDelayAfterAction.get();
+        if (integer == null) return -1;
+        else return integer;
+    }
+
+    @Override
+    public int setDelayAfterAction(int millis) {
+        Integer prevDelay = getDelayAfterAction();
+        if (millis < 0) {
+            // Back to default
+            threadLocalDelayAfterAction.remove();
+        } else {
+            threadLocalDelayAfterAction.set(millis);
+        }
+        return prevDelay;
     }
 
     @Override

@@ -29,12 +29,14 @@ import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
+import org.testng.Assert;
+
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import org.testng.Assert;
 
 /**
  * Default implementation of {@link TestController}
+ *
  * @author Mike Reiche
  */
 public class DefaultTestController implements TestController, Loggable {
@@ -79,7 +81,7 @@ public class DefaultTestController implements TestController, Loggable {
     }
 
     private String createSequenceLog(int timeoutSeconds, Sequence sequence) {
-        return String.format("after %.2fs of %ds", sequence.getDurationMs()/1000f, timeoutSeconds);
+        return String.format("after %.2fs of %ds", sequence.getDurationMs() / 1000f, timeoutSeconds);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class DefaultTestController implements TestController, Loggable {
 
     @Override
     public boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail) {
-        return _waitFor(seconds, runnable, (sequence,throwable) -> {
+        return _waitFor(seconds, runnable, (sequence, throwable) -> {
             log().info("Giving up " + createSequenceLog(seconds, sequence) + " because of: " + throwable.getMessage());
             if (whenFail != null) {
                 whenFail.run();
@@ -141,7 +143,7 @@ public class DefaultTestController implements TestController, Loggable {
                 whenFail.accept(sequence, throwable);
             }
             // Sequence ends when throwable is empty
-            return atomicThrowable.get()==null;
+            return atomicThrowable.get() == null;
         });
         return atomicThrowable.get();
     }
@@ -156,6 +158,26 @@ public class DefaultTestController implements TestController, Loggable {
         }) == null;
     }
 
+    @Override
+    public void delayBeforeGuiElementAction(int millis, Runnable runnable) {
+        int prevDelay = overrides.setDelayBeforeAction(millis);
+        try {
+            runnable.run();
+        } finally {
+            overrides.setDelayBeforeAction(prevDelay);
+        }
+    }
+
+    @Override
+    public void delayAfterGuiElementAction(int millis, Runnable runnable) {
+        int prevDelay = overrides.setDelayAfterAction(millis);
+        try {
+            runnable.run();
+        } finally {
+            overrides.setDelayAfterAction(prevDelay);
+        }
+    }
+
     private Throwable _waitTimes(int times, Assert.ThrowingRunnable runnable, BiConsumer<Integer, Throwable> whenFail) {
         Throwable catchedThrowable = null;
         for (int s = 0; s < times; ++s) {
@@ -165,7 +187,7 @@ public class DefaultTestController implements TestController, Loggable {
                 break;
             } catch (Throwable throwable) {
                 catchedThrowable = throwable;
-                whenFail.accept(s+1, throwable);
+                whenFail.accept(s + 1, throwable);
             }
         }
         return catchedThrowable;

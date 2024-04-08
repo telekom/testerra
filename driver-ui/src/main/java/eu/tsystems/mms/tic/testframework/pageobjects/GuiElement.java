@@ -47,6 +47,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLo
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.openqa.selenium.By;
@@ -69,6 +70,8 @@ import java.util.stream.Collectors;
  * Authors: pele, rnhb
  */
 public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable, WebDriverManagerProvider {
+
+    private final static TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
     /**
      * Factory required for {@link UiElementFinder}
      */
@@ -204,6 +207,14 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
         int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();
+
+        if (overrides.hasDelayBeforeAction()) {
+            delayBeforeAction = overrides.getDelayBeforeAction();
+        }
+        if (overrides.hasDelayAfterAction()) {
+            delayAfterAction = overrides.getDelayAfterAction();
+        }
+
         if (delayAfterAction > 0 || delayBeforeAction > 0) {
             decoratedCore = new DelayActionsGuiElementFacade(decoratedCore, delayBeforeAction, delayAfterAction);
         }

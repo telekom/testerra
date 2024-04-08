@@ -15,4 +15,22 @@ public class UiElementOverrides extends DefaultTestControllerOverrides {
         }
         return timeoutInSeconds;
     }
+
+    @Override
+    public int getDelayBeforeAction() {
+        int delay = super.getDelayBeforeAction();
+        if (delay < 0) {
+            delay = UiElement.Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();
+        }
+        return delay;
+    }
+
+    @Override
+    public int getDelayAfterAction() {
+        int delay = super.getDelayAfterAction();
+        if (delay < 0) {
+            delay = UiElement.Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
+        }
+        return delay;
+    }
 }

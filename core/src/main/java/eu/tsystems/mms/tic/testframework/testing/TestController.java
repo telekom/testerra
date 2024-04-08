@@ -22,11 +22,11 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
 import org.testng.Assert;
 
 /**
  * Allows to run blocks of code in a {@link Runnable} with {@link Overrides}
+ *
  * @author Mike Reiche
  */
 public interface TestController {
@@ -38,17 +38,55 @@ public interface TestController {
          * Determines if a timeout has been configured
          */
         boolean hasTimeout();
+
+        /**
+         * Determines if a delay before action has been configured
+         */
+        boolean hasDelayBeforeAction();
+
+        /**
+         * Determines if a delay before action has been configured
+         */
+        boolean hasDelayAfterAction();
+
         /**
          * @return Configured or default timeout for any actions
          */
         int getTimeoutInSeconds();
 
         /**
+         * @return Configured or default delay before actions
+         */
+        int getDelayBeforeAction();
+
+        /**
+         * @return Configured or default delay after actions
+         */
+        int getDelayAfterAction();
+
+        /**
          * Sets a timeout for any action
+         *
          * @param seconds If < 0, the timeout configuration will be removed
          * @return Returns the previously configured timeout
          */
         int setTimeout(int seconds);
+
+        /**
+         * Sets a delay before an action on a UiElement
+         *
+         * @param millis If < 0, the delay configuration will be removed
+         * @return Returns the previously configured delay
+         */
+        int setDelayBeforeAction(int millis);
+
+        /**
+         * Sets a delay after an action on a UiElement
+         *
+         * @param millis If < 0, the delay configuration will be removed
+         * @return Returns the previously configured delay
+         */
+        int setDelayAfterAction(int millis);
 
         Assertion getAssertionImpl();
 
@@ -71,7 +109,18 @@ public interface TestController {
     void withTimeout(int seconds, Runnable runnable);
 
     /**
+     * Runs a {@link Runnable} with a specified delay before actions
+     */
+    void delayBeforeGuiElementAction(int millis, Runnable runnable);
+
+    /**
+     * Runs a {@link Runnable} with a specified delay before actions
+     */
+    void delayAfterGuiElementAction(int millis, Runnable runnable);
+
+    /**
      * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period.
+     *
      * @param seconds Period in seconds
      * @param runnable Runnable
      * @param whenFail Runnable which gets called when a throwable occurred
@@ -87,6 +136,7 @@ public interface TestController {
 
     /**
      * Runs a {@link Runnable} while {@link Throwable} occurs n times.
+     *
      * @param times Retry n times
      * @param runnable Runnable
      * @param whenFail Runnable which gets called when a throwable occurred
@@ -101,7 +151,7 @@ public interface TestController {
     }
 
     /**
-     * Does the same like {@link #retryFor(int, Assert.ThrowingRunnable, Runnable)} but without throwing any exception
+     * Does the same as {@link #retryFor(int, Assert.ThrowingRunnable, Runnable)} but without throwing any exception
      */
     boolean waitFor(int seconds, Assert.ThrowingRunnable runnable, Runnable whenFail);
 
@@ -113,7 +163,7 @@ public interface TestController {
     }
 
     /**
-     * Does the same like {@link #retryTimes(int, Assert.ThrowingRunnable, Runnable)} but without throwing any exception
+     * Does the same as {@link #retryTimes(int, Assert.ThrowingRunnable, Runnable)} but without throwing any exception
      */
     boolean waitTimes(int times, Assert.ThrowingRunnable runnable, Runnable whenFail);
 

@@ -119,6 +119,11 @@ public interface TestController {
     void delayAfterGuiElementAction(int millis, Runnable runnable);
 
     /**
+     * Runs a {@link Runnable} with a specified delay before and after actions
+     */
+    void delayGuiElementAction(int millisBefore, int millisAfter, Runnable runnable);
+
+    /**
      * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period.
      *
      * @param seconds Period in seconds

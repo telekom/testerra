@@ -178,6 +178,18 @@ public class DefaultTestController implements TestController, Loggable {
         }
     }
 
+    @Override
+    public void delayGuiElementAction(int millisBefore, int millisAfter, Runnable runnable) {
+        int prevDelayBefore = overrides.setDelayBeforeAction(millisBefore);
+        int prevDelayAfter = overrides.setDelayAfterAction(millisAfter);
+        try {
+            runnable.run();
+        } finally {
+            overrides.setDelayBeforeAction(prevDelayBefore);
+            overrides.setDelayAfterAction(prevDelayAfter);
+        }
+    }
+
     private Throwable _waitTimes(int times, Assert.ThrowingRunnable runnable, BiConsumer<Integer, Throwable> whenFail) {
         Throwable catchedThrowable = null;
         for (int s = 0; s < times; ++s) {

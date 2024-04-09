@@ -22,7 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.listeners;
 
-import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
@@ -30,16 +30,6 @@ import eu.tsystems.mms.tic.testframework.events.TestStatusUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-import org.testng.collections.Maps;
-import org.testng.collections.Sets;
-import org.testng.internal.Utils;
-import org.testng.reporters.XMLConstants;
-import org.testng.reporters.XMLStringBuffer;
-import org.testng.util.TimeUtils;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -52,6 +42,18 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.regex.Pattern;
+
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.collections.Maps;
+import org.testng.collections.Sets;
+import org.testng.internal.Utils;
+import org.testng.reporters.XMLConstants;
+import org.testng.reporters.XMLStringBuffer;
+import org.testng.util.TimeUtils;
+
+import com.google.common.eventbus.Subscribe;
 
 /**
  * Generates an JUnit XML report.
@@ -79,7 +81,7 @@ public class GenerateJUnitXML2ReportListener implements
 
     private ITestContext testngTestContext = null;
 
-    private Report report = Testerra.getInjector().getInstance(Report.class);
+    private final Report report = Testerra.getInjector().getInstance(Report.class);
 
     static {
         ATTR_ESCAPES.put("&lt;", LESS);

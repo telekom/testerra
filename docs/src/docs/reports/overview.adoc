@@ -8,6 +8,7 @@ A report generated with `Report-NG` consists of these different views:
 * Failure Aspects - a summary of the different types of failures
 * Logs - a panel that contains detailed logging information
 * Threads - a graphical view of the thread activities during the parallel test execution
+* Timings - a detailed overview of the execution time of test cases and loading time of sessions
 
 image::report-ng-01.png[align="center", alt="Report-NG Dashboard"]
 

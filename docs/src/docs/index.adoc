@@ -32,6 +32,7 @@ include::reports.adoc[leveloffset=+1]
 include::modules.adoc[leveloffset=+1]
 include::utilities.adoc[leveloffset=+1]
 include::selenium4.adoc[leveloffset=+1]
+include::jvm.adoc[leveloffset=+1]
 
 '''
 = Extending Testerra

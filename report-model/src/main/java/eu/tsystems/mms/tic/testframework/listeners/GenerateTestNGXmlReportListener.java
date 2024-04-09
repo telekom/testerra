@@ -22,12 +22,12 @@
 
 package eu.tsystems.mms.tic.testframework.listeners;
 
-import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+
+import com.google.common.eventbus.Subscribe;
 
 /**
  * Generate TestNG result XML
@@ -36,7 +36,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
  */
 public class GenerateTestNGXmlReportListener implements Loggable, ExecutionFinishEvent.Listener {
 
-    private Report report = Testerra.getInjector().getInstance(Report.class);
+    private final Report report = Testerra.getInjector().getInstance(Report.class);
 
     @Override
     @Subscribe

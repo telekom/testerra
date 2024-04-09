@@ -49,7 +49,7 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     public void test_Page_title() {
         WebTestPage page = getPage();
 
-        StringAssertion<String> title = page.expect().title();
+        StringAssertion title = page.expect().title();
 
         title.is("Input test");
         title.isNot("Affentest");

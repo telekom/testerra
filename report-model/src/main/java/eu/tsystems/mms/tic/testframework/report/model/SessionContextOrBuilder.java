@@ -141,4 +141,16 @@ public interface SessionContextOrBuilder extends
    */
   com.google.protobuf.ByteString
       getUserAgentBytes();
+
+  /**
+   * <code>string base_url = 15;</code>
+   * @return The baseUrl.
+   */
+  java.lang.String getBaseUrl();
+  /**
+   * <code>string base_url = 15;</code>
+   * @return The bytes for baseUrl.
+   */
+  com.google.protobuf.ByteString
+      getBaseUrlBytes();
 }

@@ -123,7 +123,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     @Override
-    public StringAssertion<String> tagName() {
+    public StringAssertion tagName() {
         return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -138,7 +138,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     @Override
-    public StringAssertion<String> text() {
+    public StringAssertion text() {
         return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -153,7 +153,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     @Override
-    public StringAssertion<String> attribute(String attribute) {
+    public StringAssertion attribute(String attribute) {
         return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -168,7 +168,7 @@ public class DefaultUiElementAssertion implements UiElementAssertion {
     }
 
     @Override
-    public StringAssertion<String> css(String property) {
+    public StringAssertion css(String property) {
         return propertyAssertionFactory.createWithConfig(DefaultStringAssertion.class, this.propertyAssertionConfig, new UiElementAssertionProvider<String>() {
             @Override
             public String getActual() {

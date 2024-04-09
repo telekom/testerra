@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -33,9 +34,9 @@ import java.util.stream.Collectors;
  *
  * @author Mike Reiche
  */
-public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
+public class DefaultStringAssertion extends DefaultObjectAssertion<String> implements StringAssertion, Loggable {
 
-    public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultStringAssertion(AbstractPropertyAssertion<String> parentAssertion, AssertionProvider<String> provider) {
         super(parentAssertion, provider);
     }
 
@@ -44,7 +45,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().contains(expected);
+                return provider.getActual().contains(expected);
             }
 
             @Override
@@ -59,7 +60,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().startsWith(expected);
+                return provider.getActual().startsWith(expected);
             }
 
             @Override
@@ -74,7 +75,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return provider.getActual().toString().endsWith(expected);
+                return provider.getActual().endsWith(expected);
             }
 
             @Override
@@ -89,7 +90,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultPatternAssertion.class, this, new AssertionProvider<Matcher>() {
             @Override
             public Matcher getActual() {
-                return pattern.matcher(provider.getActual().toString());
+                return pattern.matcher(provider.getActual());
             }
 
             @Override
@@ -116,7 +117,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
             @Override
             public Boolean getActual() {
                 int found = 0;
-                Matcher matcher = wordsPattern.matcher(provider.getActual().toString());
+                Matcher matcher = wordsPattern.matcher(provider.getActual());
                 while (matcher.find()) found++;
                 return found == words.size();
             }
@@ -133,12 +134,32 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         return propertyAssertionFactory.createWithParent(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                return provider.getActual().toString().length();
+                return provider.getActual().length();
             }
 
             @Override
             public String createSubject() {
                 return "length";
+            }
+        });
+    }
+
+    @Override
+    public StringAssertion map(Function<String, String> mapFunction) {
+        return propertyAssertionFactory.createWithParent(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
+            @Override
+            public String getActual() {
+                String actual = provider.getActual();
+                if (actual == null) {
+                    return null;
+                } else {
+                    return mapFunction.apply(provider.getActual());
+                }
+            }
+
+            @Override
+            public java.lang.String createSubject() {
+                return "mapped to " + Format.shortString(getActual());
             }
         });
     }

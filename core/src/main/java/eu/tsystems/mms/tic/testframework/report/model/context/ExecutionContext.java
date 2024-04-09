@@ -38,9 +38,10 @@ public class ExecutionContext extends AbstractContext {
      */
     public final RunConfig runConfig = new RunConfig();
     /**
-     * @deprecated Use {@link #isCrashed()} instead
-     */
-    public boolean crashed = false;
+     * flag to indicate whether report has been already generated, used by {@link eu.tsystems.mms.tic.testframework.common.JVMExitHook}
+     * */
+    private boolean reportModelGenerated;
+    private boolean crashed;
     private Queue<SessionContext> exclusiveSessionContexts;
     /**
      * @deprecated Use {@link #getEstimatedTestMethodCount()} instead
@@ -108,12 +109,23 @@ public class ExecutionContext extends AbstractContext {
         return this.runConfig;
     }
 
+    /**
+     * set reportModelGenerated flag, indicating already existing report
+     */
+    public synchronized void setReportModelGenerated() {
+        reportModelGenerated = true;
+    }
+
+    public boolean getReportModelGenerated() {
+        return reportModelGenerated;
+    }
+
     public boolean isCrashed() {
         return this.crashed;
     }
 
-    public void setCrashed(boolean crashed) {
-        this.crashed = crashed;
+    public void setCrashed() {
+        this.crashed = true;
     }
 
     public int getEstimatedTestMethodCount() {

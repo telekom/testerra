@@ -338,7 +338,6 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
         int totalPixels = distanceImageSize.width * distanceImageSize.height;
 
-        // TODO: calculation
         // calculate and return the percentage number of pixels in error
         double result_rgb = ((double) pixelsInError / (totalPixels - noOfExclusivePixels - noOfIgnoredPixels)) * 100;
         double result_size = ((double) noOfExclusivePixels / totalPixels) * 100;
@@ -351,7 +350,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         // Just for debug log
         Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
-        LOGGER.info("Raw results of pixel check: \n" +
+        LOGGER.debug("Raw results of pixel check: \n" +
                         "Dimension actual image: {}\n" +
                         "Dimension expected image: {}\n" +
                         "Number of total pixel: {}\n" +
@@ -452,8 +451,6 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
                 // LayoutCheckContext (for dimension check and for pixel check) is working with identical objects
                 methodContext.addLayoutCheckContext(context.clone());
             });
-
-            // TODO: assertion
             OptionalAssert.fail(
                     String.format(
                             "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",

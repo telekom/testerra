@@ -62,7 +62,8 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
         // Handling custom timeouts
         int useTimeout;
-        if (overrides.hasTimeout()) {
+        boolean threadLocalTimeoutSet = overrides.hasTimeout();
+        if (threadLocalTimeoutSet) {
             useTimeout = overrides.getTimeoutInSeconds();
         } else {
             useTimeout = check.timeout();
@@ -121,9 +122,16 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
             }
         }
 
-        if (prevTimeout >= 0) {
-            overrides.setTimeout(prevTimeout);
+        if (threadLocalTimeoutSet) {
+            if (prevTimeout >= 0) {
+                // Reset timeout to previous value
+                overrides.setTimeout(prevTimeout);
+            }
+        } else {
+            // Remove thread local timeout
+            overrides.setTimeout(-1);
         }
+
         if (check.optional() || check.collect()) {
             overrides.setAssertionImpl(previousAssertionImpl);
         }

@@ -72,7 +72,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
         PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0.0),
-        PIXEL_COUNT("pixel.count", "optional"),
+        PIXEL_COUNT_ASSERTION("pixel.count.assertion", "optional"),
 
         ;
         private final String property;
@@ -343,7 +343,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         double result_size = ((double) noOfExclusivePixels / totalPixels) * 100;
         double result = result_rgb;
 
-        if (Properties.PIXEL_COUNT.asString().equalsIgnoreCase("hard")) {
+        if (Properties.PIXEL_COUNT_ASSERTION.asString().equalsIgnoreCase("hard")) {
             result += result_size;
         }
 

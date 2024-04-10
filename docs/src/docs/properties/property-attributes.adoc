@@ -79,6 +79,7 @@
 :layoutcheck_distance_path:                     tt.layoutcheck.distance.path
 :layoutcheck_actual_path:                       tt.layoutcheck.actual.path
 :layoutcheck_pixel_rgb_deviation_percent:       tt.layoutcheck.pixel.rgb.deviation.percent
+:layoutcheck_pixel_count_assertion:             tt.layoutcheck.pixel.count.assertion
 
 :layoutcheck_match_threshold:                   tt.layoutcheck.match.threshold
 :layoutcheck_displacement_threshold:            tt.layoutcheck.displacement.threshold

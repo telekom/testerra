@@ -40,7 +40,7 @@ public interface TestController {
         boolean hasTimeout();
 
         /**
-         * Determines if a delay before action has been configured
+         * Determines if a delay after actions has been configured
          */
         boolean hasDelayAfterAction();
 
@@ -63,7 +63,7 @@ public interface TestController {
         int setTimeout(int seconds);
 
         /**
-         * Sets a delay after an action on a UiElement
+         * Sets a delay after actions on a UiElement
          *
          * @param millis If < 0, the delay configuration will be removed
          * @return Returns the previously configured delay
@@ -91,7 +91,7 @@ public interface TestController {
     void withTimeout(int seconds, Runnable runnable);
 
     /**
-     * Runs a {@link Runnable} with a specified delay before actions
+     * Runs a {@link Runnable} with a specified delay after actions
      */
     void withDelayAfterAction(int millis, Runnable runnable);
 

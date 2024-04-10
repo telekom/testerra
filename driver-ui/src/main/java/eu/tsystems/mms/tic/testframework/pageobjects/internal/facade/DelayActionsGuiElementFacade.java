@@ -21,9 +21,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCoreDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreActions;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 
 /**
@@ -31,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
  */
 public class DelayActionsGuiElementFacade extends AbstractGuiElementCoreDecorator {
 
+    private final static TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
     private final int beforeActionSleepTime;
     private final int afterActionSleepTime;
 
@@ -40,11 +43,22 @@ public class DelayActionsGuiElementFacade extends AbstractGuiElementCoreDecorato
         this.afterActionSleepTime = afterActionSleepTime;
     }
 
-    protected void beforeDelegation(String method, Object ... params) {
-        TimerUtils.sleep(beforeActionSleepTime);
+    protected void beforeDelegation(String method, Object... params) {
+        if (beforeActionSleepTime > 0) {
+            TimerUtils.sleep(beforeActionSleepTime);
+        }
     }
 
     protected void afterDelegation() {
-        TimerUtils.sleep(afterActionSleepTime);
+        if (overrides.hasDelayAfterAction()) {
+            int delay = overrides.getDelayAfterAction();
+            if (delay > 0) {
+                TimerUtils.sleep(delay);
+            }
+        } else {
+            if (afterActionSleepTime > 0) {
+                TimerUtils.sleep(afterActionSleepTime);
+            }
+        }
     }
 }

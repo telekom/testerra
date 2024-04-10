@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 public class DefaultTestControllerOverrides implements TestController.Overrides {
 
     private final ThreadLocal<Integer> threadLocalTimeout = new ThreadLocal<>();
-    private final ThreadLocal<Integer> threadLocalDelayBeforeAction = new ThreadLocal<>();
     private final ThreadLocal<Integer> threadLocalDelayAfterAction = new ThreadLocal<>();
     private final ThreadLocal<Assertion> threadLocalAssertionImpl = new ThreadLocal<>();
 
@@ -43,11 +42,6 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
     @Override
     public boolean hasTimeout() {
         return threadLocalTimeout.get() != null;
-    }
-
-    @Override
-    public boolean hasDelayBeforeAction() {
-        return threadLocalDelayBeforeAction.get()!=null;
     }
 
     @Override
@@ -72,25 +66,6 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
             threadLocalTimeout.set(seconds);
         }
         return prevTimeout;
-    }
-
-    @Override
-    public int getDelayBeforeAction() {
-        Integer integer = threadLocalDelayBeforeAction.get();
-        if (integer == null) return -1;
-        else return integer;
-    }
-
-    @Override
-    public int setDelayBeforeAction(int millis) {
-        Integer prevDelay = getDelayBeforeAction();
-        if (millis < 0) {
-            // Back to default
-            threadLocalDelayBeforeAction.remove();
-        } else {
-            threadLocalDelayBeforeAction.set(millis);
-        }
-        return prevDelay;
     }
 
     @Override

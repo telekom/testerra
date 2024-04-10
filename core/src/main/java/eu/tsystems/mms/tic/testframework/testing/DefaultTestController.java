@@ -159,34 +159,12 @@ public class DefaultTestController implements TestController, Loggable {
     }
 
     @Override
-    public void delayBeforeGuiElementAction(int millis, Runnable runnable) {
-        int prevDelay = overrides.setDelayBeforeAction(millis);
-        try {
-            runnable.run();
-        } finally {
-            overrides.setDelayBeforeAction(prevDelay);
-        }
-    }
-
-    @Override
-    public void delayAfterGuiElementAction(int millis, Runnable runnable) {
+    public void withDelayAfterAction(int millis, Runnable runnable) {
         int prevDelay = overrides.setDelayAfterAction(millis);
         try {
             runnable.run();
         } finally {
             overrides.setDelayAfterAction(prevDelay);
-        }
-    }
-
-    @Override
-    public void delayGuiElementAction(int millisBefore, int millisAfter, Runnable runnable) {
-        int prevDelayBefore = overrides.setDelayBeforeAction(millisBefore);
-        int prevDelayAfter = overrides.setDelayAfterAction(millisAfter);
-        try {
-            runnable.run();
-        } finally {
-            overrides.setDelayBeforeAction(prevDelayBefore);
-            overrides.setDelayAfterAction(prevDelayAfter);
         }
     }
 

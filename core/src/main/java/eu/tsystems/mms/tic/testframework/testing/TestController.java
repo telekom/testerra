@@ -42,22 +42,12 @@ public interface TestController {
         /**
          * Determines if a delay before action has been configured
          */
-        boolean hasDelayBeforeAction();
-
-        /**
-         * Determines if a delay before action has been configured
-         */
         boolean hasDelayAfterAction();
 
         /**
          * @return Configured or default timeout for any actions
          */
         int getTimeoutInSeconds();
-
-        /**
-         * @return Configured or default delay before actions
-         */
-        int getDelayBeforeAction();
 
         /**
          * @return Configured or default delay after actions
@@ -71,14 +61,6 @@ public interface TestController {
          * @return Returns the previously configured timeout
          */
         int setTimeout(int seconds);
-
-        /**
-         * Sets a delay before an action on a UiElement
-         *
-         * @param millis If < 0, the delay configuration will be removed
-         * @return Returns the previously configured delay
-         */
-        int setDelayBeforeAction(int millis);
 
         /**
          * Sets a delay after an action on a UiElement
@@ -111,17 +93,7 @@ public interface TestController {
     /**
      * Runs a {@link Runnable} with a specified delay before actions
      */
-    void delayBeforeGuiElementAction(int millis, Runnable runnable);
-
-    /**
-     * Runs a {@link Runnable} with a specified delay before actions
-     */
-    void delayAfterGuiElementAction(int millis, Runnable runnable);
-
-    /**
-     * Runs a {@link Runnable} with a specified delay before and after actions
-     */
-    void delayGuiElementAction(int millisBefore, int millisAfter, Runnable runnable);
+    void withDelayAfterAction(int millis, Runnable runnable);
 
     /**
      * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period.

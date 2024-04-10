@@ -47,7 +47,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLo
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.webdriver.WebDriverFactory;
 import org.openqa.selenium.By;
@@ -71,7 +70,6 @@ import java.util.stream.Collectors;
  */
 public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable, WebDriverManagerProvider {
 
-    private final static TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
     /**
      * Factory required for {@link UiElementFinder}
      */
@@ -196,7 +194,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
 
     /**
      * We cannot use the GuiElementFactory for decorating the facade here,
-     * since GuiElement is not always created by it's according factory
+     * since GuiElement is not always created by its according factory
      * and implementing a GuiElementFacadeFactory is useless.
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      */
@@ -208,16 +206,7 @@ public class GuiElement implements UiElement, NameableChild<UiElement>, Loggable
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
         int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();
 
-        if (overrides.hasDelayBeforeAction()) {
-            delayBeforeAction = overrides.getDelayBeforeAction();
-        }
-        if (overrides.hasDelayAfterAction()) {
-            delayAfterAction = overrides.getDelayAfterAction();
-        }
-
-        if (delayAfterAction > 0 || delayBeforeAction > 0) {
-            decoratedCore = new DelayActionsGuiElementFacade(decoratedCore, delayBeforeAction, delayAfterAction);
-        }
+        decoratedCore = new DelayActionsGuiElementFacade(decoratedCore, delayBeforeAction, delayAfterAction);
     }
 
     /**

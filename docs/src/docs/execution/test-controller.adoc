@@ -62,6 +62,17 @@ public void test_something_fast() {
 
 NOTE: `withTimeout()` overrides all internal timeouts except the explicit set timeout in `waitFor(int seconds)` methods.
 
+== Add delay after actions
+
+Adding a delay after an actions on UiElements can be achieved by overriding it for a specified block.
+
+[source, java]
+----
+CONTROL.withDelayAfterAction(500, () -> {
+    button.click(); // Delay of 500 milliseconds after the click
+});
+----
+
 == Retries
 
 In some situations you cannot rely on single assertions or waits anymore and need to continue trying something out before performing an alternative solution. Use control methods for repeating a couple of actions within a loop until a timeout has reached.

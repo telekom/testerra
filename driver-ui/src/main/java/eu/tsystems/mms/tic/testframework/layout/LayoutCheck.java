@@ -256,7 +256,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
     /**
      * Creates an image showing the differences of the given images and calculates the difference between the images in
-     * percent.
+     * percent. Also calculates the percentage of pixels that are incorrect based on the property 'tt.layoutcheck.pixel.count.assertion'.
      *
      * @param expectedImage The expected image
      * @param actualImage The actual image

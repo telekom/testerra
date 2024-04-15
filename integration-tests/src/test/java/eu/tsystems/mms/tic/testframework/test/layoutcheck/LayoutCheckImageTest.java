@@ -52,13 +52,13 @@ public class LayoutCheckImageTest extends AbstractTestSitesTest implements Locat
     }
 
     @Test
-    public void testT02_CheckImageLayoutDifferentSizesOptional() {
+    public void testT02_CheckImageLayoutDifferentSizes_Optional() {
         UiElement uiElement = getUIElementQa("testimage");
         uiElement.expect().screenshot().pixelDistance("TestImageDifferentSize").isLowerThan(1.4);
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT03_CheckImageLayoutDifferentSizesHard() {
+    public void testT03_CheckImageLayoutDifferentSizes_Hard() {
         PROPERTY_MANAGER.setTestLocalProperty("tt.layoutcheck.pixel.count.assertion", "hard");
 
         UiElement uiElement = getUIElementQa("testimage");

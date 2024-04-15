@@ -76,13 +76,13 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
     }
 
     @Override
-    public int setDelayAfterAction(int millis) {
+    public int setDelayAfterAction(int seconds) {
         Integer prevDelay = getDelayAfterAction();
-        if (millis < 0) {
+        if (seconds < 0) {
             // Back to default
             threadLocalDelayAfterAction.remove();
         } else {
-            threadLocalDelayAfterAction.set(millis);
+            threadLocalDelayAfterAction.set(seconds * 1000);
         }
         return prevDelay;
     }

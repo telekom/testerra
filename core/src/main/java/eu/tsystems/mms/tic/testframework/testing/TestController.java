@@ -65,10 +65,10 @@ public interface TestController {
         /**
          * Sets a delay after actions on a UiElement
          *
-         * @param millis If < 0, the delay configuration will be removed
+         * @param seconds If < 0, the delay configuration will be removed
          * @return Returns the previously configured delay
          */
-        int setDelayAfterAction(int millis);
+        int setDelayAfterAction(int seconds);
 
         Assertion getAssertionImpl();
 
@@ -93,7 +93,7 @@ public interface TestController {
     /**
      * Runs a {@link Runnable} with a specified delay after actions
      */
-    void withDelayAfterAction(int millis, Runnable runnable);
+    void withDelayAfterAction(int seconds, Runnable runnable);
 
     /**
      * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period.

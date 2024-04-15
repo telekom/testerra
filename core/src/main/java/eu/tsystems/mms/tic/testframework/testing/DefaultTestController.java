@@ -159,8 +159,8 @@ public class DefaultTestController implements TestController, Loggable {
     }
 
     @Override
-    public void withDelayAfterAction(int millis, Runnable runnable) {
-        int prevDelay = overrides.setDelayAfterAction(millis);
+    public void withDelayAfterAction(int seconds, Runnable runnable) {
+        int prevDelay = overrides.setDelayAfterAction(seconds);
         try {
             runnable.run();
         } finally {

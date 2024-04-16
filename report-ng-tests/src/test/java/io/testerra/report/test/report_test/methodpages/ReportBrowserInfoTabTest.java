@@ -24,20 +24,20 @@ package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 
+import io.testerra.report.test.pages.report.methodReport.ReportBrowserInfoTab;
 import org.testng.annotations.Test;
 
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
-import io.testerra.report.test.pages.report.methodReport.ReportSessionsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 
-public class ReportSessionsTabTest extends AbstractReportTest {
+public class ReportBrowserInfoTabTest extends AbstractReportTest {
 
     @Test
-    public void testT01_checkDisplayedSessionGotContent() {
-        String preTestWithSessionTab = "test_Failed_WithScreenShot";
+    public void testT01_checkDisplayedBrowserInfoGotContent() {
+        String preTestWithBrowserInfoTab = "test_Failed_WithScreenShot";
         String usedBrowser = "Chrome";
 
         TestStep.begin("Navigate to dashboard page.");
@@ -46,10 +46,10 @@ public class ReportSessionsTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        TestStep.begin("Navigate to method sessions page and check for correct content");
+        TestStep.begin("Navigate to method browser info page and check for correct content");
         reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
-        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(preTestWithSessionTab);
-        ReportSessionsTab reportSessionsTab = reportDetailsTab.navigateToSessionsTab();
-        reportSessionsTab.validateBrowser(usedBrowser);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(preTestWithBrowserInfoTab);
+        ReportBrowserInfoTab reportBrowserInfoTab = reportDetailsTab.navigateToBrowserInfoTab();
+        reportBrowserInfoTab.validateBrowser(usedBrowser);
     }
 }

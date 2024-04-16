@@ -27,25 +27,25 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class ReportSessionsTab extends AbstractReportMethodPage {
+public class ReportBrowserInfoTab extends AbstractReportMethodPage {
 
     @Check
-    private final UiElement sessionCard = tabPagesContent.find(By.tagName("mdc-layout-grid-cell"));
+    private final UiElement sessionCard = tabPagesContent.find(By.tagName("mdc-card"));
     @Check
-    private final UiElement headline = sessionCard.find(By.xpath("//*[contains(text(),'Session')]"));
+    private final UiElement headline = sessionCard.find(By.xpath("//*[contains(@class, 'card-headline') and contains(text(),'Session')]"));
     @Check
-    private final UiElement id = sessionCard.find(By.xpath("/ul//span[contains(text(),'ID')]"));
+    private final UiElement id = sessionCard.find(By.xpath("//ul//span[contains(text(),'ID')]"));
     @Check
     private final UiElement browser = sessionCard.find(By.xpath("//li[./span[contains(text(), 'Browser')]]"));
     @Check
     private final UiElement userAgent = sessionCard.find(By.xpath("//li[./span[contains(text(), 'User') and contains(text(), 'agent')]]"));
     private final UiElement node = sessionCard.find(By.xpath("/ul//span[contains(text(),'Node')]"));
     @Check
-    private final UiElement capabilityHeadline = sessionCard.find(By.xpath("/div[contains(text(),'Capabilities')]"));
+    private final UiElement capabilityHeadline = sessionCard.find(By.xpath("//div[contains(text(),'Capabilities')]"));
     @Check
-    private final UiElement capabilities = sessionCard.find(By.xpath("/div[contains(@class,'capabilities-view')]"));
+    private final UiElement capabilities = sessionCard.find(By.xpath("//div[contains(@class,'capabilities-view')]"));
 
-    public ReportSessionsTab(WebDriver driver) {
+    public ReportBrowserInfoTab(WebDriver driver) {
         super(driver);
     }
 

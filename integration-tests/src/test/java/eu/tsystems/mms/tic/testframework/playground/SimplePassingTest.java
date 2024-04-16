@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 
 public class SimplePassingTest extends TesterraTest {
 
+
     @Test
     public void testPassing() {
 

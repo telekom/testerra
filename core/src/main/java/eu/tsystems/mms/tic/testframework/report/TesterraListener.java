@@ -563,8 +563,6 @@ public class TesterraListener implements
         dpTestResult.setThrowable(exception);
         pAfterInvocation(dpIinvokedMethod, dpTestResult, testContext);
 
-//        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
-
         // For the called test method a new method context is created
         ITestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
         IInvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
@@ -580,6 +578,5 @@ public class TesterraListener implements
 
         // To prevent double method context, this map is needed
         dataProviderSemaphore.put(testNGMethod, true);
-//        }
     }
 }

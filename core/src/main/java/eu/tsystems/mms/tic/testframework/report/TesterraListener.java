@@ -42,7 +42,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
-
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
@@ -66,6 +65,7 @@ import org.testng.SkipException;
 import org.testng.annotations.Test;
 import org.testng.internal.ConfigurationMethod;
 import org.testng.internal.ConstructorOrMethod;
+import org.testng.internal.IObject;
 import org.testng.internal.NoOpTestClass;
 import org.testng.internal.TestResult;
 import org.testng.internal.annotations.DefaultAnnotationTransformer;
@@ -78,6 +78,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -510,6 +511,7 @@ public class TesterraListener implements
 
         // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
         IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());
+        IObject.IdentifiableObject identifiableObject = new IObject.IdentifiableObject(dataProviderMethod.getInstance(), UUID.randomUUID());
         ITestNGMethod dpConfigMethod = new ConfigurationMethod(
                 new DefaultTestObjectFactory(),
                 new ConstructorOrMethod(dataProviderMethod.getMethod()),
@@ -526,7 +528,7 @@ public class TesterraListener implements
                 new String[]{},
                 new String[]{},
                 testNGMethod.getXmlTest(),
-                dataProviderMethod
+                identifiableObject
         );
 
         // A data provider could also defined in a specific data provider class

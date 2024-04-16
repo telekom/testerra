@@ -26,23 +26,26 @@
             <mdc-list-divider></mdc-list-divider>
             <div class="card-content">
                 <mdc-layout-grid-inner>
+                    <mdc-layout-grid-cell span="2">
+                        <div>
+                            <ul class="mdc-list mdc-list--dense" mdc-caption>
+                                <li class="mdc-custom-list-item overflow-wrap">
+                                    <span class="secondary sr1">Session ID</span>
+                                    <a class="" route-href="route: browser-info; params.bind: {id: sessionContext.contextValues.id}">${sessionContext.contextValues.id}</a>
+                                </li>
+                                <li class="mdc-custom-list-item overflow-wrap">
+                                    <span class="secondary sr1">Browser</span>
+                                    <span>${sessionContext.browserName}:${sessionContext.browserVersion}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </mdc-layout-grid-cell>
                     <mdc-layout-grid-cell span="10">
                         <div>
                             <lazy-video file-id.bind="sessionContext.videoId"></lazy-video>
                         </div>
                     </mdc-layout-grid-cell>
-                        <mdc-layout-grid-cell span="2">
-                            <div>
-                                <ul class="mdc-list mdc-list--dense" mdc-caption>
-                                    <li class="mdc-custom-list-item">
-                                        <span class="secondary sr1">Session ID</span><a route-href="route: browser-info; params.bind: {id: sessionContext.contextValues.id}">${sessionContext.contextValues.id}</a>
-                                    </li>
-                                    <li class="mdc-custom-list-item">
-                                        <span class="secondary sr1">Browser</span>${sessionContext.browserName}:${sessionContext.browserVersion}
-                                    </li>
-                                </ul>
-                            </div>
-                        </mdc-layout-grid-cell>
+
                 </mdc-layout-grid-inner>
             </div>
         </mdc-card>

@@ -19,11 +19,11 @@ A layout test with the Testerra utilities is actually a comparison between a ref
 image::layoutcheck_comparison.png[alt="Visualization of a layout check",width=920,height=233]
 
 There are two different ways in which Testerra handles different sized images.
-Using the property `tt.layoutcheck.pixel.count.assertion`, you can customize the handling of such cases.
+Using the property `{layoutcheck_pixel_count_hard_assertion}`, you can customize the handling of such cases.
 
-If the property is set to `optional` (default) Testerra reports this as an <<#_optional_assertions, Optional assertion>>. Only the common pixels of both images as considered as 100% for the calculation. Pixels that are outside of one or the other image are not included in the error calculation.
+If the property is set to `false` (default) Testerra reports this as an <<#_optional_assertions, Optional assertion>>. Only the common pixels of both images as considered as 100% for the calculation. Pixels that are outside of one or the other image are not included in the error calculation.
 
-With the property set to `hard`, the size difference of the two images is included in the calculation so that all pixels that appear in only one image counted as incorrect ones.
+With the property set to `true`, the size difference of the two images is included in the calculation so that all pixels that appear in only one image counted as incorrect ones.
 
 In both scenarios, all pixels outside one or the other image are marked in blue in the generated distance image.
 

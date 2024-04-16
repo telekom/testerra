@@ -72,7 +72,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
         PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0.0),
-        PIXEL_COUNT_ASSERTION("pixel.count.assertion", "optional"),
+        PIXEL_COUNT_HARD_ASSERTION("pixel.count.hard.assertion", false),
 
         ;
         private final String property;
@@ -256,7 +256,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
     /**
      * Creates an image showing the differences of the given images and calculates the difference between the images in
-     * percent. Also calculates the percentage of pixels that are incorrect based on the property 'tt.layoutcheck.pixel.count.assertion'.
+     * percent. Also calculates the percentage of pixels that are incorrect based on the property 'tt.layoutcheck.pixel.count.hard.assertion'.
      *
      * @param expectedImage The expected image
      * @param actualImage The actual image
@@ -343,7 +343,8 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         double result_size = ((double) noOfExclusivePixels / totalPixels) * 100;
         double result = result_rgb;
 
-        if (Properties.PIXEL_COUNT_ASSERTION.asString().equalsIgnoreCase("hard")) {
+        boolean pixelCountHardAssertion = Properties.PIXEL_COUNT_HARD_ASSERTION.asBool();
+        if (pixelCountHardAssertion) {
             result += result_size;
         }
 

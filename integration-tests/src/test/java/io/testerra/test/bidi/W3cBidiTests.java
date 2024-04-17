@@ -32,11 +32,12 @@ import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.bidi.LogInspector;
-import org.openqa.selenium.bidi.Network;
+
 import org.openqa.selenium.bidi.log.ConsoleLogEntry;
 import org.openqa.selenium.bidi.log.GenericLogEntry;
 import org.openqa.selenium.bidi.log.JavascriptLogEntry;
+import org.openqa.selenium.bidi.module.LogInspector;
+import org.openqa.selenium.bidi.module.Network;
 import org.openqa.selenium.bidi.network.ResponseDetails;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

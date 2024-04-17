@@ -25,8 +25,9 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Credentials;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.bidi.LogInspector;
-import org.openqa.selenium.bidi.Network;
+
+import org.openqa.selenium.bidi.module.LogInspector;
+import org.openqa.selenium.bidi.module.Network;
 import org.openqa.selenium.remote.Augmenter;
 
 import java.util.function.Supplier;

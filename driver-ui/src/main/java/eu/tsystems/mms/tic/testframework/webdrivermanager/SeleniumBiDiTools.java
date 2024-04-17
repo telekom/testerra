@@ -22,9 +22,10 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.bidi.LogInspector;
-import org.openqa.selenium.bidi.Network;
+
 import org.openqa.selenium.bidi.log.LogEntry;
+import org.openqa.selenium.bidi.module.LogInspector;
+import org.openqa.selenium.bidi.module.Network;
 import org.openqa.selenium.bidi.network.ResponseDetails;
 
 import java.util.List;

@@ -31,10 +31,10 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverReques
 import org.openqa.selenium.By;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.bidi.LogInspector;
-import org.openqa.selenium.bidi.Network;
 import org.openqa.selenium.bidi.log.GenericLogEntry;
 import org.openqa.selenium.bidi.log.LogEntry;
+import org.openqa.selenium.bidi.module.LogInspector;
+import org.openqa.selenium.bidi.module.Network;
 import org.openqa.selenium.bidi.network.AddInterceptParameters;
 import org.openqa.selenium.bidi.network.BeforeRequestSent;
 import org.openqa.selenium.bidi.network.InterceptPhase;
@@ -146,7 +146,7 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest implements Selen
     /**
      * Does not work
      * https://github.com/SeleniumHQ/seleniumhq.github.io/issues/1593
-     *
+     * <p>
      * Seems to be not fully supported by Chrome and Firefox
      */
     @Test(enabled = false)

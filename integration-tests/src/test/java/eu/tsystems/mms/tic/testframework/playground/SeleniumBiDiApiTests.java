@@ -21,8 +21,12 @@
 package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.SeleniumBidiToolsProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
@@ -31,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverReques
 import org.openqa.selenium.By;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.bidi.browsingcontext.BrowsingContext;
 import org.openqa.selenium.bidi.log.GenericLogEntry;
 import org.openqa.selenium.bidi.log.LogEntry;
 import org.openqa.selenium.bidi.module.LogInspector;
@@ -39,11 +44,17 @@ import org.openqa.selenium.bidi.network.AddInterceptParameters;
 import org.openqa.selenium.bidi.network.BeforeRequestSent;
 import org.openqa.selenium.bidi.network.InterceptPhase;
 import org.openqa.selenium.bidi.network.ResponseDetails;
+import org.openqa.selenium.remote.Augmenter;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -164,5 +175,27 @@ public class SeleniumBiDiApiTests extends AbstractWebDriverTest implements Selen
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
     }
 
+    @Test
+    public void testT07_CaptureScreenshot() throws IOException {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        WebDriver originalFromDecorated = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
+        Augmenter augmenter = new Augmenter();
+        BrowsingContext browsingContext = new BrowsingContext(augmenter.augment(originalFromDecorated), webDriver.getWindowHandle());
+
+        webDriver.get("https://the-internet.herokuapp.com/");
+
+        browsingContext.setViewport(1024, 2000);
+        String s = browsingContext.captureScreenshot();
+        byte[] decode = Base64.getDecoder().decode(s);
+
+        Screenshot screenshot = new Screenshot();
+        OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(screenshot.getScreenshotFile()));
+        outputStream.write(decode);
+
+        Report reportInstance = Testerra.getInjector().getInstance(Report.class);
+        IExecutionContextController iExecutionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
+        reportInstance.addScreenshot(screenshot, Report.FileMode.COPY);
+        iExecutionContextController.getCurrentMethodContext().get().addScreenshot(screenshot);
+    }
 
 }

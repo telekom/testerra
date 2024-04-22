@@ -57,7 +57,6 @@
 :failed_tests_if_throwable_classes:             tt.failed.tests.if.throwable.classes
 :failed_tests_if_throwable_messages:            tt.failed.tests.if.throwable.messages
 :failed_tests_max_retries:                      tt.failed.tests.max.retries
-:execution_omit_indevelopment:                  tt.execution.omit.indevelopment
 
 :watchdog_enable:                               tt.watchdog.enable
 :watchdog_timeout_seconds:                      tt.watchdog.timeout.seconds

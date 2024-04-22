@@ -3,7 +3,7 @@ include::../properties/property-attributes.adoc[]
 
 The `JVMMonitor` is the Observer of the hardware utilization for memory and cpu.
 With the start of a test while using the `TesterraListener` the latter implicitly starts the `JVMMonitor`.
-Thus a concurrent thread for monitoring purposes only is initiated next to the actual test execution. Every ten seconds the following parameters are logged
+Thus a concurrent thread for monitoring purposes only is initiated next to the actual test execution. Every ten seconds the following parameters are logged at DEBUG Level.
 
 * JVM Memory usage      in MB
 * JVM Memory reserved   in MB

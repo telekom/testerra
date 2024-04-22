@@ -278,6 +278,7 @@ public class TestDataProvider {
     public static Object[][] dataProviderMultipleScreenShotTests() {
         return new Object[][]{
                 {"test_takeScreenshotOnErrorWithMultipleActiveSessionsError", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
+                {"test_takeScreenshotViaCollectedAssertion_fails", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
                 {"test_takeScreenshotOnErrorWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
                 {"test_takeScreenshotsWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
                 {"test_takeScreenshotWithMultipleExclusiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
@@ -288,7 +289,6 @@ public class TestDataProvider {
     public static Object[][] dataProviderSingleScreenShotTests() {
         return new Object[][]{
                 {"test_takeScreenshotOnExclusiveSession_fails", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
-                {"test_takeScreenshotViaCollectedAssertion_fails", "GenerateScreenshotsInTesterraReportTest", ReportDetailsTab.class},
                 {"test_takeExclusiveSessionScreenshotWithMultipleActiveSessions", "GenerateScreenshotsInTesterraReportTest", ReportStepsTab.class},
         };
     }

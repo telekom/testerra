@@ -86,6 +86,20 @@ Especially for photo checks it should be helpful in case of different kinds of i
 | image::layoutcheck_rgb_deviation01.png[alt="Screenshot of the report visualization of a layout check"] | image::layoutcheck_rgb_deviation02.png[alt="Screenshot of the report visualization of a layout check"]
 |===
 
+== Check image files
+
+In case you don't want to check a screenshot of the browser but rather a pre-existing image, there is also a way to do that.
+The `assertImage` method requires the `File` object of the actual image and executes a layout check.
+
+[source, java]
+----
+// 5% of the pixels are allowed to be different
+float pixelDistanceToleranceThresholdPercent = 5.0;
+
+File absoluteFile = FileUtils.getResourceFile("images/actual.png");
+LayoutCheck.assertImage(absoluteFile, "reference", pixelDistanceToleranceThresholdPercent);
+----
+
 == Take reference screenshots on first run
 
 When you have configured the reference screenshots location and implemented the tests, you can now set the option

@@ -30,7 +30,7 @@
                         <span class="secondary sr1">Title</span>${_current.meta.Title}
                     </li>
                     <li class="mdc-custom-list-item" if.bind="_current.meta.URL.length">
-                        <span class="secondary sr1">URL</span><a href="${_current.meta.URL}" rel="noopener" target="_blank">${_current.meta.URL}</a>
+                        <span class="secondary sr1">URL</span><a href="${_current.meta.URL}" rel="noopener" target="_blank" class="overflow-wrap inherit-height">${_current.meta.URL}</a>
                     </li>
                     <li class="mdc-custom-list-item" if.bind="_pageSourceFile">
                         <span class="secondary sr1">PageSource</span><a href="${_pageSourceFile.relativePath}" rel="noopener" target="_blank">${_pageSourceFile.relativePath}</a>

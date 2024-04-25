@@ -37,7 +37,7 @@ import java.util.Arrays;
 public class GsonCustomTypeSerializer<T> implements JsonSerializer<T>, Loggable {
 
     /**
-     * Simple serializer which only
+     * Simple serializer searching for 'Get' methods and add the result to the json object
      */
     @Override
     public JsonElement serialize(T t, Type src, JsonSerializationContext context) {

@@ -551,7 +551,8 @@ public class ContextExporter implements Loggable {
         sessionContext.getActualBrowserName().ifPresent(builder::setBrowserName);
         sessionContext.getActualBrowserVersion().ifPresent(builder::setBrowserVersion);
         sessionContext.getUserAgent().ifPresent(builder::setUserAgent);
-        apply(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()), builder::setCapabilities);
+//        apply(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()), builder::setCapabilities);
+        apply(this.convertObjectToJson(sessionContext.getWebDriverRequest().getCapabilities()), builder::setCapabilities);
         sessionContext.getWebDriverRequest().getServerUrl().ifPresent(url -> builder.setServerUrl(url.toString()));
         sessionContext.getNodeInfo().ifPresent(nodeInfo -> builder.setNodeUrl(nodeInfo.toString()));
         apply(sessionContext.getBaseUrl(), builder::setBaseUrl);
@@ -605,6 +606,18 @@ public class ContextExporter implements Loggable {
 
             testMetricBuilder.addSessionMetrics(sessionMetricBuilder.build());
         }
+    }
+
+    /**
+     * If caps contain java.util.logging.Level, they need to handled via a custom serializer to prevent
+     * 'Unable to make field private final java.lang.String java.util.logging.Level.name accessible:'.
+     *
+     */
+    private String convertObjectToJson(Object o) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(java.util.logging.Level.class, new GsonCustomTypeSerializer<java.util.logging.Level>())
+                .create();
+        return gson.toJson(o);
     }
 
 }

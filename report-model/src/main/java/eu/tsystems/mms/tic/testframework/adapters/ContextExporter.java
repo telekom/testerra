@@ -72,7 +72,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextControlle
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
-import java.lang.reflect.Modifier;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
@@ -91,7 +90,7 @@ public class ContextExporter implements Loggable {
     private final Map<Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
     private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = injector.getInstance(Report.class);
-    private final Gson jsonEncoder = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create();
+//    private final Gson jsonEncoder = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create();
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();
@@ -122,7 +121,7 @@ public class ContextExporter implements Loggable {
         methodContext.readAnnotations()
                 .forEach(annotation -> {
                     report.getAnnotationConverter(annotation).ifPresent(annotationExporter -> {
-                        builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(annotationExporter.toMap(annotation)));
+                        builder.putAnnotations(annotation.annotationType().getName(), this.convertObjectToJson(annotationExporter.toMap(annotation)));
                     });
                 });
 
@@ -155,7 +154,7 @@ public class ContextExporter implements Loggable {
                 .forEach(layoutCheckContext -> builder.addLayoutCheckContext(buildLayoutCheckContext(layoutCheckContext)));
 
         methodContext.readCustomContexts().forEach(customContext -> {
-            builder.putCustomContexts(customContext.getName(), jsonEncoder.toJson(customContext.exportToReport(report)));
+            builder.putCustomContexts(customContext.getName(), this.convertObjectToJson(customContext.exportToReport(report)));
         });
 
         return builder;
@@ -551,7 +550,6 @@ public class ContextExporter implements Loggable {
         sessionContext.getActualBrowserName().ifPresent(builder::setBrowserName);
         sessionContext.getActualBrowserVersion().ifPresent(builder::setBrowserVersion);
         sessionContext.getUserAgent().ifPresent(builder::setUserAgent);
-//        apply(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()), builder::setCapabilities);
         apply(this.convertObjectToJson(sessionContext.getWebDriverRequest().getCapabilities()), builder::setCapabilities);
         sessionContext.getWebDriverRequest().getServerUrl().ifPresent(url -> builder.setServerUrl(url.toString()));
         sessionContext.getNodeInfo().ifPresent(nodeInfo -> builder.setNodeUrl(nodeInfo.toString()));
@@ -611,7 +609,6 @@ public class ContextExporter implements Loggable {
     /**
      * If caps contain java.util.logging.Level, they need to handled via a custom serializer to prevent
      * 'Unable to make field private final java.lang.String java.util.logging.Level.name accessible:'.
-     *
      */
     private String convertObjectToJson(Object o) {
         Gson gson = new GsonBuilder()

@@ -15,6 +15,7 @@ include::property-attributes.adoc[]
 | {layoutcheck_distance_path} | `src/test/resources/screenreferences/distance` | Directory path under which the calculated distance images are stored.
 | {layoutcheck_actual_path}       | `src/test/resources/screenreferences/actual` | Directory path under which the current screenshots for the comparison are saved
 | {layoutcheck_pixel_rgb_deviation_percent}       | 0.0 | Max allowed difference in rgb values between actual and reference image in percentage. If on of Red, Green, and Blue percentages are higher than the given value, the corresponding pixel is marked as false (means red color in distance image)
+| {layoutcheck_pixel_count_hard_assertion}    | false | Specifies the handling of different sized images. If false, only the common pixels of both images are used for the error calculation and pixels that are outside one of the images are ignored. If true, the pixels outside of one or the other image are included in the error calculation and are counted as incorrect pixels.
 
 // The following properties were used for annotated layout check, which is inactive
 //| {layoutcheck_match_threshold}       | 0.95d | Defines how many percent of pixels are considered a match. Should be as high as possible and as low as needed.

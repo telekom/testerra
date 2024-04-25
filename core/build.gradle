@@ -29,7 +29,7 @@ dependencies {
     // -> Dependency error Could not find netty-transport-native-epoll-4.1.84.Final-linux-x86_64.jar (io.netty:netty-transport-native-epoll:4.1.84.Final).
     api 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 
-    api('org.testng:testng:7.8.0')
+    api('org.testng:testng:7.10.1')
 
 }
 

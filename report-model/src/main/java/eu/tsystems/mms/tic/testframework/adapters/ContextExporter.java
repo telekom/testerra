@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
@@ -72,7 +71,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextControlle
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
-import java.lang.reflect.Modifier;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
@@ -91,7 +89,7 @@ public class ContextExporter implements Loggable {
     private final Map<Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
     private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = injector.getInstance(Report.class);
-    private final Gson jsonEncoder = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create();
+    private final Gson jsonEncoder = new Gson();
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();

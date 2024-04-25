@@ -32,11 +32,9 @@ import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
@@ -177,20 +175,6 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         String content = chromeExtensionJson.waitFor().text().getActual();
         Assert.assertTrue(content.contains("Simple Translate"));
 
-    }
-
-    /**
-     * This test generates special caps to test a successful export of all test context in `ContextExporter`.
-     * If a report of all integration tests is generated this test has no impact.
-     * https://github.com/telekom/testerra/issues/409
-     */
-    @Test
-    public void testT09_SpecialCapsForContextExport() {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        MutableCapabilities capabilities = request.getMutableCapabilities();
-        LoggingPreferences logPrefs = new LoggingPreferences();
-        capabilities.setCapability("goog:loggingPrefs", logPrefs);
-        WEB_DRIVER_MANAGER.getWebDriver(request);
     }
 
 }

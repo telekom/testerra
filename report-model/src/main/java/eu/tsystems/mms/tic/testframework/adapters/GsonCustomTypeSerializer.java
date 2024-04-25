@@ -26,8 +26,8 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 
 /**
  * Created on 2024-04-25
@@ -37,21 +37,21 @@ import java.lang.reflect.Type;
 public class GsonCustomTypeSerializer<T> implements JsonSerializer<T>, Loggable {
 
     /**
-     *
+     * Simple serializer which only
      */
     @Override
     public JsonElement serialize(T t, Type src, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
-        for (Method method : src.getClass().getDeclaredMethods()) {
-            if (method.getName().startsWith("get")) {
-                String fieldName = method.getName().substring(3);
-                try {
-                    jsonObject.add(fieldName, context.serialize(method.invoke(src)));
-                } catch (Exception e) {
-                    log().warn("Cannot serialize {} from {}", fieldName, t);
-                }
-            }
-        }
+        Arrays.stream(t.getClass().getDeclaredMethods())
+                .filter(method -> method.getName().startsWith("get"))
+                .forEach(method -> {
+                    String fieldName = method.getName().substring(3);
+                    try {
+                        jsonObject.add(fieldName, context.serialize(method.invoke(t)));
+                    } catch (Exception e) {
+                        log().debug("Cannot serialize {} from {}", fieldName, t);
+                    }
+                });
         return jsonObject;
     }
 }

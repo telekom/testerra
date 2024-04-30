@@ -53,6 +53,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     @Check
     private final UiElement testStepsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
     private final UiElement testBrowserInfoTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Browser Info')]]"));
+    private final UiElement testVideoTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Video')]]"));
 
     protected final UiElement testLastScreenshot = pageContent.find(By.xpath("//mdc-card[contains(.,'Last Screenshot')]//img"));
 
@@ -73,6 +74,11 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     public ReportBrowserInfoTab navigateToBrowserInfoTab() {
         testBrowserInfoTab.click();
         return createPage(ReportBrowserInfoTab.class);
+    }
+
+    public ReportVideoTab navigateToVideoTab() {
+        testVideoTab.click();
+        return createPage(ReportVideoTab.class);
     }
 
     private void assertMethodNamesAreCorrect(String methodName) {

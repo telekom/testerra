@@ -21,7 +21,6 @@
 
 <template>
     <require from="../../value-converters/chip-name-value-converter"></require>
-    <require from="../../value-converters/chip-class-value-converter"></require>
 
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
@@ -83,15 +82,15 @@
             <!-- Chip List -->
             <mdc-layout-grid-cell span="12">
                 <mdc-chip-set>
-                    <mdc-chip repeat.for="chip of _chipList"
-                              class="chip-${chip.chipType|chipClass} mr1"
-                              mdc-tooltip="value.bind:_chipNameValueConverter.toView(chip.chipType, chip.chipElement, 0)"
-                              click.delegate="_removeFilter(chip.chipType, chip.chipElement)">
-                        <span>${chip.chipType|chipName:chip.chipElement:1}</span>
+                    <mdc-chip repeat.for="chip of _chips"
+                              class="chip-${chip.filter.cssClass} mr1"
+                              mdc-tooltip="value.bind:_chipNameValueConverter.toView(chip, 0)"
+                              click.delegate="_removeFilter(chip.filter.type, chip.value)">
+                        <span>${chip|chipName:1}</span>
                         <button mdc-chip-action trailing icon="cancel" tabindex="-1"></button>
                     </mdc-chip>
                     <button class="mdc-button">
-                        <span if.bind="_chipList.length > 0" class="mdc-button__label" mdc-tooltip="Remove all filters" click.delegate="_removeFilter(5)">Clear All</span>
+                        <span if.bind="_chips.length > 0" class="mdc-button__label" mdc-tooltip="Remove all filters" click.delegate="_removeAllFilters()">Clear All</span>
                     </button>
                 </mdc-chip-set>
             </mdc-layout-grid-cell>

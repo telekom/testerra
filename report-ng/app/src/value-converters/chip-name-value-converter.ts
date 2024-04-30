@@ -20,9 +20,9 @@
  */
 
 import {autoinject} from "aurelia-framework";
-import {ChipType} from "../services/common-models";
 import {StatusConverter} from "../services/status-converter";
 import {ClassName, ClassNameValueConverter} from "./class-name-value-converter";
+import {FilterType, IFilterChip} from "../components/classes/classes";
 
 @autoinject()
 export class ChipNameValueConverter {
@@ -33,42 +33,37 @@ export class ChipNameValueConverter {
     ) {
     }
 
-    toView(chipType: ChipType, element, converterType: ChipConverterType) {
+    toView(filterChip: IFilterChip, converterType: ChipConverterType) {
 
         if (converterType == ChipConverterType.TOOLTIP) {
 
-            switch (chipType) {
-                case ChipType.STATUS:
+            switch (filterChip.filter.type) {
+                case FilterType.STATUS:
                     return "Status";
-                case ChipType.CLASS:
+                case FilterType.CLASS:
                     return "Test Class";
-                case ChipType.CUSTOM_TEXT:
+                case FilterType.CUSTOM_TEXT:
                     return "Search Text";
-                case ChipType.CUSTOM_FILTER_TIMINGS:
+                case FilterType.CUSTOM_FILTER_TIMINGS:
                     return "Custom test filter according to filter in previous view";
-                case ChipType.CUSTOM_FILTER_FAILURE_ASPECTS:
+                case FilterType.CUSTOM_FILTER_FAILURE_ASPECTS:
                     return "Custom test filter according to filter in previous view";
-                case ChipType.CLEAR_ALL:
-                    return "Remove all Filters";
             }
 
         } else if (converterType == ChipConverterType.LABEL) {
 
-            switch (chipType) {
-                case ChipType.STATUS:
-                    return this._statusConverter.getLabelForStatus(this._statusConverter.getStatusForClass(element));
-                case ChipType.CLASS:
-                    return this._classNameValueConverter.toView(String(element), ClassName.simpleName);
-                case ChipType.CUSTOM_TEXT:
-                    return element;
-                case ChipType.CUSTOM_FILTER_TIMINGS:
+            switch (filterChip.filter.type) {
+                case FilterType.STATUS:
+                    return this._statusConverter.getLabelForStatus(this._statusConverter.getStatusForClass(filterChip.value));
+                case FilterType.CLASS:
+                    return this._classNameValueConverter.toView(String(filterChip.value), ClassName.simpleName);
+                case FilterType.CUSTOM_TEXT:
+                    return filterChip.value;
+                case FilterType.CUSTOM_FILTER_TIMINGS:
                     return "Custom Filter";
-                case ChipType.CUSTOM_FILTER_FAILURE_ASPECTS:
+                case FilterType.CUSTOM_FILTER_FAILURE_ASPECTS:
                     return "Custom Filter";
-                case ChipType.CLEAR_ALL:
-                    return "Clear All";
             }
-
         }
     }
 }

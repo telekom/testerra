@@ -72,7 +72,9 @@ export class TestTimings extends AbstractViewModel {
         }
         this._router = navInstruction.router;
 
-        if (!this.queryParams.rangeNum) this.queryParams.rangeNum = '10';// only set range 10 if there is no range at all (e.g. when navigation from another view)
+        if (!this.queryParams.rangeNum){
+            this.queryParams.rangeNum = '10';// only set range 10 if there is no range at all (e.g. when navigation from another view)
+        }
         if (params.config) {
             this._showConfigurationMethods = !!params.config.toLowerCase();
         }

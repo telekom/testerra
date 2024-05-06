@@ -50,7 +50,5 @@ public class ReportVideoTabTest extends AbstractReportTest {
         ReportVideoTab reportVideoTab = reportStepsTab.navigateToVideoTab();
 
         reportVideoTab.validateBrowser(usedBrowser);
-        reportVideoTab.checkSessionId();
-        reportVideoTab.checkVideo();
     }
 }

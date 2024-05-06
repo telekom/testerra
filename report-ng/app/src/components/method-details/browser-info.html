@@ -56,7 +56,7 @@
                                 <span class="secondary sr1">Session start duration</span>${session.sessionStartDuration}s
                             </li>
                             <li class="mdc-custom-list-item" if.bind="session.sessionStartTime>0">
-                                <span class="secondary sr1">Session start time</span>${_dateFormatter.toView(Number(session.sessionStartTime))}
+                                <span class="secondary sr1">Session start time</span>${session.sessionStartTime|dateFormat}
                             </li>
 
                             <div mdc-subtitle2 class="mt1" if.bind="session.baseUrl">Base URL metrics</div>
@@ -67,7 +67,7 @@
                                 <span class="secondary sr1">Base URL start duration</span>${session.baseurlStartDuration}s
                             </li>
                             <li class="mdc-custom-list-item" if.bind="session.baseurlStartTime>0">
-                                <span class="secondary sr1">Base URL start time</span>${_dateFormatter.toView(Number(session.baseurlStartTime))}
+                                <span class="secondary sr1">Base URL start time</span>${session.baseurlStartTime|dateFormat}
                             </li>
                         </ul>
                     </mdc-layout-grid-cell>

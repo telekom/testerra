@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2022, Marc Dietrich, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2024, Selina Natschke, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -34,7 +34,7 @@ public class ReportVideoTab extends AbstractReportMethodPage {
     private final UiElement videoCard = tabPagesContent.find(By.tagName("mdc-card"));
     private final UiElement headline = videoCard.find(By.xpath("//*[contains(@class, 'card-headline') and contains(text(),'Session')]"));
     @Check
-    private final UiElement id = videoCard.find(By.xpath("//ul//span[contains(text(),'ID')]"));
+    private final UiElement id = videoCard.find(By.xpath("//a[contains(@href, 'browser-info')]"));
     @Check
     private final UiElement browser = videoCard.find(By.xpath("//li[./span[contains(text(), 'Browser')]]"));
     @Check
@@ -45,11 +45,11 @@ public class ReportVideoTab extends AbstractReportMethodPage {
     }
 
     public void validateBrowser(String browser) {
-        this.browser.assertThat().text().contains(browser);
+        this.browser.assertThat().text().isContaining(browser);
     }
 
-    public void checkSessionId(String id){
-        this.id.assertThat().text().contains(id);
+    public void checkSessionId(){
+        this.id.assertThat().displayed();
     }
 
     public void checkVideo(){

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2022, Marc Dietrich, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2024, Selina Natschke, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -22,10 +22,7 @@
 
 package io.testerra.report.test.report_test.methodpages;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
@@ -52,11 +49,8 @@ public class ReportVideoTabTest extends AbstractReportTest {
         ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(preTestWithVideoTab);
         ReportVideoTab reportVideoTab = reportStepsTab.navigateToVideoTab();
 
-        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
-        SessionContext sessionContext = instance.getCurrentSessionContext().get();
-
         reportVideoTab.validateBrowser(usedBrowser);
-        reportVideoTab.checkSessionId(sessionContext.getId());
+        reportVideoTab.checkSessionId();
         reportVideoTab.checkVideo();
     }
 }

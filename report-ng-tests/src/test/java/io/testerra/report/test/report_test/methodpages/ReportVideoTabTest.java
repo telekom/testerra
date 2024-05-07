@@ -22,9 +22,11 @@
 
 package io.testerra.report.test.report_test.methodpages;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.methodReport.ReportBrowserInfoTab;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportVideoTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
@@ -47,8 +49,13 @@ public class ReportVideoTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to method browser info page and check for correct content");
         reportTestsPage = reportTestsPage.clickConfigurationMethodsSwitch();
         ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(preTestWithVideoTab);
-        ReportVideoTab reportVideoTab = reportStepsTab.navigateToVideoTab();
 
+        ReportBrowserInfoTab browserInfoTab = reportStepsTab.navigateToBrowserInfoTab();
+        TestableUiElement sessionIdElement = browserInfoTab.getSessionIdElement();
+        String sessionIdString = sessionIdElement.assertThat().text().getActual();
+        ReportVideoTab reportVideoTab = browserInfoTab.navigateToVideoTab();
+
+        reportVideoTab.checkFirstId(sessionIdString);
         reportVideoTab.validateBrowser(usedBrowser);
     }
 }

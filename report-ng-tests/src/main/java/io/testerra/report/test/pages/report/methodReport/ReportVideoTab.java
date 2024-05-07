@@ -47,4 +47,8 @@ public class ReportVideoTab extends AbstractReportMethodPage {
     public void validateBrowser(String browser) {
         this.browser.assertThat().text().isContaining(browser);
     }
+
+    public void checkFirstId(String sessionId){
+        this.id.assertThat().text().isContaining(sessionId);
+    }
 }

@@ -87,6 +87,7 @@ export class BrowserInfo {
                     videoId: sessionContext.videoId
                 }
                 this._sessionInformationArray.push(sessionInformation);
+                this._sessionInformationArray.sort((a,b) => a.sessionId.localeCompare(b.sessionId));
             })
         })
 

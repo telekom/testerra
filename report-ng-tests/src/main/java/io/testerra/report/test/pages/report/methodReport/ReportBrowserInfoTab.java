@@ -23,6 +23,7 @@
 package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -34,7 +35,9 @@ public class ReportBrowserInfoTab extends AbstractReportMethodPage {
     @Check
     private final UiElement headline = sessionCard.find(By.xpath("//*[contains(@class, 'card-headline') and contains(text(),'Session')]"));
     @Check
-    private final UiElement id = sessionCard.find(By.xpath("//ul//span[contains(text(),'ID')]"));
+    private final UiElement idString = sessionCard.find(By.xpath("//ul//span[contains(text(),'ID')]"));
+    @Check
+    private final UiElement id = sessionCard.find(By.xpath("//ul//span[contains(text(),'ID')]/following-sibling::span"));
     @Check
     private final UiElement browser = sessionCard.find(By.xpath("//li[./span[contains(text(), 'Browser')]]"));
     @Check
@@ -47,6 +50,10 @@ public class ReportBrowserInfoTab extends AbstractReportMethodPage {
 
     public ReportBrowserInfoTab(WebDriver driver) {
         super(driver);
+    }
+
+    public TestableUiElement getSessionIdElement(){
+        return id;
     }
 
     public void validateBrowser(String browser) {

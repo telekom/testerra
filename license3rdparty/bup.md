@@ -1,7 +1,7 @@
 
 #bup
 ##Dependency License Report
-_2022-04-06 13:49:33 MESZ_
+_2024-03-05 07:59:00 MEZ_
 ## Apache 2.0
 
 **1** **Group:** `com.google.code.gson` **Name:** `gson` **Version:** `2.8.8` 

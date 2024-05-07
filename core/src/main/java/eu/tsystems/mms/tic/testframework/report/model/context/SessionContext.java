@@ -38,6 +38,7 @@ public class SessionContext extends AbstractContext {
     private URL nodeUrl;
     private final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     private String remoteSessionId;
+    private String baseUrl;
     public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
     public SessionContext(WebDriverRequest webDriverRequest) {
@@ -128,6 +129,14 @@ public class SessionContext extends AbstractContext {
 
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
     void addMethodContext(MethodContext methodContext) {

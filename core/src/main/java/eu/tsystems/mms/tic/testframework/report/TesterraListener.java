@@ -41,6 +41,8 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
@@ -332,8 +334,9 @@ public class TesterraListener implements
 //        }
 
         final String methodName = getMethodName(testResult);
+        final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
-        Optional<MethodContext> optionalMethodContext = ExecutionContextController.getMethodContextForThread();
+        Optional<MethodContext> optionalMethodContext = executionContextController.getCurrentMethodContext();
         MethodContext methodContext;
 
         if (!optionalMethodContext.isPresent()) {
@@ -371,6 +374,8 @@ public class TesterraListener implements
         ExecutionFinishEvent event = new ExecutionFinishEvent()
                 .setSuites(suites)
                 .setXmlSuites(xmlSuites);
+
+        log().info("Triggering report generation after successful test execution.");
         Testerra.getEventBus().post(event);
     }
 

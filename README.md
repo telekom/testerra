@@ -115,6 +115,14 @@ Create a report about used licenses for every dependency:
 
 You will find the reports of all modules under  ``license3rdparty``.
 
+### SBOM reports
+
+Create an SBOM reports for every module:
+
+``gradle cyclonedxBom``
+
+You will find the JSON files under ``<root-project>/build/sbom``
+
 ### Publishing
 
 Testerra is deployed and published to Maven Central. All JAR files are signed via Gradle signing plugin.

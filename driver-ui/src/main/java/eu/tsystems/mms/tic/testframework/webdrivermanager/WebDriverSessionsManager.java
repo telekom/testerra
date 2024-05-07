@@ -230,6 +230,9 @@ public final class WebDriverSessionsManager implements WebDriverManagerProvider 
             }
         });
         unlinkFromThread(sessionKey, decoratedWebDriver);
+        if (WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(decoratedWebDriver) != null) {
+            WEBDRIVER_SESSIONS_CONTEXTS_MAP.get(decoratedWebDriver).updateEndTime(new Date());
+        }
         WEBDRIVER_SESSIONS_CONTEXTS_MAP.remove(decoratedWebDriver);
         if (sessionKey.startsWith(SessionContext.EXCLUSIVE_PREFIX)) {
             EXCLUSIVE_SESSION_KEY_WEBDRIVER_MAP.remove(sessionKey);

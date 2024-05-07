@@ -166,6 +166,7 @@ public class DesktopWebDriverFactory implements
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
+                sessionContext.setBaseUrl(baseUrl.toString());
                 MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
                 metricsController.start(sessionContext, MetricsType.BASEURL_LOAD);
                 decoratedDriver.get(baseUrl.toString());

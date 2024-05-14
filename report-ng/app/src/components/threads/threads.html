@@ -40,7 +40,22 @@
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="4">
+            <mdc-layout-grid-cell span="3">
+                <mdc-select label="Class"
+                            value.bind="_selectedClass"
+                            change.delegate="_classChanged()"
+                            outlined
+                            class="w100"
+                >
+                    <mdc-list>
+                        <mdc-list-item>(All)</mdc-list-item>
+                        <mdc-list-item repeat.for="classStatistic of _executionStatistics.classStatistics"
+                                       value.bind="classStatistic.classIdentifier"
+                        >${classStatistic.classIdentifier|className:1}</mdc-list-item>
+                    </mdc-list>
+                </mdc-select>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="5">
                 <div mdc-menu-surface-anchor>
                     <mdc-card-action-textfield>
                         <mdc-text-field label="Method"

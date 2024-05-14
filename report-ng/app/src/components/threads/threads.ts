@@ -36,7 +36,8 @@ import {
 import {
     DurationFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
-import ResultStatusType = data.ResultStatusType;
+import {ResultStatusType} from "../../services/report-model/framework_pb";
+import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
 import MethodContext = data.MethodContext;
 
 interface MethodInfo {
@@ -51,6 +52,8 @@ export class Threads extends AbstractViewModel {
     private _inputValue;
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
+    private _selectedClass: string;
+    private _executionStatistics: ExecutionStatistics;
     private _initialChartLoading = true;
     private _filterActive = false;          // To prevent unnecessary method calls
     private _suppressMethodFilter = false;  // To prevent conflict between method filter and status filter
@@ -73,7 +76,8 @@ export class Threads extends AbstractViewModel {
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
         private _statistics: StatisticsGenerator,
-        private _router: Router
+        private _router: Router,
+        private _classNameValueConverter: ClassNameValueConverter
     ) {
         super();
     }
@@ -86,15 +90,24 @@ export class Threads extends AbstractViewModel {
             (async () => {
                 this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
                 await new Promise(f => setTimeout(f, 200));
-                this._zoomInOnMethodsWithStatus(this._statusConverter.getStatusForClass(params.status));
+                this._zoomInOnFilter(this._statusConverter.getStatusForClass(params.status), 7);
             })();
         } else {
             this._selectedStatus = null;
+        }
+
+        if (this.queryParams.class || params.class) {
+            (async () => {
+                this._selectedClass = params.class;
+                await new Promise(f => setTimeout(f, 200));
+                this._zoomInOnFilter(params.class, 8);
+            })();
         }
     }
 
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._executionStatistics = executionStatistics;
             this._availableStatuses = [];
             this._availableStatuses = executionStatistics.availableStatuses;
             this._initDateFormatter();
@@ -119,8 +132,12 @@ export class Threads extends AbstractViewModel {
                     this._suppressMethodFilter = true;
                     this._selectedStatus = undefined;
                 }
+                if (this._selectedClass != null) {
+                    this._suppressMethodFilter = true;
+                    this._selectedClass = undefined;
+                }
                 this._resetColor();
-                this._zoomInOnMethod(methodId);
+                this._zoomInOnFilter(methodId, 6);
                 this.updateUrl({methodId: methodId});
             } else if (filter?.length > 0) {
                 this._searchRegexp = this._statusConverter.createRegexpFromSearchString(filter);
@@ -167,15 +184,49 @@ export class Threads extends AbstractViewModel {
             this._suppressMethodFilter = false;
             return;
         }
-        if (this._filterActive) {
-            this._resetColor();
-        }
-        if (this._selectedStatus > 0) {
-            this._zoomInOnMethodsWithStatus();
+        if(this._selectedStatus){
+            if (this._filterActive) {
+                this._resetColor();
+            }
+
+            this._zoomInOnFilter(this._selectedStatus, 7)
             this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
-        } else {
+
+            // make sure that filters are not combined
+            this._inputValue = "";
+            this._selectedClass = undefined;
+
+        }
+        // prevent overwriting of method and status filter when _selectedStatus is set undefined by their observers
+        else if (!this._selectedClass && !this._inputValue) {
             this._resetZoom();
-            this.updateUrl({});
+            this.queryParams = {};
+        }
+
+    }
+
+    private _classChanged() {
+        if (this._suppressMethodFilter) {
+            this._suppressMethodFilter = false;
+            return;
+        }
+        if(this._selectedClass){
+            if (this._filterActive) {
+                this._resetColor();
+            }
+
+            this._zoomInOnFilter(this._selectedClass, 8)
+            this.updateUrl({class: this._selectedClass});
+
+            // make sure that filters are not combined
+            this._selectedStatus = undefined;
+            this._inputValue = "";
+
+        }
+        // prevent overwriting of method and status filter when _selectedStatus is set undefined by their observers
+        else if (!this._selectedStatus && !this._inputValue) {
+            this._resetZoom();
+            this.queryParams = {};
         }
     }
 
@@ -190,37 +241,15 @@ export class Threads extends AbstractViewModel {
         });
     }
 
-    private _zoomInOnMethod(methodId: string) {
+    private _zoomInOnFilter(filter: any, valueIndex: number) {
         this._resetColor();
-        const dataToZoomInOn = this._options.series[0].data.find(function (method) {
-            return method.value[6] == methodId;
-        });
-        const zoomStart = dataToZoomInOn.value[1];
-        const zoomEnd = dataToZoomInOn.value[2];
         const opacity = this._opacityOfInactiveElements;
-
-        this._options.series[0].data.forEach(function (value) {
-            const mid = value.value[6];
-            if (mid != methodId) {
-                value.itemStyle.normal.opacity = opacity;
-            }
-        });
-        this._chart.setOption(this._options);
-        this._zoom(zoomStart, zoomEnd);
-    }
-
-    private _zoomInOnMethodsWithStatus(status?: data.ResultStatusType) {
-        const opacity = this._opacityOfInactiveElements;
-        let selectedStat = this._selectedStatus;
         let startTimes: number[] = [];
         let endTimes: number[] = [];
 
-        if (status) {
-            selectedStat = status;
-        }
         this._options.series[0].data.forEach(function (value) {
-            const stat = value.value[7];
-            if (stat != selectedStat) {
+            const criterion = value.value[valueIndex];
+            if (criterion != filter) {
                 value.itemStyle.normal.opacity = opacity;
             } else {
                 startTimes.push(value.value[1]);
@@ -311,6 +340,9 @@ export class Threads extends AbstractViewModel {
 
                 const itemColor = style.get(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
+                const classId = executionStatistics.classStatistics.find(classStat => {
+                    return classStat.classContext.contextValues.id == context.classContextId;
+                }).classIdentifier;
 
                 data.push({
                     name: context.contextValues.name,
@@ -322,7 +354,8 @@ export class Threads extends AbstractViewModel {
                         duration,
                         context.methodRunIndex,
                         context.contextValues.id,
-                        context.resultStatus
+                        context.resultStatus,
+                        classId
                     ],
                     itemStyle: {
                         normal: {
@@ -338,6 +371,7 @@ export class Threads extends AbstractViewModel {
         const sliderFromTop = gridHeight + this._sliderSpacingFromChart
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
+        const classNameFormatter = this._classNameValueConverter;
         this._cardHeight = sliderFromTop + 60; // 60px space for dataZoom-slider
 
         // Set gridLeftValue dynamically to the longest thread name
@@ -356,7 +390,8 @@ export class Threads extends AbstractViewModel {
                         params.color + ';"> ' + params.name + ' (' + params.value[5] + ')' + '</div>'
                         + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
                         + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
-                        + '<br>Duration: ' + durationFormatter.toView(params.value[4]);
+                        + '<br>Duration: ' + durationFormatter.toView(params.value[4])
+                        + '<br>Class: ' + classNameFormatter.toView(params.value[8], ClassName.simpleName);
                 }
             },
             dataZoom: [

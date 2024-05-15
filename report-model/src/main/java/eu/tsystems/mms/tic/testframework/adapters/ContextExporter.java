@@ -90,7 +90,7 @@ public class ContextExporter implements Loggable {
     private final Map<Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
     private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = injector.getInstance(Report.class);
-//    private final Gson jsonEncoder = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create();
+//    private final Gson jsonEncoder = new Gson();
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();

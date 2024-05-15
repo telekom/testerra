@@ -28,6 +28,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.LocatorFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.testng.annotations.Test;
 
+import static eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider.PROPERTY_MANAGER;
+
 public class LayoutCheckImageTest extends AbstractTestSitesTest implements LocatorFactoryProvider {
 
     @Override
@@ -50,7 +52,15 @@ public class LayoutCheckImageTest extends AbstractTestSitesTest implements Locat
     }
 
     @Test
-    public void testT02_CheckImageLayoutDifferentSizes() {
+    public void testT02_CheckImageLayoutDifferentSizes_Optional() {
+        UiElement uiElement = getUIElementQa("testimage");
+        uiElement.expect().screenshot().pixelDistance("TestImageDifferentSize").isLowerThan(1.4);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testT03_CheckImageLayoutDifferentSizes_Hard() {
+        PROPERTY_MANAGER.setTestLocalProperty("tt.layoutcheck.pixel.count.hard.assertion", true);
+
         UiElement uiElement = getUIElementQa("testimage");
         uiElement.expect().screenshot().pixelDistance("TestImageDifferentSize").isLowerThan(1.4);
     }

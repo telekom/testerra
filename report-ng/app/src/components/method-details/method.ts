@@ -84,13 +84,23 @@ export class Method {
                 }
             },
             {
-                route: 'sessions',
-                moduleId: PLATFORM.moduleName('./sessions'),
+                route: 'browser-info',
+                moduleId: PLATFORM.moduleName('./browser-info'),
                 nav: true,
-                name: "sessions",
-                title: 'Sessions',
+                name: "browser-info",
+                title: 'Browser Info',
                 settings: {
                     icon: "devices"
+                }
+            },
+            {
+                route: 'video',
+                moduleId: PLATFORM.moduleName('./video'),
+                nav: true,
+                name: "video",
+                title: 'Video',
+                settings: {
+                    icon: "videocam"
                 }
             },
             {
@@ -145,9 +155,19 @@ export class Method {
                         }
                         break;
                     }
-                    case "sessions": {
+                    case "browser-info": {
                         if (methodDetails.sessionContexts.length > 0) {
                             routeConfig.settings.count = methodDetails.sessionContexts.length;
+                            routeConfig.nav = true;
+                        } else {
+                            disableRoute(routeConfig);
+                        }
+                        break;
+                    }
+                    case "video":{
+                        const contextsWithVideos = methodDetails.sessionContexts.filter(context => context.videoId?.length > 0)
+                        if(contextsWithVideos.length > 0){
+                            routeConfig.settings.count = contextsWithVideos.length;
                             routeConfig.nav = true;
                         } else {
                             disableRoute(routeConfig);

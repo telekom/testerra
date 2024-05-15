@@ -1,6 +1,10 @@
 package io.testerra.report.test.pretest_status.pageTests;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
 import io.testerra.report.test.pages.pretest.CheckPages.OptionalCheckPage;
@@ -89,6 +93,17 @@ public class GeneratePassedCheckTestsTTReportTest extends AbstractTestSitesTest 
         new Thread(() -> log().warn("Warn me!", Loggable.prompt)).start();
 
         new Thread(() -> log().error("Tell me more!", Loggable.prompt)).start();
+    }
+
+    @Test(groups = {Groups.EXT})
+    public void preTest10_videoTest_passed(){
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
+        WEB_DRIVER_MANAGER.getWebDriver();
+        SessionContext sessionContext = instance.getCurrentSessionContext().get();
+        sessionContext.setVideo(new Video());
+        WEB_DRIVER_MANAGER.getWebDriver("new session");
+        SessionContext sessionContext2 = instance.getCurrentSessionContext().get();
+        sessionContext2.setVideo(new Video());
     }
 
 }

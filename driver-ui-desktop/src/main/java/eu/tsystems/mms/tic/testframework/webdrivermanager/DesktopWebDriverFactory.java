@@ -119,7 +119,7 @@ public class DesktopWebDriverFactory implements
                 });
                 chromeOptions.addArguments("--no-sandbox");
                 if (browser.equals(Browsers.chromeHeadless)) {
-                    chromeOptions.addArguments("--headless");
+                    chromeOptions.addArguments("--headless=new");
                 }
                 userAgentCapabilities = chromeOptions;
                 break;

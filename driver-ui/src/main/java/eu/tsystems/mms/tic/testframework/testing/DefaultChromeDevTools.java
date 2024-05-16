@@ -47,16 +47,15 @@ import java.util.function.Supplier;
  *
  * @author mgn
  */
-public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
+public class DefaultChromeDevTools implements ChromeDevTools, Loggable {
 
     /**
      * Create a Chrome DevTools session
      */
     @Override
     public DevTools getRawDevTools(WebDriver webDriver) {
-        if (!isSupported(webDriver)) {
-            throw new RuntimeException("The current browser does not support DevTools");
-        }
+        validateSupport(webDriver);
+
         try {
             DevTools devTools = null;
             final String message = "Creating DevTools instance of ";
@@ -80,9 +79,6 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
 
     @Override
     public void setGeoLocation(WebDriver webDriver, double latitude, double longitude, int accuracy) {
-        if (!isSupported(webDriver)) {
-            throw new RuntimeException("The current browser does not support DevTools");
-        }
         DevTools devTools = this.getRawDevTools(webDriver);
         devTools.send(Emulation.setGeolocationOverride(
                 Optional.of(latitude),
@@ -93,9 +89,6 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
 
     @Override
     public void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials) {
-        if (!isSupported(webDriver)) {
-            throw new RuntimeException("The current browser does not support DevTools");
-        }
         DevTools devTools = this.getRawDevTools(webDriver);
 
         try {

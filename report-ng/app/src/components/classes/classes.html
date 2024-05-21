@@ -84,9 +84,9 @@
                 <mdc-chip-set>
                     <mdc-chip repeat.for="chip of _chips"
                               class="chip-${chip.filter.cssClass} mr1"
-                              mdc-tooltip="value.bind:_chipNameValueConverter.toView(chip, 0)"
+                              mdc-tooltip="value.bind:chip.filter.tooltip"
                               click.delegate="_removeFilter(chip.filter.type, chip.value)">
-                        <span>${chip|chipName:1}</span>
+                        <span>${chip|chipName}</span>
                         <button mdc-chip-action trailing icon="cancel" tabindex="-1"></button>
                     </mdc-chip>
                     <button class="mdc-button">

@@ -33,42 +33,20 @@ export class ChipNameValueConverter {
     ) {
     }
 
-    toView(filterChip: IFilterChip, converterType: ChipConverterType) {
+    toView(filterChip: IFilterChip) {
 
-        if (converterType == ChipConverterType.TOOLTIP) {
-
-            switch (filterChip.filter.type) {
-                case FilterType.STATUS:
-                    return "Status";
-                case FilterType.CLASS:
-                    return "Test Class";
-                case FilterType.CUSTOM_TEXT:
-                    return "Search Text";
-                case FilterType.CUSTOM_FILTER_TIMINGS:
-                    return "Custom test filter according to filter in previous view";
-                case FilterType.CUSTOM_FILTER_FAILURE_ASPECTS:
-                    return "Custom test filter according to filter in previous view";
-            }
-
-        } else if (converterType == ChipConverterType.LABEL) {
-
-            switch (filterChip.filter.type) {
-                case FilterType.STATUS:
-                    return this._statusConverter.getLabelForStatus(this._statusConverter.getStatusForClass(filterChip.value));
-                case FilterType.CLASS:
-                    return this._classNameValueConverter.toView(String(filterChip.value), ClassName.simpleName);
-                case FilterType.CUSTOM_TEXT:
-                    return filterChip.value;
-                case FilterType.CUSTOM_FILTER_TIMINGS:
-                    return "Custom Filter";
-                case FilterType.CUSTOM_FILTER_FAILURE_ASPECTS:
-                    return "Custom Filter";
-            }
+        switch (filterChip.filter.type) {
+            case FilterType.STATUS:
+                return this._statusConverter.getLabelForStatus(this._statusConverter.getStatusForClass(filterChip.value));
+            case FilterType.CLASS:
+                return this._classNameValueConverter.toView(String(filterChip.value), ClassName.simpleName);
+            case FilterType.CUSTOM_TEXT:
+                return filterChip.value;
+            case FilterType.CUSTOM_FILTER_TIMINGS:
+                return "Custom Filter";
+            case FilterType.CUSTOM_FILTER_FAILURE_ASPECTS:
+                return "Custom Filter";
         }
     }
-}
 
-enum ChipConverterType {
-    TOOLTIP,
-    LABEL
 }

@@ -60,22 +60,27 @@ export class Classes extends AbstractViewModel {
         {
             "type": FilterType.CLASS,
             "cssClass": "class",
+            "tooltip": "Class"
         },
         {
             "type": FilterType.CUSTOM_TEXT,
             "cssClass": "text",
+            "tooltip": "Custom Filter"
         },
         {
             "type": FilterType.STATUS,
             "cssClass": "status",
+            "tooltip": "Status"
         },
         {
             "type": FilterType.CUSTOM_FILTER_TIMINGS,
             "cssClass": "default",
+            "tooltip": "Custom Test Filter"
         },
         {
             "type": FilterType.CUSTOM_FILTER_FAILURE_ASPECTS,
             "cssClass": "default",
+            "tooltip": "Custom Failure Aspects Filter"
         }
     ]
 
@@ -410,6 +415,7 @@ export enum FilterType {
 type Filter = {
     type: FilterType,
     cssClass: string,
+    tooltip: string
 }
 
 export interface IFilterChip {

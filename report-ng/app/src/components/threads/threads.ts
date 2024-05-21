@@ -51,8 +51,6 @@ export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _inputValue;
     private _availableStatuses: data.ResultStatusType[] | number[];
-    private _selectedStatus: data.ResultStatusType;
-    private _selectedClass: string;
     private _executionStatistics: ExecutionStatistics;
     private _initialChartLoading = true;
     private _filterActive = false;          // To prevent unnecessary method calls
@@ -84,28 +82,9 @@ export class Threads extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
+        console.log("queryparams", this.queryParams)
         this._router = navInstruction.router;
 
-        if (this.queryParams.status || params.status) {
-            (async () => {
-                this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
-                await new Promise(f => setTimeout(f, 200));
-                this._zoomInOnFilter(this._statusConverter.getStatusForClass(params.status), 7);
-            })();
-        } else {
-            this._selectedStatus = null;
-        }
-
-        if (this.queryParams.class || params.class) {
-            (async () => {
-                this._selectedClass = params.class;
-                await new Promise(f => setTimeout(f, 200));
-                this._zoomInOnFilter(params.class, 8);
-            })();
-        }
-    }
-
-    attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             this._availableStatuses = [];
@@ -114,6 +93,18 @@ export class Threads extends AbstractViewModel {
             this._initDurationFormatter();
             this._prepareTimeline(executionStatistics);
             this._initialChartLoading = false;
+
+        }).finally(() => {
+
+            if (params.status) {
+                this._zoomInOnFilter(this._statusConverter.getStatusForClass(params.status), 7);
+            } else {
+                delete this.queryParams.status
+            }
+
+            if (params.class) {
+                this._zoomInOnFilter(params.class, 8);
+            }
         });
     };
 
@@ -128,13 +119,13 @@ export class Threads extends AbstractViewModel {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
-                if (this._selectedStatus != null) {
+                if (this.queryParams.status != null) {
                     this._suppressMethodFilter = true;
-                    this._selectedStatus = undefined;
+                    delete this.queryParams.status
                 }
-                if (this._selectedClass != null) {
+                if (this.queryParams.class != null) {
                     this._suppressMethodFilter = true;
-                    this._selectedClass = undefined;
+                    delete this.queryParams.class
                 }
                 this._resetColor();
                 this._zoomInOnFilter(methodId, 6);
@@ -153,7 +144,6 @@ export class Threads extends AbstractViewModel {
                     name: methodContext.contextValues.name + " (" + methodContext.methodRunIndex + ")"
                 });
             }
-
             return methodInfo.sort(function (a, b) {
                 if (a.name < b.name) {
                     return -1;
@@ -173,7 +163,7 @@ export class Threads extends AbstractViewModel {
     private _selectionChanged() {
         if (this._inputValue.length == 0) {
             this._searchRegexp = null;
-            if (this._filterActive && this._selectedStatus == null) {
+            if (this._filterActive && this.queryParams.status == null && this.queryParams.class == null) {
                 this._resetZoom();
             }
         }
@@ -184,23 +174,30 @@ export class Threads extends AbstractViewModel {
             this._suppressMethodFilter = false;
             return;
         }
-        if(this._selectedStatus){
+        if(this.queryParams.status){
             if (this._filterActive) {
                 this._resetColor();
             }
 
-            this._zoomInOnFilter(this._selectedStatus, 7)
-            this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
+            this._zoomInOnFilter(this.queryParams.status, 7)
+            this.updateUrl({status: this._statusConverter.getClassForStatus(this.queryParams.status)});
 
             // make sure that filters are not combined
             this._inputValue = "";
-            this._selectedClass = undefined;
+            delete this.queryParams.class
 
         }
         // prevent overwriting of method and status filter when _selectedStatus is set undefined by their observers
-        else if (!this._selectedClass && !this._inputValue) {
+        else if (!this.queryParams.class && !this._inputValue) {
             this._resetZoom();
             this.queryParams = {};
+        }
+        console.log("queryparams(status)", this.queryParams)
+        if(this.queryParams.status){
+            console.log("log: status")
+        }
+        if(this.queryParams.class){
+            console.log("log: class")
         }
 
     }
@@ -210,24 +207,25 @@ export class Threads extends AbstractViewModel {
             this._suppressMethodFilter = false;
             return;
         }
-        if(this._selectedClass){
+        if(this.queryParams.class){
             if (this._filterActive) {
                 this._resetColor();
             }
 
-            this._zoomInOnFilter(this._selectedClass, 8)
-            this.updateUrl({class: this._selectedClass});
+            this._zoomInOnFilter(this.queryParams.class, 8)
+            this.updateUrl({class: this.queryParams.class});
 
             // make sure that filters are not combined
-            this._selectedStatus = undefined;
+            delete this.queryParams.status
             this._inputValue = "";
 
         }
         // prevent overwriting of method and status filter when _selectedStatus is set undefined by their observers
-        else if (!this._selectedStatus && !this._inputValue) {
+        else if (!this.queryParams.status && !this._inputValue) {
             this._resetZoom();
             this.queryParams = {};
         }
+        console.log("queryparams(class)", this.queryParams)
     }
 
     private _zoom(zoomStart: number, zoomEnd: number) {
@@ -472,5 +470,17 @@ export class Threads extends AbstractViewModel {
 
     private _handleClickEvent(event: echarts.ECElementEvent) {
         this._router.navigateToRoute('method', {methodId: event.value[6]})
+    }
+
+    private _removeMethodFilter(){
+        delete this.queryParams.methodId;
+        this._inputValue = "";
+
+        this._searchRegexp = null;
+        if (this._filterActive && this.queryParams.status == null && this.queryParams.class == null) {
+            this._resetZoom();
+        }
+        this._getLookupOptions("", "")
+        console.log("queryParams (remove)", this.queryParams)
     }
 }

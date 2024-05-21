@@ -42,20 +42,7 @@ enum SortBy {
 
 @autoinject()
 export class Classes extends AbstractViewModel {
-    private _executionStatistics: ExecutionStatistics;
-    private _selectedStatus: data.ResultStatusType;
-    private _selectedClass: string;
     @bindable({defaultBindingMode: bindingMode.twoWay}) _searchInput: string;
-    private _availableStatuses: data.ResultStatusType[] | number[];
-    private _filteredMethodDetails: MethodDetails[];
-    private _showConfigurationMethods: boolean = null;
-    private _uniqueStatuses = 0;
-    private _uniqueClasses = 0;
-    private _loading = false;
-    private _sortBy = SortBy.Class;
-    private _filteredClassStatistics: ClassStatistics[] = [];
-
-    private _chips: IFilterChip[]
     readonly filters: Filter[] = [
         {
             "type": FilterType.CLASS,
@@ -83,6 +70,18 @@ export class Classes extends AbstractViewModel {
             "tooltip": "Custom Failure Aspects Filter"
         }
     ]
+    private _executionStatistics: ExecutionStatistics;
+    private _selectedStatus: data.ResultStatusType;
+    private _selectedClass: string;
+    private _availableStatuses: data.ResultStatusType[] | number[];
+    private _filteredMethodDetails: MethodDetails[];
+    private _showConfigurationMethods: boolean = null;
+    private _uniqueStatuses = 0;
+    private _uniqueClasses = 0;
+    private _loading = false;
+    private _sortBy = SortBy.Class;
+    private _filteredClassStatistics: ClassStatistics[] = [];
+    private _chips: IFilterChip[]
 
     constructor(
         private _dataLoader: DataLoader,
@@ -122,13 +121,13 @@ export class Classes extends AbstractViewModel {
         for (const type in this.queryParams) {
             const filter = this.filters.find(filter => filter.type == type);
 
-            if(type != 'config' && type != 'methods'){
+            if (type != 'config' && type != 'methods') {
                 this.queryParams[type].split("~").forEach(param => {
                     const chip = {
                         filter: filter,
                         value: param
                     }
-                    if(type == 'failureAspect'){
+                    if (type == 'failureAspect') {
                         this._chips.unshift(chip);
                     } else {
                         this._chips.push(chip);
@@ -182,10 +181,10 @@ export class Classes extends AbstractViewModel {
                 filterByFailureAspect = true;
             }
             this._executionStatistics = executionStatistics;
-            this._executionStatistics.classStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier));
+            this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
 
-            if(this._filteredClassStatistics.length <= 0){      // create array for class select options that can be manipulated
-                this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier))];
+            if (this._filteredClassStatistics.length <= 0) {      // create array for class select options that can be manipulated
+                this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))];
 
                 // remove selected classes from options in select box
                 this._chips.filter(chip => chip.filter == classFilter).forEach(chipClass => {
@@ -206,10 +205,10 @@ export class Classes extends AbstractViewModel {
                 })
                 .filter(classStatistic => {
                     return !this._chips.filter(chip => chip.filter === classFilter).length ||
-                    this._chips.some(chip => {
-                        const className = this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.full);
-                        return chip.value === className || chip.value == classStatistic.classIdentifier;
-                    });
+                        this._chips.some(chip => {
+                            const className = this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.full);
+                            return chip.value === className || chip.value == classStatistic.classIdentifier;
+                        });
                 })
                 .forEach(classStatistic => {
                     let methodContexts = classStatistic.methodContexts;
@@ -243,11 +242,11 @@ export class Classes extends AbstractViewModel {
                             return this._chips.filter(chip => chip.filter == customTextFilter).map(chip => chip.value).every(searchTerm => {
                                 searchTerm = this._statusConverter.createRegexpFromSearchString(searchTerm);
                                 return methodDetail.identifier.match(searchTerm)
-                                || methodDetail.failureAspects.some(failureAspect => failureAspect.identifier.match(searchTerm))
-                                || methodDetail.failsAnnotation?.description?.match(searchTerm)
-                                || methodDetail.failsAnnotation?.ticketString?.match(searchTerm)
-                                || methodDetail.promptLogs.some(logMessage => logMessage.message.match(searchTerm))
-                                || methodDetail.classStatistics.classIdentifier.match(searchTerm)
+                                    || methodDetail.failureAspects.some(failureAspect => failureAspect.identifier.match(searchTerm))
+                                    || methodDetail.failsAnnotation?.description?.match(searchTerm)
+                                    || methodDetail.failsAnnotation?.ticketString?.match(searchTerm)
+                                    || methodDetail.promptLogs.some(logMessage => logMessage.message.match(searchTerm))
+                                    || methodDetail.classStatistics.classIdentifier.match(searchTerm)
                             })
                         });
                     }
@@ -269,10 +268,10 @@ export class Classes extends AbstractViewModel {
 
             switch (this._sortBy) {
                 case SortBy.Method :
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a,b) => a.identifier.localeCompare(b.identifier));
+                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.identifier.localeCompare(b.identifier));
                     break;
                 case SortBy.RunIndex :  // Sort by run index
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex-b.methodContext.methodRunIndex);
+                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex - b.methodContext.methodRunIndex);
                     break;
                 case SortBy.Class :
                 default:
@@ -321,7 +320,7 @@ export class Classes extends AbstractViewModel {
     }
 
     private _statusChanged() {
-        if(this._selectedStatus){
+        if (this._selectedStatus) {
             this.queryParams.status = this._addChipToQueryParams(this._statusConverter.getClassForStatus(this._selectedStatus), this.queryParams.status);
             this.updateUrl(this.queryParams);
             this._selectedStatus = undefined;
@@ -331,7 +330,7 @@ export class Classes extends AbstractViewModel {
     }
 
     private _classChanged() {
-        if(this._selectedClass){
+        if (this._selectedClass) {
             // remove selected classes from options in select box
             const index = this._filteredClassStatistics.map(stat => stat.classIdentifier).indexOf(this._selectedClass, 0);
             if (index > -1) {
@@ -350,7 +349,7 @@ export class Classes extends AbstractViewModel {
     }
 
     private _searchQueryChanged($event) {
-        if(this._searchInput) {
+        if (this._searchInput) {
             if ($event.key == "Enter") {
                 this.queryParams.q = this._addChipToQueryParams(this._searchInput, this.queryParams.q);
                 this.updateUrl(this.queryParams);
@@ -361,31 +360,31 @@ export class Classes extends AbstractViewModel {
         }
     }
 
-    private _removeAllFilters(){
+    private _removeAllFilters() {
         this._chips = [];
 
         this.queryParams = {}
         this.updateUrl(this.queryParams);
 
         // reset class filter select options
-        this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier))];
+        this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))];
 
         this._filter();
     }
 
-    private _removeFilter(filterType: FilterType, filterObject?){
+    private _removeFilter(filterType: FilterType, filterObject?) {
 
         var filterTypeArray = this.queryParams[filterType].split("~");
         const index = filterTypeArray.indexOf(filterObject);
         filterTypeArray.splice(index, 1);
-        if(filterTypeArray.length > 0) {
+        if (filterTypeArray.length > 0) {
             this.queryParams[filterType] = filterTypeArray.join("~");
         } else {
             delete this.queryParams[filterType];
         }
         this.updateUrl(this.queryParams);
 
-        if(filterType == FilterType.CUSTOM_FILTER_TIMINGS || filterType == FilterType.CUSTOM_FILTER_FAILURE_ASPECTS){
+        if (filterType == FilterType.CUSTOM_FILTER_TIMINGS || filterType == FilterType.CUSTOM_FILTER_FAILURE_ASPECTS) {
             // since the Custom Filter Chip only appears when navigating from another view to the tests view,
             // we can use it for failureAspects and Methods,because they never appear together
             delete this.queryParams.methods;
@@ -393,9 +392,9 @@ export class Classes extends AbstractViewModel {
         }
 
         // insert classes that are not selected as filter anymore back into filter class select options
-        if(filterType == FilterType.CLASS && !this._filteredClassStatistics.some(stat => stat.classIdentifier == filterObject)){
+        if (filterType == FilterType.CLASS && !this._filteredClassStatistics.some(stat => stat.classIdentifier == filterObject)) {
             this._filteredClassStatistics.push(this._executionStatistics.classStatistics.find(stat => stat.classIdentifier == filterObject));
-            this._filteredClassStatistics.sort((a,b) => a.classIdentifier.localeCompare(b.classIdentifier));
+            this._filteredClassStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
         }
 
         this.updateUrl(this.queryParams);
@@ -405,11 +404,11 @@ export class Classes extends AbstractViewModel {
 }
 
 export enum FilterType {
-    CLASS="class",
-    CUSTOM_TEXT="q",
-    STATUS="status",
-    CUSTOM_FILTER_TIMINGS="methods",
-    CUSTOM_FILTER_FAILURE_ASPECTS="failureAspect"
+    CLASS = "class",
+    CUSTOM_TEXT = "q",
+    STATUS = "status",
+    CUSTOM_FILTER_TIMINGS = "methods",
+    CUSTOM_FILTER_FAILURE_ASPECTS = "failureAspect"
 }
 
 type Filter = {

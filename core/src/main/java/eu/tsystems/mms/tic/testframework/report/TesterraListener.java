@@ -509,6 +509,12 @@ public class TesterraListener implements
         }
         dataProviderSemaphore.put(testNGMethod, true);
 
+        // Creates a method context for test method in case of empty data provider
+        // Should solved by TestNG
+//        TestResult testMethodTestResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+//        InvokedMethod testMethodInvokedMethod = new InvokedMethod(new Date().getTime(), testMethodTestResult);
+//        pBeforeInvocation(testMethodInvokedMethod, testMethodTestResult, testContext);
+
         // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
         IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());
         IObject.IdentifiableObject identifiableObject = new IObject.IdentifiableObject(dataProviderMethod.getInstance(), UUID.randomUUID());

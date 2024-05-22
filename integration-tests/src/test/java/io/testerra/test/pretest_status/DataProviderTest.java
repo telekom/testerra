@@ -121,4 +121,14 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
         }
     }
 
+    @DataProvider
+    public Object[][] dataProviderWithNoData() {
+        return new Object[0][0];
+    }
+
+    // TestNG does not throw a skip event, just a warning -> cannot create method context
+    @Test(dataProvider = "dataProviderWithNoData")
+    public void testT09_DataProviderWithoutData(String dp) {
+    }
+
 }

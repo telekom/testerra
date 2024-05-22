@@ -79,6 +79,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"dataProviderThrowingException", Status.FAILED},
                 {"dataProviderInClassThrowingException", Status.FAILED},
                 {"beforeClassBeforeMethodSetup03", Status.NO_RUN},
+                {"dataProviderWithNoData", Status.PASSED}
         };
     }
 
@@ -127,7 +128,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
                 {"*** Stats: ClassContexts:  16", "ClassContext"},
-                {"*** Stats: MethodContexts: 83", "MethodContexts"},
+                {"*** Stats: MethodContexts: 84", "MethodContexts"},
                 {"*** Stats: Test Methods Count: 60 (49 relevant)", "Test methods"},
                 {"*** Stats: Failed: 10", "Failed tests"},
                 {"*** Stats: Retried: 11", "Retried tests"},

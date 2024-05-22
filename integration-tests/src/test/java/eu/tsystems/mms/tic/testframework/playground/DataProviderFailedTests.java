@@ -38,9 +38,6 @@ import org.testng.annotations.Test;
  */
 public class DataProviderFailedTests extends TesterraTest implements Loggable {
 
-    // TODO:
-    // - Data provider provides no data
-
     @DataProvider(name = "dpAssertFailed")
     public Object[][] dpAssertFailedMethod() {
         Object[][] objects = new Object[1][1];
@@ -88,8 +85,6 @@ public class DataProviderFailedTests extends TesterraTest implements Loggable {
     public void test_retriedFailed() {
         Assert.fail();
     }
-
-
 
 //    @BeforeMethod(groups = "failedGroup1")
 //    public void beforeMethod() {

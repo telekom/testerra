@@ -136,9 +136,6 @@ public class ClassContext extends AbstractContext implements Loggable {
             }
 
             methodContext = new MethodContext(methodContextName, methodType, this);
-            //methodContext.name = name;
-            //fillBasicContextValues(methodContext, this, name);
-
             methodContext.setTestNgResult(testResult);
             methodContext.setParameterValues(testResult.getParameters());
 //
@@ -186,8 +183,6 @@ public class ClassContext extends AbstractContext implements Loggable {
                     methodContext.setStatus(Status.SKIPPED);
                 }
         );
-//        methodContext.addError(new SkipException("Skipped"));
-//        methodContext.setStatus(Status.SKIPPED);
         return methodContext;
     }
 }

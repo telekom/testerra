@@ -19,11 +19,15 @@ Below this section different tab panes provide more information:
 * Sessions - a tab pane which shows the web driver sessions with its capabilities when a web driver session was active.
 * Dependencies - a tab pane that shows the dependencies of this test case in case there are any.
 
-== Sessions tab pane
+== Browser Info tab pane
 
 image::report-ng-09.png[align="left", alt="Webdriver Sessions"]
 
+== Video tab pane
+
 NOTE: If you are using the (link:https://github.com/telekom/testerra-selenoid-connector[Testerra Selenoid connector]) and a (link:https://github.com/aerokube/selenoid[Selenoid grid]), you can add recorded video streams to your report.
+
+image::report-ng-26.png[align="left", alt="Video tab pane"]
 
 == Dependencies tab pane
 

@@ -47,6 +47,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,7 +92,6 @@ public class Testerra {
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH("tt.failure.corridor.allowed.failed.tests.high", 0),
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID("tt.failure.corridor.allowed.failed.tests.mid", 0),
         FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW("tt.failure.corridor.allowed.failed.tests.low", 0),
-        EXECUTION_OMIT_IN_DEVELOPMENT("tt.execution.omit.indevelopment", false),
         SCREENCASTER_ACTIVE("tt.screencaster.active", false),
         SCREENSHOTTER_ACTIVE("tt.screenshotter.active", true),
         SCREENSHOT_ON_PAGELOAD("tt.screenshot.on.pageload", false),
@@ -172,7 +172,10 @@ public class Testerra {
      * overwrite custom implementations (of factories, providers etc.) but custom modules can do this to inject their own behaviour.
      */
     private static Injector initIoc() {
-        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFAULT_PACKAGES));
+        FilterBuilder filterBuilder = new FilterBuilder();
+        filterBuilder.includePackage(TesterraListener.DEFAULT_PACKAGES);
+
+        Reflections reflections = new Reflections(new ConfigurationBuilder().forPackages(TesterraListener.DEFAULT_PACKAGES).filterInputsBy(filterBuilder));
         Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
         TreeMap<String, Module> sortedModules = new TreeMap<>(new ModuleComparator());

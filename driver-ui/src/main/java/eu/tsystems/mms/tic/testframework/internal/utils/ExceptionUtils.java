@@ -37,8 +37,6 @@ public class ExceptionUtils extends CoreExceptionUtils {
             return null;
         }
 
-//        String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-
         AtomicReference<String> atomicMethodName = new AtomicReference<>();
         IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
         instance.getCurrentMethodContext().ifPresent(methodContext -> atomicMethodName.set(methodContext.getName()));

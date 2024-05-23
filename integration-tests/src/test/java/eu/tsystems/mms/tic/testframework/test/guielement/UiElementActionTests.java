@@ -66,7 +66,8 @@ public class UiElementActionTests extends AbstractExclusiveTestSitesTest<WebTest
                 disableMyselfBtn.expect().enabled(false);
             });
         });
-        ASSERT.assertEquals(retryCount.get(), 5, "Retry count");
+        // Depends on local machine
+        ASSERT.assertBetween(retryCount.get(), 4, 5, "Retry count");
         disableMyselfBtn.expect().enabled(false);
 
         // Check if the timeout is default

@@ -28,7 +28,7 @@ import org.testng.annotations.DataProvider;
  */
 public class MyDataProvider {
     @DataProvider
-    public static Object[][] dataProviderThrowingException() {
+    public static Object[][] dataProviderInClassThrowingException() {
         throw new RuntimeException("I was told to throw that.");
     }
 }

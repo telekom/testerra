@@ -223,7 +223,7 @@ public class TestDataProvider {
                 {new TestData("AssertionError: 'Failed' on reached Page.", new Status[]{Status.FAILED})},
                 {new TestData("AssertionError: minor fail", new Status[]{Status.PASSED})},
                 {new TestData("SkipException: Test Skipped.", new Status[]{Status.SKIPPED})},
-                {new TestData("RuntimeException: Error in DataProvider.", new Status[]{Status.SKIPPED})},
+                {new TestData("SkipException: Method skipped because of failed data provider", new Status[]{Status.SKIPPED})},
                 {new TestData("Throwable: depends on not successfully finished methods", new Status[]{Status.SKIPPED})},
                 {new TestData("AssertionError: test_FailedToPassedHistoryWithRetry", new Status[]{Status.RETRIED})},
                 {new TestData("AssertionError: No Oil.", new Status[]{Status.FAILED_EXPECTED})}
@@ -234,7 +234,7 @@ public class TestDataProvider {
     public static Object[][] dataProviderForFailureAspectsWithCorrespondingMethodNames() {
         return new Object[][]{
                 {"AssertionError: 'Failed' on reached Page.", Status.FAILED, "test_Failed_WithScreenShot"},
-                {"RuntimeException: Error in DataProvider.", Status.SKIPPED, "test_Skipped_AfterErrorInDataProvider"},
+                {"SkipException: Method skipped because of failed data provider", Status.SKIPPED, "test_Skipped_AfterErrorInDataProvider"},
                 {"AssertionError: minor fail", Status.PASSED, "test_Optional_Assert"}
         };
     }
@@ -270,7 +270,11 @@ public class TestDataProvider {
                 // expected Failed
                 {new TestData("test_expectedFailedAssertCollector", Status.FAILED_EXPECTED)},
                 // retried
-                {new TestData("test_PassedAfterRetry", Status.RETRIED)}
+                {new TestData("test_PassedAfterRetry", Status.RETRIED)},
+                // failed data provider method
+                {new TestData( "dataProviderWithError", Status.FAILED)},
+                // failed before method
+                {new TestData("beforeMethodFailing", Status.FAILED)}
         };
     }
 

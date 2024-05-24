@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -37,7 +36,7 @@ import org.testng.annotations.Test;
  *
  * @author mgn
  */
-public class SetupFailedTests extends TesterraTest implements Loggable {
+public class DataProviderFailedTests extends TesterraTest implements Loggable {
 
     @DataProvider(name = "dpAssertFailed")
     public Object[][] dpAssertFailedMethod() {
@@ -49,18 +48,6 @@ public class SetupFailedTests extends TesterraTest implements Loggable {
     @Test(dataProvider = "dpAssertFailed")
     public void testDpAssertFailed(String dp) throws Exception {
 
-    }
-
-    @DataProvider(name = "dpAssertPassed")
-    public Object[][] dpAssertPassedMethod() {
-        Object[][] objects = new Object[1][1];
-        Assert.assertTrue(true, "Passed assertion in Dataprovider");
-        return objects;
-    }
-
-    @Test(dataProvider = "dpAssertPassed")
-    public void testDpAssertPassed(String dp) throws Exception {
-        log().info("Test case passed");
     }
 
     @DataProvider(name = "dpOptionalAssertFailed")
@@ -98,8 +85,6 @@ public class SetupFailedTests extends TesterraTest implements Loggable {
     public void test_retriedFailed() {
         Assert.fail();
     }
-
-
 
 //    @BeforeMethod(groups = "failedGroup1")
 //    public void beforeMethod() {

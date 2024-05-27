@@ -66,11 +66,8 @@
                                         class="w100"
                                         value.bind="_inputValue"
                                         input.delegate="_selectionChanged()"
-                                        disabled.bind="queryParams.status || queryParams.class || _suppressMethodFilter"
+                                        disabled.bind="queryParams.status || queryParams.class"
                         >
-                            <button mdc-icon-button mdc-text-field-icon trailing icon="close" tabindex="0"
-                                    if.bind="queryParams.methodId"
-                                    click.delegate="_removeMethodFilter()"></button>
                         </mdc-text-field>
                         <mdc-text-field-helper-line></mdc-text-field-helper-line>
                         <mdc-lookup options.bind="_getLookupOptions"

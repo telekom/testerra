@@ -82,7 +82,6 @@ export class Threads extends AbstractViewModel {
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
-        console.log("queryparams", this.queryParams)
         this._router = navInstruction.router;
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
@@ -192,14 +191,6 @@ export class Threads extends AbstractViewModel {
             this._resetZoom();
             this.queryParams = {};
         }
-        console.log("queryparams(status)", this.queryParams)
-        if(this.queryParams.status){
-            console.log("log: status")
-        }
-        if(this.queryParams.class){
-            console.log("log: class")
-        }
-
     }
 
     private _classChanged() {
@@ -225,7 +216,6 @@ export class Threads extends AbstractViewModel {
             this._resetZoom();
             this.queryParams = {};
         }
-        console.log("queryparams(class)", this.queryParams)
     }
 
     private _zoom(zoomStart: number, zoomEnd: number) {
@@ -470,17 +460,5 @@ export class Threads extends AbstractViewModel {
 
     private _handleClickEvent(event: echarts.ECElementEvent) {
         this._router.navigateToRoute('method', {methodId: event.value[6]})
-    }
-
-    private _removeMethodFilter(){
-        delete this.queryParams.methodId;
-        this._inputValue = "";
-
-        this._searchRegexp = null;
-        if (this._filterActive && this.queryParams.status == null && this.queryParams.class == null) {
-            this._resetZoom();
-        }
-        this._getLookupOptions("", "")
-        console.log("queryParams (remove)", this.queryParams)
     }
 }

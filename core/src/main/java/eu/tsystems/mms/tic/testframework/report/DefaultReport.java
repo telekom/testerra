@@ -73,9 +73,9 @@ public class DefaultReport implements Report, Loggable {
             }
 
             if (tempReportDirectory.exists()) {
-//                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
-                FileUtils.copyDirectory(tempReportDirectory, finalReportDirectory, null, true, StandardCopyOption.COPY_ATTRIBUTES);
-                FileUtils.deleteDirectory(tempReportDirectory);
+                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
+//                FileUtils.copyDirectory(tempReportDirectory, finalReportDirectory, null, true, StandardCopyOption.COPY_ATTRIBUTES);
+//                FileUtils.deleteDirectory(tempReportDirectory);
                 currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
             }

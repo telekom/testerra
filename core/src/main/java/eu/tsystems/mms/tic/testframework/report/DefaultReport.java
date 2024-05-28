@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,7 +57,9 @@ public class DefaultReport implements Report, Loggable {
                     break;
                 default:
                 case MOVE:
-                    FileUtils.moveFileToDirectory(sourceFile, directory, true);
+
+                    Files.move(sourceFile.toPath(), new File(directory, sourceFile.getName()).toPath());
+//                    FileUtils.moveFileToDirectory(sourceFile, directory, true);
                     break;
             }
         } catch (IOException e) {
@@ -74,8 +76,6 @@ public class DefaultReport implements Report, Loggable {
 
             if (tempReportDirectory.exists()) {
                 FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
-//                FileUtils.copyDirectory(tempReportDirectory, finalReportDirectory, null, true, StandardCopyOption.COPY_ATTRIBUTES);
-//                FileUtils.deleteDirectory(tempReportDirectory);
                 currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
             }

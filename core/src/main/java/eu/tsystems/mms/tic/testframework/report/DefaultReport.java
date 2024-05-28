@@ -57,9 +57,8 @@ public class DefaultReport implements Report, Loggable {
                     break;
                 default:
                 case MOVE:
-
-                    Files.move(sourceFile.toPath(), new File(directory, sourceFile.getName()).toPath());
-//                    FileUtils.moveFileToDirectory(sourceFile, directory, true);
+//                    Files.move(sourceFile.toPath(), new File(directory, sourceFile.getName()).toPath());
+                    FileUtils.moveFileToDirectory(sourceFile, directory, true);
                     break;
             }
         } catch (IOException e) {
@@ -75,7 +74,8 @@ public class DefaultReport implements Report, Loggable {
             }
 
             if (tempReportDirectory.exists()) {
-                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
+//                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
+                FileUtils.copyDirectory(tempReportDirectory, finalReportDirectory);
                 currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
             }

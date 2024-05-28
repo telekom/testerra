@@ -51,10 +51,11 @@ export class Threads extends AbstractViewModel {
     private _searchRegexp: RegExp;
     private _inputValue;
     private _availableStatuses: data.ResultStatusType[] | number[];
+    private _selectedStatus: data.ResultStatusType;
+    private _selectedClass: string;
     private _executionStatistics: ExecutionStatistics;
     private _initialChartLoading = true;
     private _filterActive = false;          // To prevent unnecessary method calls
-    private _suppressMethodFilter = false;  // To prevent conflict between method filter and status filter
     private _options: EChartsOption;
     @observable()
     private _chart: echarts.ECharts;
@@ -80,10 +81,7 @@ export class Threads extends AbstractViewModel {
         super();
     }
 
-    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
-        super.activate(params, routeConfig, navInstruction);
-        this._router = navInstruction.router;
-
+    attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             this._availableStatuses = [];
@@ -92,19 +90,32 @@ export class Threads extends AbstractViewModel {
             this._initDurationFormatter();
             this._prepareTimeline(executionStatistics);
             this._initialChartLoading = false;
-
-        }).finally(() => {
-
-            if (params.status) {
-                this._zoomInOnFilter(this._statusConverter.getStatusForClass(params.status), 7);
-            } else {
-                delete this.queryParams.status
-            }
-
-            if (params.class) {
-                this._zoomInOnFilter(params.class, 8);
-            }
         });
+    };
+
+    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+        super.activate(params, routeConfig, navInstruction);
+        this._router = navInstruction.router;
+
+        if (this.queryParams.status || params.status) {
+            (async () => {
+                this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
+                await new Promise(f => setTimeout(f, 200));
+                this._zoomInOnFilter(this._statusConverter.getStatusForClass(params.status), 7);
+            })();
+        } else {
+            this._selectedStatus = null;
+        }
+
+        if (this.queryParams.class || params.class) {
+            (async () => {
+                this._selectedClass = params.class;
+                await new Promise(f => setTimeout(f, 200));
+                this._zoomInOnFilter(params.class, 8);
+            })();
+        } else {
+            this._selectedClass = null;
+        }
     };
 
     private _getLookupOptions = async (filter: string, methodId: string): Promise<MethodInfo[]> => {
@@ -118,12 +129,12 @@ export class Threads extends AbstractViewModel {
                 methodContexts = [executionStatistics.executionAggregate.methodContexts[methodId]];
                 this._searchRegexp = null;
                 delete this.queryParams.methodName;
-                if (this.queryParams.status != null) {
-                    this._suppressMethodFilter = true;
+                if (this._selectedStatus != null) {
+                    this._selectedStatus = null;
                     delete this.queryParams.status
                 }
-                if (this.queryParams.class != null) {
-                    this._suppressMethodFilter = true;
+                if (this._selectedClass != null) {
+                    this._selectedClass = null;
                     delete this.queryParams.class
                 }
                 this._resetColor();
@@ -162,29 +173,20 @@ export class Threads extends AbstractViewModel {
     private _selectionChanged() {
         if (this._inputValue.length == 0) {
             this._searchRegexp = null;
-            if (this._filterActive && this.queryParams.status == null && this.queryParams.class == null) {
+            if (this._filterActive && this._selectedStatus == null && this._selectedClass == null) {
                 this._resetZoom();
             }
         }
     }
 
     private _statusChanged() {
-        if (this._suppressMethodFilter) {
-            this._suppressMethodFilter = false;
-            return;
+        if (this._filterActive) {
+            this._resetColor();
         }
-        if(this.queryParams.status){
-            if (this._filterActive) {
-                this._resetColor();
-            }
 
-            this._zoomInOnFilter(this.queryParams.status, 7)
-            this.updateUrl({status: this._statusConverter.getClassForStatus(this.queryParams.status)});
-
-            // make sure that filters are not combined
-            this._inputValue = "";
-            delete this.queryParams.class
-
+        if(this._selectedStatus > 0){
+            this._zoomInOnFilter(this._selectedStatus, 7)
+            this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
         }
         // prevent overwriting of method and status filter when _selectedStatus is set undefined by their observers
         else if (!this.queryParams.class && !this._inputValue) {
@@ -194,24 +196,15 @@ export class Threads extends AbstractViewModel {
     }
 
     private _classChanged() {
-        if (this._suppressMethodFilter) {
-            this._suppressMethodFilter = false;
-            return;
+        if (this._filterActive) {
+            this._resetColor();
         }
-        if(this.queryParams.class){
-            if (this._filterActive) {
-                this._resetColor();
-            }
 
-            this._zoomInOnFilter(this.queryParams.class, 8)
-            this.updateUrl({class: this.queryParams.class});
-
-            // make sure that filters are not combined
-            delete this.queryParams.status
-            this._inputValue = "";
-
+        if(this._selectedClass){
+            this._zoomInOnFilter(this._selectedClass, 8)
+            this.updateUrl({class: this._selectedClass});
         }
-        // prevent overwriting of method and status filter when _selectedStatus is set undefined by their observers
+        // prevent overwriting of method and class filter when _selectedClass is set undefined by their observers
         else if (!this.queryParams.status && !this._inputValue) {
             this._resetZoom();
             this.queryParams = {};

@@ -24,6 +24,8 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultReport implements Report, Loggable {
 
+    private static final Logger log = LoggerFactory.getLogger(DefaultReport.class);
     private File currentReportDirectory;
     private final String baseDir = Properties.BASE_DIR.asString();
     private final File finalReportDirectory = new File(baseDir);
@@ -74,6 +77,7 @@ public class DefaultReport implements Report, Loggable {
             }
 
             if (tempReportDirectory.exists()) {
+                log().info("Temporary directory is {}", tempReportDirectory);
 //                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
                 FileUtils.copyDirectory(tempReportDirectory, finalReportDirectory);
                 currentReportDirectory = finalReportDirectory;

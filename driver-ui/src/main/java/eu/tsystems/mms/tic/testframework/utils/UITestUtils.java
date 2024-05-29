@@ -46,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -228,7 +229,8 @@ public class UITestUtils implements WebDriverManagerProvider {
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
         try {
             File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.moveFile(file, screenShotTargetFile);
+            Files.move(file.toPath(), screenShotTargetFile.toPath());
+//            FileUtils.moveFile(file, screenShotTargetFile);
         } catch (Exception e) {
             LOGGER.error("Unable to take screenshot to file", e);
         }

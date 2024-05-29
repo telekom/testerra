@@ -229,9 +229,7 @@ public class UITestUtils implements WebDriverManagerProvider {
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
         try {
             File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            LOGGER.info("take screenshot src {}", file.toPath());
-            Files.copy(file.toPath(), screenShotTargetFile.toPath());
-//            FileUtils.moveFile(file, screenShotTargetFile);
+            FileUtils.moveFile(file, screenShotTargetFile);
         } catch (Exception e) {
             LOGGER.error("Unable to take screenshot to file", e);
         }

@@ -2,6 +2,7 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -26,12 +27,12 @@ public class DriverStandaloneTest extends AbstractWebDriverTest {
         request.setBrowser(Browsers.chrome);
 
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-//        UITestUtils.takeScreenshot(webDriver, false);
+        UITestUtils.takeScreenshot(webDriver, false);
 //        Assert.assertTrue(false);
         File file = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
         PosixFileAttributeView fileAttributeView = Files.getFileAttributeView(file.toPath(), PosixFileAttributeView.class);
         log().info("take screenshot src {}", file.toPath());
-        log().info("Posix {}", fileAttributeView.toString());
+        log().info("Posix {}", fileAttributeView.readAttributes().permissions().toString());
     }
 
 }

@@ -88,9 +88,11 @@ public class DefaultReport implements Report, Loggable {
                 PosixFileAttributeView posixReport = Files.getFileAttributeView(finalReportDirectory.toPath(), PosixFileAttributeView.class);
                 if (posixReport != null && posixReport.readAttributes().permissions().contains(PosixFilePermission.OTHERS_READ)) {
                     log().info("Update file permissions");
-//                    Files.walk(finalizeReport().toPath())
-//                            .filter(Files::isRegularFile)
-//                            .forEach(path -> {
+                    Files.walk(finalizeReport().toPath())
+                            .filter(file -> file.toFile().exists())
+                            .filter(Files::isRegularFile)
+                            .forEach(path -> {
+                                log().info(path.toString());
 //                                try {
 //                                    Set<PosixFilePermission> posixFilePermissions = Files.getPosixFilePermissions(path);
 //                                    posixFilePermissions.add(PosixFilePermission.OTHERS_READ);
@@ -98,7 +100,7 @@ public class DefaultReport implements Report, Loggable {
 //                                } catch (IOException e) {
 //                                    log().warn("Cannot add permission OTHERS_READ to {}: {}", path, e.getMessage());
 //                                }
-//                            });
+                            });
                 }
             }
         } catch (IOException e) {

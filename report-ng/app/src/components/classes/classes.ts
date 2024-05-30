@@ -32,6 +32,7 @@ import {ClassName, ClassNameValueConverter} from "../../value-converters/class-n
 import {ChipNameValueConverter} from "../../value-converters/chip-name-value-converter";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
+import {ResultStatusType} from "../../services/report-model/framework_pb";
 import MethodType = data.MethodType;
 
 enum SortBy {
@@ -74,6 +75,7 @@ export class Classes extends AbstractViewModel {
     private _selectedStatus: data.ResultStatusType;
     private _selectedClass: string;
     private _availableStatuses: data.ResultStatusType[] | number[];
+    private _filteredStatuses: data.ResultStatusType[] | number[];
     private _filteredMethodDetails: MethodDetails[];
     private _showConfigurationMethods: boolean = null;
     private _uniqueStatuses = 0;
@@ -102,6 +104,7 @@ export class Classes extends AbstractViewModel {
 
         this._chips = [];
         this._filteredClassStatistics = [];
+        this._filteredStatuses = [];
 
         this._createFilterChips();
 
@@ -147,6 +150,23 @@ export class Classes extends AbstractViewModel {
         }
     }
 
+    private _updateAvailableStatuses() {
+        const resultStatuses: data.ResultStatusType[] | number[] = [];
+
+        if (this._executionStatistics) {
+            this._executionStatistics.classStatistics.forEach(classStat => {
+                classStat.methodContexts.forEach(context => {
+                    if (this._showConfigurationMethods || context.methodType == 1) {
+                        if (!resultStatuses.includes(context.resultStatus)) {
+                            resultStatuses.push(context.resultStatus);
+                        }
+                    }
+                });
+            });
+        }
+        this._availableStatuses = resultStatuses;
+    }
+
     private _filter() {
         this._loading = true;
         const customTextFilter = this.filters.find(filter => filter.type == FilterType.CUSTOM_TEXT);
@@ -160,10 +180,24 @@ export class Classes extends AbstractViewModel {
         const uniqueClasses = {};
         const uniqueStatuses = {};
         this._filteredMethodDetails = [];
-        this._availableStatuses = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._availableStatuses = executionStatistics.availableStatuses;
+            this._executionStatistics = executionStatistics;
+            this._updateAvailableStatuses();
+
+            this._filteredStatuses = [...this._availableStatuses.sort((a, b) =>
+                this._statusConverter.getLabelForStatus(a).localeCompare(this._statusConverter.getLabelForStatus(b)))];
+
+            // remove selected statuses from options in select box
+            this._chips.filter(chip => chip.filter == statusFilter).forEach(chipStatus => {
+                const index = this._filteredStatuses
+                    .map(stat => this._statusConverter.normalizeStatus(stat))
+                    .indexOf(this._statusConverter.getStatusForClass(chipStatus.value), 0);
+                if (index > -1) {
+                    this._filteredStatuses.splice(index, 1);
+                }
+            })
+
             // this._availableStatuses = Object.keys();
             // this._statusConverter.relevantStatuses
             //     .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
@@ -180,7 +214,6 @@ export class Classes extends AbstractViewModel {
                 relevantFailureAspect = executionStatistics.uniqueFailureAspects[this._chips.find(chip => chip.filter == customFilterFailureAspects).value - 1];
                 filterByFailureAspect = true;
             }
-            this._executionStatistics = executionStatistics;
             this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
 
             if (this._filteredClassStatistics.length <= 0) {      // create array for class select options that can be manipulated
@@ -321,6 +354,10 @@ export class Classes extends AbstractViewModel {
 
     private _statusChanged() {
         if (this._selectedStatus) {
+            const index = this._filteredStatuses.indexOf(this._selectedStatus, 0);
+            if (index > -1) {
+                this._filteredStatuses.splice(index, 1);
+            }
             this.queryParams.status = this._addChipToQueryParams(this._statusConverter.getClassForStatus(this._selectedStatus), this.queryParams.status);
             this.updateUrl(this.queryParams);
             this._selectedStatus = undefined;
@@ -369,6 +406,9 @@ export class Classes extends AbstractViewModel {
         // reset class filter select options
         this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))];
 
+        //reset status filter select options
+        this._filteredStatuses = [...this._availableStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(a).localeCompare(this._statusConverter.getLabelForStatus(b)))];
+
         this._filter();
     }
 
@@ -395,6 +435,12 @@ export class Classes extends AbstractViewModel {
         if (filterType == FilterType.CLASS && !this._filteredClassStatistics.some(stat => stat.classIdentifier == filterObject)) {
             this._filteredClassStatistics.push(this._executionStatistics.classStatistics.find(stat => stat.classIdentifier == filterObject));
             this._filteredClassStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
+        }
+
+        // insert statuses that are not selected as filter anymore back into filter status select options
+        if (filterType == FilterType.STATUS && !this._filteredStatuses.some(stat => stat == this._statusConverter.getStatusForClass(filterObject))) {
+            this._filteredStatuses.push(this._availableStatuses.find(stat => stat == this._statusConverter.getStatusForClass(filterObject)));
+            this._filteredStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(a).localeCompare(this._statusConverter.getLabelForStatus(b)));
         }
 
         this.updateUrl(this.queryParams);

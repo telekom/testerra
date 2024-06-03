@@ -20,47 +20,49 @@
   -->
 
 <template>
-    <div class="flex space-between card-actions">
-        <div></div>
-        <div class="flex vcenter card-actions">
-            <mdc-icon class="m1">compare</mdc-icon>
-            <mdc-select label="Left"
-                        value.bind="_comparison.left"
-                        change.delegate="_leftChanged()"
-                        outlined
-            >
-                <mdc-list>
-                    <mdc-list-item repeat.for="image of _left"
-                                   value.bind="image"
-                    >${image.title}</mdc-list-item>
-                </mdc-list>
-            </mdc-select>
-            <mdc-icon class="m1">compare_arrows</mdc-icon>
-            <mdc-select label="Right"
-                        value.bind="_comparison.right"
-                        change.delegate="_rightChanged()"
-                        outlined
-            >
-                <mdc-list>
-                    <mdc-list-item repeat.for="image of _right"
-                                   value.bind="image"
-                    >${image.title}</mdc-list-item>
-                </mdc-list>
-            </mdc-select>
-        </div>
-        <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
-    </div>
-<!--    <mdc-dialog-actions>-->
-<!--        <button mdc-icon-button icon="clear" class="icon-button&#45;&#45;dense" data-mdc-dialog-action="cancel"></button>-->
-<!--    </mdc-dialog-actions>-->
-    <mdc-dialog-content class="pt0">
-        <div class="img-comp-container" ref="_compContainer">
-            <div class="img-comp-img" ref="_leftImageElement">
-                <img src.bind="_comparison.left.src" load.trigger="_leftLoaded($event)">
+    <mdc-dialog>
+        <div class="flex space-between card-actions">
+            <div></div>
+            <div class="flex vcenter card-actions">
+                <mdc-icon class="m1">compare</mdc-icon>
+                <mdc-select label="Left"
+                            value.bind="_comparison.left"
+                            change.delegate="_leftChanged()"
+                            outlined
+                >
+                    <mdc-list>
+                        <mdc-list-item repeat.for="image of _left"
+                                       value.bind="image"
+                        >${image.title}</mdc-list-item>
+                    </mdc-list>
+                </mdc-select>
+                <mdc-icon class="m1">compare_arrows</mdc-icon>
+                <mdc-select label="Right"
+                            value.bind="_comparison.right"
+                            change.delegate="_rightChanged()"
+                            outlined
+                >
+                    <mdc-list>
+                        <mdc-list-item repeat.for="image of _right"
+                                       value.bind="image"
+                        >${image.title}</mdc-list-item>
+                    </mdc-list>
+                </mdc-select>
             </div>
-            <div class="img-comp-img" ref="_rightImageElement">
-                <img src.bind="_comparison.right.src">
-            </div>
+            <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
         </div>
-    </mdc-dialog-content>
+    <!--    <mdc-dialog-actions>-->
+    <!--        <button mdc-icon-button icon="clear" class="icon-button&#45;&#45;dense" data-mdc-dialog-action="cancel"></button>-->
+    <!--    </mdc-dialog-actions>-->
+        <mdc-dialog-content class="pt0">
+            <div class="img-comp-container" ref="_compContainer">
+                <div class="img-comp-img" ref="_leftImageElement">
+                    <img src.bind="_comparison.left.src" load.trigger="_leftLoaded($event)">
+                </div>
+                <div class="img-comp-img" ref="_rightImageElement">
+                    <img src.bind="_comparison.right.src">
+                </div>
+            </div>
+        </mdc-dialog-content>
+    </mdc-dialog>
 </template>

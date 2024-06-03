@@ -322,8 +322,11 @@ export class Threads extends AbstractViewModel {
                 const itemColor = style.get(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
                 const classId = executionStatistics.classStatistics.find(classStat => {
-                    return classStat.classContext.contextValues.id == context.classContextId;
-                }).classIdentifier;
+                    const classContextIds = classStat.methodContexts
+                        .map(con => con.classContextId)
+                        .filter((value, index, self) => self.indexOf(value) === index);
+                    return classContextIds.includes(context.classContextId);
+                }).classIdentifier
 
                 data.push({
                     name: context.contextValues.name,

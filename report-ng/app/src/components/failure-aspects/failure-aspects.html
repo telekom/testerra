@@ -75,7 +75,7 @@
                                 <td class="p1 wrapable" mdc-body1>
                                     <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
                                     ><class-name-markup namespace.bind="failureAspect.relevantCause.className" highlight.bind="_searchRegexp">:</class-name-markup>
-                                       <span innerhtml.bind="parseHTMLTagsInMessage(failureAspect.message)|highlightText:_searchRegexp"></span></a>
+                                       <span innerhtml.bind="failureAspect.message | htmlEscape | highlightText:_searchRegexp"></span></a>
                                 </td>
                                 <td>
                                     <div repeat.for="status of failureAspect.availableStatuses" class="mt1 mb1">

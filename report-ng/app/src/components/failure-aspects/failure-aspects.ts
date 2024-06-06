@@ -51,12 +51,6 @@ export class FailureAspects extends AbstractViewModel {
         this._filter();
     }
 
-    private parseHTMLTagsInMessage(message) {
-        return message.replace(/[<>]/g, tag => {
-            return tag === '<' ? '&lt;' : '&gt;';
-        });
-    }
-
     private _filter() {
         if (this.queryParams?.q?.trim().length > 0) {
             this._searchRegexp = this._statusConverter.createRegexpFromSearchString(this.queryParams.q);

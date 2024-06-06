@@ -32,7 +32,6 @@ import {ClassName, ClassNameValueConverter} from "../../value-converters/class-n
 import {ChipNameValueConverter} from "../../value-converters/chip-name-value-converter";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
-import {ResultStatusType} from "../../services/report-model/framework_pb";
 import MethodType = data.MethodType;
 
 enum SortBy {
@@ -186,7 +185,7 @@ export class Classes extends AbstractViewModel {
             this._updateAvailableStatuses();
 
             this._filteredStatuses = [...this._availableStatuses.sort((a, b) =>
-                this._statusConverter.getLabelForStatus(a).localeCompare(this._statusConverter.getLabelForStatus(b)))];
+                this._statusConverter.getLabelForStatus(b).localeCompare(this._statusConverter.getLabelForStatus(a)))];
 
             // remove selected statuses from options in select box
             this._chips.filter(chip => chip.filter == statusFilter).forEach(chipStatus => {
@@ -407,7 +406,7 @@ export class Classes extends AbstractViewModel {
         this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))];
 
         //reset status filter select options
-        this._filteredStatuses = [...this._availableStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(a).localeCompare(this._statusConverter.getLabelForStatus(b)))];
+        this._filteredStatuses = [...this._availableStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(b).localeCompare(this._statusConverter.getLabelForStatus(a)))];
 
         this._filter();
     }
@@ -440,7 +439,7 @@ export class Classes extends AbstractViewModel {
         // insert statuses that are not selected as filter anymore back into filter status select options
         if (filterType == FilterType.STATUS && !this._filteredStatuses.some(stat => stat == this._statusConverter.getStatusForClass(filterObject))) {
             this._filteredStatuses.push(this._availableStatuses.find(stat => stat == this._statusConverter.getStatusForClass(filterObject)));
-            this._filteredStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(a).localeCompare(this._statusConverter.getLabelForStatus(b)));
+            this._filteredStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(b).localeCompare(this._statusConverter.getLabelForStatus(a)));
         }
 
         this.updateUrl(this.queryParams);

@@ -50,7 +50,7 @@ public abstract class AbstractReportPage extends ReportSideBar {
         dropbox.click();
 
         // select element
-        final UiElement statusItem = dropbox.find(By.xpath(".//mdc-list-item[.//span[text()='" + label + "']]"));
+        final UiElement statusItem = dropbox.find(By.xpath(".//mdc-list-item[.//span[contains(text(), '" + label + "')]]"));
         statusItem.click();
 
         return createPage(clazz);

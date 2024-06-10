@@ -216,7 +216,8 @@ export class Classes extends AbstractViewModel {
             this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
 
             if (this._filteredClassStatistics.length <= 0) {      // create array for class select options that can be manipulated
-                this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))];
+                this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a, b) =>
+                    this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))];
 
                 // remove selected classes from options in select box
                 this._chips.filter(chip => chip.filter == classFilter).forEach(chipClass => {
@@ -310,7 +311,8 @@ export class Classes extends AbstractViewModel {
                     // Sort by class and method name
                     this._filteredMethodDetails = this._filteredMethodDetails.sort(
                         (a, b) => a.classStatistics.classIdentifier === b.classStatistics.classIdentifier ?
-                            a.identifier.localeCompare(b.identifier) : a.classStatistics.classIdentifier.localeCompare(b.classStatistics.classIdentifier));
+                            a.identifier.localeCompare(b.identifier) :
+                            this._classNameValueConverter.toView(a.classStatistics.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classStatistics.classIdentifier, 1)));
             }
 
             this._uniqueClasses = Object.keys(uniqueClasses).length;
@@ -403,7 +405,8 @@ export class Classes extends AbstractViewModel {
         this.updateUrl(this.queryParams);
 
         // reset class filter select options
-        this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))];
+        this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a, b) =>
+            this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))];
 
         //reset status filter select options
         this._filteredStatuses = [...this._availableStatuses.sort((a, b) => this._statusConverter.normalizeStatus(a) - this._statusConverter.normalizeStatus(b))];
@@ -413,7 +416,7 @@ export class Classes extends AbstractViewModel {
 
     private _removeFilter(filterType: FilterType, filterObject?) {
 
-        var filterTypeArray = this.queryParams[filterType].split("~");
+        const filterTypeArray = this.queryParams[filterType].split("~");
         const index = filterTypeArray.indexOf(filterObject);
         filterTypeArray.splice(index, 1);
         if (filterTypeArray.length > 0) {
@@ -433,7 +436,8 @@ export class Classes extends AbstractViewModel {
         // insert classes that are not selected as filter anymore back into filter class select options
         if (filterType == FilterType.CLASS && !this._filteredClassStatistics.some(stat => stat.classIdentifier == filterObject)) {
             this._filteredClassStatistics.push(this._executionStatistics.classStatistics.find(stat => stat.classIdentifier == filterObject));
-            this._filteredClassStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
+            this._filteredClassStatistics.sort((a, b) =>
+                this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)));
         }
 
         // insert statuses that are not selected as filter anymore back into filter status select options

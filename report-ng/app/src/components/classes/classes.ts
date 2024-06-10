@@ -185,7 +185,7 @@ export class Classes extends AbstractViewModel {
             this._updateAvailableStatuses();
 
             this._filteredStatuses = [...this._availableStatuses.sort((a, b) =>
-                this._statusConverter.getLabelForStatus(b).localeCompare(this._statusConverter.getLabelForStatus(a)))];
+                this._statusConverter.normalizeStatus(a) - this._statusConverter.normalizeStatus(b))];
 
             // remove selected statuses from options in select box
             this._chips.filter(chip => chip.filter == statusFilter).forEach(chipStatus => {
@@ -406,7 +406,7 @@ export class Classes extends AbstractViewModel {
         this._filteredClassStatistics = [...this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))];
 
         //reset status filter select options
-        this._filteredStatuses = [...this._availableStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(b).localeCompare(this._statusConverter.getLabelForStatus(a)))];
+        this._filteredStatuses = [...this._availableStatuses.sort((a, b) => this._statusConverter.normalizeStatus(a) - this._statusConverter.normalizeStatus(b))];
 
         this._filter();
     }
@@ -439,7 +439,7 @@ export class Classes extends AbstractViewModel {
         // insert statuses that are not selected as filter anymore back into filter status select options
         if (filterType == FilterType.STATUS && !this._filteredStatuses.some(stat => stat == this._statusConverter.getStatusForClass(filterObject))) {
             this._filteredStatuses.push(this._availableStatuses.find(stat => stat == this._statusConverter.getStatusForClass(filterObject)));
-            this._filteredStatuses.sort((a, b) => this._statusConverter.getLabelForStatus(b).localeCompare(this._statusConverter.getLabelForStatus(a)));
+            this._filteredStatuses.sort((a, b) => this._statusConverter.normalizeStatus(a) - this._statusConverter.normalizeStatus(b));
         }
 
         this.updateUrl(this.queryParams);

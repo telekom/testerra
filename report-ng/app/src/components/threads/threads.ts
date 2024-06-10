@@ -39,6 +39,7 @@ import {
 import {ResultStatusType} from "../../services/report-model/framework_pb";
 import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
 import MethodContext = data.MethodContext;
+import {MdcSelect} from "@aurelia-mdc-web/select";
 
 interface MethodInfo {
     id: string;
@@ -53,6 +54,8 @@ export class Threads extends AbstractViewModel {
     private _availableStatuses: data.ResultStatusType[] | number[];
     private _selectedStatus: data.ResultStatusType;
     private _selectedClass: string;
+    private statusSelect: MdcSelect;
+    private classSelect: MdcSelect;
     private _executionStatistics: ExecutionStatistics;
     private _initialChartLoading = true;
     private _filterActive = false;          // To prevent unnecessary method calls
@@ -102,6 +105,7 @@ export class Threads extends AbstractViewModel {
                 this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
                 await new Promise(f => setTimeout(f, 200));
                 this._zoomInOnFilter(this._statusConverter.getStatusForClass(params.status), 7);
+                this.statusSelect.value = this._statusConverter.normalizeStatus(this._statusConverter.getStatusForClass(this.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
             })();
         } else {
             this._selectedStatus = null;
@@ -112,6 +116,7 @@ export class Threads extends AbstractViewModel {
                 this._selectedClass = params.class;
                 await new Promise(f => setTimeout(f, 200));
                 this._zoomInOnFilter(params.class, 8);
+                this.classSelect.value = this._executionStatistics.classStatistics.find(classStat => classStat.classIdentifier == this.queryParams.class).classIdentifier;      // necessary to keep selection after refreshing the page
             })();
         } else {
             this._selectedClass = null;

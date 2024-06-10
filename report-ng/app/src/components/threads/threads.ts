@@ -87,6 +87,7 @@ export class Threads extends AbstractViewModel {
     attached() {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
+            this._executionStatistics.classStatistics.sort((a, b) => this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))
             this._availableStatuses = [];
             this._availableStatuses = executionStatistics.availableStatuses;
             this._initDateFormatter();

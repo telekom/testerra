@@ -100,25 +100,24 @@ export class Threads extends AbstractViewModel {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
 
+        const self = this
         if (this.queryParams.status || params.status) {
-            (async () => {
-                this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
-                await new Promise(f => setTimeout(f, 200));
-                this._zoomInOnFilter(this._statusConverter.getStatusForClass(params.status), 7);
-                this.statusSelect.value = this._statusConverter.normalizeStatus(this._statusConverter.getStatusForClass(this.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
-            })();
-        } else {
+            window.setTimeout(() => {
+                self._selectedStatus = self._statusConverter.getStatusForClass(params.status);
+                self._zoomInOnFilter(self._statusConverter.getStatusForClass(params.status), 7)
+                self.statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
+            }, 200)
+        }  else {
             this._selectedStatus = null;
         }
 
         if (this.queryParams.class || params.class) {
-            (async () => {
-                this._selectedClass = params.class;
-                await new Promise(f => setTimeout(f, 200));
-                this._zoomInOnFilter(params.class, 8);
-                this.classSelect.value = this._executionStatistics.classStatistics.find(classStat => classStat.classIdentifier == this.queryParams.class).classIdentifier;      // necessary to keep selection after refreshing the page
-            })();
-        } else {
+            window.setTimeout(() => {
+                self._selectedClass = params.class;
+                self._zoomInOnFilter(params.class, 8);
+                self.classSelect.value = self._executionStatistics.classStatistics.find(classStat => classStat.classIdentifier == self.queryParams.class).classIdentifier;      // necessary to keep selection after refreshing the page
+            }, 200)
+        }  else {
             this._selectedClass = null;
         }
     };

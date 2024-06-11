@@ -502,13 +502,18 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     }
 
     private static void assertWithLayoutCheck(MatchStep matchStep, double confidenceThreshold, String assertMessage) {
+        // Check for 2 decimals of % value is enough --> Readable assertion message
+        BigDecimal distance = new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal threshold = new BigDecimal(confidenceThreshold);
+        if (distance.compareTo(threshold) <= 0) {
+            return;
+        }
         try {
             // In case of optional or collected assertions
             if (!matchStep.takeReferenceOnly) {
                 LayoutCheck.toReport(matchStep);
             }
-            // Check for 2 decimals of % value is enough --> Readable assertion message
-            ASSERT.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
+            ASSERT.assertLowerEqualThan(distance, threshold, assertMessage);
         } catch (LayoutCheckException e) {
             matchStep = e.getMatchStep();
             LayoutCheck.toReport(matchStep);

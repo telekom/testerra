@@ -114,4 +114,41 @@ public class LayoutTest extends AbstractReportTest {
         reportDetailsTab.getComparisonImgElement(errorMessages[1], "Expected").assertThat().attribute("src").isContaining("box2");
     }
 
+    @Test
+    public void testT04_checkFailedLayoutTestAndFailedAssertion() {
+        String methodName = "layoutTest05_layoutTestFailing_AssertionFailing";
+        String className = "GenerateLayoutTestsTTReportTest";
+
+        String[] errorMessages = new String[]{
+                "Expected that pixel distance (%) of WebDriver screenshot to image ",
+                "Just a simple error message"
+        };
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        ASSERT.assertTrue(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[0]), "Visibility of screenshot comparison in Failure aspect box");
+        ASSERT.assertFalse(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[1]), "Visibility of screenshot comparison in Failure aspect box");
+
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Actual").assertThat().attribute("src").isContaining("inputHtml_image3");
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Expected").assertThat().attribute("src").isContaining("inputHtml_image3");
+    }
+
+    @Test
+    public void testT05_checkPassedLayoutTestAndFailedAssertion() {
+        String methodName = "layoutTest06_layoutTestPassing_AssertionFailing";
+        String className = "GenerateLayoutTestsTTReportTest";
+
+        String errorMessage = "Just a simple error message";
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        ASSERT.assertFalse(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessage), "Visibility of screenshot comparison in Failure aspect box");
+    }
+
 }

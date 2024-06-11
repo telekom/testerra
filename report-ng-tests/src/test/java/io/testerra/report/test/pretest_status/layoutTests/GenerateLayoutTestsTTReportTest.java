@@ -88,12 +88,12 @@ public class GenerateLayoutTestsTTReportTest extends AbstractTestSitesTest {
 
         TestStep.begin("visit test page");
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
-        double screenshotPixelDistance = 1;
+        double screenshotPixelDistance = 5.0;
 
         CONTROL.collectAssertions(() -> {
             TestStep.begin("create page object and take element screenshots");
             UniversalPage page = PAGE_FACTORY.createPage(UniversalPage.class);
-            LayoutCheck.assertScreenshot(page.getWebDriver(), "inputHtml_image3", screenshotPixelDistance);
+            LayoutCheck.assertScreenshot(page.getWebDriver(), "inputHtml_image2", screenshotPixelDistance);
             ASSERT.fail("Just a simple error message");
         });
     }

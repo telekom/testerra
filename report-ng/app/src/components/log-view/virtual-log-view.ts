@@ -79,23 +79,31 @@ export class VirtualLogView extends AbstractLogView {
         this._calculateOccurrences();
     }
 
+    private checkMatches(logMessage: ILogEntry){
+        const foundInMessage = logMessage.message.match(this.searchRegexp);
+
+        const foundInStackTrace = logMessage.stackTrace
+            .flatMap(stackTrace => [
+                ...(stackTrace.stackTraceElements || []),
+                stackTrace.message])
+            .filter(line => line.match(this.searchRegexp));
+        const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
+
+        const logTime = new Date(logMessage.timestamp);
+        const formatTimeStamp = `{${logTime.getHours().toString().padStart(2,'0')}:${logTime.getMinutes().toString().padStart(2,'0')}:${logTime.getSeconds().toString().padStart(2,'0')}.${logTime.getMilliseconds().toString().padStart(3,'0')}}`
+        const foundInTimeStamp = formatTimeStamp.match(this.searchRegexp);
+
+        if (foundInStackTrace) {
+            this.open(logMessage);
+        }
+        return foundInMessage || foundInStackTrace.length > 0 || foundInLoggerName || foundInTimeStamp
+    }
+
     private _calculateOccurrences() {
         if (this.searchRegexp) {
             let totalOccurrences = 0;
-
             this.logMessages.forEach(logMessage => {
-                const foundInMessage = logMessage.message.match(this.searchRegexp);
-                const foundInStackTrace = logMessage.stackTrace
-                    .flatMap(stackTrace => [
-                        ...(stackTrace.stackTraceElements || []),
-                        stackTrace.message])
-                    .filter(line => line.match(this.searchRegexp));
-                const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
-
-                if (foundInMessage || foundInStackTrace.length > 0 || foundInLoggerName) {
-                    if (foundInStackTrace.length > 0) {
-                        this.open(logMessage);
-                    }
+                if (this.checkMatches(logMessage)) {
                     totalOccurrences += 1;
                 }
             });
@@ -110,21 +118,7 @@ export class VirtualLogView extends AbstractLogView {
         if (this.searchRegexp && this._logView) {
             const logMessagesToSearch = this.logMessages.slice(this._lastFoundIndex + 1);
 
-            const foundLogMessage = logMessagesToSearch.find(logMessage => {
-                const foundInMessage = logMessage.message.match(this.searchRegexp);
-                const foundInStackTrace = logMessage.stackTrace
-                    .flatMap(stackTrace => [
-                        ...(stackTrace.stackTraceElements || []),       // keep stackTraceElements and message
-                        stackTrace.message])
-                    .filter(line => line.match(this.searchRegexp));
-                const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
-
-                if (foundInStackTrace.length > 0) {
-                    this.open(logMessage);
-                }
-
-                return foundInMessage || foundInStackTrace.length > 0 || foundInLoggerName;
-            });
+            const foundLogMessage = logMessagesToSearch.find(logMessage =>this.checkMatches(logMessage));
 
             if (foundLogMessage) {
                 this._occurrences += 1;

@@ -24,6 +24,9 @@ import {StatusConverter} from "services/status-converter";
 import {ILogEntry} from "services/statistics-generator";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
+import {
+    IntlDateFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
 
 @autoinject()
 export abstract class AbstractLogView {
@@ -39,7 +42,13 @@ export abstract class AbstractLogView {
 
     constructor(
         readonly statusConverter:StatusConverter,
+        private dateFormat: IntlDateFormatValueConverter
     ) {
+    }
+
+    // Method to format timestamp using dateFormat
+    protected formatTimestamp(timestamp: Date): string {
+        return this.dateFormat.toView(timestamp,'log');
     }
 
     protected toggleCause(logMessage:ILogEntry) {

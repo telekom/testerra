@@ -89,9 +89,8 @@ export class VirtualLogView extends AbstractLogView {
             .filter(line => line.match(this.searchRegexp));
         const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 
-        const logTime = new Date(logMessage.timestamp);
-        const formatTimeStamp = `{${logTime.getHours().toString().padStart(2,'0')}:${logTime.getMinutes().toString().padStart(2,'0')}:${logTime.getSeconds().toString().padStart(2,'0')}.${logTime.getMilliseconds().toString().padStart(3,'0')}}`
-        const foundInTimeStamp = formatTimeStamp.match(this.searchRegexp);
+        const logTime = this.formatTimestamp(new Date(logMessage.timestamp));
+        const foundInTimeStamp = logTime.match(this.searchRegexp);
 
         if (foundInStackTrace) {
             this.open(logMessage);

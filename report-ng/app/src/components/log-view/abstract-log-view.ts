@@ -40,6 +40,10 @@ export abstract class AbstractLogView {
     @bindable({defaultBindingMode: bindingMode.toView})
     searchRegexp:RegExp;
 
+    //improve performance
+    //The cache uses the timestamp as the key and the formatted timestamp as the value.
+    private timestampCache: Map<number, string> = new Map<number, string>();
+
     constructor(
         readonly statusConverter:StatusConverter,
         private dateFormat: IntlDateFormatValueConverter
@@ -47,8 +51,15 @@ export abstract class AbstractLogView {
     }
 
     // Method to format timestamp using dateFormat
-    protected formatTimestamp(timestamp: Date): string {
-        return this.dateFormat.toView(timestamp,'log');
+    protected formatTimestamp(timestamp: number): string {
+        //check timestamp exists in cache
+        if (this.timestampCache.has(timestamp)) {
+            return this.timestampCache.get(timestamp)!;
+        } else {
+            const formattedTimestamp = this.dateFormat.toView(new Date(timestamp), 'log');
+            this.timestampCache.set(timestamp, formattedTimestamp);
+            return formattedTimestamp;
+        }
     }
 
     protected toggleCause(logMessage:ILogEntry) {

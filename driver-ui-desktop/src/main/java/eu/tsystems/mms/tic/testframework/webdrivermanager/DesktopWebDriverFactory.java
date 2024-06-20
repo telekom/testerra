@@ -341,7 +341,7 @@ public class DesktopWebDriverFactory implements
                 ((RemoteWebDriver) webDriver).setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
-                log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
+                log().info("Local WebDriver is used.");
 
                 // Starting local webdriver needs caps as browser options
                 if (optionClass == request.getCapabilities().getClass()) {

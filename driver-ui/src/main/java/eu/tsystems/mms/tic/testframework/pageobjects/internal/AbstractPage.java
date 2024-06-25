@@ -42,9 +42,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssert
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -184,12 +186,12 @@ public abstract class AbstractPage<SELF> implements
         List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
         allClasses.forEach(pageClass -> {
-            for (Field field : pageClass.getDeclaredFields()) {
+            Arrays.stream(pageClass.getDeclaredFields()).parallel().forEach(field -> {
                 field.setAccessible(true);
                 List<AbstractFieldAction> fieldActions = getFieldActions(field, checkRule, this);
                 fieldActions.forEach(AbstractFieldAction::run);
                 field.setAccessible(false);
-            }
+            });
         });
     }
 
@@ -212,7 +214,7 @@ public abstract class AbstractPage<SELF> implements
     }
 
     /**
-     * Collects all classes in the hierarchy that are sub classes of {@link AbstractPage}
+     * Collects all classes in the hierarchy that are subclasses of {@link AbstractPage}
      */
     private List<Class<? extends AbstractPage>> collectAllSuperClasses() {
         final LinkedList<Class<? extends AbstractPage>> allClasses = new LinkedList<>();
@@ -252,7 +254,7 @@ public abstract class AbstractPage<SELF> implements
     }
 
     /**
-     * Empty method to be overriden. Can perform some (additional) checks on page objects.
+     * Empty method to be overridden. Can perform some (additional) checks on page objects.
      */
     @Deprecated
     public void assertPageIsShown() {

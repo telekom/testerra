@@ -40,60 +40,75 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementC
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import java.util.stream.Collectors;
 
 /**
  * This is an abstract page object used for {@link Page} and {@link AbstractComponent}.
  * Provides basic {@link PageObject} related features:
- *      Supports element {@link Check}
- *      Supports {@link PageOptions}
+ * Supports element {@link Check}
+ * Supports {@link PageOptions}
  * Livecycle methods for {@link #checkUiElements(CheckRule)}:
- *      {@link #checkPagePreparation()}
- *      {@link #addCustomFieldActions}
- *      {@link #assertPageIsNotShown()} or {@link #assertPageIsNotShown()}
- *      {@link #checkPageErrorState(Throwable)}
- * @see {https://martinfowler.com/bliki/PageObject.html}
+ * {@link #checkPagePreparation()}
+ * {@link #addCustomFieldActions}
+ * {@link #assertPageIsNotShown()} or {@link #assertPageIsNotShown()}
+ * {@link #checkPageErrorState(Throwable)}
+ *
  * @author Peter Lehmann
  * @author Mike Reiche
  * @todo Rename to AbstractPageObject
+ * @see {https://martinfowler.com/bliki/PageObject.html}
+ * @see {https://martinfowler.com/bliki/PageObject.html}
  */
 public abstract class AbstractPage<SELF> implements
         Loggable,
         TestControllerProvider,
         PageObject<SELF>,
         LocatorFactoryProvider,
-        PageCreator
-{
+        PageCreator {
     protected static final PageFactory pageFactory = Testerra.getInjector().getInstance(PageFactory.class);
 
     abstract protected UiElement find(Locator locator);
+
     abstract protected UiElement findDeep(Locator locator);
 
     protected UiElement findById(Object id) {
         return find(LOCATE.by(By.id(id.toString())));
     }
+
     protected UiElement findByQa(String qa) {
         return find(LOCATE.byQa(qa));
     }
+
     protected UiElement find(By by) {
         return find(LOCATE.by(by));
     }
+
     protected UiElement find(XPath xPath) {
         return find(LOCATE.by(xPath));
     }
-    protected UiElement findDeep(XPath xPath) { return findDeep(LOCATE.by(xPath)); }
-    protected UiElement findDeep(By by) { return findDeep(LOCATE.by(by)); }
+
+    protected UiElement findDeep(XPath xPath) {
+        return findDeep(LOCATE.by(xPath));
+    }
+
+    protected UiElement findDeep(By by) {
+        return findDeep(LOCATE.by(by));
+    }
+
     protected UiElement createEmpty() {
         return createEmpty(LOCATE.by(By.tagName("empty")));
     }
+
     protected UiElement createEmpty(Locator locator) {
         return new EmptyUiElement(this, locator);
     }
@@ -130,6 +145,7 @@ public abstract class AbstractPage<SELF> implements
      * The call of this method is injected into the constructor of every page class or must be called from every page
      * class constructor!!!
      * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
+     *
      * @deprecated Don't call this method on your own and use {@link eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory#create(Class, WebDriver)} or {@link PageAssertions#displayed(boolean)} instead
      */
     @Deprecated
@@ -168,6 +184,7 @@ public abstract class AbstractPage<SELF> implements
     protected void pageLoaded() {
 
     }
+
     /**
      * Method entered when checkPage runs into an error (catching any throwable). You can throw a new throwable that
      * should be stacked onto the checkpage error (like new RuntimeException("bla", throwable) ).
@@ -186,11 +203,29 @@ public abstract class AbstractPage<SELF> implements
         List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
         allClasses.forEach(pageClass -> {
-            Arrays.stream(pageClass.getDeclaredFields()).parallel().forEach(field -> {
-                field.setAccessible(true);
-                List<AbstractFieldAction> fieldActions = getFieldActions(field, checkRule, this);
+            Field[] declaredFields = pageClass.getDeclaredFields();
+
+            Map<Boolean, List<Field>> partitionedFields = Arrays.stream(declaredFields)
+                    .peek(field -> field.setAccessible(true))
+                    .collect(Collectors.partitioningBy(field -> {
+                        Check check = field.getAnnotation(Check.class);
+                        return check.collect() || check.optional();
+                    }));
+
+            List<Field> optionalOrCollectFields = partitionedFields.get(true);
+            List<Field> fieldsParallel = partitionedFields.get(false);
+
+            // Run every field that is optional or collected sequential
+            optionalOrCollectFields.forEach(f -> {
+                List<AbstractFieldAction> fieldActions = getFieldActions(f, checkRule, this);
                 fieldActions.forEach(AbstractFieldAction::run);
-                field.setAccessible(false);
+                f.setAccessible(false);
+            });
+            // Run every normal field in parallel
+            fieldsParallel.parallelStream().forEach(f -> {
+                List<AbstractFieldAction> fieldActions = getFieldActions(f, checkRule, this);
+                fieldActions.forEach(AbstractFieldAction::run);
+                f.setAccessible(false);
             });
         });
     }

@@ -87,11 +87,24 @@ export class VirtualLogView extends AbstractLogView {
                 ...(stackTrace.stackTraceElements || []),
                 stackTrace.message])
             .filter(line => line.match(this.searchRegexp));
+
         const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 
-        const logTime = new Date(logMessage.timestamp);
-        const formatTimeStamp = `{${logTime.getHours().toString().padStart(2,'0')}:${logTime.getMinutes().toString().padStart(2,'0')}:${logTime.getSeconds().toString().padStart(2,'0')}.${logTime.getMilliseconds().toString().padStart(3,'0')}}`
-        const foundInTimeStamp = formatTimeStamp.match(this.searchRegexp);
+        //const logTime = this.formatTimestamp(logMessage.timestamp);
+        //const logTime = this.dateFormat.toView(logMessage.timestamp,'log')
+        //const foundInTimeStamp = logTime.match(this.searchRegexp);
+        let foundInTimeStamp = false;
+
+        //we only check searchRegex matches timeStamp only whenever it matches timestamp pattern in oder to save consuming time
+        const regexSource = this.searchRegexp.source.replace(/^\((.*)\)$/, '$1');
+        // check if any searchRegex matches in timeStampPattern
+        const timestampPartPattern = /\d{1,2}|\d{1,2}:\d{1,2}|\d{1,2}:\d{1,2}:\d{1,2}|\d{1,2}:\d{1,2}:\d{1,2}\.\d{1,3}/;
+
+        if (timestampPartPattern.test(regexSource)) {
+            const logTime = this.formatTimestamp(logMessage.timestamp);
+            //const logTime = this.dateFormat.toView(logMessage.timestamp,'log')
+            foundInTimeStamp = this.searchRegexp.test(logTime); // Use test() for a faster boolean check
+        }
 
         if (foundInStackTrace) {
             this.open(logMessage);
@@ -134,6 +147,7 @@ export class VirtualLogView extends AbstractLogView {
                     const element = document.getElementById(`id-${foundLogMessage.message}-${foundLogMessage.timestamp}-${foundLogMessage.type}-${foundLogMessage.loggerName}-${foundLogMessage.stackTrace}-${foundLogMessage.threadName}`)
                     element.scrollIntoView();
                 }, 1);
+                return; // Exit the loop as soon as a match is found
 
             }
         }

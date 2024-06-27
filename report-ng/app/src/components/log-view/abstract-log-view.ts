@@ -40,9 +40,25 @@ export abstract class AbstractLogView {
     @bindable({defaultBindingMode: bindingMode.toView})
     searchRegexp:RegExp;
 
+    //improve performance
+    //The cache uses the timestamp as the key and the formatted timestamp as the value.
+    private timestampCache: Map<number, string> = new Map<number, string>();
+
     constructor(
         readonly statusConverter:StatusConverter,
+        protected dateFormat: IntlDateFormatValueConverter
     ) {
+    }
+
+    protected formatTimestamp(timestamp: number): string {
+        //check timestamp exists in cache, we do not need to reload timestamp every time
+        if (this.timestampCache.has(timestamp)) {
+            return this.timestampCache.get(timestamp)!;
+        } else {
+            const formattedTimestamp = this.dateFormat.toView(new Date(timestamp), 'log');
+            this.timestampCache.set(timestamp, formattedTimestamp);
+            return formattedTimestamp;
+        }
     }
 
     protected toggleCause(logMessage:ILogEntry) {

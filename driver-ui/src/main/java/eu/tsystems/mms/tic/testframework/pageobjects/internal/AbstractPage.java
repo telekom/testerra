@@ -209,7 +209,10 @@ public abstract class AbstractPage<SELF> implements
                     .peek(field -> field.setAccessible(true))
                     .collect(Collectors.partitioningBy(field -> {
                         Check check = field.getAnnotation(Check.class);
-                        return check.collect() || check.optional();
+                        if (check != null) {
+                            return check.collect() || check.optional();
+                        }
+                        return false;
                     }));
 
             List<Field> optionalOrCollectFields = partitionedFields.get(true);

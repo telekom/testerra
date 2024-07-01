@@ -100,9 +100,10 @@ TIP: All defined properties can be overwritten later by adding system parameters
 
 All supported browsers are listed in <<WebdriverManager properties>>
 
-The tests will be started using the browser that is installed on the local machine. If you want to use a specific browser version that is not installed on the machine, the required version of Firefox or Chrome is automatically downloaded in the background when the tests are started by Selenium Manager.
+The tests will be started using the browser that is installed on the local machine.
+If you want to use a specific browser version that is not installed on the machine, the required version of Firefox or Chrome is automatically downloaded in the background by Selenium Manager.
 
-For further information about the Selenium Manager, you can read about it in the https://www.selenium.dev/documentation/selenium_manager/[Selenium documentation].
+For further information about the Selenium Manager, you can read the corresponding section of the https://www.selenium.dev/documentation/selenium_manager/[Selenium documentation].
 
 == Create Page Class
 
@@ -203,7 +204,7 @@ apt-get install chromium-chromedriver
 brew install selenium-server-standalone chromedriver
 ----
 
-Read here, if you want to setup <<WebDriver sessions,another Selenium configuration>>.
+Read here, if you want to set up <<WebDriver sessions,another Selenium configuration>>.
 
 == Setup a test suite
 

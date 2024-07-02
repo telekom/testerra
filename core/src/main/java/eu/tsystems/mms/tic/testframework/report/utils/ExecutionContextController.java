@@ -132,10 +132,6 @@ public class ExecutionContextController {
         CURRENT_SESSION_CONTEXT.set(sessionContext);
     }
 
-    public static void setCurrentExecutionContext(final ExecutionContext executionContext) {
-        EXECUTION_CONTEXT = executionContext;
-    }
-
     /**
      * Returns the current active session context
      */

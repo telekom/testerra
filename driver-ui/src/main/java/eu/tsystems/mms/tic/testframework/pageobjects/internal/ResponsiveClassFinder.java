@@ -148,12 +148,12 @@ final public class ResponsiveClassFinder {
         final String baseClassName = baseClass.getSimpleName();
         PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();
 
-        // at first, add the base page it self, only if not abstract
+        // at first, add the base page itself, only if not abstract
         if (!Modifier.isAbstract(baseClass.getModifiers())) {
             prioritizedClassInfos.setBaseClass(baseClass);
         }
 
-        // search for sub pages
+        // search for sub-pages
         Set<? extends Class<T>> subClasses = reflections.getSubTypesOf((Class) baseClass);
         for (Class<T> subClass : subClasses) {
             String classname = subClass.getSimpleName();

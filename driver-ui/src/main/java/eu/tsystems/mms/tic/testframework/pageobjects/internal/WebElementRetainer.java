@@ -31,7 +31,7 @@ import org.openqa.selenium.WebElement;
 public interface WebElementRetainer {
     /**
      * Supplies the first found filtered {@link WebElement} to a consumer.
-     * This makes sure that the element is present it it's current scope and not stale
+     * This ensures that the element is present in its current scope and is not stale
      * @throws ElementNotFoundException If the expected count of elements hasn't been found
      */
     void findWebElement(Consumer<WebElement> consumer);

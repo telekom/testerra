@@ -37,7 +37,7 @@ public class LayoutCheckContext implements Cloneable, Loggable {
     public ErrorContext errorContext;
 
     /**
-     * LayoutCheckContext needs to be clonable because of similar contexts for dimension check (optional)
+     * LayoutCheckContext needs to be cloneable because of similar contexts for dimension check (optional)
      * and pixel difference (see LayoutCheck.toReport())
      */
     @Override

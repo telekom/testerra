@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Holds the informations of a test class.
+ * Holds the information of a test class.
  *
  * @author pele
  */

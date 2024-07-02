@@ -98,7 +98,7 @@ public class ExecutionContextController {
 
     /**
      * Gets the MethodContext for TestNG ITestResult. If no MethodContext for test result exists, it will
-     * created.
+     * be created.
      *
      * @param iTestResult The ITestResult to set.
      * @return the MethodContext for the result.
@@ -130,6 +130,10 @@ public class ExecutionContextController {
 
     public static void setCurrentSessionContext(final SessionContext sessionContext) {
         CURRENT_SESSION_CONTEXT.set(sessionContext);
+    }
+
+    public static void setCurrentExecutionContext(final ExecutionContext executionContext) {
+        EXECUTION_CONTEXT = executionContext;
     }
 
     /**

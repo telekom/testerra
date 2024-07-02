@@ -233,6 +233,45 @@ public abstract class AbstractPage<SELF> implements
         });
     }
 
+/*    private void checkAnnotatedFields(CheckRule checkRule) {
+        List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
+
+        MethodContext context = ExecutionContextController.getMethodContextForThread().get();
+        SessionContext sessionContext = ExecutionContextController.getSessionContextForThread().get();
+        ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
+//        SuiteContext suiteContext = ExecutionContextController.getCurrentExecutionContext().getSuiteContext(context.getTestNgResult().get());
+//        TestContext testContext = suiteContext.getTestContext(context.getTestNgResult().get());
+
+        allClasses.forEach(pageClass -> {
+            Field[] declaredFields = pageClass.getDeclaredFields();
+
+            Arrays.stream(declaredFields).parallel().forEach(f -> {
+                // Make sure the newly created threads have the same context
+                ExecutionContextController.setCurrentMethodContext(context.getTestNgResult().get());
+                ExecutionContextController.setCurrentSessionContext(sessionContext);
+                ExecutionContextController.setCurrentExecutionContext(executionContext);
+
+                f.setAccessible(true);
+                List<AbstractFieldAction> fieldActions = getFieldActions(f, checkRule, this);
+                fieldActions.forEach(AbstractFieldAction::run);
+                f.setAccessible(false);
+            });
+        });
+    }*/
+
+/*    private void checkAnnotatedFields(CheckRule checkRule) {
+        List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
+
+        allClasses.forEach(pageClass -> {
+            for (Field field : pageClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                List<AbstractFieldAction> fieldActions = getFieldActions(field, checkRule, this);
+                fieldActions.forEach(AbstractFieldAction::run);
+                field.setAccessible(false);
+            }
+        });
+    }*/
+
     protected Optional<List<AbstractFieldAction>> addCustomFieldActions(Field field, AbstractPage declaringPage) {
         return Optional.empty();
     }

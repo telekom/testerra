@@ -53,7 +53,7 @@ public class TestStepAction implements Serializable {
      * where the timestamp can be retrieved by calling {@link LogEvent#getTimeMillis()}
      * But when running under platform, the log messages are handled differently and not stored to the database within entities.
      * In this case, the TestSteps are stored WITHOUT log messages and WITHOUT timestamp, which is still required to find log messages according to time ranges.
-     * Therefore, the TestStepAction gets it's own timestamp.
+     * Therefore, the TestStepAction gets its own timestamp.
      */
     public long getTimestamp() {
         return this.timestamp;

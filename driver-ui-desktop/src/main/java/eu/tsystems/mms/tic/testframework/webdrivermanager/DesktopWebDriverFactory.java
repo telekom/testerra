@@ -281,7 +281,7 @@ public class DesktopWebDriverFactory implements
     }
 
     /**
-     * Remote when remoteAdress != null, local need browser to be set.
+     * Remote when remoteAddress != null, local need browser to be set.
      */
     private WebDriver startNewWebDriverSession(DesktopWebDriverRequest request, SessionContext sessionContext) {
 

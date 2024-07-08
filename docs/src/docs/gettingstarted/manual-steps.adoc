@@ -91,6 +91,9 @@ Create a new file at `src/test/resources` with the name `test.properties`.
 # Setting the browser
 {browser_setting}=chrome
 
+# ... or with version
+{browser_setting}=chrome:120
+
 # Setting the start page
 {baseurl}=http://example.org
 ----
@@ -100,8 +103,8 @@ TIP: All defined properties can be overwritten later by adding system parameters
 
 All supported browsers are listed in <<WebdriverManager properties>>
 
-The tests will be started using the browser that is installed on the local machine.
-If you want to use a specific browser version that is not installed on the machine, the required version of Firefox or Chrome is automatically downloaded in the background by Selenium Manager.
+The tests will be started using the browser that is installed on the local machine if you do not provide a version in the properties.
+If you want to use a specific browser version that is not installed, Selenium Manager will automatically download the required version of Firefox or Chrome in the background if you add your desired version to the properties.
 
 For further information about the Selenium Manager, you can read the corresponding section of the https://www.selenium.dev/documentation/selenium_manager/[Selenium documentation].
 
@@ -180,11 +183,11 @@ public class ExampleTest {
 }
 ----
 
-== Setup Selenium
+== Setup Selenium (optional)
 
 You do not have to set up a web driver manually, as the Selenium Manager automatically handles the download of the drivers.
 
-If you don't have a remote selenium yet, you can easily install it by the package manager of your choice.
+However, if you want to set up a selenium driver by yourself and if you don't have a remote selenium yet, you can easily install it by the package manager of your choice.
 
 .https://chocolatey.org[chocolately] for Windows
 [source, cmd, role="primary"]
@@ -293,7 +296,7 @@ test {
 ----
 
 == Run the tests
-Finally you are good to run your very first test by entering the following command:
+Finally, you are good to run your very first test by entering the following command:
 
 .Gradle
 [source, bash, role="primary"]

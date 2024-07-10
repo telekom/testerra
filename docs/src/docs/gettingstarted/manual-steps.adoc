@@ -37,7 +37,7 @@ dependencies {
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <!-- Its highly recommended to normalize your project to Unicode -->
+        <!-- It's highly recommended to normalize your project to Unicode -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -226,9 +226,11 @@ To customize the executing of your tests, you have to create a TestNG suite file
 </suite>
 ----
 
+NOTE: If `configfailurepolicy` is not set to "continue" and a configuration method fails, the test methods will be skipped.
+
 == Setup test build target
 
-In order to get tests to work, you need to setup a build target `test` in your project.
+In order to get tests to work, you need to set up a build target `test` in your project.
 
 .Gradle
 [source, gradle, role="primary"]

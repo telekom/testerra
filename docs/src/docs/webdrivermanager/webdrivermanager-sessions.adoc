@@ -18,7 +18,7 @@ NOTE: The browser support depends on the remote Selenium setup.
 
 === Manually configure WebDriver binaries
 
-- Search for your browser's Selenium driver online, like _selenium gecko driver_ for Firefox or _selenium crome driver_ for Chrome based browsers
+- Search for your browser's Selenium driver online, like _selenium gecko driver_ for Firefox or _selenium chrome driver_ for Chrome based browsers
 - Download your WebDriver binary from browser vendor's website to a local location
 - Make sure the driver version supports your installed browser
 - Since the properties are system properties, you need to put the location of the binaries to the `system.properties` file as mentioned in the <<Property files>> section.

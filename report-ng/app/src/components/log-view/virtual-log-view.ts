@@ -90,21 +90,10 @@ export class VirtualLogView extends AbstractLogView {
 
         const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 
-        //const logTime = this.formatTimestamp(logMessage.timestamp);
-        //const logTime = this.dateFormat.toView(logMessage.timestamp,'log')
-        //const foundInTimeStamp = logTime.match(this.searchRegexp);
         let foundInTimeStamp = false;
 
-        //we only check searchRegex matches timeStamp only whenever it matches timestamp pattern in oder to save consuming time
-        const regexSource = this.searchRegexp.source.replace(/^\((.*)\)$/, '$1');
-        // check if any searchRegex matches in timeStampPattern
-        const timestampPartPattern = /\d{1,2}|\d{1,2}:\d{1,2}|\d{1,2}:\d{1,2}:\d{1,2}|\d{1,2}:\d{1,2}:\d{1,2}\.\d{1,3}/;
-
-        if (timestampPartPattern.test(regexSource)) {
-            const logTime = this.formatTimestamp(logMessage.timestamp);
-            //const logTime = this.dateFormat.toView(logMessage.timestamp,'log')
-            foundInTimeStamp = this.searchRegexp.test(logTime); // Use test() for a faster boolean check
-        }
+        const logTime = this.formatTimestamp(logMessage.timestamp);
+        foundInTimeStamp = this.searchRegexp.test(logTime); // Use test() for a faster boolean check
 
         if (foundInStackTrace) {
             this.open(logMessage);

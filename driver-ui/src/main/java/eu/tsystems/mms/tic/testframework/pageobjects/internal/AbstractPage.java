@@ -39,6 +39,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFie
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.TestControllerProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -48,9 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * This is an abstract page object used for {@link Page} and {@link AbstractComponent}.
@@ -199,7 +199,7 @@ public abstract class AbstractPage<SELF> implements
     /**
      * Gets all @Check annotated fields of a class and executes a webdriver find().
      */
-    private void checkAnnotatedFields(CheckRule checkRule) {
+/*    private void checkAnnotatedFields(CheckRule checkRule) {
         List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
         allClasses.forEach(pageClass -> {
@@ -231,16 +231,15 @@ public abstract class AbstractPage<SELF> implements
                 f.setAccessible(false);
             });
         });
-    }
+    }*/
 
-/*    private void checkAnnotatedFields(CheckRule checkRule) {
+    /**
+     * Gets all @Check annotated fields of a class and executes a webdriver find().
+     */
+    private void checkAnnotatedFields(CheckRule checkRule) {
         List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
         MethodContext context = ExecutionContextController.getMethodContextForThread().get();
-        SessionContext sessionContext = ExecutionContextController.getSessionContextForThread().get();
-        ExecutionContext executionContext = ExecutionContextController.getCurrentExecutionContext();
-//        SuiteContext suiteContext = ExecutionContextController.getCurrentExecutionContext().getSuiteContext(context.getTestNgResult().get());
-//        TestContext testContext = suiteContext.getTestContext(context.getTestNgResult().get());
 
         allClasses.forEach(pageClass -> {
             Field[] declaredFields = pageClass.getDeclaredFields();
@@ -248,8 +247,6 @@ public abstract class AbstractPage<SELF> implements
             Arrays.stream(declaredFields).parallel().forEach(f -> {
                 // Make sure the newly created threads have the same context
                 ExecutionContextController.setCurrentMethodContext(context.getTestNgResult().get());
-                ExecutionContextController.setCurrentSessionContext(sessionContext);
-                ExecutionContextController.setCurrentExecutionContext(executionContext);
 
                 f.setAccessible(true);
                 List<AbstractFieldAction> fieldActions = getFieldActions(f, checkRule, this);
@@ -257,8 +254,11 @@ public abstract class AbstractPage<SELF> implements
                 f.setAccessible(false);
             });
         });
-    }*/
+    }
 
+    /**
+     * Gets all @Check annotated fields of a class and executes a webdriver find().
+     */
 /*    private void checkAnnotatedFields(CheckRule checkRule) {
         List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
@@ -271,7 +271,6 @@ public abstract class AbstractPage<SELF> implements
             }
         });
     }*/
-
     protected Optional<List<AbstractFieldAction>> addCustomFieldActions(Field field, AbstractPage declaringPage) {
         return Optional.empty();
     }

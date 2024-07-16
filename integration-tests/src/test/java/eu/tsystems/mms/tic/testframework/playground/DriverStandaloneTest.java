@@ -32,7 +32,7 @@ public class DriverStandaloneTest extends AbstractWebDriverTest {
         File file = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
         PosixFileAttributeView fileAttributeView = Files.getFileAttributeView(file.toPath(), PosixFileAttributeView.class);
         log().info("take screenshot src {}", file.toPath());
-        log().info("Posix {}", fileAttributeView.readAttributes().permissions().toString());
+//        log().info("Posix {}", fileAttributeView.readAttributes().permissions().toString());
     }
 
 }

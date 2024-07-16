@@ -12,7 +12,7 @@ dependencies {
     // </Testerra>
 
     api 'commons-io:commons-io:2.16.1'
-    // StringUtils needs api dep
+//    api 'commons-io:commons-io:2.6'
     api 'org.apache.commons:commons-lang3:3.14.0'
 
     // <PdfUtils>

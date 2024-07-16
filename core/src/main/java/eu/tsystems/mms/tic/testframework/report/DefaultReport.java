@@ -72,6 +72,8 @@ public class DefaultReport implements Report, Loggable {
 
     public File finalizeReport() {
         try {
+            log().info("Before delete {}", finalReportDirectory.getAbsolutePath());
+            log().info("exists: {}", finalReportDirectory.exists());
             if (finalReportDirectory.exists()) {
                 FileUtils.deleteDirectory(finalReportDirectory);
             }
@@ -85,14 +87,14 @@ public class DefaultReport implements Report, Loggable {
                 // Only for ix systems:
                 // Since commons-io:commons-io:2.7 the FileUtils does not set permissions of parent folder to all copied files.
                 // This adds the OTHERS-READ permission to every file if exists in final report directory
-                PosixFileAttributeView posixReport = Files.getFileAttributeView(finalReportDirectory.toPath(), PosixFileAttributeView.class);
-                if (posixReport != null && posixReport.readAttributes().permissions().contains(PosixFilePermission.OTHERS_READ)) {
-                    log().info("Update file permissions");
-                    Files.walk(finalizeReport().toPath())
-                            .filter(file -> file.toFile().exists())
-                            .filter(Files::isRegularFile)
-                            .forEach(path -> {
-                                log().info(path.toString());
+//                PosixFileAttributeView posixReport = Files.getFileAttributeView(finalReportDirectory.toPath(), PosixFileAttributeView.class);
+//                if (posixReport != null && posixReport.readAttributes().permissions().contains(PosixFilePermission.OTHERS_READ)) {
+//                    log().info("Update file permissions");
+//                    Files.walk(finalizeReport().toPath())
+//                            .filter(file -> file.toFile().exists())
+//                            .filter(Files::isRegularFile)
+//                            .forEach(path -> {
+//                                log().info(path.toString());
 //                                try {
 //                                    Set<PosixFilePermission> posixFilePermissions = Files.getPosixFilePermissions(path);
 //                                    posixFilePermissions.add(PosixFilePermission.OTHERS_READ);
@@ -100,8 +102,8 @@ public class DefaultReport implements Report, Loggable {
 //                                } catch (IOException e) {
 //                                    log().warn("Cannot add permission OTHERS_READ to {}: {}", path, e.getMessage());
 //                                }
-                            });
-                }
+//                            });
+//                }
             }
         } catch (IOException e) {
             throw new RuntimeException("Could not move report dir: " + e.getMessage(), e);

@@ -33,10 +33,10 @@ image::layoutcheck_diffsize_comparison.png[alt="Visualization of a layout check 
 === Prerequisites
 The following prerequisites must be met
 
-. Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
-** Size of browser window: Define fixed size to exclude different sizes of the images at different screen resolutions
-** Screen resolution: Make sure you have the same screen resolution on each presentation device.
-** Scaling: The scaling should always be set to 100%. Using a different scaling causes variations in the positions of the elements on the website. For more details, see this https://github.com/SeleniumHQ/selenium/issues/4725[Selenium issue].
+- Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
+- Size of browser window: Define fixed size to exclude different sizes of the images at different screen resolutions.
+- Screen resolution: Make sure you have the same screen resolution on each presentation device.
+- Scaling: The scaling should always be set to 100%. Using a different scaling causes variations in the positions of the elements on the website. For more details, see this https://github.com/SeleniumHQ/selenium/issues/4725[Selenium issue].
 
 == Configuration
 

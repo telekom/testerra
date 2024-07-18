@@ -18,7 +18,6 @@ NOTE: The browser support depends on the remote Selenium setup.
 
 === Manually configure WebDriver binaries
 
-- Search for your browser's Selenium driver online, like _selenium gecko driver_ for Firefox or _selenium chrome driver_ for Chrome based browsers
 - Download your WebDriver binary from browser vendor's website to a local location
 - Make sure the driver version supports your installed browser
 - Since the properties are system properties, you need to put the location of the binaries to the `system.properties` file as mentioned in the <<Property files>> section.
@@ -201,7 +200,7 @@ When you create a WebDriver in a **setup method** annotated with `@Before...` or
 ----
 @BeforeMethod
 public void setupWebDriver() {
-    // This WebDriver will not be closed, because its a setup method
+    // This WebDriver will not be closed, because it's a setup method
     WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 }
 

@@ -80,6 +80,7 @@ export class ScreenshotComparison {
     }
 
     private _leftChanged() {
+        //handle when comparison.left is null or undefined because of unexpected binding from DOM, then take the lastValue
         const currentLeft = this._comparison.left ?? this._lastLeft;
         this._lastLeft = currentLeft;
         this._comparison.left = currentLeft;
@@ -87,6 +88,7 @@ export class ScreenshotComparison {
     }
 
     private _rightChanged() {
+        //handle when comparison.right is null or undefined
         const currentRight = this._comparison.right ?? this._lastRight;
         this._lastRight = currentRight;
         this._comparison.right = currentRight;

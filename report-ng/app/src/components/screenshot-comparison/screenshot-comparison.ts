@@ -74,40 +74,23 @@ export class ScreenshotComparison {
     }
 
     private _updateCompareLists() {
-        this._left = this._comparison.images.filter(value => value !== this._comparison.right);
-        this._right = this._comparison.images.filter(value => value !== this._comparison.left);
+        const { images, left, right } = this._comparison;
+        this._left = images.filter(image => image !== right);
+        this._right = images.filter(image => image !== left);
     }
 
-    private _leftChanged(e) {
-        // Use the last valid value if current value is undefined
-        const currentLeft = this._comparison.left !== undefined ? this._comparison.left : this._lastLeft;
-        this._lastLeft = currentLeft; // Update last valid value
-        this._comparison.left = this._lastLeft;
-        this._right = this._comparison.images.filter(value => value !== currentLeft);
+    private _leftChanged() {
+        const currentLeft = this._comparison.left ?? this._lastLeft;
+        this._lastLeft = currentLeft;
+        this._comparison.left = currentLeft;
+        this._right = this._comparison.images.filter(image => image !== currentLeft);
     }
 
-    private _rightChanged(e) {
-        // Use the last valid value if current value is undefined
-        const currentRight = this._comparison.right !== undefined ? this._comparison.right : this._lastRight;
-        this._lastRight = currentRight; // Update last valid value
-        this._comparison.right = this._lastRight;
-        this._left = this._comparison.images.filter(value => value !== currentRight);
-    }
-
-    private  handleChange(select, event) {
-        this._isProcessing = true;
-        switch (select) {
-            case 'left':
-                this._leftChanged(event);
-                break;
-            case 'right':
-                this._rightChanged(event);
-                break;
-            default:
-                break;
-        }
-        // Reset the flag after processing
-        this._isProcessing = false;
+    private _rightChanged() {
+        const currentRight = this._comparison.right ?? this._lastRight;
+        this._lastRight = currentRight;
+        this._comparison.right = currentRight;
+        this._left = this._comparison.images.filter(image => image !== currentRight);
     }
 
     private _prepareImageComparison(){

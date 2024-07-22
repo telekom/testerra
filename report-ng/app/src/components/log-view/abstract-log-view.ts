@@ -46,13 +46,12 @@ export abstract class AbstractLogView {
 
     constructor(
         readonly statusConverter:StatusConverter,
-        private dateFormat: IntlDateFormatValueConverter
+        protected dateFormat: IntlDateFormatValueConverter
     ) {
     }
 
-    // Method to format timestamp using dateFormat
     protected formatTimestamp(timestamp: number): string {
-        //check timestamp exists in cache
+        //check timestamp exists in cache, we do not need to reload timestamp every time
         if (this.timestampCache.has(timestamp)) {
             return this.timestampCache.get(timestamp)!;
         } else {

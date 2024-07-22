@@ -87,10 +87,13 @@ export class VirtualLogView extends AbstractLogView {
                 ...(stackTrace.stackTraceElements || []),
                 stackTrace.message])
             .filter(line => line.match(this.searchRegexp));
+
         const foundInLoggerName = this.statusConverter.separateNamespace(logMessage.loggerName).class.match(this.searchRegexp);
 
+        let foundInTimeStamp = false;
+
         const logTime = this.formatTimestamp(logMessage.timestamp);
-        const foundInTimeStamp = logTime.match(this.searchRegexp);
+        foundInTimeStamp = this.searchRegexp.test(logTime); // Use test() for a faster boolean check
 
         if (foundInStackTrace) {
             this.open(logMessage);
@@ -133,6 +136,7 @@ export class VirtualLogView extends AbstractLogView {
                     const element = document.getElementById(`id-${foundLogMessage.message}-${foundLogMessage.timestamp}-${foundLogMessage.type}-${foundLogMessage.loggerName}-${foundLogMessage.stackTrace}-${foundLogMessage.threadName}`)
                     element.scrollIntoView();
                 }, 1);
+                return; // Exit the loop as soon as a match is found
 
             }
         }

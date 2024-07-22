@@ -23,16 +23,6 @@
     white-space: pre;
     width: 100%;
     overflow: scroll;
+    height: calc(100vh - 260px);
 
-    @media (max-height: 1199px) {
-        height: 700px;
-    }
-
-    @media (max-height: 991px) {
-        height: 500px;
-    }
-
-    @media (max-height: 767px) {
-        height: 300px;
-    }
 }

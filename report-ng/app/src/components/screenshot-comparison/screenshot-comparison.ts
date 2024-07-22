@@ -43,6 +43,11 @@ export class ScreenshotComparison {
     private _clicked: boolean;
     private _ratio: number = 0.5;
     private _mouseMoveHandler: EventListenerObject;
+    // Variables to track last valid values
+    private _lastLeft = null;
+    private _lastRight = null;
+    private _isProcessing: boolean = false;
+
     private _resizeListener = () => {
         this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
     };
@@ -55,6 +60,8 @@ export class ScreenshotComparison {
 
     activate(params:IComparison) {
         this._comparison = params;
+        this._lastLeft = this._comparison.left;
+        this._lastRight = this._comparison.right;
         this._updateCompareLists();
     }
 
@@ -67,16 +74,40 @@ export class ScreenshotComparison {
     }
 
     private _updateCompareLists() {
-        this._left = this._comparison.images.filter(value => value != this._comparison.right);
-        this._right = this._comparison.images.filter(value => value != this._comparison.left);
+        this._left = this._comparison.images.filter(value => value !== this._comparison.right);
+        this._right = this._comparison.images.filter(value => value !== this._comparison.left);
     }
 
-    private _leftChanged() {
-        this._updateCompareLists();
+    private _leftChanged(e) {
+        // Use the last valid value if current value is undefined
+        const currentLeft = this._comparison.left !== undefined ? this._comparison.left : this._lastLeft;
+        this._lastLeft = currentLeft; // Update last valid value
+        this._comparison.left = this._lastLeft;
+        this._right = this._comparison.images.filter(value => value !== currentLeft);
     }
 
-    private _rightChanged() {
-        this._updateCompareLists();
+    private _rightChanged(e) {
+        // Use the last valid value if current value is undefined
+        const currentRight = this._comparison.right !== undefined ? this._comparison.right : this._lastRight;
+        this._lastRight = currentRight; // Update last valid value
+        this._comparison.right = this._lastRight;
+        this._left = this._comparison.images.filter(value => value !== currentRight);
+    }
+
+    private  handleChange(select, event) {
+        this._isProcessing = true;
+        switch (select) {
+            case 'left':
+                this._leftChanged(event);
+                break;
+            case 'right':
+                this._rightChanged(event);
+                break;
+            default:
+                break;
+        }
+        // Reset the flag after processing
+        this._isProcessing = false;
     }
 
     private _prepareImageComparison(){

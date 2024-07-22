@@ -27,7 +27,7 @@
                 <mdc-icon class="m1">compare</mdc-icon>
                 <mdc-select label="Left"
                             value.bind="_comparison.left"
-                            change.delegate="_leftChanged()"
+                            change.delegate="handleChange('left', $event)"
                             outlined
                 >
                     <mdc-list>
@@ -39,7 +39,7 @@
                 <mdc-icon class="m1">compare_arrows</mdc-icon>
                 <mdc-select label="Right"
                             value.bind="_comparison.right"
-                            change.delegate="_rightChanged()"
+                            change.delegate="handleChange('right', $event)"
                             outlined
                 >
                     <mdc-list>
@@ -48,6 +48,7 @@
                         >${image.title}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
+
             </div>
             <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
         </div>

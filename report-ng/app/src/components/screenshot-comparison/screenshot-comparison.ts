@@ -46,7 +46,6 @@ export class ScreenshotComparison {
     // Variables to track last valid values
     private _lastLeft = null;
     private _lastRight = null;
-    private _isProcessing: boolean = false;
 
     private _resizeListener = () => {
         this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
@@ -60,6 +59,7 @@ export class ScreenshotComparison {
 
     activate(params:IComparison) {
         this._comparison = params;
+        console.log('activate',params)
         this._lastLeft = this._comparison.left;
         this._lastRight = this._comparison.right;
         this._updateCompareLists();

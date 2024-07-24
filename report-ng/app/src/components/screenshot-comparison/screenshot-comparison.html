@@ -59,10 +59,10 @@
         <mdc-dialog-content class="pt0">
             <div class="img-comp-container" ref="_compContainer">
                 <div class="img-comp-img" ref="_leftImageElement">
-                    <img src.bind="_comparison.left.src" load.trigger="_leftLoaded($event)">
+                    <img src.bind="_comparison.left === _lastLeft ? _comparison.left.src : _lastLeft.src" load.trigger="_leftLoaded($event)">
                 </div>
                 <div class="img-comp-img" ref="_rightImageElement">
-                    <img src.bind="_comparison.right.src" >
+                    <img src.bind="_comparison.right === _lastRight ? _comparison.right.src : _lastRight.src" >
                 </div>
             </div>
         </mdc-dialog-content>

@@ -52,6 +52,7 @@ export class TestClassesCard {
     private _apexBarOptions: ApexOptions = undefined;
     private _filteredStatuses: number[];
     private _fullClassNames: string[] = [];
+    @bindable({defaultBindingMode: bindingMode.toView}) printMode = false;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -126,7 +127,18 @@ export class TestClassesCard {
         const height: string = yLabels.length * 60 + 67.65 + 'px'
 
         this._apexBarOptions = {
+            title: this.printMode ? {
+                text: "Test Classes",
+                offsetY: 10,
+                margin: 10,
+                style: {
+                    fontWeight: '400'
+                }
+            }: {},      // only show a title if we are in print mode (=print dialog) (otherwise the usual card header will be displayed)
             chart: {
+                animations: {
+                    enabled: !this.printMode
+                },
                 type: 'bar',
                 fontFamily: 'Roboto',
                 stacked: true,

@@ -29,6 +29,8 @@ import "./app.scss"
 import {StatisticsGenerator} from "./services/statistics-generator";
 import Logo from 'assets/logo.png'
 import IExecutionContext = data.ExecutionContext;
+import {MdcDialogService} from "@aurelia-mdc-web/dialog";
+import {PrintDialog} from "./components/print-dialog/print-dialog";
 
 @autoinject()
 export class App {
@@ -42,6 +44,7 @@ export class App {
         private _dataLoader: DataLoader,
         private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
+        private _dialogService: MdcDialogService
     ) {
     }
 
@@ -59,6 +62,9 @@ export class App {
             //     route.settings.count = executionStatistics.exitPointStatistics.length;
             // });
         });
+
+        // checks if our current path is "printable" to disable header (this is only used in the iFrame for the print dialog)
+        const path = this._router.currentInstruction.fragment;
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
@@ -128,13 +134,13 @@ export class App {
                 nav: true,
                 title: 'Timings'
             },
-            // {
-            //     route: 'timings',
-            //     name: 'Timings',
-            //     moduleId: PLATFORM.moduleName('components/timings'),
-            //     nav: true,
-            //     title: 'Timings'
-            // },
+            {
+                route: 'printable',
+                name: 'printable',
+                moduleId: PLATFORM.moduleName('components/print-dialog/printable'),
+                nav: true,
+                title: 'printable'
+            },
             // {
             //     route: 'jvm-monitor',
             //     name: 'JVM Monitor',
@@ -153,6 +159,15 @@ export class App {
         }
         this._drawer.open = false;
     }
+
+    private _printButtonClicked() {
+        this._dialogService.open({ viewModel: PrintDialog, model: <IPrintable>{ title: this._router.title, iFrameSrc: "printable"}});
+    }
+}
+
+export interface IPrintable {
+    title: string,
+    iFrameSrc: string
 }
 
 

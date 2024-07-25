@@ -34,6 +34,10 @@ html {
     //height: 100%;
 }
 
+#header {
+    position: unset;
+}
+
 .logo {
     width: 60px;
     height: 60px;
@@ -77,8 +81,20 @@ html {
     -webkit-box-orient: vertical;
 }
 
+.button-container {
+    padding: 16px 46px;
+    position: fixed;
+    bottom: 0;
+}
+
 //a {
 //    mdc-icon {
 //        text-decoration: none !important;
 //    }
 //}
+
+@media print {
+    .nav {
+        display: none;
+    }
+}

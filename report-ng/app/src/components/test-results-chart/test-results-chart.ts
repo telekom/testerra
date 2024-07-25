@@ -46,7 +46,7 @@ export class PieceClickedEvent extends CustomEvent<IPieceClickedDetails> {
 }
 
 @autoinject
-export class TestResultsCard {
+export class TestResultsChart {
     @bindable({defaultBindingMode: bindingMode.toView})
     filter:IFilter;
 
@@ -58,6 +58,9 @@ export class TestResultsCard {
 
     @bindable({defaultBindingMode: bindingMode.toView})
     class:string;
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    animationsEnabled = true;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -105,6 +108,9 @@ export class TestResultsCard {
 
         this._apexPieOptions = {
             chart: {
+                animations: {
+                    enabled: this.animationsEnabled
+                },
                 type: 'pie',
                 //width: '400px',
                 //height:'300px',

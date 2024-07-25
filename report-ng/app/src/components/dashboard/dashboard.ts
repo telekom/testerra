@@ -26,11 +26,10 @@ import {ExecutionStatistics, FailureAspectStatistics} from "services/statistic-m
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import FailureCorridorValue = data.FailureCorridorValue;
-import ResultStatusType = data.ResultStatusType;
 import "./dashboard.scss"
 import {ClassBarClick} from "../test-classes-card/test-classes-card";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {PieceClickedEvent} from "../test-results-card/test-results-card";
+import {PieceClickedEvent} from "../test-results-chart/test-results-chart";
 
 class FailureCorridor {
     count:number = 0;
@@ -38,12 +37,6 @@ class FailureCorridor {
     get matched() {
         return this.count <= this.limit;
     }
-}
-
-interface IItem {
-    status: ResultStatusType,
-    counts: (string|number)[],
-    labels: string[],
 }
 
 @autoinject()
@@ -54,7 +47,6 @@ export class Dashboard extends AbstractViewModel {
     private _highCorridor = new FailureCorridor();
     private _midCorridor = new FailureCorridor();
     private _lowCorridor = new FailureCorridor();
-    private _filterItems:IItem[];
     private _filter:IFilter;
     private _topFailureAspects:FailureAspectStatistics[];
     private _loading = true;
@@ -79,62 +71,6 @@ export class Dashboard extends AbstractViewModel {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0,3);
-
-            this._filterItems = [];
-            const failed = this._executionStatistics.overallFailed;
-            const failedRetried = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
-            if (failed > 0 || failedRetried > 0) {
-                const counts = []
-                const labels = []
-                counts.push(failed)
-                labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
-                if (failedRetried > 0) {
-                    counts.push(" + " + failedRetried)
-                    labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
-                }
-                this._filterItems.push({
-                    status: ResultStatusType.FAILED,
-                    counts: counts,
-                    labels: labels,
-                });
-            }
-
-            const failedExpected = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-            if (failedExpected > 0) {
-                this._filterItems.push({
-                    status: ResultStatusType.FAILED_EXPECTED,
-                    counts: [failedExpected],
-                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-                });
-            }
-
-            const skipped = this._executionStatistics.overallSkipped;
-            if (skipped > 0) {
-                this._filterItems.push({
-                    status: ResultStatusType.SKIPPED,
-                    counts: [skipped],
-                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-                });
-            }
-
-            const passed = this._executionStatistics.overallPassed;
-            if (passed > 0) {
-                const recovered = this._executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
-                const repaired = this._executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
-                this._filterItems.push({
-                    status: ResultStatusType.PASSED,
-                    counts: [
-                        passed,
-                        (repaired>0?`&sup; ${repaired}`:null),
-                        (recovered>0?`&sup; ${recovered}`:null),
-                    ],
-                    labels: [
-                        this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                        (repaired>0?this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED):null),
-                        (recovered>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
-                    ],
-                });
-            }
 
             this._executionStatistics.uniqueFailureAspects.forEach(failureAspectStatistics => {
                 if (failureAspectStatistics.isMinor) {
@@ -169,20 +105,6 @@ export class Dashboard extends AbstractViewModel {
         }
         if (updateUrl) {
             this.updateUrl(this.queryParams);
-        }
-    }
-
-    private _resultItemClicked(item:IItem) {
-        /**
-         * It still happens that items keep selected when they shouldn't
-         * https://gist.dumber.app/?gist=f09831456ae377d1121e8a41eece1c42
-         */
-        if (item.status === this._filter?.status) {
-            this._setFilter(null);
-        } else {
-            this._setFilter({
-                status: item.status
-            });
         }
     }
 

@@ -1,0 +1,108 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <require from="../test-duration-card/test-duration-card"></require>
+    <require from="../test-results-chart/test-results-chart"></require>
+    <require from="../test-classes-card/test-classes-card"></require>
+    <require from="../test-results-list/test-results-list"></require>
+    <require from="../failure-aspects/failure-aspects-table"></require>
+    <require from="../classes/classes-table"></require>
+
+    <div id="printable-body">
+        <div mdc-headline3>Test Report of ${_title}</div>
+        <mdc-card class="print-card">
+            <div class="card-headline" mdc-subtitle2>Report Information</div>
+
+            <mdc-list-divider class="print-divider"></mdc-list-divider>
+
+            <div mdc-body2>
+                <div class="container">
+                    <div class="row">
+                        <p>Duration</p>
+                        <ul>
+                            <li> Duration: ${_duration | durationFormat:"h[h] m[min] s[s] S[ms]"}</li>
+                            <li> Started: ${_started | dateFormat}</li>
+                            <li> Ended: ${_ended | dateFormat}</li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <p>Browser Information</p>
+                        <ul>
+                            <li> used Browsers: ${_browserString}</li>
+                            <li> created Sessions: ${_sessions}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <mdc-list-divider></mdc-list-divider>
+
+            <div mdc-body2>
+                <p class="result-headline">Test Results</p>
+                <mdc-layout-grid class="pt0">
+                    <mdc-layout-grid-inner>
+                        <mdc-layout-grid-cell class="test-results grid-cell-small">
+                            <test-results-list execution-statistics.bind="_executionStatistics">
+                            </test-results-list>
+                        </mdc-layout-grid-cell>
+                        <mdc-layout-grid-cell class="test-results grid-cell-small">
+                            <test-results-chart animations-enabled.bind="false"
+                                                execution-statistics.bind="_executionStatistics"
+                            ></test-results-chart>
+                        </mdc-layout-grid-cell>
+                    </mdc-layout-grid-inner>
+                </mdc-layout-grid>
+            </div>
+        </mdc-card>
+
+        <div class="print-card" id="test-classes-card">
+            <test-classes-card class-statistics.bind="_executionStatistics.classStatistics"
+                               print-mode.bind="true"
+            ></test-classes-card>
+        </div>
+
+        <div class="print-card" id="failure-aspects-card">
+            <mdc-card id="failure-aspects-table">
+                <failure-aspects-table filtered-failure-aspects.bind="_filteredFailureAspects"
+                ></failure-aspects-table>
+            </mdc-card>
+            <mdc-card id="failure-aspects-table-major" style="display: none;">
+                <failure-aspects-table filtered-failure-aspects.bind="_filteredFailureAspectsMajor"
+                ></failure-aspects-table>
+            </mdc-card>
+            <mdc-card id="failure-aspects-table-minor" style="display: none;">
+                <failure-aspects-table filtered-failure-aspects.bind="_filteredFailureAspectsMinor"
+                ></failure-aspects-table>
+            </mdc-card>
+        </div>
+
+        <div class="print-card" id="classes-table-card">
+            <mdc-card>
+                <classes-table filtered-method-details.bind="_filteredMethodDetails"
+                ></classes-table>
+            </mdc-card>
+        </div>
+    </div>
+</template>
+
+
+

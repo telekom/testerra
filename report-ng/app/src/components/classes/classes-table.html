@@ -1,0 +1,138 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <mdc-data-table class="w100"
+                    if.bind="filteredMethodDetails.length > 0"
+    >
+        <table>
+            <thead>
+            <th class="status-column centered-text">Status (${uniqueStatuses})</th>
+            <th class="mdc-data-table__header-cell" click.delegate="sortByRunIndex()">
+                <div class="mdc-data-table__header-cell-wrapper">
+                    <div class="mdc-data-table__header-cell-label">Run index</div>
+                    <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">
+                        arrow_upward
+                    </button>
+                </div>
+            </th>
+            <th class="mdc-data-table__header-cell" click.delegate="sortByClass()">
+                <div class="mdc-data-table__header-cell-wrapper">
+                    <div class="mdc-data-table__header-cell-label">Class (${uniqueClasses})</div>
+                    <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">
+                        arrow_upward
+                    </button>
+                </div>
+            </th>
+            <th class="mdc-data-table__header-cell" click.delegate="sortByMethod()">
+                <div class="mdc-data-table__header-cell-wrapper">
+                    <div class="mdc-data-table__header-cell-label">Method
+                        (${filteredMethodDetails.length})
+                    </div>
+                    <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">
+                        arrow_upward
+                    </button>
+                </div>
+            </th>
+            <!--                        <th>Failure Aspect (${_uniqueFailureAspects})</th>-->
+            </thead>
+            <tbody>
+            <tr repeat.for="methodDetails of filteredMethodDetails">
+                <td class="p1 centered-text">
+                    <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus
+                        | statusName}</a>
+                </td>
+                <td class="run-index-cell">${methodDetails.methodContext.methodRunIndex}</td>
+                <td class="p1 wrapable">
+                    <a innerhtml.bind="methodDetails.classStatistics.classIdentifier|className:1|highlightText:searchInput"
+                       route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"
+                    ></a>
+                </td>
+                <td class="p1 wrapable" mdc-body1>
+
+                    <!-- Method name -->
+                    <div class="vcenter">
+                        <mdc-icon class="sr1">read_more</mdc-icon>
+                        <a innerhtml.bind="methodDetails.identifier|highlightText:searchInput"
+                           route-href="route: method; params.bind: {methodId: methodDetails.methodContext.contextValues.id}"
+                        ></a>
+                        <method-tags class="sl1" details.bind="methodDetails"></method-tags>
+                    </div>
+
+                    <!-- Failure aspect -->
+                    <div class="st1"
+                         mdc-body2
+                         repeat.for="failureAspect of methodDetails.failureAspects"
+                    >
+                        <class-name-markup highlight.bind="searchInput"
+                                           namespace.bind="failureAspect.relevantCause.className">:
+                        </class-name-markup>
+                        <span
+                            innerhtml.bind="failureAspect.message|htmlEscape|highlightText:searchInput"></span>
+                    </div>
+
+                    <!-- List of @Fails details -->
+                    <div class="flex vcenter"
+                         if.bind="methodDetails.failsAnnotation.description || methodDetails.failsAnnotation.ticketString"
+                    >
+                        <mdc-icon
+                            class="colored-icon status-${methodDetails.methodContext.resultStatus|statusClass}">
+                            highlight_off
+                        </mdc-icon>
+                        <ul class="mdc-list mdc-list--dense" mdc-caption>
+                            <li class="mdc-custom-list-item"
+                                if.bind="methodDetails.failsAnnotation.description&&7!= methodDetails.methodContext.resultStatus">
+                                            <span
+                                                innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:searchInput"></span>
+                            </li>
+                            <li class="mdc-custom-list-item"
+                                if.bind="methodDetails.failsAnnotation.ticketString&&7!= methodDetails.methodContext.resultStatus">
+                                Ticket:&nbsp;<a href="${methodDetails.failsAnnotation.ticketString}"
+                                                innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:searchInput"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- List of prompted messages -->
+                    <div class="flex vcenter"
+                         if.bind="methodDetails.promptLogs.length > 0"
+                    >
+                        <mdc-icon>speaker_notes</mdc-icon>
+                        <ul class="mdc-list mdc-list--dense" mdc-caption>
+                            <li class="mdc-custom-list-item"
+                                repeat.for="logMessage of methodDetails.promptLogs">
+                                            <span
+                                                innerhtml.bind="logMessage.message|html|highlightText:searchInput"></span>
+                            </li>
+                        </ul>
+                        <div>
+                            <div mdc-body2 repeat.for="logMessage of methodDetails.promptLogs">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </mdc-data-table>
+</template>

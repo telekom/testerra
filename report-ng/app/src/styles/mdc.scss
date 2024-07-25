@@ -30,6 +30,7 @@
 @use '@material/card/mdc-card';
 @use '@material/card';
 @use '@material/checkbox';
+@use '@material/checkbox/mdc-checkbox';
 @use '@material/chips/styles' as chips-styles;
 @use '@aurelia-mdc-web/chips';
 @use '@material/data-table';
@@ -61,8 +62,8 @@
 @use '@material/snackbar';
 @use '@material/switch/styles' as switch-styles;
 @use '@material/switch';
-//@use '@material/radio/mdc-radio';
-//@use '@material/radio';
+@use '@material/radio/mdc-radio';
+@use '@material/radio';
 @use '@material/tab-bar/mdc-tab-bar';
 @use '@material/tab-bar';
 @use '@material/tab-scroller/mdc-tab-scroller';

@@ -23,7 +23,7 @@ ext {
 
     seleniumVersion = '4.23.0'
     // Must be the same like in Selenium 4
-    guavaVersion = "33.0.0-jre"
+    guavaVersion = "33.2.1-jre"
 
     moduleVersion = '2-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {

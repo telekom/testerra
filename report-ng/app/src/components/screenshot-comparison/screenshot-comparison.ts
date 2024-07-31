@@ -43,6 +43,10 @@ export class ScreenshotComparison {
     private _clicked: boolean;
     private _ratio: number = 0.5;
     private _mouseMoveHandler: EventListenerObject;
+    // Variables to track last valid values
+    private _lastLeft = null;
+    private _lastRight = null;
+
     private _resizeListener = () => {
         this._setImageSizes(this._leftImageElement, this._rightImageElement, this._ratio);
     };
@@ -55,6 +59,8 @@ export class ScreenshotComparison {
 
     activate(params:IComparison) {
         this._comparison = params;
+        this._lastLeft = this._comparison.left;
+        this._lastRight = this._comparison.right;
         this._updateCompareLists();
     }
 
@@ -67,16 +73,27 @@ export class ScreenshotComparison {
     }
 
     private _updateCompareLists() {
-        this._left = this._comparison.images.filter(value => value != this._comparison.right);
-        this._right = this._comparison.images.filter(value => value != this._comparison.left);
+        const { images, left, right } = this._comparison;
+        this._left = images.filter(image => image !== right);
+        this._right = images.filter(image => image !== left);
     }
 
     private _leftChanged() {
-        this._updateCompareLists();
+        //handle when comparison.left is null or undefined because of unexpected binding from DOM, then take the lastValue
+        const currentLeft = this._comparison.left ?? this._lastLeft;
+        this._lastLeft = currentLeft;
+        //prevent _comparison.left is undefined when change binding is impacted from other side
+        this._comparison.left = currentLeft;
+        this._right = this._comparison.images.filter(image => image !== currentLeft);
     }
 
     private _rightChanged() {
-        this._updateCompareLists();
+        //handle when comparison.right is null or undefined
+        const currentRight = this._comparison.right ?? this._lastRight;
+        this._lastRight = currentRight;
+        //prevent _comparison.right is undefined when change binding is impacted from other side
+        this._comparison.right = currentRight;
+        this._left = this._comparison.images.filter(image => image !== currentRight);
     }
 
     private _prepareImageComparison(){

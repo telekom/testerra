@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.methodReport.ComparisonDialogOverlay;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
@@ -149,6 +150,29 @@ public class LayoutTest extends AbstractReportTest {
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
         ASSERT.assertFalse(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessage), "Visibility of screenshot comparison in Failure aspect box");
+    }
+
+    @Test
+    public void testT06_checkLayoutDialog(){
+        String methodName = "layoutTest01_layoutTestFailing";
+        String className = "GenerateLayoutTestsTTReportTest";
+
+        String[] imageTitles = new String[]{
+                "Actual",
+                "Difference",
+                "Expected"
+        };
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        TestStep.begin("Open Layout Dialog");
+        for(String title: imageTitles){
+            ComparisonDialogOverlay comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(title);
+            reportDetailsTab = comparisonDialogOverlay.closeDialog();
+        }
     }
 
 }

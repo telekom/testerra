@@ -171,6 +171,7 @@ public class LayoutTest extends AbstractReportTest {
         TestStep.begin("Open Layout Dialog");
         for(String title: imageTitles){
             ComparisonDialogOverlay comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(title);
+            comparisonDialogOverlay.checkSelectedAndContentFromStartingMatched(title);
             reportDetailsTab = comparisonDialogOverlay.closeDialog();
         }
     }

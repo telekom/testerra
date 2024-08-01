@@ -2,13 +2,15 @@ package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.util.HashMap;
 
-public class ComparisonDialogOverlay extends Page {
+public class ComparisonDialogOverlay extends Page implements AssertProvider {
     @Check
     private final UiElement contrastIcon = findIconInDialog("compare");
     @Check
@@ -21,6 +23,7 @@ public class ComparisonDialogOverlay extends Page {
     private final UiElement slider= find(By.xpath("//div[contains(@class,'slider')]"));
     private final UiElement selectedItemLeft = leftSelection.find(By.xpath("//span[contains(@class,'selected-text')]"));
     private final UiElement selectedItemRight = rightSelection.find(By.xpath("//span[contains(@class,'selected-text')]"));
+    PreparedLocator itemLocator = LOCATE.prepare("//span[text()='%s']");
 
     public ComparisonDialogOverlay(WebDriver webDriver) {
         super(webDriver);
@@ -48,20 +51,17 @@ public class ComparisonDialogOverlay extends Page {
         screenshotMapping.put("Expected", "expected_difference_referenceImage");
 
         CONTROL.collectAssertions(()->{
-            UiElement defaultSelectedItemLeft = selectedItemLeft.find(By.xpath(String.format("//span[text()='%s']",state)));
+            UiElement defaultSelectedItemLeft = selectedItemLeft.find(itemLocator.with(state));
             UiElement imgContent = find(By.xpath("//div[contains(@class,'img-comp-container')]"));
             defaultSelectedItemLeft.expect().displayed(true);
             String expectedRightState = stateMapping.get(state);
             String screenshotReference = screenshotMapping.get(state);
+            ASSERT.assertNotNull(expectedRightState);
 
-            if(expectedRightState != null){
-                UiElement defaultSelectedItemRight = selectedItemRight.find(By.xpath(String.format("//span[text()='%s']", expectedRightState)));
-                defaultSelectedItemRight.expect().displayed(true);
-                imgContent.expect().screenshot().pixelDistance(screenshotReference).isLowerThan(10);
-            } else {
-                // throw an exception if the state is not found
-                throw new IllegalArgumentException("Unknown state: " + state);
-            }
+            UiElement defaultSelectedItemRight = selectedItemRight.find(itemLocator.with(expectedRightState));
+            defaultSelectedItemRight.expect().displayed(true);
+            imgContent.expect().screenshot().pixelDistance(screenshotReference).isLowerThan(10);
+
         });
 
     }

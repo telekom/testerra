@@ -153,35 +153,35 @@ public class ReportingAllStatesTests extends TesterraTest {
     }
 
     @Test
-    @Fails(validFor = "test=haha")
+    @Fails
     public void testFailedExpectedExceptionINVALID_FOR() throws Exception {
 
         throw new RuntimeException();
     }
 
     @Test
-    @Fails(validFor = "test=huhu")
+    @Fails
     public void testFailedExpectedExceptionVALID_FOR() throws Exception {
 
         throw new RuntimeException();
     }
 
     @Test
-    @Fails(validFor = "unknown.property=haha")
+    @Fails
     public void testFailedExpectedExceptionVALID_FOR_unknownProperty() throws Exception {
 
         throw new RuntimeException();
     }
 
     @Test
-    @Fails(ticketId = 1)
+    @Fails
     public void testFailedExpectedAssertion() throws Exception {
 
         failingStep(How.FAST);
     }
 
     @Test
-    @Fails(ticketId = 1)
+    @Fails
     public void testFailedExpectedCollectedAssertions() throws Exception {
 
         failingStep(How.LATE);
@@ -256,19 +256,19 @@ public class ReportingAllStatesTests extends TesterraTest {
     }
 
     @Test
-    @Fails(ticketId = 2345)
+    @Fails
     public void testPassedWithFailsAnnotation() throws Exception {
 
     }
 
     @Test
-    @Fails(ticketId = 2345, validFor = "test.foobar.fails.annotation.test.property.one=one")
+    @Fails
     public void testPassedWithFailsAnnotationValid() throws Exception {
 
     }
 
     @Test
-    @Fails(ticketId = 2345, validFor = "test.foobar.fails.annotation.test.property.one=two")
+    @Fails
     public void testPassedWithFailsAnnotationNotValid() throws Exception {
 
     }
@@ -280,13 +280,13 @@ public class ReportingAllStatesTests extends TesterraTest {
     }
 
     @Test
-    @Fails(validFor = "test.foobar.fails.annotation.test.property.one=one")
+    @Fails
     public void testRetryAnalyzerWithFailsValid() {
         throw new WebDriverException("Error communicating with the remote browser. It may have died.");
     }
 
     @Test
-    @Fails(validFor = "test.foobar.fails.annotation.test.property.one=foo")
+    @Fails
     public void testRetryAnalyzerWithFailsInvalid() {
         throw new WebDriverException("Error communicating with the remote browser. It may have died.");
     }

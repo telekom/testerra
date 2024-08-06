@@ -46,7 +46,7 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
     }
 
     @Test(groups = {Groups.EXT})
-    @Fails
+    @Fails()
     public void test_takeScreenshotViaCollectedAssertion_fails() {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
@@ -68,7 +68,7 @@ public class GenerateScreenshotsInTesterraReportTest extends AbstractTestSitesTe
 
     // one screenshot on error on exclusive session
     @Test(groups = {Groups.EXT})
-    @Fails
+    @Fails()
     public void test_takeScreenshotOnExclusiveSession_fails() {
         WebDriver driver = getExclusiveWebDriver();
         visitTestPage(driver, TestPage.INPUT_TEST_PAGE);

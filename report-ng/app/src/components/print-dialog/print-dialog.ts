@@ -115,6 +115,13 @@ export class PrintDialog {
 
         const pageOverlayElement = document.getElementById("page-overlay");
         pageOverlayElement.setAttribute("style", `margin-top: ${this._iFrameDoc.scrollingElement.clientHeight - pageOverlayElement.getBoundingClientRect().height - 16}px;`)
+
+        // set grid span width depending on screen width because grid column number changes
+        const gridCells = this._iFrameDoc.getElementsByClassName("grid-cell-small");
+        const spanValue = this._iFrameDoc.scrollingElement.clientWidth <= 600 ? 1 : 2;
+        for (let i = 0; i < 2; i++) {
+            gridCells[i].setAttribute("style", `grid-column: span ${spanValue}`);
+        }
     }
 
     private _print() {

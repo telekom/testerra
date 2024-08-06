@@ -34,8 +34,7 @@
                             value.bind="_selectedStatus"
                 >
                     <mdc-list>
-                        <mdc-list-item>(All)</mdc-list-item>
-                        <mdc-list-item repeat.for="status of _availableStatuses"
+                        <mdc-list-item repeat.for="status of _filteredStatuses"
                                        value.bind="status"
                         >
                             <span class="badge status-${status|statusClass}">${status | statusName}</span>
@@ -51,7 +50,6 @@
                             value.bind="_selectedClass"
                 >
                     <mdc-list>
-                        <mdc-list-item>(All)</mdc-list-item>
                         <mdc-list-item repeat.for="classStatistic of _filteredClassStatistics"
                                        value.bind="classStatistic.classIdentifier"
                         >${classStatistic.classIdentifier | className

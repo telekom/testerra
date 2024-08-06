@@ -50,6 +50,8 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     private final UiElement testStacktraceCard = pageContent.find(By.xpath("//div[./div[contains(text(), 'Stacktrace')]]"));
 
     private final String failureAspectCodeLineXPath = "//div[contains(@class,'line') and contains(@class,'error')]/span[@class='au-target']";
+    private final UiElement layoutComparison = find(By.xpath("//layout-comparison"));
+    PreparedLocator imgTitleLocator = LOCATE.prepare("//img[contains(@title,'%s')]");
 
     public ReportDetailsTab(WebDriver driver) {
         super(driver);
@@ -207,5 +209,11 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
 
     public boolean hasFailureAspectAScreenshotComparison(String failureMessage) {
         return this.getFailureAspectElement(failureMessage).find(By.xpath("//layout-comparison")).waitFor().present(true);
+    }
+
+    public ComparisonDialogOverlay openComparisonDialogByClickingOnScreenShot(String imageTitle) {
+        UiElement image = layoutComparison.find(imgTitleLocator.with(imageTitle));
+        image.click();
+        return createPage(ComparisonDialogOverlay.class);
     }
 }

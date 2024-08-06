@@ -31,11 +31,13 @@
                             outlined
                 >
                     <mdc-list>
+                        <!--_left is dynamic array and is impacted by _rightChanged(), which is binding change event of mdc-select-->
                         <mdc-list-item repeat.for="image of _left"
                                        value.bind="image"
                         >${image.title}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
+
                 <mdc-icon class="m1">compare_arrows</mdc-icon>
                 <mdc-select label="Right"
                             value.bind="_comparison.right"
@@ -43,11 +45,13 @@
                             outlined
                 >
                     <mdc-list>
+                        <!--_right is dynamic array and is impacted by _leftChanged(), which is binding change event of mdc-select-->
                         <mdc-list-item repeat.for="image of _right"
                                        value.bind="image"
                         >${image.title}</mdc-list-item>
                     </mdc-list>
                 </mdc-select>
+
             </div>
             <button mdc-icon-button class="icon-button--dense" icon="clear" data-mdc-dialog-action="cancel"></button>
         </div>

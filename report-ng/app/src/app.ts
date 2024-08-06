@@ -163,9 +163,14 @@ export class App {
 
     private _printButtonClicked() {
         let currentPath = window.location.href;
-        if(!currentPath.endsWith("#/")){
+
+        if (!currentPath.includes("#/")) {
             currentPath = currentPath.concat("#/");
+        } else if (!currentPath.endsWith("#/")) {   // if we are not on dashboard, we need to cut off the active path
+            const index = currentPath.indexOf("#/");
+            currentPath = currentPath.slice(0, index + 2);
         }
+        
         this._dialogService.open({ viewModel: PrintDialog, model: <IPrintable>{ title: this._router.title, iFrameSrc: currentPath + "printable"}});
     }
 }

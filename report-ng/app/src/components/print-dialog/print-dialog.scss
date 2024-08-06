@@ -87,3 +87,13 @@
 .progress-bar {
     width: 600px;
 }
+
+#page-overlay {
+    position: fixed;
+    background: #4b4b4b;
+    opacity: 100%;
+    color: white;
+    margin-left: 16px;
+    padding: 8px;
+    border-radius: 5px;
+}

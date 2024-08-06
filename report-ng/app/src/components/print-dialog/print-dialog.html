@@ -24,6 +24,9 @@
         <mdc-layout-grid class="p0">
             <mdc-layout-grid-inner>
                 <mdc-layout-grid-cell class="p0 content" span="6">
+                    <div class="mdc-elevation--z2" id="page-overlay" show.bind="!_loading">
+                        <div mdc-body2>Page ${_page}/${_totalPages}</div>
+                    </div>
                     <div class="preview">
                         <mdc-linear-progress class="progress-bar" if.bind="_loading" open="true"></mdc-linear-progress>
                         <iframe id="iframe" show.bind="!_loading" src.bind="_iFrameSrc" title="_title"></iframe>

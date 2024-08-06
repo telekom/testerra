@@ -22,7 +22,6 @@
 import {autoinject, observable} from 'aurelia-framework';
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './print-dialog.scss';
-import {MdcSnackbarService} from "@aurelia-mdc-web/snackbar";
 
 @autoinject()
 export class PrintDialog {
@@ -49,8 +48,7 @@ export class PrintDialog {
     ];
 
     constructor(
-        private _dialog: MdcDialog,
-        private _snackBar: MdcSnackbarService
+        private _dialog: MdcDialog
     ) {
     }
 
@@ -114,6 +112,9 @@ export class PrintDialog {
             this._calculateTotalPages();
             this.handleScrollEvent()
         }
+
+        const pageOverlayElement = document.getElementById("page-overlay");
+        pageOverlayElement.setAttribute("style", `margin-top: ${this._iFrameDoc.scrollingElement.clientHeight - pageOverlayElement.getBoundingClientRect().height - 16}px;`)
     }
 
     private _print() {
@@ -219,50 +220,6 @@ export class PrintDialog {
 
         if(Math.floor(this._iFrameDoc.scrollingElement.scrollTop) >= this._iFrameDoc.scrollingElement.scrollHeight - this._iFrameDoc.scrollingElement.clientHeight){    // if we scrolled down to the bottom, the value should be set to the maximum
             this._page = this._totalPages;
-        }
-
-        if(this._page != this._prevPage){
-            this._snackbarNotification("Page " + this._page + "/" + this._totalPages);      // only display snackbar if page has changed
-        }
-    }
-
-    private async _snackbarNotification(message: string) {
-
-        this._calculateSnackbarMargin();
-
-        await this._snackBar.open(message, undefined, {
-            dismissible: true,
-            classes: "snackbar--fill-color snackbar",
-            leading: true,
-            timeout: 4000,
-        });
-
-        if(document.getElementById("iframe")){
-            this._calculateSnackbarMargin();
-        }
-    }
-
-    // This is necessary because snackbars are usually placed in the bottom center of the browser window.
-    // Instead, we want it to hover over the Preview IFrame as a page overlay, therefore the margin needs to be set accordingly.
-    private _calculateSnackbarMargin(){
-        const iFrameClientRect = document.getElementById("iframe").getBoundingClientRect()
-        const snackbarClientRect = document.querySelector('.mdc-snackbar__surface')?.getBoundingClientRect();
-
-        const marginBottom = snackbarClientRect?.bottom - iFrameClientRect.bottom;
-        const marginLeft = iFrameClientRect.left - snackbarClientRect?.left;
-
-        if(marginBottom > 0){
-            const style = document.createElement('style');      // since it is not possible to directly manipulate classes and the snackbar is a temporary element, it is done this way
-            style.textContent = `
-                .snackbar {
-                    transform: scale(0.75);
-                    transform-origin: top;
-                    margin-bottom: ${marginBottom + 8}px;
-                    margin-left: ${marginLeft + 8}px;
-                }
-            `;
-
-            document.head.appendChild(style);
         }
     }
 }

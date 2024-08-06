@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.report.testundertest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -41,7 +42,7 @@ public class ReportTestUnderTestPassed extends AbstractTest {
     }
 
     @Test
-    @Fails(ticketId = 1, description = "Does not actually fail.")
+    @Fails(ticketString = "1", description = "Does not actually fail.")
     public void test_TestStatePassed2() {
         Assert.assertTrue(true);
     }

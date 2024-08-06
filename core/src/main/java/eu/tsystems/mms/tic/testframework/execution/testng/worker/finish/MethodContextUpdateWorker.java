@@ -119,8 +119,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                         } catch (Throwable t) {
                             methodContext.addError(t);
                         }
-                    } else if (fails.validFor().length > 0) {
-                        isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails.validFor());
                     } else {
                         isFailsAnnotationValid = true;
                     }

@@ -43,8 +43,6 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
-
-
 @TestClassContext(name = "MyClass")
 public class ReportingAllStatesTests extends TesterraTest implements PropertyManagerProvider {
 
@@ -151,7 +149,6 @@ public class ReportingAllStatesTests extends TesterraTest implements PropertyMan
     @Test
     @Fails
     public void testFailedExpectedException() throws Exception {
-
 
         throw new RuntimeException();
     }

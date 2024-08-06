@@ -26,7 +26,7 @@
                 <mdc-layout-grid-cell class="p0 content" span="6">
                     <div class="preview">
                         <mdc-linear-progress class="progress-bar" if.bind="_loading" open="true"></mdc-linear-progress>
-                        <iframe id="iframe" show.bind="!_loading" src.bind="'/#/' + _iFrameSrc" title="_title"></iframe>
+                        <iframe id="iframe" show.bind="!_loading" src.bind="_iFrameSrc" title="_title"></iframe>
                     </div>
                 </mdc-layout-grid-cell>
 

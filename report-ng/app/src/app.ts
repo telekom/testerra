@@ -31,6 +31,7 @@ import Logo from 'assets/logo.png'
 import IExecutionContext = data.ExecutionContext;
 import {MdcDialogService} from "@aurelia-mdc-web/dialog";
 import {PrintDialog} from "./components/print-dialog/print-dialog";
+PLATFORM.moduleName('./components/print-dialog/print-dialog')   // necessary to display dialog according to https://discourse.aurelia.io/t/solved-error-cannot-determine-default-view-strategy-for-object/3589/5
 
 @autoinject()
 export class App {
@@ -161,7 +162,7 @@ export class App {
     }
 
     private _printButtonClicked() {
-        this._dialogService.open({ viewModel: PrintDialog, model: <IPrintable>{ title: this._router.title, iFrameSrc: "printable"}});
+        this._dialogService.open({ viewModel: PrintDialog, model: <IPrintable>{ title: this._router.title, iFrameSrc: window.location.href + "printable"}});
     }
 }
 

@@ -22,6 +22,7 @@
 import {autoinject, observable} from 'aurelia-framework';
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './print-dialog.scss';
+import {MdcSnackbarService} from "@aurelia-mdc-web/snackbar";
 
 @autoinject()
 export class PrintDialog {
@@ -29,6 +30,11 @@ export class PrintDialog {
     private _iFrameSrc: string;
     private _iFrameDoc: Document | undefined;
     private _loading = true;
+    private _page = 1;
+    private _prevPage = 1;
+    private _totalPages = 1;
+    private _pagesCalculated = false;   // necessary otherwise total pages will be added up if window is resized
+    private _pageArray = [0, 0];
     private _failureAspectFilters: IFailureAspectFilter[] = [
         {id: 0, name: "All"},
         {id: 1, name: "Major"},
@@ -42,7 +48,10 @@ export class PrintDialog {
         {label: 'Test Case List', checked: true, id: "classes-table-card"}
     ];
 
-    constructor(private _dialog: MdcDialog) {
+    constructor(
+        private _dialog: MdcDialog,
+        private _snackBar: MdcSnackbarService
+    ) {
     }
 
     activate(params: { title: string; iFrameSrc: string }) {
@@ -54,6 +63,7 @@ export class PrintDialog {
         const iframe = document.getElementById('iframe') as HTMLIFrameElement;
         iframe.onload = () => {
             this._iFrameDoc = iframe.contentDocument || iframe.contentWindow.document;
+            this._iFrameDoc.addEventListener('scroll', this.handleScrollEvent.bind(this))
 
             setTimeout(() => {
                 this._resizeFrame();
@@ -99,6 +109,11 @@ export class PrintDialog {
             }`;
             this._iFrameDoc.head.appendChild(styleElement);
         }
+
+        if(!this._pagesCalculated){     // prevents that totalPages are calculated again and summed up if page is resized
+            this._calculateTotalPages();
+            this.handleScrollEvent()
+        }
     }
 
     private _print() {
@@ -114,6 +129,10 @@ export class PrintDialog {
         } else {
             iFrameElement.removeAttribute("style");
         }
+
+        this._totalPages = 1;
+        this._pageArray = [0, 0]
+        this._calculateTotalPages();
     }
 
     // function to calculate scaling and margin-bottom
@@ -121,7 +140,7 @@ export class PrintDialog {
 
         // reference values adapted by hand - calculation base for transformation
         const referenceHeight = 527.25;
-        const referenceScale = 0.3;
+        const referenceScale = 0.3125;
         const referenceMarginBottom = -5500;
 
         // calculate scaling and margin-bottom based on height
@@ -149,6 +168,101 @@ export class PrintDialog {
             if (tables[newValue]) {
                 tables[newValue].removeAttribute("style");      // Remove style attribute from the selected table to show it
             }
+        }
+    }
+
+    private _calculateTotalPages(){
+        const a4inPixels = document.getElementById("iframe").getBoundingClientRect().height * 0.9125;   // multiplied by 0.9125 because the standard print
+
+        let pixels = 0;
+        pixels += this._iFrameDoc.getElementById("print-card").getBoundingClientRect().bottom     // add space for header, headline and report information card
+
+        this._pageArray[this._totalPages] += this._iFrameDoc.getElementById("print-card").getBoundingClientRect().bottom;
+
+        this._checkboxOptions.forEach(option => {
+            if(option.checked){
+                pixels = pixels + this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height;
+
+                let pageElementCount = 0;
+
+                if(pixels < a4inPixels){
+                    this._pageArray[this._totalPages] += this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height
+                }
+
+                while(pixels > a4inPixels){
+                    this._totalPages++;
+                    this._pageArray[this._totalPages] = this._pageArray[this._totalPages-1] + a4inPixels;
+
+                    if(pageElementCount == 0){
+                        pixels = this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height;
+                    } else {
+                        pixels -= a4inPixels;
+                    }
+                    pageElementCount++;
+                }
+
+                // use the last page of this option and add only the actual content length instead of the whole a4 page to calculate active pag while scrolling
+                this._pageArray[this._pageArray.length-1] = this._pageArray[this._pageArray.length-2] + this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height % a4inPixels;
+            }
+        })
+        this._pagesCalculated = true;
+    }
+
+    handleScrollEvent() {
+        this._prevPage = this._page;
+
+        const pageOffset = this._iFrameDoc.scrollingElement.clientHeight / 2;   // use pixel offset to not use top of iframe as page indicator
+
+        this._page = this._pageArray.findIndex((value, index) =>
+            this._iFrameDoc.scrollingElement.scrollTop + pageOffset >= value && (index === this._pageArray.length - 1
+                || this._iFrameDoc.scrollingElement.scrollTop + pageOffset < this._pageArray[index + 1]))
+
+        if(Math.floor(this._iFrameDoc.scrollingElement.scrollTop) >= this._iFrameDoc.scrollingElement.scrollHeight - this._iFrameDoc.scrollingElement.clientHeight){    // if we scrolled down to the bottom, the value should be set to the maximum
+            this._page = this._totalPages;
+        }
+
+        if(this._page != this._prevPage){
+            this._snackbarNotification("Page " + this._page + "/" + this._totalPages);      // only display snackbar if page has changed
+        }
+    }
+
+    private async _snackbarNotification(message: string) {
+
+        this._calculateSnackbarMargin();
+
+        await this._snackBar.open(message, undefined, {
+            dismissible: true,
+            classes: "snackbar--fill-color snackbar",
+            leading: true,
+            timeout: 4000,
+        });
+
+        if(document.getElementById("iframe")){
+            this._calculateSnackbarMargin();
+        }
+    }
+
+    // This is necessary because snackbars are usually placed in the bottom center of the browser window.
+    // Instead, we want it to hover over the Preview IFrame as a page overlay, therefore the margin needs to be set accordingly.
+    private _calculateSnackbarMargin(){
+        const iFrameClientRect = document.getElementById("iframe").getBoundingClientRect()
+        const snackbarClientRect = document.querySelector('.mdc-snackbar__surface')?.getBoundingClientRect();
+
+        const marginBottom = snackbarClientRect?.bottom - iFrameClientRect.bottom;
+        const marginLeft = iFrameClientRect.left - snackbarClientRect?.left;
+
+        if(marginBottom > 0){
+            const style = document.createElement('style');      // since it is not possible to directly manipulate classes and the snackbar is a temporary element, it is done this way
+            style.textContent = `
+                .snackbar {
+                    transform: scale(0.75);
+                    transform-origin: top;
+                    margin-bottom: ${marginBottom + 8}px;
+                    margin-left: ${marginLeft + 8}px;
+                }
+            `;
+
+            document.head.appendChild(style);
         }
     }
 }

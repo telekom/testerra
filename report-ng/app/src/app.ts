@@ -162,7 +162,11 @@ export class App {
     }
 
     private _printButtonClicked() {
-        this._dialogService.open({ viewModel: PrintDialog, model: <IPrintable>{ title: this._router.title, iFrameSrc: window.location.href + "printable"}});
+        let currentPath = window.location.href;
+        if(!currentPath.endsWith("#/")){
+            currentPath.concat("#/");
+        }
+        this._dialogService.open({ viewModel: PrintDialog, model: <IPrintable>{ title: this._router.title, iFrameSrc: currentPath + "printable"}});
     }
 }
 

@@ -23,7 +23,6 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
-import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
@@ -44,7 +43,7 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 @TestClassContext(name = "MyClass")
-public class ReportingAllStatesTests extends TesterraTest implements PropertyManagerProvider {
+public class ReportingAllStatesTests extends TesterraTest {
 
     static {
         System.setProperty("test.foobar.fails.annotation.test.property.one", "one");
@@ -154,27 +153,6 @@ public class ReportingAllStatesTests extends TesterraTest implements PropertyMan
     }
 
     @Test
-    @Fails(validatorClass = FailsValidator.class ,validator = "expectedExceptionInvalid")
-    public void testFailedExpectedExceptionINVALID_FOR() throws Exception {
-
-        throw new RuntimeException();
-    }
-
-    @Test
-    @Fails(validatorClass = FailsValidator.class, validator = "expectedExceptionValid")
-    public void testFailedExpectedExceptionVALID_FOR() throws Exception {
-
-        throw new RuntimeException();
-    }
-
-    @Test
-    @Fails(validatorClass = FailsValidator.class, validator = "expectedExceptionValidForUnknownProperty")
-    public void testFailedExpectedExceptionVALID_FOR_unknownProperty() throws Exception {
-
-        throw new RuntimeException();
-    }
-
-    @Test
     @Fails(ticketString = "1")
     public void testFailedExpectedAssertion() throws Exception {
 
@@ -263,32 +241,8 @@ public class ReportingAllStatesTests extends TesterraTest implements PropertyMan
     }
 
     @Test
-    @Fails(ticketString = "2345", validatorClass = FailsValidator.class, validator = "expectedExceptionValidForFailsAnnotationValid")
-    public void testPassedWithFailsAnnotationValid() throws Exception {
-
-    }
-
-    @Test
-    @Fails(ticketString = "2345", validatorClass = FailsValidator.class, validator = "expectedExceptionValidForFailsAnnotationNotValid")
-    public void testPassedWithFailsAnnotationNotValid() throws Exception {
-
-    }
-
-    @Test
     @Fails
     public void testRetryAnalyzerWithFails() {
-        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
-    }
-
-    @Test
-    @Fails(validatorClass = FailsValidator.class, validator = "expectedExceptionValidForFailsAnnotationValid")
-    public void testRetryAnalyzerWithFailsValid() {
-        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
-    }
-
-    @Test
-    @Fails(validatorClass = FailsValidator.class, validator = "expectedExceptionValidForFailsAnnotationNotValid")
-    public void testRetryAnalyzerWithFailsInvalid() {
         throw new WebDriverException("Error communicating with the remote browser. It may have died.");
     }
 

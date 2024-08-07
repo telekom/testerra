@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
 

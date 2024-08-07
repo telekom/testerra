@@ -56,7 +56,7 @@ import org.openqa.selenium.WebDriver;
  * Livecycle methods for {@link #checkUiElements(CheckRule)}:
  *      {@link #checkPagePreparation()}
  *      {@link #addCustomFieldActions}
- *      {@link #assertPageIsNotShown()} or {@link #assertPageIsNotShown()}
+ *
  *      {@link #checkPageErrorState(Throwable)}
  * @see {https://martinfowler.com/bliki/PageObject.html}
  * @author Peter Lehmann
@@ -95,21 +95,6 @@ public abstract class AbstractPage<SELF> implements
     protected UiElement createEmpty(Locator locator) {
         return new EmptyUiElement(this, locator);
     }
-
-    /**
-     * Calls the assertPageIsShown method.
-     */
-    private void checkAdditional(CheckRule checkRule) {
-        switch (checkRule) {
-            case IS_NOT_PRESENT:
-            case IS_NOT_DISPLAYED:
-                assertPageIsNotShown();
-                break;
-            default:
-                assertPageIsShown();
-        }
-    }
-
     /**
      * Package private accessible by {@link PageFactory}
      */
@@ -148,7 +133,6 @@ public abstract class AbstractPage<SELF> implements
         checkPagePreparation();
         try {
             checkAnnotatedFields(checkRule);
-            checkAdditional(checkRule);
         } catch (Throwable throwable) {
             // call page error state logic
             checkPageErrorState(throwable);
@@ -254,13 +238,6 @@ public abstract class AbstractPage<SELF> implements
     /**
      * Empty method to be overriden. Can perform some (additional) checks on page objects.
      */
-    @Deprecated
-    public void assertPageIsShown() {
-    }
-
-    @Deprecated
-    public void assertPageIsNotShown() {
-    }
 
     @Override
     abstract public WebDriver getWebDriver();

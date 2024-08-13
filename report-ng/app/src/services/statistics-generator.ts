@@ -38,6 +38,7 @@ export class MethodDetails {
     testContext: data.TestContext;
     suiteContext: data.SuiteContext;
     sessionContexts: data.SessionContext[];
+    promptLogs: data.LogMessage[]
     private _identifier: string = null;
     static readonly FAILS_ANNOTATION_NAME = "eu.tsystems.mms.tic.testframework.annotations.Fails";
     static readonly TEST_ANNOTATION_NAME = "org.testng.annotations.Test";
@@ -91,16 +92,6 @@ export class MethodDetails {
             ;
         }
         return this._numDetails;
-    }
-
-    get promptLogs() {
-        return this.methodContext.testSteps
-            .flatMap(value => value.actions)
-            .flatMap(value => value.entries)
-            .filter(value => value.logMessage)
-            .map(value => value.logMessage)
-            .filter(value => value.prompt)
-            ;
     }
 
     get failedStep() {
@@ -184,27 +175,42 @@ export class StatisticsGenerator {
         })
     }
 
-    getMethodDetails(methodId:string):Promise<MethodDetails> {
-        return this._cacheService.getForKeyWithLoadingFunction("method:"+methodId, () => {
-            return this.getExecutionStatistics().then(executionStatistics => {
-                const methodContext = executionStatistics.executionAggregate.methodContexts[methodId];
-                if (methodContext) {
-                    const classContext = executionStatistics.executionAggregate.classContexts[methodContext.classContextId];
-                    const testContext = executionStatistics.executionAggregate.testContexts[classContext.testContextId];
-                    const suiteContext = executionStatistics.executionAggregate.suiteContexts[testContext.suiteContextId];
-                    const sessionContexts = [];
-                    methodContext.sessionContextIds.forEach(value => {
-                        sessionContexts.push(executionStatistics.executionAggregate.sessionContexts[value]);
-                    })
+    getLogs() {
+        return this._cacheService.getForKeyWithLoadingFunction("logMessages", () => {
+            return this._dataLoader.getLogMessages().then(logMessageAggregate => logMessageAggregate.logMessages)
+        })
+    }
 
-                    const methodDetails = new MethodDetails(methodContext, new ClassStatistics(classContext));
-                    methodDetails.executionStatistics = executionStatistics;
-                    methodDetails.testContext = testContext;
-                    methodDetails.suiteContext = suiteContext;
-                    methodDetails.sessionContexts = sessionContexts;
-                    return methodDetails;
-                }
-            });
+    getMethodPromptLogs(methodContext: data.MethodContext) {
+        return this._cacheService.getForKeyWithLoadingFunction("promptLogs:" + methodContext.contextValues.id, async () => {
+            const logMessageIds = methodContext.testSteps
+                .flatMap(value => value.actions)
+                .flatMap(value => value.entries)
+                .filter(value => value.logMessageId)
+                .map(value => value.logMessageId)
+            const logMessages = await this.getLogs()
+            return Object.values(logMessages).filter(logMessage => logMessage.prompt && logMessageIds.includes(logMessage.id))
+        })
+    }
+
+    getMethodDetails(methodId: string) {
+        return this._cacheService.getForKeyWithLoadingFunction("method:" + methodId, async () => {
+            const executionStatistics = await this.getExecutionStatistics()
+            const methodContext = executionStatistics.executionAggregate.methodContexts[methodId];
+            if (methodContext) {
+                const classContext = executionStatistics.executionAggregate.classContexts[methodContext.classContextId];
+                const testContext = executionStatistics.executionAggregate.testContexts[classContext.testContextId];
+                const suiteContext = executionStatistics.executionAggregate.suiteContexts[testContext.suiteContextId];
+                const sessionContexts = methodContext.sessionContextIds.map(value => executionStatistics.executionAggregate.sessionContexts[value])
+
+                const methodDetails = new MethodDetails(methodContext, new ClassStatistics(classContext));
+                methodDetails.executionStatistics = executionStatistics;
+                methodDetails.testContext = testContext;
+                methodDetails.suiteContext = suiteContext;
+                methodDetails.sessionContexts = sessionContexts;
+                methodDetails.promptLogs = await this.getMethodPromptLogs(methodContext)
+                return methodDetails;
+            }
         });
     }
 

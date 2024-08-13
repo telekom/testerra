@@ -48,22 +48,47 @@ export class PieceClickedEvent extends CustomEvent<IPieceClickedDetails> {
 @autoinject
 export class TestResultsCard {
     @bindable({defaultBindingMode: bindingMode.toView})
-    filter:IFilter;
+    filter: IFilter;
 
     @bindable({defaultBindingMode: bindingMode.toView})
     executionStatistics: ExecutionStatistics;
 
     private _apexPieOptions: ApexOptions = undefined;
-    private _selection:ISelection;
+    private _skeletonOptions: ApexOptions = undefined
+    private _selection: ISelection;
 
     @bindable({defaultBindingMode: bindingMode.toView})
-    class:string;
+    class: string;
 
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
         private _element: Element
     ) {
+        this._skeletonOptions = {
+            chart: {
+                type: 'pie',
+                animations: {
+                    enabled: false,
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            legend: {
+                show: false,
+            },
+            tooltip: {
+                enabled: false,
+            },
+            plotOptions: {
+                pie: {
+                    expandOnClick: false,
+                },
+            },
+            series: [1, 1, 2, 3, 5],
+            colors: ['#c4c4c4'],
+        }
     }
 
     private _getSeriesByStatus(status:ResultStatusType) {

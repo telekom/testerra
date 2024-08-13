@@ -34,6 +34,8 @@ public enum TestPage {
     LAYOUT("Layout/index.html"),
     LAYOUT_FRAME("Layout/index-frame.html"),
     LAYOUT_IMAGE("LayoutImage/index.html"),
+    LAYOUT_EXT_CSS_X("LayoutExtremeCSS/index-x.html"),
+    LAYOUT_EXT_CSS_Y("LayoutExtremeCSS/index-y.html"),
     LIST("GuiElementList/index.html"),
     IMG("Img/logo", INPUT_TEST_PAGE),
     SHADOW_ROOT("ShadowDom/shadow_dom1.html"),

@@ -290,6 +290,7 @@ public final class WebDriverUtils {
      * @param intervalSleepTimeInSeconds int
      * @param durationInSeconds int
      * @return WebDriverKeepAliveSequence
+     * @deprecated Use {@link IWebDriverManager#keepAlive(WebDriver, int, int)} instead
      */
     public static WebDriverKeepAliveSequence keepWebDriverAlive(final WebDriver driver, final int intervalSleepTimeInSeconds, int durationInSeconds) {
 
@@ -311,6 +312,7 @@ public final class WebDriverUtils {
      * Removes an active {@link WebDriverKeepAliveSequence} if present.
      *
      * @param driver {@link WebDriver} the current driver
+     * @deprecated Use {@link IWebDriverManager#stopKeepingAlive(WebDriver)} instead
      */
     public static void removeKeepAliveForWebDriver(final WebDriver driver) {
 

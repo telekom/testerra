@@ -1,3 +1,2 @@
 // Platform badge with link
-// image:https://img.shields.io/badge/-PLATFORM-blue[link="index.html#_opensource_and_platform"
 :platform_badge: image:PLATFORM-blue.svg[link="index.html#_opensource_and_platform"]

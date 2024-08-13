@@ -28,6 +28,12 @@
 
 |2.2
 |https://docs.testerra.io/testerra/2.2/index.html
+
+|2.4
+|https://docs.testerra.io/testerra/2.4/index.html
+
+|2.7
+|https://docs.testerra.io/testerra/2.7/index.html
 |===
 
 You will find detailed release notes at https://github.com/telekom/testerra/releases.

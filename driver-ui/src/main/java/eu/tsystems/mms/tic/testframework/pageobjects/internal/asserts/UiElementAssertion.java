@@ -35,16 +35,16 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
     default boolean text(Object text) {
         return text().is(text);
     }
-    StringAssertion<String> text();
+    StringAssertion text();
 
     default boolean value(Object text) {
         return value().is(text);
     }
-    default StringAssertion<String> value() {
+    default StringAssertion value() {
         return attribute(Attribute.VALUE);
     }
 
-    default StringAssertion<String> attribute(Attribute attribute) {
+    default StringAssertion attribute(Attribute attribute) {
         return attribute(attribute.toString());
     }
     default boolean attribute(Attribute attribute, Object expected) {
@@ -53,9 +53,9 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
     default boolean attribute(String attribute, Object expected) {
         return this.attribute(attribute).is(expected);
     }
-    StringAssertion<String> attribute(String attribute);
+    StringAssertion attribute(String attribute);
 
-    StringAssertion<String> css(String property);
+    StringAssertion css(String property);
 
     BinaryAssertion<Boolean> enabled();
     default boolean enabled(boolean expected) {
@@ -72,7 +72,7 @@ public interface UiElementAssertion extends UiElementBaseAssertion {
         return selectable().is(expected);
     }
 
-    default StringAssertion<String> classes() {
+    default StringAssertion classes() {
         return this.attribute(Attribute.CLASS);
     }
 

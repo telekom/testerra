@@ -1,7 +1,7 @@
 
 #driver-ui
 ##Dependency License Report
-_2022-04-06 13:49:35 MESZ_
+_2024-03-05 07:59:02 MEZ_
 ## Apache 2.0
 
 **1** **Group:** `com.google.code.gson` **Name:** `gson` **Version:** `2.8.6` 
@@ -42,22 +42,16 @@ _2022-04-06 13:49:35 MESZ_
 > - **POM Project URL**: [https://github.com/ua-parser/uap-java](https://github.com/ua-parser/uap-java)
 > - **POM License**: The Apache License, Version 2.0 - [http://www.apache.org/licenses/LICENSE-2.0.txt](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-## The Apache Software License, Version 2.0
-
-**7** **Group:** `org.seleniumhq.selenium` **Name:** `selenium-java` **Version:** `3.141.59` 
-> - **POM Project URL**: [http://www.seleniumhq.org/](http://www.seleniumhq.org/)
-> - **POM License**: The Apache Software License, Version 2.0 - [http://www.apache.org/licenses/LICENSE-2.0.txt](http://www.apache.org/licenses/LICENSE-2.0.txt)
-
 ## The New BSD License
 
-**8** **Group:** `org.reflections` **Name:** `reflections` **Version:** `0.9.12` 
+**7** **Group:** `org.reflections` **Name:** `reflections` **Version:** `0.9.12` 
 > - **POM Project URL**: [http://github.com/ronmamo/reflections](http://github.com/ronmamo/reflections)
 > - **POM License**: The New BSD License - [http://www.opensource.org/licenses/bsd-license.html](http://www.opensource.org/licenses/bsd-license.html)
 > - **POM License**: WTFPL - [http://www.wtfpl.net/](http://www.wtfpl.net/)
 
 ## WTFPL
 
-**9** **Group:** `org.reflections` **Name:** `reflections` **Version:** `0.9.12` 
+**8** **Group:** `org.reflections` **Name:** `reflections` **Version:** `0.9.12` 
 > - **POM Project URL**: [http://github.com/ronmamo/reflections](http://github.com/ronmamo/reflections)
 > - **POM License**: The New BSD License - [http://www.opensource.org/licenses/bsd-license.html](http://www.opensource.org/licenses/bsd-license.html)
 > - **POM License**: WTFPL - [http://www.wtfpl.net/](http://www.wtfpl.net/)

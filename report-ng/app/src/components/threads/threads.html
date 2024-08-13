@@ -25,10 +25,12 @@
         <mdc-layout-grid-inner>
             <mdc-layout-grid-cell span="2">
                 <mdc-select label="Status"
+                            ref="statusSelect"
                             value.bind="_selectedStatus"
                             change.delegate="_statusChanged()"
                             outlined
                             class="w100"
+                            disabled.bind="_selectedClass|| queryParams.class || queryParams.methodId"
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
@@ -40,7 +42,24 @@
                     </mdc-list>
                 </mdc-select>
             </mdc-layout-grid-cell>
-            <mdc-layout-grid-cell span="4">
+            <mdc-layout-grid-cell span="3">
+                <mdc-select label="Class"
+                            ref="classSelect"
+                            value.bind="_selectedClass"
+                            change.delegate="_classChanged()"
+                            outlined
+                            class="w100"
+                            disabled.bind="_selectedStatus || queryParams.status || queryParams.methodId"
+                >
+                    <mdc-list>
+                        <mdc-list-item>(All)</mdc-list-item>
+                        <mdc-list-item repeat.for="classStatistic of _executionStatistics.classStatistics"
+                                       value.bind="classStatistic.classIdentifier"
+                        >${classStatistic.classIdentifier|className:1}</mdc-list-item>
+                    </mdc-list>
+                </mdc-select>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="5">
                 <div mdc-menu-surface-anchor>
                     <mdc-card-action-textfield>
                         <mdc-text-field label="Method"
@@ -49,6 +68,7 @@
                                         class="w100"
                                         value.bind="_inputValue"
                                         input.delegate="_selectionChanged()"
+                                        disabled.bind="_selectedStatus || _selectedClass || queryParams.status || queryParams.class"
                         >
                         </mdc-text-field>
                         <mdc-text-field-helper-line></mdc-text-field-helper-line>

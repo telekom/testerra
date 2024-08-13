@@ -21,9 +21,12 @@
  */
 package eu.tsystems.mms.tic.testframework.internal.utils;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ExceptionUtils extends CoreExceptionUtils {
 
@@ -34,8 +37,11 @@ public class ExceptionUtils extends CoreExceptionUtils {
             return null;
         }
 
-        String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
-        if (methodName == null) {
+        AtomicReference<String> atomicMethodName = new AtomicReference<>();
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
+        instance.getCurrentMethodContext().ifPresent(methodContext -> atomicMethodName.set(methodContext.getName()));
+
+        if (StringUtils.isBlank(atomicMethodName.get())) {
             return null;
         }
 
@@ -46,7 +52,7 @@ public class ExceptionUtils extends CoreExceptionUtils {
         int position = 0;
         for (int i = 0; i < stackTrace.length; i++) {
             StackTraceElement stackTraceElement = stackTrace[i];
-            if (methodName.equals(stackTraceElement.getMethodName())) {
+            if (atomicMethodName.get().equals(stackTraceElement.getMethodName())) {
                 position = i;
                 break;
             }

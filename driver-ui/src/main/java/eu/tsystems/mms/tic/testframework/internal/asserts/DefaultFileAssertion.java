@@ -32,7 +32,7 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implements FileAssertion {
 
-    public DefaultFileAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<File> provider) {
+    public DefaultFileAssertion(AbstractPropertyAssertion<File> parentAssertion, AssertionProvider<File> provider) {
         super(parentAssertion, provider);
     }
 
@@ -52,7 +52,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public StringAssertion<String> name() {
+    public StringAssertion name() {
         return propertyAssertionFactory.createWithParent(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -67,7 +67,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public StringAssertion<String> extension() {
+    public StringAssertion extension() {
         return propertyAssertionFactory.createWithParent(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -82,7 +82,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public StringAssertion<String> mimetype() {
+    public StringAssertion mimetype() {
         return propertyAssertionFactory.createWithParent(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
             @Override
             public String getActual() {

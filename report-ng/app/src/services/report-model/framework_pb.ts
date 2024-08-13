@@ -374,6 +374,7 @@ export interface SessionContext {
   serverUrl?: string | undefined;
   nodeUrl?: string | undefined;
   userAgent?: string | undefined;
+  baseUrl?: string | undefined;
 }
 
 export interface LayoutCheckContext {
@@ -1960,6 +1961,7 @@ function createBaseSessionContext(): SessionContext {
     serverUrl: "",
     nodeUrl: "",
     userAgent: "",
+    baseUrl: "",
   };
 }
 
@@ -1994,6 +1996,9 @@ export const SessionContext = {
     }
     if (message.userAgent !== undefined && message.userAgent !== "") {
       writer.uint32(114).string(message.userAgent);
+    }
+    if (message.baseUrl !== undefined && message.baseUrl !== "") {
+      writer.uint32(122).string(message.baseUrl);
     }
     return writer;
   },
@@ -2074,6 +2079,13 @@ export const SessionContext = {
           }
 
           message.userAgent = reader.string();
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.baseUrl = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

@@ -41,7 +41,7 @@ public class ReportTestUnderTestPassed extends AbstractTest {
     }
 
     @Test
-    @Fails(ticketId = 1, description = "Does not actually fail.")
+    @Fails(ticketString = "1", description = "Does not actually fail.")
     public void test_TestStatePassed2() {
         Assert.assertTrue(true);
     }

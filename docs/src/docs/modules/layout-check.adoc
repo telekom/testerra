@@ -18,7 +18,14 @@ A layout test with the Testerra utilities is actually a comparison between a ref
 
 image::layoutcheck_comparison.png[alt="Visualization of a layout check",width=920,height=233]
 
-In case that one image has a different size than the other Testerra reports this as an <<#_optional_assertions, Optional assertion>>. Testerra considers only the common pixels of both images as 100%. Pixels that are outside of one or the other image are not included in the error calculation. In the comparison, those Pixels are marked in blue.
+There are two different ways in which Testerra handles different sized images.
+Using the property `{layoutcheck_pixel_count_hard_assertion}`, you can customize the handling of such cases.
+
+If the property is set to `false` (default) Testerra reports this as an <<#_optional_assertions, Optional assertion>>. Only the common pixels of both images as considered as 100% for the calculation. Pixels that are outside of one or the other image are not included in the error calculation.
+
+With the property set to `true`, the size difference of the two images is included in the calculation so that all pixels that appear in only one image counted as incorrect ones.
+
+In both scenarios, all pixels outside one or the other image are marked in blue in the generated distance image.
 
 image::layoutcheck_diffsize_comparison.png[alt="Visualization of a layout check with different sized images",width=920,height=233]
 
@@ -26,9 +33,10 @@ image::layoutcheck_diffsize_comparison.png[alt="Visualization of a layout check 
 === Prerequisites
 The following prerequisites must be met
 
-. Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
-** Size of browser window: Define fixed size to exclude different sizes of the images at different screen resolutions
-** Screen resolution and scaling: Make sure you have the same screen resolution and scaling on each presentation device.
+- Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
+- Size of browser window: Define fixed size to exclude different sizes of the images at different screen resolutions.
+- Screen resolution: Make sure you have the same screen resolution on each presentation device.
+- Scaling: The scaling should always be set to 100%. Using a different scaling causes variations in the positions of the elements on the website. For more details, see this https://github.com/SeleniumHQ/selenium/issues/4725[Selenium issue].
 
 == Configuration
 
@@ -85,6 +93,20 @@ Especially for photo checks it should be helpful in case of different kinds of i
 | `{layoutcheck_pixel_rgb_deviation_percent}=0.0` | `{layoutcheck_pixel_rgb_deviation_percent}=2.0`
 | image::layoutcheck_rgb_deviation01.png[alt="Screenshot of the report visualization of a layout check"] | image::layoutcheck_rgb_deviation02.png[alt="Screenshot of the report visualization of a layout check"]
 |===
+
+== Check image files
+
+In case you don't want to check a screenshot of the browser but rather a pre-existing image, there is also a way to do that.
+The `assertImage` method requires the `File` object of the actual image and executes a layout check.
+
+[source, java]
+----
+// 5% of the pixels are allowed to be different
+float pixelDistanceToleranceThresholdPercent = 5.0;
+
+File absoluteFile = FileUtils.getResourceFile("images/actual.png");
+LayoutCheck.assertImage(absoluteFile, "reference", pixelDistanceToleranceThresholdPercent);
+----
 
 == Take reference screenshots on first run
 

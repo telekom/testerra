@@ -31,6 +31,7 @@ import io.testerra.report.test.pages.report.methodReport.AbstractReportMethodPag
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
@@ -277,6 +278,7 @@ public class ReportTestsPage extends AbstractReportPage {
 
     public ReportTestsPage search(String query) {
         testSearchInput.type(query);
+        testSearchInput.sendKeys(Keys.ENTER);
         return createPage(ReportTestsPage.class);
     }
 

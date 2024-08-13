@@ -34,29 +34,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Fails {
-
-    /**
-     * tickedID as integer
-     * @deprecated Use {@link #ticketString()} instead
-     */
-    int ticketId() default 0;
-
     /**
      * ticket as string
      */
     String ticketString() default "";
-
     /**
      * string description
      */
     String description() default "";
 
     boolean intoReport() default false;
-
-    /**
-     * @deprecated Use {@link #validatorClass()} instead
-     */
-    String[] validFor() default {};
 
     Class<?> validatorClass() default Object.class;
     String validator() default "";

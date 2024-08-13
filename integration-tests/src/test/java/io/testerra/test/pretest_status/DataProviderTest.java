@@ -34,7 +34,7 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
     /**
      * This test uses an external data provider throwing an exception
      */
-    @Test(dataProviderClass = MyDataProvider.class, dataProvider = "dataProviderThrowingException")
+    @Test(dataProviderClass = MyDataProvider.class, dataProvider = "dataProviderInClassThrowingException")
     public void testT01_interceptCrashedDataProvider() {
     }
 
@@ -119,6 +119,16 @@ public class DataProviderTest extends TesterraTest implements AssertProvider {
                 Assert.fail("test_T08_RetriedDataProvider");
             }
         }
+    }
+
+    @DataProvider
+    public Object[][] dataProviderWithNoData() {
+        return new Object[0][0];
+    }
+
+    // TestNG does not throw a skip event, just a warning -> cannot create method context
+    @Test(dataProvider = "dataProviderWithNoData")
+    public void testT09_DataProviderWithoutData(String dp) {
     }
 
 }

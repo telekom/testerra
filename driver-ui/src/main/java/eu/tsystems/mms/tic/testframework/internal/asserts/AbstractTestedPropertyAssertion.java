@@ -46,7 +46,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     protected static final Assertion assertionImpl = Testerra.getInjector().getInstance(Assertion.class);
     private static final TestController.Overrides overrides = Testerra.getInjector().getInstance(TestController.Overrides.class);
 
-    public AbstractTestedPropertyAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public AbstractTestedPropertyAssertion(AbstractPropertyAssertion<T> parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 

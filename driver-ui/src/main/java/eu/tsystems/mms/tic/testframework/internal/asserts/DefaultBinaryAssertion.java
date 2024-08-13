@@ -26,7 +26,7 @@ package eu.tsystems.mms.tic.testframework.internal.asserts;
  * @author Mike Reiche
  */
 public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryAssertion<T> {
-    public DefaultBinaryAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultBinaryAssertion(AbstractPropertyAssertion<T> parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 

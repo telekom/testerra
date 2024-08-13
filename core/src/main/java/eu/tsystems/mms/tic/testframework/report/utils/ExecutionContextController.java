@@ -45,7 +45,6 @@ public class ExecutionContextController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionContextController.class);
 
     private static final ThreadLocal<MethodContext> CURRENT_METHOD_CONTEXT = new ThreadLocal<>();
-    private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
 
     /**
@@ -61,20 +60,6 @@ public class ExecutionContextController {
      */
     public static Optional<MethodContext> getMethodContextForThread() {
         return Optional.ofNullable(CURRENT_METHOD_CONTEXT.get());
-    }
-
-    /**
-     * @deprecated Use {@link #getTestResultForThread()} instead
-     */
-    public static ITestResult getCurrentTestResult() {
-        return getTestResultForThread().orElse(null);
-    }
-
-    /**
-     * Returns the test result of the current thread
-     */
-    public static Optional<ITestResult> getTestResultForThread() {
-        return Optional.ofNullable(CURRENT_TEST_RESULT.get());
     }
 
     /**
@@ -137,8 +122,7 @@ public class ExecutionContextController {
      *
      * @param iTestResult TestNg testResult representing current test.
      */
-    public static MethodContext setCurrentTestResult(ITestResult iTestResult) {
-        CURRENT_TEST_RESULT.set(iTestResult);
+    public static MethodContext setCurrentMethodContext(ITestResult iTestResult) {
         MethodContext methodContext = getMethodContextFromTestResult(iTestResult);
         CURRENT_METHOD_CONTEXT.set(methodContext);
         return methodContext;
@@ -170,7 +154,6 @@ public class ExecutionContextController {
      * Clear the -current testresult-. Use with care!
      */
     public static void clearCurrentTestResult() {
-        CURRENT_TEST_RESULT.remove();
         CURRENT_METHOD_CONTEXT.remove();
     }
 

@@ -164,4 +164,8 @@ public abstract class AbstractContext implements Loggable, Measurable {
             context = context.parentContext;
         }
     }
+
+    public void updateEndTime(Date date) {
+        this.endTime = date;
+    }
 }

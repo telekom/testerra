@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public interface WebDriverFactory {
     WebDriverRequest prepareWebDriverRequest(WebDriverRequest webDriverRequest);
@@ -39,8 +38,8 @@ public interface WebDriverFactory {
      * This method get called after the WebDriver has been accepted by the {@link IWebDriverManager}
      * Use it to perform initial session setups like calling the base URL, maximize or rotate windows.
      */
-    default void setupNewWebDriverSession(EventFiringWebDriver webDriver, SessionContext sessionContext) {
-
+    default WebDriver setupNewWebDriverSession(WebDriver webDriver, SessionContext sessionContext) {
+        return webDriver;
     }
 
     List<String> getSupportedBrowsers();

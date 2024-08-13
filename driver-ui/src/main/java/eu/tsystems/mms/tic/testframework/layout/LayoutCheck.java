@@ -72,6 +72,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
         PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0.0),
+        PIXEL_COUNT_HARD_ASSERTION("pixel.count.hard.assertion", false),
 
         ;
         private final String property;
@@ -159,14 +160,14 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
         step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();
         if (step.takeReferenceOnly) {
-            // take reference screenshot
+            // create reference image
             try {
                 FileUtils.copyFile(screenshot, step.referenceFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new SystemException("Error when saving reference screenshot.", e);
+                throw new SystemException("Error when saving reference image.", e);
             }
-            LOGGER.info(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
+            LOGGER.info(String.format("Saved reference image at '%s'.", step.referenceFileName.toString()));
         } else {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
 
@@ -178,9 +179,9 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
                 FileUtils.copyFile(screenshot, step.actualFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new SystemException("Error when saving screenshot.", e);
+                throw new SystemException("Error when saving image.", e);
             }
-            LOGGER.debug(String.format("Saved actual screenshot at '%s'.", step.actualFileName.toString()));
+            LOGGER.debug(String.format("Saved actual image at '%s'.", step.actualFileName.toString()));
 
             // create distance file name
             step.distanceFileName = distanceImagesDir.resolve(
@@ -255,7 +256,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
 
     /**
      * Creates an image showing the differences of the given images and calculates the difference between the images in
-     * percent.
+     * percent. Also calculates the percentage of pixels that are incorrect based on the property 'tt.layoutcheck.pixel.count.hard.assertion'.
      *
      * @param expectedImage The expected image
      * @param actualImage The actual image
@@ -271,8 +272,10 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         // for counting the pixels that are different
         int pixelsInError = 0;
         int noOfIgnoredPixels = 0;
+        // for counting the pixels that are just in one image
+        int noOfExclusivePixels = 0;
         // calculate the size of the distance image and create an empty image
-        final Dimension distanceImageSize = calculateMinImageSize(expectedImage, actualImage);
+        final Dimension distanceImageSize = calculateMaxImageSize(expectedImage, actualImage);
         final BufferedImage distanceImage = new BufferedImage(
                 distanceImageSize.width, distanceImageSize.height,
                 expectedImage.getType());
@@ -309,6 +312,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
                     }
                 } else {
                     // this pixel is not inside one or the other image - mark it, but not as error
+                    noOfExclusivePixels++;
                     distanceImage.setRGB(currentX, currentY, Color.BLUE.getRGB());
                 }
             }
@@ -335,7 +339,14 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         int totalPixels = distanceImageSize.width * distanceImageSize.height;
 
         // calculate and return the percentage number of pixels in error
-        double result = ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
+        double result_rgb = ((double) pixelsInError / (totalPixels - noOfExclusivePixels - noOfIgnoredPixels)) * 100;
+        double result_size = ((double) noOfExclusivePixels / totalPixels) * 100;
+        double result = result_rgb;
+
+        boolean pixelCountHardAssertion = Properties.PIXEL_COUNT_HARD_ASSERTION.asBool();
+        if (pixelCountHardAssertion) {
+            result += result_size;
+        }
 
         // Just for debug log
         Dimension expectedImageDimension = new Dimension(expectedImage.getWidth(), expectedImage.getHeight());
@@ -346,8 +357,10 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
                         "Number of total pixel: {}\n" +
                         "Number of ignored pixel: {}\n" +
                         "Number of pixel in errors: {}\n" +
+                        "Result of matching pixels: {}\n" +
+                        "Result of matching size: {}\n" +
                         "Result of matching: {}"
-                , actualImageDimension, expectedImageDimension, totalPixels, noOfIgnoredPixels, pixelsInError, result);
+                , actualImageDimension, expectedImageDimension, totalPixels, noOfIgnoredPixels, pixelsInError, result_rgb, result_size, result);
         return result;
     }
 
@@ -376,19 +389,19 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     }
 
     /**
-     * Calculates the sizes that result from the minimum sizes of both pictures.
+     * Calculates the sizes that result from the maximum sizes of both pictures.
      *
      * @param expectedImage The expected image
      * @param actualImage The actual image
-     * @return Calculated minimum size of the images
+     * @return Calculated maximum size of the images
      */
-    private static Dimension calculateMinImageSize(
+    private static Dimension calculateMaxImageSize(
             final BufferedImage expectedImage,
             final BufferedImage actualImage
     ) {
         return new Dimension(
-                Math.min(expectedImage.getWidth(), actualImage.getWidth()),
-                Math.min(expectedImage.getHeight(), actualImage.getHeight())
+                Math.max(expectedImage.getWidth(), actualImage.getWidth()),
+                Math.max(expectedImage.getHeight(), actualImage.getHeight())
         );
     }
 
@@ -460,17 +473,47 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         return step.actualFileDimension.equals(step.referenceFileDimension);
     }
 
+    /**
+     * Check the layout of the current browser window using a reference image.
+     *
+     * @param webDriver WebDriver instance
+     * @param targetImageName The name of the reference image
+     * @param confidenceThreshold A value that defines a threshold for the layout check
+     */
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
-        LayoutCheck.MatchStep matchStep = null;
         final String assertMessage = String.format("pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
+
+        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
+        assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);
+    }
+
+    /**
+     * Check the layout of an image file using a reference image.
+     *
+     * @param image The actual image file
+     * @param targetImageName The name of the reference image
+     * @param confidenceThreshold A value that defines a threshold for the layout check
+     */
+    public static void assertImage(File image, String targetImageName, double confidenceThreshold) {
+        final String assertMessage = String.format("pixel distance (%%) of '%s' to image '%s'", image.getName(), targetImageName);
+
+        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(image, targetImageName);
+        assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);
+    }
+
+    private static void assertWithLayoutCheck(MatchStep matchStep, double confidenceThreshold, String assertMessage) {
+        // Check for 2 decimals of % value is enough --> Readable assertion message
+        BigDecimal distance = new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal threshold = new BigDecimal(confidenceThreshold);
+        if (distance.compareTo(threshold) <= 0) {
+            return;
+        }
         try {
-            matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
-            // Check for 2 decimals of % value is enough --> Readable assertion message
-            ASSERT.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
             // In case of optional or collected assertions
             if (!matchStep.takeReferenceOnly) {
                 LayoutCheck.toReport(matchStep);
             }
+            ASSERT.assertLowerEqualThan(distance, threshold, assertMessage);
         } catch (LayoutCheckException e) {
             matchStep = e.getMatchStep();
             LayoutCheck.toReport(matchStep);

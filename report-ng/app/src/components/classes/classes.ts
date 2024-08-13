@@ -215,20 +215,20 @@ export class Classes extends AbstractViewModel {
         }
         this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
 
-            if (this._filteredClassStatistics.length <= 0) {      // create array for class select options that can be manipulated
-                this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a, b) =>
-                    this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))];
+        if (this._filteredClassStatistics.length <= 0) {      // create array for class select options that can be manipulated
+            this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a, b) =>
+                this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))];
 
-                // remove selected classes from options in select box
-                this._chips.filter(chip => chip.filter == classFilter).forEach(chipClass => {
-                    const index = this._filteredClassStatistics.map(stat => stat.classIdentifier).indexOf(chipClass.value, 0);
-                    if (index > -1) {
-                        this._filteredClassStatistics.splice(index, 1);
-                    }
-                })
-            }
+            // remove selected classes from options in select box
+            this._chips.filter(chip => chip.filter == classFilter).forEach(chipClass => {
+                const index = this._filteredClassStatistics.map(stat => stat.classIdentifier).indexOf(chipClass.value, 0);
+                if (index > -1) {
+                    this._filteredClassStatistics.splice(index, 1);
+                }
+            })
+        }
 
-        executionStatistics.classStatistics
+        const filteredClassStatistics = executionStatistics.classStatistics
             .map(classStatistics => {
                 // Determine if we need to enable showing config methods by default if there has any error occured
                 if (this._showConfigurationMethods === null) {
@@ -242,61 +242,62 @@ export class Classes extends AbstractViewModel {
                         const className = this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.full);
                         return chip.value === className || chip.value == classStatistic.classIdentifier;
                     });
-            })
-            .forEach(classStatistic => {
-                let methodContexts = classStatistic.methodContexts;
-
-                if (this._chips.filter(chip => chip.filter === statusFilter).length > 0) {
-                    const selectedStatusGroups = this._chips.filter(chip => chip.filter === statusFilter).map(chip => {
-                        return this._statusConverter.groupStatus(this._statusConverter.getStatusForClass(chip.value));
-                    });
-
-                    methodContexts = methodContexts.filter(methodContext => {
-                        return selectedStatusGroups.some(selectedStatusGroup => {
-                            return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0;
-                        });
-                    });
-                }
-
-                if (filterByFailureAspect) {
-                    methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
-                }
-
-                if (this._showConfigurationMethods === false) {
-                    methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-                }
-
-                let methodDetails = methodContexts.map(methodContext => {
-                    return new MethodDetails(methodContext, classStatistic);
-                });
-
-                if (this._chips.filter(chip => chip.filter == customTextFilter).length > 0) {
-                    methodDetails = methodDetails.filter(methodDetail => {
-                        return this._chips.filter(chip => chip.filter == customTextFilter).map(chip => chip.value).every(searchTerm => {
-                            searchTerm = this._statusConverter.createRegexpFromSearchString(searchTerm);
-                            return methodDetail.identifier.match(searchTerm)
-                                || methodDetail.failureAspects.some(failureAspect => failureAspect.identifier.match(searchTerm))
-                                || methodDetail.failsAnnotation?.description?.match(searchTerm)
-                                || methodDetail.failsAnnotation?.ticketString?.match(searchTerm)
-                                || methodDetail.promptLogs.some(logMessage => logMessage.message.match(searchTerm))
-                                || methodDetail.classStatistics.classIdentifier.match(searchTerm)
-                        })
-                    });
-                }
-
-                methodDetails.forEach(methodDetails => {
-                    uniqueClasses[classStatistic.classContext.fullClassName] = true;
-                    uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
-                    this._filteredMethodDetails.push(methodDetails);
-                });
-
             });
 
-        if (this._chips.filter(chip => chip.filter == customFilterTimings).length > 0) {
-                this._filteredMethodDetails = this._filteredMethodDetails.filter(method => {
-                    return this._chips.filter(chip => chip.filter == customFilterTimings).flatMap(chip => chip.value)
-                        .includes(method.methodContext.contextValues.id);
+        for (const classStatistic of filteredClassStatistics) {
+            let methodContexts = classStatistic.methodContexts;
+
+            if (this._chips.filter(chip => chip.filter === statusFilter).length > 0) {
+                const selectedStatusGroups = this._chips.filter(chip => chip.filter === statusFilter).map(chip => {
+                    return this._statusConverter.groupStatus(this._statusConverter.getStatusForClass(chip.value));
                 });
+
+                methodContexts = methodContexts.filter(methodContext => {
+                    return selectedStatusGroups.some(selectedStatusGroup => {
+                        return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0;
+                    });
+                });
+            }
+
+            if (filterByFailureAspect) {
+                methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
+            }
+
+            if (this._showConfigurationMethods === false) {
+                methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
+            }
+
+            let methodDetails = await Promise.all(methodContexts.map(methodContext => {
+                return this._statisticsGenerator.getMethodDetails(methodContext.contextValues.id)
+            }))
+
+            if (this._chips.filter(chip => chip.filter == customTextFilter).length > 0) {
+                methodDetails = methodDetails.filter(methodDetail => {
+                    return this._chips.filter(chip => chip.filter == customTextFilter).map(chip => chip.value).every(searchTerm => {
+                        searchTerm = this._statusConverter.createRegexpFromSearchString(searchTerm);
+                        return methodDetail.identifier.match(searchTerm)
+                            || methodDetail.failureAspects.some(failureAspect => failureAspect.identifier.match(searchTerm))
+                            || methodDetail.failsAnnotation?.description?.match(searchTerm)
+                            || methodDetail.failsAnnotation?.ticketString?.match(searchTerm)
+                            || methodDetail.promptLogs.some(logMessage => logMessage.message.match(searchTerm))
+                            || methodDetail.classStatistics.classIdentifier.match(searchTerm)
+                    })
+                });
+            }
+
+            methodDetails.forEach(methodDetails => {
+                uniqueClasses[classStatistic.classContext.fullClassName] = true;
+                uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
+                this._filteredMethodDetails.push(methodDetails);
+            });
+
+        }
+
+        if (this._chips.filter(chip => chip.filter == customFilterTimings).length > 0) {
+            this._filteredMethodDetails = this._filteredMethodDetails.filter(method => {
+                return this._chips.filter(chip => chip.filter == customFilterTimings).flatMap(chip => chip.value)
+                    .includes(method.methodContext.contextValues.id);
+            });
         }
 
         switch (this._sortBy) {

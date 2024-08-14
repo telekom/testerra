@@ -259,4 +259,41 @@ public class ChromeDevToolsTests extends TesterraTest implements
 
 ----
 
+== Set device emulation
 
+There is a simple implementation to emulate mobile devices.
+
+[source, java]
+----
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        WebDriverManagerProvider {
+
+    @Test
+    public void test_CDP_GeoLocation() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        CHROME_DEV_TOOLS.setDevice(
+                webDriver,
+                new Dimension(400, 900),    // resolution
+                100,                        // Scale factor
+                true);                      // it's a mobile device
+
+        webDriver.get("...");
+    }
+
+}
+
+----
+
+If you need some more impact on device settings, you can use the origin method
+
+[source, java]
+----
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+devTools.send(Emulation.setDeviceMetricsOverride(...);
+----
+
+See here for more details: https://chromedevtools.github.io/devtools-protocol/tot/Emulation/#method-setDeviceMetricsOverride

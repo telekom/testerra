@@ -214,7 +214,9 @@ final public class ResponsiveClassFinder {
             // mehrfaches auslesen verhindern, nur auslesen wenn nötig
             return viewportWidth;
         }
-        Object o = JSUtils.executeScript(driver, "return window.innerWidth");
+        // In case of using Chrome CDP device emulation
+        // https://developer.chrome.com/blog/visual-viewport-api
+        Object o = JSUtils.executeScript(driver, "return window.visualViewport.width");
         if (o instanceof Long) {
             int viewportWidthNew = (int) (long) (Long) o;
             LOGGER.debug(String.format("Browser viewport width is %dpx", viewportWidthNew));

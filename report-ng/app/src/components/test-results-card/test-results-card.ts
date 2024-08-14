@@ -54,7 +54,7 @@ export class TestResultsCard {
     executionStatistics: ExecutionStatistics;
 
     private _apexPieOptions: ApexOptions = undefined;
-    private _skeletonOptions: ApexOptions = undefined
+    private _skeletonOptions: ApexOptions = undefined;
     private _selection: ISelection;
 
     @bindable({defaultBindingMode: bindingMode.toView})
@@ -65,6 +65,9 @@ export class TestResultsCard {
         private _statisticsGenerator: StatisticsGenerator,
         private _element: Element
     ) {
+    }
+
+    attached() {
         this._skeletonOptions = {
             chart: {
                 type: 'pie',
@@ -87,9 +90,9 @@ export class TestResultsCard {
                 },
             },
             series: [1, 1, 2, 3, 5],
-            colors: ['#c4c4c4'],
+            colors: ['#c4c4c4']
         }
-    }
+    };
 
     private _getSeriesByStatus(status:ResultStatusType) {
         return this._statusConverter.relevantStatuses.indexOf(status);

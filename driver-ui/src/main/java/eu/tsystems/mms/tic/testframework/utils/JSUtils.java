@@ -478,20 +478,26 @@ public final class JSUtils implements Loggable {
      * Also working with elements in frames/iframes
      */
     public void scrollToCenter(UiElement uiElement, Point offset) {
+        // Get location via JSUtils method to support frames/iframes
+        Point elementLocationInParent = new JSUtils().getElementLocationInParent(uiElement);
+
+        final String js = String.format(
+                "const elementRect = arguments[0].getBoundingClientRect();" +
+                        "const scrollX = %d + (elementRect.width /2) - (window.innerWidth / 2);" +
+                        "const scrollY = %d + (elementRect.height / 2) - (window.innerHeight / 2);" +
+                        "window.scrollBy(scrollX + %s, scrollY + %s)",
+                elementLocationInParent.getX(),
+                elementLocationInParent.getY(),
+                offset.getX(),
+                offset.getY());
+
         uiElement.findWebElement(webElement -> {
             JSUtils.executeScript(
                     uiElement.getWebDriver(),
-                    "arguments[0].scrollIntoView({ block: 'center', inline: 'center' });",
+                    js,
                     webElement
             );
         });
-
-        JSUtils.executeScript(
-                uiElement.getWebDriver(),
-                "window.scrollBy(arguments[0], arguments[1]);",
-                offset != null ? offset.getX() : 0,
-                offset != null ? offset.getY() : 0
-        );
 
     }
 

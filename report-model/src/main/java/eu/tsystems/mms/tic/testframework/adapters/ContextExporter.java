@@ -299,9 +299,8 @@ public class ContextExporter implements Loggable {
                 Optional<File.Builder> optional = Optional.ofNullable(builders[0]);
                 optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) {
-                eu.tsystems.mms.tic.testframework.report.model.context.LogMessage logEvent = (eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) entry;
-                Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
-                optional.ifPresent(entryBuilder::setLogMessage);
+                String logMessageId = ((eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) entry).getId();
+                entryBuilder.setLogMessageId(logMessageId);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) entry;
                 Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
@@ -310,7 +309,7 @@ public class ContextExporter implements Loggable {
 
             if (
                     entryBuilder.hasErrorContext()
-                            || entryBuilder.hasLogMessage()
+                            || StringUtils.isNotBlank(entryBuilder.getLogMessageId())
                             || entryBuilder.hasClickPathEvent()
                             || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
             ) {
@@ -435,6 +434,7 @@ public class ContextExporter implements Loggable {
         builder.setTimestamp(logMessage.getTimestamp());
         builder.setThreadName(logMessage.getThreadName());
         builder.setPrompt(logMessage.isPrompt());
+        builder.setId(logMessage.getId());
 
         logMessage.getThrown().ifPresent(t -> {
             traceThrowable(t, throwable -> {
@@ -478,10 +478,7 @@ public class ContextExporter implements Loggable {
         map(executionContext.getRunConfig(), this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.getEstimatedTestMethodCount(), builder::setEstimatedTestsCount);
-        executionContext.readMethodContextLessLogs().forEach(logEvent -> {
-            Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
-            optional.ifPresent(builder::addLogMessages);
-        });
+        executionContext.readMethodContextLessLogs().forEach(logMessage -> builder.addLogMessageIds(logMessage.getId()));
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());

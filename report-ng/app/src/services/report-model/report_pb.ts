@@ -3,6 +3,7 @@ import _m0 from "protobufjs/minimal";
 import {
   ClassContext,
   ExecutionContext,
+  LogMessage,
   MethodContext,
   SessionContext,
   SuiteContext,
@@ -43,6 +44,15 @@ export interface ExecutionAggregate_MethodContextsEntry {
 export interface ExecutionAggregate_SessionContextsEntry {
   key: string;
   value?: SessionContext | undefined;
+}
+
+export interface LogMessageAggregate {
+  logMessages?: { [key: string]: LogMessage } | undefined;
+}
+
+export interface LogMessageAggregate_LogMessagesEntry {
+  key: string;
+  value?: LogMessage | undefined;
 }
 
 function createBaseExecutionAggregate(): ExecutionAggregate {
@@ -383,6 +393,91 @@ export const ExecutionAggregate_SessionContextsEntry = {
           }
 
           message.value = SessionContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseLogMessageAggregate(): LogMessageAggregate {
+  return { logMessages: {} };
+}
+
+export const LogMessageAggregate = {
+  encode(message: LogMessageAggregate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    Object.entries(message.logMessages || {}).forEach(([key, value]) => {
+      LogMessageAggregate_LogMessagesEntry.encode({ key: key as any, value }, writer.uint32(10).fork()).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogMessageAggregate {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLogMessageAggregate();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          const entry1 = LogMessageAggregate_LogMessagesEntry.decode(reader, reader.uint32());
+          if (entry1.value !== undefined) {
+            message.logMessages![entry1.key] = entry1.value;
+          }
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+};
+
+function createBaseLogMessageAggregate_LogMessagesEntry(): LogMessageAggregate_LogMessagesEntry {
+  return { key: "", value: undefined };
+}
+
+export const LogMessageAggregate_LogMessagesEntry = {
+  encode(message: LogMessageAggregate_LogMessagesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      LogMessage.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogMessageAggregate_LogMessagesEntry {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLogMessageAggregate_LogMessagesEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = LogMessage.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

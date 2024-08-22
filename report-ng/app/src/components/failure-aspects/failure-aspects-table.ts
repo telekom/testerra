@@ -22,6 +22,7 @@
 import {autoinject, bindable} from "aurelia-framework";
 import {FailureAspectStatistics} from "../../services/statistic-models";
 import {bindingMode} from "aurelia-binding";
+import {StatusConverter} from "../../services/status-converter";
 
 @autoinject()
 export class FailureAspectsTable {
@@ -32,7 +33,9 @@ export class FailureAspectsTable {
     @bindable({defaultBindingMode: bindingMode.toView})
     private searchRegexp: RegExp;
 
-    constructor() {
+    constructor(
+        private _statusConverter:StatusConverter
+    ) {
     }
 
     private _calcFontSize(index: number) {

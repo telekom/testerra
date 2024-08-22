@@ -25,7 +25,7 @@
     }
 
     .grid-cell-small {
-        grid-column: span 2; // grid layout has a different size than grids in print version which is why we need to adjust the grid spans
+        grid-column: span 2; // grid layout might have a different size than grids in print version which is why we need to adjust the grid spans
     }
 
     apex-chart {
@@ -45,7 +45,13 @@
     }
 
     .grid-cell-small {
-        grid-column: span 1; // grid layout in iframe is only 4 grids which is why we need to adjust the grid spans
+        @media (max-width: 600px) { // 600px is the grid layout breakpoint that causes problems if not dynamically adapted: https://m2.material.io/design/layout/responsive-layout-grid.html#columns-gutters-and-margins
+            grid-column: span 1;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
+        }
+
+        @media (min-width: 600px) {
+            grid-column: span 2;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
+        }
     }
 }
 

@@ -30,7 +30,6 @@ export class PrintDialog {
     private _iFrameDoc: Document | undefined;
     private _loading = true;
     private _page = 1;
-    private _prevPage = 1;
     private _totalPages = 1;
     private _pagesCalculated = false;   // necessary otherwise total pages will be added up if window is resized
     private _pageArray = [0, 0];
@@ -115,13 +114,6 @@ export class PrintDialog {
 
         const pageOverlayElement = document.getElementById("page-overlay");
         pageOverlayElement.setAttribute("style", `margin-top: ${this._iFrameDoc.scrollingElement.clientHeight - pageOverlayElement.getBoundingClientRect().height - 16}px;`)
-
-        // set grid span width depending on screen width because grid column number changes
-        const gridCells = this._iFrameDoc.getElementsByClassName("grid-cell-small");
-        const spanValue = this._iFrameDoc.scrollingElement.clientWidth <= 600 ? 1 : 2;
-        for (let i = 0; i < 2; i++) {
-            gridCells[i].setAttribute("style", `grid-column: span ${spanValue}`);
-        }
     }
 
     private _print() {
@@ -217,8 +209,6 @@ export class PrintDialog {
     }
 
     handleScrollEvent() {
-        this._prevPage = this._page;
-
         const pageOffset = this._iFrameDoc.scrollingElement.clientHeight / 2;   // use pixel offset to not use top of iframe as page indicator
 
         this._page = this._pageArray.findIndex((value, index) =>

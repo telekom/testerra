@@ -97,7 +97,11 @@
 
         <div class="print-card" id="classes-table-card">
             <mdc-card>
-                <classes-table filtered-method-details.bind="_filteredMethodDetails"
+                <classes-table id="classes-table" filtered-method-details.bind="_filteredMethodDetails"
+                ></classes-table>
+            </mdc-card>
+            <mdc-card>
+                <classes-table id="classes-table-failed" filtered-method-details.bind="_filteredMethodDetailsFailed" style="display: none;"
                 ></classes-table>
             </mdc-card>
         </div>

@@ -70,6 +70,16 @@
                                           id="checkbox-2"></mdc-checkbox>
                             <label style="margin: 8px 8px;">${_checkboxOptions[2].label}</label>
                         </div>
+
+                        <div class="form-container">
+                            <div class="radio-div" repeat.for="filter of _testFilters">
+                                <mdc-radio checked.bind="_selectedTestFilter"
+                                           disabled.bind="!_checkboxOptions[2].checked"
+                                           model.bind="filter.id"
+                                           mdc-tooltip="value.bind:filter.tooltip"></mdc-radio>
+                                <label>${filter.name}</label>
+                            </div>
+                        </div>
                     </mdc-dialog-content>
 
                     <mdc-dialog-actions class="dialog-footer">

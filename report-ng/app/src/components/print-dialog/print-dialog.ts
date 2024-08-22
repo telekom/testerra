@@ -33,12 +33,17 @@ export class PrintDialog {
     private _totalPages = 1;
     private _pagesCalculated = false;   // necessary otherwise total pages will be added up if window is resized
     private _pageArray = [0, 0];
-    private _failureAspectFilters: IFailureAspectFilter[] = [
+    private _failureAspectFilters: IFilter[] = [
         {id: 0, name: "All"},
         {id: 1, name: "Major"},
         {id: 2, name: "Minor"}
     ];
+    private _testFilters: IFilter[] = [
+        {id: 0, name: "All", tooltip: "Included status: Passed, Failed, Expected Failed, Skipped"},
+        {id: 1, name: "Failed", tooltip: "Included status: Failed, Expected Failed, Skipped"},
+    ];
     @observable private _selectedFailureAspectFilter = 0;
+    @observable private _selectedTestFilter = 0;
 
     private readonly _checkboxOptions: ICheckBoxOption[] = [
         {label: 'Test Classes Chart', checked: true, id: "test-classes-card"},
@@ -171,6 +176,24 @@ export class PrintDialog {
         }
     }
 
+    private _selectedTestFilterChanged(newValue: string, oldValue: string) {
+        if (oldValue == "0" || oldValue == "1") {
+            const table = this._iFrameDoc.getElementById("classes-table");
+            const tableFailed = this._iFrameDoc.getElementById("classes-table-failed");
+
+            const tables = {
+                "0": table,
+                "1": tableFailed
+            };
+
+            Object.values(tables).forEach(tbl => tbl.setAttribute("style", "display: none;"));      // Set all tables to hidden
+
+            if (tables[newValue]) {
+                tables[newValue].removeAttribute("style");      // Remove style attribute from the selected table to show it
+            }
+        }
+    }
+
     private _calculateTotalPages(){
         const a4inPixels = document.getElementById("iframe").getBoundingClientRect().height * 0.9125;   // multiplied by 0.9125 because the standard print
 
@@ -227,7 +250,8 @@ type ICheckBoxOption = {
     id: string
 }
 
-export interface IFailureAspectFilter {
+export interface IFilter {
     id: number;
     name: string;
+    tooltip?: string;
 }

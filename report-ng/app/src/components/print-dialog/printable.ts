@@ -36,6 +36,7 @@ export class Printable extends AbstractViewModel {
     private _filteredFailureAspectsMinor: FailureAspectStatistics[];
 
     private _filteredMethodDetails: MethodDetails[];
+    private _filteredMethodDetailsFailed: MethodDetails[];
 
     private _title: string;
     private _duration: number;
@@ -58,6 +59,7 @@ export class Printable extends AbstractViewModel {
         const uniqueClasses = {};
         const uniqueStatuses = {};
         this._filteredMethodDetails = [];
+        this._filteredMethodDetailsFailed = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
@@ -101,6 +103,10 @@ export class Printable extends AbstractViewModel {
                     uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
                     if (methodDetails.methodContext.resultStatus != ResultStatusType.PASSED_RETRY && methodDetails.methodContext.resultStatus != ResultStatusType.FAILED_RETRIED && methodDetails.methodContext.resultStatus != ResultStatusType.REPAIRED) {
                         this._filteredMethodDetails.push(methodDetails);
+
+                        if(methodDetails.methodContext.resultStatus != ResultStatusType.PASSED){
+                            this._filteredMethodDetailsFailed.push(methodDetails)
+                        }
                     }
                 });
             })

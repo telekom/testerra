@@ -41,6 +41,12 @@ class FailureCorridor {
     }
 }
 
+interface IItem {
+    status: ResultStatusType,
+    counts: (string|number)[],
+    labels: string[],
+}
+
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
@@ -170,6 +176,20 @@ export class Dashboard extends AbstractViewModel {
         }
         if (updateUrl) {
             this.updateUrl(this.queryParams);
+        }
+    }
+
+    private _resultItemClicked(item:IItem) {
+        /**
+         * It still happens that items keep selected when they shouldn't
+         * https://gist.dumber.app/?gist=f09831456ae377d1121e8a41eece1c42
+         */
+        if (item.status === this._filter?.status) {
+            this._setFilter(null);
+        } else {
+            this._setFilter({
+                status: item.status
+            });
         }
     }
 

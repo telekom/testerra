@@ -21,7 +21,7 @@
 
 <template>
     <mdc-data-table class="w100"
-                    if.bind="filteredMethodDetails.length > 0"
+                    if.bind="filteredMethodDetails.length > 0 && !_loading"
     >
         <table>
             <thead>

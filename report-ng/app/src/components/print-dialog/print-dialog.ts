@@ -72,6 +72,8 @@ export class PrintDialog {
             }, 50);
 
             window.addEventListener('resize', this._resizeFrame.bind(this));
+
+            this._iFrameDoc.getElementById("header").setAttribute("style", "pointer-events: none;");
         };
     }
 

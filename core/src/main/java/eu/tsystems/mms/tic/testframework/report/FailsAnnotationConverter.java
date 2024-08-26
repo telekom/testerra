@@ -37,8 +37,6 @@ public class FailsAnnotationConverter implements AnnotationConverter<Fails> {
         }
         if (StringUtils.isNotBlank(annotation.ticketString())) {
             map.put("ticketString", annotation.ticketString());
-        } else if (annotation.ticketId() > 0) {
-            map.put("ticketString", Integer.toString(annotation.ticketId()));
         }
         if (StringUtils.isNotBlank(annotation.validator())) {
             map.put("validator", annotation.validatorClass().getCanonicalName() + "." + annotation.validator());

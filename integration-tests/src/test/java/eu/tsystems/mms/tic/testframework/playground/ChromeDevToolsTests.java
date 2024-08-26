@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.testing.ChromeDevToolsProvider;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.UsernameAndPassword;
@@ -336,6 +337,15 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         for (ResponseReceived response : responseReceivedList) {
             log().info("Response: {} - [{}] {}", response.getRequestId().toString(), response.getResponse().getStatus(), response.getResponse().getStatusText());
         }
+    }
+
+    @Test
+    public void testT14_MobileDeviceEmulation() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        CHROME_DEV_TOOLS.setDevice(webDriver, new Dimension(400, 900), 100, true);
+
+        webDriver.get("https://the-internet.herokuapp.com/broken_images");
+
     }
 
 }

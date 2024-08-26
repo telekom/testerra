@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import org.openqa.selenium.Credentials;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.devtools.DevTools;
 
@@ -39,6 +40,8 @@ public interface ChromeDevTools extends WebDriverManagerProvider {
     DevTools getRawDevTools(WebDriver webDriver);
 
     void setGeoLocation(WebDriver webDriver, double latitude, double longitude, int accuracy);
+
+    void setDevice(WebDriver webDriver, Dimension dimension, int scaleFactor, boolean mobile);
 
     void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials);
 

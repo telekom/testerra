@@ -44,6 +44,16 @@ public final class Report {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_data_ExecutionAggregate_SessionContextsEntry_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_LogMessageAggregate_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_LogMessageAggregate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_data_LogMessageAggregate_LogMessagesEntry_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_data_LogMessageAggregate_LogMessagesEntry_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -74,7 +84,11 @@ public final class Report {
       "\001\032J\n\023MethodContextsEntry\022\013\n\003key\030\001 \001(\t\022\"\n" +
       "\005value\030\002 \001(\0132\023.data.MethodContext:\0028\001\032L\n" +
       "\024SessionContextsEntry\022\013\n\003key\030\001 \001(\t\022#\n\005va" +
-      "lue\030\002 \001(\0132\024.data.SessionContext:\0028\001B2\n.e" +
+      "lue\030\002 \001(\0132\024.data.SessionContext:\0028\001\"\235\001\n\023" +
+      "LogMessageAggregate\022@\n\014log_messages\030\001 \003(" +
+      "\0132*.data.LogMessageAggregate.LogMessages" +
+      "Entry\032D\n\020LogMessagesEntry\022\013\n\003key\030\001 \001(\t\022\037" +
+      "\n\005value\030\002 \001(\0132\020.data.LogMessage:\0028\001B2\n.e" +
       "u.tsystems.mms.tic.testframework.report." +
       "modelP\001b\006proto3"
     };
@@ -118,6 +132,18 @@ public final class Report {
     internal_static_data_ExecutionAggregate_SessionContextsEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_ExecutionAggregate_SessionContextsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_data_LogMessageAggregate_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_data_LogMessageAggregate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_LogMessageAggregate_descriptor,
+        new java.lang.String[] { "LogMessages", });
+    internal_static_data_LogMessageAggregate_LogMessagesEntry_descriptor =
+      internal_static_data_LogMessageAggregate_descriptor.getNestedTypes().get(0);
+    internal_static_data_LogMessageAggregate_LogMessagesEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_data_LogMessageAggregate_LogMessagesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     eu.tsystems.mms.tic.testframework.report.model.Framework.getDescriptor();
   }

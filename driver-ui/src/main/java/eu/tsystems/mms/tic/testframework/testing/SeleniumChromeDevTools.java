@@ -23,15 +23,15 @@ package eu.tsystems.mms.tic.testframework.testing;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
 import org.openqa.selenium.Credentials;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-
-import org.openqa.selenium.devtools.v125.emulation.Emulation;
-import org.openqa.selenium.devtools.v125.network.Network;
-import org.openqa.selenium.devtools.v125.network.model.Headers;
+import org.openqa.selenium.devtools.v127.emulation.Emulation;
+import org.openqa.selenium.devtools.v127.network.Network;
+import org.openqa.selenium.devtools.v127.network.model.Headers;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -89,6 +89,32 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
                 Optional.of(longitude),
                 Optional.of(accuracy)));
         log().info("Changed geolocation information to lat={}, long={}", latitude, longitude);
+    }
+
+    @Override
+    public void setDevice(WebDriver webDriver, Dimension dimension, int scaleFactor, boolean mobile) {
+        if (!isSupported(webDriver)) {
+            throw new RuntimeException("The current browser does not support DevTools");
+        }
+        DevTools devTools = this.getRawDevTools(webDriver);
+        devTools.send(Emulation.setDeviceMetricsOverride(
+                        dimension.getWidth(),
+                        dimension.getHeight(),
+                        100,
+                        true,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()
+                )
+        );
+        log().info("Changed device metrics to {}x{} with scale={}", dimension.getWidth(), dimension.getHeight(), scaleFactor);
     }
 
     @Override

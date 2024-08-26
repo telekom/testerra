@@ -63,7 +63,7 @@ class TestStepActionGroup {
             return EntryType.SCREENSHOT;
         } else if (entry.errorContext) {
             return EntryType.ERROR_CONTEXT;
-        } else if (entry.logMessage) {
+        } else if (entry.logMessageId) {
             return EntryType.LOG_MESSAGE;
         } else if (entry.clickPathEvent) {
             return EntryType.CLICK_PATH_EVENT;
@@ -88,12 +88,13 @@ export class Steps {
     ) {
     }
 
-    activate(
+    async activate(
         params: any,
         routeConfig: RouteConfig,
         navInstruction: NavigationInstruction
     ) {
         this._router = navInstruction.router;
+        const logMessages = await this._statistics.getLogs()
         this._statistics.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
             this._methodDetails.methodContext.testSteps
@@ -123,7 +124,7 @@ export class Steps {
                                 break;
                             }
                             case EntryType.LOG_MESSAGE: {
-                                currentActionGroup.addLogMessage(entry.logMessage);
+                                currentActionGroup.addLogMessage(logMessages[entry.logMessageId]);
                             }
                         }
                         lastEntryType = currentEntryType;

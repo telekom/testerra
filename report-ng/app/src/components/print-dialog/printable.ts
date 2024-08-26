@@ -25,7 +25,7 @@ import {ExecutionStatistics, FailureAspectStatistics} from "../../services/stati
 import {AbstractViewModel} from "../abstract-view-model";
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {ResultStatusType} from "../../services/report-model/framework_pb";
+import {MethodType, ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()
 export class Printable extends AbstractViewModel {
@@ -98,7 +98,9 @@ export class Printable extends AbstractViewModel {
                     return new MethodDetails(methodContext, classStatistic);
                 });
 
-                methodDetails.forEach(methodDetails => {
+            methodDetails
+                .filter(methodDetail => methodDetail.methodContext.methodType == MethodType.TEST_METHOD)
+                .forEach(methodDetails => {
                     uniqueClasses[classStatistic.classContext.fullClassName] = true;
                     uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
                     if (methodDetails.methodContext.resultStatus != ResultStatusType.PASSED_RETRY && methodDetails.methodContext.resultStatus != ResultStatusType.FAILED_RETRIED && methodDetails.methodContext.resultStatus != ResultStatusType.REPAIRED) {

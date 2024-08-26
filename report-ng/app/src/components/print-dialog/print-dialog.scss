@@ -22,7 +22,7 @@
 .print-dialog {
     .mdc-dialog__surface {
         max-width: 100%;
-        height: 85vh;
+        height: 100vh;
     }
 }
 
@@ -96,4 +96,8 @@
     margin-left: 16px;
     padding: 8px;
     border-radius: 5px;
+}
+
+.hide {
+    visibility: hidden;
 }

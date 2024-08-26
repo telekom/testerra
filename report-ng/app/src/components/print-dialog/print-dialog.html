@@ -24,12 +24,14 @@
         <mdc-layout-grid class="p0">
             <mdc-layout-grid-inner>
                 <mdc-layout-grid-cell class="p0 content" span="6">
-                    <div class="mdc-elevation--z2" id="page-overlay" show.bind="!_loading">
+                    <div class="mdc-elevation--z2" id="page-overlay" style="visibility: hidden;">
                         <div mdc-body2>Page ${_page}/${_totalPages}</div>
                     </div>
-                    <div class="preview">
+                    <div>
                         <mdc-linear-progress class="progress-bar" if.bind="_loading" open="true"></mdc-linear-progress>
-                        <iframe id="iframe" show.bind="!_loading" src.bind="_iFrameSrc" title="_title"></iframe>
+                        <div class="preview">
+                            <iframe id="iframe" src.bind="_iFrameSrc" title="_title" class="hide"></iframe>
+                        </div>
                     </div>
                 </mdc-layout-grid-cell>
 

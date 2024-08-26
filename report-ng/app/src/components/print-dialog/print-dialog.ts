@@ -28,7 +28,7 @@ export class PrintDialog {
     private _title: string;
     private _iFrameSrc: string;
     private _iFrameDoc: Document | undefined;
-    private _loading = true;
+    @observable private _loading = true;
     private _page = 1;
     private _totalPages = 1;
     private _pagesCalculated = false;   // necessary otherwise total pages will be added up if window is resized
@@ -72,8 +72,6 @@ export class PrintDialog {
             }, 50);
 
             window.addEventListener('resize', this._resizeFrame.bind(this));
-
-            this._loading = false;
         };
     }
 
@@ -81,7 +79,7 @@ export class PrintDialog {
         const dialog = document.getElementById("print-dialog");
         if (!dialog || !this._iFrameDoc) return;
 
-        const iFrameHeight = window.innerHeight / 100 * 80;
+        const iFrameHeight = window.innerHeight / 100 * 90;
         const iFrameWidth = iFrameHeight / Math.sqrt(2);
 
         const iframe = document.getElementById("iframe");
@@ -90,20 +88,17 @@ export class PrintDialog {
         iframe.style.height = `${iFrameHeight}px`;
         iframe.style.width = `${iFrameWidth}px`;
 
-        const {scale, marginBottom} = this._calculateScaleAndMargin(iFrameHeight);
-
         const printableBody = this._iFrameDoc.getElementById("printable-body");
         if (printableBody) {
 
             // workaround to use <style> tags to make sure the scaling is only applied to the screen version
-            // scaling necessary to display whole page in the iframe; origin-transform necessary because scaling will always cause gaps
             const styleElement = this._iFrameDoc.createElement('style');
             styleElement.textContent = `
             @media screen {
                 #printable-body {
-                    transform: scale(${scale});     
-                    transform-origin: top left;
-                    margin-bottom: ${marginBottom}px;
+                    transform: scale(${this._calculateScale(iFrameHeight)});     /* necessary to display whole page in the iframe*/ 
+                    transform-origin: top left;     /* necessary because scaling will always cause gaps */
+                    margin-bottom: -100000px;       /* setting the margin high enough - it will detect the end of the last element automatically and is more reliable than estimated calculation */
                 }
                 body {
                     overflow-x: hidden;
@@ -117,13 +112,39 @@ export class PrintDialog {
             this.handleScrollEvent()
         }
 
-        const pageOverlayElement = document.getElementById("page-overlay");
-        pageOverlayElement.setAttribute("style", `margin-top: ${this._iFrameDoc.scrollingElement.clientHeight - pageOverlayElement.getBoundingClientRect().height - 16}px;`)
+        this._loading = false;
+
+        if (!this._loading && this._pagesCalculated) {
+            const pageOverlayElement = document.getElementById("page-overlay");
+            pageOverlayElement.setAttribute("style", `margin-top: ${this._iFrameDoc.scrollingElement.clientHeight - pageOverlayElement.getBoundingClientRect().height - 16}px;`)
+        }
     }
 
     private _print() {
         const iframe = document.getElementById('iframe') as HTMLIFrameElement;
         iframe.contentWindow.print();
+    }
+
+    private _loadingChanged(){
+        // Workaround for if.bind and show.bind
+        // if.bind cannot be used because it removes the elements from the DOM, but we need them for calculation
+        // show.bind does not remove elements from the DOM, but it adds a class "aurelia-hide" which sets "display: none".
+        // This causes getBoundingClientRect() to return 0 and crash all calculations (https://stackoverflow.com/questions/4576295/getboundingclientrect-is-returning-zero-in-xul).
+        // Aurelia documentation proposes overwriting the "aurelia-hide" class, but it is added as <style> to the head which makes simply overwriting the class useless.
+        // For some reason the class adding approach will not work for the page overlay and in return removing style will not work for the iFrame.
+
+        const iFrameElement = document.getElementById("iframe");
+        const pageOverlayElement = document.getElementById("page-overlay")
+
+        if(iFrameElement && pageOverlayElement){
+            if(this._loading){
+                iFrameElement.classList.add("hide")
+                pageOverlayElement.setAttribute("style","visibility: hidden;")
+            } else {
+                iFrameElement.classList.remove("hide")
+                pageOverlayElement.removeAttribute("style")
+            }
+        }
     }
 
     private _selectionChanged(item) {
@@ -140,19 +161,13 @@ export class PrintDialog {
         this._calculateTotalPages();
     }
 
-    // function to calculate scaling and margin-bottom
-    private _calculateScaleAndMargin(height: number): { scale: number, marginBottom: number } {
-
+    private _calculateScale(height: number): number {
         // reference values adapted by hand - calculation base for transformation
         const referenceHeight = 527.25;
         const referenceScale = 0.3125;
-        const referenceMarginBottom = -5500;
 
-        // calculate scaling and margin-bottom based on height
-        const scale = (referenceScale / referenceHeight) * height;
-        const marginBottom = (referenceMarginBottom / referenceHeight) * height;
-
-        return {scale, marginBottom};
+        // calculate scaling based on height
+        return (referenceScale / referenceHeight) * height;
     }
 
     private _selectedFailureAspectFilterChanged(newValue: string, oldValue: string) {
@@ -168,11 +183,7 @@ export class PrintDialog {
                 "2": tableMinor
             };
 
-            Object.values(tables).forEach(tbl => tbl.setAttribute("style", "display: none;"));      // Set all tables to hidden
-
-            if (tables[newValue]) {
-                tables[newValue].removeAttribute("style");      // Remove style attribute from the selected table to show it
-            }
+            this._setTableVisibility(tables, newValue);
         }
     }
 
@@ -186,16 +197,25 @@ export class PrintDialog {
                 "1": tableFailed
             };
 
-            Object.values(tables).forEach(tbl => tbl.setAttribute("style", "display: none;"));      // Set all tables to hidden
-
-            if (tables[newValue]) {
-                tables[newValue].removeAttribute("style");      // Remove style attribute from the selected table to show it
-            }
+            this._setTableVisibility(tables, newValue);
         }
     }
 
+    private _setTableVisibility(tables: Object, newValue){
+        Object.values(tables).forEach(tbl => tbl.setAttribute("style", "display: none;"));      // Set all tables to hidden
+
+        if (tables[newValue]) {
+            tables[newValue].removeAttribute("style");      // Remove style attribute from the selected table to show it
+        }
+        this._calculateTotalPages();
+    }
+
     private _calculateTotalPages(){
-        const a4inPixels = document.getElementById("iframe").getBoundingClientRect().height * 0.9125;   // multiplied by 0.9125 because the standard print
+        this._iFrameDoc.scrollingElement.scrollTop = 0;
+        this._totalPages = 1;
+        this._pageArray = [0,0];
+
+        const a4inPixels = document.getElementById("iframe").getBoundingClientRect().height * 0.9125;   // multiplied by 0.9125 because the standard print uses borders (value estimated through testing)
 
         let pixels = 0;
         pixels += this._iFrameDoc.getElementById("print-card").getBoundingClientRect().bottom     // add space for header, headline and report information card
@@ -224,8 +244,10 @@ export class PrintDialog {
                     pageElementCount++;
                 }
 
-                // use the last page of this option and add only the actual content length instead of the whole a4 page to calculate active pag while scrolling
-                this._pageArray[this._pageArray.length-1] = this._pageArray[this._pageArray.length-2] + this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height % a4inPixels;
+                // use the last page of this option and add only the actual content length instead of the whole a4 page to calculate active page while scrolling
+                if(pageElementCount > 0){
+                    this._pageArray[this._pageArray.length-1] = this._pageArray[this._pageArray.length-2] + this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height % a4inPixels;
+                }
             }
         })
         this._pagesCalculated = true;
@@ -236,10 +258,13 @@ export class PrintDialog {
 
         this._page = this._pageArray.findIndex((value, index) =>
             this._iFrameDoc.scrollingElement.scrollTop + pageOffset >= value && (index === this._pageArray.length - 1
-                || this._iFrameDoc.scrollingElement.scrollTop + pageOffset < this._pageArray[index + 1]))
+                || this._iFrameDoc.scrollingElement.scrollTop + pageOffset < this._pageArray[index + 1])) + 1
 
         if(Math.floor(this._iFrameDoc.scrollingElement.scrollTop) >= this._iFrameDoc.scrollingElement.scrollHeight - this._iFrameDoc.scrollingElement.clientHeight){    // if we scrolled down to the bottom, the value should be set to the maximum
             this._page = this._totalPages;
+        }
+        if(this._iFrameDoc.scrollingElement.scrollTop == 0){     // if we scroll back to the top the page should be set to 1 (even if the page indicator is technically already in the second page (see pageOffset))
+            this._page = 1;
         }
     }
 }

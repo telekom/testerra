@@ -46,7 +46,7 @@
                             <mdc-checkbox change.delegate="_selectionChanged(_checkboxOptions[0])"
                                           checked.bind="_checkboxOptions[0].checked"
                                           id="checkbox-0"></mdc-checkbox>
-                            <label style="margin: 8px 8px;">${_checkboxOptions[0].label}</label>
+                            <p style="margin: 8px 8px;">${_checkboxOptions[0].label}</p>
                         </div>
 
                         <p class="headline-label">Failure Aspects</p>
@@ -54,14 +54,14 @@
                             <mdc-checkbox change.delegate="_selectionChanged(_checkboxOptions[1])"
                                           checked.bind="_checkboxOptions[1].checked"
                                           id="checkbox-1"></mdc-checkbox>
-                            <label style="margin: 8px 8px;">${_checkboxOptions[1].label}</label>
+                            <p style="margin: 8px 8px;">${_checkboxOptions[1].label}</p>
                         </div>
 
                         <div class="form-container">
                             <div class="radio-div" repeat.for="filter of _failureAspectFilters">
                                 <mdc-radio checked.bind="_selectedFailureAspectFilter" disabled.bind="!_checkboxOptions[1].checked"
                                            model.bind="filter.id"></mdc-radio>
-                                <label>${filter.name}</label>
+                                <p style="margin: 8px 8px;">${filter.name}</p>
                             </div>
                         </div>
 
@@ -70,7 +70,7 @@
                             <mdc-checkbox change.delegate="_selectionChanged(_checkboxOptions[2])"
                                           checked.bind="_checkboxOptions[2].checked"
                                           id="checkbox-2"></mdc-checkbox>
-                            <label style="margin: 8px 8px;">${_checkboxOptions[2].label}</label>
+                            <p style="margin: 8px 8px;">${_checkboxOptions[2].label}</p>
                         </div>
 
                         <div class="form-container">
@@ -79,7 +79,7 @@
                                            disabled.bind="!_checkboxOptions[2].checked"
                                            model.bind="filter.id"
                                            mdc-tooltip="value.bind:filter.tooltip"></mdc-radio>
-                                <label>${filter.name}</label>
+                                <p style="margin: 8px 8px;">${filter.name}</p>
                             </div>
                         </div>
                     </mdc-dialog-content>

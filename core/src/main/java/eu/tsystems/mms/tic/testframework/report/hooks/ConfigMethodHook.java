@@ -43,11 +43,13 @@ public final class ConfigMethodHook extends Hook {
 
         if (Report.Properties.LIST_TESTS.asBool()) {
             LOGGER.info("Dry run for list tests: " + testNGMethod.getMethodName());
+            testResult.setStatus(ITestResult.SUCCESS);
             // no sleep
             return;
         }
         if (Testerra.Properties.DRY_RUN.asBool()) {
             if (dryRun(testNGMethod)) {
+                testResult.setStatus(ITestResult.SUCCESS);
                 return;
             }
         }

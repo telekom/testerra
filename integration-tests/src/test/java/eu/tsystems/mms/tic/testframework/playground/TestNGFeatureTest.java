@@ -1,4 +1,4 @@
-package io.testerra.test.pretest_testng;
+package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;

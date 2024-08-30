@@ -19,10 +19,9 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.hooks;
+package eu.tsystems.mms.tic.testframework.report.hooks;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.report.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IConfigureCallBack;
@@ -39,16 +38,8 @@ public final class ConfigMethodHook extends Hook {
 
     public static void runHook(IConfigureCallBack callBack, ITestResult testResult) {
 
-        final ITestNGMethod testNGMethod = testResult.getMethod();
-
-        if (Report.Properties.LIST_TESTS.asBool()) {
-            LOGGER.info("Dry run for list tests: " + testNGMethod.getMethodName());
-            testResult.setStatus(ITestResult.SUCCESS);
-            // no sleep
-            return;
-        }
         if (Testerra.Properties.DRY_RUN.asBool()) {
-            if (dryRun(testNGMethod)) {
+            if (dryRun(testResult.getMethod())) {
                 testResult.setStatus(ITestResult.SUCCESS);
                 return;
             }

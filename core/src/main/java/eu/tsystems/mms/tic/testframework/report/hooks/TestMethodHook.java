@@ -19,10 +19,9 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.hooks;
+package eu.tsystems.mms.tic.testframework.report.hooks;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,15 +44,8 @@ public final class TestMethodHook extends Hook {
             throw new SkipException("Conditional skipping test method (testerra run runHook)");
         }
 
-        final ITestNGMethod testNGMethod = testResult.getMethod();
-
-        if (Report.Properties.LIST_TESTS.asBool()) {
-            LOGGER.info("Dry run for list tests: " + testNGMethod.getMethodName());
-            testResult.setStatus(ITestResult.SUCCESS);
-            // no sleep
-            return;
-        } else if (Testerra.Properties.DRY_RUN.asBool()) {
-            if (dryRun(testNGMethod)) {
+        if (Testerra.Properties.DRY_RUN.asBool()) {
+            if (dryRun(testResult.getMethod())) {
                 testResult.setStatus(ITestResult.SUCCESS);
                 return;
             }

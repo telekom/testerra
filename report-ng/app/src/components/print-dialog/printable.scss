@@ -53,6 +53,10 @@
             grid-column: span 2;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
         }
     }
+
+    .print-card {
+        padding-bottom: 16px;
+    }
 }
 
 .container { // use this styling instead of mdc grid because the spans of the grid are changing depending on print/iFrame and mess up the layout
@@ -72,9 +76,12 @@
 
 .print-card {
     margin: 16px;
-    padding-bottom: 16px;
 }
 
 .result-headline {
     padding-left: 24px;
+}
+
+.printable-card-headline {
+    color: black;
 }

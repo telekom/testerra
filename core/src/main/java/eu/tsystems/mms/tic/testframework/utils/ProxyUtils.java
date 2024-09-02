@@ -59,14 +59,14 @@ public class ProxyUtils implements PropertyManagerProvider {
         String proxyString = "";
 
         final String proxyHost = PROPERTY_MANAGER.getProperty(proxyType + ".proxyHost");
-        if (proxyHost != null) {
+        if (StringUtils.isNotBlank(proxyHost)) {
             proxyString += proxyHost;
         } else {
             return null;
         }
 
         final String proxyPort = PROPERTY_MANAGER.getProperty(proxyType + ".proxyPort");
-        if (proxyPort != null) {
+        if (StringUtils.isNotBlank(proxyHost)) {
             proxyString += ":" + proxyPort;
         }
 

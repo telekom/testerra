@@ -153,35 +153,14 @@ public class ReportingAllStatesTests extends TesterraTest {
     }
 
     @Test
-    @Fails(validFor = "test=haha")
-    public void testFailedExpectedExceptionINVALID_FOR() throws Exception {
-
-        throw new RuntimeException();
-    }
-
-    @Test
-    @Fails(validFor = "test=huhu")
-    public void testFailedExpectedExceptionVALID_FOR() throws Exception {
-
-        throw new RuntimeException();
-    }
-
-    @Test
-    @Fails(validFor = "unknown.property=haha")
-    public void testFailedExpectedExceptionVALID_FOR_unknownProperty() throws Exception {
-
-        throw new RuntimeException();
-    }
-
-    @Test
-    @Fails(ticketId = 1)
+    @Fails(ticketString = "1")
     public void testFailedExpectedAssertion() throws Exception {
 
         failingStep(How.FAST);
     }
 
     @Test
-    @Fails(ticketId = 1)
+    @Fails(ticketString = "1")
     public void testFailedExpectedCollectedAssertions() throws Exception {
 
         failingStep(How.LATE);
@@ -256,38 +235,14 @@ public class ReportingAllStatesTests extends TesterraTest {
     }
 
     @Test
-    @Fails(ticketId = 2345)
+    @Fails(ticketString = "2345")
     public void testPassedWithFailsAnnotation() throws Exception {
-
-    }
-
-    @Test
-    @Fails(ticketId = 2345, validFor = "test.foobar.fails.annotation.test.property.one=one")
-    public void testPassedWithFailsAnnotationValid() throws Exception {
-
-    }
-
-    @Test
-    @Fails(ticketId = 2345, validFor = "test.foobar.fails.annotation.test.property.one=two")
-    public void testPassedWithFailsAnnotationNotValid() throws Exception {
 
     }
 
     @Test
     @Fails
     public void testRetryAnalyzerWithFails() {
-        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
-    }
-
-    @Test
-    @Fails(validFor = "test.foobar.fails.annotation.test.property.one=one")
-    public void testRetryAnalyzerWithFailsValid() {
-        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
-    }
-
-    @Test
-    @Fails(validFor = "test.foobar.fails.annotation.test.property.one=foo")
-    public void testRetryAnalyzerWithFailsInvalid() {
         throw new WebDriverException("Error communicating with the remote browser. It may have died.");
     }
 

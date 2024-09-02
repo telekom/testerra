@@ -114,7 +114,7 @@ export class Classes extends AbstractViewModel {
                 this._showConfigurationMethods = false;
             }
         }
-        this._filter();
+        return this._filter();
     }
 
     private _createFilterChips() {
@@ -166,7 +166,7 @@ export class Classes extends AbstractViewModel {
         this._availableStatuses = resultStatuses;
     }
 
-    private _filter() {
+    private async _filter() {
         this._loading = true;
         const customTextFilter = this.filters.find(filter => filter.type == FilterType.CUSTOM_TEXT);
         const statusFilter = this.filters.find(filter => filter.type == FilterType.STATUS);
@@ -180,152 +180,151 @@ export class Classes extends AbstractViewModel {
         const uniqueStatuses = {};
         this._filteredMethodDetails = [];
 
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._executionStatistics = executionStatistics;
-            this._updateAvailableStatuses();
+        const executionStatistics = await this._statisticsGenerator.getExecutionStatistics()
+        this._executionStatistics = executionStatistics;
+        this._updateAvailableStatuses();
 
-            this._filteredStatuses = [...this._availableStatuses.sort((a, b) =>
-                this._statusConverter.normalizeStatus(a) - this._statusConverter.normalizeStatus(b))];
+        this._filteredStatuses = [...this._availableStatuses.sort((a, b) =>
+            this._statusConverter.normalizeStatus(a) - this._statusConverter.normalizeStatus(b))];
 
-            // remove selected statuses from options in select box
-            this._chips.filter(chip => chip.filter == statusFilter).forEach(chipStatus => {
-                const index = this._filteredStatuses
-                    .map(stat => this._statusConverter.normalizeStatus(stat))
-                    .indexOf(this._statusConverter.getStatusForClass(chipStatus.value), 0);
+        // remove selected statuses from options in select box
+        this._chips.filter(chip => chip.filter == statusFilter).forEach(chipStatus => {
+            const index = this._filteredStatuses
+                .map(stat => this._statusConverter.normalizeStatus(stat))
+                .indexOf(this._statusConverter.getStatusForClass(chipStatus.value), 0);
+            if (index > -1) {
+                this._filteredStatuses.splice(index, 1);
+            }
+        })
+
+        // this._availableStatuses = Object.keys();
+        // this._statusConverter.relevantStatuses
+        //     .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
+        //     .forEach(status => {
+        //         if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
+        //             this._availableStatuses.push(status)
+        //         }
+        //     });
+
+        let relevantFailureAspect: FailureAspectStatistics;
+        let filterByFailureAspect = false;
+
+        if (this._chips.find(chip => chip.filter == customFilterFailureAspects)?.value > 0) {
+            relevantFailureAspect = executionStatistics.uniqueFailureAspects[this._chips.find(chip => chip.filter == customFilterFailureAspects).value - 1];
+            filterByFailureAspect = true;
+        }
+        this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
+
+        if (this._filteredClassStatistics.length <= 0) {      // create array for class select options that can be manipulated
+            this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a, b) =>
+                this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))];
+
+            // remove selected classes from options in select box
+            this._chips.filter(chip => chip.filter == classFilter).forEach(chipClass => {
+                const index = this._filteredClassStatistics.map(stat => stat.classIdentifier).indexOf(chipClass.value, 0);
                 if (index > -1) {
-                    this._filteredStatuses.splice(index, 1);
+                    this._filteredClassStatistics.splice(index, 1);
                 }
             })
+        }
 
-            // this._availableStatuses = Object.keys();
-            // this._statusConverter.relevantStatuses
-            //     .concat(...[data.ResultStatusType.FAILED_RETRIED, data.ResultStatusType.PASSED_RETRY])
-            //     .forEach(status => {
-            //         if (executionStatistics.getStatusesCount(this._statusConverter.groupStatus(status)) > 0) {
-            //             this._availableStatuses.push(status)
-            //         }
-            //     });
-
-            let relevantFailureAspect: FailureAspectStatistics;
-            let filterByFailureAspect = false;
-
-            if (this._chips.find(chip => chip.filter == customFilterFailureAspects)?.value > 0) {
-                relevantFailureAspect = executionStatistics.uniqueFailureAspects[this._chips.find(chip => chip.filter == customFilterFailureAspects).value - 1];
-                filterByFailureAspect = true;
-            }
-            this._executionStatistics.classStatistics.sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier));
-
-            if (this._filteredClassStatistics.length <= 0) {      // create array for class select options that can be manipulated
-                this._filteredClassStatistics = [...executionStatistics.classStatistics.sort((a, b) =>
-                    this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))];
-
-                // remove selected classes from options in select box
-                this._chips.filter(chip => chip.filter == classFilter).forEach(chipClass => {
-                    const index = this._filteredClassStatistics.map(stat => stat.classIdentifier).indexOf(chipClass.value, 0);
-                    if (index > -1) {
-                        this._filteredClassStatistics.splice(index, 1);
-                    }
-                })
-            }
-
-            executionStatistics.classStatistics
-                .map(classStatistics => {
-                    // Determine if we need to enable showing config methods by default if there has any error occured
-                    if (this._showConfigurationMethods === null) {
-                        this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
-                    }
-                    return classStatistics;
-                })
-                .filter(classStatistic => {
-                    return !this._chips.filter(chip => chip.filter === classFilter).length ||
-                        this._chips.some(chip => {
-                            const className = this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.full);
-                            return chip.value === className || chip.value == classStatistic.classIdentifier;
-                        });
-                })
-                .forEach(classStatistic => {
-                    let methodContexts = classStatistic.methodContexts;
-
-                    if (this._chips.filter(chip => chip.filter === statusFilter).length > 0) {
-                        const selectedStatusGroups = this._chips.filter(chip => chip.filter === statusFilter).map(chip => {
-                            return this._statusConverter.groupStatus(this._statusConverter.getStatusForClass(chip.value));
-                        });
-
-                        methodContexts = methodContexts.filter(methodContext => {
-                            return selectedStatusGroups.some(selectedStatusGroup => {
-                                return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0;
-                            });
-                        });
-                    }
-
-                    if (filterByFailureAspect) {
-                        methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
-                    }
-
-                    if (this._showConfigurationMethods === false) {
-                        methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
-                    }
-
-                    let methodDetails = methodContexts.map(methodContext => {
-                        return new MethodDetails(methodContext, classStatistic);
+        const filteredClassStatistics = executionStatistics.classStatistics
+            .map(classStatistics => {
+                // Determine if we need to enable showing config methods by default if there has any error occured
+                if (this._showConfigurationMethods === null) {
+                    this._showConfigurationMethods = classStatistics.configStatistics.overallFailed > 0;
+                }
+                return classStatistics;
+            })
+            .filter(classStatistic => {
+                return !this._chips.filter(chip => chip.filter === classFilter).length ||
+                    this._chips.some(chip => {
+                        const className = this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.full);
+                        return chip.value === className || chip.value == classStatistic.classIdentifier;
                     });
+            });
 
-                    if (this._chips.filter(chip => chip.filter == customTextFilter).length > 0) {
-                        methodDetails = methodDetails.filter(methodDetail => {
-                            return this._chips.filter(chip => chip.filter == customTextFilter).map(chip => chip.value).every(searchTerm => {
-                                searchTerm = this._statusConverter.createRegexpFromSearchString(searchTerm);
-                                return methodDetail.identifier.match(searchTerm)
-                                    || methodDetail.failureAspects.some(failureAspect => failureAspect.identifier.match(searchTerm))
-                                    || methodDetail.failsAnnotation?.description?.match(searchTerm)
-                                    || methodDetail.failsAnnotation?.ticketString?.match(searchTerm)
-                                    || methodDetail.promptLogs.some(logMessage => logMessage.message.match(searchTerm))
-                                    || methodDetail.classStatistics.classIdentifier.match(searchTerm)
-                            })
-                        });
-                    }
+        for (const classStatistic of filteredClassStatistics) {
+            let methodContexts = classStatistic.methodContexts;
 
-                    methodDetails.forEach(methodDetails => {
-                        uniqueClasses[classStatistic.classContext.fullClassName] = true;
-                        uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
-                        this._filteredMethodDetails.push(methodDetails);
-                    });
-
+            if (this._chips.filter(chip => chip.filter === statusFilter).length > 0) {
+                const selectedStatusGroups = this._chips.filter(chip => chip.filter === statusFilter).map(chip => {
+                    return this._statusConverter.groupStatus(this._statusConverter.getStatusForClass(chip.value));
                 });
 
-            if (this._chips.filter(chip => chip.filter == customFilterTimings).length > 0) {
-                this._filteredMethodDetails = this._filteredMethodDetails.filter(method => {
-                    return this._chips.filter(chip => chip.filter == customFilterTimings).flatMap(chip => chip.value)
-                        .includes(method.methodContext.contextValues.id);
+                methodContexts = methodContexts.filter(methodContext => {
+                    return selectedStatusGroups.some(selectedStatusGroup => {
+                        return selectedStatusGroup.indexOf(methodContext.resultStatus) >= 0;
+                    });
                 });
             }
 
-            switch (this._sortBy) {
-                case SortBy.Method :
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.identifier.localeCompare(b.identifier));
-                    break;
-                case SortBy.RunIndex :  // Sort by run index
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex - b.methodContext.methodRunIndex);
-                    break;
-                case SortBy.Class :
-                default:
-                    // Sort by class and method name
-                    this._filteredMethodDetails = this._filteredMethodDetails.sort(
-                        (a, b) => a.classStatistics.classIdentifier === b.classStatistics.classIdentifier ?
-                            a.identifier.localeCompare(b.identifier) :
-                            this._classNameValueConverter.toView(a.classStatistics.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classStatistics.classIdentifier, 1)));
+            if (filterByFailureAspect) {
+                methodContexts = methodContexts.filter(methodContext => relevantFailureAspect.methodContexts.indexOf(methodContext) >= 0);
             }
 
-            this._uniqueClasses = Object.keys(uniqueClasses).length;
-            this._uniqueStatuses = Object.keys(uniqueStatuses).length;
-            if (this._showConfigurationMethods) {
-                this.queryParams.config = this._showConfigurationMethods;
-            } else {
-                delete this.queryParams.config;
+            if (this._showConfigurationMethods === false) {
+                methodContexts = methodContexts.filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD);
             }
 
-            this.updateUrl(this.queryParams);
-            this._loading = false;
-        });
+            let methodDetails = await Promise.all(methodContexts.map(methodContext => {
+                return this._statisticsGenerator.getMethodDetails(methodContext.contextValues.id)
+            }))
+
+            if (this._chips.filter(chip => chip.filter == customTextFilter).length > 0) {
+                methodDetails = methodDetails.filter(methodDetail => {
+                    return this._chips.filter(chip => chip.filter == customTextFilter).map(chip => chip.value).every(searchTerm => {
+                        searchTerm = this._statusConverter.createRegexpFromSearchString(searchTerm);
+                        return methodDetail.identifier.match(searchTerm)
+                            || methodDetail.failureAspects.some(failureAspect => failureAspect.identifier.match(searchTerm))
+                            || methodDetail.failsAnnotation?.description?.match(searchTerm)
+                            || methodDetail.failsAnnotation?.ticketString?.match(searchTerm)
+                            || methodDetail.promptLogs.some(logMessage => logMessage.message.match(searchTerm))
+                            || methodDetail.classStatistics.classIdentifier.match(searchTerm)
+                    })
+                });
+            }
+
+            methodDetails.forEach(methodDetails => {
+                uniqueClasses[classStatistic.classContext.fullClassName] = true;
+                uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
+                this._filteredMethodDetails.push(methodDetails);
+            });
+
+        }
+
+        if (this._chips.filter(chip => chip.filter == customFilterTimings).length > 0) {
+            this._filteredMethodDetails = this._filteredMethodDetails.filter(method => {
+                return this._chips.filter(chip => chip.filter == customFilterTimings).flatMap(chip => chip.value)
+                    .includes(method.methodContext.contextValues.id);
+            });
+        }
+
+        switch (this._sortBy) {
+            case SortBy.Method :
+                this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.identifier.localeCompare(b.identifier));
+                break;
+            case SortBy.RunIndex :  // Sort by run index
+                this._filteredMethodDetails = this._filteredMethodDetails.sort((a, b) => a.methodContext.methodRunIndex - b.methodContext.methodRunIndex);
+                break;
+            case SortBy.Class :
+            default:
+                // Sort by class and method name
+                this._filteredMethodDetails = this._filteredMethodDetails.sort(
+                    (a, b) => a.classStatistics.classIdentifier === b.classStatistics.classIdentifier ?
+                        a.identifier.localeCompare(b.identifier) : this._classNameValueConverter.toView(a.classStatistics.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classStatistics.classIdentifier, 1)));
+        }
+
+        this._uniqueClasses = Object.keys(uniqueClasses).length;
+        this._uniqueStatuses = Object.keys(uniqueStatuses).length;
+        if (this._showConfigurationMethods) {
+            this.queryParams.config = this._showConfigurationMethods;
+        } else {
+            delete this.queryParams.config;
+        }
+
+        this.updateUrl(this.queryParams);
+        this._loading = false;
     }
 
     private _filterOnce() {

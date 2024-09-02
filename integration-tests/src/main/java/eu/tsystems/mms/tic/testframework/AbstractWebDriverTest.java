@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.webdriver.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.AbstractWebDriverRequest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
@@ -64,11 +63,9 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements
      */
     @BeforeMethod(alwaysRun = true)
     public void configureChromeOptions(Method method) {
-        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
-            @Override
-            public void configure(ChromeOptions options) {
-                options.addArguments("--disable-dev-shm-usage");
-            }
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless, (ChromeConfig) options -> {
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-search-engine-choice-screen");
         });
     }
 

@@ -98,7 +98,7 @@ export class PrintDialog {
         const printableBody = this._iFrameDoc.getElementById("printable-body");
         if (printableBody) {
 
-            // workaround to use <style> tags to make sure the scaling is only applied to the screen version
+            // workaround to use <style> tags to make sure the scaling is only applied to the preview and not the actual website
             const styleElement = this._iFrameDoc.createElement('style');
             styleElement.textContent = `
             @media screen {
@@ -110,6 +110,13 @@ export class PrintDialog {
                 body {
                     overflow-x: hidden;
                 }
+            }
+            a:-webkit-any-link {            /* overwrites styling that indicate links/routes */
+                color: black;
+                text-decoration: none;
+            }
+            .badge {
+                color: white !important;    /* overwrites styling specifically for badges */
             }`;
             this._iFrameDoc.head.appendChild(styleElement);
         }

@@ -70,7 +70,10 @@ export class TestResultsChart {
     ) {
     }
 
-    attached() {
+    async attached() {
+
+        this.executionStatistics = await this._statisticsGenerator.getExecutionStatistics();
+
         this._skeletonOptions = {
             chart: {
                 type: 'pie',

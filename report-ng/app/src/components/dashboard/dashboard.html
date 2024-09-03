@@ -22,7 +22,7 @@
 <template>
   <require from="../test-duration-card/test-duration-card"></require>
   <require from="../test-results-chart/test-results-chart"></require>
-  <require from="../test-classes-card/test-classes-card"></require>
+  <require from="../test-classes-chart/test-classes-chart"></require>
     <require from="../test-results-list/test-results-list"></require>
 
     <mdc-linear-progress if.bind="_loading" open="true"></mdc-linear-progress>
@@ -107,10 +107,14 @@
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12">
-                <test-classes-card filter.bind="_filter"
-                                   class-statistics.bind="_executionStatistics.classStatistics"
-                                   class-bar-click.delegate="_classBarClicked($event)"
-                ></test-classes-card>
+                <mdc-card>
+                    <div mdc-subtitle2 class="card-headline" id="test-classes-headline">Test Classes</div>
+                    <mdc-list-divider id="test-classes-divider"></mdc-list-divider>
+                    <test-classes-chart filter.bind="_filter"
+                                       class-statistics.bind="_executionStatistics.classStatistics"
+                                       class-bar-click.delegate="_classBarClicked($event)"
+                    ></test-classes-chart>
+                </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
     </mdc-layout-grid>

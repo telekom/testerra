@@ -28,14 +28,11 @@
         grid-column: span 2; // grid layout might have a different size than grids in print version which is why we need to adjust the grid spans
     }
 
-    apex-chart {
+    .classes-chart {
         transform: scale(0.9); // needs to be scaled down otherwise it will overflow the card and/or grid column in the browser print dialog
         transform-origin: top left;
     }
 
-    .print-divider {
-        background: rgba(0, 0, 0, 0.12);    // needs to be set, otherwise it will not be displayed in browser print view
-    }
 }
 
 @media screen {
@@ -84,4 +81,16 @@
 
 .printable-card-headline {
     color: black;
+}
+
+.borders {      // this will imitate the borders around the tables
+    border-radius: var(--mdc-shape-medium, 4px);
+    border-color: rgba(0, 0, 0, 0.12);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.print-divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    margin: 0;
 }

@@ -22,16 +22,16 @@
 <template>
     <require from="../test-duration-card/test-duration-card"></require>
     <require from="../test-results-chart/test-results-chart"></require>
-    <require from="../test-classes-card/test-classes-card"></require>
+    <require from="../test-classes-chart/test-classes-chart"></require>
     <require from="../test-results-list/test-results-list"></require>
     <require from="../failure-aspects/failure-aspects-table"></require>
     <require from="../classes/classes-table"></require>
 
     <div id="printable-body">
-        <mdc-card class="print-card" id="print-card">
+        <div class="print-card borders" id="print-card">
             <div class="card-headline printable-card-headline" mdc-subtitle2>Test Report Information</div>
 
-            <mdc-list-divider class="print-divider"></mdc-list-divider>
+            <hr class="solid print-divider">
 
             <div mdc-body2>
                 <div class="container">
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <mdc-list-divider></mdc-list-divider>
+            <hr class="solid print-divider">
 
             <div mdc-body2>
                 <p class="result-headline">Test Results</p>
@@ -71,38 +71,36 @@
                     </mdc-layout-grid-inner>
                 </mdc-layout-grid>
             </div>
-        </mdc-card>
+        </div>
 
-        <div class="print-card" id="test-classes-card">
-            <test-classes-card class-statistics.bind="_executionStatistics.classStatistics"
+        <div class="print-card borders" id="test-classes-chart">
+            <div class="classes-chart">
+            <test-classes-chart class-statistics.bind="_executionStatistics.classStatistics"
                                print-mode.bind="true"
-            ></test-classes-card>
+            ></test-classes-chart>
+            </div>
         </div>
 
         <div class="print-card" id="failure-aspects-card">
-            <mdc-card id="failure-aspects-table">
+            <div id="failure-aspects-table">
                 <failure-aspects-table filtered-failure-aspects.bind="_filteredFailureAspects"
                 ></failure-aspects-table>
-            </mdc-card>
-            <mdc-card id="failure-aspects-table-major" style="display: none;">
+            </div>
+            <div id="failure-aspects-table-major" style="display: none;">
                 <failure-aspects-table filtered-failure-aspects.bind="_filteredFailureAspectsMajor"
                 ></failure-aspects-table>
-            </mdc-card>
-            <mdc-card id="failure-aspects-table-minor" style="display: none;">
+            </div>
+            <div id="failure-aspects-table-minor" style="display: none;">
                 <failure-aspects-table filtered-failure-aspects.bind="_filteredFailureAspectsMinor"
                 ></failure-aspects-table>
-            </mdc-card>
+            </div>
         </div>
 
         <div class="print-card" id="classes-table-card">
-            <mdc-card>
-                <classes-table id="classes-table" filtered-method-details.bind="_filteredMethodDetails"
-                ></classes-table>
-            </mdc-card>
-            <mdc-card>
-                <classes-table id="classes-table-failed" filtered-method-details.bind="_filteredMethodDetailsFailed" style="display: none;"
-                ></classes-table>
-            </mdc-card>
+            <classes-table id="classes-table" filtered-method-details.bind="_filteredMethodDetails"
+            ></classes-table>
+            <classes-table id="classes-table-failed" filtered-method-details.bind="_filteredMethodDetailsFailed" style="display: none;"
+            ></classes-table>
         </div>
     </div>
 </template>

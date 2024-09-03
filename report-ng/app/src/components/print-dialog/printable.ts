@@ -114,10 +114,6 @@ export class Printable extends AbstractViewModel {
             })
         });
 
-        // remove card header because it will not break the page and create gaps
-        document.getElementById("test-classes-headline").setAttribute("style", "display: none;");
-        document.getElementById("test-classes-divider").setAttribute("style", "display: none;");
-
         // check if we use this view in iFrame or not
         if (window.self !== window.top) {
             document.getElementById("mdc-drawer-app-content").setAttribute("style", "padding: 0.75rem 1rem; background-color: white;");     // needs to be set separately otherwise it will change the styling for the whole webpage

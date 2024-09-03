@@ -55,7 +55,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     @Check
     private final UiElement testResultElement = pageContent.find(By.tagName("test-results-chart"));    //pieChart
     @Check
-    private final UiElement testClassesElement = pageContent.find(By.tagName("test-classes-card"));
+    private final UiElement testClassesElement = pageContent.find(By.tagName("test-classes-chart"));
 
     private final UiElement barChartElement = testClassesElement
             .find(By.xpath("//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]"));

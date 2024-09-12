@@ -26,6 +26,8 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {MethodDetails, StatisticsGenerator} from "../../services/statistics-generator";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {MethodType, ResultStatusType} from "../../services/report-model/framework_pb";
+import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
+import {StatusConverter} from "../../services/status-converter";
 
 @autoinject()
 export class Printable extends AbstractViewModel {
@@ -37,6 +39,8 @@ export class Printable extends AbstractViewModel {
 
     private _filteredMethodDetails: MethodDetails[];
     private _filteredMethodDetailsFailed: MethodDetails[];
+    private _classInformation: IClassInformation[];
+    private _relevantStatuses: ResultStatusType[];
 
     private _title: string;
     private _duration: number;
@@ -47,6 +51,8 @@ export class Printable extends AbstractViewModel {
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
+        private _classNameValueConverter: ClassNameValueConverter,
+        private _statusConverter: StatusConverter
     ) {
         super();
     }
@@ -60,6 +66,7 @@ export class Printable extends AbstractViewModel {
         const uniqueStatuses = {};
         this._filteredMethodDetails = [];
         this._filteredMethodDetailsFailed = [];
+        this._classInformation = [];
 
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
@@ -92,31 +99,60 @@ export class Printable extends AbstractViewModel {
                 return failureAspectStats.isMinor;
             })
 
-            executionStatistics.classStatistics.forEach(classStatistic => {
-                let methodContexts = classStatistic.methodContexts;
-                let methodDetails = methodContexts.map(methodContext => {
-                    return new MethodDetails(methodContext, classStatistic);
-                });
-
-            methodDetails
-                .filter(methodDetail => methodDetail.methodContext.methodType == MethodType.TEST_METHOD)
-                .forEach(methodDetails => {
-                    uniqueClasses[classStatistic.classContext.fullClassName] = true;
-                    uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
-                    if (methodDetails.methodContext.resultStatus != ResultStatusType.PASSED_RETRY && methodDetails.methodContext.resultStatus != ResultStatusType.FAILED_RETRIED && methodDetails.methodContext.resultStatus != ResultStatusType.REPAIRED) {
-                        this._filteredMethodDetails.push(methodDetails);
-
-                        if(methodDetails.methodContext.resultStatus != ResultStatusType.PASSED){
-                            this._filteredMethodDetailsFailed.push(methodDetails)
-                        }
-                    }
-                });
+            // get statuses for head of test class table
+            this._relevantStatuses = this._statusConverter.relevantStatuses.filter(status => {      // make sure we only use the relevant statuses that are available
+                return this._executionStatistics.availableStatuses.some(availableStatus => status == availableStatus)
             })
-        });
+
+            executionStatistics.classStatistics
+                .sort((a, b) => this._classNameValueConverter.toView(a.classIdentifier, ClassName.simpleName).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, ClassName.simpleName)))
+                .forEach(classStatistic => {
+                    let methodContexts = classStatistic.methodContexts;
+                    let methodDetails = methodContexts.map(methodContext => {
+                        return new MethodDetails(methodContext, classStatistic);
+                    })
+
+                    methodDetails
+                        .filter(methodDetail => methodDetail.methodContext.methodType == MethodType.TEST_METHOD)
+                        .forEach(methodDetails => {
+                            uniqueClasses[classStatistic.classContext.fullClassName] = true;
+                            uniqueStatuses[methodDetails.methodContext.resultStatus] = true;
+                            if (methodDetails.methodContext.resultStatus != ResultStatusType.PASSED_RETRY && methodDetails.methodContext.resultStatus != ResultStatusType.FAILED_RETRIED && methodDetails.methodContext.resultStatus != ResultStatusType.REPAIRED) {
+                                this._filteredMethodDetails.push(methodDetails);
+
+                                if(methodDetails.methodContext.resultStatus != ResultStatusType.PASSED){
+                                    this._filteredMethodDetailsFailed.push(methodDetails)
+                                }
+                            }
+                        });
+
+
+                    // get class information for test class table
+                    const data = this._relevantStatuses.map(status => {
+                        const amount = classStatistic.getSummarizedStatusCount(this._statusConverter.groupStatus(status));      // [failed, expected failed, skipped, passed (incl. recovered and repaired)]
+                        return {
+                            status: status,
+                            amount: amount === 0 ? "-" : amount
+                        };
+                    })
+
+                    const classInfo: IClassInformation = {
+                        name: this._classNameValueConverter.toView(classStatistic.classIdentifier, ClassName.simpleName),
+                        data: data
+                    };
+
+                    this._classInformation.push(classInfo);
+                })
+        })
 
         // check if we use this view in iFrame or not
         if (window.self !== window.top) {
             document.getElementById("mdc-drawer-app-content").setAttribute("style", "padding: 0.75rem 1rem; background-color: white;");     // needs to be set separately otherwise it will change the styling for the whole webpage
         }
     }
+}
+
+interface IClassInformation {
+    name: string;
+    data: { status: ResultStatusType, amount: number|string }[];
 }

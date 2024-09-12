@@ -22,7 +22,6 @@
 <template>
     <require from="../test-duration-card/test-duration-card"></require>
     <require from="../test-results-chart/test-results-chart"></require>
-    <require from="../test-classes-chart/test-classes-chart"></require>
     <require from="../test-results-list/test-results-list"></require>
     <require from="../failure-aspects/failure-aspects-table"></require>
     <require from="../classes/classes-table"></require>
@@ -73,12 +72,28 @@
             </div>
         </div>
 
-        <div class="print-card borders" id="test-classes-chart">
-            <div class="classes-chart">
-            <test-classes-chart class-statistics.bind="_executionStatistics.classStatistics"
-                               print-mode.bind="true"
-            ></test-classes-chart>
-            </div>
+        <div class="print-card" id="test-classes-table">
+            <mdc-data-table class="w100"
+            >
+                <table>
+                    <thead>
+                    <th>Test Class</th>
+                    <th class="centered-text" repeat.for="status of _relevantStatuses">
+                        <span class="badge status-${status|statusClass}">${status|statusName}</span>
+                    </th>
+                    </thead>
+                    <tbody>
+                        <tr repeat.for="classInfo of _classInformation">
+                            <td class="p1 wrapable">
+                                ${classInfo.name}
+                            </td>
+                            <td class="centered-text" repeat.for="data of classInfo.data">
+                                <span class.bind="data.amount !== '-' ? 'badge status-' + _statusConverter.getClassForStatus(data.status) : ''">${data.amount}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mdc-data-table>
         </div>
 
         <div class="print-card" id="failure-aspects-card">

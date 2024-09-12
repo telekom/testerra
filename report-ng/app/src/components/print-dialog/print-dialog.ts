@@ -46,7 +46,7 @@ export class PrintDialog {
     @observable private _selectedTestFilter = 0;
 
     private readonly _checkboxOptions: ICheckBoxOption[] = [
-        {label: 'Test Classes Chart', checked: true, id: "test-classes-chart"},
+        {label: 'Test Classes Table', checked: true, id: "test-classes-table"},
         {label: 'Failure Aspects Table', checked: true, id: "failure-aspects-card"},
         {label: 'Test Case List', checked: true, id: "classes-table-card"}
     ];
@@ -288,7 +288,7 @@ type ICheckBoxOption = {
     id: string
 }
 
-export interface IFilter {
+interface IFilter {
     id: number;
     name: string;
     tooltip?: string;

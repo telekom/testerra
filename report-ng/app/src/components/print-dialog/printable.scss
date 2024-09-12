@@ -27,12 +27,6 @@
     .grid-cell-small {
         grid-column: span 2; // grid layout might have a different size than grids in print version which is why we need to adjust the grid spans
     }
-
-    .classes-chart {
-        transform: scale(0.9); // needs to be scaled down otherwise it will overflow the card and/or grid column in the browser print dialog
-        transform-origin: top left;
-    }
-
 }
 
 @media screen {
@@ -49,10 +43,6 @@
         @media (min-width: 600px) {
             grid-column: span 2;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
         }
-    }
-
-    .print-card {
-        padding-bottom: 16px;
     }
 }
 

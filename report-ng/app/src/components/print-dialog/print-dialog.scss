@@ -103,7 +103,13 @@
 }
 
 .note {
-    font-size: 8pt;
+    font-size: 9pt;
     line-height: 120%;
     margin-top: 16px;
+    max-width: 90%;
+}
+
+.note-headline {
+    font-size: 10pt;
+    margin-top: 24px;
 }

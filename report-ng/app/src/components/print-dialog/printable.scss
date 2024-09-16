@@ -27,6 +27,12 @@
     .grid-cell-small {
         grid-column: span 2; // grid layout might have a different size than grids in print version which is why we need to adjust the grid spans
     }
+
+    @supports (-moz-appearance: none){
+        .grid-cell-small {
+            grid-column: span 3;    // Firefox-specific grid because Firefox ignores the width settings and messes up the layout
+        }
+    }
 }
 
 @media screen {
@@ -35,13 +41,17 @@
         width: 1080px; // necessary to have nearly same width as A4 pages
     }
 
-    .grid-cell-small {
-        @media (max-width: 600px) { // 600px is the grid layout breakpoint that causes problems if not dynamically adapted: https://m2.material.io/design/layout/responsive-layout-grid.html#columns-gutters-and-margins
+    .grid-cell-small {      // grid layout breakpoints cause problems if not dynamically adapted: https://m2.material.io/design/layout/responsive-layout-grid.html#columns-gutters-and-margins
+        @media (max-width: 600px) {
             grid-column: span 1;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
         }
 
         @media (min-width: 600px) {
             grid-column: span 2;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
+        }
+
+        @media (min-width: 905px) {
+            grid-column: span 3;
         }
     }
 }

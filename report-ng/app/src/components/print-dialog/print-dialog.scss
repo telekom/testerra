@@ -113,3 +113,13 @@
     font-size: 10pt;
     margin-top: 24px;
 }
+
+.firefox-note {     // hide note if browser is not Firefox
+    display: none;
+}
+
+@supports (-moz-appearance: none) {      // Firefox-specific note
+    .firefox-note {
+        display: block;
+    }
+}

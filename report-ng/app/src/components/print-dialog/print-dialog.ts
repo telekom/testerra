@@ -74,7 +74,6 @@ export class PrintDialog {
             window.addEventListener('resize', this._resizeFrame.bind(this));
 
             this._iFrameDoc.getElementById("header").style.pointerEvents = "none";
-            this._iFrameDoc.getElementById("version").style.display = "none";
         };
     }
 

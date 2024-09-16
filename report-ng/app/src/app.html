@@ -32,7 +32,7 @@
         -->
     </head>
     <body>
-    <mdc-top-app-bar fixed style="position: unset" id="header">
+    <mdc-top-app-bar fixed style="position: unset">
         <mdc-top-app-bar-row>
 
             <mdc-top-app-bar-section start>
@@ -56,7 +56,7 @@
                    rel="noopener"
                    role="button"
                    mdc-body2
-                   id="version"
+                   if.bind="_router.currentInstruction.config.route != 'printable'"
                 >${_executionContext.runConfig.buildInformation.buildVersion}</a>
             </mdc-top-app-bar-section>
 

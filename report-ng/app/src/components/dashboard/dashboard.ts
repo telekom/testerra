@@ -26,7 +26,7 @@ import {ExecutionStatistics, FailureAspectStatistics} from "services/statistic-m
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
 import "./dashboard.scss"
-import {ClassBarClick} from "../test-classes-chart/test-classes-chart";
+import {ClassBarClick} from "../test-classes-card/test-classes-card";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {PieceClickedEvent} from "../test-results-chart/test-results-chart";
 import FailureCorridorValue = data.FailureCorridorValue;

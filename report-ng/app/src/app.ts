@@ -63,9 +63,6 @@ export class App {
             //     route.settings.count = executionStatistics.exitPointStatistics.length;
             // });
         });
-
-        // checks if our current path is "printable" to disable header (this is only used in the iFrame for the print dialog)
-        const path = this._router.currentInstruction.fragment;
     }
 
     configureRouter(config: RouterConfiguration, router: Router) {
@@ -161,7 +158,7 @@ export class App {
         this._drawer.open = false;
     }
 
-    private _printButtonClicked() {
+    private _printButtonClicked() {     // work around to get correct iframe source
         let currentPath = window.location.href;
 
         if (!currentPath.includes("#/")) {

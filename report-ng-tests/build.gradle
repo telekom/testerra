@@ -28,7 +28,6 @@ test {
         s = ['src/test/resources/testng/GenerateReport.xml']
         System.setProperty("tt.report.dir", "src/test/resources/reports/report-generated-status")
         System.setProperty("tt.report.name", "Generated Report for UI-Test")
-        print(System.getProperty("log4j2.configurationFile"))
     }
 
     if (preTestExtended) {

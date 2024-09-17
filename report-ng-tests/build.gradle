@@ -21,8 +21,8 @@ test {
     ]
 
 
-    def preTest = findProperty("pretest")
-    def preTestExtended = findProperty("pretestExtended")
+    def preTest = findProperty("pretestRNG")
+    def preTestExtended = findProperty("pretestRNGExtended")
 
     if (preTest) {
         s = ['src/test/resources/testng/GenerateReport.xml']

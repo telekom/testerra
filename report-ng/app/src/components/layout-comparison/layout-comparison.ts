@@ -91,10 +91,23 @@ export class LayoutComparison {
             }
         }
         // Needed relative paths for <screenshot-comparison>, does not really work with <lazy-image>
-        this._statistics.getFilesForIds([this._images.actual.id, this._images.diff.id, this._images.expected.id]).then(file => {
-            this._images.actual.src = file[0].relativePath;
-            this._images.diff.src = file[1].relativePath;
-            this._images.expected.src = file[2].relativePath;
+        this._statistics.getFilesForIds([this._images.actual.id, this._images.diff.id, this._images.expected.id]).then(files => {
+            // Map the files to their respective images based on meta titles
+            files.forEach(file => {
+                switch (file.meta.Title) {
+                    case 'Actual image':
+                        this._images.actual.src = file.relativePath;
+                        break;
+                    case 'Difference image':
+                        this._images.diff.src = file.relativePath;
+                        break;
+                    case 'Expected image':
+                        this._images.expected.src = file.relativePath;
+                        break;
+                    default:
+                        console.warn(`Unknown file title: ${file.meta.Title}`);
+                }
+            });
         });
     }
 

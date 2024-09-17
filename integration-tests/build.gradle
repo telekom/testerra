@@ -35,6 +35,16 @@ test {
 
     def preTest = findProperty("pretest")
     if (preTest) {
+        System.setProperty("logFileName", "logs/pre-test-log4j.log")
+        System.setProperty("log4j2.configurationFile", "src/test/resources/log4j2-pretest.xml")
+        s = ['src/test/resources/Pretest_Tests.xml']
+    }
+
+    def pretestDryRun = findProperty("pretestDryRun")
+    if (pretestDryRun) {
+        System.setProperty("tt.dryrun", "true")
+        System.setProperty("logFileName", "logs/pre-test-dry-run-log4j.log")
+        System.setProperty("log4j2.configurationFile", "src/test/resources/log4j2-pretest.xml")
         s = ['src/test/resources/Pretest_Tests.xml']
     }
 

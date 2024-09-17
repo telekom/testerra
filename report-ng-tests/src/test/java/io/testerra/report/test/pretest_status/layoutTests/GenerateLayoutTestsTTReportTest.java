@@ -1,5 +1,6 @@
 package io.testerra.report.test.pretest_status.layoutTests;
 
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractTestSitesTest;
 import io.testerra.report.test.pages.TestPage;
@@ -59,6 +60,40 @@ public class GenerateLayoutTestsTTReportTest extends AbstractTestSitesTest {
                     .screenshot().pixelDistance("inputHtml_box1").isLowerThan(screenshotPixelDistance);
             page.getFinder().findById("box2").assertThat()
                     .screenshot().pixelDistance("inputHtml_box2").isLowerThan(screenshotPixelDistance);
+            ASSERT.fail("Just a simple error message");
+        });
+    }
+
+    @Test(groups = {Groups.EXT})
+    public void layoutTest05_layoutTestFailing_AssertionFailing() {
+        TestStep.begin("get web driver");
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        TestStep.begin("visit test page");
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
+        double screenshotPixelDistance = 0;
+
+        CONTROL.collectAssertions(() -> {
+            TestStep.begin("create page object and take element screenshots");
+            UniversalPage page = PAGE_FACTORY.createPage(UniversalPage.class);
+            LayoutCheck.assertScreenshot(page.getWebDriver(), "inputHtml_image2", screenshotPixelDistance);
+            ASSERT.fail("Just a simple error message");
+        });
+    }
+
+    @Test(groups = {Groups.EXT})
+    public void layoutTest06_layoutTestPassing_AssertionFailing() {
+        TestStep.begin("get web driver");
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        TestStep.begin("visit test page");
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
+        double screenshotPixelDistance = 5.0;
+
+        CONTROL.collectAssertions(() -> {
+            TestStep.begin("create page object and take element screenshots");
+            UniversalPage page = PAGE_FACTORY.createPage(UniversalPage.class);
+            LayoutCheck.assertScreenshot(page.getWebDriver(), "inputHtml_image2", screenshotPixelDistance);
             ASSERT.fail("Just a simple error message");
         });
     }

@@ -43,8 +43,8 @@ Include the following dependency in your project.
 Gradle:
 ```groovy
 dependencies {
-    implementation 'io.testerra:driver-ui-desktop:2.8'
-    implementation 'io.testerra:report-ng:2.8'
+    implementation 'io.testerra:driver-ui-desktop:2.9'
+    implementation 'io.testerra:report-ng:2.9'
 }
 ```
 
@@ -54,12 +54,12 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2.8</version>
+        <version>2.9</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.8</version>
+        <version>2.9</version>
     </dependency>
 </dependencies>
 ```

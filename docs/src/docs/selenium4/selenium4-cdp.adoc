@@ -170,7 +170,7 @@ public class ChromeDevToolsTests extends TesterraTest implements
 .'Broken' page resources
 [source, java]
 ----
-import org.openqa.selenium.devtools.v125.log.model.LogEntry;
+import org.openqa.selenium.devtools.v127.log.model.LogEntry;
 ...
 
 public class ChromeDevToolsTests extends TesterraTest implements
@@ -211,9 +211,9 @@ public class ChromeDevToolsTests extends TesterraTest implements
 
 [source, java]
 ----
-import org.openqa.selenium.devtools.v125.network.Network;
-import org.openqa.selenium.devtools.v125.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v125.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v127.network.Network;
+import org.openqa.selenium.devtools.v127.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v127.network.model.ResponseReceived;
 ...
 
 public class ChromeDevToolsTests extends TesterraTest implements
@@ -259,4 +259,41 @@ public class ChromeDevToolsTests extends TesterraTest implements
 
 ----
 
+== Set device emulation
 
+There is a simple implementation to emulate mobile devices.
+
+[source, java]
+----
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        WebDriverManagerProvider {
+
+    @Test
+    public void test_CDP_GeoLocation() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+
+        CHROME_DEV_TOOLS.setDevice(
+                webDriver,
+                new Dimension(400, 900),    // resolution
+                100,                        // Scale factor
+                true);                      // it's a mobile device
+
+        webDriver.get("...");
+    }
+
+}
+
+----
+
+If you need some more impact on device settings, you can use the origin method
+
+[source, java]
+----
+WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+DevTools devTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+devTools.send(Emulation.setDeviceMetricsOverride(...);
+----
+
+See here for more details: https://chromedevtools.github.io/devtools-protocol/tot/Emulation/#method-setDeviceMetricsOverride

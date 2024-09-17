@@ -25,11 +25,10 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.adapters.ContextExporter;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.report.model.LogMessageAggregate;
+import eu.tsystems.mms.tic.testframework.report.model.context.*;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 
 import java.io.File;
 import java.util.Objects;
@@ -37,6 +36,7 @@ import java.util.stream.Stream;
 
 public class GenerateReportNgModelListener extends AbstractReportModelListener implements FinalizeExecutionEvent.Listener {
     private final ExecutionAggregate.Builder executionAggregateBuilder = ExecutionAggregate.newBuilder();
+    private final LogMessageAggregate.Builder logMessageAggregateBuilder = LogMessageAggregate.newBuilder();
 
     private final ContextExporter contextExporter = new ContextExporter() {
 
@@ -81,6 +81,13 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
                         this.buildUniqueMethod(methodContext);
                         methodContext.readSessionContexts().forEach(this::buildUniqueSession);
                         methodContext.readRelatedMethodContexts().forEach(this::buildUniqueMethod);
+                        // Extract LogMessages for LogMessageAggregate
+                        methodContext.readTestSteps()
+                                .flatMap(TestStep::readActions)
+                                .flatMap(TestStepAction::readEntries)
+                                .filter(LogMessage.class::isInstance)
+                                .map(entry -> (eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) entry)
+                                .forEach(logMessage -> logMessageAggregateBuilder.putLogMessages(logMessage.getId(), contextExporter.buildLogMessage(logMessage).build()));
                     });
                 });
             });
@@ -93,6 +100,9 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder executionContextBuilder = contextExporter.buildExecutionContext(executionContext);
         executionAggregateBuilder.setExecutionContext(executionContextBuilder);
         writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
+
+        executionContext.readMethodContextLessLogs().map(contextExporter::buildLogMessage).forEach(logMessage -> logMessageAggregateBuilder.putLogMessages(logMessage.getId(), logMessage.build()));
+        writeBuilderToFile(logMessageAggregateBuilder, new File(baseDir, "logMessages"));
     }
 
     private void buildUniqueSession(SessionContext sessionContext) {

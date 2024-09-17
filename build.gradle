@@ -21,9 +21,9 @@ ext {
     core = project(':core')
     report = project(':report-ng')
 
-    seleniumVersion = '4.21.0'
+    seleniumVersion = '4.23.0'
     // Must be the same like in Selenium 4
-    guavaVersion = "33.0.0-jre"
+    guavaVersion = "33.2.1-jre"
 
     moduleVersion = '2-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {
@@ -37,8 +37,10 @@ allprojects {
 
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = "UTF-8"
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
 
 }
 

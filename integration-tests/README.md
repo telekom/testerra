@@ -2,7 +2,13 @@
 
 ## Run pretest
 ```shell
-gradle test -P pretest=true -D log4j2.configurationFile=src/test/resources/log4j2-pretest.xml
+# The pretest to check test status
+gradle test -P pretest=true
+```
+
+```shell
+# The pretest to check dry run
+gradle test -P pretestDryRun=true
 ```
 
 ## Start Report prepare tests (deprecated)

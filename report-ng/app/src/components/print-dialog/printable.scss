@@ -54,6 +54,10 @@
             grid-column: span 3;
         }
     }
+
+    .print-card:last-of-type {
+        padding-bottom: 16px;
+    }
 }
 
 .container { // use this styling instead of mdc grid because the spans of the grid are changing depending on print/iFrame and mess up the layout

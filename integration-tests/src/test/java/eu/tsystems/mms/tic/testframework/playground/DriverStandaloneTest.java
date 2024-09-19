@@ -24,14 +24,14 @@ public class DriverStandaloneTest extends AbstractWebDriverTest {
     public void testFailing() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBaseUrl("http://google.de");
-        request.setBrowser(Browsers.chrome);
+//        request.setBrowser(Browsers.chrome);
 
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        UITestUtils.takeScreenshot(webDriver, false);
+        UITestUtils.takeScreenshot(webDriver, true);
 //        Assert.assertTrue(false);
-        File file = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-        PosixFileAttributeView fileAttributeView = Files.getFileAttributeView(file.toPath(), PosixFileAttributeView.class);
-        log().info("take screenshot src {}", file.toPath());
+//        File file = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+//        PosixFileAttributeView fileAttributeView = Files.getFileAttributeView(file.toPath(), PosixFileAttributeView.class);
+//        log().info("take screenshot src {}", file.toPath());
 //        log().info("Posix {}", fileAttributeView.readAttributes().permissions().toString());
     }
 

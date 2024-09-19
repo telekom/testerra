@@ -67,6 +67,9 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--disable-search-engine-choice-screen");
         });
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome, (ChromeConfig) options -> {
+            options.addArguments("--disable-search-engine-choice-screen");
+        });
     }
 
     protected AbstractWebDriverRequest getWebDriverRequest() {

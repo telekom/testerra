@@ -72,8 +72,6 @@ public class DefaultReport implements Report, Loggable {
 
     public File finalizeReport() {
         try {
-            log().info("Before delete {}", finalReportDirectory.getAbsolutePath());
-            log().info("exists: {}", finalReportDirectory.exists());
             if (finalReportDirectory.exists()) {
                 FileUtils.deleteDirectory(finalReportDirectory);
             }

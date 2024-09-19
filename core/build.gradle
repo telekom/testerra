@@ -12,8 +12,7 @@ dependencies {
     // </Testerra>
 
     api 'commons-io:commons-io:2.16.1'
-//    api 'commons-io:commons-io:2.6'
-    api 'org.apache.commons:commons-lang3:3.14.0'
+    api 'org.apache.commons:commons-lang3:3.17.0'
 
     // <PdfUtils>
     implementation 'org.apache.pdfbox:pdfbox:3.0.1'

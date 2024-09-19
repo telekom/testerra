@@ -28,12 +28,8 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.nio.file.Files;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFilePermission;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultReport implements Report, Loggable {
@@ -60,7 +56,6 @@ public class DefaultReport implements Report, Loggable {
                     break;
                 default:
                 case MOVE:
-//                    Files.move(sourceFile.toPath(), new File(directory, sourceFile.getName()).toPath());
                     FileUtils.moveFileToDirectory(sourceFile, directory, true);
                     break;
             }
@@ -81,27 +76,6 @@ public class DefaultReport implements Report, Loggable {
                 FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
                 currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
-
-                // Only for ix systems:
-                // Since commons-io:commons-io:2.7 the FileUtils does not set permissions of parent folder to all copied files.
-                // This adds the OTHERS-READ permission to every file if exists in final report directory
-//                PosixFileAttributeView posixReport = Files.getFileAttributeView(finalReportDirectory.toPath(), PosixFileAttributeView.class);
-//                if (posixReport != null && posixReport.readAttributes().permissions().contains(PosixFilePermission.OTHERS_READ)) {
-//                    log().info("Update file permissions");
-//                    Files.walk(finalizeReport().toPath())
-//                            .filter(file -> file.toFile().exists())
-//                            .filter(Files::isRegularFile)
-//                            .forEach(path -> {
-//                                log().info(path.toString());
-//                                try {
-//                                    Set<PosixFilePermission> posixFilePermissions = Files.getPosixFilePermissions(path);
-//                                    posixFilePermissions.add(PosixFilePermission.OTHERS_READ);
-//                                    Files.setPosixFilePermissions(path, posixFilePermissions);
-//                                } catch (IOException e) {
-//                                    log().warn("Cannot add permission OTHERS_READ to {}: {}", path, e.getMessage());
-//                                }
-//                            });
-//                }
             }
         } catch (IOException e) {
             throw new RuntimeException("Could not move report dir: " + e.getMessage(), e);

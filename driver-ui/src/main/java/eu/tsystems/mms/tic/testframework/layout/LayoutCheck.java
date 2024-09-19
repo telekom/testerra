@@ -32,8 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -195,9 +194,10 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     /**
      * Matches image pixels and returns an absolute distance value
      */
-    public static MatchStep matchPixels(final TakesScreenshot takesScreenshot, final String targetImageName) {
-        final File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
-        return matchPixels(screenshot, targetImageName);
+    public static MatchStep matchPixels(WebDriver webDriver, final String targetImageName) {
+        Screenshot screenshot = new Screenshot();
+        UITestUtils.takeWebDriverScreenshotToFile(webDriver, screenshot.getScreenshotFile());
+        return matchPixels(screenshot.getScreenshotFile(), targetImageName);
     }
 
     public static MatchStep matchPixels(final File screenshot, final String targetImageName) {
@@ -483,7 +483,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
         final String assertMessage = String.format("pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
 
-        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
+        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(webDriver, targetImageName);
         assertWithLayoutCheck(matchStep, confidenceThreshold, assertMessage);
     }
 

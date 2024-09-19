@@ -31,7 +31,7 @@ public class AssertionFormatTests extends AbstractExclusiveTestSitesTest<WebTest
         return WebTestPage.class;
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage url=\\[http://localhost/Input/input.html\\] ends with \\[nonexistingfile.html\\] is true")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that WebTestPage url=\\[http://localhost:8080/Input/input.html\\] ends with \\[nonexistingfile.html\\] is true")
     public void test_Page_url_format() {
         WebTestPage page = getPage();
         CONTROL.withTimeout(0, () -> page.expect().url().endsWith("nonexistingfile.html").is(true));

@@ -4,14 +4,14 @@
 Generate Testerra Report with several status
 
 ```shell
-gradle test -P pretest=true
+gradle test -P pretestRNG=true
 ```
 
 ## Run additional pretest (separate test set)
 Generate Testerra Report with additional status
 
 ```shell
-gradle test -P pretestExtended=true
+gradle test -P pretestRNGExtended=true
 ```
 
 ## Start Test of generated Testerra Report

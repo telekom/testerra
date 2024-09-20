@@ -7,7 +7,6 @@ include::property-attributes.adoc[]
 | {demomode_timeout} | 2000 | Timeout in ms for visual marks of UiElements.
 | {dryrun} | false | All testmethods are executed with ignoring all steps. Also all setup methods (before, after) are ignored. +
 This is useful to check your TestNG suite without executing real testcode.
-| {list_tests} | false | Lists all test methods in the current context without executing them.
 | {on_state_testfailed_skip_shutdown} | false | If true all browser sessions are left open.
 | {on_state_testfailed_skip_following_tests} | false | If true, all follwoing tests are skipped in case a test failed.
 | {failed_tests_if_throwable_classes} | na. | Failed tests condition: Throwable Class(~es, devided by ',').

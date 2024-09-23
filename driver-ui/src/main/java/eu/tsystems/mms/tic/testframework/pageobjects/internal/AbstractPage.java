@@ -227,17 +227,8 @@ public abstract class AbstractPage<SELF> implements
                 running = false;
             }
         }
-        /**
-         * Revert classes order to bottom up
-         * @todo Why? There is no reason
-         */
-        //Collections.reverse(allClasses);
         return allClasses;
     }
-
-    /**
-     * Empty method to be overriden. Can perform some (additional) checks on page objects.
-     */
 
     @Override
     abstract public WebDriver getWebDriver();

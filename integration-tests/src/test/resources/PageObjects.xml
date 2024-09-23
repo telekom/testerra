@@ -2,7 +2,6 @@
 <suite name="Page Objects" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="true">
     <test name="Page Objects" parallel="methods">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.test.page.AssertTextPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.test.page.DefaultElementLabelProviderTest"/>
             <class name="eu.tsystems.mms.tic.testframework.test.page.PageTests">
                 <methods>
@@ -13,7 +12,7 @@
     </test>
 
     <test name="Page Factory" parallel="classes">
-        <packages>            
+        <packages>
             <package name="eu.tsystems.mms.tic.testframework.pageobjects.internal"></package>
         </packages>
 

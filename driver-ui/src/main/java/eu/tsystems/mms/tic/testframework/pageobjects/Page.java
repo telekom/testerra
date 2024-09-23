@@ -21,12 +21,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageAssertions;
@@ -34,11 +31,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageUiElementFinde
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import java.util.Random;
 import org.openqa.selenium.WebDriver;
 
 /**
  * Represents a full web page and provides advanced {@link PageObject}.
+ *
  * @author Peter Lehmann
  * @author Mike Reiche
  * @todo Should be an interface only
@@ -166,7 +163,7 @@ public class Page extends AbstractPage<Page> implements TestablePage {
 
     @Override
     protected void pageLoaded() {
-        if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
+        if (Testerra.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
             this.screenshotToReport();
         }
     }

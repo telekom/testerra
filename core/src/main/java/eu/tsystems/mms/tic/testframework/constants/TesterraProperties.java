@@ -78,20 +78,12 @@ public final class TesterraProperties {
     @Deprecated
     public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
 
-    /**
-     * If true, screenshot after page is loaded will be taken.
-     */
-    public static final String SCREENSHOT_ON_PAGELOAD = "tt.screenshot.on.pageload";
-
     public static final String SYSTEM_SETTINGS_FILE = "tt.system.settings.file";
 
     public static final String RUNCFG = "tt.runcfg";
 
     public static final String WATCHDOG_ENABLE = "tt.watchdog.enable";
     public static final String WATCHDOG_TIMEOUT_SECONDS = "tt.watchdog.timeout.seconds";
-
-    public static final String SCREENCASTER_ACTIVE_ON_SUCCESS = "tt.screencaster.active.on.success";
-    public static final String SCREENCASTER_ACTIVE_ON_FAILED = "tt.screencaster.active.on.failed";
 
     /**
      * @deprecated Use {@link Properties#SELENIUM_SERVER_URL} instead

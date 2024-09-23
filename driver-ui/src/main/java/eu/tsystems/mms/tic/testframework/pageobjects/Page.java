@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.internal.asserts.PropertyAssertionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage;
@@ -30,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageAsserti
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.PageUiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -125,17 +123,6 @@ public class Page extends AbstractPage<Page> implements TestablePage {
 //        TimerUtils.sleep(timeToWait);
 //    }
 
-    /**
-     * Waits for a text to be not present.
-     *
-     * @return boolean true if success == text is not present. false otherwise.
-     */
-    @Deprecated
-    public boolean waitForIsNotTextPresentWithDelay(final String text, final int delayInSeconds) {
-        TimerUtils.sleep(delayInSeconds * 1000);
-        return waitForIsNotTextPresent(text);
-    }
-
     protected UiElementFinder getFinder() {
         return this.finder;
     }
@@ -150,84 +137,11 @@ public class Page extends AbstractPage<Page> implements TestablePage {
         return getFinder().findDeep(locator);
     }
 
-    /**
-     * Waits for a text to be not present.
-     *
-     * @return boolean true if success == text is not present. false otherwise.
-     */
-    @Deprecated
-    public boolean waitForIsNotTextDisplayedWithDelay(final String text, final int delayInSeconds) {
-        TimerUtils.sleep(delayInSeconds * 1000);
-        return waitForIsNotTextDisplayed(text);
-    }
-
     @Override
     protected void pageLoaded() {
         if (Testerra.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
             this.screenshotToReport();
         }
-    }
-
-    /**
-     * Waits for a text to be not present.
-     *
-     * @return boolean true if success == text is not present. false otherwise.
-     */
-    @Deprecated
-    public boolean waitForIsNotTextPresent(final String text) {
-        return anyElementContainsText(text).waitFor().present(false);
-    }
-
-    /**
-     * Waits for a text to be not displayed.
-     *
-     * @return boolean true if success == text is not present. false otherwise.
-     */
-    @Deprecated
-    public boolean waitForIsNotTextDisplayed(final String text) {
-        return anyElementContainsText(text).waitFor().displayed(false);
-    }
-
-    @Deprecated
-    public void assertIsTextPresent(String text, String description) {
-        assertIsTextPresent(text);
-    }
-
-    @Deprecated
-    public void assertIsTextDisplayed(String text, String description) {
-        assertIsTextDisplayed(text);
-    }
-
-    @Deprecated
-    public void assertIsTextPresent(String text) {
-        anyElementContainsText(text).expect().present().is(true);
-    }
-
-    @Deprecated
-    public void assertIsTextDisplayed(String text) {
-        anyElementContainsText(text).expect().displayed().is(true);
-    }
-
-    @Deprecated
-    public void assertIsNotTextPresent(String text) {
-        anyElementContainsText(text).expect().present().is(false);
-    }
-
-    @Deprecated
-    public void assertIsNotTextDisplayed(String text) {
-        try {
-            anyElementContainsText(text).expect().displayed().is(false);
-        } catch (AssertionError error) {
-            if (error.getCause() instanceof ElementNotFoundException) {
-                // ignore this
-            } else {
-                throw error;
-            }
-        }
-    }
-
-    private TestableUiElement anyElementContainsText(String text) {
-        return this.getFinder().findDeep(XPath.from("*").text().contains(text));
     }
 
     @Override

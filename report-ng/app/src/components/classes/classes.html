@@ -21,6 +21,7 @@
 
 <template>
     <require from="../../value-converters/chip-name-value-converter"></require>
+    <require from="./classes-table"></require>
 
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
@@ -99,121 +100,16 @@
 
             <mdc-layout-grid-cell span="12">
                 <mdc-linear-progress if.bind="_loading" open="true"></mdc-linear-progress>
-                <mdc-data-table class="w100"
-                                if.bind="_filteredMethodDetails.length > 0 && !_loading"
-                >
-                    <table>
 
-                        <thead>
-                        <th class="status-column centered-text">Status (${_uniqueStatuses})</th>
-                        <th class="mdc-data-table__header-cell" click.delegate="_sortByRunIndex()">
-                            <div class="mdc-data-table__header-cell-wrapper">
-                                <div class="mdc-data-table__header-cell-label">Run index</div>
-                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">
-                                    arrow_upward
-                                </button>
-                            </div>
-                        </th>
-                        <th class="mdc-data-table__header-cell" click.delegate="_sortByClass()">
-                            <div class="mdc-data-table__header-cell-wrapper">
-                                <div class="mdc-data-table__header-cell-label">Class (${_uniqueClasses})</div>
-                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">
-                                    arrow_upward
-                                </button>
-                            </div>
-                        </th>
-                        <th class="mdc-data-table__header-cell" click.delegate="_sortByMethod()">
-                            <div class="mdc-data-table__header-cell-wrapper">
-                                <div class="mdc-data-table__header-cell-label">Method
-                                    (${_filteredMethodDetails.length})
-                                </div>
-                                <button class="mdc-icon-button material-icons mdc-data-table__sort-icon-button">
-                                    arrow_upward
-                                </button>
-                            </div>
-                        </th>
-                        <!--                        <th>Failure Aspect (${_uniqueFailureAspects})</th>-->
-                        </thead>
-                        <tbody>
-                        <tr repeat.for="methodDetails of _filteredMethodDetails">
-                            <td class="p1 centered-text">
-                                <a class="badge status-${methodDetails.methodContext.resultStatus|statusClass}">${methodDetails.methodContext.resultStatus | statusName}</a>
-                            </td>
-                            <td class="run-index-cell">${methodDetails.methodContext.methodRunIndex}</td>
-                            <td class="p1 wrapable">
-                                <a innerhtml.bind="methodDetails.classStatistics.classIdentifier|className:1|highlightText:_searchInput"
-                                   route-href="route: tests; params.bind: withQueryParams({class: methodDetails.classStatistics.classIdentifier})"
-                                ></a>
-                            </td>
-                            <td class="p1 wrapable" mdc-body1>
+                <classes-table  sort-by-run-index.call="_sortByRunIndex()"
+                                sort-by-class.call="_sortByClass()"
+                                sort-by-method.call="_sortByMethod()"
+                                unique-statuses.bind="_uniqueStatuses"
+                                unique-classes.bind="_uniqueClasses"
+                                search-input.bind="_searchInput"
+                                filtered-method-details.bind="_filteredMethodDetails"
+                ></classes-table>
 
-                                <!-- Method name -->
-                                <div class="vcenter">
-                                    <mdc-icon class="sr1">read_more</mdc-icon>
-                                    <a innerhtml.bind="methodDetails.identifier|highlightText:_searchInput"
-                                       route-href="route: method; params.bind: {methodId: methodDetails.methodContext.contextValues.id}"
-                                    ></a>
-                                    <method-tags class="sl1" details.bind="methodDetails"></method-tags>
-                                </div>
-
-                                <!-- Failure aspect -->
-                                <div class="st1"
-                                     mdc-body2
-                                     repeat.for="failureAspect of methodDetails.failureAspects"
-                                >
-                                    <class-name-markup highlight.bind="_searchInput"
-                                                       namespace.bind="failureAspect.relevantCause.className">:
-                                    </class-name-markup>
-                                    <span
-                                        innerhtml.bind="failureAspect.message|htmlEscape|highlightText:_searchInput"></span>
-                                </div>
-
-                                <!-- List of @Fails details -->
-                                <div class="flex vcenter"
-                                     if.bind="methodDetails.failsAnnotation.description || methodDetails.failsAnnotation.ticketString"
-                                >
-                                    <mdc-icon
-                                        class="colored-icon status-${methodDetails.methodContext.resultStatus|statusClass}">
-                                        highlight_off
-                                    </mdc-icon>
-                                    <ul class="mdc-list mdc-list--dense" mdc-caption>
-                                        <li class="mdc-custom-list-item"
-                                            if.bind="methodDetails.failsAnnotation.description&&7!= methodDetails.methodContext.resultStatus">
-                                            <span
-                                                innerhtml.bind="methodDetails.failsAnnotation.description|highlightText:_searchInput"></span>
-                                        </li>
-                                        <li class="mdc-custom-list-item"
-                                            if.bind="methodDetails.failsAnnotation.ticketString&&7!= methodDetails.methodContext.resultStatus">
-                                            Ticket:&nbsp;<a href="${methodDetails.failsAnnotation.ticketString}"
-                                                            innerhtml.bind="methodDetails.failsAnnotation.ticketString|highlightText:_searchInput"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <!-- List of prompted messages -->
-                                <div class="flex vcenter"
-                                     if.bind="methodDetails.promptLogs.length > 0"
-                                >
-                                    <mdc-icon>speaker_notes</mdc-icon>
-                                    <ul class="mdc-list mdc-list--dense" mdc-caption>
-                                        <li class="mdc-custom-list-item"
-                                            repeat.for="logMessage of methodDetails.promptLogs">
-                                            <span
-                                                innerhtml.bind="logMessage.message|html|highlightText:_searchInput"></span>
-                                        </li>
-                                    </ul>
-                                    <div>
-                                        <div mdc-body2 repeat.for="logMessage of methodDetails.promptLogs">
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </mdc-data-table>
                 <alert if.bind="!_loading && !_filteredMethodDetails.length">
                     <div style="display: grid;">
                         <div class="flex">

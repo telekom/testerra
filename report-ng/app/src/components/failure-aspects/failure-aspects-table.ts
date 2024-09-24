@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2022, Clemens Große, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,8 +19,22 @@
  * under the License.
  */
 
-package io.testerra.report.test.pages;
+import {autoinject, bindable} from "aurelia-framework";
+import {FailureAspectStatistics} from "../../services/statistic-models";
+import {bindingMode} from "aurelia-binding";
+import {StatusConverter} from "../../services/status-converter";
 
-public enum ReportSidebarPageType {
-    DASHBOARD, TESTS, FAILURE_ASPECTS, LOGS, THREADS, PRINT_REPORT
+@autoinject()
+export class FailureAspectsTable {
+    @bindable({defaultBindingMode: bindingMode.toView})
+    private filteredFailureAspects: FailureAspectStatistics[];
+
+
+    @bindable({defaultBindingMode: bindingMode.toView})
+    private searchRegexp: RegExp;
+
+    constructor(
+        private _statusConverter:StatusConverter
+    ) {
+    }
 }

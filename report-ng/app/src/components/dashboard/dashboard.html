@@ -21,8 +21,10 @@
 
 <template>
   <require from="../test-duration-card/test-duration-card"></require>
-  <require from="../test-results-card/test-results-card"></require>
+  <require from="../test-results-chart/test-results-chart"></require>
   <require from="../test-classes-card/test-classes-card"></require>
+    <require from="../test-results-list/test-results-list"></require>
+
     <mdc-linear-progress if.bind="_loading" open="true"></mdc-linear-progress>
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
@@ -30,33 +32,10 @@
                 <mdc-card>
                     <div mdc-subtitle2 class="card-headline">Tests: ${_executionStatistics.overallTestCases}</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-list single-selection
-                              class="p0"
-                    >
-                        <mdc-list-item repeat.for="item of _filterItems"
-                                       click.delegate="_resultItemClicked(item)"
-                                       activated.bind="item.status === _filter.status"
-                                       two-line
-                        >
-                            <mdc-icon mdc-list-item-leading
-                                      class="colored-icon status-${item.status|statusClass}"
-                                      title="${item.status|statusName}"
-                            >${item.status|statusIconName}</mdc-icon>
-                            <mdc-list-item-primary-text>
-                                <span class="item-label"
-                                      repeat.for="count of item.counts"
-                                      innerhtml="${count}"
-                                      if.bind="count!=null"
-                                ></span>
-                            </mdc-list-item-primary-text>
-                            <mdc-list-item-secondary-text>
-                                <span class="item-label"
-                                      repeat.for="label of item.labels"
-                                      innerhtml="${label}"
-                                      if.bind="label"
-                                ></span></mdc-list-item-secondary-text>
-                        </mdc-list-item>
-                    </mdc-list>
+                    <test-results-list filter.bind="_filter"
+                                            execution-statistics.bind="_executionStatistics"
+                                            set-filter.call="_setFilter(filter, updateUrl)">
+                    </test-results-list>
                 </mdc-card>
                 <test-duration-card class="mt1"
                                     start.bind="_executionStatistics.executionAggregate.executionContext.contextValues.startTime"
@@ -64,11 +43,15 @@
                 ></test-duration-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
-                <test-results-card filter.bind="_filter"
-                                   execution-statistics.bind="_executionStatistics"
-                                   class=""
-                                   piece-clicked.delegate="_piePieceClicked($event)"
-                ></test-results-card>
+                <mdc-card class.bind="class">
+                    <div mdc-subtitle2 class="card-headline">Breakdown</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <test-results-chart filter.bind="_filter"
+                                       execution-statistics.bind="_executionStatistics"
+                                       piece-clicked.delegate="_piePieceClicked($event)"
+                    ></test-results-chart>
+                </mdc-card>
+
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="6">
                 <mdc-card>

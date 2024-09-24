@@ -1,0 +1,105 @@
+/*!
+ * Testerra
+ *
+ * (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+@media print {
+    body {
+        width: 1920px;
+    }
+
+    .grid-cell-small {
+        grid-column: span 2; // grid layout might have a different size than grids in print version which is why we need to adjust the grid spans
+    }
+
+    @supports (-moz-appearance: none){
+        .grid-cell-small {
+            grid-column: span 3;    // Firefox-specific grid because Firefox ignores the width settings and messes up the layout
+        }
+    }
+
+    body {      // force background graphics for browser print preview according to: https://excessivelyadequate.com/posts/print.html
+        -webkit-print-color-adjust: exact;      // Chrome/Safari/Edge/Opera
+        color-adjust: exact;                    // Firefox
+    }
+}
+
+@media screen {
+    #printable-body {
+        pointer-events: none;
+        width: 1080px; // necessary to have nearly same width as A4 pages
+    }
+
+    .grid-cell-small {      // grid layout breakpoints cause problems if not dynamically adapted: https://m2.material.io/design/layout/responsive-layout-grid.html#columns-gutters-and-margins
+        @media (max-width: 600px) {
+            grid-column: span 1;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
+        }
+
+        @media (min-width: 600px) {
+            grid-column: span 2;    // grid layout in iframe depends on screen width which is why we need to adjust the grid spans;
+        }
+
+        @media (min-width: 905px) {
+            grid-column: span 3;
+        }
+    }
+
+    .print-card:last-of-type {
+        padding-bottom: 16px;
+    }
+}
+
+.container { // use this styling instead of mdc grid because the spans of the grid are changing depending on print/iFrame and mess up the layout
+    display: flex;
+    flex-direction: column;
+
+    .row {
+        display: flex;
+        align-items: flex-start;
+
+        p {
+            margin-right: 16px;
+            min-width: 150px;
+        }
+    }
+}
+
+.print-card {
+    margin: 16px;
+}
+
+.result-headline {
+    padding-left: 24px;
+}
+
+.printable-card-headline {
+    color: black;
+}
+
+.borders {      // this will imitate the borders around the tables
+    border-radius: var(--mdc-shape-medium, 4px);
+    border-color: rgba(0, 0, 0, 0.12);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.print-divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    margin: 0;
+}

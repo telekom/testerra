@@ -90,15 +90,6 @@ export class FailureAspects extends AbstractViewModel {
         });
     }
 
-    private _calcFontSize(index:number) {
-        const min = 1;
-        const max = 3;
-        const count = Math.min(10, this._filteredFailureAspects.length);
-        let size = ((count-index)/count) * max;
-        if (size < min) size = min;
-        return size;
-    }
-
     private _showExpectedFailedChanged() {
         this._filter();
     }

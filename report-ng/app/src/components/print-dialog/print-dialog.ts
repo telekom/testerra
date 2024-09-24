@@ -137,6 +137,7 @@ export class PrintDialog {
 
     private _print() {
         const iframe = document.getElementById('iframe') as HTMLIFrameElement;
+        document.title = this._title;       // this modifies the file title that is proposed by the browser if we want to save the file as a PDF
         iframe.contentWindow.print();
     }
 

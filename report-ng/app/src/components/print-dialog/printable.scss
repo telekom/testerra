@@ -33,6 +33,11 @@
             grid-column: span 3;    // Firefox-specific grid because Firefox ignores the width settings and messes up the layout
         }
     }
+
+    body {      // force background graphics for browser print preview according to: https://excessivelyadequate.com/posts/print.html
+        -webkit-print-color-adjust: exact;      // Chrome/Safari/Edge/Opera
+        color-adjust: exact;                    // Firefox
+    }
 }
 
 @media screen {

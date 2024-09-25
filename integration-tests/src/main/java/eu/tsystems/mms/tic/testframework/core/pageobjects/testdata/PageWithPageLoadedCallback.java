@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2024, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -21,21 +21,24 @@
  */
 package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import org.openqa.selenium.WebDriver;
 
-public class PageWithNonCheckableCheck extends Page {
+/**
+ * Created on 2024-09-23
+ *
+ * @author mgn
+ */
+public class PageWithPageLoadedCallback extends Page {
 
-    @Check
-    private String string = "";
+    public boolean isLoaded = false;
 
-    /**
-     * Constructor for existing sessions.
-     *
-     * @param driver .
-     */
-    public PageWithNonCheckableCheck(WebDriver driver) {
-        super(driver);
+    public PageWithPageLoadedCallback(WebDriver webDriver) {
+        super(webDriver);
+    }
+
+    @Override
+    public void pageLoaded() {
+        this.isLoaded = true;
     }
 }

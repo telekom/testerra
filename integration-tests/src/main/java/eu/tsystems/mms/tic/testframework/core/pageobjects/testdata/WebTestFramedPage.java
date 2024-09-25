@@ -50,7 +50,6 @@ public class WebTestFramedPage extends Page {
      */
     public WebTestFramedPage(WebDriver driver) {
         super(driver);
-        checkPage();
     }
 
     public void clickOnField() {

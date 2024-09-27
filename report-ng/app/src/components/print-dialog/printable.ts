@@ -48,6 +48,7 @@ export class Printable extends AbstractViewModel {
     private _ended: number;
     private _browserString: string;
     private _sessions: number;
+    private _runConfig: string;
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
@@ -75,6 +76,7 @@ export class Printable extends AbstractViewModel {
             this._started = this._executionStatistics.executionAggregate.executionContext.contextValues.startTime;
             this._ended = this._executionStatistics.executionAggregate.executionContext.contextValues.endTime;
             this._duration = this._ended - this._started;
+            this._runConfig = this._executionStatistics.executionAggregate.executionContext.runConfig.runcfg;
 
             let browsers: string[] = [];
 

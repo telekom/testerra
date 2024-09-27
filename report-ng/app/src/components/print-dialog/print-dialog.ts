@@ -22,6 +22,11 @@
 import {autoinject, observable} from 'aurelia-framework';
 import {MdcDialog} from '@aurelia-mdc-web/dialog';
 import './print-dialog.scss';
+import {StatisticsGenerator} from "../../services/statistics-generator";
+import {ExecutionStatistics} from "../../services/statistic-models";
+import {
+    IntlDateFormatValueConverter
+} from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
 
 @autoinject()
 export class PrintDialog {
@@ -44,6 +49,7 @@ export class PrintDialog {
     ];
     @observable private _selectedFailureAspectFilter = 0;
     @observable private _selectedTestFilter = 0;
+    private _executionStatistics: ExecutionStatistics;
 
     private readonly _checkboxOptions: ICheckBoxOption[] = [
         {label: 'Test Classes Table', checked: true, id: "test-classes-table"},
@@ -52,7 +58,9 @@ export class PrintDialog {
     ];
 
     constructor(
-        private _dialog: MdcDialog
+        private _dialog: MdcDialog,
+        private _statisticsGenerator: StatisticsGenerator,
+        private readonly _dateFormatter: IntlDateFormatValueConverter,
     ) {
     }
 
@@ -62,9 +70,14 @@ export class PrintDialog {
     }
 
     attached() {
+        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
+            this._executionStatistics = executionStatistics;
+        })
+
         const iframe = document.getElementById('iframe') as HTMLIFrameElement;
         iframe.onload = () => {
             this._iFrameDoc = iframe.contentDocument || iframe.contentWindow.document;
+            this._iFrameDoc.title = "Test report " + this._title;    // sets header in browser print preview
             this._iFrameDoc.addEventListener('scroll', this.handleScrollEvent.bind(this))
 
             setTimeout(() => {      // make sure iFrame is fully loaded
@@ -137,7 +150,9 @@ export class PrintDialog {
 
     private _print() {
         const iframe = document.getElementById('iframe') as HTMLIFrameElement;
-        document.title = this._title;       // this modifies the file title that is proposed by the browser if we want to save the file as a PDF
+        const executionContext = this._executionStatistics.executionAggregate.executionContext;
+        const date = this._dateFormatter.toView(executionContext.contextValues.startTime, "print").replaceAll(',', '_').replaceAll(':', '-').replaceAll('/', '-').replaceAll(' ', '')
+        document.title = "Testreport_" + this._title + "_" + executionContext.runConfig.runcfg + "_" + date;       // modifies the file title that is proposed by the browser if we want to save the file as a PDF
         iframe.contentWindow.print();
     }
 

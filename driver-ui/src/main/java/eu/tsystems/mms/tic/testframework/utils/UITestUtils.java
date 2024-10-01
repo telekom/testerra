@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -78,7 +79,6 @@ public class UITestUtils implements WebDriverManagerProvider {
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
     private static final IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);
-    private static final int IE_SCREENSHOT_LIMIT = 1200;
 
     @Deprecated
     private UITestUtils() {
@@ -207,28 +207,16 @@ public class UITestUtils implements WebDriverManagerProvider {
     }
 
     public static void takeWebDriverScreenshotToFile(WebDriver decoratedWebDriver, File screenShotTargetFile) {
-        /*
-         * The ChromeDriver doesn't support Screenshots of a large Site currently (Selenium 2.44), only the viewport ist
-         * captured. To allow full-page screenshots, we stitch several viewport-screenshots together.
-         * If this is eventually supported by WebDriver, this special branch can be removed.
-         */
-        if (Browsers.ie.equalsIgnoreCase(WEB_DRIVER_MANAGER.getRequestedBrowser(decoratedWebDriver).orElse(null))) {
-            Rectangle viewport = new JSUtils().getViewport(decoratedWebDriver);
-
-            if (viewport.height > IE_SCREENSHOT_LIMIT) {
-                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + IE_SCREENSHOT_LIMIT);
-                return;
-            }
-        }
-
-        // take screenshot
         makeSimpleScreenshot(decoratedWebDriver, screenShotTargetFile);
     }
 
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        try {
-            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.moveFile(file, screenShotTargetFile);
+        // Using FileOutputStream prevents from file permission issues on -ix systems:
+        // '((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)' creates files with user-only permissions
+        // Moving the file with latest org.apache.commons.io.FileUtils does not change permissions any more
+        try (OutputStream os = new FileOutputStream(screenShotTargetFile)) {
+            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            os.write(screenshot);
         } catch (Exception e) {
             LOGGER.error("Unable to take screenshot to file", e);
         }
@@ -237,7 +225,7 @@ public class UITestUtils implements WebDriverManagerProvider {
     /**
      * Save page source to file.
      *
-     * @param pageSource page source.
+     * @param pageSource       page source.
      * @param sourceTargetFile target file.
      */
     private static void savePageSource(final String pageSource, final File sourceTargetFile) {

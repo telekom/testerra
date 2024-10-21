@@ -41,45 +41,26 @@
                             title="Close dialog"></button>
 
                     <mdc-dialog-content>
-                        <p class="headline-label">Test Classes</p>
-                        <div class="checkbox-div">
-                            <mdc-checkbox change.delegate="_selectionChanged(_checkboxOptions[0])"
-                                          checked.bind="_checkboxOptions[0].checked"
-                                          id="checkbox-0"></mdc-checkbox>
-                            <p style="margin: 8px 8px;">${_checkboxOptions[0].label}</p>
-                        </div>
-
-                        <p class="headline-label">Failure Aspects</p>
-                        <div class="checkbox-div">
-                            <mdc-checkbox change.delegate="_selectionChanged(_checkboxOptions[1])"
-                                          checked.bind="_checkboxOptions[1].checked"
-                                          id="checkbox-1"></mdc-checkbox>
-                            <p style="margin: 8px 8px;">${_checkboxOptions[1].label}</p>
-                        </div>
-
-                        <div class="form-container">
-                            <div class="radio-div" repeat.for="filter of _failureAspectFilters">
-                                <mdc-radio checked.bind="_selectedFailureAspectFilter" disabled.bind="!_checkboxOptions[1].checked"
-                                           model.bind="filter.id"></mdc-radio>
-                                <p style="margin: 8px 8px;">${filter.name}</p>
+                        <div repeat.for="option of _checkboxOptions">
+                            <p class="headline-label">${option.label}</p>
+                            <div class="checkbox-div">
+                                <mdc-checkbox change.delegate="_checkboxSelectionChanged(option)"
+                                              checked.bind="option.checked"
+                                ></mdc-checkbox>
+                                <p style="margin: 8px 8px;">${option.label}</p>
                             </div>
-                        </div>
 
-                        <p class="headline-label">Tests</p>
-                        <div class="checkbox-div">
-                            <mdc-checkbox change.delegate="_selectionChanged(_checkboxOptions[2])"
-                                          checked.bind="_checkboxOptions[2].checked"
-                                          id="checkbox-2"></mdc-checkbox>
-                            <p style="margin: 8px 8px;">${_checkboxOptions[2].label}</p>
-                        </div>
-
-                        <div class="form-container">
-                            <div class="radio-div" repeat.for="filter of _testFilters">
-                                <mdc-radio checked.bind="_selectedTestFilter"
-                                           disabled.bind="!_checkboxOptions[2].checked"
-                                           model.bind="filter.id"
-                                           mdc-tooltip="value.bind:filter.tooltip"></mdc-radio>
-                                <p style="margin: 8px 8px;">${filter.name}</p>
+                            <!-- Check if the option has filters and display them as radio buttons -->
+                            <div class="form-container" if.bind="option.filter && option.filter.length">
+                                <div class="radio-div" repeat.for="filter of option.filter">
+                                    <mdc-radio disabled.bind="!option.checked"
+                                               model.bind="filter"
+                                               mdc-tooltip="value.bind:filter.tooltip"
+                                               change.delegate="_radioSelectionChanged(option, filter)"
+                                               checked.bind="_dynamicFilter[option.id]"
+                                    ></mdc-radio>
+                                    <p style="margin: 8px 8px;">${filter.name}</p>
+                                </div>
                             </div>
                         </div>
 

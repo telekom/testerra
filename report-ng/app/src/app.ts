@@ -168,13 +168,8 @@ export class App {
             currentPath = currentPath.slice(0, index + 2);
         }
         
-        this._dialogService.open({ viewModel: PrintDialog, model: <IPrintable>{ title: this._router.title, iFrameSrc: currentPath + "printable"}});
+        this._dialogService.open({ viewModel: PrintDialog, model: { title: this._router.title, iFrameSrc: currentPath + "printable"}});
     }
-}
-
-export interface IPrintable {
-    title: string,
-    iFrameSrc: string
 }
 
 

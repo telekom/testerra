@@ -38,24 +38,32 @@ export class PrintDialog {
     private _totalPages = 1;
     private _pagesCalculated = false;   // necessary otherwise total pages will be added up if window is resized
     private _pageArray = [0, 0];
-    private _failureAspectFilters: IFilter[] = [
-        {id: 0, name: "All"},
-        {id: 1, name: "Major"},
-        {id: 2, name: "Minor"}
-    ];
-    private _testFilters: IFilter[] = [
-        {id: 0, name: "All", tooltip: "Included status: Passed, Failed, Expected Failed, Skipped"},
-        {id: 1, name: "Failed", tooltip: "Included status: Failed, Expected Failed, Skipped"},
-    ];
-    @observable private _selectedFailureAspectFilter = 0;
-    @observable private _selectedTestFilter = 0;
     private _executionStatistics: ExecutionStatistics;
 
-    private readonly _checkboxOptions: ICheckBoxOption[] = [
+    // reference values adapted by hand - calculation base for transformation
+    private static readonly REFERENCE_HEIGHT = 527.25;
+    private static readonly REFERENCE_SCALE = 0.3125;
+    private static readonly A4_SCALE_VALUE = 0.9125;    // value estimated througth testing
+
+    private readonly _checkboxOptions: ICheckBoxOption[] = [        // Note: id is always the html-id that can be checked in printable.html. It is used to display or hide the components.
         {label: 'Test Classes Table', checked: true, id: "test-classes-table"},
-        {label: 'Failure Aspects Table', checked: true, id: "failure-aspects-card"},
-        {label: 'Test Case List', checked: true, id: "classes-table-card"}
+        {label: 'Failure Aspects Table', checked: true, id: "failure-aspects-card",
+            filter: [
+                {id: "failure-aspects-table", name: "All", tooltip: "Displays all Failure Aspects"},
+                {id: "failure-aspects-table-major", name: "Major", tooltip: "Failure aspect affects end status"},
+                {id: "failure-aspects-table-minor", name: "Minor", tooltip: "Failure aspect does not affect end status"}
+            ]},
+        {label: 'Test Case List', checked: true, id: "classes-table-card",
+            filter: [
+                {id: "classes-table", name: "All", tooltip: "Included status: Passed, Failed, Expected Failed, Skipped"},
+                {id: "classes-table-failed", name: "Failed", tooltip: "Included status: Failed, Expected Failed, Skipped"},
+            ]}
     ];
+
+    private _dynamicFilter = {      // Needs to be used to bind the selected filter to the radio button. Default values are the first filter value per CheckboxOption.
+        'failure-aspects-card': this._checkboxOptions[1].filter[0],
+        'classes-table-card': this._checkboxOptions[2].filter[0]
+    };
 
     constructor(
         private _dialog: MdcDialog,
@@ -116,7 +124,7 @@ export class PrintDialog {
             styleElement.textContent = `
             @media screen {
                 #printable-body {
-                    transform: scale(${this._calculateScale(iFrameHeight)});     /* scale content inside iFrame to fit new iFrame size */ 
+                    transform: scale(${(PrintDialog.REFERENCE_SCALE / PrintDialog.REFERENCE_HEIGHT) * iFrameHeight});     /* scale content inside iFrame to fit new iFrame size */ 
                     transform-origin: top left;     /* necessary because scaling will always cause gaps */
                     margin-bottom: -100000px;       /* setting the margin high enough - it will detect the end of the last element automatically and is more reliable than estimated calculation */
                 }
@@ -173,59 +181,21 @@ export class PrintDialog {
         }
     }
 
-    private _selectionChanged(item) {
-        const iFrameElement = this._iFrameDoc.getElementById(item.id)
-        iFrameElement.style.display = item.checked ? "" : "none";
+    private _checkboxSelectionChanged(option) {
+        const iFrameElement = this._iFrameDoc.getElementById(option.id)
+        iFrameElement.style.display = option.checked ? "" : "none";
 
         this._calculateTotalPages();
     }
 
-    private _calculateScale(height: number): number {
-        // reference values adapted by hand - calculation base for transformation
-        const referenceHeight = 527.25;
-        const referenceScale = 0.3125;
+    private _radioSelectionChanged(option: ICheckBoxOption, filter: IFilter) {
+        option.filter.forEach(optionFilter => {
+            const table = this._iFrameDoc.getElementById(optionFilter.id);
+            table.style.display = "none"
+        });      // Set all tables to hidden
 
-        // calculate scaling based on height
-        return (referenceScale / referenceHeight) * height;
-    }
+        this._iFrameDoc.getElementById(filter.id).style.display = "";   // set only this table visible
 
-    private _selectedFailureAspectFilterChanged(newValue: string, oldValue: string) {
-
-        if (oldValue == "0" || oldValue == "1" || oldValue == "2") {
-            const table = this._iFrameDoc.getElementById("failure-aspects-table");
-            const tableMajor = this._iFrameDoc.getElementById("failure-aspects-table-major");
-            const tableMinor = this._iFrameDoc.getElementById("failure-aspects-table-minor");
-
-            const tables = {
-                "0": table,
-                "1": tableMajor,
-                "2": tableMinor
-            };
-
-            this._setTableVisibility(tables, newValue);
-        }
-    }
-
-    private _selectedTestFilterChanged(newValue: string, oldValue: string) {
-        if (oldValue == "0" || oldValue == "1") {
-            const table = this._iFrameDoc.getElementById("classes-table");
-            const tableFailed = this._iFrameDoc.getElementById("classes-table-failed");
-
-            const tables = {
-                "0": table,
-                "1": tableFailed
-            };
-
-            this._setTableVisibility(tables, newValue);
-        }
-    }
-
-    private _setTableVisibility(tables: Object, newValue){
-        Object.values(tables).forEach(tbl => tbl.style.display = "none");      // Set all tables to hidden
-
-        if (tables[newValue]) {
-            tables[newValue].style.display = "";      // Remove style attribute from the selected table to show it
-        }
         this._calculateTotalPages();
     }
 
@@ -235,8 +205,8 @@ export class PrintDialog {
         this._totalPages = 1;
         this._pageArray = [0,0];
 
-        // Calculate the height of an A4 page in pixels, considering margins/borders in browser print version (value estimated through testing)
-        const a4inPixels = document.getElementById("iframe").getBoundingClientRect().height * 0.9125;
+        // Calculate the height of an A4 page in pixels, considering margins/borders in browser print version
+        const a4inPixels = document.getElementById("iframe").getBoundingClientRect().height * PrintDialog.A4_SCALE_VALUE;
 
         // Initialize pixel tracker and add space for header, headline and report information card
         let pixels = this._iFrameDoc.getElementById("print-card").getBoundingClientRect().bottom
@@ -300,11 +270,12 @@ export class PrintDialog {
 type ICheckBoxOption = {
     label: string,
     checked: boolean,
-    id: string
+    id: string,
+    filter?: IFilter[]
 }
 
 interface IFilter {
-    id: number;
+    id: string;
     name: string;
     tooltip?: string;
 }

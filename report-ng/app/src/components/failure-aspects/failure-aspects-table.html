@@ -27,6 +27,7 @@
             <thead>
             <th class="centered-text">Rank</th>
             <th class="w75">Failure Aspect</th>
+            <th class="centered-text">Type</th>
             <th>Status</th>
             </thead>
             <tbody>
@@ -44,6 +45,7 @@
                         <span
                             innerhtml.bind="failureAspect.message | htmlEscape | highlightText:searchRegexp"></span></a>
                 </td>
+                <td class="centered-text">${failureAspect.isMinor ? "Minor" : "Major"}</td>
                 <td>
                     <div class="mt1 mb1" repeat.for="status of failureAspect.availableStatuses">
                         <a class="badge status-${status|statusClass}"

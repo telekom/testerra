@@ -122,7 +122,7 @@ export class Printable extends AbstractViewModel {
                             if (methodDetails.methodContext.resultStatus != ResultStatusType.PASSED_RETRY && methodDetails.methodContext.resultStatus != ResultStatusType.FAILED_RETRIED && methodDetails.methodContext.resultStatus != ResultStatusType.REPAIRED) {
                                 this._filteredMethodDetails.push(methodDetails);
 
-                                if(methodDetails.methodContext.resultStatus != ResultStatusType.PASSED){
+                                if (methodDetails.methodContext.resultStatus != ResultStatusType.PASSED) {
                                     this._filteredMethodDetailsFailed.push(methodDetails)
                                 }
                             }
@@ -156,5 +156,5 @@ export class Printable extends AbstractViewModel {
 
 interface IClassInformation {
     name: string;
-    data: { status: ResultStatusType, amount: number|string }[];
+    data: { status: ResultStatusType, amount: number | string }[];
 }

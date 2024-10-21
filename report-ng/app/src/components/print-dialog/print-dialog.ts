@@ -30,6 +30,11 @@ import {
 
 @autoinject()
 export class PrintDialog {
+    // reference values adapted by hand - calculation base for transformation
+    private static readonly REFERENCE_HEIGHT = 527.25;
+    private static readonly REFERENCE_SCALE = 0.3125;
+    private static readonly A4_SCALE_VALUE = 0.9125;    // value estimated througth testing
+
     private _title: string;
     private _iFrameSrc: string;
     private _iFrameDoc: Document | undefined;
@@ -40,24 +45,31 @@ export class PrintDialog {
     private _pageArray = [0, 0];
     private _executionStatistics: ExecutionStatistics;
 
-    // reference values adapted by hand - calculation base for transformation
-    private static readonly REFERENCE_HEIGHT = 527.25;
-    private static readonly REFERENCE_SCALE = 0.3125;
-    private static readonly A4_SCALE_VALUE = 0.9125;    // value estimated througth testing
-
     private readonly _checkboxOptions: ICheckBoxOption[] = [        // Note: id is always the html-id that can be checked in printable.html. It is used to display or hide the components.
         {label: 'Test Classes Table', checked: true, id: "test-classes-table"},
-        {label: 'Failure Aspects Table', checked: true, id: "failure-aspects-card",
+        {
+            label: 'Failure Aspects Table', checked: true, id: "failure-aspects-card",
             filter: [
                 {id: "failure-aspects-table", name: "All", tooltip: "Displays all Failure Aspects"},
                 {id: "failure-aspects-table-major", name: "Major", tooltip: "Failure aspect affects end status"},
                 {id: "failure-aspects-table-minor", name: "Minor", tooltip: "Failure aspect does not affect end status"}
-            ]},
-        {label: 'Test Case List', checked: true, id: "classes-table-card",
+            ]
+        },
+        {
+            label: 'Test Case List', checked: true, id: "classes-table-card",
             filter: [
-                {id: "classes-table", name: "All", tooltip: "Included status: Passed, Failed, Expected Failed, Skipped"},
-                {id: "classes-table-failed", name: "Failed", tooltip: "Included status: Failed, Expected Failed, Skipped"},
-            ]}
+                {
+                    id: "classes-table",
+                    name: "All",
+                    tooltip: "Included status: Passed, Failed, Expected Failed, Skipped"
+                },
+                {
+                    id: "classes-table-failed",
+                    name: "Failed",
+                    tooltip: "Included status: Failed, Expected Failed, Skipped"
+                },
+            ]
+        }
     ];
 
     private _dynamicFilter = {      // Needs to be used to bind the selected filter to the radio button. Default values are the first filter value per CheckboxOption.
@@ -98,9 +110,28 @@ export class PrintDialog {
         };
     }
 
-    detached(){
+    detached() {
         window.removeEventListener('resize', this._resizeFrame.bind(this));
         this._iFrameDoc?.removeEventListener('scroll', this.handleScrollEvent.bind(this));
+    }
+
+    handleScrollEvent() {
+        const pageOffset = this._iFrameDoc.scrollingElement.clientHeight / 2;   // use pixel offset to not use top of iframe as page indicator
+
+        // Find the current page based on scroll position and page boundaries
+        this._page = this._pageArray.findIndex((value, index) =>
+            this._iFrameDoc.scrollingElement.scrollTop + pageOffset >= value && (index === this._pageArray.length - 1
+                || this._iFrameDoc.scrollingElement.scrollTop + pageOffset < this._pageArray[index + 1])) + 1
+
+        // Set page to last page if scrolled to the bottom
+        if (Math.floor(this._iFrameDoc.scrollingElement.scrollTop) >= this._iFrameDoc.scrollingElement.scrollHeight - this._iFrameDoc.scrollingElement.clientHeight) {
+            this._page = this._totalPages;
+        }
+
+        // Set page to 1 if scrolled to the top (even though page indicator could be already on page 2 - see page offset)
+        if (this._iFrameDoc.scrollingElement.scrollTop == 0) {
+            this._page = 1;
+        }
     }
 
     private _resizeFrame() {
@@ -142,7 +173,7 @@ export class PrintDialog {
             this._iFrameDoc.head.appendChild(styleElement);
         }
 
-        if(!this._pagesCalculated){     // prevents that totalPages are calculated again and summed up if page is resized
+        if (!this._pagesCalculated) {     // prevents that totalPages are calculated again and summed up if page is resized
             this._calculateTotalPages();
             this.handleScrollEvent()
         }
@@ -164,7 +195,7 @@ export class PrintDialog {
         iframe.contentWindow.print();
     }
 
-    private _loadingChanged(){
+    private _loadingChanged() {
         // Workaround for if.bind and show.bind
         // if.bind cannot be used because it removes the elements from the DOM, but we need them for calculation
         // show.bind does not remove elements from the DOM, but it adds a class "aurelia-hide" which sets "display: none".
@@ -175,7 +206,7 @@ export class PrintDialog {
         const iFrameElement = document.getElementById("iframe");
         const pageOverlayElement = document.getElementById("page-overlay")
 
-        if(iFrameElement && pageOverlayElement){
+        if (iFrameElement && pageOverlayElement) {
             iFrameElement.classList.toggle("hide", this._loading);
             pageOverlayElement.style.visibility = this._loading ? "hidden" : "";
         }
@@ -199,11 +230,11 @@ export class PrintDialog {
         this._calculateTotalPages();
     }
 
-    private _calculateTotalPages(){
+    private _calculateTotalPages() {
         // Reset scroll position and initialize page count
         this._iFrameDoc.scrollingElement.scrollTop = 0;
         this._totalPages = 1;
-        this._pageArray = [0,0];
+        this._pageArray = [0, 0];
 
         // Calculate the height of an A4 page in pixels, considering margins/borders in browser print version
         const a4inPixels = document.getElementById("iframe").getBoundingClientRect().height * PrintDialog.A4_SCALE_VALUE;
@@ -214,23 +245,23 @@ export class PrintDialog {
 
         // Iterate through each checkbox option to calculate content height and check if they fill multiple pages
         this._checkboxOptions.forEach(option => {
-            if(option.checked){
+            if (option.checked) {
                 const elementHeight = this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height;
                 pixels += elementHeight;
 
                 let pageElementCount = 0;
 
                 // Check if the current content fits on the current page
-                if(pixels < a4inPixels){
+                if (pixels < a4inPixels) {
                     this._pageArray[this._totalPages] += this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height
                 }
 
                 // If content exceeds one page, split across multiple pages
-                while(pixels > a4inPixels){
+                while (pixels > a4inPixels) {
                     this._totalPages++;
-                    this._pageArray[this._totalPages] = this._pageArray[this._totalPages-1] + a4inPixels;
+                    this._pageArray[this._totalPages] = this._pageArray[this._totalPages - 1] + a4inPixels;
 
-                    if(pageElementCount == 0){
+                    if (pageElementCount == 0) {
                         pixels = elementHeight;     // Reset pixels to the current element's height
                     } else {
                         pixels -= a4inPixels;
@@ -239,31 +270,12 @@ export class PrintDialog {
                 }
 
                 // Add remaining height to the last page if split across multiple pages
-                if(pageElementCount > 0){
-                    this._pageArray[this._pageArray.length-1] = this._pageArray[this._pageArray.length-2] + this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height % a4inPixels;
+                if (pageElementCount > 0) {
+                    this._pageArray[this._pageArray.length - 1] = this._pageArray[this._pageArray.length - 2] + this._iFrameDoc.getElementById(option.id).getBoundingClientRect().height % a4inPixels;
                 }
             }
         })
         this._pagesCalculated = true;
-    }
-
-    handleScrollEvent() {
-        const pageOffset = this._iFrameDoc.scrollingElement.clientHeight / 2;   // use pixel offset to not use top of iframe as page indicator
-
-        // Find the current page based on scroll position and page boundaries
-        this._page = this._pageArray.findIndex((value, index) =>
-            this._iFrameDoc.scrollingElement.scrollTop + pageOffset >= value && (index === this._pageArray.length - 1
-                || this._iFrameDoc.scrollingElement.scrollTop + pageOffset < this._pageArray[index + 1])) + 1
-
-        // Set page to last page if scrolled to the bottom
-        if(Math.floor(this._iFrameDoc.scrollingElement.scrollTop) >= this._iFrameDoc.scrollingElement.scrollHeight - this._iFrameDoc.scrollingElement.clientHeight){
-            this._page = this._totalPages;
-        }
-
-        // Set page to 1 if scrolled to the top (even though page indicator could be already on page 2 - see page offset)
-        if(this._iFrameDoc.scrollingElement.scrollTop == 0){
-            this._page = 1;
-        }
     }
 }
 

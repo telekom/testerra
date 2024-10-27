@@ -19,3 +19,15 @@ message ExecutionAggregate {
 message LogMessageAggregate {
     map<string, LogMessage> log_messages = 1;
 }
+
+message HistoryAggregate {
+    ExecutionContext execution_context = 1;
+    map<string, SuiteContext> suite_contexts = 2;
+    map<string, TestContext> test_contexts = 3;
+    map<string, ClassContext> class_contexts = 4;
+    map<string, MethodContext> method_contexts = 5;
+}
+
+message History {
+    repeated HistoryAggregate entry = 1;
+}

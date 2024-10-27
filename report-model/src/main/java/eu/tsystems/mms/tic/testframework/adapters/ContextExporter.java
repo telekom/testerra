@@ -159,6 +159,54 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
+    public MethodContext.Builder buildHistoryMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
+        MethodContext.Builder builder = MethodContext.newBuilder();
+
+        ContextValues.Builder contextValuesBuilder = buildContextValues(methodContext);
+
+        methodContext.getTestNgResult().ifPresent(iTestResult -> {
+            String testName = methodContext.getName();
+            String methodName = iTestResult.getMethod().getMethodName();
+            // When the context name differs from the method name
+            if (!testName.equals(methodName)) {
+                // Set the context name to the method name
+                contextValuesBuilder.setName(methodName);
+                // And the test name to the actual generated test name
+                builder.setTestName(testName);
+            }
+        });
+
+        builder.setContextValues(contextValuesBuilder);
+
+        builder.setResultStatus(this.mapResultStatus(methodContext));
+        map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
+        List<Object> parameterValues = methodContext.getParameterValues();
+        for (int i = 0; i < parameterValues.size(); ++i) {
+            builder.putParameters(methodContext.getParameters()[i].getName(), parameterValues.get(i).toString());
+        }
+
+        methodContext.readAnnotations()
+                .forEach(annotation -> {
+                    report.getAnnotationConverter(annotation).ifPresent(annotationExporter -> {
+                        builder.putAnnotations(annotation.annotationType().getName(), this.convertObjectToJson(annotationExporter.toMap(annotation)));
+                    });
+                });
+
+        apply(methodContext.getRetryCounter(), builder::setRetryNumber);
+        apply(methodContext.getMethodRunIndex(), builder::setMethodRunIndex);
+
+        // test steps
+        methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(buildHistoryTestStep(testStep)));
+
+        builder.setClassContextId(methodContext.getClassContext().getId());
+
+        methodContext.readCustomContexts().forEach(customContext -> {
+            builder.putCustomContexts(customContext.getName(), this.convertObjectToJson(customContext.exportToReport(report)));
+        });
+
+        return builder;
+    }
+
     public File.Builder[] buildScreenshot(Screenshot screenshot) {
         File.Builder[] fileBuilders = new File.Builder[2];
 
@@ -248,11 +296,31 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
+    public ErrorContext.Builder buildHistoryErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
+        ErrorContext.Builder builder = ErrorContext.newBuilder();
+
+        traceThrowable(errorContext.getThrowable(), throwable -> {
+            builder.addStackTrace(this.buildStackTraceCause(throwable));
+        });
+        builder.setOptional(errorContext.isOptional());
+        apply(errorContext.getId(), builder::setId);
+        return builder;
+    }
+
     public TestStep.Builder buildTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep) {
         TestStep.Builder builder = TestStep.newBuilder();
 
         apply(testStep.getName(), builder::setName);
         testStep.readActions().forEach(testStepAction -> builder.addActions(buildTestStepAction(testStepAction)));
+
+        return builder;
+    }
+
+    public TestStep.Builder buildHistoryTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep) {
+        TestStep.Builder builder = TestStep.newBuilder();
+
+        apply(testStep.getName(), builder::setName);
+        testStep.readActions().forEach(testStepAction -> builder.addActions(buildHistoryTestStepAction(testStepAction)));
 
         return builder;
     }
@@ -314,6 +382,23 @@ public class ContextExporter implements Loggable {
                             || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
             ) {
                 actionBuilder.addEntries(entryBuilder);
+            }
+        });
+        return actionBuilder;
+    }
+
+    public TestStepAction.Builder buildHistoryTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction) {
+        TestStepAction.Builder actionBuilder = TestStepAction.newBuilder();
+
+        apply(testStepAction.getName(), actionBuilder::setName);
+        apply(testStepAction.getTimestamp(), actionBuilder::setTimestamp);
+
+        testStepAction.readEntries().forEach(entry -> {
+            TestStepActionEntry.Builder entryBuilder = TestStepActionEntry.newBuilder();
+            if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
+                eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) entry;
+                Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildHistoryErrorContext(errorContext));
+                optional.ifPresent(entryBuilder::setErrorContext);
             }
         });
         return actionBuilder;
@@ -490,6 +575,16 @@ public class ContextExporter implements Loggable {
                 builder.putFailureCorridorCounts(mapFailureCorridorClass(failureCorridorClass).getNumber(), count);
             }
         });
+
+        return builder;
+    }
+
+    public ExecutionContext.Builder buildHistoryExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
+        ExecutionContext.Builder builder = ExecutionContext.newBuilder();
+
+        apply(buildContextValues(executionContext), builder::setContextValues);
+        map(executionContext.getRunConfig(), this::buildRunConfig, builder::setRunConfig);
+        apply(executionContext.getEstimatedTestMethodCount(), builder::setEstimatedTestsCount);
 
         return builder;
     }

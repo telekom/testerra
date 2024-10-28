@@ -30,7 +30,7 @@ import org.openqa.selenium.WebDriver;
 public abstract class ReportHeader extends Page {
 
     @Check
-    private final UiElement title = find(By.xpath("//mdc-top-app-bar-title"));
+    protected final UiElement title = find(By.xpath("//mdc-top-app-bar-title"));
 
     public ReportHeader(WebDriver driver) {
         super(driver);

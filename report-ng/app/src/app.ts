@@ -29,6 +29,9 @@ import "./app.scss"
 import {StatisticsGenerator} from "./services/statistics-generator";
 import Logo from 'assets/logo.png'
 import IExecutionContext = data.ExecutionContext;
+import {MdcDialogService} from "@aurelia-mdc-web/dialog";
+import {PrintDialog} from "./components/print-dialog/print-dialog";
+PLATFORM.moduleName('./components/print-dialog/print-dialog')   // necessary to display dialog according to https://discourse.aurelia.io/t/solved-error-cannot-determine-default-view-strategy-for-object/3589/5
 
 @autoinject()
 export class App {
@@ -42,6 +45,7 @@ export class App {
         private _dataLoader: DataLoader,
         private _statistics: StatisticsGenerator,
         private _statusConverter: StatusConverter,
+        private _dialogService: MdcDialogService
     ) {
     }
 
@@ -128,13 +132,13 @@ export class App {
                 nav: true,
                 title: 'Timings'
             },
-            // {
-            //     route: 'timings',
-            //     name: 'Timings',
-            //     moduleId: PLATFORM.moduleName('components/timings'),
-            //     nav: true,
-            //     title: 'Timings'
-            // },
+            {
+                route: 'printable',
+                name: 'printable',
+                moduleId: PLATFORM.moduleName('components/print-dialog/printable'),
+                nav: true,
+                title: 'printable'
+            },
             // {
             //     route: 'jvm-monitor',
             //     name: 'JVM Monitor',
@@ -152,6 +156,19 @@ export class App {
             this._router.navigateToRoute(nav);
         }
         this._drawer.open = false;
+    }
+
+    private _printButtonClicked() {     // work around to get correct iframe source
+        let currentPath = window.location.href;
+
+        if (!currentPath.includes("#/")) {
+            currentPath = currentPath.concat("#/");
+        } else if (!currentPath.endsWith("#/")) {   // if we are not on dashboard, we need to cut off the active path
+            const index = currentPath.indexOf("#/");
+            currentPath = currentPath.slice(0, index + 2);
+        }
+        
+        this._dialogService.open({ viewModel: PrintDialog, model: { title: this._router.title, iFrameSrc: currentPath + "printable"}});
     }
 }
 

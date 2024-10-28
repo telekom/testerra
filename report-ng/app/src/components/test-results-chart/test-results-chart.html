@@ -20,10 +20,6 @@
   -->
 
 <template>
-  <mdc-card class.bind="class">
-    <div mdc-subtitle2 class="card-headline">Breakdown</div>
-    <mdc-list-divider></mdc-list-divider>
-      <apex-chart if.bind="!_apexPieOptions" data.bind="_skeletonOptions" class="pulsating"></apex-chart>
-      <apex-chart data.bind="_apexPieOptions" selection.bind="_selection"></apex-chart>
-  </mdc-card>
+    <apex-chart if.bind="!_apexPieOptions" data.bind="_skeletonOptions" class="pulsating"></apex-chart>
+    <apex-chart data.bind="_apexPieOptions" selection.bind="_selection"></apex-chart>
 </template>

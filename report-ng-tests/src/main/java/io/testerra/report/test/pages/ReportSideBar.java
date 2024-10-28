@@ -45,6 +45,9 @@ public abstract class ReportSideBar extends ReportHeader {
     private final UiElement sideBarLogs = sideBar.find(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Logs')]]"));
     @Check
     private final UiElement sideBarThreads = sideBar.find(By.xpath(".//mdc-list-item[.//span[contains(text(), 'Threads')]]"));
+    @Check
+    private final UiElement sideBarPrintPreview = sideBar.find(By.xpath(".//button[contains(normalize-space(), 'Print Report')]"));
+
 
     public ReportSideBar(WebDriver driver) {
         super(driver);
@@ -67,6 +70,8 @@ public abstract class ReportSideBar extends ReportHeader {
             case THREADS:
                 sideBarThreads.click();
                 break;
+            case PRINT_REPORT:
+                sideBarPrintPreview.click();
         }
 
         return createPage(reportPageClass);

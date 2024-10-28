@@ -183,7 +183,7 @@ export class StatusConverter {
     }
 
     createRegexpFromSearchString(searchQuery:string) {
-        const specialCharacters = new RegExp("([.*+?^${}()|[\\]\\\\])", "g");
+        const specialCharacters = new RegExp('([.*+?^${}()|[\\]\\\\"])', "g");
         searchQuery = searchQuery.replace(specialCharacters, "\\$1");
         return new RegExp("(" + searchQuery + ")", "ig");
     }

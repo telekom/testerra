@@ -20,7 +20,6 @@
  */
 
 import {autoinject} from "aurelia-framework";
-import 'ts-replace-all'
 
 @autoinject()
 export class HtmlValueConverter {

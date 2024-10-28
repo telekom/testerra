@@ -20,7 +20,6 @@
  */
 
 import {autoinject} from "aurelia-framework";
-import 'ts-replace-all'
 
 @autoinject()
 export class HtmlEscapeValueConverter {
@@ -30,9 +29,8 @@ export class HtmlEscapeValueConverter {
             return value;
         }
         return value
-            .replaceAll('&','&amp;')
-            .replaceAll('<', '&lt')
-            .replaceAll('>', '&gt;')
+            .replaceAll(/<(?!br\b|\/?br>)/gi, '&lt')    // only escape < & > if they do not belong to <br> or </br>
+            .replaceAll(/(?<!<\/?br)>/gi, '&gt;')
             .replaceAll('"', '&quot;');
     }
 }

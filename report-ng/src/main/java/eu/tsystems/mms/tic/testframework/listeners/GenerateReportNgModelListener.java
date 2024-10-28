@@ -23,7 +23,9 @@ package eu.tsystems.mms.tic.testframework.listeners;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.adapters.ContextExporter;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.ExecutionAggregate;
 import eu.tsystems.mms.tic.testframework.report.model.History;
 import eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate;
@@ -139,21 +141,24 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
 
     protected void writeHistoryFile(HistoryAggregate.Builder newHistoryEntry, File file) {
         History.Builder history = History.newBuilder();
+        Report report = Testerra.getInjector().getInstance(Report.class);
+        File currentHistoryFile = report.getFinalReportDirectory("report-ng/model/history");
 
-        // Check if history-file already exists and read its content
-        // TODO: Check the final report destination, not the temp-directory, to make this work!
-        if (file.exists()) {
+        // Check if a history file already exists and read its content
+        if (currentHistoryFile.exists()) {
             log().info("History file already exists. Appending new entry.");
             try {
-                history.mergeFrom(new FileInputStream(file));
+                FileInputStream stream = new FileInputStream(currentHistoryFile);
+                history.mergeFrom(stream);
+                stream.close();
             } catch (Exception e) {
-                log().error("Unable to read file", e);
+                log().error("Unable to read history file", e);
                 return;
             }
         } else {
-            log().info("No history file found: {}. Creating new one.", file.getAbsolutePath());
+            log().info("No history file found: {}. Creating new one.", currentHistoryFile.getAbsolutePath());
         }
-        // Add the new entry
+        // Add the new entry from the current execution
         history.addEntry(newHistoryEntry);
 
         // Check if the maximum number of entries has been reached and delete the oldest

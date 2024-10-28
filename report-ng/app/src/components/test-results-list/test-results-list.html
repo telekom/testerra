@@ -1,0 +1,51 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <mdc-list class="p0"
+              single-selection
+    >
+        <mdc-list-item repeat.for="item of _filterItems"
+                       activated.bind="item.status === _filter.status"
+                       click.delegate="_resultItemClicked(item)"
+                       two-line
+        >
+            <mdc-icon class="colored-icon status-${item.status|statusClass}"
+                      mdc-list-item-leading
+                      title="${item.status|statusName}"
+            >${item.status|statusIconName}
+            </mdc-icon>
+            <mdc-list-item-primary-text>
+                <span class="item-label"
+                      repeat.for="count of item.counts"
+                      if.bind="count!=null"
+                      innerhtml="${count}"
+                ></span>
+            </mdc-list-item-primary-text>
+            <mdc-list-item-secondary-text>
+                <span class="item-label"
+                      repeat.for="label of item.labels"
+                      if.bind="label"
+                      innerhtml="${label}"
+                ></span></mdc-list-item-secondary-text>
+        </mdc-list-item>
+    </mdc-list>
+</template>

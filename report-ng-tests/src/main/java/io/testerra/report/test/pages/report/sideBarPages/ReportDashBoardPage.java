@@ -39,7 +39,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ReportDashBoardPage extends AbstractReportPage {
@@ -54,7 +53,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement testEndElement = testDurationElement.find(By.xpath("//span[contains(text(), 'Ended')]/following-sibling::span"));
 
     @Check
-    private final UiElement testResultElement = pageContent.find(By.tagName("test-results-card"));    //pieChart
+    private final UiElement testResultElement = pageContent.find(By.tagName("test-results-chart"));    //pieChart
     @Check
     private final UiElement testClassesElement = pageContent.find(By.tagName("test-classes-card"));
 

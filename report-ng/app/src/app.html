@@ -32,7 +32,7 @@
         -->
     </head>
     <body>
-    <mdc-top-app-bar fixed style="position: unset">
+    <mdc-top-app-bar fixed style="position: unset" id="header">
         <mdc-top-app-bar-row>
 
             <mdc-top-app-bar-section start>
@@ -56,13 +56,14 @@
                    rel="noopener"
                    role="button"
                    mdc-body2
+                   if.bind="_router.currentInstruction.config.route != 'printable'"
                 >${_executionContext.runConfig.buildInformation.buildVersion}</a>
             </mdc-top-app-bar-section>
 
         </mdc-top-app-bar-row>
     </mdc-top-app-bar>
     <div class="flex">
-        <mdc-drawer view-model.ref="_drawer" > <!--add : type="dismissible"-->
+        <mdc-drawer view-model.ref="_drawer" class="nav"> <!--add : type="dismissible"-->
 
             <mdc-drawer-header title="Execution" subtitle="${_executionContext.contextValues.name}"></mdc-drawer-header>
             <mdc-drawer-content>
@@ -71,6 +72,7 @@
                         click.delegate="navigateTo(nav)"
                         class="mdc-list-item mdc-ripple-upgraded"
                         class.bind="nav.isActive ? 'mdc-list-item--activated' : ''"
+                        if.bind="nav.title != 'printable'"
                     >
                         <div class="mdc-list-item__ripple"></div>
                         <span class="mdc-list-item__text">${nav.title}</span>
@@ -78,10 +80,15 @@
                     </mdc-list-item>
                 </mdc-list>
             </mdc-drawer-content>
-
+            <div class="button-container">
+                <button mdc-button outlined click.delegate="_printButtonClicked()">
+                    <mdc-icon>print</mdc-icon>
+                    Print Report
+                </button>
+            </div>
         </mdc-drawer>
 
-        <mdc-drawer-app-content>
+        <mdc-drawer-app-content id="mdc-drawer-app-content">
             <router-view class="w100"></router-view>
         </mdc-drawer-app-content>
     </div>

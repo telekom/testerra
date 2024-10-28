@@ -28,7 +28,7 @@ import {data} from "../../services/report-model";
 import "./dashboard.scss"
 import {ClassBarClick} from "../test-classes-card/test-classes-card";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {PieceClickedEvent} from "../test-results-card/test-results-card";
+import {PieceClickedEvent} from "../test-results-chart/test-results-chart";
 import FailureCorridorValue = data.FailureCorridorValue;
 import ResultStatusType = data.ResultStatusType;
 

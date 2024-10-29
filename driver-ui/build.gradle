@@ -1,18 +1,5 @@
-
-def opencv = [
-        //'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9',
-        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86',
-        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86_64',
-        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86',
-        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86_64',
-        'nu.pattern:opencv:2.4.9-7',
-        //'org.javatuples:javatuples:1.2'
-]
-
-
 dependencies {
     api core
-    implementation opencv
 
     // <LayoutCheck AnnotationContainer, JSUtils>
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -26,9 +13,7 @@ dependencies {
     implementation 'org.reflections:reflections:0.9.12'
 
     // <BrowserInformation>
-    //implementation 'nl.basjes.parse.useragent:yauaa:4.5'
-    // 1.5.3
-    implementation group: 'com.github.ua-parser', name: 'uap-java', version: '1.4.3'
+    implementation 'com.github.ua-parser:uap-java:1.6.1'
     // </BrowserInformation>
 }
 

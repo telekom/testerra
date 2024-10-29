@@ -21,12 +21,12 @@
 package eu.tsystems.mms.tic.testframework.useragents;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import java.io.IOException;
 import ua_parser.Client;
 import ua_parser.Parser;
 
 /**
  * Uap User Agent implementation
+ *
  * @author Mike Reiche
  */
 public class UapBrowserInformation implements BrowserInformation, Loggable {
@@ -37,11 +37,7 @@ public class UapBrowserInformation implements BrowserInformation, Loggable {
     private String userAgent;
 
     public UapBrowserInformation() {
-        try {
-            userAgentAnalyzer = new Parser();
-        } catch (IOException e) {
-            log().error(e.getMessage(), e);
-        }
+        userAgentAnalyzer = new Parser();
     }
 
     /**

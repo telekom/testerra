@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -80,23 +81,26 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         ExecutionContext executionContext = event.getExecutionContext();
 
         executionContext.readSuiteContexts().forEach(suiteContext -> {
-            executionAggregateBuilder.putSuiteContexts(suiteContext.getId(), contextExporter.buildSuiteContext(suiteContext).build());
-            historyAggregateBuilder.putSuiteContexts(suiteContext.getId(), contextExporter.buildSuiteContext(suiteContext).build());
+            eu.tsystems.mms.tic.testframework.report.model.SuiteContext builtSuiteContext = contextExporter.buildSuiteContext(suiteContext).build();
+            executionAggregateBuilder.putSuiteContexts(suiteContext.getId(), builtSuiteContext);
+            historyAggregateBuilder.putSuiteContexts(suiteContext.getId(), builtSuiteContext);
 
             suiteContext.readTestContexts().forEach(testContext -> {
-                executionAggregateBuilder.putTestContexts(testContext.getId(), contextExporter.buildTestContext(testContext).build());
-                historyAggregateBuilder.putTestContexts(testContext.getId(), contextExporter.buildTestContext(testContext).build());
+                eu.tsystems.mms.tic.testframework.report.model.TestContext builtTestContext = contextExporter.buildTestContext(testContext).build();
+                executionAggregateBuilder.putTestContexts(testContext.getId(), builtTestContext);
+                historyAggregateBuilder.putTestContexts(testContext.getId(), builtTestContext);
 
                 testContext.readClassContexts().forEach(classContext -> {
-                    executionAggregateBuilder.putClassContexts(classContext.getId(), contextExporter.buildClassContext(classContext).build());
-                    historyAggregateBuilder.putClassContexts(classContext.getId(), contextExporter.buildClassContext(classContext).build());
+                    eu.tsystems.mms.tic.testframework.report.model.ClassContext builtClassContext = contextExporter.buildClassContext(classContext).build();
+                    executionAggregateBuilder.putClassContexts(classContext.getId(), builtClassContext);
+                    historyAggregateBuilder.putClassContexts(classContext.getId(), builtClassContext);
 
                     classContext.readMethodContexts().forEach(methodContext -> {
                         this.buildUniqueMethod(methodContext);
                         methodContext.readSessionContexts().forEach(this::buildUniqueSession);
                         methodContext.readRelatedMethodContexts().forEach(this::buildUniqueMethod);
                         if (!historyAggregateBuilder.containsMethodContexts(methodContext.getId())) {
-                            historyAggregateBuilder.putMethodContexts(methodContext.getId(), contextExporter.buildHistoryMethodContext(methodContext).build());
+                            historyAggregateBuilder.putMethodContexts(methodContext.getId(), contextExporter.buildMethodContext(methodContext, true).build());
                         }
                         // Extract LogMessages for LogMessageAggregate
                         methodContext.readTestSteps()
@@ -114,14 +118,14 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         // Export all test metrics from SessionContext, MethodContext, ...
         executionAggregateBuilder.setTestMetrics(contextExporter.buildTestMetrics());
 
-        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder executionContextBuilder = contextExporter.buildExecutionContext(executionContext);
+        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder executionContextBuilder = contextExporter.buildExecutionContext(executionContext, false);
         executionAggregateBuilder.setExecutionContext(executionContextBuilder);
         writeBuilderToFile(executionAggregateBuilder, new File(baseDir, "execution"));
 
         executionContext.readMethodContextLessLogs().map(contextExporter::buildLogMessage).forEach(logMessage -> logMessageAggregateBuilder.putLogMessages(logMessage.getId(), logMessage.build()));
         writeBuilderToFile(logMessageAggregateBuilder, new File(baseDir, "logMessages"));
 
-        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder historyExecutionContextBuilder = contextExporter.buildHistoryExecutionContext(executionContext);
+        eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder historyExecutionContextBuilder = contextExporter.buildExecutionContext(executionContext, true);
         historyAggregateBuilder.setExecutionContext(historyExecutionContextBuilder);
         writeHistoryFile(historyAggregateBuilder, new File(baseDir, "history"));
     }
@@ -135,11 +139,14 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
 
     private void buildUniqueMethod(MethodContext methodContext) {
         if (!executionAggregateBuilder.containsMethodContexts(methodContext.getId())) {
-            executionAggregateBuilder.putMethodContexts(methodContext.getId(), contextExporter.buildMethodContext(methodContext).build());
+            executionAggregateBuilder.putMethodContexts(methodContext.getId(), contextExporter.buildMethodContext(methodContext, false).build());
         }
     }
 
     protected void writeHistoryFile(HistoryAggregate.Builder newHistoryEntry, File file) {
+        int maxHistoryEntries = 50;
+        int historyId = 1;
+
         History.Builder history = History.newBuilder();
         Report report = Testerra.getInjector().getInstance(Report.class);
         File currentHistoryFile = report.getFinalReportDirectory("report-ng/model/history");
@@ -147,10 +154,10 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         // Check if a history file already exists and read its content
         if (currentHistoryFile.exists()) {
             log().info("History file already exists. Appending new entry.");
-            try {
-                FileInputStream stream = new FileInputStream(currentHistoryFile);
+            try (FileInputStream stream = new FileInputStream(currentHistoryFile)) {
                 history.mergeFrom(stream);
-                stream.close();
+                HistoryAggregate lastEntry = history.getEntry(history.getEntryCount() - 1);
+                historyId = lastEntry.getHistoryId() + 1;
             } catch (Exception e) {
                 log().error("Unable to read history file", e);
                 return;
@@ -158,14 +165,19 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         } else {
             log().info("No history file found: {}. Creating new one.", currentHistoryFile.getAbsolutePath());
         }
+
+        newHistoryEntry.setHistoryId(historyId);
+
         // Add the new entry from the current execution
         history.addEntry(newHistoryEntry);
-
-        // Check if the maximum number of entries has been reached and delete the oldest
-        while (history.getEntryCount() > 30) {
-            history.removeEntry(0);
+        List<HistoryAggregate> historyEntryList = history.getEntryList();
+        if (historyEntryList.size() > maxHistoryEntries) {
+            // Cut the history to the correct size
+            historyEntryList = historyEntryList.subList(historyEntryList.size() - maxHistoryEntries, historyEntryList.size());
         }
 
+        history.clear();
+        history.addAllEntry(historyEntryList);
         writeBuilderToFile(history, file);
     }
 }

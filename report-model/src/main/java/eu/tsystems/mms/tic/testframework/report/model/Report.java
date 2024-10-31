@@ -118,26 +118,26 @@ public final class Report {
       "LogMessageAggregate\022@\n\014log_messages\030\001 \003(" +
       "\0132*.data.LogMessageAggregate.LogMessages" +
       "Entry\032D\n\020LogMessagesEntry\022\013\n\003key\030\001 \001(\t\022\037" +
-      "\n\005value\030\002 \001(\0132\020.data.LogMessage:\0028\001\"\371\004\n\020" +
-      "HistoryAggregate\0221\n\021execution_context\030\001 " +
-      "\001(\0132\026.data.ExecutionContext\022A\n\016suite_con" +
-      "texts\030\002 \003(\0132).data.HistoryAggregate.Suit" +
-      "eContextsEntry\022?\n\rtest_contexts\030\003 \003(\0132(." +
-      "data.HistoryAggregate.TestContextsEntry\022" +
-      "A\n\016class_contexts\030\004 \003(\0132).data.HistoryAg" +
-      "gregate.ClassContextsEntry\022C\n\017method_con" +
-      "texts\030\005 \003(\0132*.data.HistoryAggregate.Meth" +
-      "odContextsEntry\032H\n\022SuiteContextsEntry\022\013\n" +
-      "\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\0132\022.data.SuiteCo" +
-      "ntext:\0028\001\032F\n\021TestContextsEntry\022\013\n\003key\030\001 " +
-      "\001(\t\022 \n\005value\030\002 \001(\0132\021.data.TestContext:\0028" +
-      "\001\032H\n\022ClassContextsEntry\022\013\n\003key\030\001 \001(\t\022!\n\005" +
-      "value\030\002 \001(\0132\022.data.ClassContext:\0028\001\032J\n\023M" +
-      "ethodContextsEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005value" +
-      "\030\002 \001(\0132\023.data.MethodContext:\0028\001\"0\n\007Histo" +
-      "ry\022%\n\005entry\030\001 \003(\0132\026.data.HistoryAggregat" +
-      "eB2\n.eu.tsystems.mms.tic.testframework.r" +
-      "eport.modelP\001b\006proto3"
+      "\n\005value\030\002 \001(\0132\020.data.LogMessage:\0028\001\"\214\005\n\020" +
+      "HistoryAggregate\022\021\n\thistoryId\030\001 \001(\005\0221\n\021e" +
+      "xecution_context\030\002 \001(\0132\026.data.ExecutionC" +
+      "ontext\022A\n\016suite_contexts\030\003 \003(\0132).data.Hi" +
+      "storyAggregate.SuiteContextsEntry\022?\n\rtes" +
+      "t_contexts\030\004 \003(\0132(.data.HistoryAggregate" +
+      ".TestContextsEntry\022A\n\016class_contexts\030\005 \003" +
+      "(\0132).data.HistoryAggregate.ClassContexts" +
+      "Entry\022C\n\017method_contexts\030\006 \003(\0132*.data.Hi" +
+      "storyAggregate.MethodContextsEntry\032H\n\022Su" +
+      "iteContextsEntry\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002" +
+      " \001(\0132\022.data.SuiteContext:\0028\001\032F\n\021TestCont" +
+      "extsEntry\022\013\n\003key\030\001 \001(\t\022 \n\005value\030\002 \001(\0132\021." +
+      "data.TestContext:\0028\001\032H\n\022ClassContextsEnt" +
+      "ry\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\0132\022.data.Cl" +
+      "assContext:\0028\001\032J\n\023MethodContextsEntry\022\013\n" +
+      "\003key\030\001 \001(\t\022\"\n\005value\030\002 \001(\0132\023.data.MethodC" +
+      "ontext:\0028\001\"0\n\007History\022%\n\005entry\030\001 \003(\0132\026.d" +
+      "ata.HistoryAggregateB2\n.eu.tsystems.mms." +
+      "tic.testframework.report.modelP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -197,7 +197,7 @@ public final class Report {
     internal_static_data_HistoryAggregate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_HistoryAggregate_descriptor,
-        new java.lang.String[] { "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", });
+        new java.lang.String[] { "HistoryId", "ExecutionContext", "SuiteContexts", "TestContexts", "ClassContexts", "MethodContexts", });
     internal_static_data_HistoryAggregate_SuiteContextsEntry_descriptor =
       internal_static_data_HistoryAggregate_descriptor.getNestedTypes().get(0);
     internal_static_data_HistoryAggregate_SuiteContextsEntry_fieldAccessorTable = new

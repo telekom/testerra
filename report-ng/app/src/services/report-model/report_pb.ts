@@ -56,6 +56,7 @@ export interface LogMessageAggregate_LogMessagesEntry {
 }
 
 export interface HistoryAggregate {
+  historyId?: number | undefined;
   executionContext?: ExecutionContext | undefined;
   suiteContexts?: { [key: string]: SuiteContext } | undefined;
   testContexts?: { [key: string]: TestContext } | undefined;
@@ -522,25 +523,35 @@ export const LogMessageAggregate_LogMessagesEntry = {
 };
 
 function createBaseHistoryAggregate(): HistoryAggregate {
-  return { executionContext: undefined, suiteContexts: {}, testContexts: {}, classContexts: {}, methodContexts: {} };
+  return {
+    historyId: 0,
+    executionContext: undefined,
+    suiteContexts: {},
+    testContexts: {},
+    classContexts: {},
+    methodContexts: {},
+  };
 }
 
 export const HistoryAggregate = {
   encode(message: HistoryAggregate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.historyId !== undefined && message.historyId !== 0) {
+      writer.uint32(8).int32(message.historyId);
+    }
     if (message.executionContext !== undefined) {
-      ExecutionContext.encode(message.executionContext, writer.uint32(10).fork()).ldelim();
+      ExecutionContext.encode(message.executionContext, writer.uint32(18).fork()).ldelim();
     }
     Object.entries(message.suiteContexts || {}).forEach(([key, value]) => {
-      HistoryAggregate_SuiteContextsEntry.encode({ key: key as any, value }, writer.uint32(18).fork()).ldelim();
+      HistoryAggregate_SuiteContextsEntry.encode({ key: key as any, value }, writer.uint32(26).fork()).ldelim();
     });
     Object.entries(message.testContexts || {}).forEach(([key, value]) => {
-      HistoryAggregate_TestContextsEntry.encode({ key: key as any, value }, writer.uint32(26).fork()).ldelim();
+      HistoryAggregate_TestContextsEntry.encode({ key: key as any, value }, writer.uint32(34).fork()).ldelim();
     });
     Object.entries(message.classContexts || {}).forEach(([key, value]) => {
-      HistoryAggregate_ClassContextsEntry.encode({ key: key as any, value }, writer.uint32(34).fork()).ldelim();
+      HistoryAggregate_ClassContextsEntry.encode({ key: key as any, value }, writer.uint32(42).fork()).ldelim();
     });
     Object.entries(message.methodContexts || {}).forEach(([key, value]) => {
-      HistoryAggregate_MethodContextsEntry.encode({ key: key as any, value }, writer.uint32(42).fork()).ldelim();
+      HistoryAggregate_MethodContextsEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
     });
     return writer;
   },
@@ -553,30 +564,27 @@ export const HistoryAggregate = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.executionContext = ExecutionContext.decode(reader, reader.uint32());
+          message.historyId = reader.int32();
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          const entry2 = HistoryAggregate_SuiteContextsEntry.decode(reader, reader.uint32());
-          if (entry2.value !== undefined) {
-            message.suiteContexts![entry2.key] = entry2.value;
-          }
+          message.executionContext = ExecutionContext.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          const entry3 = HistoryAggregate_TestContextsEntry.decode(reader, reader.uint32());
+          const entry3 = HistoryAggregate_SuiteContextsEntry.decode(reader, reader.uint32());
           if (entry3.value !== undefined) {
-            message.testContexts![entry3.key] = entry3.value;
+            message.suiteContexts![entry3.key] = entry3.value;
           }
           continue;
         case 4:
@@ -584,9 +592,9 @@ export const HistoryAggregate = {
             break;
           }
 
-          const entry4 = HistoryAggregate_ClassContextsEntry.decode(reader, reader.uint32());
+          const entry4 = HistoryAggregate_TestContextsEntry.decode(reader, reader.uint32());
           if (entry4.value !== undefined) {
-            message.classContexts![entry4.key] = entry4.value;
+            message.testContexts![entry4.key] = entry4.value;
           }
           continue;
         case 5:
@@ -594,9 +602,19 @@ export const HistoryAggregate = {
             break;
           }
 
-          const entry5 = HistoryAggregate_MethodContextsEntry.decode(reader, reader.uint32());
+          const entry5 = HistoryAggregate_ClassContextsEntry.decode(reader, reader.uint32());
           if (entry5.value !== undefined) {
-            message.methodContexts![entry5.key] = entry5.value;
+            message.classContexts![entry5.key] = entry5.value;
+          }
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          const entry6 = HistoryAggregate_MethodContextsEntry.decode(reader, reader.uint32());
+          if (entry6.value !== undefined) {
+            message.methodContexts![entry6.key] = entry6.value;
           }
           continue;
       }

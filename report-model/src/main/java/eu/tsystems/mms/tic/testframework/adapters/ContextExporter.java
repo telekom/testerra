@@ -91,7 +91,7 @@ public class ContextExporter implements Loggable {
     private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = injector.getInstance(Report.class);
 
-    public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
+    public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext, boolean isHistory) {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
         ContextValues.Builder contextValuesBuilder = buildContextValues(methodContext);
@@ -126,79 +126,36 @@ public class ContextExporter implements Loggable {
 
         apply(methodContext.getRetryCounter(), builder::setRetryNumber);
         apply(methodContext.getMethodRunIndex(), builder::setMethodRunIndex);
-        //methodContext.getPriorityMessage().ifPresent(builder::setPriorityMessage);
-        apply(methodContext.getThreadName(), builder::setThreadName);
 
         // test steps
-        methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(buildTestStep(testStep)));
+        methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(buildTestStep(testStep, isHistory)));
         //value(methodContext.failedStep, MethodContextExporter::createTestStep, builder::setFailedStep);
         builder.setFailedStepIndex(methodContext.getLastFailedTestStepIndex());
+        //methodContext.getPriorityMessage().ifPresent(builder::setPriorityMessage);
 
-        Class failureCorridorClass = methodContext.getFailureCorridorClass();
-        if (failureCorridorClass.equals(FailureCorridor.High.class)) {
-            builder.setFailureCorridorValue(FailureCorridorValue.FCV_HIGH);
-        } else if (failureCorridorClass.equals(FailureCorridor.Mid.class)) {
-            builder.setFailureCorridorValue(FailureCorridorValue.FCV_MID);
-        } else {
-            builder.setFailureCorridorValue(FailureCorridorValue.FCV_LOW);
-        }
         builder.setClassContextId(methodContext.getClassContext().getId());
-        methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
-        methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 
-        // build context
-        methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
+        if (!isHistory) {
+            apply(methodContext.getThreadName(), builder::setThreadName);
 
-        methodContext.readLayoutCheckContexts()
-                .forEach(layoutCheckContext -> builder.addLayoutCheckContext(buildLayoutCheckContext(layoutCheckContext)));
-
-        methodContext.readCustomContexts().forEach(customContext -> {
-            builder.putCustomContexts(customContext.getName(), this.convertObjectToJson(customContext.exportToReport(report)));
-        });
-
-        return builder;
-    }
-
-    public MethodContext.Builder buildHistoryMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
-        MethodContext.Builder builder = MethodContext.newBuilder();
-
-        ContextValues.Builder contextValuesBuilder = buildContextValues(methodContext);
-
-        methodContext.getTestNgResult().ifPresent(iTestResult -> {
-            String testName = methodContext.getName();
-            String methodName = iTestResult.getMethod().getMethodName();
-            // When the context name differs from the method name
-            if (!testName.equals(methodName)) {
-                // Set the context name to the method name
-                contextValuesBuilder.setName(methodName);
-                // And the test name to the actual generated test name
-                builder.setTestName(testName);
+            Class failureCorridorClass = methodContext.getFailureCorridorClass();
+            if (failureCorridorClass.equals(FailureCorridor.High.class)) {
+                builder.setFailureCorridorValue(FailureCorridorValue.FCV_HIGH);
+            } else if (failureCorridorClass.equals(FailureCorridor.Mid.class)) {
+                builder.setFailureCorridorValue(FailureCorridorValue.FCV_MID);
+            } else {
+                builder.setFailureCorridorValue(FailureCorridorValue.FCV_LOW);
             }
-        });
 
-        builder.setContextValues(contextValuesBuilder);
+            methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
+            methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
 
-        builder.setResultStatus(this.mapResultStatus(methodContext));
-        map(methodContext.getMethodType(), type -> MethodType.valueOf(type.name()), builder::setMethodType);
-        List<Object> parameterValues = methodContext.getParameterValues();
-        for (int i = 0; i < parameterValues.size(); ++i) {
-            builder.putParameters(methodContext.getParameters()[i].getName(), parameterValues.get(i).toString());
+            // build context
+            methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
+
+            methodContext.readLayoutCheckContexts()
+                    .forEach(layoutCheckContext -> builder.addLayoutCheckContext(buildLayoutCheckContext(layoutCheckContext)));
         }
-
-        methodContext.readAnnotations()
-                .forEach(annotation -> {
-                    report.getAnnotationConverter(annotation).ifPresent(annotationExporter -> {
-                        builder.putAnnotations(annotation.annotationType().getName(), this.convertObjectToJson(annotationExporter.toMap(annotation)));
-                    });
-                });
-
-        apply(methodContext.getRetryCounter(), builder::setRetryNumber);
-        apply(methodContext.getMethodRunIndex(), builder::setMethodRunIndex);
-
-        // test steps
-        methodContext.readTestSteps().forEach(testStep -> builder.addTestSteps(buildHistoryTestStep(testStep)));
-
-        builder.setClassContextId(methodContext.getClassContext().getId());
 
         methodContext.readCustomContexts().forEach(customContext -> {
             builder.putCustomContexts(customContext.getName(), this.convertObjectToJson(customContext.exportToReport(report)));
@@ -277,17 +234,19 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
-    public ErrorContext.Builder buildErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
+    public ErrorContext.Builder buildErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext, boolean isHistory) {
         ErrorContext.Builder builder = ErrorContext.newBuilder();
 
 //        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
 //        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
         traceThrowable(errorContext.getThrowable(), throwable -> {
-            builder.addStackTrace(this.buildStackTraceCause(throwable));
+            builder.addStackTrace(this.buildStackTraceCause(throwable, isHistory));
         });
 //        map(errorContext.getThrowable(), this::prepareStackTraceCause, builder::addAllCause);
 //        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
-        errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.buildScriptSource(scriptSource)));
+        if (!isHistory) {
+            errorContext.getScriptSource().ifPresent(scriptSource -> builder.setScriptSource(this.buildScriptSource(scriptSource)));
+        }
         //errorContext.getExecutionObjectSource().ifPresent(scriptSource -> builder.setExecutionObjectSource(this.buildScriptSource(scriptSource)));
 //        if (errorContext.getTicketId() != null) builder.setTicketId(errorContext.getTicketId().toString());
 //        apply(errorContext.getDescription(), builder::setDescription);
@@ -296,31 +255,11 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
-    public ErrorContext.Builder buildHistoryErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
-        ErrorContext.Builder builder = ErrorContext.newBuilder();
-
-        traceThrowable(errorContext.getThrowable(), throwable -> {
-            builder.addStackTrace(this.buildStackTraceCause(throwable));
-        });
-        builder.setOptional(errorContext.isOptional());
-        apply(errorContext.getId(), builder::setId);
-        return builder;
-    }
-
-    public TestStep.Builder buildTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep) {
+    public TestStep.Builder buildTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep, boolean isHistory) {
         TestStep.Builder builder = TestStep.newBuilder();
 
         apply(testStep.getName(), builder::setName);
-        testStep.readActions().forEach(testStepAction -> builder.addActions(buildTestStepAction(testStepAction)));
-
-        return builder;
-    }
-
-    public TestStep.Builder buildHistoryTestStep(eu.tsystems.mms.tic.testframework.report.model.steps.TestStep testStep) {
-        TestStep.Builder builder = TestStep.newBuilder();
-
-        apply(testStep.getName(), builder::setName);
-        testStep.readActions().forEach(testStepAction -> builder.addActions(buildHistoryTestStepAction(testStepAction)));
+        testStep.readActions().forEach(testStepAction -> builder.addActions(buildTestStepAction(testStepAction, isHistory)));
 
         return builder;
     }
@@ -351,7 +290,7 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
-    public TestStepAction.Builder buildTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction) {
+    public TestStepAction.Builder buildTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction, boolean isHistory) {
         TestStepAction.Builder actionBuilder = TestStepAction.newBuilder();
 
         apply(testStepAction.getName(), actionBuilder::setName);
@@ -359,19 +298,19 @@ public class ContextExporter implements Loggable {
 
         testStepAction.readEntries().forEach(entry -> {
             TestStepActionEntry.Builder entryBuilder = TestStepActionEntry.newBuilder();
-            if (entry instanceof eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) {
+            if (entry instanceof eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent && !isHistory) {
                 Optional<ClickPathEvent.Builder> optional = Optional.ofNullable(this.buildClickPathEvent((eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent) entry));
                 optional.ifPresent(entryBuilder::setClickPathEvent);
-            } else if (entry instanceof Screenshot) {
+            } else if (entry instanceof Screenshot && !isHistory) {
                 File.Builder[] builders = buildScreenshot((Screenshot) entry);
                 Optional<File.Builder> optional = Optional.ofNullable(builders[0]);
                 optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
-            } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) {
+            } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.LogMessage && !isHistory) {
                 String logMessageId = ((eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) entry).getId();
                 entryBuilder.setLogMessageId(logMessageId);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) entry;
-                Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
+                Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext, isHistory));
                 optional.ifPresent(entryBuilder::setErrorContext);
             }
 
@@ -382,23 +321,6 @@ public class ContextExporter implements Loggable {
                             || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
             ) {
                 actionBuilder.addEntries(entryBuilder);
-            }
-        });
-        return actionBuilder;
-    }
-
-    public TestStepAction.Builder buildHistoryTestStepAction(eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction testStepAction) {
-        TestStepAction.Builder actionBuilder = TestStepAction.newBuilder();
-
-        apply(testStepAction.getName(), actionBuilder::setName);
-        apply(testStepAction.getTimestamp(), actionBuilder::setTimestamp);
-
-        testStepAction.readEntries().forEach(entry -> {
-            TestStepActionEntry.Builder entryBuilder = TestStepActionEntry.newBuilder();
-            if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
-                eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) entry;
-                Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildHistoryErrorContext(errorContext));
-                optional.ifPresent(entryBuilder::setErrorContext);
             }
         });
         return actionBuilder;
@@ -523,18 +445,20 @@ public class ContextExporter implements Loggable {
 
         logMessage.getThrown().ifPresent(t -> {
             traceThrowable(t, throwable -> {
-                builder.addStackTrace(this.buildStackTraceCause(throwable));
+                builder.addStackTrace(this.buildStackTraceCause(throwable, false));
             });
         });
 
         return builder;
     }
 
-    public StackTraceCause.Builder buildStackTraceCause(Throwable throwable) {
+    public StackTraceCause.Builder buildStackTraceCause(Throwable throwable, boolean isHistory) {
         StackTraceCause.Builder builder = StackTraceCause.newBuilder();
         apply(throwable.getClass().getName(), builder::setClassName);
         apply(throwable.getMessage(), builder::setMessage);
-        builder.addAllStackTraceElements(Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()));
+        if (!isHistory) {
+            builder.addAllStackTraceElements(Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()));
+        }
         return builder;
     }
 
@@ -556,38 +480,31 @@ public class ContextExporter implements Loggable {
         return builder;
     }
 
-    public ExecutionContext.Builder buildExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
-        ExecutionContext.Builder builder = ExecutionContext.newBuilder();
-
-        apply(buildContextValues(executionContext), builder::setContextValues);
-        map(executionContext.getRunConfig(), this::buildRunConfig, builder::setRunConfig);
-        executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
-        apply(executionContext.getEstimatedTestMethodCount(), builder::setEstimatedTestsCount);
-        executionContext.readMethodContextLessLogs().forEach(logMessage -> builder.addLogMessageIds(logMessage.getId()));
-        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
-        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
-        builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
-
-        ITestStatusController testStatusController = Testerra.getInjector().getInstance(ITestStatusController.class);
-        Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
-            int count = testStatusController.getFailureCorridorCount(failureCorridorClass);
-            if (count > 0) {
-                builder.putFailureCorridorCounts(mapFailureCorridorClass(failureCorridorClass).getNumber(), count);
-            }
-        });
-
-        return builder;
-    }
-
-    public ExecutionContext.Builder buildHistoryExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
+    public ExecutionContext.Builder buildExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext, boolean isHistory) {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         apply(buildContextValues(executionContext), builder::setContextValues);
         map(executionContext.getRunConfig(), this::buildRunConfig, builder::setRunConfig);
         apply(executionContext.getEstimatedTestMethodCount(), builder::setEstimatedTestsCount);
+        if (!isHistory) {
+            executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
+            executionContext.readMethodContextLessLogs().forEach(logMessage -> builder.addLogMessageIds(logMessage.getId()));
+            builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
+            builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
+            builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
+
+            ITestStatusController testStatusController = Testerra.getInjector().getInstance(ITestStatusController.class);
+            Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
+                int count = testStatusController.getFailureCorridorCount(failureCorridorClass);
+                if (count > 0) {
+                    builder.putFailureCorridorCounts(mapFailureCorridorClass(failureCorridorClass).getNumber(), count);
+                }
+            });
+        }
 
         return builder;
     }
+
 //
 //    private List<ContextClip> createContextClip(Map<String, List<eu.tsystems.mms.tic.testframework.report.model.context.MethodContext>> values) {
 //        List<ContextClip> out = new LinkedList<>();

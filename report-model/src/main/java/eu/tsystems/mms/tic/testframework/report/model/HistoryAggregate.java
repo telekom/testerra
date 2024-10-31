@@ -49,7 +49,12 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 10: {
+          case 8: {
+
+            historyId_ = input.readInt32();
+            break;
+          }
+          case 18: {
             eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder subBuilder = null;
             if (executionContext_ != null) {
               subBuilder = executionContext_.toBuilder();
@@ -62,7 +67,7 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 18: {
+          case 26: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
               suiteContexts_ = com.google.protobuf.MapField.newMapField(
                   SuiteContextsDefaultEntryHolder.defaultEntry);
@@ -75,7 +80,7 @@ private static final long serialVersionUID = 0L;
                 suiteContexts__.getKey(), suiteContexts__.getValue());
             break;
           }
-          case 26: {
+          case 34: {
             if (!((mutable_bitField0_ & 0x00000002) != 0)) {
               testContexts_ = com.google.protobuf.MapField.newMapField(
                   TestContextsDefaultEntryHolder.defaultEntry);
@@ -88,7 +93,7 @@ private static final long serialVersionUID = 0L;
                 testContexts__.getKey(), testContexts__.getValue());
             break;
           }
-          case 34: {
+          case 42: {
             if (!((mutable_bitField0_ & 0x00000004) != 0)) {
               classContexts_ = com.google.protobuf.MapField.newMapField(
                   ClassContextsDefaultEntryHolder.defaultEntry);
@@ -101,7 +106,7 @@ private static final long serialVersionUID = 0L;
                 classContexts__.getKey(), classContexts__.getValue());
             break;
           }
-          case 42: {
+          case 50: {
             if (!((mutable_bitField0_ & 0x00000008) != 0)) {
               methodContexts_ = com.google.protobuf.MapField.newMapField(
                   MethodContextsDefaultEntryHolder.defaultEntry);
@@ -143,13 +148,13 @@ private static final long serialVersionUID = 0L;
   protected com.google.protobuf.MapField internalGetMapField(
       int number) {
     switch (number) {
-      case 2:
-        return internalGetSuiteContexts();
       case 3:
-        return internalGetTestContexts();
+        return internalGetSuiteContexts();
       case 4:
-        return internalGetClassContexts();
+        return internalGetTestContexts();
       case 5:
+        return internalGetClassContexts();
+      case 6:
         return internalGetMethodContexts();
       default:
         throw new RuntimeException(
@@ -164,10 +169,21 @@ private static final long serialVersionUID = 0L;
             eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.class, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder.class);
   }
 
-  public static final int EXECUTION_CONTEXT_FIELD_NUMBER = 1;
+  public static final int HISTORYID_FIELD_NUMBER = 1;
+  private int historyId_;
+  /**
+   * <code>int32 historyId = 1;</code>
+   * @return The historyId.
+   */
+  @java.lang.Override
+  public int getHistoryId() {
+    return historyId_;
+  }
+
+  public static final int EXECUTION_CONTEXT_FIELD_NUMBER = 2;
   private eu.tsystems.mms.tic.testframework.report.model.ExecutionContext executionContext_;
   /**
-   * <code>.data.ExecutionContext execution_context = 1;</code>
+   * <code>.data.ExecutionContext execution_context = 2;</code>
    * @return Whether the executionContext field is set.
    */
   @java.lang.Override
@@ -175,7 +191,7 @@ private static final long serialVersionUID = 0L;
     return executionContext_ != null;
   }
   /**
-   * <code>.data.ExecutionContext execution_context = 1;</code>
+   * <code>.data.ExecutionContext execution_context = 2;</code>
    * @return The executionContext.
    */
   @java.lang.Override
@@ -183,14 +199,14 @@ private static final long serialVersionUID = 0L;
     return executionContext_ == null ? eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.getDefaultInstance() : executionContext_;
   }
   /**
-   * <code>.data.ExecutionContext execution_context = 1;</code>
+   * <code>.data.ExecutionContext execution_context = 2;</code>
    */
   @java.lang.Override
   public eu.tsystems.mms.tic.testframework.report.model.ExecutionContextOrBuilder getExecutionContextOrBuilder() {
     return getExecutionContext();
   }
 
-  public static final int SUITE_CONTEXTS_FIELD_NUMBER = 2;
+  public static final int SUITE_CONTEXTS_FIELD_NUMBER = 3;
   private static final class SuiteContextsDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
         java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> defaultEntry =
@@ -217,7 +233,7 @@ private static final long serialVersionUID = 0L;
     return internalGetSuiteContexts().getMap().size();
   }
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
 
   @java.lang.Override
@@ -235,7 +251,7 @@ private static final long serialVersionUID = 0L;
     return getSuiteContextsMap();
   }
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
   @java.lang.Override
 
@@ -243,7 +259,7 @@ private static final long serialVersionUID = 0L;
     return internalGetSuiteContexts().getMap();
   }
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
   @java.lang.Override
 
@@ -256,7 +272,7 @@ private static final long serialVersionUID = 0L;
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
   @java.lang.Override
 
@@ -271,7 +287,7 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
-  public static final int TEST_CONTEXTS_FIELD_NUMBER = 3;
+  public static final int TEST_CONTEXTS_FIELD_NUMBER = 4;
   private static final class TestContextsDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
         java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> defaultEntry =
@@ -298,7 +314,7 @@ private static final long serialVersionUID = 0L;
     return internalGetTestContexts().getMap().size();
   }
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
 
   @java.lang.Override
@@ -316,7 +332,7 @@ private static final long serialVersionUID = 0L;
     return getTestContextsMap();
   }
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
   @java.lang.Override
 
@@ -324,7 +340,7 @@ private static final long serialVersionUID = 0L;
     return internalGetTestContexts().getMap();
   }
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
   @java.lang.Override
 
@@ -337,7 +353,7 @@ private static final long serialVersionUID = 0L;
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
   @java.lang.Override
 
@@ -352,7 +368,7 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
-  public static final int CLASS_CONTEXTS_FIELD_NUMBER = 4;
+  public static final int CLASS_CONTEXTS_FIELD_NUMBER = 5;
   private static final class ClassContextsDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
         java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> defaultEntry =
@@ -379,7 +395,7 @@ private static final long serialVersionUID = 0L;
     return internalGetClassContexts().getMap().size();
   }
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
 
   @java.lang.Override
@@ -397,7 +413,7 @@ private static final long serialVersionUID = 0L;
     return getClassContextsMap();
   }
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
   @java.lang.Override
 
@@ -405,7 +421,7 @@ private static final long serialVersionUID = 0L;
     return internalGetClassContexts().getMap();
   }
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
   @java.lang.Override
 
@@ -418,7 +434,7 @@ private static final long serialVersionUID = 0L;
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
   @java.lang.Override
 
@@ -433,7 +449,7 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
-  public static final int METHOD_CONTEXTS_FIELD_NUMBER = 5;
+  public static final int METHOD_CONTEXTS_FIELD_NUMBER = 6;
   private static final class MethodContextsDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
         java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> defaultEntry =
@@ -460,7 +476,7 @@ private static final long serialVersionUID = 0L;
     return internalGetMethodContexts().getMap().size();
   }
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
 
   @java.lang.Override
@@ -478,7 +494,7 @@ private static final long serialVersionUID = 0L;
     return getMethodContextsMap();
   }
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
   @java.lang.Override
 
@@ -486,7 +502,7 @@ private static final long serialVersionUID = 0L;
     return internalGetMethodContexts().getMap();
   }
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
   @java.lang.Override
 
@@ -499,7 +515,7 @@ private static final long serialVersionUID = 0L;
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
   @java.lang.Override
 
@@ -528,33 +544,36 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (historyId_ != 0) {
+      output.writeInt32(1, historyId_);
+    }
     if (executionContext_ != null) {
-      output.writeMessage(1, getExecutionContext());
+      output.writeMessage(2, getExecutionContext());
     }
     com.google.protobuf.GeneratedMessageV3
       .serializeStringMapTo(
         output,
         internalGetSuiteContexts(),
         SuiteContextsDefaultEntryHolder.defaultEntry,
-        2);
+        3);
     com.google.protobuf.GeneratedMessageV3
       .serializeStringMapTo(
         output,
         internalGetTestContexts(),
         TestContextsDefaultEntryHolder.defaultEntry,
-        3);
+        4);
     com.google.protobuf.GeneratedMessageV3
       .serializeStringMapTo(
         output,
         internalGetClassContexts(),
         ClassContextsDefaultEntryHolder.defaultEntry,
-        4);
+        5);
     com.google.protobuf.GeneratedMessageV3
       .serializeStringMapTo(
         output,
         internalGetMethodContexts(),
         MethodContextsDefaultEntryHolder.defaultEntry,
-        5);
+        6);
     unknownFields.writeTo(output);
   }
 
@@ -564,9 +583,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    if (historyId_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(1, historyId_);
+    }
     if (executionContext_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, getExecutionContext());
+        .computeMessageSize(2, getExecutionContext());
     }
     for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext> entry
          : internalGetSuiteContexts().getMap().entrySet()) {
@@ -576,7 +599,7 @@ private static final long serialVersionUID = 0L;
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, suiteContexts__);
+          .computeMessageSize(3, suiteContexts__);
     }
     for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext> entry
          : internalGetTestContexts().getMap().entrySet()) {
@@ -586,7 +609,7 @@ private static final long serialVersionUID = 0L;
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, testContexts__);
+          .computeMessageSize(4, testContexts__);
     }
     for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext> entry
          : internalGetClassContexts().getMap().entrySet()) {
@@ -596,7 +619,7 @@ private static final long serialVersionUID = 0L;
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, classContexts__);
+          .computeMessageSize(5, classContexts__);
     }
     for (java.util.Map.Entry<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext> entry
          : internalGetMethodContexts().getMap().entrySet()) {
@@ -606,7 +629,7 @@ private static final long serialVersionUID = 0L;
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, methodContexts__);
+          .computeMessageSize(6, methodContexts__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -623,6 +646,8 @@ private static final long serialVersionUID = 0L;
     }
     eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate other = (eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate) obj;
 
+    if (getHistoryId()
+        != other.getHistoryId()) return false;
     if (hasExecutionContext() != other.hasExecutionContext()) return false;
     if (hasExecutionContext()) {
       if (!getExecutionContext()
@@ -647,6 +672,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + HISTORYID_FIELD_NUMBER;
+    hash = (53 * hash) + getHistoryId();
     if (hasExecutionContext()) {
       hash = (37 * hash) + EXECUTION_CONTEXT_FIELD_NUMBER;
       hash = (53 * hash) + getExecutionContext().hashCode();
@@ -778,13 +805,13 @@ private static final long serialVersionUID = 0L;
     protected com.google.protobuf.MapField internalGetMapField(
         int number) {
       switch (number) {
-        case 2:
-          return internalGetSuiteContexts();
         case 3:
-          return internalGetTestContexts();
+          return internalGetSuiteContexts();
         case 4:
-          return internalGetClassContexts();
+          return internalGetTestContexts();
         case 5:
+          return internalGetClassContexts();
+        case 6:
           return internalGetMethodContexts();
         default:
           throw new RuntimeException(
@@ -795,13 +822,13 @@ private static final long serialVersionUID = 0L;
     protected com.google.protobuf.MapField internalGetMutableMapField(
         int number) {
       switch (number) {
-        case 2:
-          return internalGetMutableSuiteContexts();
         case 3:
-          return internalGetMutableTestContexts();
+          return internalGetMutableSuiteContexts();
         case 4:
-          return internalGetMutableClassContexts();
+          return internalGetMutableTestContexts();
         case 5:
+          return internalGetMutableClassContexts();
+        case 6:
           return internalGetMutableMethodContexts();
         default:
           throw new RuntimeException(
@@ -834,6 +861,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      historyId_ = 0;
+
       if (executionContextBuilder_ == null) {
         executionContext_ = null;
       } else {
@@ -871,6 +900,7 @@ private static final long serialVersionUID = 0L;
     public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate buildPartial() {
       eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate result = new eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate(this);
       int from_bitField0_ = bitField0_;
+      result.historyId_ = historyId_;
       if (executionContextBuilder_ == null) {
         result.executionContext_ = executionContext_;
       } else {
@@ -932,6 +962,9 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate other) {
       if (other == eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.getDefaultInstance()) return this;
+      if (other.getHistoryId() != 0) {
+        setHistoryId(other.getHistoryId());
+      }
       if (other.hasExecutionContext()) {
         mergeExecutionContext(other.getExecutionContext());
       }
@@ -973,18 +1006,49 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
+    private int historyId_ ;
+    /**
+     * <code>int32 historyId = 1;</code>
+     * @return The historyId.
+     */
+    @java.lang.Override
+    public int getHistoryId() {
+      return historyId_;
+    }
+    /**
+     * <code>int32 historyId = 1;</code>
+     * @param value The historyId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setHistoryId(int value) {
+      
+      historyId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 historyId = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearHistoryId() {
+      
+      historyId_ = 0;
+      onChanged();
+      return this;
+    }
+
     private eu.tsystems.mms.tic.testframework.report.model.ExecutionContext executionContext_;
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.ExecutionContext, eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ExecutionContextOrBuilder> executionContextBuilder_;
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      * @return Whether the executionContext field is set.
      */
     public boolean hasExecutionContext() {
       return executionContextBuilder_ != null || executionContext_ != null;
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      * @return The executionContext.
      */
     public eu.tsystems.mms.tic.testframework.report.model.ExecutionContext getExecutionContext() {
@@ -995,7 +1059,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      */
     public Builder setExecutionContext(eu.tsystems.mms.tic.testframework.report.model.ExecutionContext value) {
       if (executionContextBuilder_ == null) {
@@ -1011,7 +1075,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      */
     public Builder setExecutionContext(
         eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder builderForValue) {
@@ -1025,7 +1089,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      */
     public Builder mergeExecutionContext(eu.tsystems.mms.tic.testframework.report.model.ExecutionContext value) {
       if (executionContextBuilder_ == null) {
@@ -1043,7 +1107,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      */
     public Builder clearExecutionContext() {
       if (executionContextBuilder_ == null) {
@@ -1057,7 +1121,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder getExecutionContextBuilder() {
       
@@ -1065,7 +1129,7 @@ private static final long serialVersionUID = 0L;
       return getExecutionContextFieldBuilder().getBuilder();
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      */
     public eu.tsystems.mms.tic.testframework.report.model.ExecutionContextOrBuilder getExecutionContextOrBuilder() {
       if (executionContextBuilder_ != null) {
@@ -1076,7 +1140,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.data.ExecutionContext execution_context = 1;</code>
+     * <code>.data.ExecutionContext execution_context = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.ExecutionContext, eu.tsystems.mms.tic.testframework.report.model.ExecutionContext.Builder, eu.tsystems.mms.tic.testframework.report.model.ExecutionContextOrBuilder> 
@@ -1119,7 +1183,7 @@ private static final long serialVersionUID = 0L;
       return internalGetSuiteContexts().getMap().size();
     }
     /**
-     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
      */
 
     @java.lang.Override
@@ -1137,7 +1201,7 @@ private static final long serialVersionUID = 0L;
       return getSuiteContextsMap();
     }
     /**
-     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
      */
     @java.lang.Override
 
@@ -1145,7 +1209,7 @@ private static final long serialVersionUID = 0L;
       return internalGetSuiteContexts().getMap();
     }
     /**
-     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
      */
     @java.lang.Override
 
@@ -1158,7 +1222,7 @@ private static final long serialVersionUID = 0L;
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
      */
     @java.lang.Override
 
@@ -1179,7 +1243,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
      */
 
     public Builder removeSuiteContexts(
@@ -1198,7 +1262,7 @@ private static final long serialVersionUID = 0L;
       return internalGetMutableSuiteContexts().getMutableMap();
     }
     /**
-     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
      */
     public Builder putSuiteContexts(
         java.lang.String key,
@@ -1210,7 +1274,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+     * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
      */
 
     public Builder putAllSuiteContexts(
@@ -1247,7 +1311,7 @@ private static final long serialVersionUID = 0L;
       return internalGetTestContexts().getMap().size();
     }
     /**
-     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
      */
 
     @java.lang.Override
@@ -1265,7 +1329,7 @@ private static final long serialVersionUID = 0L;
       return getTestContextsMap();
     }
     /**
-     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
      */
     @java.lang.Override
 
@@ -1273,7 +1337,7 @@ private static final long serialVersionUID = 0L;
       return internalGetTestContexts().getMap();
     }
     /**
-     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
      */
     @java.lang.Override
 
@@ -1286,7 +1350,7 @@ private static final long serialVersionUID = 0L;
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
      */
     @java.lang.Override
 
@@ -1307,7 +1371,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
      */
 
     public Builder removeTestContexts(
@@ -1326,7 +1390,7 @@ private static final long serialVersionUID = 0L;
       return internalGetMutableTestContexts().getMutableMap();
     }
     /**
-     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
      */
     public Builder putTestContexts(
         java.lang.String key,
@@ -1338,7 +1402,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+     * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
      */
 
     public Builder putAllTestContexts(
@@ -1375,7 +1439,7 @@ private static final long serialVersionUID = 0L;
       return internalGetClassContexts().getMap().size();
     }
     /**
-     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
      */
 
     @java.lang.Override
@@ -1393,7 +1457,7 @@ private static final long serialVersionUID = 0L;
       return getClassContextsMap();
     }
     /**
-     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
      */
     @java.lang.Override
 
@@ -1401,7 +1465,7 @@ private static final long serialVersionUID = 0L;
       return internalGetClassContexts().getMap();
     }
     /**
-     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
      */
     @java.lang.Override
 
@@ -1414,7 +1478,7 @@ private static final long serialVersionUID = 0L;
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
      */
     @java.lang.Override
 
@@ -1435,7 +1499,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
      */
 
     public Builder removeClassContexts(
@@ -1454,7 +1518,7 @@ private static final long serialVersionUID = 0L;
       return internalGetMutableClassContexts().getMutableMap();
     }
     /**
-     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
      */
     public Builder putClassContexts(
         java.lang.String key,
@@ -1466,7 +1530,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+     * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
      */
 
     public Builder putAllClassContexts(
@@ -1503,7 +1567,7 @@ private static final long serialVersionUID = 0L;
       return internalGetMethodContexts().getMap().size();
     }
     /**
-     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
      */
 
     @java.lang.Override
@@ -1521,7 +1585,7 @@ private static final long serialVersionUID = 0L;
       return getMethodContextsMap();
     }
     /**
-     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
      */
     @java.lang.Override
 
@@ -1529,7 +1593,7 @@ private static final long serialVersionUID = 0L;
       return internalGetMethodContexts().getMap();
     }
     /**
-     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
      */
     @java.lang.Override
 
@@ -1542,7 +1606,7 @@ private static final long serialVersionUID = 0L;
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
      */
     @java.lang.Override
 
@@ -1563,7 +1627,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
      */
 
     public Builder removeMethodContexts(
@@ -1582,7 +1646,7 @@ private static final long serialVersionUID = 0L;
       return internalGetMutableMethodContexts().getMutableMap();
     }
     /**
-     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
      */
     public Builder putMethodContexts(
         java.lang.String key,
@@ -1594,7 +1658,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+     * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
      */
 
     public Builder putAllMethodContexts(

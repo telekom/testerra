@@ -8,26 +8,32 @@ public interface HistoryAggregateOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.data.ExecutionContext execution_context = 1;</code>
+   * <code>int32 historyId = 1;</code>
+   * @return The historyId.
+   */
+  int getHistoryId();
+
+  /**
+   * <code>.data.ExecutionContext execution_context = 2;</code>
    * @return Whether the executionContext field is set.
    */
   boolean hasExecutionContext();
   /**
-   * <code>.data.ExecutionContext execution_context = 1;</code>
+   * <code>.data.ExecutionContext execution_context = 2;</code>
    * @return The executionContext.
    */
   eu.tsystems.mms.tic.testframework.report.model.ExecutionContext getExecutionContext();
   /**
-   * <code>.data.ExecutionContext execution_context = 1;</code>
+   * <code>.data.ExecutionContext execution_context = 2;</code>
    */
   eu.tsystems.mms.tic.testframework.report.model.ExecutionContextOrBuilder getExecutionContextOrBuilder();
 
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
   int getSuiteContextsCount();
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
   boolean containsSuiteContexts(
       java.lang.String key);
@@ -38,30 +44,30 @@ public interface HistoryAggregateOrBuilder extends
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
   getSuiteContexts();
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.SuiteContext>
   getSuiteContextsMap();
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrDefault(
       java.lang.String key,
       eu.tsystems.mms.tic.testframework.report.model.SuiteContext defaultValue);
   /**
-   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 2;</code>
+   * <code>map&lt;string, .data.SuiteContext&gt; suite_contexts = 3;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.SuiteContext getSuiteContextsOrThrow(
       java.lang.String key);
 
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
   int getTestContextsCount();
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
   boolean containsTestContexts(
       java.lang.String key);
@@ -72,30 +78,30 @@ public interface HistoryAggregateOrBuilder extends
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
   getTestContexts();
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.TestContext>
   getTestContextsMap();
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrDefault(
       java.lang.String key,
       eu.tsystems.mms.tic.testframework.report.model.TestContext defaultValue);
   /**
-   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 3;</code>
+   * <code>map&lt;string, .data.TestContext&gt; test_contexts = 4;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.TestContext getTestContextsOrThrow(
       java.lang.String key);
 
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
   int getClassContextsCount();
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
   boolean containsClassContexts(
       java.lang.String key);
@@ -106,30 +112,30 @@ public interface HistoryAggregateOrBuilder extends
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
   getClassContexts();
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.ClassContext>
   getClassContextsMap();
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrDefault(
       java.lang.String key,
       eu.tsystems.mms.tic.testframework.report.model.ClassContext defaultValue);
   /**
-   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 4;</code>
+   * <code>map&lt;string, .data.ClassContext&gt; class_contexts = 5;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.ClassContext getClassContextsOrThrow(
       java.lang.String key);
 
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
   int getMethodContextsCount();
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
   boolean containsMethodContexts(
       java.lang.String key);
@@ -140,19 +146,19 @@ public interface HistoryAggregateOrBuilder extends
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
   getMethodContexts();
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
   java.util.Map<java.lang.String, eu.tsystems.mms.tic.testframework.report.model.MethodContext>
   getMethodContextsMap();
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrDefault(
       java.lang.String key,
       eu.tsystems.mms.tic.testframework.report.model.MethodContext defaultValue);
   /**
-   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 5;</code>
+   * <code>map&lt;string, .data.MethodContext&gt; method_contexts = 6;</code>
    */
 
   eu.tsystems.mms.tic.testframework.report.model.MethodContext getMethodContextsOrThrow(

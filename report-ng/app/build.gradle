@@ -20,7 +20,8 @@
  */
 
 plugins {
-    id "com.github.node-gradle.node" version "3.0.0-rc6"
+//    id "com.github.node-gradle.node" version "3.0.0-rc6"
+    id "com.github.node-gradle.node" version "7.0.2"
 }
 
 // Deactivate JAR publishing
@@ -36,7 +37,8 @@ project.afterEvaluate {
 
 node {
     download = true
-    version = "16.4.0"
+//    version = "16.4.0"
+    version = "19.8.1"
     useGradleProxySettings = true
 }
 

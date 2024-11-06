@@ -293,22 +293,22 @@ public class TesterraListener implements
         pAfterInvocation(method, testResult, context);
     }
 
-    private static String getMethodName(ITestResult testResult) {
-        ITestNGMethod testMethod = testResult.getMethod();
-        String methodName = testMethod.getMethodName();
-        Object[] parameters = testResult.getParameters();
-        if (parameters != null) {
-            methodName += "(";
-            for (Object parameter : parameters) {
-                methodName += parameter + ", ";
-            }
-            if (parameters.length > 0) {
-                methodName = methodName.substring(0, methodName.length() - 2);
-            }
-            methodName += ")";
-        }
-        return methodName;
-    }
+//    private static String getMethodName(ITestResult testResult) {
+//        ITestNGMethod testMethod = testResult.getMethod();
+//        String methodName = testMethod.getMethodName();
+//        Object[] parameters = testResult.getParameters();
+//        if (parameters != null) {
+//            methodName += "(";
+//            for (Object parameter : parameters) {
+//                methodName += parameter + ", ";
+//            }
+//            if (parameters.length > 0) {
+//                methodName = methodName.substring(0, methodName.length() - 2);
+//            }
+//            methodName += ")";
+//        }
+//        return methodName;
+//    }
 
     /**
      * Override after invocation, to visualize threads and finish reporting.

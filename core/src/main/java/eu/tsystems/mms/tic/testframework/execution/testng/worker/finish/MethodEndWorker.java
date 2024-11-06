@@ -45,7 +45,7 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
         ITestNGMethod testMethod = event.getTestMethod();
         MethodContext methodContext = event.getMethodContext();
 
-        String msg = String.format("%s %s", methodContext.getStatus().title, formatter.toString(testMethod));
+        String msg = String.format("%s %s", methodContext.getStatus().title, formatter.toString(testResult));
         if (event.isFailed()) {
             log().error(msg, testResult.getThrowable());
         } else if (event.getTestResult().isSuccess()) {

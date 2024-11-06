@@ -174,15 +174,15 @@ public class ClassContext extends AbstractContext implements Loggable {
         return methodContext;
     }
 
-    public MethodContext safeAddSkipMethod(ITestResult testResult) {
-        MethodContext methodContext = getMethodContext(testResult);
-        methodContext.readErrors().findFirst().ifPresentOrElse(
-                error -> {},
-                () -> {
-                    methodContext.addError(new SkipException("Skipped"));
-                    methodContext.setStatus(Status.SKIPPED);
-                }
-        );
-        return methodContext;
-    }
+//    public MethodContext safeAddSkipMethod(ITestResult testResult) {
+//        MethodContext methodContext = getMethodContext(testResult);
+//        methodContext.readErrors().findFirst().ifPresentOrElse(
+//                error -> {},
+//                () -> {
+//                    methodContext.addError(new SkipException("Skipped"));
+//                    methodContext.setStatus(Status.SKIPPED);
+//                }
+//        );
+//        return methodContext;
+//    }
 }

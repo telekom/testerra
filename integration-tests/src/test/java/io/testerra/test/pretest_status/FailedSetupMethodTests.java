@@ -153,41 +153,4 @@ public class FailedSetupMethodTests extends TesterraTest implements AssertProvid
         }
     }
 
-//    public static class SetupAfterTest implements Loggable {
-//
-//        @Test
-//        public void testPassedMethodBeforeAFailedAfterMethod() {
-//            log().info("Info log of test method.");
-//        }
-//
-//        @AfterMethod
-//        public void setupAfterMethod() {
-//            ASSERT.fail("Setup method must fail.");
-//        }
-//    }
-//
-//    public static class SetupAfterClass1 implements Loggable {
-//        @Test
-//        public void testPassedMethodBeforeAFailedAfterClass() {
-//            log().info("Info log of test method.");
-//        }
-//
-//        @AfterClass
-//        public void setupAfterClass() {
-//            ASSERT.fail("Setup method must fail.");
-//        }
-//    }
-//
-//    public static class SetupAfterClass2 implements Loggable {
-//        @Test
-//        public void testPassedMethodBeforeAFailedAfterClass() {
-//            log().info("Info log of test method.");
-//        }
-//
-//        @AfterClass
-//        public void setupAfterClass() {
-//            throw new RuntimeException("Setup method must fail.");
-//        }
-//    }
-
 }

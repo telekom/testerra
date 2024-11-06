@@ -21,7 +21,9 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -50,12 +52,30 @@ public interface Formatter {
 
     String logTime(Date date);
 
-    default String toString(ITestNGMethod method) {
-        return (method.isTest() ? "Test" : "Configuration")
-                .concat(" (")
-                .concat(method.getTestClass().getRealClass().getSimpleName())
+    default String getMethodName(ITestResult testResult) {
+        ITestNGMethod testMethod = testResult.getMethod();
+        Object[] parameters = testResult.getParameters();
+        String parameterString = "";
+        if (parameters != null) {
+            parameterString = Arrays.toString(parameters)
+                    .replace("[", "")
+                    .replace("]", "");
+        }
+
+        return testMethod.getTestClass().getRealClass().getSimpleName()
                 .concat(".")
-                .concat(method.getMethodName())
-                .concat("())");
+                .concat(testMethod.getMethodName())
+                .concat("(")
+                .concat(parameterString)
+                .concat(")");
     }
+
+    default String toString(ITestResult testResult) {
+        ITestNGMethod testMethod = testResult.getMethod();
+
+        return (testMethod.isTest() ? "Test" : "Configuration")
+                .concat(" ")
+                .concat(this.getMethodName(testResult));
+    }
+
 }

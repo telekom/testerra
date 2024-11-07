@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private History() {
-    entry_ = java.util.Collections.emptyList();
+    entries_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -52,10 +52,10 @@ private static final long serialVersionUID = 0L;
             break;
           case 10: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              entry_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate>();
+              entries_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate>();
               mutable_bitField0_ |= 0x00000001;
             }
-            entry_.add(
+            entries_.add(
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.parser(), extensionRegistry));
             break;
           }
@@ -75,7 +75,7 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        entry_ = java.util.Collections.unmodifiableList(entry_);
+        entries_ = java.util.Collections.unmodifiableList(entries_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -94,44 +94,44 @@ private static final long serialVersionUID = 0L;
             eu.tsystems.mms.tic.testframework.report.model.History.class, eu.tsystems.mms.tic.testframework.report.model.History.Builder.class);
   }
 
-  public static final int ENTRY_FIELD_NUMBER = 1;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> entry_;
+  public static final int ENTRIES_FIELD_NUMBER = 1;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> entries_;
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
   @java.lang.Override
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> getEntryList() {
-    return entry_;
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> getEntriesList() {
+    return entries_;
   }
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
   @java.lang.Override
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder> 
-      getEntryOrBuilderList() {
-    return entry_;
+      getEntriesOrBuilderList() {
+    return entries_;
   }
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
   @java.lang.Override
-  public int getEntryCount() {
-    return entry_.size();
+  public int getEntriesCount() {
+    return entries_.size();
   }
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate getEntry(int index) {
-    return entry_.get(index);
+  public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate getEntries(int index) {
+    return entries_.get(index);
   }
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder getEntryOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder getEntriesOrBuilder(
       int index) {
-    return entry_.get(index);
+    return entries_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -148,8 +148,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    for (int i = 0; i < entry_.size(); i++) {
-      output.writeMessage(1, entry_.get(i));
+    for (int i = 0; i < entries_.size(); i++) {
+      output.writeMessage(1, entries_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -160,9 +160,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    for (int i = 0; i < entry_.size(); i++) {
+    for (int i = 0; i < entries_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, entry_.get(i));
+        .computeMessageSize(1, entries_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -179,8 +179,8 @@ private static final long serialVersionUID = 0L;
     }
     eu.tsystems.mms.tic.testframework.report.model.History other = (eu.tsystems.mms.tic.testframework.report.model.History) obj;
 
-    if (!getEntryList()
-        .equals(other.getEntryList())) return false;
+    if (!getEntriesList()
+        .equals(other.getEntriesList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -192,9 +192,9 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    if (getEntryCount() > 0) {
-      hash = (37 * hash) + ENTRY_FIELD_NUMBER;
-      hash = (53 * hash) + getEntryList().hashCode();
+    if (getEntriesCount() > 0) {
+      hash = (37 * hash) + ENTRIES_FIELD_NUMBER;
+      hash = (53 * hash) + getEntriesList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -324,17 +324,17 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getEntryFieldBuilder();
+        getEntriesFieldBuilder();
       }
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (entryBuilder_ == null) {
-        entry_ = java.util.Collections.emptyList();
+      if (entriesBuilder_ == null) {
+        entries_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
       } else {
-        entryBuilder_.clear();
+        entriesBuilder_.clear();
       }
       return this;
     }
@@ -363,14 +363,14 @@ private static final long serialVersionUID = 0L;
     public eu.tsystems.mms.tic.testframework.report.model.History buildPartial() {
       eu.tsystems.mms.tic.testframework.report.model.History result = new eu.tsystems.mms.tic.testframework.report.model.History(this);
       int from_bitField0_ = bitField0_;
-      if (entryBuilder_ == null) {
+      if (entriesBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
-          entry_ = java.util.Collections.unmodifiableList(entry_);
+          entries_ = java.util.Collections.unmodifiableList(entries_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.entry_ = entry_;
+        result.entries_ = entries_;
       } else {
-        result.entry_ = entryBuilder_.build();
+        result.entries_ = entriesBuilder_.build();
       }
       onBuilt();
       return result;
@@ -420,29 +420,29 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.History other) {
       if (other == eu.tsystems.mms.tic.testframework.report.model.History.getDefaultInstance()) return this;
-      if (entryBuilder_ == null) {
-        if (!other.entry_.isEmpty()) {
-          if (entry_.isEmpty()) {
-            entry_ = other.entry_;
+      if (entriesBuilder_ == null) {
+        if (!other.entries_.isEmpty()) {
+          if (entries_.isEmpty()) {
+            entries_ = other.entries_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureEntryIsMutable();
-            entry_.addAll(other.entry_);
+            ensureEntriesIsMutable();
+            entries_.addAll(other.entries_);
           }
           onChanged();
         }
       } else {
-        if (!other.entry_.isEmpty()) {
-          if (entryBuilder_.isEmpty()) {
-            entryBuilder_.dispose();
-            entryBuilder_ = null;
-            entry_ = other.entry_;
+        if (!other.entries_.isEmpty()) {
+          if (entriesBuilder_.isEmpty()) {
+            entriesBuilder_.dispose();
+            entriesBuilder_ = null;
+            entries_ = other.entries_;
             bitField0_ = (bitField0_ & ~0x00000001);
-            entryBuilder_ = 
+            entriesBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getEntryFieldBuilder() : null;
+                 getEntriesFieldBuilder() : null;
           } else {
-            entryBuilder_.addAllMessages(other.entry_);
+            entriesBuilder_.addAllMessages(other.entries_);
           }
         }
       }
@@ -476,244 +476,244 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> entry_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> entries_ =
       java.util.Collections.emptyList();
-    private void ensureEntryIsMutable() {
+    private void ensureEntriesIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        entry_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate>(entry_);
+        entries_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate>(entries_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder> entryBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder> entriesBuilder_;
 
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> getEntryList() {
-      if (entryBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(entry_);
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> getEntriesList() {
+      if (entriesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(entries_);
       } else {
-        return entryBuilder_.getMessageList();
+        return entriesBuilder_.getMessageList();
       }
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public int getEntryCount() {
-      if (entryBuilder_ == null) {
-        return entry_.size();
+    public int getEntriesCount() {
+      if (entriesBuilder_ == null) {
+        return entries_.size();
       } else {
-        return entryBuilder_.getCount();
+        return entriesBuilder_.getCount();
       }
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate getEntry(int index) {
-      if (entryBuilder_ == null) {
-        return entry_.get(index);
+    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate getEntries(int index) {
+      if (entriesBuilder_ == null) {
+        return entries_.get(index);
       } else {
-        return entryBuilder_.getMessage(index);
+        return entriesBuilder_.getMessage(index);
       }
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder setEntry(
+    public Builder setEntries(
         int index, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate value) {
-      if (entryBuilder_ == null) {
+      if (entriesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureEntryIsMutable();
-        entry_.set(index, value);
+        ensureEntriesIsMutable();
+        entries_.set(index, value);
         onChanged();
       } else {
-        entryBuilder_.setMessage(index, value);
+        entriesBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder setEntry(
+    public Builder setEntries(
         int index, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder builderForValue) {
-      if (entryBuilder_ == null) {
-        ensureEntryIsMutable();
-        entry_.set(index, builderForValue.build());
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.set(index, builderForValue.build());
         onChanged();
       } else {
-        entryBuilder_.setMessage(index, builderForValue.build());
+        entriesBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder addEntry(eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate value) {
-      if (entryBuilder_ == null) {
+    public Builder addEntries(eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate value) {
+      if (entriesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureEntryIsMutable();
-        entry_.add(value);
+        ensureEntriesIsMutable();
+        entries_.add(value);
         onChanged();
       } else {
-        entryBuilder_.addMessage(value);
+        entriesBuilder_.addMessage(value);
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder addEntry(
+    public Builder addEntries(
         int index, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate value) {
-      if (entryBuilder_ == null) {
+      if (entriesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureEntryIsMutable();
-        entry_.add(index, value);
+        ensureEntriesIsMutable();
+        entries_.add(index, value);
         onChanged();
       } else {
-        entryBuilder_.addMessage(index, value);
+        entriesBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder addEntry(
+    public Builder addEntries(
         eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder builderForValue) {
-      if (entryBuilder_ == null) {
-        ensureEntryIsMutable();
-        entry_.add(builderForValue.build());
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.add(builderForValue.build());
         onChanged();
       } else {
-        entryBuilder_.addMessage(builderForValue.build());
+        entriesBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder addEntry(
+    public Builder addEntries(
         int index, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder builderForValue) {
-      if (entryBuilder_ == null) {
-        ensureEntryIsMutable();
-        entry_.add(index, builderForValue.build());
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.add(index, builderForValue.build());
         onChanged();
       } else {
-        entryBuilder_.addMessage(index, builderForValue.build());
+        entriesBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder addAllEntry(
+    public Builder addAllEntries(
         java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> values) {
-      if (entryBuilder_ == null) {
-        ensureEntryIsMutable();
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, entry_);
+            values, entries_);
         onChanged();
       } else {
-        entryBuilder_.addAllMessages(values);
+        entriesBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder clearEntry() {
-      if (entryBuilder_ == null) {
-        entry_ = java.util.Collections.emptyList();
+    public Builder clearEntries() {
+      if (entriesBuilder_ == null) {
+        entries_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
       } else {
-        entryBuilder_.clear();
+        entriesBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public Builder removeEntry(int index) {
-      if (entryBuilder_ == null) {
-        ensureEntryIsMutable();
-        entry_.remove(index);
+    public Builder removeEntries(int index) {
+      if (entriesBuilder_ == null) {
+        ensureEntriesIsMutable();
+        entries_.remove(index);
         onChanged();
       } else {
-        entryBuilder_.remove(index);
+        entriesBuilder_.remove(index);
       }
       return this;
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder getEntryBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder getEntriesBuilder(
         int index) {
-      return getEntryFieldBuilder().getBuilder(index);
+      return getEntriesFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder getEntryOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder getEntriesOrBuilder(
         int index) {
-      if (entryBuilder_ == null) {
-        return entry_.get(index);  } else {
-        return entryBuilder_.getMessageOrBuilder(index);
+      if (entriesBuilder_ == null) {
+        return entries_.get(index);  } else {
+        return entriesBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
     public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder> 
-         getEntryOrBuilderList() {
-      if (entryBuilder_ != null) {
-        return entryBuilder_.getMessageOrBuilderList();
+         getEntriesOrBuilderList() {
+      if (entriesBuilder_ != null) {
+        return entriesBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(entry_);
+        return java.util.Collections.unmodifiableList(entries_);
       }
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder addEntryBuilder() {
-      return getEntryFieldBuilder().addBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder addEntriesBuilder() {
+      return getEntriesFieldBuilder().addBuilder(
           eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder addEntryBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder addEntriesBuilder(
         int index) {
-      return getEntryFieldBuilder().addBuilder(
+      return getEntriesFieldBuilder().addBuilder(
           index, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.HistoryAggregate entry = 1;</code>
+     * <code>repeated .data.HistoryAggregate entries = 1;</code>
      */
     public java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder> 
-         getEntryBuilderList() {
-      return getEntryFieldBuilder().getBuilderList();
+         getEntriesBuilderList() {
+      return getEntriesFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder> 
-        getEntryFieldBuilder() {
-      if (entryBuilder_ == null) {
-        entryBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+        getEntriesFieldBuilder() {
+      if (entriesBuilder_ == null) {
+        entriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder>(
-                entry_,
+                entries_,
                 ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
                 isClean());
-        entry_ = null;
+        entries_ = null;
       }
-      return entryBuilder_;
+      return entriesBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

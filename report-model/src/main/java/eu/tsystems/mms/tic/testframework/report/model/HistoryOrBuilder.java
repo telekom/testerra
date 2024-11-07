@@ -8,26 +8,26 @@ public interface HistoryOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate> 
-      getEntryList();
+      getEntriesList();
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate getEntry(int index);
+  eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate getEntries(int index);
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
-  int getEntryCount();
+  int getEntriesCount();
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder> 
-      getEntryOrBuilderList();
+      getEntriesOrBuilderList();
   /**
-   * <code>repeated .data.HistoryAggregate entry = 1;</code>
+   * <code>repeated .data.HistoryAggregate entries = 1;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder getEntryOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.HistoryAggregateOrBuilder getEntriesOrBuilder(
       int index);
 }

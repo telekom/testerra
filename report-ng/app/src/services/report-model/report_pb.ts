@@ -56,7 +56,7 @@ export interface LogMessageAggregate_LogMessagesEntry {
 }
 
 export interface HistoryAggregate {
-  historyId?: number | undefined;
+  historyIndex?: number | undefined;
   executionContext?: ExecutionContext | undefined;
   suiteContexts?: { [key: string]: SuiteContext } | undefined;
   testContexts?: { [key: string]: TestContext } | undefined;
@@ -85,7 +85,7 @@ export interface HistoryAggregate_MethodContextsEntry {
 }
 
 export interface History {
-  entry?: HistoryAggregate[] | undefined;
+  entries?: HistoryAggregate[] | undefined;
 }
 
 function createBaseExecutionAggregate(): ExecutionAggregate {
@@ -524,7 +524,7 @@ export const LogMessageAggregate_LogMessagesEntry = {
 
 function createBaseHistoryAggregate(): HistoryAggregate {
   return {
-    historyId: 0,
+    historyIndex: 0,
     executionContext: undefined,
     suiteContexts: {},
     testContexts: {},
@@ -535,8 +535,8 @@ function createBaseHistoryAggregate(): HistoryAggregate {
 
 export const HistoryAggregate = {
   encode(message: HistoryAggregate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.historyId !== undefined && message.historyId !== 0) {
-      writer.uint32(8).int32(message.historyId);
+    if (message.historyIndex !== undefined && message.historyIndex !== 0) {
+      writer.uint32(8).int32(message.historyIndex);
     }
     if (message.executionContext !== undefined) {
       ExecutionContext.encode(message.executionContext, writer.uint32(18).fork()).ldelim();
@@ -568,7 +568,7 @@ export const HistoryAggregate = {
             break;
           }
 
-          message.historyId = reader.int32();
+          message.historyIndex = reader.int32();
           continue;
         case 2:
           if (tag !== 18) {
@@ -812,13 +812,13 @@ export const HistoryAggregate_MethodContextsEntry = {
 };
 
 function createBaseHistory(): History {
-  return { entry: [] };
+  return { entries: [] };
 }
 
 export const History = {
   encode(message: History, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.entry !== undefined && message.entry.length !== 0) {
-      for (const v of message.entry) {
+    if (message.entries !== undefined && message.entries.length !== 0) {
+      for (const v of message.entries) {
         HistoryAggregate.encode(v!, writer.uint32(10).fork()).ldelim();
       }
     }
@@ -837,7 +837,7 @@ export const History = {
             break;
           }
 
-          message.entry!.push(HistoryAggregate.decode(reader, reader.uint32()));
+          message.entries!.push(HistoryAggregate.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {

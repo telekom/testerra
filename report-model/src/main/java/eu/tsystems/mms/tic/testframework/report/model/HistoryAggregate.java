@@ -51,7 +51,7 @@ private static final long serialVersionUID = 0L;
             break;
           case 8: {
 
-            historyId_ = input.readInt32();
+            historyIndex_ = input.readInt32();
             break;
           }
           case 18: {
@@ -169,15 +169,15 @@ private static final long serialVersionUID = 0L;
             eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.class, eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.Builder.class);
   }
 
-  public static final int HISTORYID_FIELD_NUMBER = 1;
-  private int historyId_;
+  public static final int HISTORY_INDEX_FIELD_NUMBER = 1;
+  private int historyIndex_;
   /**
-   * <code>int32 historyId = 1;</code>
-   * @return The historyId.
+   * <code>int32 history_index = 1;</code>
+   * @return The historyIndex.
    */
   @java.lang.Override
-  public int getHistoryId() {
-    return historyId_;
+  public int getHistoryIndex() {
+    return historyIndex_;
   }
 
   public static final int EXECUTION_CONTEXT_FIELD_NUMBER = 2;
@@ -544,8 +544,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (historyId_ != 0) {
-      output.writeInt32(1, historyId_);
+    if (historyIndex_ != 0) {
+      output.writeInt32(1, historyIndex_);
     }
     if (executionContext_ != null) {
       output.writeMessage(2, getExecutionContext());
@@ -583,9 +583,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (historyId_ != 0) {
+    if (historyIndex_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, historyId_);
+        .computeInt32Size(1, historyIndex_);
     }
     if (executionContext_ != null) {
       size += com.google.protobuf.CodedOutputStream
@@ -646,8 +646,8 @@ private static final long serialVersionUID = 0L;
     }
     eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate other = (eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate) obj;
 
-    if (getHistoryId()
-        != other.getHistoryId()) return false;
+    if (getHistoryIndex()
+        != other.getHistoryIndex()) return false;
     if (hasExecutionContext() != other.hasExecutionContext()) return false;
     if (hasExecutionContext()) {
       if (!getExecutionContext()
@@ -672,8 +672,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + HISTORYID_FIELD_NUMBER;
-    hash = (53 * hash) + getHistoryId();
+    hash = (37 * hash) + HISTORY_INDEX_FIELD_NUMBER;
+    hash = (53 * hash) + getHistoryIndex();
     if (hasExecutionContext()) {
       hash = (37 * hash) + EXECUTION_CONTEXT_FIELD_NUMBER;
       hash = (53 * hash) + getExecutionContext().hashCode();
@@ -861,7 +861,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      historyId_ = 0;
+      historyIndex_ = 0;
 
       if (executionContextBuilder_ == null) {
         executionContext_ = null;
@@ -900,7 +900,7 @@ private static final long serialVersionUID = 0L;
     public eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate buildPartial() {
       eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate result = new eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate(this);
       int from_bitField0_ = bitField0_;
-      result.historyId_ = historyId_;
+      result.historyIndex_ = historyIndex_;
       if (executionContextBuilder_ == null) {
         result.executionContext_ = executionContext_;
       } else {
@@ -962,8 +962,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate other) {
       if (other == eu.tsystems.mms.tic.testframework.report.model.HistoryAggregate.getDefaultInstance()) return this;
-      if (other.getHistoryId() != 0) {
-        setHistoryId(other.getHistoryId());
+      if (other.getHistoryIndex() != 0) {
+        setHistoryIndex(other.getHistoryIndex());
       }
       if (other.hasExecutionContext()) {
         mergeExecutionContext(other.getExecutionContext());
@@ -1006,33 +1006,33 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int historyId_ ;
+    private int historyIndex_ ;
     /**
-     * <code>int32 historyId = 1;</code>
-     * @return The historyId.
+     * <code>int32 history_index = 1;</code>
+     * @return The historyIndex.
      */
     @java.lang.Override
-    public int getHistoryId() {
-      return historyId_;
+    public int getHistoryIndex() {
+      return historyIndex_;
     }
     /**
-     * <code>int32 historyId = 1;</code>
-     * @param value The historyId to set.
+     * <code>int32 history_index = 1;</code>
+     * @param value The historyIndex to set.
      * @return This builder for chaining.
      */
-    public Builder setHistoryId(int value) {
+    public Builder setHistoryIndex(int value) {
       
-      historyId_ = value;
+      historyIndex_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 historyId = 1;</code>
+     * <code>int32 history_index = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder clearHistoryId() {
+    public Builder clearHistoryIndex() {
       
-      historyId_ = 0;
+      historyIndex_ = 0;
       onChanged();
       return this;
     }

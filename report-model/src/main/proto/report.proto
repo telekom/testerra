@@ -21,7 +21,7 @@ message LogMessageAggregate {
 }
 
 message HistoryAggregate {
-    int32 historyId = 1;
+    int32 history_index = 1;
     ExecutionContext execution_context = 2;
     map<string, SuiteContext> suite_contexts = 3;
     map<string, TestContext> test_contexts = 4;
@@ -30,5 +30,5 @@ message HistoryAggregate {
 }
 
 message History {
-    repeated HistoryAggregate entry = 1;
+    repeated HistoryAggregate entries = 1;
 }

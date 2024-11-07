@@ -8,10 +8,10 @@ public interface HistoryAggregateOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 historyId = 1;</code>
-   * @return The historyId.
+   * <code>int32 history_index = 1;</code>
+   * @return The historyIndex.
    */
-  int getHistoryId();
+  int getHistoryIndex();
 
   /**
    * <code>.data.ExecutionContext execution_context = 2;</code>

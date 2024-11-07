@@ -22,6 +22,7 @@
         "@aurelia-mdc-web/layout-grid": "^9.0.8",
         "@aurelia-mdc-web/linear-progress": "^9.0.8",
         "@aurelia-mdc-web/lookup": "^9.0.8",
+        "@aurelia-mdc-web/radio": "^9.0.8",
         "@aurelia-mdc-web/ripple": "^9.0.8",
         "@aurelia-mdc-web/select": "^9.0.8",
         "@aurelia-mdc-web/snackbar": "^9.0.8",
@@ -31,6 +32,8 @@
         "@aurelia-mdc-web/tooltip": "^9.0.8",
         "@aurelia-mdc-web/top-app-bar": "^9.0.8",
         "@aurelia-mdc-web/typography": "^9.0.8",
+        "@material/form-field": "^14.0.0",
+        "@material/radio": "^14.0.0",
         "@types/moment-duration-format": "^2.2.2",
         "apexcharts": "^3.26.3",
         "aurelia-animator-css": "^1.0.4",
@@ -44,8 +47,7 @@
         "highlight.js": "^11.8.0",
         "moment": "^2.29.4",
         "moment-duration-format": "^2.3.2",
-        "t-systems-aurelia-components": "^1.1.1",
-        "ts-replace-all": "^1.0.0",
+        "t-systems-aurelia-components": "^1.1.8",
         "vis-network": "^7.4.2"
     },
     "devDependencies": {

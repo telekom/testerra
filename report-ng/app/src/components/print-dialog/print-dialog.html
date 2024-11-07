@@ -1,0 +1,83 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <mdc-dialog class="print-dialog" id="print-dialog">
+        <mdc-layout-grid class="p0">
+            <mdc-layout-grid-inner>
+                <mdc-layout-grid-cell class="p0 content" span="6">
+                    <div class="mdc-elevation--z2" id="page-overlay" style="visibility: hidden;">
+                        <div mdc-body2>Page ${_page}/${_totalPages}</div>
+                    </div>
+                    <div>
+                        <mdc-linear-progress class="progress-bar" if.bind="_loading" open="true"></mdc-linear-progress>
+                        <div class="preview">
+                            <iframe id="iframe" src.bind="_iFrameSrc" title="_title" class="hide"></iframe>
+                        </div>
+                    </div>
+                </mdc-layout-grid-cell>
+
+                <mdc-layout-grid-cell class="options pr1" span="6">
+                    <div class="title" mdc-headline6>Print Preview: ${_title}</div>
+                    <button class="icon-button--dense close-button" data-mdc-dialog-action="cancel" icon="clear" mdc-icon-button
+                            title="Close dialog"></button>
+
+                    <mdc-dialog-content>
+                        <div repeat.for="option of _checkboxOptions">
+                            <p class="headline-label">${option.label}</p>
+                            <div class="checkbox-div">
+                                <mdc-checkbox change.delegate="_checkboxSelectionChanged(option)"
+                                              checked.bind="option.checked"
+                                ></mdc-checkbox>
+                                <p style="margin: 8px 8px;">${option.label}</p>
+                            </div>
+
+                            <!-- Check if the option has filters and display them as radio buttons -->
+                            <div class="form-container" if.bind="option.filter && option.filter.length">
+                                <div class="radio-div" repeat.for="filter of option.filter">
+                                    <mdc-radio disabled.bind="!option.checked"
+                                               model.bind="filter"
+                                               mdc-tooltip="value.bind:filter.tooltip"
+                                               change.delegate="_radioSelectionChanged(option, filter)"
+                                               checked.bind="_dynamicFilter[option.id]"
+                                    ></mdc-radio>
+                                    <p style="margin: 8px 8px;">${filter.name}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="note note-headline firefox-note"><b>Please note: </b></p>
+                        <p class="firefox-note note">This feature is recommended for the <b> Chrome browser </b>.</p>
+
+                    </mdc-dialog-content>
+
+                    <mdc-dialog-actions class="dialog-footer">
+                        <button click.delegate="_print()" outlined data-mdc-dialog-action="ok" data-mdc-dialog-button-default
+                                data-mdc-dialog-initial-focus mdc-button>
+                            Print
+                        </button>
+                    </mdc-dialog-actions>
+
+                </mdc-layout-grid-cell>
+            </mdc-layout-grid-inner>
+        </mdc-layout-grid>
+    </mdc-dialog>
+</template>

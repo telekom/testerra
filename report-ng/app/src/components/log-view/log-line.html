@@ -26,6 +26,6 @@
     route-href="route: method; params.bind: {methodId: logMessage.methodContext.contextValues.id}">${logMessage.threadName}</a>]</span>
     [${logMessage.type | logLevel}]: <span title="${logger.package}.${logger.class}"
                                            innerhtml.bind="logger.class|highlightText:searchRegexp"></span><span> - </span><span
-    innerhtml.bind="logMessage.message|highlightText:searchRegexp"></span>
-    <div if.bind="logMessage.cause" innerhtml.bind="logMessage.cause|highlightText:searchRegexp"></div>
+    innerhtml.bind="logMessage.message|htmlEscape|highlightText:searchRegexp"></span>
+    <div if.bind="logMessage.cause" innerhtml.bind="logMessage.cause|htmlEscape|highlightText:searchRegexp"></div>
 </template>

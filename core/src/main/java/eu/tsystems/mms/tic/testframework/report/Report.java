@@ -39,7 +39,7 @@ public interface Report {
         SOURCE_ROOT("source.root", "src"),
         SOURCE_LINES_PREFETCH("source.lines.prefetch", 5),
         SOURCE_EXCLUSION("source.exclusion.regex", ""),
-        HISTORY_MAX_TESTRUNS("history.max.testruns", 50),
+        HISTORY_MAXTESTRUNS("history.maxtestruns", 50),
         ;
         private final String property;
         private final Object defaultValue;

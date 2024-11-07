@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
+import eu.tsystems.mms.tic.testframework.report.Report;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -144,8 +145,8 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
     }
 
     protected void writeHistoryFile(HistoryAggregate.Builder newHistoryEntry, File file) {
-        int maxHistoryEntries = 50;
-        int historyId = 1;
+        int maxHistoryEntries = Report.Properties.HISTORY_MAXTESTRUNS.asLong().intValue();
+        int historyIndex = 1;
 
         History.Builder history = History.newBuilder();
         Report report = Testerra.getInjector().getInstance(Report.class);
@@ -156,8 +157,8 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
             log().info("History file already exists. Appending new entry.");
             try (FileInputStream stream = new FileInputStream(currentHistoryFile)) {
                 history.mergeFrom(stream);
-                HistoryAggregate lastEntry = history.getEntry(history.getEntryCount() - 1);
-                historyId = lastEntry.getHistoryId() + 1;
+                HistoryAggregate lastEntry = history.getEntries(history.getEntriesCount() - 1);
+                historyIndex = lastEntry.getHistoryIndex() + 1;
             } catch (Exception e) {
                 log().error("Unable to read history file", e);
                 return;
@@ -166,18 +167,20 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
             log().info("No history file found: {}. Creating new one.", currentHistoryFile.getAbsolutePath());
         }
 
-        newHistoryEntry.setHistoryId(historyId);
+        newHistoryEntry.setHistoryIndex(historyIndex);
 
         // Add the new entry from the current execution
-        history.addEntry(newHistoryEntry);
-        List<HistoryAggregate> historyEntryList = history.getEntryList();
-        if (historyEntryList.size() > maxHistoryEntries) {
+        history.addEntries(newHistoryEntry);
+        List<HistoryAggregate> historyEntryList = history.getEntriesList();
+        int entriesCount = historyEntryList.size();
+        int entriesToRemove = entriesCount - maxHistoryEntries;
+        if (entriesToRemove > 0) {
             // Cut the history to the correct size
-            historyEntryList = historyEntryList.subList(historyEntryList.size() - maxHistoryEntries, historyEntryList.size());
+            historyEntryList = historyEntryList.subList(entriesToRemove, entriesCount);
         }
 
         history.clear();
-        history.addAllEntry(historyEntryList);
+        history.addAllEntries(historyEntryList);
         writeBuilderToFile(history, file);
     }
 }

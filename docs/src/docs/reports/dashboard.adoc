@@ -1,10 +1,17 @@
 = Dashboard View
 
+== Overview
+
 The dashboard view gives an overview of the last test execution. It shows the total number of executed tests and of passed, skipped or failed tests.
 
 image::report-ng-05.png[align="center", alt="Dashboard"]
 
 On the Breakdown panel is a pie chart that shows the proportions, displayed with different colors according to the test status.
+
+Right beside the Breakdown pie chart you find another panel with the Top 3 failure types (aspects).
+There are two more panels below, one displaying detailed information about test execution duration, start and end times and another panel with a list of test classes that reports how many tests did pass, fail or were skipped in the individual test classes.
+
+== Status definitions
 
 Testerra defines the following *final 4 statuses* which describe the final test result:
 
@@ -33,10 +40,10 @@ Additional to the statuses above Testerra defines some more _sub statuses_:
 | Test Status | Description
 
 | image::status_retried.png[]
-| The test failed at it's first try. Testerra executed that test again if the <<#_retry_analyzer, RetryAnalyzer>> is active.
+| The test failed at it's first try. Testerra executed that test again if the <<#_retry_analyzer, RetryAnalyzer>> was active.
 
 | image::status_recovered.png[]
-| The test was passed at it's second (third...) execution.
+| The test was passed at it's second (third...) execution if the <<#_retry_analyzer, RetryAnalyzer>> was active.
 
 | image::status_repaired.png[]
 | The test was passed but it is still annotated with `@Fails`. The annotation can be removed now.
@@ -51,5 +58,3 @@ Additional to the statuses above Testerra defines some more _sub statuses_:
 ====
 
 
-Right beside the Breakdown pie chart you find another panel with the Top 3 failure types (aspects).
-There are two more panels below, one displaying detailed information about test execution duration, start and end times and another panel with a list of test classes that reports how many tests did pass, fail or were skipped in the individual test classes.

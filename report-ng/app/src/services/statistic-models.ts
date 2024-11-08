@@ -23,6 +23,8 @@ import {data} from "./report-model";
 import {Container} from "aurelia-framework";
 import {StatusConverter} from "./status-converter";
 import ResultStatusType = data.ResultStatusType;
+import History = data.History;
+import HistoryAggregate = data.HistoryAggregate;
 import ExecutionAggregate = data.ExecutionAggregate;
 import MethodType = data.MethodType;
 import IMethodContext = data.MethodContext;
@@ -46,7 +48,7 @@ class Statistics {
         this._resultStatuses[status]++;
     }
 
-    get availableStatuses():ResultStatusType[] {
+    get availableStatuses(): ResultStatusType[] {
         const statuses = [];
         for (const status in this._resultStatuses) {
             statuses.push(status);
@@ -58,9 +60,9 @@ class Statistics {
         return this._resultStatuses[status] | 0;
     }
 
-    getUpmostStatus():number {
+    getUpmostStatus(): number {
         let count = 0;
-        let upmostStatus:any;
+        let upmostStatus: any;
         for (let status in this._resultStatuses) {
             if (this._resultStatuses[status] > count) {
                 upmostStatus = status;
@@ -110,7 +112,7 @@ class Statistics {
         ]);
     }
 
-    getSummarizedStatusCount(statuses:number[]) {
+    getSummarizedStatusCount(statuses: number[]) {
         let count = 0;
         statuses.forEach(value => {
             count += this.getStatusCount(value);
@@ -121,7 +123,7 @@ class Statistics {
 
 export class ExecutionStatistics extends Statistics {
     private _classStatistics: ClassStatistics[] = [];
-    private _uniqueFailureAspects:FailureAspectStatistics[] = [];
+    private _uniqueFailureAspects: FailureAspectStatistics[] = [];
 
     constructor(
         readonly executionAggregate: ExecutionAggregate
@@ -129,7 +131,7 @@ export class ExecutionStatistics extends Statistics {
         super()
     }
 
-    setClassStatistics(classStatistics:ClassStatistics[]) {
+    setClassStatistics(classStatistics: ClassStatistics[]) {
         this._classStatistics = classStatistics;
         this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
     }
@@ -158,7 +160,7 @@ export class ExecutionStatistics extends Statistics {
             })
 
         // Sort failure aspects by fail count
-        this._uniqueFailureAspects = this._uniqueFailureAspects.sort((a, b) => b.overallFailed-a.overallFailed);
+        this._uniqueFailureAspects = this._uniqueFailureAspects.sort((a, b) => b.overallFailed - a.overallFailed);
 
         for (let i = 0; i < this._uniqueFailureAspects.length; ++i) {
             this._uniqueFailureAspects[i].index = i;
@@ -185,6 +187,7 @@ export class ExecutionStatistics extends Statistics {
     get classStatistics() {
         return this._classStatistics;
     }
+
     //
     // get exitPointStatistics() {
     //     return this._exitPointStatistics;
@@ -195,19 +198,70 @@ export class ExecutionStatistics extends Statistics {
     }
 }
 
+export class HistoryAggregateStatistics extends Statistics {
+
+    private _classStatistics: ClassStatistics[] = [];
+
+    constructor(
+        readonly historyAggregate: HistoryAggregate
+    ) {
+        super();
+
+        const classStatistics = {}
+
+        for (const id in this.historyAggregate.methodContexts) {
+            const methodContext = this.historyAggregate.methodContexts[id];
+            const classContext = this.historyAggregate.classContexts[methodContext.classContextId];
+
+            let currentClassStatistics:ClassStatistics = new ClassStatistics(classContext);
+            if (!classStatistics[currentClassStatistics.classIdentifier]) {
+                classStatistics[currentClassStatistics.classIdentifier] = currentClassStatistics;
+            } else {
+                currentClassStatistics = classStatistics[currentClassStatistics.classIdentifier];
+            }
+
+            currentClassStatistics.addMethodContext(methodContext);
+        }
+        this.setClassStatistics(Object.values(classStatistics));
+    }
+
+    setClassStatistics(classStatistics: ClassStatistics[]) {
+        this._classStatistics = classStatistics;
+        this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
+    }
+
+}
+
+export class HistoryStatistics {
+
+    protected historyAggregateStatistics: HistoryAggregateStatistics[] = [];
+
+    constructor(
+        readonly history: History
+    ) {
+        this.history.entries.forEach(entry => {
+            this.historyAggregateStatistics.push(new HistoryAggregateStatistics(entry));
+        })
+    }
+
+    getHistoryAggregateStatistics(): HistoryAggregateStatistics[] {
+        return this.historyAggregateStatistics;
+    }
+}
+
 export class ClassStatistics extends Statistics {
     private _configStatistics = new Statistics();
-    private _methodContexts:IMethodContext[] = [];
+    private _methodContexts: IMethodContext[] = [];
     readonly classIdentifier;
 
     constructor(
-        readonly classContext:IClassContext
+        readonly classContext: IClassContext
     ) {
         super();
         this.classIdentifier = classContext.testContextName || classContext.contextValues.name;
     }
 
-    addMethodContext(methodContext : IMethodContext) {
+    addMethodContext(methodContext: IMethodContext) {
         if (methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
             this._configStatistics.addResultStatus(methodContext.resultStatus);
         } else {
@@ -228,14 +282,14 @@ export class ClassStatistics extends Statistics {
 
 export class FailureAspectStatistics extends Statistics {
     private _irrelevantClassNameNeedles = ["TimeoutException"];
-    private _methodContexts:IMethodContext[] = [];
-    readonly identifier:string;
-    readonly relevantCause:IStackTraceCause;
-    readonly message:string;
-    public index:number;
+    private _methodContexts: IMethodContext[] = [];
+    readonly identifier: string;
+    readonly relevantCause: IStackTraceCause;
+    readonly message: string;
+    public index: number;
 
     constructor(
-        readonly errorContext:IErrorContext
+        readonly errorContext: IErrorContext
     ) {
         super();
         this.relevantCause = this._findRelevantCause(this.errorContext.stackTrace);
@@ -254,7 +308,7 @@ export class FailureAspectStatistics extends Statistics {
      * This method finds a relevant cause from the stack trace.
      * If it could not find any, it takes the first cause from the stack.
      */
-    private _findRelevantCause(causes:IStackTraceCause[]):IStackTraceCause {
+    private _findRelevantCause(causes: IStackTraceCause[]): IStackTraceCause {
         let relevantCause = causes.find(cause => {
             return !this._irrelevantClassNameNeedles.find(needle => cause.className.indexOf(needle) >= 0);
         })
@@ -264,7 +318,7 @@ export class FailureAspectStatistics extends Statistics {
         return relevantCause;
     }
 
-    addMethodContext(methodContext:IMethodContext) {
+    addMethodContext(methodContext: IMethodContext) {
         if (this._methodContexts.indexOf(methodContext) == -1) {
             this._methodContexts.push(methodContext);
             this.addResultStatus(methodContext.resultStatus);

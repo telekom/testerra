@@ -170,6 +170,7 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         newHistoryEntry.setHistoryIndex(historyIndex);
 
         // Add the new entry from the current execution
+        // TODO: Check for better implementation
         history.addEntries(newHistoryEntry);
         List<HistoryAggregate> historyEntryList = history.getEntriesList();
         int entriesCount = historyEntryList.size();

@@ -21,7 +21,7 @@
 
 import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
-import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "./statistic-models";
+import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics, HistoryStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
 import {Config} from "./config-dev";
 import {data} from "./report-model";
@@ -172,6 +172,14 @@ export class StatisticsGenerator {
                 executionStatistics.setClassStatistics(Object.values(classStatistics));
                 return executionStatistics;
             });
+        })
+    }
+
+    getHistoryStatistics(): Promise<HistoryStatistics> {
+        return this._cacheService.getForKeyWithLoadingFunction("historyStatistics", () => {
+            return this._dataLoader.getHistory().then(entries => {
+                return new HistoryStatistics(entries);
+            })
         })
     }
 

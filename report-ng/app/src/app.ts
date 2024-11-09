@@ -133,6 +133,13 @@ export class App {
                 title: 'Timings'
             },
             {
+                route: 'history',
+                name: 'history',
+                moduleId: PLATFORM.moduleName('components/history/history'),
+                nav: true,
+                title: 'History'
+            },
+            {
                 route: 'printable',
                 name: 'printable',
                 moduleId: PLATFORM.moduleName('components/print-dialog/printable'),

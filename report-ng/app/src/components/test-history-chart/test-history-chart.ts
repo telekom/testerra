@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {autoinject, observable} from "aurelia-framework";
+import {autoinject, bindable, observable} from "aurelia-framework";
 import {AbstractViewModel} from "../abstract-view-model";
 import {
     IntlDateFormatValueConverter
@@ -30,9 +30,11 @@ import {
 import {HistoryStatistics} from "../../services/statistic-models";
 import {ECharts, EChartsOption} from "echarts";
 import {data} from "../../services/report-model";
-import {StatusConverter} from "../../services/status-converter";
+import {IFilter, StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {Container} from "aurelia-dependency-injection";
+import "./test-history-chart.scss"
+import {bindingMode} from "aurelia-binding";
 
 @autoinject()
 export class TestHistoryChart extends AbstractViewModel {
@@ -41,6 +43,7 @@ export class TestHistoryChart extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
+    @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -105,12 +108,22 @@ export class TestHistoryChart extends AbstractViewModel {
                     axisLabel: {
                         show: false
                     },
-                    boundaryGap: false
+                    boundaryGap: false,
+                    splitLine: {
+                        show: true
+                    }
                 }
             ],
             yAxis: [
                 {
+                    type: 'value',
+                    axisLine: {
+                        show: true
+                    },
                     axisLabel: {
+                        show: false
+                    },
+                    splitLine: {
                         show: false
                     }
                 }
@@ -125,9 +138,10 @@ export class TestHistoryChart extends AbstractViewModel {
                     color: 'rgba(255,255,255,0)',
                     width: 0
                 },
+                silent: true,
                 symbol: 'none',
                 emphasis: {
-                    focus: 'series'
+                    focus: 'none'
                 },
                 tooltip: {
                     show: false
@@ -149,27 +163,29 @@ export class TestHistoryChart extends AbstractViewModel {
     }
 
     private _setChartOption() {
-        let dataPassed: number[] = [];
-        let dataFailed: number[] = [];
-        let dataSkipped: number[] = [];
-        let dataExpectedFailed: number[] = [];
-        let dataHistoryIndex: number[] = [];
-
-        // const dateFormatter = this._dateFormatter;
-        // const durationFormatter = this._durationFormatter;
+        let chartData: any[] = [];
+        const dateFormatter = this._dateFormatter;
+        const durationFormatter = this._durationFormatter;
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(entry => {
-            dataPassed.push(entry.overallPassed);
-            dataFailed.push(entry.getStatusCount(data.ResultStatusType.FAILED));
-            dataSkipped.push(entry.getStatusCount(data.ResultStatusType.SKIPPED));
-            dataExpectedFailed.push(entry.getStatusCount(data.ResultStatusType.FAILED_EXPECTED));
-            dataHistoryIndex.push(entry.historyAggregate.historyIndex);
-        });
 
-        console.log("Passed: " + dataPassed);
-        console.log("Failed: " + dataFailed);
-        console.log("Skipped: " + dataSkipped);
-        console.log("Expected Failed: " + dataExpectedFailed);
+            const startTime = entry.historyAggregate.executionContext.contextValues.startTime;
+            const endTime = entry.historyAggregate.executionContext.contextValues.endTime;
+
+            chartData.push({
+                startTime: startTime,
+                endTime: endTime,
+                duration: endTime - startTime,
+                testcases: entry.overallTestCases,
+                value: [
+                    entry.historyAggregate.historyIndex,
+                    entry.overallPassed,
+                    entry.getStatusCount(data.ResultStatusType.FAILED),
+                    entry.getStatusCount(data.ResultStatusType.SKIPPED),
+                    entry.getStatusCount(data.ResultStatusType.FAILED_EXPECTED),
+                ]
+            });
+        });
 
         this._option = {
             grid: {
@@ -183,34 +199,52 @@ export class TestHistoryChart extends AbstractViewModel {
                 trigger: 'axis',
                 axisPointer: {
                     type: 'line',
-                    label: {
-                        backgroundColor: '#6a7985'
-                    }
+                },
+                confine: true,
+                formatter: function (params) {
+                    const data = params[0].data;
+                    const values = params[0].value;
+
+                    const passed = values[1];
+                    const failed = values[2];
+                    const skipped = values[3];
+                    const expectedFailed = values[4];
+                    const testcases = passed + failed + skipped + expectedFailed;
+
+                    return `<div class="history-chart-tooltip-header">Run ${params[0].axisValue}</div>
+                        <br>Testcases: ${testcases}
+                        ${passed > 0 ? `<br><span class="status-dot" style="background-color: #417336;"></span> Passed: ${passed}` : ''}
+                        ${failed > 0 ? `<br><span class="status-dot" style="background-color: #E63946;"></span> Failed: ${failed}` : ''}
+                        ${skipped > 0 ? `<br><span class="status-dot" style="background-color: #F7AF3E;"></span> Skipped: ${skipped}` : ''}
+                        ${expectedFailed > 0 ? `<br><span class="status-dot" style="background-color: #4F031B;"></span> Expected Failed: ${expectedFailed}` : ''}
+                        <br><br>Start time: ${dateFormatter.toView(data.startTime, 'full')}
+                        <br>End time: ${dateFormatter.toView(data.endTime, 'full')}
+                        <br>Duration: ${durationFormatter.toView(data.duration)}`;
                 }
             },
-            // tooltip: {
-            //     formatter: function (params) {
-            //         return '<div class="header" style="background-color: ' +
-            //             params.color + ';"> ' + params.name + ' (' + params.value[5] + ')' + '</div>'
-            //             + '<br>Start time: ' + dateFormatter.toView(params.value[1], 'full')
-            //             + '<br>End time: ' + dateFormatter.toView(params.value[2], 'full')
-            //             + '<br>Duration: ' + durationFormatter.toView(params.value[4])
-            //     }
-            // },
             xAxis: [
                 {
                     type: 'category',
-                    data: dataHistoryIndex,
+                    axisLine: {
+                        show: true
+                    },
                     axisLabel: {
                         show: true
                     },
-                    boundaryGap: false
+                    boundaryGap: false,
+                    splitLine: {
+                        show: true
+                    }
                 }
             ],
             yAxis: [
                 {
+                    type: 'value',
                     axisLabel: {
                         show: true
+                    },
+                    splitLine: {
+                        show: false
                     }
                 }
             ],
@@ -230,7 +264,11 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         focus: 'none'
                     },
-                    data: dataExpectedFailed
+                    encode: {
+                        x: 0,
+                        y: 4
+                    },
+                    data: chartData
                 },
                 {
                     name: 'Skipped',
@@ -247,7 +285,11 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         focus: 'none'
                     },
-                    data: dataSkipped
+                    encode: {
+                        x: 0,
+                        y: 3
+                    },
+                    data: chartData
                 },
                 {
                     name: 'Failed',
@@ -264,7 +306,11 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         focus: 'none'
                     },
-                    data: dataFailed
+                    encode: {
+                        x: 0,
+                        y: 2
+                    },
+                    data: chartData
                 },
                 {
                     name: 'Passed',
@@ -281,7 +327,11 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         focus: 'none'
                     },
-                    data: dataPassed
+                    encode: {
+                        x: 0,
+                        y: 1
+                    },
+                    data: chartData
                 },
             ]
         };

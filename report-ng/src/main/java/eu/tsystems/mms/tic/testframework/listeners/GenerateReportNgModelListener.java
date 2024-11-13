@@ -38,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
-import eu.tsystems.mms.tic.testframework.report.Report;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -170,7 +169,7 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
         newHistoryEntry.setHistoryIndex(historyIndex);
 
         // Add the new entry from the current execution
-        // TODO: Check for better implementation
+        // TODO: Check for better implementation | the entries-list does not support .clear() -> unsupported action exception
         history.addEntries(newHistoryEntry);
         List<HistoryAggregate> historyEntryList = history.getEntriesList();
         int entriesCount = historyEntryList.size();

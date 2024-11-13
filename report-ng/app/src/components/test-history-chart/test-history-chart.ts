@@ -35,12 +35,15 @@ import {StatisticsGenerator} from "../../services/statistics-generator";
 import {Container} from "aurelia-dependency-injection";
 import "./test-history-chart.scss"
 import {bindingMode} from "aurelia-binding";
+import {ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()
 export class TestHistoryChart extends AbstractViewModel {
     private _dateFormatter: IntlDateFormatValueConverter;
     private _durationFormatter: DurationFormatValueConverter;
     private _historyStatistics: HistoryStatistics;
+    private _historyAvailable: boolean;
+    private _initialChartLoading = true;
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
     @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
@@ -53,21 +56,55 @@ export class TestHistoryChart extends AbstractViewModel {
         this._option = {};
     }
 
+    filterChanged() {
+        if (this._initialChartLoading || !this._historyAvailable) {
+            return;
+        }
+
+        const defaultLegend = {
+            'Failed': false,
+            'Expected Failed': false,
+            'Skipped': false,
+            'Passed': false,
+        };
+
+        const statusLegendMap = {
+            [ResultStatusType.FAILED]: {...defaultLegend, 'Failed': true},
+            [ResultStatusType.FAILED_EXPECTED]: {...defaultLegend, 'Expected Failed': true},
+            [ResultStatusType.SKIPPED]: {...defaultLegend, 'Skipped': true},
+            [ResultStatusType.PASSED]: {...defaultLegend, 'Passed': true},
+        };
+
+        this._option.legend = {
+            show: false,
+            selected: this.filter?.status
+                ? statusLegendMap[this.filter.status] || defaultLegend
+                : {
+                    'Failed': true,
+                    'Expected Failed': true,
+                    'Skipped': true,
+                    'Passed': true,
+                },
+        };
+
+        this._chart.setOption(this._option);
+    }
+
     async attached() {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
+        this._historyAvailable = this._historyStatistics.history.entries.length >= 2;
         this._initDateFormatter();
         this._initDurationFormatter();
 
-        console.log(this._historyStatistics);
-        if (this._historyStatistics.history.entries.length < 2) {
-            console.log("No history");
-            this._setChartPlaceholderOption();
-        } else {
-            console.log("History with " + this._historyStatistics.history.entries.length + " entries");
+        if (this._historyAvailable) {
             this._setChartOption();
+        } else {
+            this._setChartPlaceholderOption();
         }
-
-        this._chart.setOption(this._option);
+        this._initialChartLoading = false;
+        if (this.filter?.status) {
+            this.filterChanged();
+        }
     };
 
     private _initDurationFormatter() {
@@ -163,6 +200,16 @@ export class TestHistoryChart extends AbstractViewModel {
     }
 
     private _setChartOption() {
+        const style = new Map<number, string>();
+        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+
         let chartData: any[] = [];
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
@@ -179,10 +226,10 @@ export class TestHistoryChart extends AbstractViewModel {
                 testcases: entry.overallTestCases,
                 value: [
                     entry.historyAggregate.historyIndex,
-                    entry.overallPassed,
                     entry.getStatusCount(data.ResultStatusType.FAILED),
-                    entry.getStatusCount(data.ResultStatusType.SKIPPED),
                     entry.getStatusCount(data.ResultStatusType.FAILED_EXPECTED),
+                    entry.getStatusCount(data.ResultStatusType.SKIPPED),
+                    entry.overallPassed,
                 ]
             });
         });
@@ -195,28 +242,31 @@ export class TestHistoryChart extends AbstractViewModel {
                 bottom: '0%',
                 containLabel: true
             },
+            animation: false,
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
                     type: 'line',
                 },
                 confine: true,
+                borderWidth: 1,
+                borderColor: 'rgba(221,221,221,1)',
                 formatter: function (params) {
                     const data = params[0].data;
                     const values = params[0].value;
 
-                    const passed = values[1];
-                    const failed = values[2];
+                    const failed = values[1];
+                    const expectedFailed = values[2];
                     const skipped = values[3];
-                    const expectedFailed = values[4];
+                    const passed = values[4];
                     const testcases = passed + failed + skipped + expectedFailed;
 
                     return `<div class="history-chart-tooltip-header">Run ${params[0].axisValue}</div>
                         <br>Testcases: ${testcases}
-                        ${passed > 0 ? `<br><span class="status-dot" style="background-color: #417336;"></span> Passed: ${passed}` : ''}
-                        ${failed > 0 ? `<br><span class="status-dot" style="background-color: #E63946;"></span> Failed: ${failed}` : ''}
-                        ${skipped > 0 ? `<br><span class="status-dot" style="background-color: #F7AF3E;"></span> Skipped: ${skipped}` : ''}
-                        ${expectedFailed > 0 ? `<br><span class="status-dot" style="background-color: #4F031B;"></span> Expected Failed: ${expectedFailed}` : ''}
+                        ${failed > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.FAILED) + `;"></span> Failed: ${failed}` : ''}
+                        ${expectedFailed > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.FAILED_EXPECTED) + `;"></span> Expected Failed: ${expectedFailed}` : ''}
+                        ${skipped > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.SKIPPED) + `;"></span> Skipped: ${skipped}` : ''}
+                        ${passed > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.PASSED) + `;"></span> Passed: ${passed}` : ''}
                         <br><br>Start time: ${dateFormatter.toView(data.startTime, 'full')}
                         <br>End time: ${dateFormatter.toView(data.endTime, 'full')}
                         <br>Duration: ${durationFormatter.toView(data.duration)}`;
@@ -250,17 +300,18 @@ export class TestHistoryChart extends AbstractViewModel {
             ],
             series: [
                 {
-                    name: 'Expected Failed',
+                    name: 'Passed',
                     type: 'line',
                     stack: 'Total',
-                    areaStyle: {
-                        color: 'rgba(79,3,27,1)',
-                        opacity: 1
-                    },
+                    silent: true,
                     lineStyle: {
                         width: 0
                     },
                     symbol: 'none',
+                    areaStyle: {
+                        color: style.get(ResultStatusType.PASSED),
+                        opacity: 1
+                    },
                     emphasis: {
                         focus: 'none'
                     },
@@ -274,12 +325,13 @@ export class TestHistoryChart extends AbstractViewModel {
                     name: 'Skipped',
                     type: 'line',
                     stack: 'Total',
+                    silent: true,
                     lineStyle: {
                         width: 0
                     },
                     symbol: 'none',
                     areaStyle: {
-                        color: 'rgba(247,175,62,1)',
+                        color: style.get(ResultStatusType.SKIPPED),
                         opacity: 1
                     },
                     emphasis: {
@@ -292,17 +344,18 @@ export class TestHistoryChart extends AbstractViewModel {
                     data: chartData
                 },
                 {
-                    name: 'Failed',
+                    name: 'Expected Failed',
                     type: 'line',
                     stack: 'Total',
+                    silent: true,
+                    areaStyle: {
+                        color: style.get(ResultStatusType.FAILED_EXPECTED),
+                        opacity: 1
+                    },
                     lineStyle: {
                         width: 0
                     },
                     symbol: 'none',
-                    areaStyle: {
-                        color: 'rgba(230,57,70,1)',
-                        opacity: 1
-                    },
                     emphasis: {
                         focus: 'none'
                     },
@@ -313,15 +366,16 @@ export class TestHistoryChart extends AbstractViewModel {
                     data: chartData
                 },
                 {
-                    name: 'Passed',
+                    name: 'Failed',
                     type: 'line',
                     stack: 'Total',
+                    silent: true,
                     lineStyle: {
                         width: 0
                     },
                     symbol: 'none',
                     areaStyle: {
-                        color: 'rgba(65,115,54,1)',
+                        color: style.get(ResultStatusType.FAILED),
                         opacity: 1
                     },
                     emphasis: {

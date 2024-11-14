@@ -1,4 +1,4 @@
-= Print Preview
+= Print preview
 
 If you want to consolidate all report information into a single PDF file or print it directly, the "Print Report" feature
 can be accessed by clicking the button located at the bottom of the navigation drawer.

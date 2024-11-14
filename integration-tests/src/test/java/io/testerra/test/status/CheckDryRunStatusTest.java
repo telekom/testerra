@@ -74,9 +74,9 @@ public class CheckDryRunStatusTest extends TesterraTest {
     @DataProvider
     public static Object[][] provideTestMethodsSkipped() {
         return new Object[][]{
-                {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT02_crashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT03_AssertFailedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
+                {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "org.testng.SkipException"},
+                {"testT02_crashedDataProvider", Status.SKIPPED, "org.testng.SkipException"},
+                {"testT03_AssertFailedDataProvider", Status.SKIPPED, "org.testng.SkipException"},
         };
     }
 
@@ -85,12 +85,12 @@ public class CheckDryRunStatusTest extends TesterraTest {
         return new Object[][]{
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
-                {"*** Stats: ClassContexts:  16", "ClassContext"},
-                {"*** Stats: MethodContexts: 73", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 49 (49 relevant)", "Test methods"},
+                {"*** Stats: ClassContexts:  17", "ClassContext"},
+                {"*** Stats: MethodContexts: 78", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 51 (51 relevant)", "Test methods"},
                 {"*** Stats: Failed: 1", "Failed tests"},
                 {"*** Stats: Skipped: 3", "Skipped tests"},
-                {"*** Stats: Passed: 45 ⊃ Repaired: 11", "Passed tests"}
+                {"*** Stats: Passed: 47 ⊃ Repaired: 11", "Passed tests"}
         };
     }
 
@@ -118,7 +118,7 @@ public class CheckDryRunStatusTest extends TesterraTest {
     }
 
     @Test(dataProvider = "provideFinalTestResult")
-    public void testT02_verifyCompleteResult(final String resultString, final String testObject) {
+    public void testT03_verifyCompleteResult(final String resultString, final String testObject) {
         List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(resultString);
         Assert.assertEquals(foundEntries.size(), 1, String.format("The count of %s should contains in log with the string '%s'.", testObject, resultString));
     }

@@ -103,7 +103,7 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         for (final UiElement row : tableRows) {
             statusContainsFailed = false;
 
-            final List<UiElement> statusEntriesInTable = row.find(By.xpath(".//td[3]/div")).list().stream().collect(Collectors.toList());
+            final List<UiElement> statusEntriesInTable = row.find(By.xpath(".//td[4]/div")).list().stream().collect(Collectors.toList());
             for (final UiElement statusColumn : statusEntriesInTable) {
                 final String foundStatusInTable = statusColumn.expect().text().getActual();
                 if (!foundStatusInTable.contains(Status.FAILED_EXPECTED.title) && foundStatusInTable.contains(Status.FAILED.title)) {

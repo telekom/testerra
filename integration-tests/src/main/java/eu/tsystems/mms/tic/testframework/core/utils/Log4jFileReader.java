@@ -71,7 +71,9 @@ public class Log4jFileReader implements Loggable {
         }
 
         if (methodNameSlug != null) {
-            final String regEx = methodNameSlug.concat("\\b");
+            final String regEx = methodNameSlug
+                    .replace("(", "\\(")
+                    .replace(")", "\\)");
             final Pattern pattern = Pattern.compile(regEx);
             final Predicate<String> predicate = s -> pattern.matcher(s).find();
 

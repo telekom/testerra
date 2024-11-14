@@ -22,17 +22,16 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import java.lang.reflect.Method;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.internal.annotations.DisabledRetryAnalyzer;
+
+import java.lang.reflect.Method;
 
 public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
 
@@ -46,7 +45,7 @@ public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
             addRetryAnalyzer(event);
         }
 
-        log().info("Run " + formatter.toString(event.getTestMethod()));
+        log().info("Run {}", formatter.toString(event.getTestResult()));
     }
 
     private void addRetryAnalyzer(MethodStartEvent event) {
@@ -55,8 +54,8 @@ public class MethodStartWorker implements Loggable, MethodStartEvent.Listener {
         Method method = event.getMethod();
         if (retryAnalyzer == null || retryAnalyzer instanceof DisabledRetryAnalyzer) {
             testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
-        } else if (!(retryAnalyzer instanceof RetryAnalyzer)){
-            log().info("Using a non-default retry analyzer: " + retryAnalyzer.getClass().getSimpleName() + " on " + method.getName());
+        } else if (!(retryAnalyzer instanceof RetryAnalyzer)) {
+            log().info("Using a non-default retry analyzer: {} on {}", retryAnalyzer.getClass().getSimpleName(), method.getName());
         }
     }
 }

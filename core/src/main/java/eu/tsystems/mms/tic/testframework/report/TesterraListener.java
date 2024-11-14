@@ -42,6 +42,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
@@ -248,7 +249,8 @@ public class TesterraListener implements
             ITestResult testResult,
             ITestContext testContext
     ) {
-        final String methodName = getMethodName(testResult);
+        Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
+        final String methodName = formatter.getMethodName(testResult);
 
         // stores the actual testresult, auto-creates the method context
         MethodContext methodContext = ExecutionContextController.setCurrentMethodContext(testResult);
@@ -291,22 +293,22 @@ public class TesterraListener implements
         pAfterInvocation(method, testResult, context);
     }
 
-    private static String getMethodName(ITestResult testResult) {
-        ITestNGMethod testMethod = testResult.getMethod();
-        String methodName = testMethod.getMethodName();
-        Object[] parameters = testResult.getParameters();
-        if (parameters != null) {
-            methodName += "(";
-            for (Object parameter : parameters) {
-                methodName += parameter + ", ";
-            }
-            if (parameters.length > 0) {
-                methodName = methodName.substring(0, methodName.length() - 2);
-            }
-            methodName += ")";
-        }
-        return methodName;
-    }
+//    private static String getMethodName(ITestResult testResult) {
+//        ITestNGMethod testMethod = testResult.getMethod();
+//        String methodName = testMethod.getMethodName();
+//        Object[] parameters = testResult.getParameters();
+//        if (parameters != null) {
+//            methodName += "(";
+//            for (Object parameter : parameters) {
+//                methodName += parameter + ", ";
+//            }
+//            if (parameters.length > 0) {
+//                methodName = methodName.substring(0, methodName.length() - 2);
+//            }
+//            methodName += ")";
+//        }
+//        return methodName;
+//    }
 
     /**
      * Override after invocation, to visualize threads and finish reporting.
@@ -320,8 +322,8 @@ public class TesterraListener implements
             ITestResult testResult,
             ITestContext testContext
     ) {
-
-        final String methodName = getMethodName(testResult);
+        Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
+        final String methodName = formatter.getMethodName(testResult);
         IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
 //        Optional<MethodContext> optionalMethodContext = Optional.of(ExecutionContextController.getMethodContextFromTestResult(testResult));
@@ -330,11 +332,16 @@ public class TesterraListener implements
 
         if (optionalMethodContext.isEmpty()) {
             if (testResult.getStatus() == ITestResult.CREATED || testResult.getStatus() == ITestResult.SKIP) {
-                /*
-                 * TestNG bug or whatever ?!?!
-                 */
+                // Safely handling of skipped test methods
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult);
-                methodContext = classContext.safeAddSkipMethod(testResult);
+                methodContext = classContext.getMethodContext(testResult);
+                if (testResult.getThrowable() != null) {
+                    methodContext.addError(testResult.getThrowable());
+                } else {
+                    methodContext.addError(new SkipException("Skipped"));
+                }
+                methodContext.setStatus(Status.SKIPPED);
+//                methodContext = classContext.safeAddSkipMethod(testResult);
             } else {
                 log().error("INTERNAL ERROR. Could not create methodContext for {} with result {}", methodName, testResult);
                 throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
@@ -398,11 +405,15 @@ public class TesterraListener implements
     }
 
     /**
-     * This is only a fallback when 'afterInvocation was not called.' This could happen when TestNG runs into an exception, e.g.
-     * the Test method points to a non-existing dataprovider.
+     * This is method is only used in two cases:
+     * 1) Fallback method when 'afterInvocation' was not called.
+     * 2) When a data provider failed (only TestNG runner in IntelliJ).
+     * <p>
+     * For 1) This could happen when TestNG runs into an exception, e.g. the Test method points to a non-existing dataprovider.
      * Therefor the events will only post if the corresponding MethodContext has no status.
      * <p>
-     * This method is also called when data provider failed. This is excluded, see {@link #onDataProviderFailure(ITestNGMethod, ITestContext, RuntimeException)}
+     * For 2) TestNG calls this method in that case, but the correct status 'SKIP' is set in
+     * {@link #onDataProviderFailure(ITestNGMethod, ITestContext, RuntimeException)}
      */
     @Override
     public void onTestFailure(ITestResult iTestResult) {
@@ -410,14 +421,16 @@ public class TesterraListener implements
             return;
         }
 
-        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), iTestResult);
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
+        Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
+        final String methodName = formatter.getMethodName(iTestResult);
 
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
+        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), iTestResult);
         if (methodContext != null && methodContext.getStatus() == Status.NO_RUN) {
             AbstractMethodEvent event = new MethodEndEvent()
                     .setTestResult(iTestResult)
                     .setInvokedMethod(invokedMethod)
-                    .setMethodName(getMethodName(iTestResult))
+                    .setMethodName(methodName)
                     .setTestContext(iTestResult.getTestContext())
                     .setMethodContext(methodContext);
             Testerra.getEventBus().post(event);
@@ -426,9 +439,10 @@ public class TesterraListener implements
     }
 
     /**
-     * This method gets not only called when
-     * - a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException},
-     * - a data provider failed
+     * This method is called when
+     * - a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException}
+     * - a configuration method failed
+     * - a data provider failed (non-IntelliJ execution)
      * - a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}.
      */
     @Override
@@ -509,12 +523,6 @@ public class TesterraListener implements
         }
         dataProviderSemaphore.put(testNGMethod, true);
 
-        // Creates a method context for test method in case of empty data provider
-        // Should solved by TestNG
-//        TestResult testMethodTestResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-//        InvokedMethod testMethodInvokedMethod = new InvokedMethod(new Date().getTime(), testMethodTestResult);
-//        pBeforeInvocation(testMethodInvokedMethod, testMethodTestResult, testContext);
-
         // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
         IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());
         IObject.IdentifiableObject identifiableObject = new IObject.IdentifiableObject(dataProviderMethod.getInstance(), UUID.randomUUID());
@@ -569,18 +577,13 @@ public class TesterraListener implements
         dpTestResult.setThrowable(exception);
         pAfterInvocation(dpIinvokedMethod, dpTestResult, testContext);
 
-        // For the called test method a new method context is created
+        // For the called test method a new method context is created, the origin throwable from DP is appended
         ITestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-        IInvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
-
         Throwable nestedThrowable = exception.getCause() != null ? exception.getCause() : exception;
-        methodContext.addError(new SkipException("Method skipped because of failed data provider", nestedThrowable));
-
-        // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
-        methodContext.setStatus(Status.SKIPPED);
+        testResult.setThrowable(new SkipException("Method skipped because of failed data provider", nestedThrowable));
         testResult.setStatus(ITestResult.SKIP);
-        pAfterInvocation(invokedMethod, testResult, testContext);
+        // invokedMethod is not needed/used
+        pAfterInvocation(null, testResult, testContext);
 
         // To prevent double method context, this map is needed
         dataProviderSemaphore.put(testNGMethod, true);

@@ -1,7 +1,7 @@
 /*!
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2024, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,51 +19,7 @@
  * under the License.
  */
 
-.item-label {
-    min-width: 64px;
-    display: inline-block;
-}
-
-.pulsating {
-    animation: pulse 2s ease-in-out 0.5s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.3;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.run-history-overview-chart {
+.echart-method-history {
     width: 100%;
-    height: 16em;
-}
-
-.tall-card {
-    height: 21em;
-}
-
-.short-card {
-    height: 11em;
-}
-
-.card-content-vertical {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.status-row {
-    display: flex;
-    justify-content: center;
+    height: 5em;
 }

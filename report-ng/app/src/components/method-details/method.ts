@@ -114,6 +114,16 @@ export class Method {
                     // icon: "sync_alt"
                 }
             },
+            {
+                route: 'method-history',
+                moduleId: PLATFORM.moduleName('./method-history'),
+                nav: true,
+                name: "method-history",
+                title: 'Method History',
+                settings: {
+                    icon: "history",
+                }
+            },
         ]);
     }
 

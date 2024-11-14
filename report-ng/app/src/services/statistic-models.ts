@@ -201,6 +201,7 @@ export class ExecutionStatistics extends Statistics {
 export class HistoryAggregateStatistics extends Statistics {
 
     private _classStatistics: ClassStatistics[] = [];
+    private _methods: IMethodContext[] = [];
 
     constructor(
         readonly historyAggregate: HistoryAggregate
@@ -213,7 +214,9 @@ export class HistoryAggregateStatistics extends Statistics {
             const methodContext = this.historyAggregate.methodContexts[id];
             const classContext = this.historyAggregate.classContexts[methodContext.classContextId];
 
-            let currentClassStatistics:ClassStatistics = new ClassStatistics(classContext);
+            this._methods.push(methodContext);
+
+            let currentClassStatistics: ClassStatistics = new ClassStatistics(classContext);
             if (!classStatistics[currentClassStatistics.classIdentifier]) {
                 classStatistics[currentClassStatistics.classIdentifier] = currentClassStatistics;
             } else {
@@ -230,11 +233,82 @@ export class HistoryAggregateStatistics extends Statistics {
         this._classStatistics.forEach(classStatistics => this.addStatistics(classStatistics));
     }
 
+    getAllMethods() {
+        return this._methods;
+    }
+}
+
+export class MethodRun {
+
+    protected historyIndex: number = 0;
+    protected context: IMethodContext;
+
+    constructor(context: IMethodContext, index: number) {
+        this.historyIndex = index;
+        this.context = context;
+    }
+}
+
+export class MethodHistoryStatistics {
+
+    protected name: string = "";
+    protected testname: string = "";
+    protected parameters: { [key: string]: string; } = {};
+    protected totalRuns: number = 0;
+    protected runs: MethodRun[] = [];
+
+    constructor(
+        currentMethod: IMethodContext, history: HistoryStatistics
+    ) {
+        history.getHistoryAggregateStatistics().forEach(historicalRun => {
+            const methodInRun = historicalRun.getAllMethods().find(method =>
+                method.contextValues.name === currentMethod.contextValues.name &&
+                method.testName === currentMethod.testName &&
+                this._compareParameters(method.parameters, currentMethod.parameters)
+            );
+            if (!(methodInRun === undefined)) {
+                this.runs.push(new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex));
+            }
+        });
+        this.name = currentMethod.contextValues.name;
+        this.testname = currentMethod.testName;
+        this.parameters = currentMethod.parameters;
+        this.totalRuns = this.runs.length;
+    }
+
+    public _isMatchingMethod(methodContext: IMethodContext): boolean {
+        return (this.name === methodContext.contextValues.name &&
+            this.testname === methodContext.testName &&
+            this._compareParameters(this.parameters, methodContext.parameters))
+    }
+
+    private _compareParameters(
+        obj1: { parameters?: { [key: string]: string } },
+        obj2: { parameters?: { [key: string]: string } }
+    ): boolean {
+        if (obj1.parameters === undefined && obj2.parameters === undefined) {
+            return true;
+        }
+
+        if (obj1.parameters === undefined || obj2.parameters === undefined) {
+            return false;
+        }
+
+        const keys1 = Object.keys(obj1.parameters);
+        const keys2 = Object.keys(obj2.parameters);
+
+        if (keys1.length !== keys2.length) {
+            return false;
+        }
+
+        return keys1.every(key => obj2.parameters![key] === obj1.parameters![key]);
+    }
 }
 
 export class HistoryStatistics {
 
     protected historyAggregateStatistics: HistoryAggregateStatistics[] = [];
+    protected methodHistoryStatistics: MethodHistoryStatistics[] = [];
 
     constructor(
         readonly history: History
@@ -242,11 +316,25 @@ export class HistoryStatistics {
         this.history.entries.forEach(entry => {
             this.historyAggregateStatistics.push(new HistoryAggregateStatistics(entry));
         })
+
+        const lastEntry = this.historyAggregateStatistics[this.historyAggregateStatistics.length - 1];
+
+        lastEntry.getAllMethods().forEach(currentMethod => {
+            this.methodHistoryStatistics.push(new MethodHistoryStatistics(currentMethod, this));
+        });
     }
 
     getHistoryAggregateStatistics(): HistoryAggregateStatistics[] {
         return this.historyAggregateStatistics;
     }
+
+    getMethodHistoryStatistics(): MethodHistoryStatistics[] {
+        return this.methodHistoryStatistics;
+    }
+
+    // getMethodHistoryStatisticsForMethod(methodContext: IMethodContext): MethodHistoryStatistics {
+    //     return this.methodHistoryStatistics.find();
+    // }
 }
 
 export class ClassStatistics extends Statistics {

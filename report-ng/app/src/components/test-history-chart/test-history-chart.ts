@@ -214,6 +214,8 @@ export class TestHistoryChart extends AbstractViewModel {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
 
+        console.log(this._historyStatistics.getMethodHistoryStatistics());
+
         this._historyStatistics.getHistoryAggregateStatistics().forEach(entry => {
 
             const startTime = entry.historyAggregate.executionContext.contextValues.startTime;

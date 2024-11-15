@@ -22,6 +22,7 @@
 import {data} from "./report-model";
 import {Container} from "aurelia-framework";
 import {StatusConverter} from "./status-converter";
+import {MethodDetails} from "./statistics-generator";
 import ResultStatusType = data.ResultStatusType;
 import History = data.History;
 import HistoryAggregate = data.HistoryAggregate;
@@ -31,7 +32,6 @@ import IMethodContext = data.MethodContext;
 import IClassContext = data.ClassContext;
 import IErrorContext = data.ErrorContext;
 import IStackTraceCause = data.StackTraceCause;
-import {MethodDetails} from "./statistics-generator";
 
 class Statistics {
     private _statusConverter: StatusConverter;
@@ -249,17 +249,19 @@ export class MethodRun {
     }
 }
 
-export class MethodHistoryStatistics {
+export class MethodHistoryStatistics extends Statistics {
 
     protected name: string = "";
     protected testname: string = "";
     protected parameters: { [key: string]: string; } = {};
     protected totalRuns: number = 0;
     protected runs: MethodRun[] = [];
+    protected durations: number[] = [];
 
     constructor(
         currentMethod: IMethodContext, history: HistoryStatistics
     ) {
+        super();
         history.getHistoryAggregateStatistics().forEach(historicalRun => {
             const methodInRun = historicalRun.getAllMethods().find(method =>
                 method.contextValues.name === currentMethod.contextValues.name &&
@@ -268,12 +270,23 @@ export class MethodHistoryStatistics {
             );
             if (!(methodInRun === undefined)) {
                 this.runs.push(new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex));
+                this.addResultStatus(methodInRun.resultStatus);
+                this.durations.push(methodInRun.contextValues.endTime - methodInRun.contextValues.startTime);
             }
         });
         this.name = currentMethod.contextValues.name;
         this.testname = currentMethod.testName;
         this.parameters = currentMethod.parameters;
         this.totalRuns = this.runs.length;
+    }
+
+    public getAverageDuration(): number {
+        let avg = 0;
+        if (this.durations.length > 0) {
+            let sum = this.durations.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            avg = Math.round(sum / this.durations.length);
+        }
+        return avg;
     }
 
     public _isMatchingMethod(methodContext: IMethodContext): boolean {

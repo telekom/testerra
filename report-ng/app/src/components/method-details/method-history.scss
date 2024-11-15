@@ -24,5 +24,17 @@
 }
 
 .short-history-card {
-    height: 18em;
+    height: 16em;
+}
+
+.history-statistics {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
 }

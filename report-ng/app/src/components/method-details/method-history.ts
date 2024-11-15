@@ -40,14 +40,15 @@ export class MethodHistory extends AbstractViewModel {
     }
 
     async attached() {
-        this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
     };
 
-    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+    async activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
 
-        this._statisticsGenerator.getMethodDetails(params.methodId).then(methodDetails => {
+        this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
+
+        await this._statisticsGenerator.getMethodDetails(params.methodId).then(methodDetails => {
             this._methodDetails = methodDetails;
 
             this._historyStatistics.getMethodHistoryStatistics().find(method => {
@@ -58,4 +59,3 @@ export class MethodHistory extends AbstractViewModel {
         });
     }
 }
-

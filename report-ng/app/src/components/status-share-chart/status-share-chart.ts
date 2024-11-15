@@ -25,11 +25,14 @@ import {ECharts, EChartsOption} from "echarts";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import "./status-share-chart.scss"
+import {bindable} from "aurelia-templating";
+import {MethodHistoryStatistics} from "../../services/statistic-models";
 
 @autoinject()
 export class StatusShareChart extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
+    @bindable() private _methodHistory: MethodHistoryStatistics;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -44,13 +47,10 @@ export class StatusShareChart extends AbstractViewModel {
     };
 
     private _setChartOption() {
+
+        console.log(this._methodHistory);
+
         this._option = {
-            grid: {
-                top: '0%',
-                bottom: '0%',
-                left: '0%',
-                right: '0%'
-            },
             tooltip: {
                 trigger: 'item'
             },
@@ -59,9 +59,12 @@ export class StatusShareChart extends AbstractViewModel {
             },
             series: [
                 {
-                    name: 'Access From',
+                    name: 'Status Share',
                     type: 'pie',
-                    radius: ['40%', '70%'],
+                    radius: ['30%', '80%'],
+                    center: ['50%', '80%'],
+                    startAngle: 180,
+                    endAngle: 360,
                     data: [
                         { value: 2, name: '2' },
                         { value: 7, name: '7' },

@@ -25,14 +25,19 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import {AbstractViewModel} from "../abstract-view-model";
 import {HistoryStatistics, MethodHistoryStatistics} from "../../services/statistic-models";
 import "./method-history.scss";
+import {StatusConverter} from "../../services/status-converter";
 
 @autoinject()
 export class MethodHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     private _methodDetails: MethodDetails;
-    private _methodHistoryStatistics: MethodHistoryStatistics;
+    methodHistoryStatistics: MethodHistoryStatistics;
+    totalRunCount: number = 0;
+    avgRunDuration: number = 0;
+    overallSuccessRate: number = 0;
 
     constructor(
+        private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
         private _router: Router
     ) {
@@ -52,10 +57,14 @@ export class MethodHistory extends AbstractViewModel {
             this._methodDetails = methodDetails;
 
             this._historyStatistics.getMethodHistoryStatistics().find(method => {
-                if (method._isMatchingMethod(methodDetails.methodContext)) {
-                    this._methodHistoryStatistics = method;
+                if (method.isMatchingMethod(methodDetails.methodContext)) {
+                    this.methodHistoryStatistics = method;
                 }
             });
         });
+
+        this.totalRunCount = this.methodHistoryStatistics.getMethodRunCount();
+        this.avgRunDuration = this.methodHistoryStatistics.getAverageDuration();
+        this.overallSuccessRate = this.methodHistoryStatistics.getSuccessRate();
     }
 }

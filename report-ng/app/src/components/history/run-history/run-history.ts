@@ -19,22 +19,37 @@
  * under the License.
  */
 
-import {autoinject, observable} from 'aurelia-framework';
+import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
-import {ECharts, EChartsOption} from 'echarts';
 import "./run-history.scss";
+import {HistoryStatistics} from "../../../services/statistic-models";
+import {StatusConverter} from "../../../services/status-converter";
+import {StatisticsGenerator} from "../../../services/statistics-generator";
 
 @autoinject()
 export class RunHistory extends AbstractViewModel {
-    @observable() private _chart: ECharts;
-    private _option: EChartsOption;
-    private _loading = false;
+
+    totalRunCount: number = 0;
+    avgRunDuration: number = 0;
+    overallSuccessRate: number = 0;
+    private _historyStatistics: HistoryStatistics;
 
     constructor(
+        private _statusConverter: StatusConverter,
+        private _statisticsGenerator: StatisticsGenerator,
         private _router: Router
     ) {
         super();
+    }
+
+    async attached() {
+        this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
+
+        this.totalRunCount = this._historyStatistics.getTotalRuns();
+        this.avgRunDuration = this._historyStatistics.getAverageDuration();
+        this.overallSuccessRate = this._historyStatistics.getSuccessRate();
+
     }
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {

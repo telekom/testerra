@@ -33,14 +33,19 @@ import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import {Container} from "aurelia-dependency-injection";
 import "./method-history-chart.scss"
+import {ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()
 export class MethodHistoryChart extends AbstractViewModel {
     private _dateFormatter: IntlDateFormatValueConverter;
     private _durationFormatter: DurationFormatValueConverter;
     @observable() private _chart: ECharts;
+    @bindable method_history_statistics: MethodHistoryStatistics;
     private _option: EChartsOption;
-    @bindable() private _methodHistory: MethodHistoryStatistics;
+    private _data: any[] = [];
+    private _lineStart: number[] = [];
+    private _lineEnd: number[] = [];
+    private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -53,6 +58,7 @@ export class MethodHistoryChart extends AbstractViewModel {
     async attached() {
         this._initDateFormatter();
         this._initDurationFormatter();
+        this._prepareChartData();
         this._setChartOption();
     };
 
@@ -79,9 +85,59 @@ export class MethodHistoryChart extends AbstractViewModel {
         });
     }
 
-    private _setChartOption() {
+    private _prepareChartData() {
+        const style = new Map<number, string>();
+        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
-        console.log(this._methodHistory);
+        this.method_history_statistics.getRuns().forEach(run => {
+
+            const startTime = run.context.contextValues.startTime;
+            const endTime = run.context.contextValues.endTime;
+            const status = run.context.resultStatus;
+            let errorMessage = "";
+
+            if (status != ResultStatusType.PASSED) {
+                run.context.testSteps.flatMap(value => value.actions)
+                    .forEach(actionDetails => {
+                        actionDetails.entries.forEach(entry => {
+                            const errorContext = entry.errorContext;
+                            errorContext.stackTrace.forEach(stackTrace => {
+                                // TODO: How to handle multiple errorMessages
+                                errorMessage = errorMessage.concat(stackTrace.message + " ");
+                            })
+                        })
+                    });
+            }
+
+            this._data.push({
+                status: status,
+                statusName: this._statusConverter.getLabelForStatus(status),
+                errorMessage: errorMessage,
+                itemStyle: {
+                    color: style.get(status),
+                    opacity: 1
+                },
+                startTime: startTime,
+                endTime: endTime,
+                duration: endTime - startTime,
+                value: [run.historyIndex, 0]
+            });
+        });
+
+        this._lineStart = this._data[0].value;
+        this._lineEnd = this._data[this._data.length - 1].value;
+    }
+
+    private _setChartOption() {
+        const dateFormatter = this._dateFormatter;
+        const durationFormatter = this._durationFormatter;
 
         this._option = {
             grid: {
@@ -92,7 +148,20 @@ export class MethodHistoryChart extends AbstractViewModel {
             },
             tooltip: {
                 trigger: 'item',
-                formatter: (params) => `Position: (${params.data.value[0]}, ${params.data.value[1]})<br/>Farbe: ${params.color}`
+                formatter: function (params) {
+                    let tooltip = '<div class="header" style="background-color: ' +
+                        params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
+
+                    if (params.data.errorMessage) {
+                        tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
+                    }
+
+                    tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')
+                        + '<br>End time: ' + dateFormatter.toView(params.data.endTime, 'full')
+                        + '<br>Duration: ' + durationFormatter.toView(params.data.duration);
+
+                    return tooltip;
+                }
             },
             xAxis: {
                 type: 'category',
@@ -106,65 +175,14 @@ export class MethodHistoryChart extends AbstractViewModel {
                 {
                     type: 'scatter',
                     symbolSize: 20,
-                    data: [
-                        {value: [0, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [1, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [2, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [3, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [4, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [5, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [6, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [7, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [8, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [9, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [10, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [11, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [12, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [13, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [14, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [15, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [16, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [17, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [18, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [19, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [20, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [21, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [22, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [23, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [24, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [25, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [26, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [27, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [28, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [29, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [30, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [31, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [32, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [33, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [34, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [35, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [36, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [37, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [38, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [39, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [40, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [41, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [42, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [43, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [44, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [45, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [46, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [47, 0], itemStyle: {color: '#F7AF3E', opacity: 1}},
-                        {value: [48, 0], itemStyle: {color: '#417336', opacity: 1}},
-                        {value: [49, 0], itemStyle: {color: '#E63946', opacity: 1}},
-                        {value: [50, 0], itemStyle: {color: '#417336', opacity: 1}},
-                    ],
+                    data: this._data,
                     z: 2
                 },
                 {
+                    // This series represents a static line for visual reference, with no interaction or tooltip.
                     type: 'line',
                     data: [
-                        [0, 0], [50, 0]
+                        this._lineStart, this._lineEnd
                     ],
                     lineStyle: {
                         color: '#A0A0A0',
@@ -173,7 +191,8 @@ export class MethodHistoryChart extends AbstractViewModel {
                     markLine: {
                         symbol: 'none'
                     },
-                    z: 1
+                    z: 1,
+                    silent: true
                 }
             ]
         };

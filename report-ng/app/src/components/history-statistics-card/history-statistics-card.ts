@@ -1,4 +1,4 @@
-/*!
+/*
  * Testerra
  *
  * (C) 2024, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
@@ -19,11 +19,26 @@
  * under the License.
  */
 
-.run-history-chart {
-    width: 100%;
-    height: 30em;
-}
+import {autoinject, bindable} from 'aurelia-framework';
+import {StatisticsGenerator} from "services/statistics-generator";
+import {AbstractViewModel} from "../abstract-view-model";
+import "./history-statistics-card.scss";
+import {StatusConverter} from "../../services/status-converter";
 
-.short-history-card {
-    height: 16em;
+@autoinject()
+export class HistoryStatisticsCard extends AbstractViewModel {
+    @bindable first: number;
+    @bindable second: number;
+    @bindable third: number;
+
+    constructor(
+        private _statusConverter: StatusConverter,
+        private _statisticsGenerator: StatisticsGenerator,
+    ) {
+        super();
+    }
+
+    async attached() {
+
+    };
 }

@@ -19,20 +19,22 @@
  * under the License.
  */
 
-import {autoinject, observable} from "aurelia-framework";
+import {autoinject, bindable, observable} from "aurelia-framework";
 import {AbstractViewModel} from "../abstract-view-model";
 import {ECharts, EChartsOption} from "echarts";
 import {StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
 import "./status-share-chart.scss"
-import {bindable} from "aurelia-templating";
 import {MethodHistoryStatistics} from "../../services/statistic-models";
+import {ResultStatusType} from "../../services/report-model/framework_pb";
+import {ClassName} from "../../value-converters/class-name-value-converter";
 
 @autoinject()
 export class StatusShareChart extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
-    @bindable() private _methodHistory: MethodHistoryStatistics;
+    private _data: any[] = [];
+    @bindable method_history_statistics: MethodHistoryStatistics;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -43,16 +45,44 @@ export class StatusShareChart extends AbstractViewModel {
     }
 
     async attached() {
+        this._prepareChartData();
         this._setChartOption();
     };
 
-    private _setChartOption() {
+    private _prepareChartData() {
 
-        console.log(this._methodHistory);
+        const style = new Map<number, string>();
+        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+
+        for (const status of this._statusConverter.relevantStatuses) {
+            const statusCount = this.method_history_statistics.getStatusCount(status);
+            if (statusCount) {
+                this._data.push({
+                    status: status,
+                    statusName: this._statusConverter.getLabelForStatus(status),
+                    value: statusCount,
+                    itemStyle: {color: style.get(status)}
+                })
+            }
+        }
+    }
+
+    private _setChartOption() {
 
         this._option = {
             tooltip: {
-                trigger: 'item'
+                formatter: function (params) {
+                    console.log(params);
+                    return '<div class="header" style="background-color: ' +
+                        params.color + ';"> ' + params.data.statusName + ': ' + params.value + '</div>'
+                }
             },
             legend: {
                 show: false
@@ -65,12 +95,21 @@ export class StatusShareChart extends AbstractViewModel {
                     center: ['50%', '80%'],
                     startAngle: 180,
                     endAngle: 360,
-                    data: [
-                        { value: 2, name: '2' },
-                        { value: 7, name: '7' },
-                        { value: 5, name: '5' },
-                        { value: 10, name: '10' }
-                    ]
+                    data: this._data,
+                    label: {
+                        show: true,
+                        formatter: function (params) {
+                            return `${params.value}`;
+                        }
+                    },
+                    labelLine: {
+                        length: 10,
+                        length2: 10,
+                        lineStyle: {
+                            color: '#000000',
+                            width: 1
+                        }
+                    }
                 }
             ]
         };

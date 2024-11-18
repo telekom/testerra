@@ -236,12 +236,25 @@ export class HistoryAggregateStatistics extends Statistics {
     getAllMethods() {
         return this._methods;
     }
+
+    getClassStatistics() {
+        return this._classStatistics;
+    }
+
+    isPassedRun(): boolean {
+        let isPassed: boolean = false;
+        let overallTestcases: number = this.overallPassed + this.overallFailed + this.overallSkipped;
+        if ((overallTestcases - this.overallPassed) == 0) {
+            isPassed = true;
+        }
+        return isPassed;
+    }
 }
 
 export class MethodRun {
 
-    protected historyIndex: number = 0;
-    protected context: IMethodContext;
+    public historyIndex: number = 0;
+    public context: IMethodContext;
 
     constructor(context: IMethodContext, index: number) {
         this.historyIndex = index;
@@ -251,12 +264,12 @@ export class MethodRun {
 
 export class MethodHistoryStatistics extends Statistics {
 
-    protected name: string = "";
-    protected testname: string = "";
-    protected parameters: { [key: string]: string; } = {};
-    protected totalRuns: number = 0;
-    protected runs: MethodRun[] = [];
-    protected durations: number[] = [];
+    private _name: string = "";
+    private _testname: string = "";
+    private _parameters: { [key: string]: string; } = {};
+    private _totalRuns: number = 0;
+    private _runs: MethodRun[] = [];
+    private _durations: number[] = [];
 
     constructor(
         currentMethod: IMethodContext, history: HistoryStatistics
@@ -269,52 +282,76 @@ export class MethodHistoryStatistics extends Statistics {
                 this._compareParameters(method.parameters, currentMethod.parameters)
             );
             if (!(methodInRun === undefined)) {
-                this.runs.push(new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex));
+                this._runs.push(new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex));
                 this.addResultStatus(methodInRun.resultStatus);
-                this.durations.push(methodInRun.contextValues.endTime - methodInRun.contextValues.startTime);
+                this._durations.push(methodInRun.contextValues.endTime - methodInRun.contextValues.startTime);
             }
         });
-        this.name = currentMethod.contextValues.name;
-        this.testname = currentMethod.testName;
-        this.parameters = currentMethod.parameters;
-        this.totalRuns = this.runs.length;
+        this._name = currentMethod.contextValues.name;
+        this._testname = currentMethod.testName;
+        this._parameters = currentMethod.parameters;
+        this._totalRuns = this._runs.length;
     }
 
-    public getAverageDuration(): number {
+    getAverageDuration(): number {
         let avg = 0;
-        if (this.durations.length > 0) {
-            let sum = this.durations.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            avg = Math.round(sum / this.durations.length);
+        if (this._durations.length > 0) {
+            let sum = this._durations.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            avg = Math.round(sum / this._durations.length);
         }
         return avg;
     }
 
-    public _isMatchingMethod(methodContext: IMethodContext): boolean {
-        return (this.name === methodContext.contextValues.name &&
-            this.testname === methodContext.testName &&
-            this._compareParameters(this.parameters, methodContext.parameters))
+    getSuccessRate(): number {
+        let runCount = this.getMethodRunCount();
+        let passedRuns = 0;
+
+        const validStatuses = [
+            ResultStatusType.PASSED,
+            ResultStatusType.PASSED_RETRY,
+            ResultStatusType.REPAIRED
+        ];
+
+        this._runs.forEach(methodRun => {
+            if (validStatuses.includes(methodRun.context.resultStatus)) {
+                passedRuns++;
+            }
+        });
+
+        if (runCount != 0) {
+            return (passedRuns / runCount) * 100
+        }
+        return 0;
     }
 
-    private _compareParameters(
-        obj1: { parameters?: { [key: string]: string } },
-        obj2: { parameters?: { [key: string]: string } }
-    ): boolean {
-        if (obj1.parameters === undefined && obj2.parameters === undefined) {
-            return true;
-        }
+    getMethodRunCount(): number {
+        return this._runs.length;
+    }
 
-        if (obj1.parameters === undefined || obj2.parameters === undefined) {
-            return false;
-        }
+    isMatchingMethod(methodContext: IMethodContext): boolean {
+        return (this._name === methodContext.contextValues.name &&
+            this._testname === methodContext.testName &&
+            this._compareParameters(this._parameters, methodContext.parameters))
+    }
 
-        const keys1 = Object.keys(obj1.parameters);
-        const keys2 = Object.keys(obj2.parameters);
+    getRuns(): MethodRun[] {
+        return this._runs;
+    }
 
+    private _compareParameters(parameters1: { [p: string]: string }, parameters2: { [p: string]: string }): boolean {
+        const keys1 = Object.keys(parameters1);
+        const keys2 = Object.keys(parameters2);
         if (keys1.length !== keys2.length) {
             return false;
         }
 
-        return keys1.every(key => obj2.parameters![key] === obj1.parameters![key]);
+        for (const key of keys1) {
+            if (parameters1[key] !== parameters2[key]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
@@ -345,9 +382,37 @@ export class HistoryStatistics {
         return this.methodHistoryStatistics;
     }
 
-    // getMethodHistoryStatisticsForMethod(methodContext: IMethodContext): MethodHistoryStatistics {
-    //     return this.methodHistoryStatistics.find();
-    // }
+    getSuccessRate(): number {
+        let runCount = this.getTotalRuns();
+        let passedRuns = 0;
+        this.getHistoryAggregateStatistics().forEach(aggregate => {
+            if (aggregate.isPassedRun()) {
+                passedRuns++;
+            }
+        });
+
+        if (runCount != 0) {
+            return (passedRuns / runCount) * 100
+        }
+        return 0;
+    }
+
+    getTotalRuns(): number {
+        return this.history.entries.length;
+    }
+
+    getAverageDuration(): number {
+        let durations: number[] = [];
+        this.getHistoryAggregateStatistics().forEach(aggregate => {
+            const contextValues = aggregate.historyAggregate.executionContext.contextValues;
+            durations.push(contextValues.endTime - contextValues.startTime);
+        });
+        if (durations.length > 0) {
+            let sum = durations.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            return Math.round(sum / durations.length);
+        }
+        return 0;
+    }
 }
 
 export class ClassStatistics extends Statistics {

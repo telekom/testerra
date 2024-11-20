@@ -22,64 +22,28 @@
 import {autoinject, bindable, observable} from "aurelia-framework";
 import {AbstractViewModel} from "../abstract-view-model";
 import {ECharts, EChartsOption} from "echarts";
-import {StatusConverter} from "../../services/status-converter";
-import {StatisticsGenerator} from "../../services/statistics-generator";
 import "./status-share-chart.scss"
-import {MethodHistoryStatistics} from "../../services/statistic-models";
-import {ResultStatusType} from "../../services/report-model/framework_pb";
-import {ClassName} from "../../value-converters/class-name-value-converter";
 
 @autoinject()
 export class StatusShareChart extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
-    private _data: any[] = [];
-    @bindable method_history_statistics: MethodHistoryStatistics;
+    @bindable status_data: any[] = [];
 
-    constructor(
-        private _statusConverter: StatusConverter,
-        private _statisticsGenerator: StatisticsGenerator,
-    ) {
+    constructor() {
         super();
         this._option = {};
     }
 
     async attached() {
-        this._prepareChartData();
         this._setChartOption();
     };
-
-    private _prepareChartData() {
-
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
-
-        for (const status of this._statusConverter.relevantStatuses) {
-            const statusCount = this.method_history_statistics.getStatusCount(status);
-            if (statusCount) {
-                this._data.push({
-                    status: status,
-                    statusName: this._statusConverter.getLabelForStatus(status),
-                    value: statusCount,
-                    itemStyle: {color: style.get(status)}
-                })
-            }
-        }
-    }
 
     private _setChartOption() {
 
         this._option = {
             tooltip: {
                 formatter: function (params) {
-                    console.log(params);
                     return '<div class="header" style="background-color: ' +
                         params.color + ';"> ' + params.data.statusName + ': ' + params.value + '</div>'
                 }
@@ -95,7 +59,7 @@ export class StatusShareChart extends AbstractViewModel {
                     center: ['50%', '80%'],
                     startAngle: 180,
                     endAngle: 360,
-                    data: this._data,
+                    data: this.status_data,
                     label: {
                         show: true,
                         formatter: function (params) {

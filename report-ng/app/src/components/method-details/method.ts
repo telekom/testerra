@@ -25,8 +25,8 @@ import {MethodDetails, StatisticsGenerator} from "../../services/statistics-gene
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {data} from "../../services/report-model";
-import MethodType = data.MethodType;
 import "./method.scss"
+import MethodType = data.MethodType;
 
 @autoinject()
 export class Method {
@@ -149,6 +149,16 @@ export class Method {
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
             this._loading = false;
 
+            // TODO: Disable method-history-tab if there is no history
+            // let methodRunCount = 0;
+            // this._statistics.getHistoryStatistics().then(history => {
+            //     history.getMethodHistoryStatistics().find(method => {
+            //         if (method.isMatchingMethod(this._methodDetails.methodContext)) {
+            //             methodRunCount = method.getMethodRunCount();
+            //         }
+            //     });
+            // });
+
             this._router.routes.forEach(routeConfig => {
                 switch (routeConfig.name) {
                     case "steps": {
@@ -174,9 +184,9 @@ export class Method {
                         }
                         break;
                     }
-                    case "video":{
+                    case "video": {
                         const contextsWithVideos = methodDetails.sessionContexts.filter(context => context.videoId?.length > 0)
-                        if(contextsWithVideos.length > 0){
+                        if (contextsWithVideos.length > 0) {
                             routeConfig.settings.count = contextsWithVideos.length;
                             routeConfig.nav = true;
                         } else {
@@ -184,6 +194,14 @@ export class Method {
                         }
                         break;
                     }
+                    // case "method-history": {
+                    //     if (methodRunCount > 1) {
+                    //         routeConfig.nav = true;
+                    //     } else {
+                    //         disableRoute(routeConfig);
+                    //     }
+                    //     break;
+                    // }
                     case "details": {
                         if (methodDetails.numDetails > 0) {
                             routeConfig.nav = true;

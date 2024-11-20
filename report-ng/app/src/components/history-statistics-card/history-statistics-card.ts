@@ -20,25 +20,19 @@
  */
 
 import {autoinject, bindable} from 'aurelia-framework';
-import {StatisticsGenerator} from "services/statistics-generator";
 import {AbstractViewModel} from "../abstract-view-model";
 import "./history-statistics-card.scss";
-import {StatusConverter} from "../../services/status-converter";
 
 @autoinject()
 export class HistoryStatisticsCard extends AbstractViewModel {
-    @bindable first: number;
-    @bindable second: number;
-    @bindable third: number;
+    @bindable total_run_count: number;
+    @bindable average_run_duration: number;
+    @bindable success_rate: number;
 
-    constructor(
-        private _statusConverter: StatusConverter,
-        private _statisticsGenerator: StatisticsGenerator,
-    ) {
+    constructor() {
         super();
     }
 
     async attached() {
-
     };
 }

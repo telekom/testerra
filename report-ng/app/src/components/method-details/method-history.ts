@@ -26,11 +26,13 @@ import {AbstractViewModel} from "../abstract-view-model";
 import {HistoryStatistics, MethodHistoryStatistics} from "../../services/statistic-models";
 import "./method-history.scss";
 import {StatusConverter} from "../../services/status-converter";
+import {ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()
 export class MethodHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     private _methodDetails: MethodDetails;
+    statusData: any[] = [];
     methodHistoryStatistics: MethodHistoryStatistics;
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
@@ -62,6 +64,28 @@ export class MethodHistory extends AbstractViewModel {
                 }
             });
         });
+
+        const style = new Map<number, string>();
+        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+
+        for (const status of this._statusConverter.relevantStatuses) {
+            const statusCount = this.methodHistoryStatistics.getStatusCount(status);
+            if (statusCount) {
+                this.statusData.push({
+                    status: status,
+                    statusName: this._statusConverter.getLabelForStatus(status),
+                    value: statusCount,
+                    itemStyle: {color: style.get(status)}
+                })
+            }
+        }
 
         this.totalRunCount = this.methodHistoryStatistics.getMethodRunCount();
         this.avgRunDuration = this.methodHistoryStatistics.getAverageDuration();

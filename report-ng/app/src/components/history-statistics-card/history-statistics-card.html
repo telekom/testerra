@@ -42,39 +42,34 @@
 <!--                    <div class="value">${_successRate.toFixed(1)}%</div>-->
 <!--                </div>-->
 <!--            </div>-->
-
             <mdc-list class="p0">
-
                 <mdc-list-item nonInteractive two-line>
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>bar_chart</mdc-icon>
                     <mdc-list-item-primary-text>
-                        <span>${first}</span>
+                        <span>${total_run_count}</span>
                     </mdc-list-item-primary-text>
                     <mdc-list-item-secondary-text>
                         <span>Total Runs</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-
                 <mdc-list-item nonInteractive two-line>
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>av_timer</mdc-icon>
                     <mdc-list-item-primary-text>
-                        <span>${second | durationFormat:"h[h] m[min] s[s] S[ms]"}</span>
+                        <span>${average_run_duration | durationFormat:"h[h] m[min] s[s] S[ms]"}</span>
                     </mdc-list-item-primary-text>
                     <mdc-list-item-secondary-text>
                         <span>Average run duration</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-
                 <mdc-list-item nonInteractive two-line>
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>check_circle_outline</mdc-icon>
                     <mdc-list-item-primary-text>
-                        <span>${third.toFixed(1)}%</span>
+                        <span>${success_rate.toFixed(1)}%</span>
                     </mdc-list-item-primary-text>
                     <mdc-list-item-secondary-text>
                         <span>Success Rate</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-
             </mdc-list>
         </mdc-card>
     </mdc-layout-grid-cell>

@@ -26,6 +26,7 @@ import "./run-history.scss";
 import {HistoryStatistics} from "../../../services/statistic-models";
 import {StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
+import {ResultStatusType} from "../../../services/report-model/framework_pb";
 
 @autoinject()
 export class RunHistory extends AbstractViewModel {
@@ -34,6 +35,7 @@ export class RunHistory extends AbstractViewModel {
     avgRunDuration: number = 0;
     overallSuccessRate: number = 0;
     private _historyStatistics: HistoryStatistics;
+    statusData: any[] = [];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -50,6 +52,28 @@ export class RunHistory extends AbstractViewModel {
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.overallSuccessRate = this._historyStatistics.getSuccessRate();
 
+        const passedCount = this._historyStatistics.getTotalPassedRuns();
+        const failedCount = this._historyStatistics.getTotalRuns() - this._historyStatistics.getTotalPassedRuns();
+
+        console.log("Passed: " + passedCount);
+        console.log("Failed: " + failedCount);
+
+        if (passedCount) {
+            this.statusData.push({
+                status: ResultStatusType.PASSED,
+                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
+                value: passedCount,
+                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.PASSED)}
+            })
+        }
+        if (failedCount) {
+            this.statusData.push({
+                status: ResultStatusType.FAILED,
+                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
+                value: failedCount,
+                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.FAILED)}
+            })
+        }
     }
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {

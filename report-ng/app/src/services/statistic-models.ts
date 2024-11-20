@@ -199,7 +199,6 @@ export class ExecutionStatistics extends Statistics {
 }
 
 export class HistoryAggregateStatistics extends Statistics {
-
     private _classStatistics: ClassStatistics[] = [];
     private _methods: IMethodContext[] = [];
 
@@ -242,8 +241,8 @@ export class HistoryAggregateStatistics extends Statistics {
     }
 
     isPassedRun(): boolean {
-        let isPassed: boolean = false;
-        let overallTestcases: number = this.overallPassed + this.overallFailed + this.overallSkipped;
+        let isPassed = false;
+        let overallTestcases = this.overallPassed + this.overallFailed + this.overallSkipped;
         if ((overallTestcases - this.overallPassed) == 0) {
             isPassed = true;
         }
@@ -263,11 +262,9 @@ export class MethodRun {
 }
 
 export class MethodHistoryStatistics extends Statistics {
-
-    private _name: string = "";
-    private _testname: string = "";
+    private _name: string = null;
+    private _testname: string = null;
     private _parameters: { [key: string]: string; } = {};
-    private _totalRuns: number = 0;
     private _runs: MethodRun[] = [];
     private _durations: number[] = [];
 
@@ -290,7 +287,6 @@ export class MethodHistoryStatistics extends Statistics {
         this._name = currentMethod.contextValues.name;
         this._testname = currentMethod.testName;
         this._parameters = currentMethod.parameters;
-        this._totalRuns = this._runs.length;
     }
 
     getAverageDuration(): number {
@@ -356,9 +352,10 @@ export class MethodHistoryStatistics extends Statistics {
 }
 
 export class HistoryStatistics {
-
     protected historyAggregateStatistics: HistoryAggregateStatistics[] = [];
     protected methodHistoryStatistics: MethodHistoryStatistics[] = [];
+    private _passedRuns: number = 0;
+    private _totalRuns: number = 0;
 
     constructor(
         readonly history: History
@@ -372,6 +369,14 @@ export class HistoryStatistics {
         lastEntry.getAllMethods().forEach(currentMethod => {
             this.methodHistoryStatistics.push(new MethodHistoryStatistics(currentMethod, this));
         });
+
+        this._totalRuns = this.history.entries.length;
+
+        this.historyAggregateStatistics.forEach(aggregate => {
+            if (aggregate.isPassedRun()) {
+                this._passedRuns++;
+            }
+        });
     }
 
     getHistoryAggregateStatistics(): HistoryAggregateStatistics[] {
@@ -382,23 +387,19 @@ export class HistoryStatistics {
         return this.methodHistoryStatistics;
     }
 
-    getSuccessRate(): number {
-        let runCount = this.getTotalRuns();
-        let passedRuns = 0;
-        this.getHistoryAggregateStatistics().forEach(aggregate => {
-            if (aggregate.isPassedRun()) {
-                passedRuns++;
-            }
-        });
-
-        if (runCount != 0) {
-            return (passedRuns / runCount) * 100
-        }
-        return 0;
+    getTotalRuns(): number {
+        return this._totalRuns;
     }
 
-    getTotalRuns(): number {
-        return this.history.entries.length;
+    getTotalPassedRuns(): number {
+        return this._passedRuns;
+    }
+
+    getSuccessRate(): number {
+        if (this._totalRuns != 0) {
+            return (this._passedRuns / this._totalRuns) * 100
+        }
+        return 0;
     }
 
     getAverageDuration(): number {

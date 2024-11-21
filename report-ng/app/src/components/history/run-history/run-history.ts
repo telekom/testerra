@@ -48,32 +48,55 @@ export class RunHistory extends AbstractViewModel {
     async attached() {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
 
-        this.totalRunCount = this._historyStatistics.getTotalRuns();
-        this.avgRunDuration = this._historyStatistics.getAverageDuration();
-        this.overallSuccessRate = this._historyStatistics.getSuccessRate();
+        let overallFailed = 0;
+        let overallExpectedFailed = 0;
+        let overallSkipped = 0;
+        let overallPassed = 0;
 
-        const passedCount = this._historyStatistics.getTotalPassedRuns();
-        const failedCount = this._historyStatistics.getTotalRuns() - this._historyStatistics.getTotalPassedRuns();
+        this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
+            overallFailed += aggregate.getStatusCount(ResultStatusType.FAILED);
+            overallExpectedFailed += aggregate.getStatusCount(ResultStatusType.FAILED_EXPECTED);
+            overallSkipped += aggregate.getStatusCount(ResultStatusType.SKIPPED);
+            overallPassed += aggregate.overallPassed;
+        });
 
-        console.log("Passed: " + passedCount);
-        console.log("Failed: " + failedCount);
-
-        if (passedCount) {
-            this.statusData.push({
-                status: ResultStatusType.PASSED,
-                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                value: passedCount,
-                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.PASSED)}
-            })
-        }
-        if (failedCount) {
+        // TODO: Optimize code
+        if (overallFailed) {
             this.statusData.push({
                 status: ResultStatusType.FAILED,
                 statusName: this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
-                value: failedCount,
+                value: overallFailed,
                 itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.FAILED)}
             })
         }
+        if (overallExpectedFailed) {
+            this.statusData.push({
+                status: ResultStatusType.FAILED_EXPECTED,
+                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED),
+                value: overallExpectedFailed,
+                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED)}
+            })
+        }
+        if (overallSkipped) {
+            this.statusData.push({
+                status: ResultStatusType.SKIPPED,
+                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED),
+                value: overallSkipped,
+                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED)}
+            })
+        }
+        if (overallPassed) {
+            this.statusData.push({
+                status: ResultStatusType.PASSED,
+                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
+                value: overallPassed,
+                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.PASSED)}
+            })
+        }
+
+        this.totalRunCount = this._historyStatistics.getTotalRuns();
+        this.avgRunDuration = this._historyStatistics.getAverageDuration();
+        this.overallSuccessRate = (overallPassed / (overallFailed + overallExpectedFailed + overallSkipped + overallPassed)) * 100;
     }
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {

@@ -239,15 +239,6 @@ export class HistoryAggregateStatistics extends Statistics {
     getClassStatistics() {
         return this._classStatistics;
     }
-
-    isPassedRun(): boolean {
-        let isPassed = false;
-        let overallTestcases = this.overallPassed + this.overallFailed + this.overallSkipped;
-        if ((overallTestcases - this.overallPassed) == 0) {
-            isPassed = true;
-        }
-        return isPassed;
-    }
 }
 
 export class MethodRun {
@@ -354,7 +345,6 @@ export class MethodHistoryStatistics extends Statistics {
 export class HistoryStatistics {
     protected historyAggregateStatistics: HistoryAggregateStatistics[] = [];
     protected methodHistoryStatistics: MethodHistoryStatistics[] = [];
-    private _passedRuns: number = 0;
     private _totalRuns: number = 0;
 
     constructor(
@@ -371,12 +361,6 @@ export class HistoryStatistics {
         });
 
         this._totalRuns = this.history.entries.length;
-
-        this.historyAggregateStatistics.forEach(aggregate => {
-            if (aggregate.isPassedRun()) {
-                this._passedRuns++;
-            }
-        });
     }
 
     getHistoryAggregateStatistics(): HistoryAggregateStatistics[] {
@@ -389,17 +373,6 @@ export class HistoryStatistics {
 
     getTotalRuns(): number {
         return this._totalRuns;
-    }
-
-    getTotalPassedRuns(): number {
-        return this._passedRuns;
-    }
-
-    getSuccessRate(): number {
-        if (this._totalRuns != 0) {
-            return (this._passedRuns / this._totalRuns) * 100
-        }
-        return 0;
     }
 
     getAverageDuration(): number {

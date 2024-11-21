@@ -62,9 +62,8 @@ export class StatusShareChart extends AbstractViewModel {
                     data: this.status_data,
                     label: {
                         show: true,
-                        formatter: function (params) {
-                            return `${params.value}`;
-                        }
+                        position: 'inside',
+                        formatter: '{d}%'
                     },
                     labelLine: {
                         length: 10,

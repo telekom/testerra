@@ -42,14 +42,22 @@ export class ClassesHistory extends AbstractViewModel {
     private _dateFormatter: IntlDateFormatValueConverter;
     private _durationFormatter: DurationFormatValueConverter;
     private _selectedClass: string;
+    private _previousSelectedClass: string = null;
     private _historyStatistics: HistoryStatistics;
     private _executionStatistics: ExecutionStatistics;
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
     private _data: any[] = [];
-    private _yCategoryHeight = 70;                 // Height of y-axis categories in pixel
+    private _singleClassData: any[] = [];
+    private _categorySize = 70;                 // Height of y-axis categories in pixel
+    private _chartHeaderHeight = 30;
+    private _symbolSize = 60;
     private _uniqueClasses: any[] = [];
-    private _chartHeight: number;
+    private _numberOfMethodsInClass: number = 0;
+    private _cardHeight: number;
+    private _gridHeight: number;
+    private _gridWidth: number;
+    private _numberOfRuns: number;
 
     constructor(
         private _router: Router,
@@ -72,12 +80,24 @@ export class ClassesHistory extends AbstractViewModel {
             this._executionStatistics.classStatistics.sort((a, b) => this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))
         });
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
+        this._numberOfRuns = this._historyStatistics.getTotalRuns();
         this._initDateFormatter();
         this._initDurationFormatter();
         this._prepareChartData();
 
         this._setChartOption();
     };
+
+    private _classChanged() {
+        if (this._selectedClass) {
+            this._prepareSingleClassChartData();
+            this._adaptChartSize(this._numberOfMethodsInClass);
+            this._setChartOptionForSingleClass();
+        } else {
+            this._adaptChartSize(this._uniqueClasses.length);
+            this._setChartOption();
+        }
+    }
 
     private _initDurationFormatter() {
         const container = new Container();
@@ -115,7 +135,7 @@ export class ClassesHistory extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
-            const runIndex = aggregate.historyAggregate.historyIndex;
+            const historyIndex = aggregate.historyAggregate.historyIndex;
 
             const classes = aggregate.getClassStatistics();
 
@@ -130,7 +150,7 @@ export class ClassesHistory extends AbstractViewModel {
                     testcases += testClass.getStatusCount(status);
                 });
 
-                if(testcases === 0) {
+                if (testcases === 0) {
                     return;
                 }
 
@@ -159,7 +179,7 @@ export class ClassesHistory extends AbstractViewModel {
 
                 this._data.push({
                     value: [
-                        runIndex,
+                        historyIndex,
                         className,
                         classStatuses
                     ],
@@ -174,15 +194,16 @@ export class ClassesHistory extends AbstractViewModel {
                 });
             });
         });
-
-        console.log(this._data);
-        console.log("Amount of classes: " + this._uniqueClasses.length);
-        this._chartHeight = this._uniqueClasses.length * this._yCategoryHeight;
+        this._adaptChartSize(this._uniqueClasses.length);
     }
 
-    private _setChartOption() {
-        const dateFormatter = this._dateFormatter;
-        const durationFormatter = this._durationFormatter;
+    private _prepareSingleClassChartData() {
+        if (this._previousSelectedClass === this._selectedClass) {
+            return;
+        }
+
+        this._singleClassData = [];
+        this._previousSelectedClass = this._selectedClass;
 
         const style = new Map<number, string>();
         style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
@@ -194,13 +215,161 @@ export class ClassesHistory extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
+        // let numberOfMethodsInClass = 0;
+        const relevantStatuses = this._statusConverter.relevantStatuses;
+
+        this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
+            const historyIndex = aggregate.historyAggregate.historyIndex;
+            const foundClass = aggregate.getClassStatistics().find(currentClass =>
+                currentClass.classIdentifier === this._selectedClass
+            );
+            if (foundClass) {
+                // let methodCount = 0;
+
+                foundClass.methodContexts.forEach(method => {
+                    const status = method.resultStatus;
+
+                    if (!(relevantStatuses.includes(status))) {
+                        return;
+                    }
+
+                    let methodName: string = null;
+                    // methodCount++;
+
+                    if (method.testName) {
+                        methodName = method.testName;
+                    } else {
+                        methodName = method.contextValues.name;
+                        const params = [];
+                        for (const name in method.parameters) {
+                            params.push(name + ": " + method.parameters[name]);
+                        }
+                        if (params.length > 0) {
+                            methodName += "(" + params.join(", ") + ")";
+                        }
+                    }
+
+                    let errorMessage = "";
+
+                    if (status != ResultStatusType.PASSED) {
+                        method.testSteps.flatMap(value => value.actions)
+                            .forEach(actionDetails => {
+                                actionDetails.entries.forEach(entry => {
+                                    const errorContext = entry.errorContext;
+                                    errorContext.stackTrace.forEach(stackTrace => {
+                                        // TODO: How to handle multiple errorMessages
+                                        errorMessage = errorMessage.concat(stackTrace.message + " ");
+                                    })
+                                })
+                            });
+                    }
+
+                    const color = style.get(status);
+
+                    const startTime = method.contextValues.startTime;
+                    const endTime = method.contextValues.endTime;
+
+                    this._singleClassData.push({
+                        value: [historyIndex, methodName],
+                        itemStyle: {
+                            color: color,
+                            opacity: 1
+                        },
+                        status: status,
+                        statusName: this._statusConverter.getLabelForStatus(status),
+                        errorMessage: errorMessage,
+                        startTime: startTime,
+                        endTime: endTime,
+                        duration: endTime - startTime
+                    });
+                });
+            }
+        });
+        const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
+        this._numberOfMethodsInClass = uniqueMethodNames.size;
+    }
+
+    private _adaptChartSize(yItems: number) {
+        this._gridHeight = (yItems * this._categorySize);
+        this._cardHeight = this._gridHeight + this._chartHeaderHeight + 16;
+        this._gridWidth = (this._numberOfRuns * this._categorySize);
+    }
+
+    private _setChartOptionForSingleClass() {
+        const dateFormatter = this._dateFormatter;
+        const durationFormatter = this._durationFormatter;
+
+        let maxYCategoryLength = 30;
+        let gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
+
         this._option = {
             grid: {
-                top: '3%',
-                bottom: '2%',
-                containLabel: true,
-                left: '2%',
-                right: '2%'
+                height: this._gridHeight,
+                width: this._gridWidth,
+                top: this._chartHeaderHeight,
+                bottom: 0,
+                left: gridLeftValue,
+                right: 0
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    let tooltip = '<div class="header" style="background-color: ' +
+                        params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
+
+                    if (params.data.errorMessage) {
+                        tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
+                    }
+
+                    tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')
+                        + '<br>End time: ' + dateFormatter.toView(params.data.endTime, 'full')
+                        + '<br>Duration: ' + durationFormatter.toView(params.data.duration);
+
+                    return tooltip;
+                }
+            },
+            xAxis: {
+                type: 'category',
+                position: 'top',
+                show: true
+            },
+            yAxis: {
+                type: 'category',
+                show: true,
+                axisLabel: {
+                    formatter: function (value) {
+                        const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
+                        return value.match(regex)?.join('\n');
+                    }
+                }
+            },
+            series: [
+                {
+                    type: 'scatter',
+                    symbolSize: this._symbolSize,
+                    symbol: 'rect',
+                    data: this._singleClassData,
+                    z: 2
+                }
+            ]
+        };
+    }
+
+    private _setChartOption() {
+        const dateFormatter = this._dateFormatter;
+        const durationFormatter = this._durationFormatter;
+
+        let maxYCategoryLength = 30;
+        let gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
+
+        this._option = {
+            grid: {
+                height: this._gridHeight,
+                width: this._gridWidth,
+                top: this._chartHeaderHeight,
+                bottom: 0,
+                left: gridLeftValue,
+                right: 0
             },
             tooltip: {
                 trigger: 'item',
@@ -213,10 +382,10 @@ export class ClassesHistory extends AbstractViewModel {
 
                     return `<div class="class-history-chart-tooltip-header">Run ${params.value[0]}</div>
                         <br>Testcases: ${params.data.testcases}
-                        ${failed > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.FAILED) + `;"></span> Failed: ${failed}` : ''}
-                        ${expectedFailed > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.FAILED_EXPECTED) + `;"></span> Expected Failed: ${expectedFailed}` : ''}
-                        ${skipped > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.SKIPPED) + `;"></span> Skipped: ${skipped}` : ''}
-                        ${passed > 0 ? `<br><span class="status-dot" style="background-color: ` + style.get(ResultStatusType.PASSED) + `;"></span> Passed: ${passed}` : ''}
+                        ${failed > 0 ? `<br><span class="status-dot status-failed"></span> Failed: ${failed}` : ''}
+                        ${expectedFailed > 0 ? `<br><span class="status-dot status-failed-expected"></span> Expected Failed: ${expectedFailed}` : ''}
+                        ${skipped > 0 ? `<br><span class="status-dot status-skipped"></span> Skipped: ${skipped}` : ''}
+                        ${passed > 0 ? `<br><span class="status-dot status-passed"></span> Passed: ${passed}` : ''}
                         <br><br>Start time: ${dateFormatter.toView(params.data.startTime, 'full')}
                         <br>End time: ${dateFormatter.toView(params.data.endTime, 'full')}
                         <br>Duration: ${durationFormatter.toView(params.data.duration)}`;
@@ -232,8 +401,7 @@ export class ClassesHistory extends AbstractViewModel {
                 show: true,
                 axisLabel: {
                     formatter: function (value) {
-                        const maxLineLength = 30;
-                        const regex = new RegExp(`.{1,${maxLineLength}}`, 'g');
+                        const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
                         return value.match(regex)?.join('\n');
                     }
                 }
@@ -241,7 +409,7 @@ export class ClassesHistory extends AbstractViewModel {
             series: [
                 {
                     type: 'scatter',
-                    symbolSize: 60,
+                    symbolSize: this._symbolSize,
                     symbol: 'rect',
                     encode: {
                         x: 0,

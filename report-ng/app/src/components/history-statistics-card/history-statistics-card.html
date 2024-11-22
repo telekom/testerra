@@ -25,7 +25,7 @@
             <div mdc-subtitle2 class="card-headline">History Statistics</div>
             <mdc-list-divider></mdc-list-divider>
             <mdc-list class="p0">
-                <mdc-list-item nonInteractive two-line>
+                <mdc-list-item class="non-interactive" two-line>
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>bar_chart</mdc-icon>
                     <mdc-list-item-primary-text>
                         <span>${total_run_count}</span>
@@ -34,7 +34,7 @@
                         <span>Total Runs</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-                <mdc-list-item nonInteractive two-line>
+                <mdc-list-item class="non-interactive" two-line>
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>av_timer</mdc-icon>
                     <mdc-list-item-primary-text>
                         <span>${average_run_duration | durationFormat:"h[h] m[min] s[s] S[ms]"}</span>
@@ -43,7 +43,7 @@
                         <span>Average run duration</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-                <mdc-list-item nonInteractive two-line>
+                <mdc-list-item class="non-interactive" two-line>
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>check_circle_outline</mdc-icon>
                     <mdc-list-item-primary-text>
                         <span>${success_rate.toFixed(1)}%</span>

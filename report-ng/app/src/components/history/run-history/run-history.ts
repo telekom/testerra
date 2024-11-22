@@ -48,55 +48,35 @@ export class RunHistory extends AbstractViewModel {
     async attached() {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
 
-        let overallFailed = 0;
-        let overallExpectedFailed = 0;
-        let overallSkipped = 0;
-        let overallPassed = 0;
-
+        let statusCount = new Map<ResultStatusType, number>();
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
-            overallFailed += aggregate.getStatusCount(ResultStatusType.FAILED);
-            overallExpectedFailed += aggregate.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-            overallSkipped += aggregate.getStatusCount(ResultStatusType.SKIPPED);
-            overallPassed += aggregate.overallPassed;
+            const currentFailed = statusCount.get(ResultStatusType.FAILED) || 0;
+            const currentExpectedFailed = statusCount.get(ResultStatusType.FAILED_EXPECTED) || 0;
+            const currentSkipped = statusCount.get(ResultStatusType.SKIPPED) || 0;
+            const currentPassed = statusCount.get(ResultStatusType.PASSED) || 0;
+
+            statusCount.set(ResultStatusType.FAILED, currentFailed + aggregate.getStatusCount(ResultStatusType.FAILED));
+            statusCount.set(ResultStatusType.FAILED_EXPECTED, currentExpectedFailed + aggregate.getStatusCount(ResultStatusType.FAILED_EXPECTED));
+            statusCount.set(ResultStatusType.SKIPPED, currentSkipped + aggregate.getStatusCount(ResultStatusType.SKIPPED));
+            statusCount.set(ResultStatusType.PASSED, currentPassed + aggregate.overallPassed);
         });
 
-        // TODO: Optimize code
-        if (overallFailed) {
-            this.statusData.push({
-                status: ResultStatusType.FAILED,
-                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.FAILED),
-                value: overallFailed,
-                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.FAILED)}
-            })
-        }
-        if (overallExpectedFailed) {
-            this.statusData.push({
-                status: ResultStatusType.FAILED_EXPECTED,
-                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED),
-                value: overallExpectedFailed,
-                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED)}
-            })
-        }
-        if (overallSkipped) {
-            this.statusData.push({
-                status: ResultStatusType.SKIPPED,
-                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED),
-                value: overallSkipped,
-                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED)}
-            })
-        }
-        if (overallPassed) {
-            this.statusData.push({
-                status: ResultStatusType.PASSED,
-                statusName: this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                value: overallPassed,
-                itemStyle: {color: this._statusConverter.getColorForStatus(ResultStatusType.PASSED)}
-            })
-        }
+        let overallTestCount = 0;
+        statusCount.forEach((count, status) => {
+            overallTestCount += count;
+            if (count) {
+                this.statusData.push({
+                    status: status,
+                    statusName: this._statusConverter.getLabelForStatus(status),
+                    value: count,
+                    itemStyle: {color: this._statusConverter.getColorForStatus(status)}
+                })
+            }
+        });
 
         this.totalRunCount = this._historyStatistics.getTotalRuns();
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
-        this.overallSuccessRate = (overallPassed / (overallFailed + overallExpectedFailed + overallSkipped + overallPassed)) * 100;
+        this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
     }
 
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {

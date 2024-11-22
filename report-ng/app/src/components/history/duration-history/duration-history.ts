@@ -40,6 +40,37 @@ export class DurationHistory extends AbstractViewModel {
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
+        this._setChartOption();
+    }
+
+    private _setChartOption() {
+        this._option = {
+            title: {
+                text: 'Example graph with scrollbar'
+            },
+            tooltip: {},
+            xAxis: {
+                type: 'category',
+                data: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: 'Umsatz',
+                type: 'line',
+                data: [120, 200, 150, 80, 70, 110, 130, 160, 200, 250, 300, 350]
+            }],
+            dataZoom: [
+                {
+                    type: 'slider',
+                    xAxisIndex: [0],
+                    start: 0,
+                    end: 50,
+                    brushSelect: false,
+                    zoomLock: true
+                }
+            ]
+        };
     }
 }
-

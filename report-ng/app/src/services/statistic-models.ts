@@ -258,6 +258,7 @@ export class MethodHistoryStatistics extends Statistics {
     private _parameters: { [key: string]: string; } = {};
     private _runs: MethodRun[] = [];
     private _durations: number[] = [];
+    private _errorCount = new Map<string, number>();
 
     constructor(
         currentMethod: IMethodContext, history: HistoryStatistics
@@ -269,10 +270,22 @@ export class MethodHistoryStatistics extends Statistics {
                 method.testName === currentMethod.testName &&
                 this._compareParameters(method.parameters, currentMethod.parameters)
             );
-            if (!(methodInRun === undefined)) {
+            if (methodInRun !== undefined) {
                 this._runs.push(new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex));
                 this.addResultStatus(methodInRun.resultStatus);
                 this._durations.push(methodInRun.contextValues.endTime - methodInRun.contextValues.startTime);
+
+                methodInRun.testSteps.forEach(step => {
+                    step.actions.forEach(action => {
+                        action.entries.forEach(entry => {
+                            entry.errorContext.stackTrace.forEach(stackTrace => {
+                                const error = stackTrace.className + ": " + stackTrace.message;
+                                const currentErrorCount = this._errorCount.get(error) || 0;
+                                this._errorCount.set(error, currentErrorCount + 1);
+                            });
+                        });
+                    });
+                });
             }
         });
         this._name = currentMethod.contextValues.name;
@@ -339,6 +352,10 @@ export class MethodHistoryStatistics extends Statistics {
         }
 
         return true;
+    }
+
+    getErrorCount(): Map<string, number> {
+        return this._errorCount;
     }
 }
 

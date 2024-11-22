@@ -23,6 +23,7 @@
     <require from="../method-history-chart/method-history-chart"></require>
     <require from="../status-share-chart/status-share-chart"></require>
     <require from="../history-statistics-card/history-statistics-card"></require>
+    <require from="../failure-aspects-chart/failure-aspects-chart"></require>
 
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
@@ -47,6 +48,7 @@
                 <mdc-card class="short-history-card">
                     <div mdc-subtitle2 class="card-headline">Common Failure Aspects</div>
                     <mdc-list-divider></mdc-list-divider>
+                    <failure-aspects-chart failure_aspects_data.bind="failureAspectsData"></failure-aspects-chart>
                 </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

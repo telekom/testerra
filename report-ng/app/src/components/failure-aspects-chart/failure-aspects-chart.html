@@ -20,15 +20,5 @@
   -->
 
 <template>
-    <mdc-layout-grid>
-        <mdc-layout-grid-inner>
-            <mdc-layout-grid-cell span="12">
-                <mdc-card>
-                    <div class="hcenter vcenter card-content" mdc-body1>
-                        <echart chart.bind="_chart" class="echart-duration-history" options.bind="_option"></echart>
-                    </div>
-                </mdc-card>
-            </mdc-layout-grid-cell>
-        </mdc-layout-grid-inner>
-    </mdc-layout-grid>
+    <echart chart.bind="_chart" class="echart-failure-aspects" options.bind="_option"></echart>
 </template>

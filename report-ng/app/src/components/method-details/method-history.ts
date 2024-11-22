@@ -32,6 +32,7 @@ import {ResultStatusType} from "../../services/report-model/framework_pb";
 export class MethodHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     private _methodDetails: MethodDetails;
+    failureAspectsData: any[] = [];
     statusData: any[] = [];
     methodHistoryStatistics: MethodHistoryStatistics;
     totalRunCount: number = 0;
@@ -90,5 +91,7 @@ export class MethodHistory extends AbstractViewModel {
         this.totalRunCount = this.methodHistoryStatistics.getMethodRunCount();
         this.avgRunDuration = this.methodHistoryStatistics.getAverageDuration();
         this.overallSuccessRate = this.methodHistoryStatistics.getSuccessRate();
+
+        this.failureAspectsData = Array.from(this.methodHistoryStatistics.getErrorCount()).sort((a, b) => b[1] - a[1]);
     }
 }

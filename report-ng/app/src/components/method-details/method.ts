@@ -152,11 +152,13 @@ export class Method {
             // TODO: Disable method-history-tab if there is no history
             // let methodRunCount = 0;
             // this._statistics.getHistoryStatistics().then(history => {
-            //     history.getMethodHistoryStatistics().find(method => {
-            //         if (method.isMatchingMethod(this._methodDetails.methodContext)) {
-            //             methodRunCount = method.getMethodRunCount();
-            //         }
-            //     });
+            //     const method = history.getMethodHistoryStatistics().find(method =>
+            //         method.isMatchingMethod(this._methodDetails.methodContext)
+            //     );
+            //     if (method) {
+            //         methodRunCount = method.getMethodRunCount();
+            //     }
+            //     console.log(methodRunCount);
             // });
 
             this._router.routes.forEach(routeConfig => {

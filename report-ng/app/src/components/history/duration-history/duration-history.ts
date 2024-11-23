@@ -44,6 +44,12 @@ export class DurationHistory extends AbstractViewModel {
     }
 
     private _setChartOption() {
+
+        let data = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+        let seriesData = [120, 200, 150, 80, 70, 110, 130, 160, 200, 250, 300, 350];
+        let threshold = 6;
+        let visibleItems = 6;
+
         this._option = {
             title: {
                 text: 'Example graph with scrollbar'
@@ -51,7 +57,7 @@ export class DurationHistory extends AbstractViewModel {
             tooltip: {},
             xAxis: {
                 type: 'category',
-                data: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
+                data: data
             },
             yAxis: {
                 type: 'value'
@@ -59,18 +65,23 @@ export class DurationHistory extends AbstractViewModel {
             series: [{
                 name: 'Umsatz',
                 type: 'line',
-                data: [120, 200, 150, 80, 70, 110, 130, 160, 200, 250, 300, 350]
-            }],
-            dataZoom: [
+                data: seriesData
+            }]
+        };
+
+        if(data.length > threshold) {
+            let endValue = (visibleItems / data.length) * 100;
+
+            this._option.dataZoom = [
                 {
                     type: 'slider',
                     xAxisIndex: [0],
                     start: 0,
-                    end: 50,
+                    end: endValue,
                     brushSelect: false,
                     zoomLock: true
                 }
             ]
-        };
+        }
     }
 }

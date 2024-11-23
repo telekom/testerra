@@ -24,7 +24,7 @@ import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
 import "./run-history.scss";
 import {HistoryStatistics} from "../../../services/statistic-models";
-import {StatusConverter} from "../../../services/status-converter";
+import {IFilter, StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
 
@@ -36,6 +36,9 @@ export class RunHistory extends AbstractViewModel {
     overallSuccessRate: number = 0;
     private _historyStatistics: HistoryStatistics;
     statusData: any[] = [];
+    private _filter: IFilter;
+    private _availableStatuses: ResultStatusType[] = [];
+    private _selectedStatus: ResultStatusType = null;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -65,6 +68,7 @@ export class RunHistory extends AbstractViewModel {
         statusCount.forEach((count, status) => {
             overallTestCount += count;
             if (count) {
+                this._availableStatuses.push(status);
                 this.statusData.push({
                     status: status,
                     statusName: this._statusConverter.getLabelForStatus(status),
@@ -82,5 +86,12 @@ export class RunHistory extends AbstractViewModel {
     activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
+    }
+
+    private _statusChanged() {
+        console.log(this._selectedStatus);
+        this._filter = {
+            status: this._selectedStatus
+        }
     }
 }

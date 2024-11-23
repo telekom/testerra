@@ -56,7 +56,7 @@
                     <mdc-list-divider></mdc-list-divider>
                     <div class="hcenter vcenter card-content" mdc-body1>
                         <test-history-chart class="run-history-overview-chart"
-                                            filter.bind="_filter"></test-history-chart>
+                                            is_history_view.bind=false filter.bind="_filter"></test-history-chart>
                     </div>
                 </mdc-card>
                 <mdc-linear-progress if.bind="!_promptLogs" open="true" class="mt1"></mdc-linear-progress>

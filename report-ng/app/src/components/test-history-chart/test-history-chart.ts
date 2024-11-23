@@ -46,6 +46,7 @@ export class TestHistoryChart extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
     @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
+    @bindable is_history_view: boolean;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -372,5 +373,29 @@ export class TestHistoryChart extends AbstractViewModel {
                 },
             ]
         };
+
+        if (this.is_history_view) {
+            this._option.dataZoom = [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 100,
+                    minValueSpan: 1
+                },
+                {
+                    start: 0,
+                    end: 100,
+                    minValueSpan: 1
+                }
+            ]
+
+            this._option.grid = {
+                top: '5%',
+                left: '1%',
+                right: '3%',
+                bottom: '50px',
+                containLabel: true
+            }
+        }
     }
 }

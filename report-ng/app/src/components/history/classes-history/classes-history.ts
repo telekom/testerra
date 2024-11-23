@@ -53,11 +53,13 @@ export class ClassesHistory extends AbstractViewModel {
     private _chartHeaderHeight = 30;
     private _symbolSize = 60;
     private _uniqueClasses: any[] = [];
-    private _numberOfMethodsInClass: number = 0;
+    private _numberOfMethodsInClass = 0;
     private _cardHeight: number;
     private _gridHeight: number;
     private _gridWidth: number;
     private _numberOfRuns: number;
+    private _sliderVisible = false;
+    private _visibleRuns = 18;
 
     constructor(
         private _router: Router,
@@ -85,10 +87,12 @@ export class ClassesHistory extends AbstractViewModel {
         this._initDurationFormatter();
         this._prepareChartData();
 
-        this._setChartOption();
+        this._classChanged();
     };
 
     private _classChanged() {
+        this._sliderVisible = (this._historyStatistics.getTotalRuns() > (this._visibleRuns - 1));
+
         if (this._selectedClass) {
             this._prepareSingleClassChartData();
             this._adaptChartSize(this._numberOfMethodsInClass);
@@ -96,6 +100,28 @@ export class ClassesHistory extends AbstractViewModel {
         } else {
             this._adaptChartSize(this._uniqueClasses.length);
             this._setChartOption();
+        }
+
+        if(this._sliderVisible) {
+            let endValue = ((this._visibleRuns - 1) / this._historyStatistics.getTotalRuns()) * 100;
+
+            this._option.dataZoom = [
+                {
+                    type: 'slider',
+                    xAxisIndex: [0],
+                    start: 0,
+                    end: endValue,
+                    brushSelect: false,
+                    zoomLock: true
+                }
+            ]
+
+            // this._chart.dispatchAction({
+            //     type: 'dataZoom',
+            //     id: 'threadZoom',
+            //     startValue: endValue - this._visibleRuns,
+            //     endValue: endValue
+            // });
         }
     }
 
@@ -290,8 +316,13 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _adaptChartSize(yItems: number) {
+        let topBottomPlaceholder = 16;
+        if (this._sliderVisible) {
+            topBottomPlaceholder += 60;
+        }
+
         this._gridHeight = (yItems * this._categorySize);
-        this._cardHeight = this._gridHeight + this._chartHeaderHeight + 16;
+        this._cardHeight = this._gridHeight + this._chartHeaderHeight + topBottomPlaceholder;
         this._gridWidth = (this._numberOfRuns * this._categorySize);
     }
 

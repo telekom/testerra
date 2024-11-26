@@ -219,7 +219,6 @@ export class TestHistoryChart extends AbstractViewModel {
                 startTime: startTime,
                 endTime: endTime,
                 duration: endTime - startTime,
-                testcases: entry.overallTestCases,
                 value: [
                     entry.historyAggregate.historyIndex,
                     entry.getStatusCount(ResultStatusType.FAILED),
@@ -238,7 +237,6 @@ export class TestHistoryChart extends AbstractViewModel {
                 bottom: '0%',
                 containLabel: true
             },
-            animation: false,
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -312,6 +310,9 @@ export class TestHistoryChart extends AbstractViewModel {
                         x: 0,
                         y: 4
                     },
+                    emphasis: {
+                        disabled: true
+                    },
                     data: chartData
                 },
                 {
@@ -330,6 +331,9 @@ export class TestHistoryChart extends AbstractViewModel {
                     encode: {
                         x: 0,
                         y: 3
+                    },
+                    emphasis: {
+                        disabled: true
                     },
                     data: chartData
                 },
@@ -350,6 +354,9 @@ export class TestHistoryChart extends AbstractViewModel {
                         x: 0,
                         y: 2
                     },
+                    emphasis: {
+                        disabled: true
+                    },
                     data: chartData
                 },
                 {
@@ -368,6 +375,9 @@ export class TestHistoryChart extends AbstractViewModel {
                     encode: {
                         x: 0,
                         y: 1
+                    },
+                    emphasis: {
+                        disabled: true
                     },
                     data: chartData
                 },

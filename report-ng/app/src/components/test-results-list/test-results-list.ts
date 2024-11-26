@@ -73,58 +73,50 @@ export class TestResultsList {
             this._filterItems = [];
             const failed = this.executionStatistics.overallFailed;
             const failedRetried = this.executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
-            if (failed > 0 || failedRetried > 0) {
-                const counts = []
-                const labels = []
-                counts.push(failed)
-                labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
-                if (failedRetried > 0) {
-                    counts.push(" + " + failedRetried)
-                    labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
-                }
-                this._filterItems.push({
-                    status: ResultStatusType.FAILED,
-                    counts: counts,
-                    labels: labels,
-                });
+            const counts = []
+            const labels = []
+            counts.push(failed)
+            labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
+            if (failedRetried > 0) {
+                counts.push("( + " + failedRetried + ")")
+                labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
             }
+            this._filterItems.push({
+                status: ResultStatusType.FAILED,
+                counts: counts,
+                labels: labels,
+            });
 
             const failedExpected = this.executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-            if (failedExpected > 0) {
-                this._filterItems.push({
-                    status: ResultStatusType.FAILED_EXPECTED,
-                    counts: [failedExpected],
-                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-                });
-            }
+            this._filterItems.push({
+                status: ResultStatusType.FAILED_EXPECTED,
+                counts: [failedExpected],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
+            });
 
             const skipped = this.executionStatistics.overallSkipped;
-            if (skipped > 0) {
-                this._filterItems.push({
-                    status: ResultStatusType.SKIPPED,
-                    counts: [skipped],
-                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-                });
-            }
+            this._filterItems.push({
+                status: ResultStatusType.SKIPPED,
+                counts: [skipped],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
+            });
 
             const passed = this.executionStatistics.overallPassed;
-            if (passed > 0) {
-                const recovered = this.executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
-                const repaired = this.executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
-                this._filterItems.push({
-                    status: ResultStatusType.PASSED,
-                    counts: [
-                        passed,
-                        (repaired > 0 ? `&sup; ${repaired}` : null),
-                        (recovered > 0 ? `&sup; ${recovered}` : null),
-                    ],
-                    labels: [
-                        this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                        (repaired > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED) : null),
-                        (recovered > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY) : null),
-                    ],
-                });
-            }
+            const recovered = this.executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
+            const repaired = this.executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
+            this._filterItems.push({
+                status: ResultStatusType.PASSED,
+                counts: [
+                    passed,
+                    (repaired > 0 ? `&sup; ${repaired}` : null),
+                    (recovered > 0 ? `&sup; ${recovered}` : null),
+                ],
+                labels: [
+                    this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
+                    (repaired > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED) : null),
+                    (recovered > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY) : null),
+                ],
+            });
         })
     }
 

@@ -20,5 +20,10 @@
   -->
 
 <template>
-    <echart chart.bind="_chart" class="echart-failure-aspects" options.bind="_option"></echart>
+    <echart chart.bind="_chart"
+            if.bind="failure_aspects_data.length > 0" class="echart-failure-aspects" options.bind="_option"></echart>
+    <div class="vcenter hcenter p1 echart-failure-aspects" else>
+        <mdc-icon class="sr1">celebration</mdc-icon>
+        <div mdc-body1>No failure aspects</div>
+    </div>
 </template>

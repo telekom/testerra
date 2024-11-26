@@ -35,12 +35,11 @@ export class StatusShareChart extends AbstractViewModel {
         this._option = {};
     }
 
-    async attached() {
+    attached() {
         this._setChartOption();
     };
 
     private _setChartOption() {
-
         this._option = {
             tooltip: {
                 formatter: function (params) {
@@ -55,14 +54,15 @@ export class StatusShareChart extends AbstractViewModel {
                 {
                     name: 'Status Share',
                     type: 'pie',
-                    radius: ['30%', '80%'],
-                    center: ['50%', '80%'],
+                    radius: ['40%', '130%'],
+                    center: ['50%', '90%'],
                     startAngle: 180,
                     endAngle: 360,
                     data: this.status_data,
                     label: {
                         show: true,
-                        position: 'inside',
+                        position: 'inner',
+                        color: '#ffffff',
                         formatter: '{d}%'
                     },
                     labelLine: {

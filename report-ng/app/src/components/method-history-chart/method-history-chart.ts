@@ -110,7 +110,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                             const errorContext = entry.errorContext;
                             errorContext.stackTrace.forEach(stackTrace => {
                                 // TODO: How to handle multiple errorMessages
-                                errorMessage = errorMessage.concat(stackTrace.message + " ");
+                                errorMessage = errorMessage.concat(stackTrace.className + ": " + stackTrace.message + " ");
                             })
                         })
                     });

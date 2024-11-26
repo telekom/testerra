@@ -37,8 +37,8 @@ export class RunHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     statusData: any[] = [];
     private _filter: IFilter;
-    private _availableStatuses: ResultStatusType[] = [];
     private _selectedStatus: ResultStatusType = null;
+    private _availableStatuses: ResultStatusType[] = [];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -48,7 +48,10 @@ export class RunHistory extends AbstractViewModel {
         super();
     }
 
-    async attached() {
+    async activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+        super.activate(params, routeConfig, navInstruction);
+        this._router = navInstruction.router;
+
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
 
         let statusCount = new Map<ResultStatusType, number>();
@@ -68,24 +71,19 @@ export class RunHistory extends AbstractViewModel {
         statusCount.forEach((count, status) => {
             overallTestCount += count;
             if (count) {
-                this._availableStatuses.push(status);
                 this.statusData.push({
                     status: status,
                     statusName: this._statusConverter.getLabelForStatus(status),
                     value: count,
                     itemStyle: {color: this._statusConverter.getColorForStatus(status)}
                 })
+                this._availableStatuses.push(status);
             }
         });
 
         this.totalRunCount = this._historyStatistics.getTotalRuns();
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
-    }
-
-    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
-        super.activate(params, routeConfig, navInstruction);
-        this._router = navInstruction.router;
     }
 
     private _statusChanged() {

@@ -60,6 +60,7 @@ export class Dashboard extends AbstractViewModel {
     private _topFailureAspects: FailureAspectStatistics[];
     private _loading = true;
     private _promptLogs = undefined;
+    private _numberOfTestcases = 0;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -136,6 +137,8 @@ export class Dashboard extends AbstractViewModel {
                 ],
             });
         }
+
+        this._numberOfTestcases = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED) + failedExpected + skipped + passed;
 
         this._executionStatistics.uniqueFailureAspects.forEach(failureAspectStatistics => {
             if (failureAspectStatistics.isMinor) {

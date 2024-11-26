@@ -47,9 +47,6 @@ export class MethodHistory extends AbstractViewModel {
         super();
     }
 
-    async attached() {
-    };
-
     async activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
@@ -67,16 +64,17 @@ export class MethodHistory extends AbstractViewModel {
         });
 
         const style = new Map<number, string>();
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
         style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
         style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
         style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+        let statusKeys = Array.from(style.keys());
 
-        for (const status of this._statusConverter.relevantStatuses) {
+        for (const status of statusKeys) {
             const statusCount = this.methodHistoryStatistics.getStatusCount(status);
             if (statusCount) {
                 this.statusData.push({
@@ -84,7 +82,7 @@ export class MethodHistory extends AbstractViewModel {
                     statusName: this._statusConverter.getLabelForStatus(status),
                     value: statusCount,
                     itemStyle: {color: style.get(status)}
-                })
+                });
             }
         }
 

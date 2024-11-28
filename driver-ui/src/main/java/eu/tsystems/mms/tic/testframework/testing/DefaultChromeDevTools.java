@@ -89,9 +89,7 @@ public class DefaultChromeDevTools implements ChromeDevTools, Loggable {
 
     @Override
     public void setDevice(WebDriver webDriver, Dimension dimension, int scaleFactor, boolean mobile) {
-        if (!isSupported(webDriver)) {
-            throw new RuntimeException("The current browser does not support DevTools");
-        }
+        validateSupport(webDriver);
         DevTools devTools = this.getRawDevTools(webDriver);
         devTools.send(Emulation.setDeviceMetricsOverride(
                         dimension.getWidth(),

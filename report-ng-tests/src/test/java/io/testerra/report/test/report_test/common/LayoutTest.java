@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.methodReport.ComparisonDialogOverlay;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
@@ -112,6 +113,67 @@ public class LayoutTest extends AbstractReportTest {
         reportDetailsTab.getComparisonImgElement(errorMessages[0], "Expected").assertThat().attribute("src").isContaining("box1");
         reportDetailsTab.getComparisonImgElement(errorMessages[1], "Actual").assertThat().attribute("src").isContaining("box2");
         reportDetailsTab.getComparisonImgElement(errorMessages[1], "Expected").assertThat().attribute("src").isContaining("box2");
+    }
+
+    @Test
+    public void testT04_checkFailedLayoutTestAndFailedAssertion() {
+        String methodName = "layoutTest05_layoutTestFailing_AssertionFailing";
+        String className = "GenerateLayoutTestsTTReportTest";
+
+        String[] errorMessages = new String[]{
+                "Expected that pixel distance (%) of WebDriver screenshot to image ",
+                "Just a simple error message"
+        };
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        ASSERT.assertTrue(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[0]), "Visibility of screenshot comparison in Failure aspect box");
+        ASSERT.assertFalse(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessages[1]), "Visibility of screenshot comparison in Failure aspect box");
+
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Actual").assertThat().attribute("src").isContaining("inputHtml_image2");
+        reportDetailsTab.getComparisonImgElement(errorMessages[0], "Expected").assertThat().attribute("src").isContaining("inputHtml_image2");
+    }
+
+    @Test
+    public void testT05_checkPassedLayoutTestAndFailedAssertion() {
+        String methodName = "layoutTest06_layoutTestPassing_AssertionFailing";
+        String className = "GenerateLayoutTestsTTReportTest";
+
+        String errorMessage = "Just a simple error message";
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        ASSERT.assertFalse(reportDetailsTab.hasFailureAspectAScreenshotComparison(errorMessage), "Visibility of screenshot comparison in Failure aspect box");
+    }
+
+    @Test
+    public void testT06_checkLayoutDialog(){
+        String methodName = "layoutTest01_layoutTestFailing";
+        String className = "GenerateLayoutTestsTTReportTest";
+
+        String[] imageTitles = new String[]{
+                "Actual",
+                "Difference",
+                "Expected"
+        };
+
+        TestStep.begin("Navigate to details page");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+        reportTestsPage.selectClassName(className);
+        ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
+        TestStep.begin("Open Layout Dialog");
+        for(String title: imageTitles){
+            ComparisonDialogOverlay comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(title);
+            comparisonDialogOverlay.checkSelectedAndContentFromStartingMatched(title);
+            reportDetailsTab = comparisonDialogOverlay.closeDialog();
+        }
     }
 
 }

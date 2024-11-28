@@ -2,8 +2,6 @@
     Testerra
 </h1>
 
-
-
 <p align="center">
     <a href="https://mvnrepository.com/artifact/io.testerra" title="MavenCentral"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/io.testerra/core/2?label=Maven%20Central"></a>
     <a href="/../../commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/telekom/testerra?style=flat"></a>
@@ -45,8 +43,8 @@ Include the following dependency in your project.
 Gradle:
 ```groovy
 dependencies {
-    implementation 'io.testerra:driver-ui-desktop:2.7'
-    implementation 'io.testerra:report-ng:2.7'
+    implementation 'io.testerra:driver-ui-desktop:2.10'
+    implementation 'io.testerra:report-ng:2.10'
 }
 ```
 
@@ -56,12 +54,12 @@ Maven:
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
-        <version>2.7</version>
+        <version>2.10</version>
     </dependency>
     <dependency>
         <groupId>io.testerra</groupId>
         <artifactId>report-ng</artifactId>
-        <version>2.7</version>
+        <version>2.10</version>
     </dependency>
 </dependencies>
 ```
@@ -103,9 +101,9 @@ gradle test
 
 The following optional properties can be set.
 
-| Property                      | Description                                           |
-| ----------------------------- | ----------------------------------------------------- |
-| `withJacoco`                   | Enables Jacoco code coverage analysis |
+| Property     | Description                           |
+|--------------|---------------------------------------|
+| `withJacoco` | Enables Jacoco code coverage analysis |
 
 ### License report
 
@@ -115,21 +113,29 @@ Create a report about used licenses for every dependency:
 
 You will find the reports of all modules under  ``license3rdparty``.
 
+### SBOM reports
+
+Create an SBOM reports for every module:
+
+``gradle cyclonedxBom``
+
+You will find the JSON files under ``<root-project>/build/sbom``
+
 ### Publishing
 
 Testerra is deployed and published to Maven Central. All JAR files are signed via Gradle signing plugin.
 
 The following properties have to be set via command line or ``~/.gradle/gradle.properties``
 
-| Property                      | Description                                           |
-| ----------------------------- | ----------------------------------------------------- |
-| `ttVersion`                   | Version of deployed Testerra, default is `2-SNAPSHOT` |
-| `deployUrl`                   | Maven repository URL                                  |
-| `deployUsername`              | Maven repository username                             |
-| `deployPassword`              | Maven repository password                             |
-| `signing.keyId`               | GPG private key ID (short form)                       |
-| `signing.password`            | GPG private key password                              |
-| `signing.secretKeyRingFile`   | Path to GPG private key                               |
+| Property                    | Description                                           |
+|-----------------------------|-------------------------------------------------------|
+| `ttVersion`                 | Version of deployed Testerra, default is `2-SNAPSHOT` |
+| `deployUrl`                 | Maven repository URL                                  |
+| `deployUsername`            | Maven repository username                             |
+| `deployPassword`            | Maven repository password                             |
+| `signing.keyId`             | GPG private key ID (short form)                       |
+| `signing.password`          | GPG private key password                              |
+| `signing.secretKeyRingFile` | Path to GPG private key                               |
 
 If all properties are set, call the following to build, deploy and release Testerra:
 ````shell
@@ -150,10 +156,10 @@ Consequently, all content will be made available primarily in English. We also a
 ## Support and Feedback
 The following channels are available for discussions, feedback, and support requests:
 
-| Type                     | Channel                                                |
-| ------------------------ | ------------------------------------------------------ |
-| **Issues**   | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a> |
-| **Other Requests**    | <a href="mailto:testerra@t-systems-mms.com" title="Email us"><img src="https://img.shields.io/badge/email-Testerra%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a>   |
+| Type               | Channel                                                                                                                                                                              |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Issues**         | <a href="https://github.com/telekom/testerra/issues/new/choose" title="Issues"><img src="https://img.shields.io/github/issues/telekom/testerra?style=flat"></a>                      |
+| **Other Requests** | <a href="mailto:testerra@t-systems-mms.com" title="Email us"><img src="https://img.shields.io/badge/email-Testerra%20team-green?logo=mail.ru&style=flat-square&logoColor=white"></a> |
 
 ## Additional repositories
 

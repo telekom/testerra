@@ -166,6 +166,7 @@ public class DesktopWebDriverFactory implements
 
         desktopWebDriverRequest.getBaseUrl().ifPresent(baseUrl -> {
             try {
+                sessionContext.setBaseUrl(baseUrl.toString());
                 MetricsController metricsController = Testerra.getInjector().getInstance(MetricsController.class);
                 metricsController.start(sessionContext, MetricsType.BASEURL_LOAD);
                 decoratedDriver.get(baseUrl.toString());
@@ -280,7 +281,7 @@ public class DesktopWebDriverFactory implements
     }
 
     /**
-     * Remote when remoteAdress != null, local need browser to be set.
+     * Remote when remoteAddress != null, local need browser to be set.
      */
     private WebDriver startNewWebDriverSession(DesktopWebDriverRequest request, SessionContext sessionContext) {
 
@@ -340,7 +341,7 @@ public class DesktopWebDriverFactory implements
                 ((RemoteWebDriver) webDriver).setFileDetector(new LocalFileDetector());
                 sessionContext.setNodeUrl(seleniumUrl);
             } else {
-                log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
+                log().info("Local WebDriver is used.");
 
                 // Starting local webdriver needs caps as browser options
                 if (optionClass == request.getCapabilities().getClass()) {

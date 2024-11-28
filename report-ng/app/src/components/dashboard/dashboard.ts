@@ -25,16 +25,17 @@ import {StatisticsGenerator} from "services/statistics-generator";
 import {ExecutionStatistics, FailureAspectStatistics} from "services/statistic-models";
 import {AbstractViewModel} from "../abstract-view-model";
 import {data} from "../../services/report-model";
-import FailureCorridorValue = data.FailureCorridorValue;
-import ResultStatusType = data.ResultStatusType;
 import "./dashboard.scss"
 import {ClassBarClick} from "../test-classes-card/test-classes-card";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
-import {PieceClickedEvent} from "../test-results-card/test-results-card";
+import {PieceClickedEvent} from "../test-results-chart/test-results-chart";
+import FailureCorridorValue = data.FailureCorridorValue;
+import ResultStatusType = data.ResultStatusType;
 
 class FailureCorridor {
-    count:number = 0;
-    limit:number = 0;
+    count: number = 0;
+    limit: number = 0;
+
     get matched() {
         return this.count <= this.limit;
     }
@@ -58,6 +59,7 @@ export class Dashboard extends AbstractViewModel {
     private _filter:IFilter;
     private _topFailureAspects:FailureAspectStatistics[];
     private _loading = true;
+    private _promptLogs = undefined
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -75,89 +77,94 @@ export class Dashboard extends AbstractViewModel {
         }
     }
 
-    attached() {
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._executionStatistics = executionStatistics;
-            this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0,3);
+    async attached() {
+        this._executionStatistics = await this._statisticsGenerator.getExecutionStatistics();
+        this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0, 3);
 
-            this._filterItems = [];
-            const failed = this._executionStatistics.overallFailed;
-            const failedRetried = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
-            if (failed > 0 || failedRetried > 0) {
-                const counts = []
-                const labels = []
-                counts.push(failed)
-                labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
-                if (failedRetried > 0) {
-                    counts.push(" + " + failedRetried)
-                    labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
-                }
-                this._filterItems.push({
-                    status: ResultStatusType.FAILED,
-                    counts: counts,
-                    labels: labels,
-                });
+        this._filterItems = [];
+        const failed = this._executionStatistics.overallFailed;
+        const failedRetried = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+        if (failed > 0 || failedRetried > 0) {
+            const counts = []
+            const labels = []
+            counts.push(failed)
+            labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
+            if (failedRetried > 0) {
+                counts.push(" + " + failedRetried)
+                labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
             }
+            this._filterItems.push({
+                status: ResultStatusType.FAILED,
+                counts: counts,
+                labels: labels,
+            });
+        }
 
-            const failedExpected = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-            if (failedExpected > 0) {
-                this._filterItems.push({
-                    status: ResultStatusType.FAILED_EXPECTED,
-                    counts: [failedExpected],
-                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-                });
+        const failedExpected = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
+        if (failedExpected > 0) {
+            this._filterItems.push({
+                status: ResultStatusType.FAILED_EXPECTED,
+                counts: [failedExpected],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
+            });
+        }
+
+        const skipped = this._executionStatistics.overallSkipped;
+        if (skipped > 0) {
+            this._filterItems.push({
+                status: ResultStatusType.SKIPPED,
+                counts: [skipped],
+                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
+            });
+        }
+
+        const passed = this._executionStatistics.overallPassed;
+        if (passed > 0) {
+            const recovered = this._executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
+            const repaired = this._executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
+            this._filterItems.push({
+                status: ResultStatusType.PASSED,
+                counts: [
+                    passed,
+                    (repaired > 0 ? `&sup; ${repaired}` : null),
+                    (recovered > 0 ? `&sup; ${recovered}` : null),
+                ],
+                labels: [
+                    this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
+                    (repaired > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED) : null),
+                    (recovered > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY) : null),
+                ],
+            });
+        }
+
+        this._executionStatistics.uniqueFailureAspects.forEach(failureAspectStatistics => {
+            if (failureAspectStatistics.isMinor) {
+                ++this._minorFailures;
+            } else {
+                ++this._majorFailures
             }
+        })
 
-            const skipped = this._executionStatistics.overallSkipped;
-            if (skipped > 0) {
-                this._filterItems.push({
-                    status: ResultStatusType.SKIPPED,
-                    counts: [skipped],
-                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-                });
-            }
+        /**
+         * @todo Move this to {@link ExecutionStatistics}?
+         */
+        const executionAggregate = this._executionStatistics.executionAggregate;
+        this._highCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_HIGH];
+        this._highCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_HIGH] || 0;
+        this._midCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
+        this._midCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_MID] || 0;
+        this._lowCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_LOW];
+        this._lowCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_LOW] || 0;
 
-            const passed = this._executionStatistics.overallPassed;
-            if (passed > 0) {
-                const recovered = this._executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
-                const repaired = this._executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
-                this._filterItems.push({
-                    status: ResultStatusType.PASSED,
-                    counts: [
-                        passed,
-                        (repaired>0?`&sup; ${repaired}`:null),
-                        (recovered>0?`&sup; ${recovered}`:null),
-                    ],
-                    labels: [
-                        this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                        (repaired>0?this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED):null),
-                        (recovered>0?this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY):null),
-                    ],
-                });
-            }
+        this._loading = false
 
-            this._executionStatistics.uniqueFailureAspects.forEach(failureAspectStatistics => {
-                if (failureAspectStatistics.isMinor) {
-                    ++this._minorFailures;
-                } else {
-                    ++this._majorFailures
-                }
-            })
-
-            /**
-             * @todo Move this to {@link ExecutionStatistics}?
-             */
-            const executionAggregate = this._executionStatistics.executionAggregate;
-            this._highCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_HIGH];
-            this._highCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_HIGH]||0;
-            this._midCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_MID];
-            this._midCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_MID]||0;
-            this._lowCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_LOW];
-            this._lowCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_LOW]||0;
-
-            this._loading = false;
-        });
+        this._promptLogs = await this.getPromptLogs()
     };
+
+    async getPromptLogs() {
+        const logMessages = await this._statisticsGenerator.getLogs()
+        return Object.values(logMessages).filter(logMessage => logMessage.prompt && this._executionStatistics.executionContextLogMessageIds.includes(logMessage.id))
+    }
 
     private _setFilter(filter:IFilter, updateUrl:boolean = true) {
         this._filter = filter;

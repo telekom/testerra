@@ -23,14 +23,13 @@
 package eu.tsystems.mms.tic.testframework.test.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.GuiElementListPage;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithPageLoadedCallback;
 import eu.tsystems.mms.tic.testframework.report.Report;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -38,50 +37,42 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryTest extends AbstractTestSitesTest implements PageFactoryProvider {
-
-    @Test
-    public void test_pageLoadedCallback() {
-        WebDriver webDriver = getWebDriver();
-        AtomicBoolean atomicBoolean = new AtomicBoolean();
-
-        Page testPage = new Page(webDriver) {
-            @Override
-            protected void pageLoaded() {
-                super.pageLoaded();
-                atomicBoolean.set(true);
-            }
-        };
-
-        testPage.checkPage();
-        Assert.assertTrue(atomicBoolean.get());
-    }
+public class PageFactoryTest extends AbstractTestSitesTest implements PageFactoryProvider, PropertyManagerProvider {
 
     @Test
     public void testT08_CheckPage_ScreenshotOnLoad() {
 
-        final File reportScreenshotDirectory = TesterraListener.getReport().getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+        final File reportScreenshotDirectory = Testerra.getInjector().getInstance(Report.class).getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
 
         final WebDriver driver = getWebDriver();
 
         final int fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
-        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "false");
-        new PageWithExistingElement(driver);
+        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.SCREENSHOT_ON_PAGELOAD, false);
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
 
         final int fileCountAfterCheckPageWithoutScreenshot = getNumFiles(reportScreenshotDirectory);
         Assert.assertEquals(fileCountBeforeAction, fileCountAfterCheckPageWithoutScreenshot, "Record Screenshot count not altered.");
 
-        PropertyManager.getTestLocalProperties().setProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, "true");
-        new PageWithExistingElement(driver);
+        PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.SCREENSHOT_ON_PAGELOAD, true);
+        PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
         final int fileCountAfterCheckPageWithScreenshot = getNumFiles(reportScreenshotDirectory);
 
         Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
+    }
+
+    @Test
+    public void testT09_pageLoadedCallback() {
+        WebDriver webDriver = getWebDriver();
+        PageWithPageLoadedCallback page1 = new PageWithPageLoadedCallback(webDriver);
+        Assert.assertFalse(page1.isLoaded);
+
+        PageWithPageLoadedCallback page2 = PAGE_FACTORY.createPage(PageWithPageLoadedCallback.class, webDriver);
+        Assert.assertTrue(page2.isLoaded);
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "PageFactory create loop detected loading.*")
@@ -101,10 +92,10 @@ public class PageFactoryTest extends AbstractTestSitesTest implements PageFactor
         }
     }
 
-    @DataProvider(name = "LoopDetectionInDataProvider", parallel = false)
+    @DataProvider(name = "LoopDetectionInDataProvider")
     public Object[][] testT12_Dataprovider() {
         return new Object[][]{
-                {"Test_1"}, {"Test_2"}
+                {"Test_1"}, {"Test_2"}, {"Test_3"}
         };
     }
 

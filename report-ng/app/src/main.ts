@@ -33,6 +33,8 @@ export function configure(aurelia: Aurelia) {
         .standardConfiguration()
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/base'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/card'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/chips'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/checkbox'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/data-table'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/dialog'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/drawer'))
@@ -44,6 +46,7 @@ export function configure(aurelia: Aurelia) {
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/linear-progress'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/list'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/lookup'))
+        .plugin(PLATFORM.moduleName('@aurelia-mdc-web/radio'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/ripple'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/select'))
         .plugin(PLATFORM.moduleName('@aurelia-mdc-web/snackbar'))
@@ -107,6 +110,15 @@ export function configure(aurelia: Aurelia) {
         minute: 'numeric',
         second: 'numeric',
         hour12: false
+    });
+    formatter.setOptions('print', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
     });
 
     const objectStorage = aurelia.container.get(ObjectStorage);

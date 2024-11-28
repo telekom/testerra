@@ -52,7 +52,8 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     private final UiElement testThreadLink = testMethodCard.find(By.xpath("//li[.//span[contains(text(), 'Thread')]]//a"));
     @Check
     private final UiElement testStepsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
-    private final UiElement testSessionsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Sessions')]]"));
+    private final UiElement testBrowserInfoTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Browser Info')]]"));
+    private final UiElement testVideoTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Video')]]"));
 
     protected final UiElement testLastScreenshot = pageContent.find(By.xpath("//mdc-card[contains(.,'Last Screenshot')]//img"));
 
@@ -70,9 +71,14 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
         return createPage(ReportStepsTab.class);
     }
 
-    public ReportSessionsTab navigateToSessionsTab() {
-        testSessionsTab.click();
-        return createPage(ReportSessionsTab.class);
+    public ReportBrowserInfoTab navigateToBrowserInfoTab() {
+        testBrowserInfoTab.click();
+        return createPage(ReportBrowserInfoTab.class);
+    }
+
+    public ReportVideoTab navigateToVideoTab() {
+        testVideoTab.click();
+        return createPage(ReportVideoTab.class);
     }
 
     private void assertMethodNamesAreCorrect(String methodName) {

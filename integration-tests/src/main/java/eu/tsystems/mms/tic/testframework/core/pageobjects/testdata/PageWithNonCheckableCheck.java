@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
+package eu.tsystems.mms.tic.testframework.core.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
@@ -37,6 +37,5 @@ public class PageWithNonCheckableCheck extends Page {
      */
     public PageWithNonCheckableCheck(WebDriver driver) {
         super(driver);
-        checkPage();
     }
 }

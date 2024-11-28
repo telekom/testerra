@@ -45,7 +45,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         try {
-            staticServer.start(80);
+            staticServer.start(8080);
         } catch (BindException e) {
             log().warn("Use already running WebServer: " + e.getMessage());
         }

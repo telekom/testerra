@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
 
@@ -59,19 +58,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                 testResult.setStatus(ITestResult.FAILURE);
                 methodContext.setStatus(Status.FAILED);
             }
-            StringBuilder sb = new StringBuilder();
-            sb.append("The following assertions failed in dataprovider method ");
-            sb.append(testResult.getMethod().getDataProviderMethod().getMethod().getName());
-            sb.append(":");
-            AtomicInteger i = new AtomicInteger();
-            methodContext.readErrors()
-//                    .filter(ErrorContext::isNotOptional)
-                    .forEach(errorContext -> {
-                        i.incrementAndGet();
-                        sb.append("\n").append(i).append(") ").append(errorContext.getThrowable().getMessage());
-                    });
-            AssertionError testMethodContainerError = new AssertionError(sb.toString());
-            testResult.setThrowable(testMethodContainerError);
         } else
             // Handle collected assertions if we have more than one
             if (testResult.isSuccess() && methodContext.readErrors().anyMatch(ErrorContext::isNotOptional)) {
@@ -119,8 +105,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
                         } catch (Throwable t) {
                             methodContext.addError(t);
                         }
-                    } else if (fails.validFor().length > 0) {
-                        isFailsAnnotationValid = FailsAnnotationFilter.isFailsAnnotationValid(fails.validFor());
                     } else {
                         isFailsAnnotationValid = true;
                     }
@@ -131,6 +115,9 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             });
             TestStep failedStep = methodContext.getCurrentTestStep();
             methodContext.setFailedStep(failedStep);
+        } else if (event.isSkipped()) {
+            // Can be caused by failed dataprovider or config methods
+            methodContext.setStatus(Status.SKIPPED);
         } else if (testResult.isSuccess()) {
             methodContext.setStatus(Status.PASSED);
             RetryAnalyzer.methodHasBeenPassed(methodContext);

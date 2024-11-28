@@ -38,6 +38,5 @@ public class PageWithNullElement extends Page {
      */
     public PageWithNullElement(WebDriver driver) {
         super(driver);
-        checkPage();
     }
 }

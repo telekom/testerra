@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -46,8 +47,6 @@ public class DefaultReport implements Report, Loggable {
 
         currentReportDirectory = tempReportDirectory;
     }
-
-
 
     private File addFile(File sourceFile, File directory, FileMode fileMode) {
         try {
@@ -73,6 +72,7 @@ public class DefaultReport implements Report, Loggable {
             }
 
             if (tempReportDirectory.exists()) {
+                log().debug("Temporary directory is {}", tempReportDirectory);
                 FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
                 currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
@@ -115,7 +115,7 @@ public class DefaultReport implements Report, Loggable {
     }
 
     @Override
-    public Video provideVideo(File file, FileMode fileMode)  {
+    public Video provideVideo(File file, FileMode fileMode) {
         Video video = new Video(file);
         addVideo(video, fileMode);
         return video;
@@ -127,6 +127,7 @@ public class DefaultReport implements Report, Loggable {
     public File getReportDirectory() {
         return currentReportDirectory;
     }
+
     /**
      * @return Final report directory defined by the user
      */

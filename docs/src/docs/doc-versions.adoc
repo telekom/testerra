@@ -3,31 +3,21 @@
 * Latest Testerra 1 version: https://docs.testerra.io/testerra/1-latest/index.html
 * Latest Testerra 2 version: https://docs.testerra.io/testerra/2-latest/index.html
 
-
 [cols="1,4"]
 |===
 |Version|Link
-
-|1.10
-|https://docs.testerra.io/testerra/1.10/index.html
-
-|1.11
-|https://docs.testerra.io/testerra/1.11/index.html
-
-|1.12
-|https://docs.testerra.io/testerra/1.12/index.html
-
-|1.13
-|https://docs.testerra.io/testerra/1.13/index.html
-
-|2.0
-|https://docs.testerra.io/testerra/2.0/index.html
-
-|2.1
-|https://docs.testerra.io/testerra/2.1/index.html
-
-|2.2
-|https://docs.testerra.io/testerra/2.2/index.html
+|1.10 | https://docs.testerra.io/testerra/1.10/index.html
+|1.11 | https://docs.testerra.io/testerra/1.11/index.html
+|1.12 | https://docs.testerra.io/testerra/1.12/index.html
+|1.13 | https://docs.testerra.io/testerra/1.13/index.html
+|2.0 | https://docs.testerra.io/testerra/2.0/index.html
+|2.1 | https://docs.testerra.io/testerra/2.1/index.html
+|2.2 | https://docs.testerra.io/testerra/2.2/index.html
+|2.4 | https://docs.testerra.io/testerra/2.4/index.html
+|2.6 | https://docs.testerra.io/testerra/2.5/index.html
+|2.7 | https://docs.testerra.io/testerra/2.7/index.html
+|2.8 | https://docs.testerra.io/testerra/2.8/index.html
+|2.9 | https://docs.testerra.io/testerra/2.9/index.html
 |===
 
 You will find detailed release notes at https://github.com/telekom/testerra/releases.

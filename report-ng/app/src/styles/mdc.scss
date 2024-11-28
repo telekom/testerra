@@ -25,11 +25,14 @@
   $on-primary: #ffffff,
   $on-secondary: #ffffff,
 );
-//@use '@material/button/mdc-button';
-//@use '@material/button';
+@use '@material/button/mdc-button';
+@use '@material/button';
 @use '@material/card/mdc-card';
 @use '@material/card';
 @use '@material/checkbox';
+@use '@material/checkbox/mdc-checkbox';
+@use '@material/chips/styles' as chips-styles;
+@use '@aurelia-mdc-web/chips';
 @use '@material/data-table';
 @use '@material/data-table/mdc-data-table';
 @use '@material/dialog/mdc-dialog';
@@ -59,8 +62,8 @@
 @use '@material/snackbar';
 @use '@material/switch/styles' as switch-styles;
 @use '@material/switch';
-//@use '@material/radio/mdc-radio';
-//@use '@material/radio';
+@use '@material/radio/mdc-radio';
+@use '@material/radio';
 @use '@material/tab-bar/mdc-tab-bar';
 @use '@material/tab-bar';
 @use '@material/tab-scroller/mdc-tab-scroller';
@@ -77,8 +80,6 @@
 @use '@material/top-app-bar';
 @use '@material/typography/mdc-typography';
 @use '@material/typography';
-//@use '@material/chips/mdc-chips';
-//@use '@aurelia-mdc-web/chips';
 
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
@@ -185,3 +186,7 @@ mdc-drawer-app-content {
     white-space: normal;
 }
 
+// fix styling of mdc-action-chips: https://aurelia-ui-toolkits.github.io/aurelia-mdc-web/#/chips/examples
+button[mdc-chip-action]{
+    padding-right: 12px;
+}

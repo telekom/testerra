@@ -54,11 +54,12 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"test_invalidExpectedFailed_withMethod", Status.FAILED},
                 {"test_validExpectedFailed_withClass", Status.FAILED_EXPECTED},
                 {"test_invalidExpectedFailed_withClass", Status.FAILED},
-                {"testT04_DataProviderWithFailedTests", Status.FAILED},
-                {"testT04_DataProviderWithFailedTests", Status.PASSED},
-                {"testT05_DataProviderWithFailedTestsOptional", Status.PASSED},
-                {"testT06_DataProviderWithCollectedAssertions", Status.PASSED},
-                {"testT06_DataProviderWithCollectedAssertions", Status.FAILED},
+                {"testT04_DataProviderWithFailedTests(failed)", Status.FAILED},
+                {"testT04_DataProviderWithFailedTests(passed)", Status.PASSED},
+                {"testT05_DataProviderWithFailedTestsOptional(passed)", Status.PASSED},
+                {"testT05_DataProviderWithFailedTestsOptional(failed)", Status.PASSED},
+                {"testT06_DataProviderWithCollectedAssertions(passed)", Status.PASSED},
+                {"testT06_DataProviderWithCollectedAssertions(failed)", Status.FAILED},
                 {"testT07_NonExistingDataProvider", Status.FAILED},
                 {"testT07_AfterClassWithAssertion", Status.PASSED},
                 {"testT08_AfterClassWithException", Status.PASSED},
@@ -66,6 +67,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"testT06_AfterMethodWithException", Status.PASSED},
                 {"beforeClassSetup01", Status.FAILED},
                 {"beforeClassSetup02", Status.FAILED},
+                {"beforeClassSetup03", Status.FAILED},
                 {"beforeMethodSetup01", Status.FAILED},
                 {"beforeMethodSetup02", Status.FAILED},
                 {"afterMethodSetup01", Status.FAILED},
@@ -73,21 +75,33 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"afterClassSetup01", Status.FAILED},
                 {"afterClassSetup02", Status.FAILED},
                 {"testT08_DataProviderWithRetry", Status.PASSED},
+                {"dataProviderSimple", Status.PASSED},
+                {"dataProviderThrowingAssertion", Status.FAILED},
+                {"dataProviderThrowingException", Status.FAILED},
+                {"dataProviderInClassThrowingException", Status.FAILED},
+                {"dataProviderWithNoData", Status.PASSED},
+                {"beforeMethodOfDataProvider2Tests", Status.FAILED},
+                {"dataProviderOfDataProvider2Tests", Status.PASSED}
         };
     }
 
     @DataProvider
     public static Object[][] provideTestMethodsSkipped() {
+        final String failedDpMessage = "Method skipped because of failed data provider";
         return new Object[][]{
-                {"test_SkippedNoStatus", Status.NO_RUN, Status.SKIPPED.title},
-                {"test_Skipped_dependingOnFailed", Status.NO_RUN, "depends on not successfully finished methods"},
-                {"testT01_interceptCrashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT02_crashedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT03_AssertFailedDataProvider", Status.SKIPPED, "java.lang.AssertionError"},
-                {"testT01_BeforeClassWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
-                {"testT02_BeforeClassWithException", Status.NO_RUN, "java.lang.RuntimeException"},
-                {"testT03_BeforeMethodWithAssertion", Status.NO_RUN, "java.lang.AssertionError"},
-                {"testT04_BeforeMethodWithException", Status.NO_RUN, "java.lang.RuntimeException"}
+                {"test_SkippedNoStatus", Status.SKIPPED, "org.testng.SkipException"},
+                {"test_Skipped_dependingOnFailed", Status.SKIPPED, "depends on not successfully finished methods"},
+                {"testT01_interceptCrashedDataProvider", Status.SKIPPED, failedDpMessage},
+                {"testT02_crashedDataProvider", Status.SKIPPED, failedDpMessage},
+                {"testT03_AssertFailedDataProvider", Status.SKIPPED, failedDpMessage},
+                {"testT01_BeforeClassWithAssertion", Status.SKIPPED, "java.lang.AssertionError"},
+                {"testT02_BeforeClassWithException", Status.SKIPPED, "java.lang.RuntimeException"},
+                {"beforeClassBeforeMethodSetup03", Status.SKIPPED, ""},
+                {"testT03_BeforeMethodWithAssertion", Status.SKIPPED, "java.lang.AssertionError"},
+                {"testT03_BeforeClassWithException", Status.SKIPPED, "java.lang.RuntimeException"},
+                {"testT04_BeforeMethodWithException", Status.SKIPPED, "java.lang.RuntimeException"},
+                {"testT01_DataProviderWithFailedSetup(run01)", Status.SKIPPED, "java.lang.AssertionError"},
+                {"testT01_DataProviderWithFailedSetup(run02)", Status.SKIPPED, "java.lang.AssertionError"}
         };
     }
 
@@ -118,13 +132,13 @@ public class CheckTestStatusTest extends TesterraTest {
         return new Object[][]{
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
-                {"*** Stats: ClassContexts:  14", "ClassContext"},
-                {"*** Stats: MethodContexts: 73", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 59 (48 relevant)", "Test methods"},
+                {"*** Stats: ClassContexts:  17", "ClassContext"},
+                {"*** Stats: MethodContexts: 89", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 62 (51 relevant)", "Test methods"},
                 {"*** Stats: Failed: 10", "Failed tests"},
                 {"*** Stats: Retried: 11", "Retried tests"},
                 {"*** Stats: Expected Failed: 7", "Expected failed tests"},
-                {"*** Stats: Skipped: 9", "Skipped tests"},
+                {"*** Stats: Skipped: 12", "Skipped tests"},
                 {"*** Stats: Passed: 22 ⊃ Recovered: 5 ⊃ Repaired: 1", "Passed tests"}
         };
     }

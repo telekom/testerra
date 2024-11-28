@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.testing.ChromeDevToolsProvider;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.UsernameAndPassword;
@@ -37,12 +38,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
-import org.openqa.selenium.devtools.v121.emulation.Emulation;
-import org.openqa.selenium.devtools.v121.log.Log;
-import org.openqa.selenium.devtools.v121.log.model.LogEntry;
-import org.openqa.selenium.devtools.v121.network.Network;
-import org.openqa.selenium.devtools.v121.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v121.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v130.emulation.Emulation;
+import org.openqa.selenium.devtools.v130.log.Log;
+import org.openqa.selenium.devtools.v130.log.model.LogEntry;
+import org.openqa.selenium.devtools.v130.network.Network;
+import org.openqa.selenium.devtools.v130.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v130.network.model.ResponseReceived;
 import org.openqa.selenium.logging.HasLogEvents;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -150,7 +151,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     /**
      * The following example set basic authentication via driver augumentation. This solution works only remote, not local.
      * A more flexible solution is implemented in SeleniumChromeDevTools
-     *
+     * <p>
      * Update: With Selenium 4.17 this example does not work anymore.
      */
     @Test(enabled = false)
@@ -346,8 +347,8 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         List<RequestWillBeSent> requestList = new ArrayList<>();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
 
-        devTools.addListener(Network.responseReceived(), responseReceivedList::add);
-        devTools.addListener(Network.requestWillBeSent(), requestList::add);
+        devTools.addListener(Network.responseReceived(), response -> responseReceivedList.add(response));
+        devTools.addListener(Network.requestWillBeSent(), request -> requestList.add(request));
 
         webDriver.get("https://the-internet.herokuapp.com/broken_images");
 
@@ -358,6 +359,15 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         for (ResponseReceived response : responseReceivedList) {
             log().info("Response: {} - [{}] {}", response.getRequestId().toString(), response.getResponse().getStatus(), response.getResponse().getStatusText());
         }
+    }
+
+    @Test
+    public void testT14_MobileDeviceEmulation() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        CHROME_DEV_TOOLS.setDevice(webDriver, new Dimension(400, 900), 100, true);
+
+        webDriver.get("https://the-internet.herokuapp.com/broken_images");
+
     }
 
 }

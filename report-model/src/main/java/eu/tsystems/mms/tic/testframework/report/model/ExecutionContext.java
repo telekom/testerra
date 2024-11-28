@@ -23,6 +23,7 @@ private static final long serialVersionUID = 0L;
     taskId_ = "";
     exclusiveSessionContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     logMessages_ = java.util.Collections.emptyList();
+    logMessageIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
   }
 
   @java.lang.Override
@@ -164,6 +165,15 @@ private static final long serialVersionUID = 0L;
                 failureCorridorCounts__.getKey(), failureCorridorCounts__.getValue());
             break;
           }
+          case 146: {
+            java.lang.String s = input.readStringRequireUtf8();
+            if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+              logMessageIds_ = new com.google.protobuf.LazyStringArrayList();
+              mutable_bitField0_ |= 0x00000020;
+            }
+            logMessageIds_.add(s);
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -187,6 +197,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00000004) != 0)) {
         logMessages_ = java.util.Collections.unmodifiableList(logMessages_);
+      }
+      if (((mutable_bitField0_ & 0x00000020) != 0)) {
+        logMessageIds_ = logMessageIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -520,39 +533,39 @@ private static final long serialVersionUID = 0L;
   public static final int LOG_MESSAGES_FIELD_NUMBER = 14;
   private java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> logMessages_;
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
   @java.lang.Override
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
+  @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
     return logMessages_;
   }
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
   @java.lang.Override
-  public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
+  @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
       getLogMessagesOrBuilderList() {
     return logMessages_;
   }
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
   @java.lang.Override
-  public int getLogMessagesCount() {
+  @java.lang.Deprecated public int getLogMessagesCount() {
     return logMessages_.size();
   }
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
     return logMessages_.get(index);
   }
   /**
-   * <code>repeated .data.LogMessage log_messages = 14;</code>
+   * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
    */
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
+  @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
       int index) {
     return logMessages_.get(index);
   }
@@ -730,6 +743,41 @@ private static final long serialVersionUID = 0L;
     return map.get(key);
   }
 
+  public static final int LOG_MESSAGE_IDS_FIELD_NUMBER = 18;
+  private com.google.protobuf.LazyStringList logMessageIds_;
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @return A list containing the logMessageIds.
+   */
+  public com.google.protobuf.ProtocolStringList
+      getLogMessageIdsList() {
+    return logMessageIds_;
+  }
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @return The count of logMessageIds.
+   */
+  public int getLogMessageIdsCount() {
+    return logMessageIds_.size();
+  }
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @param index The index of the element to return.
+   * @return The logMessageIds at the given index.
+   */
+  public java.lang.String getLogMessageIds(int index) {
+    return logMessageIds_.get(index);
+  }
+  /**
+   * <code>repeated string log_message_ids = 18;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the logMessageIds at the given index.
+   */
+  public com.google.protobuf.ByteString
+      getLogMessageIdsBytes(int index) {
+    return logMessageIds_.getByteString(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -786,6 +834,9 @@ private static final long serialVersionUID = 0L;
         internalGetFailureCorridorCounts(),
         FailureCorridorCountsDefaultEntryHolder.defaultEntry,
         17);
+    for (int i = 0; i < logMessageIds_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 18, logMessageIds_.getRaw(i));
+    }
     unknownFields.writeTo(output);
   }
 
@@ -859,6 +910,14 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(17, failureCorridorCounts__);
     }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < logMessageIds_.size(); i++) {
+        dataSize += computeStringSizeNoTag(logMessageIds_.getRaw(i));
+      }
+      size += dataSize;
+      size += 2 * getLogMessageIdsList().size();
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -904,6 +963,8 @@ private static final long serialVersionUID = 0L;
         other.internalGetFailureCorridorLimits())) return false;
     if (!internalGetFailureCorridorCounts().equals(
         other.internalGetFailureCorridorCounts())) return false;
+    if (!getLogMessageIdsList()
+        .equals(other.getLogMessageIdsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -952,6 +1013,10 @@ private static final long serialVersionUID = 0L;
     if (!internalGetFailureCorridorCounts().getMap().isEmpty()) {
       hash = (37 * hash) + FAILURE_CORRIDOR_COUNTS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetFailureCorridorCounts().hashCode();
+    }
+    if (getLogMessageIdsCount() > 0) {
+      hash = (37 * hash) + LOG_MESSAGE_IDS_FIELD_NUMBER;
+      hash = (53 * hash) + getLogMessageIdsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1147,6 +1212,8 @@ private static final long serialVersionUID = 0L;
 
       internalGetMutableFailureCorridorLimits().clear();
       internalGetMutableFailureCorridorCounts().clear();
+      logMessageIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -1212,6 +1279,11 @@ private static final long serialVersionUID = 0L;
       result.failureCorridorLimits_.makeImmutable();
       result.failureCorridorCounts_ = internalGetFailureCorridorCounts();
       result.failureCorridorCounts_.makeImmutable();
+      if (((bitField0_ & 0x00000020) != 0)) {
+        logMessageIds_ = logMessageIds_.getUnmodifiableView();
+        bitField0_ = (bitField0_ & ~0x00000020);
+      }
+      result.logMessageIds_ = logMessageIds_;
       onBuilt();
       return result;
     }
@@ -1335,6 +1407,16 @@ private static final long serialVersionUID = 0L;
           other.internalGetFailureCorridorLimits());
       internalGetMutableFailureCorridorCounts().mergeFrom(
           other.internalGetFailureCorridorCounts());
+      if (!other.logMessageIds_.isEmpty()) {
+        if (logMessageIds_.isEmpty()) {
+          logMessageIds_ = other.logMessageIds_;
+          bitField0_ = (bitField0_ & ~0x00000020);
+        } else {
+          ensureLogMessageIdsIsMutable();
+          logMessageIds_.addAll(other.logMessageIds_);
+        }
+        onChanged();
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -2194,9 +2276,9 @@ private static final long serialVersionUID = 0L;
         eu.tsystems.mms.tic.testframework.report.model.LogMessage, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder, eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> logMessagesBuilder_;
 
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage> getLogMessagesList() {
       if (logMessagesBuilder_ == null) {
         return java.util.Collections.unmodifiableList(logMessages_);
       } else {
@@ -2204,9 +2286,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public int getLogMessagesCount() {
+    @java.lang.Deprecated public int getLogMessagesCount() {
       if (logMessagesBuilder_ == null) {
         return logMessages_.size();
       } else {
@@ -2214,9 +2296,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage getLogMessages(int index) {
       if (logMessagesBuilder_ == null) {
         return logMessages_.get(index);
       } else {
@@ -2224,9 +2306,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder setLogMessages(
+    @java.lang.Deprecated public Builder setLogMessages(
         int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
@@ -2241,9 +2323,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder setLogMessages(
+    @java.lang.Deprecated public Builder setLogMessages(
         int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
@@ -2255,9 +2337,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
+    @java.lang.Deprecated public Builder addLogMessages(eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2271,9 +2353,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder addLogMessages(
+    @java.lang.Deprecated public Builder addLogMessages(
         int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage value) {
       if (logMessagesBuilder_ == null) {
         if (value == null) {
@@ -2288,9 +2370,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder addLogMessages(
+    @java.lang.Deprecated public Builder addLogMessages(
         eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
@@ -2302,9 +2384,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder addLogMessages(
+    @java.lang.Deprecated public Builder addLogMessages(
         int index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder builderForValue) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
@@ -2316,9 +2398,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder addAllLogMessages(
+    @java.lang.Deprecated public Builder addAllLogMessages(
         java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessage> values) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
@@ -2331,9 +2413,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder clearLogMessages() {
+    @java.lang.Deprecated public Builder clearLogMessages() {
       if (logMessagesBuilder_ == null) {
         logMessages_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -2344,9 +2426,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public Builder removeLogMessages(int index) {
+    @java.lang.Deprecated public Builder removeLogMessages(int index) {
       if (logMessagesBuilder_ == null) {
         ensureLogMessagesIsMutable();
         logMessages_.remove(index);
@@ -2357,16 +2439,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessagesBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder getLogMessagesBuilder(
         int index) {
       return getLogMessagesFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder getLogMessagesOrBuilder(
         int index) {
       if (logMessagesBuilder_ == null) {
         return logMessages_.get(index);  } else {
@@ -2374,9 +2456,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
+    @java.lang.Deprecated public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.LogMessageOrBuilder> 
          getLogMessagesOrBuilderList() {
       if (logMessagesBuilder_ != null) {
         return logMessagesBuilder_.getMessageOrBuilderList();
@@ -2385,24 +2467,24 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder() {
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder() {
       return getLogMessagesFieldBuilder().addBuilder(
           eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder(
+    @java.lang.Deprecated public eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder addLogMessagesBuilder(
         int index) {
       return getLogMessagesFieldBuilder().addBuilder(
           index, eu.tsystems.mms.tic.testframework.report.model.LogMessage.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.LogMessage log_messages = 14;</code>
+     * <code>repeated .data.LogMessage log_messages = 14 [deprecated = true];</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder> 
+    @java.lang.Deprecated public java.util.List<eu.tsystems.mms.tic.testframework.report.model.LogMessage.Builder> 
          getLogMessagesBuilderList() {
       return getLogMessagesFieldBuilder().getBuilderList();
     }
@@ -2705,6 +2787,116 @@ private static final long serialVersionUID = 0L;
         java.util.Map<java.lang.Integer, java.lang.Integer> values) {
       internalGetMutableFailureCorridorCounts().getMutableMap()
           .putAll(values);
+      return this;
+    }
+
+    private com.google.protobuf.LazyStringList logMessageIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureLogMessageIdsIsMutable() {
+      if (!((bitField0_ & 0x00000020) != 0)) {
+        logMessageIds_ = new com.google.protobuf.LazyStringArrayList(logMessageIds_);
+        bitField0_ |= 0x00000020;
+       }
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @return A list containing the logMessageIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getLogMessageIdsList() {
+      return logMessageIds_.getUnmodifiableView();
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @return The count of logMessageIds.
+     */
+    public int getLogMessageIdsCount() {
+      return logMessageIds_.size();
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @param index The index of the element to return.
+     * @return The logMessageIds at the given index.
+     */
+    public java.lang.String getLogMessageIds(int index) {
+      return logMessageIds_.get(index);
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the logMessageIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getLogMessageIdsBytes(int index) {
+      return logMessageIds_.getByteString(index);
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @param index The index to set the value at.
+     * @param value The logMessageIds to set.
+     * @return This builder for chaining.
+     */
+    public Builder setLogMessageIds(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureLogMessageIdsIsMutable();
+      logMessageIds_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @param value The logMessageIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addLogMessageIds(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureLogMessageIdsIsMutable();
+      logMessageIds_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @param values The logMessageIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllLogMessageIds(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureLogMessageIdsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, logMessageIds_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearLogMessageIds() {
+      logMessageIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000020);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string log_message_ids = 18;</code>
+     * @param value The bytes of the logMessageIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addLogMessageIdsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      ensureLogMessageIdsIsMutable();
+      logMessageIds_.add(value);
+      onChanged();
       return this;
     }
     @java.lang.Override

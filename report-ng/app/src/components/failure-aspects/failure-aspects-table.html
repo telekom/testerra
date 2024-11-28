@@ -1,0 +1,60 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <mdc-data-table class="w100"
+                    if.bind="filteredFailureAspects.length > 0"
+    >
+        <table>
+            <thead>
+            <th class="centered-text">Rank</th>
+            <th class="w75">Failure Aspect</th>
+            <th class="centered-text">Type</th>
+            <th>Status</th>
+            </thead>
+            <tbody>
+            <tr repeat.for="failureAspect of filteredFailureAspects">
+                <td class="centered-text"
+                    mdc-body1
+                >${failureAspect.index+1}
+                </td>
+                <td class="p1 wrapable" mdc-body1>
+                    <a route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1}"
+                    >
+                        <class-name-markup highlight.bind="searchRegexp"
+                                           namespace.bind="failureAspect.relevantCause.className">:
+                        </class-name-markup>
+                        <span
+                            innerhtml.bind="failureAspect.message | htmlEscape | highlightText:searchRegexp"></span></a>
+                </td>
+                <td class="centered-text">${failureAspect.isMinor ? "Minor" : "Major"}</td>
+                <td>
+                    <div class="mt1 mb1" repeat.for="status of failureAspect.availableStatuses">
+                        <a class="badge status-${status|statusClass}"
+                           route-href="route: tests; params.bind: {failureAspect: failureAspect.index+1, status: _statusConverter.getClassForStatus(status)}"
+                        >${failureAspect.getStatusCount(status)} ${status|statusName}</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </mdc-data-table>
+</template>

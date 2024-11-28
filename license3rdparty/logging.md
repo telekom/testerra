@@ -1,7 +1,7 @@
 
 #logging
 ##Dependency License Report
-_2022-04-06 13:59:49 MESZ_
+_2024-03-05 07:59:04 MEZ_
 ## Apache License, Version 2.0
 
 **1** **Group:** `org.apache.logging.log4j` **Name:** `log4j-api` **Version:** `2.17.2` 

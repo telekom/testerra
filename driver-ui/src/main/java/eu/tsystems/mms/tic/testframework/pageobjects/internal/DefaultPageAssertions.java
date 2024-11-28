@@ -35,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultRectAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PageAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.report.Report;
@@ -43,10 +42,11 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
+
+import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DefaultPageAssertions implements PageAssertions {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.getInjector().getInstance(PropertyAssertionFactory.class);
@@ -69,7 +69,7 @@ public class DefaultPageAssertions implements PageAssertions {
 
             @Override
             public String createSubject() {
-                return Format.separate(page.toString(), "title="+Format.shortString(getActual()));
+                return Format.separate(page.toString(), "title=" + Format.shortString(getActual()));
             }
         });
     }
@@ -84,7 +84,7 @@ public class DefaultPageAssertions implements PageAssertions {
 
             @Override
             public String createSubject() {
-                return Format.separate(page.toString(), "url="+Format.param(getActual()));
+                return Format.separate(page.toString(), "url=" + Format.param(getActual()));
             }
         });
     }
@@ -101,6 +101,7 @@ public class DefaultPageAssertions implements PageAssertions {
                     return false;
                 }
             }
+
             @Override
             public String createSubject() {
                 return Format.separate(page.toString(), "displayed");
@@ -120,6 +121,7 @@ public class DefaultPageAssertions implements PageAssertions {
                     return false;
                 }
             }
+
             @Override
             public String createSubject() {
                 return Format.separate(page.toString(), "present");

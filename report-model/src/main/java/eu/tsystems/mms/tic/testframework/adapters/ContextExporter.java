@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IdGenerator;
@@ -35,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.ITestStatusController;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.BuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.ClickPathEvent;
@@ -68,7 +68,7 @@ import eu.tsystems.mms.tic.testframework.report.model.TestStepActionEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.AbstractContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -90,7 +90,6 @@ public class ContextExporter implements Loggable {
     private final Map<Status, ResultStatusType> RESULT_STATUS_MAPPING = new LinkedHashMap<>();
     private final Map<Class, FailureCorridorValue> FAILURE_CORRIDOR_MAPPING = new LinkedHashMap<>();
     private final Report report = injector.getInstance(Report.class);
-    private final Gson jsonEncoder = new Gson();
 
     public MethodContext.Builder buildMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
         MethodContext.Builder builder = MethodContext.newBuilder();
@@ -121,7 +120,7 @@ public class ContextExporter implements Loggable {
         methodContext.readAnnotations()
                 .forEach(annotation -> {
                     report.getAnnotationConverter(annotation).ifPresent(annotationExporter -> {
-                        builder.putAnnotations(annotation.annotationType().getName(), this.jsonEncoder.toJson(annotationExporter.toMap(annotation)));
+                        builder.putAnnotations(annotation.annotationType().getName(), this.convertObjectToJson(annotationExporter.toMap(annotation)));
                     });
                 });
 
@@ -154,7 +153,7 @@ public class ContextExporter implements Loggable {
                 .forEach(layoutCheckContext -> builder.addLayoutCheckContext(buildLayoutCheckContext(layoutCheckContext)));
 
         methodContext.readCustomContexts().forEach(customContext -> {
-            builder.putCustomContexts(customContext.getName(), jsonEncoder.toJson(customContext.exportToReport(report)));
+            builder.putCustomContexts(customContext.getName(), this.convertObjectToJson(customContext.exportToReport(report)));
         });
 
         return builder;
@@ -300,9 +299,8 @@ public class ContextExporter implements Loggable {
                 Optional<File.Builder> optional = Optional.ofNullable(builders[0]);
                 optional.ifPresent(file -> entryBuilder.setScreenshotId(file.getId()));
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) {
-                eu.tsystems.mms.tic.testframework.report.model.context.LogMessage logEvent = (eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) entry;
-                Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
-                optional.ifPresent(entryBuilder::setLogMessage);
+                String logMessageId = ((eu.tsystems.mms.tic.testframework.report.model.context.LogMessage) entry).getId();
+                entryBuilder.setLogMessageId(logMessageId);
             } else if (entry instanceof eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) {
                 eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext = (eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext) entry;
                 Optional<ErrorContext.Builder> optional = Optional.ofNullable(buildErrorContext(errorContext));
@@ -311,7 +309,7 @@ public class ContextExporter implements Loggable {
 
             if (
                     entryBuilder.hasErrorContext()
-                            || entryBuilder.hasLogMessage()
+                            || StringUtils.isNotBlank(entryBuilder.getLogMessageId())
                             || entryBuilder.hasClickPathEvent()
                             || StringUtils.isNotBlank(entryBuilder.getScreenshotId())
             ) {
@@ -436,6 +434,7 @@ public class ContextExporter implements Loggable {
         builder.setTimestamp(logMessage.getTimestamp());
         builder.setThreadName(logMessage.getThreadName());
         builder.setPrompt(logMessage.isPrompt());
+        builder.setId(logMessage.getId());
 
         logMessage.getThrown().ifPresent(t -> {
             traceThrowable(t, throwable -> {
@@ -479,15 +478,12 @@ public class ContextExporter implements Loggable {
         map(executionContext.getRunConfig(), this::buildRunConfig, builder::setRunConfig);
         executionContext.readExclusiveSessionContexts().forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.getId()));
         apply(executionContext.getEstimatedTestMethodCount(), builder::setEstimatedTestsCount);
-        executionContext.readMethodContextLessLogs().forEach(logEvent -> {
-            Optional<LogMessage.Builder> optional = Optional.ofNullable(buildLogMessage(logEvent));
-            optional.ifPresent(builder::addLogMessages);
-        });
+        executionContext.readMethodContextLessLogs().forEach(logMessage -> builder.addLogMessageIds(logMessage.getId()));
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_HIGH_VALUE, FailureCorridor.getAllowedTestFailuresHIGH());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_MID_VALUE, FailureCorridor.getAllowedTestFailuresMID());
         builder.putFailureCorridorLimits(FailureCorridorValue.FCV_LOW_VALUE, FailureCorridor.getAllowedTestFailuresLOW());
 
-        ITestStatusController testStatusController = TesterraListener.getTestStatusController();
+        ITestStatusController testStatusController = Testerra.getInjector().getInstance(ITestStatusController.class);
         Stream.of(FailureCorridor.High.class, FailureCorridor.Mid.class, FailureCorridor.Low.class).forEach(failureCorridorClass -> {
             int count = testStatusController.getFailureCorridorCount(failureCorridorClass);
             if (count > 0) {
@@ -534,6 +530,8 @@ public class ContextExporter implements Loggable {
     }
 
     public SessionContext.Builder buildSessionContext(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext) {
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
+
         SessionContext.Builder builder = SessionContext.newBuilder();
 
         apply(buildContextValues(sessionContext), builder::setContextValues);
@@ -544,14 +542,14 @@ public class ContextExporter implements Loggable {
             Optional<File.Builder> optional = Optional.ofNullable(buildVideo(video));
             optional.ifPresent(fileBuilder -> builder.setVideoId(fileBuilder.getId()));
         });
-        builder.setExecutionContextId(ExecutionContextController.getCurrentExecutionContext().getId());
-
+        apply(instance.getExecutionContext().getId(), builder::setExecutionContextId);
         sessionContext.getActualBrowserName().ifPresent(builder::setBrowserName);
         sessionContext.getActualBrowserVersion().ifPresent(builder::setBrowserVersion);
         sessionContext.getUserAgent().ifPresent(builder::setUserAgent);
-        builder.setCapabilities(jsonEncoder.toJson(sessionContext.getWebDriverRequest().getCapabilities()));
+        apply(this.convertObjectToJson(sessionContext.getWebDriverRequest().getCapabilities()), builder::setCapabilities);
         sessionContext.getWebDriverRequest().getServerUrl().ifPresent(url -> builder.setServerUrl(url.toString()));
         sessionContext.getNodeInfo().ifPresent(nodeInfo -> builder.setNodeUrl(nodeInfo.toString()));
+        apply(sessionContext.getBaseUrl(), builder::setBaseUrl);
         return builder;
     }
 
@@ -602,6 +600,17 @@ public class ContextExporter implements Loggable {
 
             testMetricBuilder.addSessionMetrics(sessionMetricBuilder.build());
         }
+    }
+
+    /**
+     * If caps contain java.util.logging.Level, they need to handled via a custom serializer to prevent
+     * 'Unable to make field private final java.lang.String java.util.logging.Level.name accessible:'.
+     */
+    private String convertObjectToJson(Object o) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(java.util.logging.Level.class, new GsonCustomTypeSerializer<java.util.logging.Level>())
+                .create();
+        return gson.toJson(o);
     }
 
 }

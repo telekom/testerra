@@ -28,9 +28,12 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
+
+import java.io.File;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements PageFactoryProvider {
 
@@ -88,5 +91,19 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements PageFactor
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
         UiElement hugeContainer = uiElementFinder.find(By.id("huge-container"));
         hugeContainer.assertThat().screenshot().pixelDistance("ContainerElementHugeCssY").isLowerEqualThan(1.0);
+    }
+
+    @Test
+    public void testT08_CheckImage() {
+        File actualImageFile = FileUtils.getResourceFile("images/testImage.png");
+
+        LayoutCheck.assertImage(actualImageFile, "TestDocument.pdf_page1", 5);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testT09_CheckImage_fails() {
+        File actualImageFile = FileUtils.getResourceFile("images/testImage.png");
+
+        LayoutCheck.assertImage(actualImageFile, "TestDocument.pdf_page2", 5);
     }
 }

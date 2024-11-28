@@ -1,14 +1,13 @@
 package io.testerra.test.pretest_status;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.execution.testng.OptionalAssert;
 import eu.tsystems.mms.tic.testframework.report.Status;
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 
-public class GenerateSimpleTestStatusTest extends TesterraTest {
+public class GenerateSimpleTestStatusTest extends TesterraTest implements AssertProvider {
 
     private final String SKIPPED_EXCEPTION_MESSAGE = String.format("Test %s.", Status.SKIPPED.title);
 
@@ -23,7 +22,9 @@ public class GenerateSimpleTestStatusTest extends TesterraTest {
 
     @Test
     public void test_Optional_Assert() {
-        OptionalAssert.fail("minor fail");
+        CONTROL.optionalAssertions(() -> {
+            ASSERT.fail("minor fail");
+        });
     }
 
     @Test
@@ -38,8 +39,11 @@ public class GenerateSimpleTestStatusTest extends TesterraTest {
 
     @Test
     public void testAssertCollector() {
-        AssertCollector.fail("failed1");
-        AssertCollector.fail("failed2");
-        AssertCollector.assertTrue(true, "passed1");
+        CONTROL.collectAssertions(() -> {
+            ASSERT.fail("failed1");
+            ASSERT.fail("failed2");
+            ASSERT.assertTrue(true, "passed1");
+        });
+
     }
 }

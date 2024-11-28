@@ -1,0 +1,12 @@
+= Print preview
+
+If you want to consolidate all report information into a single PDF file or print it directly, the "Print Report" feature
+can be accessed by clicking the button located at the bottom of the navigation drawer.
+
+On the left side, a preview shows how the printed report might appear. It includes an indicator displaying the estimated
+page count as you scroll through the content.
+
+On the right side, you will find various settings that allow you to customize the contents of the preview. By clicking
+the "Print" button, the final version will be sent to the browser’s print dialog, where you can print the report or download it as a PDF file.
+
+image::report-ng-print-preview.png[align="center", alt="Print Preview"]

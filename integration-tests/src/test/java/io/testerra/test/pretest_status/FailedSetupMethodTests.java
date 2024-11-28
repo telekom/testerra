@@ -61,6 +61,24 @@ public class FailedSetupMethodTests extends TesterraTest implements AssertProvid
         }
     }
 
+    public static class BeforeClassBeforeMethodExceptionTests {
+
+        @BeforeClass
+        public void beforeClassSetup03() {
+            throw new RuntimeException("BeforeClass setup fails");
+        }
+
+        @BeforeMethod
+        public void beforeClassBeforeMethodSetup03() {
+
+        }
+
+        @Test
+        public void testT03_BeforeClassWithException() {
+
+        }
+    }
+
     public static class BeforeMethodAssertionTests {
         @BeforeMethod
         public void beforeMethodSetup01() {
@@ -134,42 +152,5 @@ public class FailedSetupMethodTests extends TesterraTest implements AssertProvid
             throw new RuntimeException("afterClass setup fails");
         }
     }
-
-//    public static class SetupAfterTest implements Loggable {
-//
-//        @Test
-//        public void testPassedMethodBeforeAFailedAfterMethod() {
-//            log().info("Info log of test method.");
-//        }
-//
-//        @AfterMethod
-//        public void setupAfterMethod() {
-//            ASSERT.fail("Setup method must fail.");
-//        }
-//    }
-//
-//    public static class SetupAfterClass1 implements Loggable {
-//        @Test
-//        public void testPassedMethodBeforeAFailedAfterClass() {
-//            log().info("Info log of test method.");
-//        }
-//
-//        @AfterClass
-//        public void setupAfterClass() {
-//            ASSERT.fail("Setup method must fail.");
-//        }
-//    }
-//
-//    public static class SetupAfterClass2 implements Loggable {
-//        @Test
-//        public void testPassedMethodBeforeAFailedAfterClass() {
-//            log().info("Info log of test method.");
-//        }
-//
-//        @AfterClass
-//        public void setupAfterClass() {
-//            throw new RuntimeException("Setup method must fail.");
-//        }
-//    }
 
 }

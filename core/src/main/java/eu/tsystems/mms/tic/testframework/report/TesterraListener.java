@@ -41,11 +41,14 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.testng.IConfigurable;
 import org.testng.IConfigurationListener;
 import org.testng.IConfigureCallBack;
 import org.testng.IDataProviderListener;
+import org.testng.IDataProviderMethod;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.IInvokedMethod;
@@ -61,13 +64,22 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
+import org.testng.internal.ConfigurationMethod;
+import org.testng.internal.ConstructorOrMethod;
+import org.testng.internal.IObject;
+import org.testng.internal.NoOpTestClass;
 import org.testng.internal.TestResult;
+import org.testng.internal.annotations.DefaultAnnotationTransformer;
+import org.testng.internal.annotations.IAnnotationFinder;
 import org.testng.internal.invokers.InvokedMethod;
+import org.testng.internal.objects.DefaultTestObjectFactory;
 import org.testng.xml.XmlSuite;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -237,16 +249,12 @@ public class TesterraListener implements
             ITestResult testResult,
             ITestContext testContext
     ) {
-        final String methodName = getMethodName(testResult);
+        Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
+        final String methodName = formatter.getMethodName(testResult);
 
-//        if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {
-//            return null;
-//        }
+        // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentMethodContext(testResult);
 
-        /*
-         * store testresult, create method context
-         */
-        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
         methodContext.getTestStep(TestStep.SETUP);
 
 //        final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
@@ -285,22 +293,22 @@ public class TesterraListener implements
         pAfterInvocation(method, testResult, context);
     }
 
-    private static String getMethodName(ITestResult testResult) {
-        ITestNGMethod testMethod = testResult.getMethod();
-        String methodName = testMethod.getMethodName();
-        Object[] parameters = testResult.getParameters();
-        if (parameters != null) {
-            methodName += "(";
-            for (Object parameter : parameters) {
-                methodName += parameter + ", ";
-            }
-            if (parameters.length > 0) {
-                methodName = methodName.substring(0, methodName.length() - 2);
-            }
-            methodName += ")";
-        }
-        return methodName;
-    }
+//    private static String getMethodName(ITestResult testResult) {
+//        ITestNGMethod testMethod = testResult.getMethod();
+//        String methodName = testMethod.getMethodName();
+//        Object[] parameters = testResult.getParameters();
+//        if (parameters != null) {
+//            methodName += "(";
+//            for (Object parameter : parameters) {
+//                methodName += parameter + ", ";
+//            }
+//            if (parameters.length > 0) {
+//                methodName = methodName.substring(0, methodName.length() - 2);
+//            }
+//            methodName += ")";
+//        }
+//        return methodName;
+//    }
 
     /**
      * Override after invocation, to visualize threads and finish reporting.
@@ -309,41 +317,33 @@ public class TesterraListener implements
      * @param testResult result of invoked method.
      * @param testContext steps of test.
      */
-    // CHECKSTYLE:OFF
     private void pAfterInvocation(
             IInvokedMethod invokedMethod,
             ITestResult testResult,
             ITestContext testContext
     ) {
+        Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
+        final String methodName = formatter.getMethodName(testResult);
+        IExecutionContextController instance = Testerra.getInjector().getInstance(IExecutionContextController.class);
 
-//        final String methodName;
-//        final String testClassName;
-//        if (invokedMethod != null) {
-//            methodName = invokedMethod.getTestMethod().getMethodName();
-//            testClassName = invokedMethod.getTestMethod().getTestClass().getName();
-//        } else {
-//            methodName = testResult.getMethod().getConstructorOrMethod().getName();
-//            testClassName = testResult.getTestClass().getName();
-//        }
-
-        // CHECKSTYLE:ON
-//        if (ListenerUtils.wasMethodInvokedBefore("afterInvocation", testClassName, methodName, testResult, testContext)) {
-//            return;
-//        }
-
-        final String methodName = getMethodName(testResult);
-
-        Optional<MethodContext> optionalMethodContext = ExecutionContextController.getMethodContextForThread();
+//        Optional<MethodContext> optionalMethodContext = Optional.of(ExecutionContextController.getMethodContextFromTestResult(testResult));
+        Optional<MethodContext> optionalMethodContext = instance.getCurrentMethodContext();
         MethodContext methodContext;
 
-        if (!optionalMethodContext.isPresent()) {
+        if (optionalMethodContext.isEmpty()) {
             if (testResult.getStatus() == ITestResult.CREATED || testResult.getStatus() == ITestResult.SKIP) {
-                /*
-                 * TestNG bug or whatever ?!?!
-                 */
+                // Safely handling of skipped test methods
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult);
-                methodContext = classContext.safeAddSkipMethod(testResult);
+                methodContext = classContext.getMethodContext(testResult);
+                if (testResult.getThrowable() != null) {
+                    methodContext.addError(testResult.getThrowable());
+                } else {
+                    methodContext.addError(new SkipException("Skipped"));
+                }
+                methodContext.setStatus(Status.SKIPPED);
+//                methodContext = classContext.safeAddSkipMethod(testResult);
             } else {
+                log().error("INTERNAL ERROR. Could not create methodContext for {} with result {}", methodName, testResult);
                 throw new SystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
         } else {
@@ -371,6 +371,8 @@ public class TesterraListener implements
         ExecutionFinishEvent event = new ExecutionFinishEvent()
                 .setSuites(suites)
                 .setXmlSuites(xmlSuites);
+
+        log().info("Triggering report generation after successful test execution.");
         Testerra.getEventBus().post(event);
     }
 
@@ -403,20 +405,32 @@ public class TesterraListener implements
     }
 
     /**
-     * This is only a fallback when 'afterInvocation was not called.' This could happen when TestNG runs into an exception, e.g.
-     * the Test method points to a non-existing dataprovider.
+     * This is method is only used in two cases:
+     * 1) Fallback method when 'afterInvocation' was not called.
+     * 2) When a data provider failed (only TestNG runner in IntelliJ).
+     * <p>
+     * For 1) This could happen when TestNG runs into an exception, e.g. the Test method points to a non-existing dataprovider.
      * Therefor the events will only post if the corresponding MethodContext has no status.
+     * <p>
+     * For 2) TestNG calls this method in that case, but the correct status 'SKIP' is set in
+     * {@link #onDataProviderFailure(ITestNGMethod, ITestContext, RuntimeException)}
      */
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), iTestResult);
-        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
+        if (dataProviderSemaphore.containsKey(iTestResult.getMethod())) {
+            return;
+        }
 
+        Formatter formatter = Testerra.getInjector().getInstance(Formatter.class);
+        final String methodName = formatter.getMethodName(iTestResult);
+
+        MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
+        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), iTestResult);
         if (methodContext != null && methodContext.getStatus() == Status.NO_RUN) {
             AbstractMethodEvent event = new MethodEndEvent()
                     .setTestResult(iTestResult)
                     .setInvokedMethod(invokedMethod)
-                    .setMethodName(getMethodName(iTestResult))
+                    .setMethodName(methodName)
                     .setTestContext(iTestResult.getTestContext())
                     .setMethodContext(methodContext);
             Testerra.getEventBus().post(event);
@@ -424,15 +438,21 @@ public class TesterraListener implements
         }
     }
 
+    /**
+     * This method is called when
+     * - a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException}
+     * - a configuration method failed
+     * - a data provider failed (non-IntelliJ execution)
+     * - a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}.
+     */
     @Override
-    public void onTestSkipped(ITestResult testResult) {
-        /**
-         * This method gets not only called when a test was skipped using {@link Test#dependsOnMethods()} or by throwing a {@link SkipException},
-         * but also when a failed test should not be retried by {@link RetryAnalyzer#retry(ITestResult)}
-         * or when a test fails for another reason like {@link #onDataProviderFailure(ITestNGMethod, ITestContext, RuntimeException)}
-         */
-        if (!testResult.wasRetried() && !dataProviderSemaphore.containsKey(testResult.getMethod())) {
-            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+    public void onTestSkipped(ITestResult iTestResult) {
+        if (dataProviderSemaphore.containsKey(iTestResult.getMethod())) {
+            return;
+        }
+
+        if (!iTestResult.wasRetried()) {
+            MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(iTestResult);
             methodContext.setStatus(Status.SKIPPED);
             Testerra.getEventBus().post(new TestStatusUpdateEvent(methodContext));
         }
@@ -442,6 +462,7 @@ public class TesterraListener implements
     public void onConfigurationSkip(ITestResult testResult) {
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
         methodContext.setStatus(Status.SKIPPED);
+        methodContext.addError(new SkipException("Setup method was skipped because of another failed setup method."));
     }
 
     @Override
@@ -483,27 +504,88 @@ public class TesterraListener implements
         return instances > 0;
     }
 
+    /**
+     * Generated data provider objects are stored for use in 'afterDataProviderExecutionÄ
+     */
+    private static final Map<String, IInvokedMethod> DP_INVOKED_METHODS = new ConcurrentHashMap<>();
+    private static final Map<String, ITestResult> DP_TEST_RESULT = new ConcurrentHashMap<>();
+
     @Override
-    public void onDataProviderFailure(ITestNGMethod testNGMethod, ITestContext testContext, RuntimeException exception) {
+    public void beforeDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
         /**
          * TestNG calls the data provider initialization for every thread.
          * Added a semaphore to prevent adding multiple method contexts.
+         * ?? - https://github.com/testng-team/testng/issues/3045
          */
-        if (!dataProviderSemaphore.containsKey(testNGMethod)) {
-            TestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
-            InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
-            MethodContext methodContext = pBeforeInvocation(invokedMethod, testResult, testContext);
-            if (exception.getCause() != null) {
-                methodContext.addError(exception.getCause());
-            } else {
-                methodContext.addError(exception);
-            }
-            // Data provider methods are a kind of setup methods. If they crash the test method will get the status SKIPPED
-            methodContext.setStatus(Status.SKIPPED);
-            testResult.setStatus(ITestResult.SKIP);
-            pAfterInvocation(invokedMethod, testResult, testContext);
-
-            dataProviderSemaphore.put(testNGMethod, true);
+        if (dataProviderSemaphore.containsKey(testNGMethod)) {
+            log().info("Duplicate call of beforeDataProviderExecution of {}", dataProviderMethod.getMethod().getName());
+            return;
         }
+        dataProviderSemaphore.put(testNGMethod, true);
+
+        // Manually create a TestNG ConfigurationMethod and set the 'BeforeMethod' flavour
+        IAnnotationFinder annoFinder = new DataProvAnnotationFinder(new DefaultAnnotationTransformer());
+        IObject.IdentifiableObject identifiableObject = new IObject.IdentifiableObject(dataProviderMethod.getInstance(), UUID.randomUUID());
+        ITestNGMethod dpConfigMethod = new ConfigurationMethod(
+                new DefaultTestObjectFactory(),
+                new ConstructorOrMethod(dataProviderMethod.getMethod()),
+                annoFinder,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                new String[]{},
+                new String[]{},
+                testNGMethod.getXmlTest(),
+                identifiableObject
+        );
+
+        // A data provider could also defined in a specific data provider class
+        NoOpTestClass dpTestClass = new NoOpTestClass(testNGMethod.getTestClass());
+        dpTestClass.setTestClass(dataProviderMethod.getMethod().getDeclaringClass());
+        dpConfigMethod.setTestClass(dpTestClass);
+
+        // Need full qualified TestResult
+        TestResult testResult = TestResult.newContextAwareTestResult(dpConfigMethod, testContext);
+        InvokedMethod invokedMethod = new InvokedMethod(new Date().getTime(), testResult);
+        DP_TEST_RESULT.put(dataProviderMethod.getMethod().toString(), testResult);
+        DP_INVOKED_METHODS.put(dataProviderMethod.getMethod().toString(), invokedMethod);
+
+        pBeforeInvocation(invokedMethod, testResult, testContext);
+    }
+
+    @Override
+    public void afterDataProviderExecution(IDataProviderMethod dataProviderMethod, ITestNGMethod testNGMethod, ITestContext testContext) {
+        IInvokedMethod invokedMethod = DP_INVOKED_METHODS.get(dataProviderMethod.getMethod().toString());
+        ITestResult testResult = DP_TEST_RESULT.get(dataProviderMethod.getMethod().toString());
+        testResult.setStatus(ITestResult.SUCCESS);
+        pAfterInvocation(invokedMethod, testResult, testContext);
+    }
+
+    @Override
+    public void onDataProviderFailure(ITestNGMethod testNGMethod, ITestContext testContext, RuntimeException exception) {
+
+        // Finalize method context for data provider
+        IInvokedMethod dpIinvokedMethod = DP_INVOKED_METHODS.get(testNGMethod.getDataProviderMethod().getMethod().toString());
+        ITestResult dpTestResult = DP_TEST_RESULT.get(testNGMethod.getDataProviderMethod().getMethod().toString());
+        dpTestResult.setStatus(ITestResult.FAILURE);
+        dpTestResult.setThrowable(exception);
+        pAfterInvocation(dpIinvokedMethod, dpTestResult, testContext);
+
+        // For the called test method a new method context is created, the origin throwable from DP is appended
+        ITestResult testResult = TestResult.newContextAwareTestResult(testNGMethod, testContext);
+        Throwable nestedThrowable = exception.getCause() != null ? exception.getCause() : exception;
+        testResult.setThrowable(new SkipException("Method skipped because of failed data provider", nestedThrowable));
+        testResult.setStatus(ITestResult.SKIP);
+        // invokedMethod is not needed/used
+        pAfterInvocation(null, testResult, testContext);
+
+        // To prevent double method context, this map is needed
+        dataProviderSemaphore.put(testNGMethod, true);
     }
 }

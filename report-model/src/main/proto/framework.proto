@@ -49,10 +49,11 @@ message ExecutionContext {
 
 //    int32 estimatedTestMethodCount = 13 [deprecated = true];
 
-    repeated LogMessage log_messages = 14;
+    repeated LogMessage log_messages = 14 [deprecated = true];
     int32 estimated_tests_count = 15;
     map<int32, int32> failure_corridor_limits = 16;
     map<int32, int32> failure_corridor_counts = 17;
+    repeated string log_message_ids = 18;
 }
 
 //message ContextClip {
@@ -131,9 +132,10 @@ message TestStepActionEntry {
     oneof entry {
         ClickPathEvent click_path_event = 1;
         string screenshot_id = 2;
-        LogMessage log_message = 3;
+        LogMessage log_message = 3 [deprecated = true];
         ErrorContext assertion = 4 [deprecated = true];
         ErrorContext error_context = 5;
+        string log_message_id= 6;
     }
 }
 
@@ -168,6 +170,7 @@ message LogMessage {
     string thread_name = 5;
     repeated StackTraceCause stack_trace = 6;
     bool prompt = 7;
+    string id = 8;
 }
 
 message ErrorContext {
@@ -198,6 +201,7 @@ message SessionContext {
     string server_url = 12;
     string node_url = 13;
     string user_agent = 14;
+    string base_url = 15;
 }
 
 message LayoutCheckContext {

@@ -108,9 +108,11 @@ export class ClassesHistory extends AbstractViewModel {
                 type: 'slider',
                 xAxisIndex: [0],
                 start: startValue,
+                height: 20,
                 end: 100,
                 brushSelect: false,
-                zoomLock: true
+                zoomLock: true,
+                showDataShadow: false
             }
         ]
     }
@@ -178,16 +180,10 @@ export class ClassesHistory extends AbstractViewModel {
                 let color: string;
                 switch (testcases) {
                     case classStatuses[3]:
-                        color = style.get(ResultStatusType.PASSED)
-                        break;
-                    case classStatuses[2]:
-                        color = style.get(ResultStatusType.SKIPPED)
-                        break;
-                    case classStatuses[1]:
-                        color = style.get(ResultStatusType.FAILED_EXPECTED)
+                        color = style.get(ResultStatusType.PASSED);
                         break;
                     default:
-                        color = style.get(ResultStatusType.FAILED)
+                        color = style.get(ResultStatusType.FAILED);
                         break;
                 }
 
@@ -201,9 +197,12 @@ export class ClassesHistory extends AbstractViewModel {
                 this._data.push({
                     value: [
                         historyIndex,
-                        className
+                        className,
+                        classStatuses[3],
+                        classStatuses[0],
+                        classStatuses[1],
+                        classStatuses[2]
                     ],
-                    statuses: classStatuses,
                     itemStyle: {
                         color: color,
                         opacity: 1
@@ -373,8 +372,13 @@ export class ClassesHistory extends AbstractViewModel {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
 
-        let maxYCategoryLength = this._maxYCategoryLength;
-        let gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
+        const maxYCategoryLength = this._maxYCategoryLength;
+        const gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
+
+        const size = 60;
+        const subQuadWidth = Math.sqrt((size * size) / 4);
+        const largeSubQuadWidth = subQuadWidth * 2;
+        const subQuadHeight = subQuadWidth * 2 / 3;
 
         this._option = {
             grid: {
@@ -388,11 +392,11 @@ export class ClassesHistory extends AbstractViewModel {
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
-                    const statuses = params.data.statuses;
-                    const failed = statuses[0];
-                    const expectedFailed = statuses[1];
-                    const skipped = statuses[2];
-                    const passed = statuses[3];
+                    const statuses = params.value.slice(2);
+                    const failed = statuses[1];
+                    const expectedFailed = statuses[2];
+                    const skipped = statuses[3];
+                    const passed = statuses[0];
 
                     return `<div class="class-history-chart-tooltip-header">Run ${params.value[0]}</div>
                         <br>Testcases: ${params.data.testcases}
@@ -422,15 +426,157 @@ export class ClassesHistory extends AbstractViewModel {
             },
             series: [
                 {
-                    type: 'scatter',
-                    symbolSize: this._symbolSize,
-                    symbol: 'rect',
+                    type: 'custom',
+                    renderItem: function (params, api) {
+                        const statuses = [api.value(2), api.value(3), api.value(4), api.value(5)];
+                        const x = api.coord([api.value(0), api.value(1)])[0];
+                        const y = api.coord([api.value(0), api.value(1)])[1];
+
+                        const children = [];
+
+                        const statusCounts = [
+                            Number(api.value(2)),
+                            Number(api.value(3)),
+                            Number(api.value(4)),
+                            Number(api.value(5))
+                        ];
+
+                        // passed-rect
+                        if (statusCounts[0] > 0) {
+                            children.push(
+                                {
+                                    type: 'rect',
+                                    shape: {
+                                        x: x - subQuadWidth,
+                                        y: y - (subQuadHeight * 3 / 2),
+                                        width: largeSubQuadWidth,
+                                        height: subQuadHeight
+                                    },
+                                    style: { fill: '#417336' }
+                                },
+                                {
+                                    type: 'text',
+                                    style: {
+                                        x: x,
+                                        y: y - subQuadHeight,
+                                        text: statuses[0].toString(),
+                                        fill: '#fff',
+                                        fontSize: 12,
+                                        align: 'center',
+                                        verticalAlign: 'middle'
+                                    }
+                                }
+                            );
+                        }
+
+                        // failed-rect
+                        if (statusCounts[1] > 0) {
+                            let failedWidth = subQuadWidth;
+                            let failedTextPos = (subQuadWidth / 2);
+                            if(statusCounts[2] === 0) {
+                                failedWidth = largeSubQuadWidth;
+                                failedTextPos = 0;
+                            }
+                            children.push(
+                                {
+                                    type: 'rect',
+                                    shape: {
+                                        x: x - subQuadWidth,
+                                        y: y - (subQuadHeight / 2),
+                                        width: failedWidth,
+                                        height: subQuadHeight
+                                    },
+                                    style: { fill: '#e63946' }
+                                },
+                                {
+                                    type: 'text',
+                                    style: {
+                                        x: x - failedTextPos,
+                                        y: y,
+                                        text: statuses[1].toString(),
+                                        fill: '#fff',
+                                        fontSize: 12,
+                                        align: 'center',
+                                        verticalAlign: 'middle'
+                                    }
+                                }
+                            );
+                        }
+
+                        // failed_expected-rect
+                        if (statusCounts[2] > 0) {
+                            let expectedFailedWidth = subQuadWidth;
+                            let expectedFailedTextPos = (subQuadWidth / 2);
+                            let expectedFailedPosX = 0;
+                            if(statusCounts[1] === 0) {
+                                expectedFailedWidth = largeSubQuadWidth;
+                                expectedFailedTextPos = 0;
+                                expectedFailedPosX = subQuadWidth;
+                            }
+                            children.push(
+                                {
+                                    type: 'rect',
+                                    shape: {
+                                        x: x - expectedFailedPosX,
+                                        y: y - (subQuadHeight / 2),
+                                        width: expectedFailedWidth,
+                                        height: subQuadHeight
+                                    },
+                                    style: { fill: '#4f031b' }
+                                },
+                                {
+                                    type: 'text',
+                                    style: {
+                                        x: x + expectedFailedTextPos,
+                                        y: y,
+                                        text: statuses[2].toString(),
+                                        fill: '#fff',
+                                        fontSize: 12,
+                                        align: 'center',
+                                        verticalAlign: 'middle'
+                                    }
+                                }
+                            );
+                        }
+
+                        // skipped-rect
+                        if (statusCounts[3] > 0) {
+                            children.push(
+                                {
+                                    type: 'rect',
+                                    shape: {
+                                        x: x - subQuadWidth,
+                                        y: y + (subQuadHeight / 2),
+                                        width: largeSubQuadWidth,
+                                        height: subQuadHeight
+                                    },
+                                    style: { fill: '#f7af3e' }
+                                },
+                                {
+                                    type: 'text',
+                                    style: {
+                                        x: x,
+                                        y: y + subQuadHeight,
+                                        text: statuses[3].toString(),
+                                        fill: '#fff',
+                                        fontSize: 12,
+                                        align: 'center',
+                                        verticalAlign: 'middle'
+                                    }
+                                }
+                            );
+                        }
+
+                        return {
+                            type: 'group',
+                            children: children
+                        };
+                    },
                     encode: {
                         x: 0,
                         y: 1
                     },
-                    data: this._data,
-                    z: 2
+                    data: this._data
                 }
             ]
         };

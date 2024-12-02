@@ -275,6 +275,8 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         element.expect().bounds().intersects(parent).is(test);
     }
 
+    // Window size of all tests is set to 1024x768
+    // Viewport size is smaller then window size
     @Test
     public void test_viewport() {
         WebTestPage page = getPage();
@@ -282,7 +284,7 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
         page.expect().viewport().top().is(0);
 
         page.expect().viewport().contains(page.getOpenAgainLink()).is(true);
-        page.expect().viewport().width().is(1024);
-        page.expect().viewport().height().is(768);
+        page.expect().viewport().width().isBetween(1000, 1024);
+        page.expect().viewport().height().isBetween(620, 768);
     }
 }

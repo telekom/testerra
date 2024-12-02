@@ -8,8 +8,6 @@ plugins {
 import com.github.jk1.license.filter.*
 import com.github.jk1.license.render.*
 
-def jacocoVersion = "0.8.6"
-
 apply plugin: 'io.codearte.nexus-staging'
 
 ext {
@@ -50,7 +48,7 @@ subprojects {
     archivesBaseName = "testerra"
 
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-    apply plugin: 'jacoco'
+    apply plugin: 'jacoco-report-aggregation'
     apply plugin: 'signing'
 
     apply plugin: 'com.github.jk1.dependency-license-report'
@@ -61,10 +59,6 @@ subprojects {
     repositories {
 //        mavenLocal()
         mavenCentral()
-    }
-
-    jacoco {
-        toolVersion = jacocoVersion
     }
 
     test {
@@ -78,12 +72,6 @@ subprojects {
         options {
             systemProperties(System.getProperties())
         }
-
-        jacoco {
-            enabled = System.properties.containsKey("withJacoco")
-            //excludes = ['jdk.internal.*']
-        }
-    }
 
     task cleanDist {
         doLast {
@@ -122,30 +110,3 @@ subprojects {
 
 // Do not move this integration because `group` and `version` is needed for publishing
 apply from: rootProject.file('publish.gradle')
-
-task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
-
-    additionalSourceDirs(files(subprojects.sourceSets.main.allSource.srcDirs))
-
-    def srcdirs = files(subprojects.sourceSets.main.allSource.srcDirs)
-    def classdirs = files(subprojects.sourceSets.main.output)
-    sourceDirectories.setFrom(srcdirs)
-    classDirectories.setFrom(classdirs)
-
-    executionData(project.fileTree(dir: '.', include: '**/build/jacoco/test.exec'))
-
-    reports {
-        html.enabled = true
-        xml.enabled = true
-        csv.enabled = false
-    }
-    onlyIf = {
-        true
-    }
-
-    doFirst {
-        executionData(files(executionData.findAll {
-            it.exists()
-        }))
-    }
-}

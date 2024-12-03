@@ -53,6 +53,9 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
     private final UiElement layoutComparison = find(By.xpath("//layout-comparison"));
     PreparedLocator imgTitleLocator = LOCATE.prepare("//img[contains(@title,'%s')]");
 
+    // Root element of every overly component
+    private final UiElement dialogRoot = find(By.xpath("//div[@class = 'mdc-dialog__container']"));
+
     public ReportDetailsTab(WebDriver driver) {
         super(driver);
     }
@@ -211,9 +214,15 @@ public class ReportDetailsTab extends AbstractReportMethodPage {
         return this.getFailureAspectElement(failureMessage).find(By.xpath("//layout-comparison")).waitFor().present(true);
     }
 
-    public ComparisonDialogOverlay openComparisonDialogByClickingOnScreenShot(String imageTitle) {
-        UiElement image = layoutComparison.find(imgTitleLocator.with(imageTitle));
+    public ComparisonDialogOverlay openComparisonDialogByClickingOnScreenShot(final ScreenshotType screenshotType) {
+        UiElement image = layoutComparison.find(imgTitleLocator.with(screenshotType.toString()));
         image.click();
-        return createPage(ComparisonDialogOverlay.class);
+        return createComponent(ComparisonDialogOverlay.class, this.dialogRoot);
+    }
+
+    public enum ScreenshotType {
+        Actual,
+        Difference,
+        Expected;
     }
 }

@@ -31,6 +31,7 @@ export class FailureAspectsChart extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
     @bindable failure_aspects_data: any[] = [];
+    @bindable() onClick;
 
     constructor(
         private _statusConverter: StatusConverter
@@ -41,6 +42,11 @@ export class FailureAspectsChart extends AbstractViewModel {
 
     async attached() {
         this._setChartOption();
+        this._chart.on('click', (params) => {
+            if (params.data && this.onClick) {
+                this.onClick(params.name);
+            }
+        });
     };
 
     private _setChartOption() {

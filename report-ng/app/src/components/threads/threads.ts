@@ -206,7 +206,7 @@ export class Threads extends AbstractViewModel {
         }
 
         if(this._selectedClass){
-            this._zoomInOnFilter(this._selectedClass, 8)
+            this._zoomInOnFilter(this._selectedClass, 8);
             this.updateUrl({class: this._selectedClass});
         }
         // prevent overwriting of method and class filter when _selectedClass is set undefined by their observers

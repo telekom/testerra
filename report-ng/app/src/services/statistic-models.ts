@@ -250,6 +250,11 @@ export class MethodRun {
         this.historyIndex = index;
         this.context = context;
     }
+
+    getErrorMessage() {
+        // TODO
+        return "";
+    }
 }
 
 export class MethodHistoryStatistics extends Statistics {
@@ -259,16 +264,61 @@ export class MethodHistoryStatistics extends Statistics {
     private _runs: MethodRun[] = [];
     private _durations: number[] = [];
     private _errorCount = new Map<string, number>();
+    private _flakyness: number = 0;
+    private _relatedMethods: string[] = [];
+    private _identifier: string = null;
+    private _classIdentifier: string = null;
 
     constructor(
         currentMethod: IMethodContext, history: HistoryStatistics
     ) {
         super();
+
+        this._name = currentMethod.contextValues.name;
+        this._testname = currentMethod.testName;
+        this._parameters = currentMethod.parameters;
+        this._identifier = this._getParsedMethodIdentifier(this._testname, this._name, this._parameters);
+        const currentIdArray = currentMethod.relatedMethodContextIds;
+        if (currentIdArray) {
+            this._relatedMethods = currentIdArray
+                .map(id => {
+                    history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getAllMethods().find(obj => obj.contextValues.id === id)
+                    const obj = history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getAllMethods().find(o => o.contextValues.id === id);
+                    if (obj) {
+                        return this._getParsedMethodIdentifier(obj.testName, obj.contextValues.name, obj.parameters);
+                    }
+                    return undefined;
+                })
+                .filter(entry => entry !== undefined);
+        }
+
+        this._classIdentifier = history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getClassStatistics().find(classStats => {
+            return classStats.classContext.contextValues.id === currentMethod.classContextId;
+        }).classIdentifier;
+
         history.getHistoryAggregateStatistics().forEach(historicalRun => {
-            const methodInRun = historicalRun.getAllMethods().find(method =>
-                method.contextValues.name === currentMethod.contextValues.name &&
-                method.testName === currentMethod.testName &&
-                this._compareParameters(method.parameters, currentMethod.parameters)
+            const methodInRun = historicalRun.getAllMethods().find(method => {
+                    const idArray = method.relatedMethodContextIds;
+                    let relatedMethods: string[] = [];
+
+                    if (idArray) {
+                        relatedMethods = idArray
+                            .map(id => {
+                                historicalRun.getAllMethods().find(obj => obj.contextValues.id === id)
+                                const obj = historicalRun.getAllMethods().find(o => o.contextValues.id === id);
+                                if (obj) {
+                                    return this._getParsedMethodIdentifier(obj.testName, obj.contextValues.name, obj.parameters);
+                                }
+                                return undefined;
+                            })
+                            .filter(entry => entry !== undefined);
+                    }
+                    const methodIdentifier = this._getParsedMethodIdentifier(method.testName, method.contextValues.name, method.parameters);
+
+                    return (
+                        methodIdentifier === this._identifier &&
+                        this._compareRelatedMethods(relatedMethods, this._relatedMethods));
+                }
             );
             if (methodInRun !== undefined) {
                 this._runs.push(new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex));
@@ -279,7 +329,8 @@ export class MethodHistoryStatistics extends Statistics {
                     step.actions.forEach(action => {
                         action.entries.forEach(entry => {
                             entry.errorContext.stackTrace.forEach(stackTrace => {
-                                const error = stackTrace.className + ": " + stackTrace.message;
+                                const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
+                                const error = errorClassName + ": " + stackTrace.message;
                                 const currentErrorCount = this._errorCount.get(error) || 0;
                                 this._errorCount.set(error, currentErrorCount + 1);
                             });
@@ -288,9 +339,35 @@ export class MethodHistoryStatistics extends Statistics {
                 });
             }
         });
-        this._name = currentMethod.contextValues.name;
-        this._testname = currentMethod.testName;
-        this._parameters = currentMethod.parameters;
+        this._flakyness = this._calculateFlakyness();
+    }
+
+    get classIdentifier() {
+        return this._classIdentifier;
+    }
+
+    get relatedMethods() {
+        return this._relatedMethods;
+    }
+
+    private _calculateFlakyness(): number {
+        if (this._runs.length < 2) {
+            return 0;
+        }
+
+        let switchCount = 0;
+        for (let i = 1; i < this._runs.length; i++) {
+            if (this._runs[i].context.resultStatus !== this._runs[i - 1].context.resultStatus) {
+                switchCount++;
+            }
+        }
+        const maxSwitches = this._runs.length - 1;
+
+        return (switchCount / maxSwitches);
+    }
+
+    getFlakyness(): number {
+        return this._flakyness;
     }
 
     getAverageDuration(): number {
@@ -328,34 +405,70 @@ export class MethodHistoryStatistics extends Statistics {
         return this._runs.length;
     }
 
-    isMatchingMethod(methodContext: IMethodContext): boolean {
-        return (this._name === methodContext.contextValues.name &&
-            this._testname === methodContext.testName &&
-            this._compareParameters(this._parameters, methodContext.parameters))
+    isMatchingMethod(methodContext: IMethodContext, latestRun: HistoryAggregateStatistics): boolean {
+        const methodIdentifier = this._getParsedMethodIdentifier(methodContext.testName, methodContext.contextValues.name, methodContext.parameters);
+        const idArray = methodContext.relatedMethodContextIds;
+        let relatedMethods: string[] = [];
+
+        if (idArray) {
+            relatedMethods = idArray
+                .map(id => {
+                    latestRun.getAllMethods().find(obj => obj.contextValues.id === id)
+                    const obj = latestRun.getAllMethods().find(o => o.contextValues.id === id);
+                    if (obj) {
+                        return this._getParsedMethodIdentifier(obj.testName, obj.contextValues.name, obj.parameters);
+                    }
+                    return undefined;
+                })
+                .filter(entry => entry !== undefined);
+        }
+
+        return (
+            methodIdentifier === this._identifier &&
+            this._compareRelatedMethods(relatedMethods, this._relatedMethods));
     }
 
     getRuns(): MethodRun[] {
         return this._runs;
     }
 
-    private _compareParameters(parameters1: { [p: string]: string }, parameters2: { [p: string]: string }): boolean {
-        const keys1 = Object.keys(parameters1);
-        const keys2 = Object.keys(parameters2);
-        if (keys1.length !== keys2.length) {
+    private _compareRelatedMethods(arr1: string[], arr2: string[]): boolean {
+        if (arr1.length !== arr2.length) {
             return false;
         }
+        const sortedArr1 = [...arr1].sort();
+        const sortedArr2 = [...arr2].sort();
 
-        for (const key of keys1) {
-            if (parameters1[key] !== parameters2[key]) {
-                return false;
-            }
-        }
-
-        return true;
+        return sortedArr1.every((value, index) => value === sortedArr2[index]);
     }
 
     getErrorCount(): Map<string, number> {
         return this._errorCount;
+    }
+
+    private _getParsedMethodIdentifier(testname: string, name: string, parameters: { [key: string]: string; }) {
+        let methodName: string;
+        if (testname) {
+            methodName = testname;
+        } else {
+            methodName = name;
+            const params = [];
+            for (const name in parameters) {
+                params.push(name + ": " + parameters[name]);
+            }
+            if (params.length > 0) {
+                methodName += "(" + params.join(", ") + ")";
+            }
+        }
+        return methodName;
+    }
+
+    getIdentifier() {
+        return this._getParsedMethodIdentifier(this._testname, this._name, this._parameters);
+    }
+
+    getIdOfLatestRun(): string {
+        return this._runs[this._runs.length - 1].context.contextValues.id;
     }
 }
 
@@ -367,12 +480,14 @@ export class HistoryStatistics {
     constructor(
         readonly history: History
     ) {
+        if (history.entries.length === 0) {
+            return;
+        }
         this.history.entries.forEach(entry => {
             this.historyAggregateStatistics.push(new HistoryAggregateStatistics(entry));
-        })
+        });
 
         const lastEntry = this.historyAggregateStatistics[this.historyAggregateStatistics.length - 1];
-
         lastEntry.getAllMethods().forEach(currentMethod => {
             this.methodHistoryStatistics.push(new MethodHistoryStatistics(currentMethod, this));
         });

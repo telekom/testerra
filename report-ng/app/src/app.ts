@@ -62,6 +62,13 @@ export class App {
             // this._router.routes.filter(route => route.route == "exit-points").find(route => {
             //     route.settings.count = executionStatistics.exitPointStatistics.length;
             // });
+            this._statistics.getHistoryStatistics().then(historyStatistics => {
+                if (historyStatistics.getTotalRuns() < 2) {
+                    this._router.routes.filter(route => route.route == "history").find(route => {
+                        route.settings.disabled = true;
+                    });
+                }
+            });
         });
     }
 
@@ -137,7 +144,10 @@ export class App {
                 name: 'history',
                 moduleId: PLATFORM.moduleName('components/history/history'),
                 nav: true,
-                title: 'History'
+                title: 'History',
+                settings: {
+                    disabled: false
+                }
             },
             {
                 route: 'printable',

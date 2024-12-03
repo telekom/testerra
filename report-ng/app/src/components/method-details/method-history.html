@@ -31,7 +31,7 @@
                 <mdc-card class="method-history-card">
                     <div mdc-subtitle2 class="card-headline">Previous Runs</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <method-history-chart method_history_statistics.bind="methodHistoryStatistics"></method-history-chart>
+                    <method-history-chart shared-data.bind="sharedData" method_history_statistics.bind="methodHistoryStatistics"></method-history-chart>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
@@ -48,7 +48,7 @@
                 <mdc-card class="short-history-card">
                     <div mdc-subtitle2 class="card-headline">Common Failure Aspects</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <failure-aspects-chart failure_aspects_data.bind="failureAspectsData"></failure-aspects-chart>
+                    <failure-aspects-chart on-click.bind="handleChildAClick.bind($this)" failure_aspects_data.bind="failureAspectsData"></failure-aspects-chart>
                 </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

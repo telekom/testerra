@@ -25,7 +25,7 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import {AbstractViewModel} from "../abstract-view-model";
 import {HistoryStatistics, MethodHistoryStatistics} from "../../services/statistic-models";
 import "./method-history.scss";
-import {StatusConverter} from "../../services/status-converter";
+import {IFilter, StatusConverter} from "../../services/status-converter";
 import {ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()
@@ -38,6 +38,7 @@ export class MethodHistory extends AbstractViewModel {
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
     overallSuccessRate: number = 0;
+    public sharedData: string = null;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -57,7 +58,7 @@ export class MethodHistory extends AbstractViewModel {
             this._methodDetails = methodDetails;
 
             this._historyStatistics.getMethodHistoryStatistics().find(method => {
-                if (method.isMatchingMethod(methodDetails.methodContext)) {
+                if (method.isMatchingMethod(methodDetails.methodContext, this._historyStatistics.getHistoryAggregateStatistics()[this._historyStatistics.getHistoryAggregateStatistics().length - 1])) {
                     this.methodHistoryStatistics = method;
                 }
             });
@@ -91,5 +92,9 @@ export class MethodHistory extends AbstractViewModel {
         this.overallSuccessRate = this.methodHistoryStatistics.getSuccessRate();
 
         this.failureAspectsData = Array.from(this.methodHistoryStatistics.getErrorCount()).sort((a, b) => b[1] - a[1]);
+    }
+
+    handleChildAClick(data: string) {
+        this.sharedData = data;
     }
 }

@@ -23,10 +23,12 @@ import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
 import "./run-history.scss";
-import {HistoryStatistics} from "../../../services/statistic-models";
+import {HistoryStatistics, MethodHistoryStatistics} from "../../../services/statistic-models";
 import {IFilter, StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
+import {MdcSelect} from "@aurelia-mdc-web/select";
+import {ClassName, ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
 
 @autoinject()
 export class RunHistory extends AbstractViewModel {
@@ -39,11 +41,14 @@ export class RunHistory extends AbstractViewModel {
     private _filter: IFilter;
     private _selectedStatus: ResultStatusType = null;
     private _availableStatuses: ResultStatusType[] = [];
+    private _topFlakyTests: any[] = [];
+    private statusSelect: MdcSelect;
 
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _router: Router
+        private _router: Router,
+        private _classNameValueConverter: ClassNameValueConverter
     ) {
         super();
     }
@@ -84,12 +89,70 @@ export class RunHistory extends AbstractViewModel {
         this.totalRunCount = this._historyStatistics.getTotalRuns();
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
+
+        this._getTopFlakyMethods();
+
+        if (this.queryParams.status) {
+            this._filter = {
+                status: this._statusConverter.getStatusForClass(this.queryParams.status)
+            }
+            this._selectedStatus = this.queryParams.status;
+        }
+
+        const self = this
+        if (this.queryParams.status || params.status) {
+            window.setTimeout(() => {
+                self._selectedStatus = self._statusConverter.getStatusForClass(params.status);
+                self.statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
+            }, 200)
+        } else {
+            this._selectedStatus = null;
+        }
+    }
+
+    private _getTopFlakyMethods(): void {
+        const methods = this._historyStatistics.getMethodHistoryStatistics();
+
+        const flakyMethods = methods
+            .filter(method => method.getFlakyness() > 0.2)
+            .sort((a, b) => b.getFlakyness() - a.getFlakyness())
+            .slice(0, 3);
+
+        flakyMethods.forEach(method => {
+            const className = this._classNameValueConverter.toView(method.classIdentifier, ClassName.simpleName);
+            this._topFlakyTests.push({
+                name: method.getIdentifier() + " (" + className + ")",
+                statistics: method
+            });
+        });
+        console.log(this._topFlakyTests);
     }
 
     private _statusChanged() {
-        console.log(this._selectedStatus);
-        this._filter = {
-            status: this._selectedStatus
+        if (!this._selectedStatus) {
+            this._setFilter(null);
+        } else {
+            this._setFilter({
+                status: this._selectedStatus
+            });
         }
+    }
+
+    private _setFilter(filter: IFilter, updateUrl: boolean = true) {
+        this._filter = filter;
+        if (filter) {
+            this.queryParams.status = this._statusConverter.getClassForStatus(this._filter.status);
+        } else {
+            delete this.queryParams.status;
+        }
+        if (updateUrl) {
+            this.updateUrl(this.queryParams);
+        }
+    }
+
+    private _gotoMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
+        this._router.navigateToRoute('method', {
+            methodId: methodHistoryStatistics.getIdOfLatestRun()
+        });
     }
 }

@@ -134,6 +134,7 @@ public class ContextExporter implements Loggable {
         //methodContext.getPriorityMessage().ifPresent(builder::setPriorityMessage);
 
         builder.setClassContextId(methodContext.getClassContext().getId());
+        methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
 
         if (!isHistory) {
             apply(methodContext.getThreadName(), builder::setThreadName);
@@ -147,9 +148,7 @@ public class ContextExporter implements Loggable {
                 builder.setFailureCorridorValue(FailureCorridorValue.FCV_LOW);
             }
 
-            methodContext.readRelatedMethodContexts().forEach(m -> builder.addRelatedMethodContextIds(m.getId()));
             methodContext.readDependsOnMethodContexts().forEach(m -> builder.addDependsOnMethodContextIds(m.getId()));
-
             // build context
             methodContext.readSessionContexts().forEach(sessionContext -> builder.addSessionContextIds(sessionContext.getId()));
 

@@ -41,6 +41,12 @@ export class StatusShareChart extends AbstractViewModel {
 
     private _setChartOption() {
         this._option = {
+            grid: {
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            },
             tooltip: {
                 formatter: function (params) {
                     return '<div class="header" style="background-color: ' +
@@ -63,7 +69,10 @@ export class StatusShareChart extends AbstractViewModel {
                         show: true,
                         position: 'inner',
                         color: '#ffffff',
-                        formatter: '{d}%'
+                        formatter: (params) => {
+                            const percentage = params.percent;
+                            return `${percentage.toFixed(1)}%`;
+                        }
                     },
                     labelLine: {
                         length: 10,

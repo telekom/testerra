@@ -46,6 +46,7 @@ export class MethodHistoryChart extends AbstractViewModel {
     private _lineStart: number[] = [];
     private _lineEnd: number[] = [];
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
+    @bindable() sharedData;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -85,6 +86,24 @@ export class MethodHistoryChart extends AbstractViewModel {
         });
     }
 
+    sharedDataChanged(newData: string) {
+        if (newData) {
+            this.highlightData(newData);
+        }
+    }
+
+    private highlightData(failureAspect: string) {
+        const inactiveOpacity = this._opacityOfInactiveElements;
+        this._option.series[0].data.forEach(function (value) {
+            console.log(value);
+            if (!(value.errorMessage.toString() === failureAspect)) {
+                value.itemStyle.opacity = inactiveOpacity;
+            }
+        });
+        this._chart.setOption(this._option);
+        console.log(failureAspect);
+    }
+
     private _prepareChartData() {
         const style = new Map<number, string>();
         style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
@@ -110,7 +129,8 @@ export class MethodHistoryChart extends AbstractViewModel {
                             const errorContext = entry.errorContext;
                             errorContext.stackTrace.forEach(stackTrace => {
                                 // TODO: How to handle multiple errorMessages
-                                errorMessage = errorMessage.concat(stackTrace.className + ": " + stackTrace.message + " ");
+                                const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
+                                errorMessage = errorMessage.concat(errorClassName + ": " + stackTrace.message + " ");
                             })
                         })
                     });

@@ -149,16 +149,18 @@ export class Method {
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
             this._loading = false;
 
-            // TODO: Disable method-history-tab if there is no history
-            // let methodRunCount = 0;
+            // TODO: Disable method-history-tab if there is no history (currently not working!)
+            let methodRunCount = 2;
             // this._statistics.getHistoryStatistics().then(history => {
-            //     const method = history.getMethodHistoryStatistics().find(method =>
-            //         method.isMatchingMethod(this._methodDetails.methodContext)
-            //     );
-            //     if (method) {
-            //         methodRunCount = method.getMethodRunCount();
+            //     if (history.getTotalRuns() > 1) {
+            //         const method = history.getMethodHistoryStatistics().find(method =>
+            //             method.isMatchingMethod(this._methodDetails.methodContext,
+            //                 history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1])
+            //         );
+            //         if (method) {
+            //             methodRunCount = method.getMethodRunCount();
+            //         }
             //     }
-            //     console.log(methodRunCount);
             // });
 
             this._router.routes.forEach(routeConfig => {
@@ -196,14 +198,14 @@ export class Method {
                         }
                         break;
                     }
-                    // case "method-history": {
-                    //     if (methodRunCount > 1) {
-                    //         routeConfig.nav = true;
-                    //     } else {
-                    //         disableRoute(routeConfig);
-                    //     }
-                    //     break;
-                    // }
+                    case "method-history": {
+                        if (methodRunCount > 1) {
+                            routeConfig.nav = true;
+                        } else {
+                            disableRoute(routeConfig);
+                        }
+                        break;
+                    }
                     case "details": {
                         if (methodDetails.numDetails > 0) {
                             routeConfig.nav = true;

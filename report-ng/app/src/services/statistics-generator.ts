@@ -177,8 +177,8 @@ export class StatisticsGenerator {
 
     getHistoryStatistics(): Promise<HistoryStatistics> {
         return this._cacheService.getForKeyWithLoadingFunction("historyStatistics", () => {
-            return this._dataLoader.getHistory().then(entries => {
-                return new HistoryStatistics(entries);
+            return this._dataLoader.getHistory().then(history => {
+                return new HistoryStatistics(history);
             })
         })
     }

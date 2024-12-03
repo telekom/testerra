@@ -12,7 +12,11 @@
         <classes>
 <!--            <class name="io.testerra.report.test.pretest_status.dependency.DependencySetup1Tests"/>-->
 <!--            <class name="io.testerra.report.test.pretest_status.dependency.DependencySetup3Tests"/>-->
-            <class name="io.testerra.report.test.report_test.common.LayoutTest"/>
+            <class name="io.testerra.report.test.report_test.common.LayoutTest">
+                <methods>
+                    <include name="testT06_checkLayoutDialog"/>
+                </methods>
+            </class>
         </classes>
     </test>
 

@@ -171,13 +171,20 @@ public class LayoutTest extends AbstractReportTest {
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
 
         TestStep.begin("Open Layout Dialog from actual image");
-//        for(String title: imageTitles){
-//            ComparisonDialogOverlay comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(title);
         ComparisonDialogOverlay comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(ScreenshotType.Actual);
         comparisonDialogOverlay.checkContent(ScreenshotType.Actual, ScreenshotType.Difference, "layout_compare_dialog");
-//            comparisonDialogOverlay.checkSelectedAndContentFromStartingMatched(title);
         reportDetailsTab = comparisonDialogOverlay.closeDialog();
-//        }
+
+        TestStep.begin("Open Layout Dialog from difference image");
+        comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(ScreenshotType.Difference);
+        comparisonDialogOverlay.checkContent(ScreenshotType.Difference, ScreenshotType.Expected, "layout_compare_dialog");
+        reportDetailsTab = comparisonDialogOverlay.closeDialog();
+
+        TestStep.begin("Open Layout Dialog from expected image");
+        comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(ScreenshotType.Expected);
+        comparisonDialogOverlay.checkContent(ScreenshotType.Expected, ScreenshotType.Difference, "layout_compare_dialog");
+        reportDetailsTab = comparisonDialogOverlay.closeDialog();
+
     }
 
 }

@@ -68,15 +68,12 @@ export class DurationHistory extends AbstractViewModel {
             const expectedFailed = aggregate.getStatusCount(ResultStatusType.FAILED_EXPECTED);
             const skipped = aggregate.getStatusCount(ResultStatusType.SKIPPED);
             const passed = aggregate.overallPassed;
+            const testcases = passed + failed + skipped + expectedFailed;
 
             this._chartData.push({
-                value: [aggregate.historyAggregate.historyIndex, duration],
-                itemStyle: {
-                    color: DurationHistory.TEST_COLOR
-                },
+                value: [aggregate.historyAggregate.historyIndex, duration, testcases],
                 startTime: startTime,
-                endTime: endTime,
-                testcases: passed + failed + skipped + expectedFailed
+                endTime: endTime
             });
         });
 
@@ -122,7 +119,7 @@ export class DurationHistory extends AbstractViewModel {
                 borderColor: DurationHistory.TEST_COLOR,
                 formatter: function (params) {
                     const valueData = params[0];
-                    const testcases = valueData.data.testcases;
+                    const testcases = valueData.value[2];
 
                     return `<div class="duration-history-chart-tooltip-header">Run ${valueData.axisValue} (${durationFormatter.toView(valueData.value[1])})</div>
                         <br>Testcases: ${testcases}
@@ -137,14 +134,22 @@ export class DurationHistory extends AbstractViewModel {
             xAxis: {
                 type: 'category'
             },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: function (val) {
-                        return durationFormatter.toView(val, "h[h] m[min] s[s]");
-                    },
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: function (val) {
+                            return durationFormatter.toView(val, "h[h] m[min] s[s]");
+                        },
+                    }
+                },
+                {
+                    type: 'value',
+                    splitLine: {
+                        show: false
+                    }
                 }
-            },
+            ],
             dataZoom:
                 {
                     type: 'slider',
@@ -152,13 +157,35 @@ export class DurationHistory extends AbstractViewModel {
                     start: 0,
                     end: 100,
                 },
-            series: [{
-                type: 'line',
-                data: this._chartData,
-                lineStyle: {
-                    color: DurationHistory.TEST_COLOR
+            series: [
+                {
+                    type: 'line',
+                    data: this._chartData,
+                    lineStyle: {
+                        color: DurationHistory.TEST_COLOR
+                    },
+                    encode: {
+                        x: 0,
+                        y: 1
+                    },
+                    itemStyle: {
+                        color: DurationHistory.TEST_COLOR
+                    },
+                },
+                {
+                    type: 'bar',
+                    yAxisIndex: 1,
+                    data: this._chartData,
+                    encode: {
+                        x: 0,
+                        y: 2
+                    },
+                    itemStyle: {
+                        color: '#8c8c8c',
+                        opacity: 0.1
+                    }
                 }
-            }]
+            ]
         };
     }
 }

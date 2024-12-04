@@ -258,42 +258,22 @@ export class ClassesHistory extends AbstractViewModel {
         methodsInClass.forEach(method => {
             numberOfClassRuns = Math.max(numberOfClassRuns, method.getMethodRunCount());
             const methodIdentifier = method.getIdentifier();
-            const relatedMethods = method.relatedMethods.join(";");
+            const relatedMethods = method.relatedMethods.join(";"); // TODO
             method.getRuns().forEach(methodRun => {
                 const historyIndex = methodRun.historyIndex;
                 const status = methodRun.context.resultStatus;
-
-                let errorMessage = "";
-
-                if (status != ResultStatusType.PASSED) {
-                    // TODO: Move this to statistic-models?
-                    methodRun.context.testSteps.flatMap(value => value.actions)
-                        .forEach(actionDetails => {
-                            actionDetails.entries.forEach(entry => {
-                                const errorContext = entry.errorContext;
-                                errorContext.stackTrace.forEach(stackTrace => {
-                                    // TODO: How to handle multiple errorMessages
-                                    const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
-                                    errorMessage = errorClassName + ": " + errorMessage.concat(stackTrace.message + " ");
-                                })
-                            })
-                        });
-                }
-
-                const color = style.get(status);
-
                 const startTime = methodRun.context.contextValues.startTime;
                 const endTime = methodRun.context.contextValues.endTime;
 
                 this._singleClassData.push({
                     value: [historyIndex, methodIdentifier/* + relatedMethods*/],
                     itemStyle: {
-                        color: color,
+                        color: style.get(status),
                         opacity: 1
                     },
                     status: status,
                     statusName: this._statusConverter.getLabelForStatus(status),
-                    errorMessage: errorMessage,
+                    errorMessage: methodRun.getErrorMessage(),
                     startTime: startTime,
                     endTime: endTime,
                     duration: endTime - startTime

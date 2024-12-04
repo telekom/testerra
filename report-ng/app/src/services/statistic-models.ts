@@ -252,8 +252,21 @@ export class MethodRun {
     }
 
     getErrorMessage() {
-        // TODO
-        return "";
+        let errorMessage = "";
+        if (this.context.resultStatus != ResultStatusType.PASSED) {
+            this.context.testSteps.flatMap(value => value.actions)
+                .forEach(actionDetails => {
+                    actionDetails.entries.forEach(entry => {
+                        const errorContext = entry.errorContext;
+                        errorContext.stackTrace.forEach(stackTrace => {
+                            // TODO: How to handle multiple errorMessages
+                            const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
+                            errorMessage = errorClassName + ": " + errorMessage.concat(stackTrace.message + " ");
+                        })
+                    })
+                });
+        }
+        return errorMessage.trim();
     }
 }
 
@@ -277,7 +290,7 @@ export class MethodHistoryStatistics extends Statistics {
         this._name = currentMethod.contextValues.name;
         this._testname = currentMethod.testName;
         this._parameters = currentMethod.parameters;
-        this._identifier = this._getParsedMethodIdentifier(this._testname, this._name, this._parameters);
+        this._identifier = this.getIdentifier();
         const currentIdArray = currentMethod.relatedMethodContextIds;
         if (currentIdArray) {
             this._relatedMethods = currentIdArray
@@ -285,7 +298,7 @@ export class MethodHistoryStatistics extends Statistics {
                     history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getAllMethods().find(obj => obj.contextValues.id === id)
                     const obj = history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getAllMethods().find(o => o.contextValues.id === id);
                     if (obj) {
-                        return this._getParsedMethodIdentifier(obj.testName, obj.contextValues.name, obj.parameters);
+                        return this._getMethodIdentifier(obj);
                     }
                     return undefined;
                 })
@@ -307,7 +320,7 @@ export class MethodHistoryStatistics extends Statistics {
                                 historicalRun.getAllMethods().find(obj => obj.contextValues.id === id)
                                 const obj = historicalRun.getAllMethods().find(o => o.contextValues.id === id);
                                 if (obj) {
-                                    return this._getParsedMethodIdentifier(obj.testName, obj.contextValues.name, obj.parameters);
+                                    return this._getMethodIdentifier(obj);
                                 }
                                 return undefined;
                             })
@@ -321,22 +334,16 @@ export class MethodHistoryStatistics extends Statistics {
                 }
             );
             if (methodInRun !== undefined) {
-                this._runs.push(new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex));
+                const currentRun = new MethodRun(methodInRun, historicalRun.historyAggregate.historyIndex);
+                this._runs.push(currentRun);
                 this.addResultStatus(methodInRun.resultStatus);
                 this._durations.push(methodInRun.contextValues.endTime - methodInRun.contextValues.startTime);
 
-                methodInRun.testSteps.forEach(step => {
-                    step.actions.forEach(action => {
-                        action.entries.forEach(entry => {
-                            entry.errorContext.stackTrace.forEach(stackTrace => {
-                                const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
-                                const error = errorClassName + ": " + stackTrace.message;
-                                const currentErrorCount = this._errorCount.get(error) || 0;
-                                this._errorCount.set(error, currentErrorCount + 1);
-                            });
-                        });
-                    });
-                });
+                const error = currentRun.getErrorMessage();
+                if (error) {
+                    const currentErrorCount = this._errorCount.get(error) || 0;
+                    this._errorCount.set(error, currentErrorCount + 1);
+                }
             }
         });
         this._flakyness = this._calculateFlakyness();
@@ -362,7 +369,6 @@ export class MethodHistoryStatistics extends Statistics {
             }
         }
         const maxSwitches = this._runs.length - 1;
-
         return (switchCount / maxSwitches);
     }
 
@@ -461,6 +467,10 @@ export class MethodHistoryStatistics extends Statistics {
             }
         }
         return methodName;
+    }
+
+    private _getMethodIdentifier(context: IMethodContext) {
+        return this._getParsedMethodIdentifier(context.testName, context.contextValues.name, context.parameters);
     }
 
     getIdentifier() {

@@ -32,6 +32,8 @@ export class FailureAspectsChart extends AbstractViewModel {
     private _option: EChartsOption;
     @bindable failure_aspects_data: any[] = [];
     @bindable() onClick;
+    private _highlightedData = " ";
+    private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
 
     constructor(
         private _statusConverter: StatusConverter
@@ -43,16 +45,49 @@ export class FailureAspectsChart extends AbstractViewModel {
     async attached() {
         this._setChartOption();
         this._chart.on('click', (params) => {
+            let selectedData = params.name;
+            if (this._highlightedData === selectedData) {
+                selectedData = " ";
+            }
+
             if (params.data && this.onClick) {
-                this.onClick(params.name);
+                this.onClick(selectedData);
+                this._highlightData(selectedData);
+                this._highlightedData = selectedData;
             }
         });
     };
 
-    private _setChartOption() {
+    private _highlightData(failureAspect: string) {
+        const inactiveOpacity = this._opacityOfInactiveElements;
 
-        const errors = this.failure_aspects_data.map(([key, _]) => key);
-        const errorCounts = this.failure_aspects_data.map(([_, value]) => value);
+        if (failureAspect === " ") {
+            this._option.series[0].data.forEach(function (bar) {
+                bar.itemStyle.opacity = 1;
+            });
+        } else {
+            this._option.series[0].data.forEach(function (bar) {
+                if (bar.value[0] === failureAspect) {
+                    bar.itemStyle.opacity = 1;
+                } else {
+                    bar.itemStyle.opacity = inactiveOpacity;
+                }
+            });
+        }
+        this._chart.setOption(this._option);
+    }
+
+    private _setChartOption() {
+        const chartData: any[] = [];
+        this.failure_aspects_data.forEach(failureAspect => {
+            chartData.push({
+                value: failureAspect,
+                itemStyle: {
+                    color: this._statusConverter.getColorForStatus(ResultStatusType.FAILED),
+                    opacity: 1
+                }
+            });
+        });
 
         this._option = {
             grid: {
@@ -65,12 +100,11 @@ export class FailureAspectsChart extends AbstractViewModel {
                 trigger: 'item',
                 formatter: function (params) {
                     return `<div class="tooltip-content">${params.name}</div>
-                        <br> (Occurences: ${params.value})`
+                        <br> (Occurences: ${params.value[1]})`
                 }
             },
             xAxis: {
                 type: 'category',
-                data: errors,
                 axisLabel: {
                     formatter: function (value) {
                         const maxLength = 30;
@@ -86,9 +120,8 @@ export class FailureAspectsChart extends AbstractViewModel {
             },
             series: [
                 {
-                    data: errorCounts,
-                    type: 'bar',
-                    color: this._statusConverter.getColorForStatus(ResultStatusType.FAILED)
+                    data: chartData,
+                    type: 'bar'
                 }
             ]
         };

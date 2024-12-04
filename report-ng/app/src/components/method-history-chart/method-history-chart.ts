@@ -94,14 +94,21 @@ export class MethodHistoryChart extends AbstractViewModel {
 
     private highlightData(failureAspect: string) {
         const inactiveOpacity = this._opacityOfInactiveElements;
-        this._option.series[0].data.forEach(function (value) {
-            console.log(value);
-            if (!(value.errorMessage.toString() === failureAspect)) {
-                value.itemStyle.opacity = inactiveOpacity;
-            }
-        });
+
+        if (failureAspect === " ") {
+            this._option.series[0].data.forEach(function (dot) {
+                dot.itemStyle.opacity = 1;
+            });
+        } else {
+            this._option.series[0].data.forEach(function (dot) {
+                if (dot.errorMessage.toString() === failureAspect) {
+                    dot.itemStyle.opacity = 1;
+                } else {
+                    dot.itemStyle.opacity = inactiveOpacity;
+                }
+            });
+        }
         this._chart.setOption(this._option);
-        console.log(failureAspect);
     }
 
     private _prepareChartData() {
@@ -116,30 +123,14 @@ export class MethodHistoryChart extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
         this.method_history_statistics.getRuns().forEach(run => {
-
             const startTime = run.context.contextValues.startTime;
             const endTime = run.context.contextValues.endTime;
             const status = run.context.resultStatus;
-            let errorMessage = "";
-
-            if (status != ResultStatusType.PASSED) {
-                run.context.testSteps.flatMap(value => value.actions)
-                    .forEach(actionDetails => {
-                        actionDetails.entries.forEach(entry => {
-                            const errorContext = entry.errorContext;
-                            errorContext.stackTrace.forEach(stackTrace => {
-                                // TODO: How to handle multiple errorMessages
-                                const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
-                                errorMessage = errorMessage.concat(errorClassName + ": " + stackTrace.message + " ");
-                            })
-                        })
-                    });
-            }
 
             this._data.push({
                 status: status,
                 statusName: this._statusConverter.getLabelForStatus(status),
-                errorMessage: errorMessage,
+                errorMessage: run.getErrorMessage(),
                 itemStyle: {
                     color: style.get(status),
                     opacity: 1
@@ -201,6 +192,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                 {
                     // This series represents a static line for visual reference, with no interaction or tooltip.
                     type: 'line',
+                    symbol: 'none',
                     data: [
                         this._lineStart, this._lineEnd
                     ],

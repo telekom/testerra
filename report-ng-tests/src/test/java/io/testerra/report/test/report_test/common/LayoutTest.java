@@ -158,12 +158,6 @@ public class LayoutTest extends AbstractReportTest {
         String methodName = "layoutTest01_layoutTestFailing";
         String className = "GenerateLayoutTestsTTReportTest";
 
-//        String[] imageTitles = new String[]{
-//                "Actual",
-//                "Difference",
-//                "Expected"
-//        };
-
         TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);

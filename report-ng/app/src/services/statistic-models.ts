@@ -23,11 +23,11 @@ import {data} from "./report-model";
 import {Container} from "aurelia-framework";
 import {StatusConverter} from "./status-converter";
 import {MethodDetails} from "./statistics-generator";
+import {MethodType} from "./report-model/framework_pb";
 import ResultStatusType = data.ResultStatusType;
 import History = data.History;
 import HistoryAggregate = data.HistoryAggregate;
 import ExecutionAggregate = data.ExecutionAggregate;
-import MethodType = data.MethodType;
 import IMethodContext = data.MethodContext;
 import IClassContext = data.ClassContext;
 import IErrorContext = data.ErrorContext;
@@ -479,6 +479,11 @@ export class MethodHistoryStatistics extends Statistics {
 
     getIdOfLatestRun(): string {
         return this._runs[this._runs.length - 1].context.contextValues.id;
+    }
+
+    isConfigurationMethod(): boolean {
+        return this.getRuns()[this.getRuns().length - 1].context.methodType === MethodType.CONFIGURATION_METHOD;
+
     }
 }
 

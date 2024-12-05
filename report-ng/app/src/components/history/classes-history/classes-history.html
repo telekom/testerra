@@ -32,9 +32,9 @@
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
-                        <mdc-list-item repeat.for="classStatistic of _executionStatistics.classStatistics"
-                                       value.bind="classStatistic.classIdentifier"
-                        >${classStatistic.classIdentifier | className:1}
+                        <mdc-list-item repeat.for="classIdentifier of _uniqueClasses"
+                                       value.bind="classIdentifier"
+                        >${classIdentifier|className:1}
                         </mdc-list-item>
                     </mdc-list>
                 </mdc-select>
@@ -43,7 +43,7 @@
                 <mdc-card class="classes-history-card">
                     <div mdc-subtitle2 class="card-headline">${_cardHeadline}</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <mdc-card-actions class="classesHistoryChartContainer" css="height: ${_cardHeight}px;">
+                    <mdc-card-actions id="classes-history-chart-container" class="classesHistoryChartContainer" css="height: ${_cardHeight}px;">
                         <echart chart.bind="_chart" class="echart-classes-history" options.bind="_option"></echart>
                     </mdc-card-actions>
                 </mdc-card>

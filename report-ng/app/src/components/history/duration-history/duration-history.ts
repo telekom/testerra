@@ -24,7 +24,7 @@ import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
 import {ECharts, EChartsOption} from 'echarts';
 import "./duration-history.scss";
-import {ExecutionStatistics, HistoryStatistics} from "../../../services/statistic-models";
+import {HistoryStatistics} from "../../../services/statistic-models";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {Container} from "aurelia-dependency-injection";
 import {
@@ -37,8 +37,6 @@ import {ResultStatusType} from "../../../services/report-model/framework_pb";
 
 @autoinject()
 export class DurationHistory extends AbstractViewModel {
-    private _dateFormatter: IntlDateFormatValueConverter;
-    private _durationFormatter: DurationFormatValueConverter;
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
     private _historyStatistics: HistoryStatistics;
@@ -47,7 +45,9 @@ export class DurationHistory extends AbstractViewModel {
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
-        private _router: Router
+        private _router: Router,
+        private _dateFormatter: IntlDateFormatValueConverter,
+        private _durationFormatter: DurationFormatValueConverter
     ) {
         super();
     }
@@ -77,7 +77,6 @@ export class DurationHistory extends AbstractViewModel {
             });
         });
 
-        this._initDateFormatter();
         this._initDurationFormatter();
         this._setChartOption();
     }
@@ -86,23 +85,6 @@ export class DurationHistory extends AbstractViewModel {
         const container = new Container();
         this._durationFormatter = container.get(DurationFormatValueConverter);
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
-    }
-
-    private _initDateFormatter() {
-        const container = new Container();
-        this._dateFormatter = container.get(IntlDateFormatValueConverter);
-        this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
-        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
-        this._dateFormatter.setOptions('full', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: false
-        });
     }
 
     private _setChartOption() {
@@ -141,26 +123,36 @@ export class DurationHistory extends AbstractViewModel {
                         formatter: function (val) {
                             return durationFormatter.toView(val, "h[h] m[min] s[s]");
                         },
-                    }
+                    },
+                    name: 'Duration'
                 },
                 {
                     type: 'value',
                     splitLine: {
                         show: false
-                    }
+                    },
+                    name: 'Testcases'
                 }
             ],
-            dataZoom:
+            dataZoom: [
                 {
-                    type: 'slider',
+                    type: 'inside',
                     xAxisIndex: [0],
                     start: 0,
                     end: 100,
                 },
+                {
+                    type: 'slider',
+                    xAxisIndex: [0],
+                    start: 0,
+                    end: 100
+                }
+            ],
             series: [
                 {
                     type: 'line',
                     data: this._chartData,
+                    z: 2,
                     lineStyle: {
                         color: DurationHistory.TEST_COLOR
                     },
@@ -175,16 +167,17 @@ export class DurationHistory extends AbstractViewModel {
                 {
                     type: 'bar',
                     yAxisIndex: 1,
+                    z: 1,
                     data: this._chartData,
                     encode: {
                         x: 0,
                         y: 2
                     },
                     itemStyle: {
-                        color: '#8c8c8c',
+                        color: DurationHistory.TEST_COLOR,
                         opacity: 0.1
                     }
-                }
+                },
             ]
         };
     }

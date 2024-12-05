@@ -37,30 +37,31 @@ import {ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()
 export class MethodHistoryChart extends AbstractViewModel {
-    private _dateFormatter: IntlDateFormatValueConverter;
-    private _durationFormatter: DurationFormatValueConverter;
     @observable() private _chart: ECharts;
     @bindable method_history_statistics: MethodHistoryStatistics;
     private _option: EChartsOption;
     private _data: any[] = [];
     private _lineStart: number[] = [];
     private _lineEnd: number[] = [];
+    private _initialChartLoading = true;        // To prevent the access of _option in the first call of sharedDataChanged()
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
     @bindable() sharedData;
 
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _dateFormatter: IntlDateFormatValueConverter,
+        private _durationFormatter: DurationFormatValueConverter
     ) {
         super();
         this._option = {};
     }
 
     async attached() {
-        this._initDateFormatter();
         this._initDurationFormatter();
         this._prepareChartData();
         this._setChartOption();
+        this._initialChartLoading = false;
     };
 
     private _initDurationFormatter() {
@@ -69,33 +70,32 @@ export class MethodHistoryChart extends AbstractViewModel {
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
     }
 
-    private _initDateFormatter() {
-        const container = new Container();
-        this._dateFormatter = container.get(IntlDateFormatValueConverter);
-        this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
-        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
-        this._dateFormatter.setOptions('full', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: false
-        });
-    }
+    sharedDataChanged(failureAspect: string) {
+        const inactiveOpacity = this._opacityOfInactiveElements;
 
-    sharedDataChanged(newData: string) {
-        if (newData) {
-            this.highlightData(newData);
+        if (failureAspect) {
+            this._option.series[0].data.forEach(function (dot) {
+                if (dot.errorMessage.toString() === failureAspect) {
+                    dot.itemStyle.opacity = 1;
+                } else {
+                    dot.itemStyle.opacity = inactiveOpacity;
+                }
+            });
+        } else {
+            if (this._initialChartLoading) {
+                return;
+            }
+            this._option.series[0].data.forEach(function (dot) {
+                dot.itemStyle.opacity = 1;
+            });
         }
+        this._chart.setOption(this._option);
     }
 
     private highlightData(failureAspect: string) {
         const inactiveOpacity = this._opacityOfInactiveElements;
 
-        if (failureAspect === " ") {
+        if (failureAspect === undefined) {
             this._option.series[0].data.forEach(function (dot) {
                 dot.itemStyle.opacity = 1;
             });

@@ -63,10 +63,6 @@ export class Threads extends AbstractViewModel {
     @observable()
     private _chart: echarts.ECharts;
 
-    // Aurelia Value Converters
-    private _dateFormatter: IntlDateFormatValueConverter;
-    private _durationFormatter: DurationFormatValueConverter;
-
     // Values for presentation
     private _gapFromBorderToStart = 400;        // To prevent that the beginning of the first test is located ON the y-axis.
     private _threadHeight = 50;                 // Height of y-axis categories in pixel
@@ -79,7 +75,9 @@ export class Threads extends AbstractViewModel {
         private _statisticsGenerator: StatisticsGenerator,
         private _statistics: StatisticsGenerator,
         private _router: Router,
-        private _classNameValueConverter: ClassNameValueConverter
+        private _classNameValueConverter: ClassNameValueConverter,
+        private _dateFormatter: IntlDateFormatValueConverter,
+        private _durationFormatter: DurationFormatValueConverter
     ) {
         super();
     }
@@ -90,7 +88,6 @@ export class Threads extends AbstractViewModel {
             this._executionStatistics.classStatistics.sort((a, b) => this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))
             this._availableStatuses = [];
             this._availableStatuses = executionStatistics.availableStatuses;
-            this._initDateFormatter();
             this._initDurationFormatter();
             this._prepareTimeline(executionStatistics);
             this._initialChartLoading = false;
@@ -273,23 +270,6 @@ export class Threads extends AbstractViewModel {
         const container = new Container();
         this._durationFormatter = container.get(DurationFormatValueConverter);
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
-    }
-
-    private _initDateFormatter() {
-        const container = new Container();
-        this._dateFormatter = container.get(IntlDateFormatValueConverter);
-        this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
-        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
-        this._dateFormatter.setOptions('full', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: false
-        });
     }
 
     /**

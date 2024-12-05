@@ -37,11 +37,10 @@ import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ClassName, ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
 import {MdcSelect} from "@aurelia-mdc-web/select";
+import {MdcCardActions} from "@aurelia-mdc-web/card/dist/types/mdc-card-actions/mdc-card-actions";
 
 @autoinject()
 export class ClassesHistory extends AbstractViewModel {
-    private _dateFormatter: IntlDateFormatValueConverter;
-    private _durationFormatter: DurationFormatValueConverter;
     private _selectedClass: string = null;
     private _previousSelectedClass: string;
     private _historyStatistics: HistoryStatistics;
@@ -51,17 +50,17 @@ export class ClassesHistory extends AbstractViewModel {
     private _data: any[] = [];
     private _singleClassData: any[] = [];
     private _categorySize = 70;               // Height of y-axis categories in pixel
-    private _chartHeaderHeight = 30;          // Height of the top spacing in pixel
-    private _scrollbarPlaceholder = 20;       // Height of the necessary spacing for the scrollbar in pixel
+    private _chartHeaderHeight = 50;          // Height of the top spacing including the scrollbar in pixel
     private _symbolSize = 60;                 // Width and height of chart symbol in pixel
     private _maxYCategoryLength = 35;         // Number of characters for y-category names
+    private _gridLeftValue: number;
     @observable private _uniqueClasses: any[] = [];
     private _numberOfMethodsInClass = 0;
     private _cardHeight: number;
     private _gridHeight: number;
     private _gridWidth: number;
     private _numberOfRuns: number;
-    private _visibleRuns = 18;
+    private _visibleRuns: number;
     private _cardHeadline: string = null;
     private classSelect: MdcSelect;
 
@@ -69,7 +68,9 @@ export class ClassesHistory extends AbstractViewModel {
         private _router: Router,
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _classNameValueConverter: ClassNameValueConverter
+        private _classNameValueConverter: ClassNameValueConverter,
+        private _dateFormatter: IntlDateFormatValueConverter,
+        private _durationFormatter: DurationFormatValueConverter
     ) {
         super();
         this._option = {};
@@ -92,24 +93,29 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     attached() {
+        this._gridLeftValue = this._maxYCategoryLength * 7;
+
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this._executionStatistics = executionStatistics;
             this._executionStatistics.classStatistics.sort((a, b) => this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))
         });
         this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => {
             this._historyStatistics = historyStatistics;
-            this._initDateFormatter();
             this._initDurationFormatter();
             this._prepareChartData();
 
             this._classChanged();
         });
+
+        // Calculate the number of visible runs based on the container width
+        const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - 10;
+        this._visibleRuns = Math.floor(dataGridWidth / this._categorySize);
     };
 
     private _classChanged() {
         if (this._selectedClass) {
             this.updateUrl({class: this._selectedClass});
-            this._cardHeadline = "History Of All Methods In Class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName);
+            this._cardHeadline = "History of all testcases in class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName);
             this._prepareSingleClassChartData();
             this._adaptChartSize(this._numberOfMethodsInClass);
             this._setChartOptionForSingleClass();
@@ -117,7 +123,7 @@ export class ClassesHistory extends AbstractViewModel {
             this.updateUrl({});
             this._selectedClass = null;
             delete this.queryParams.class;
-            this._cardHeadline = "History Of All Classes";
+            this._cardHeadline = "History of all test classes";
             this._numberOfRuns = this._historyStatistics.getTotalRuns();
             this._adaptChartSize(this._uniqueClasses.length);
             this._setChartOption();
@@ -146,21 +152,103 @@ export class ClassesHistory extends AbstractViewModel {
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
     }
 
-    private _initDateFormatter() {
-        const container = new Container();
-        this._dateFormatter = container.get(IntlDateFormatValueConverter);
-        this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
-        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
-        this._dateFormatter.setOptions('full', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: false
+    private _prepareSingleClassChartData() {
+        if (this._previousSelectedClass === this._selectedClass) {
+            return;
+        }
+
+        this._singleClassData = [];
+        this._previousSelectedClass = this._selectedClass;
+        let numberOfClassRuns = 0;
+
+        const style = new Map<number, string>();
+        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
+        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
+        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
+        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
+        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
+        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
+        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
+        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+
+        const methodsInClass = this._historyStatistics.getMethodHistoryStatistics().filter(method =>
+            method.classIdentifier === this._selectedClass &&
+            method.isConfigurationMethod() === false
+        );
+
+        methodsInClass.forEach(method => {
+            numberOfClassRuns = Math.max(numberOfClassRuns, method.getMethodRunCount());
+            const methodIdentifier = method.getIdentifier();
+            method.getRuns().forEach(methodRun => {
+                const historyIndex = methodRun.historyIndex;
+                const status = methodRun.context.resultStatus;
+                const startTime = methodRun.context.contextValues.startTime;
+                const endTime = methodRun.context.contextValues.endTime;
+
+                this._singleClassData.push({
+                    value: [historyIndex, methodIdentifier],
+                    itemStyle: {
+                        color: style.get(status),
+                        opacity: 1
+                    },
+                    status: status,
+                    statusName: this._statusConverter.getLabelForStatus(status),
+                    errorMessage: methodRun.getErrorMessage(),
+                    startTime: startTime,
+                    endTime: endTime,
+                    duration: endTime - startTime
+                });
+            });
         });
+        this._singleClassData.sort((a, b) => a.value[0] - b.value[0]);
+
+        const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
+        this._numberOfMethodsInClass = uniqueMethodNames.size;
+        this._numberOfRuns = numberOfClassRuns;
+    }
+
+    private _adaptChartSize(yItems: number) {
+        this._gridHeight = (yItems * this._categorySize);
+        this._cardHeight = this._gridHeight + 20 + this._chartHeaderHeight;
+        this._gridWidth = ((Math.min(this._visibleRuns, this._numberOfRuns)) * this._categorySize);
+    }
+
+    private _setChartOptionForSingleClass() {
+        const dateFormatter = this._dateFormatter;
+        const durationFormatter = this._durationFormatter;
+
+        let maxYCategoryLength = this._maxYCategoryLength;
+        let gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
+
+        this._option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    let tooltip = '<div class="header" style="background-color: ' +
+                        params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
+
+                    if (params.data.errorMessage) {
+                        tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
+                    }
+
+                    tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')
+                        + '<br>End time: ' + dateFormatter.toView(params.data.endTime, 'full')
+                        + '<br>Duration: ' + durationFormatter.toView(params.data.duration);
+
+                    return tooltip;
+                }
+            },
+            series: [
+                {
+                    type: 'scatter',
+                    symbolSize: this._symbolSize,
+                    symbol: 'rect',
+                    data: this._singleClassData,
+                    z: 2,
+                }
+            ]
+        };
+        this._setCommonChartOptions(maxYCategoryLength, gridLeftValue);
     }
 
     private _prepareChartData() {
@@ -230,211 +318,6 @@ export class ClassesHistory extends AbstractViewModel {
         this._adaptChartSize(this._uniqueClasses.length);
     }
 
-    private _prepareSingleClassChartData() {
-        if (this._previousSelectedClass === this._selectedClass) {
-            return;
-        }
-
-        this._singleClassData = [];
-        this._previousSelectedClass = this._selectedClass;
-        let numberOfClassRuns = 0;
-
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
-
-        const methodsInClass = this._historyStatistics.getMethodHistoryStatistics().filter(method =>
-            method.classIdentifier === this._selectedClass
-        );
-
-        console.log(methodsInClass);
-
-        methodsInClass.forEach(method => {
-            numberOfClassRuns = Math.max(numberOfClassRuns, method.getMethodRunCount());
-            const methodIdentifier = method.getIdentifier();
-            const relatedMethods = method.relatedMethods.join(";"); // TODO
-            method.getRuns().forEach(methodRun => {
-                const historyIndex = methodRun.historyIndex;
-                const status = methodRun.context.resultStatus;
-                const startTime = methodRun.context.contextValues.startTime;
-                const endTime = methodRun.context.contextValues.endTime;
-
-                this._singleClassData.push({
-                    value: [historyIndex, methodIdentifier/* + relatedMethods*/],
-                    itemStyle: {
-                        color: style.get(status),
-                        opacity: 1
-                    },
-                    status: status,
-                    statusName: this._statusConverter.getLabelForStatus(status),
-                    errorMessage: methodRun.getErrorMessage(),
-                    startTime: startTime,
-                    endTime: endTime,
-                    duration: endTime - startTime
-                });
-            });
-        });
-
-        this._singleClassData.sort((a, b) => a.value[0] - b.value[0]);
-
-        const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
-        this._numberOfMethodsInClass = uniqueMethodNames.size;
-        this._numberOfRuns = numberOfClassRuns;
-
-        /*this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
-            const historyIndex = aggregate.historyAggregate.historyIndex;
-            const foundClass = aggregate.getClassStatistics().find(currentClass =>
-                currentClass.classIdentifier === this._selectedClass
-            );
-            if (foundClass) {
-                numberOfClassRuns++;
-
-                foundClass.methodContexts.forEach(method => {
-                    const status = method.resultStatus;
-                    let methodName: string;
-
-                    if (method.testName) {
-                        methodName = method.testName;
-                    } else {
-                        methodName = method.contextValues.name;
-                        const params = [];
-                        for (const name in method.parameters) {
-                            params.push(name + ": " + method.parameters[name]);
-                        }
-                        if (params.length > 0) {
-                            methodName += "(" + params.join(", ") + ")";
-                        }
-                    }
-
-                    let errorMessage = "";
-
-                    if (status != ResultStatusType.PASSED) {
-                        method.testSteps.flatMap(value => value.actions)
-                            .forEach(actionDetails => {
-                                actionDetails.entries.forEach(entry => {
-                                    const errorContext = entry.errorContext;
-                                    errorContext.stackTrace.forEach(stackTrace => {
-                                        // TODO: How to handle multiple errorMessages
-                                        const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
-                                        errorMessage = errorClassName + ": " + errorMessage.concat(stackTrace.message + " ");
-                                    })
-                                })
-                            });
-                    }
-
-                    const color = style.get(status);
-
-                    const startTime = method.contextValues.startTime;
-                    const endTime = method.contextValues.endTime;
-
-                    this._singleClassData.push({
-                        value: [historyIndex, methodName],
-                        itemStyle: {
-                            color: color,
-                            opacity: 1
-                        },
-                        status: status,
-                        statusName: this._statusConverter.getLabelForStatus(status),
-                        errorMessage: errorMessage,
-                        startTime: startTime,
-                        endTime: endTime,
-                        duration: endTime - startTime
-                    });
-                });
-            }
-        });
-        const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
-        this._numberOfMethodsInClass = uniqueMethodNames.size;
-        this._numberOfRuns = numberOfClassRuns;*/
-    }
-
-    private _adaptChartSize(yItems: number) {
-        this._gridHeight = (yItems * this._categorySize);
-        this._cardHeight = this._gridHeight + 20 + this._chartHeaderHeight + this._scrollbarPlaceholder;
-        this._gridWidth = ((Math.min(this._visibleRuns, this._numberOfRuns)) * this._categorySize);
-    }
-
-    private _setChartOptionForSingleClass() {
-        const dateFormatter = this._dateFormatter;
-        const durationFormatter = this._durationFormatter;
-
-        let maxYCategoryLength = this._maxYCategoryLength;
-        let gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
-
-        this._option = {
-            grid: {
-                height: this._gridHeight,
-                width: this._gridWidth,
-                top: this._chartHeaderHeight + this._scrollbarPlaceholder,
-                bottom: 0,
-                left: gridLeftValue,
-                right: 0
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: function (params) {
-                    let tooltip = '<div class="header" style="background-color: ' +
-                        params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
-
-                    if (params.data.errorMessage) {
-                        tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
-                    }
-
-                    tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')
-                        + '<br>End time: ' + dateFormatter.toView(params.data.endTime, 'full')
-                        + '<br>Duration: ' + durationFormatter.toView(params.data.duration);
-
-                    return tooltip;
-                }
-            },
-            xAxis: {
-                type: 'category',
-                position: 'top',
-                show: true
-            },
-            yAxis: {
-                type: 'category',
-                show: true,
-                axisLabel: {
-                    formatter: function (value) {
-                        const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
-                        return value.match(regex)?.join('\n');
-                    }
-                },
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: '#c3c3c3',
-                        type: 'solid',
-                        width: 1
-                    }
-                },
-                splitArea: {
-                    show: true,
-                    areaStyle: {
-                        color: ['rgb(255,255,255)', 'rgb(242,242,242)'],
-                        opacity: 1
-                    }
-                },
-            },
-            series: [
-                {
-                    type: 'scatter',
-                    symbolSize: this._symbolSize,
-                    symbol: 'rect',
-                    data: this._singleClassData,
-                    z: 2,
-                }
-            ]
-        };
-    }
-
     private _setChartOption() {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
@@ -448,14 +331,6 @@ export class ClassesHistory extends AbstractViewModel {
         const subQuadHeight = subQuadWidth * 2 / 3;
 
         this._option = {
-            grid: {
-                height: this._gridHeight,
-                width: this._gridWidth,
-                top: this._chartHeaderHeight + this._scrollbarPlaceholder,
-                bottom: 0,
-                left: gridLeftValue,
-                right: 0
-            },
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
@@ -475,36 +350,6 @@ export class ClassesHistory extends AbstractViewModel {
                         <br>End time: ${dateFormatter.toView(params.data.endTime, 'full')}
                         <br>Duration: ${durationFormatter.toView(params.data.duration)}`;
                 }
-            },
-            xAxis: {
-                type: 'category',
-                position: 'top',
-                show: true
-            },
-            yAxis: {
-                type: 'category',
-                show: true,
-                axisLabel: {
-                    formatter: function (value) {
-                        const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
-                        return value.match(regex)?.join('\n');
-                    }
-                },
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: '#c3c3c3',
-                        type: 'solid',
-                        width: 1
-                    }
-                },
-                splitArea: {
-                    show: true,
-                    areaStyle: {
-                        color: ['rgb(255,255,255)', 'rgb(242,242,242)'],
-                        opacity: 1
-                    }
-                },
             },
             series: [
                 {
@@ -676,6 +521,48 @@ export class ClassesHistory extends AbstractViewModel {
                     data: this._data
                 }
             ]
+        };
+        this._setCommonChartOptions(maxYCategoryLength, gridLeftValue);
+    }
+
+    private _setCommonChartOptions(maxYCategoryLength, gridLeftValue) {
+        this._option.grid = {
+            height: this._gridHeight,
+                width: this._gridWidth,
+                top: this._chartHeaderHeight,
+                bottom: 0,
+                left: gridLeftValue,
+                right: 0
+        };
+        this._option.yAxis = {
+            type: 'category',
+            show: true,
+            axisLabel: {
+                formatter: function (value) {
+                    const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
+                    return value.match(regex)?.join('\n');
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#c3c3c3',
+                    type: 'solid',
+                    width: 1
+                }
+            },
+            splitArea: {
+                show: true,
+                areaStyle: {
+                    color: ['rgb(255,255,255)', 'rgb(242,242,242)'],
+                    opacity: 1
+                }
+            }
+        };
+        this._option.xAxis = {
+            type: 'category',
+            position: 'top',
+            show: true
         };
     }
 }

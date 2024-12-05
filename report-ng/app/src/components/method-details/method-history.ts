@@ -25,7 +25,7 @@ import {MethodDetails, StatisticsGenerator} from "services/statistics-generator"
 import {AbstractViewModel} from "../abstract-view-model";
 import {HistoryStatistics, MethodHistoryStatistics} from "../../services/statistic-models";
 import "./method-history.scss";
-import {IFilter, StatusConverter} from "../../services/status-converter";
+import {StatusConverter} from "../../services/status-converter";
 import {ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()

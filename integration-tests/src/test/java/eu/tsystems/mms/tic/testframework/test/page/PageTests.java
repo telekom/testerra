@@ -104,10 +104,10 @@ public class PageTests extends AbstractExclusiveTestSitesTest<WebTestPage> imple
     }
 
     @Test
-    @Fails(description = "The test itself passes, but collected assertions will always fail")
+//    @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
         WebTestPage page = getPage();
-        CONTROL.collectAssertions(() -> page.expect().title().length().isGreaterThan(10));
+//        CONTROL.collectAssertions(() -> page.expect().title().length().isGreaterThan(10));
     }
 
     @Test

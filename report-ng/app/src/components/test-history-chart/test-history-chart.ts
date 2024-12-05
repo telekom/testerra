@@ -38,8 +38,6 @@ import {ResultStatusType} from "../../services/report-model/framework_pb";
 
 @autoinject()
 export class TestHistoryChart extends AbstractViewModel {
-    private _dateFormatter: IntlDateFormatValueConverter;
-    private _durationFormatter: DurationFormatValueConverter;
     private _historyStatistics: HistoryStatistics;
     private _historyAvailable: boolean;
     private _initialChartLoading = true;
@@ -47,10 +45,13 @@ export class TestHistoryChart extends AbstractViewModel {
     private _option: EChartsOption;
     @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
     @bindable is_history_view: boolean;
+    private _chartData: any[] = [];
 
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
+        private _dateFormatter: IntlDateFormatValueConverter,
+        private _durationFormatter: DurationFormatValueConverter
     ) {
         super();
         this._option = {};
@@ -90,10 +91,32 @@ export class TestHistoryChart extends AbstractViewModel {
         this._chart.setOption(this._option);
     }
 
+/*    private _handleZoomEvent(event: any) {
+        let start: number;
+        let end: number;
+
+        if (event.batch) {
+            start = event.batch[0].start;
+            end = event.batch[0].end;
+        } else {
+            start = event.start;
+            end = event.end;
+        }
+
+        const totalDataPoints = this._chartData.length;
+        const startIndex = Math.ceil((start / 100) * totalDataPoints);
+        const endIndex = Math.ceil((end / 100) * totalDataPoints);
+
+        console.log('Zoom start:', startIndex, 'Zoom end:', endIndex);
+    }
+
+    private _chartChanged() {
+        this._chart.on('dataZoom', event => this._handleZoomEvent(event));
+    }*/
+
     async attached() {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
         this._historyAvailable = this._historyStatistics.history.entries.length >= 2;
-        this._initDateFormatter();
         this._initDurationFormatter();
 
         if (this._historyAvailable) {
@@ -111,23 +134,6 @@ export class TestHistoryChart extends AbstractViewModel {
         const container = new Container();
         this._durationFormatter = container.get(DurationFormatValueConverter);
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
-    }
-
-    private _initDateFormatter() {
-        const container = new Container();
-        this._dateFormatter = container.get(IntlDateFormatValueConverter);
-        this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
-        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
-        this._dateFormatter.setOptions('full', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: false
-        });
     }
 
     private _setChartPlaceholderOption() {
@@ -191,8 +197,8 @@ export class TestHistoryChart extends AbstractViewModel {
                 silent: true,
                 z: 10,
                 style: {
-                    text: 'No history available',
-                    font: '40px Microsoft YaHei',
+                    text: 'No History Available',
+                    font: '28px Microsoft YaHei',
                     fill: '#55555'
                 }
             }
@@ -206,7 +212,6 @@ export class TestHistoryChart extends AbstractViewModel {
         style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
         style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
 
-        let chartData: any[] = [];
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
 
@@ -215,7 +220,7 @@ export class TestHistoryChart extends AbstractViewModel {
             const startTime = entry.historyAggregate.executionContext.contextValues.startTime;
             const endTime = entry.historyAggregate.executionContext.contextValues.endTime;
 
-            chartData.push({
+            this._chartData.push({
                 startTime: startTime,
                 endTime: endTime,
                 duration: endTime - startTime,
@@ -313,7 +318,7 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         disabled: true
                     },
-                    data: chartData
+                    data: this._chartData
                 },
                 {
                     name: 'Skipped',
@@ -335,7 +340,7 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         disabled: true
                     },
-                    data: chartData
+                    data: this._chartData
                 },
                 {
                     name: 'Expected Failed',
@@ -357,7 +362,7 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         disabled: true
                     },
-                    data: chartData
+                    data: this._chartData
                 },
                 {
                     name: 'Failed',
@@ -379,7 +384,7 @@ export class TestHistoryChart extends AbstractViewModel {
                     emphasis: {
                         disabled: true
                     },
-                    data: chartData
+                    data: this._chartData
                 },
             ]
         };
@@ -399,6 +404,7 @@ export class TestHistoryChart extends AbstractViewModel {
                 }
             ]
 
+            // Adapt grid for data-zoom slider
             this._option.grid = {
                 top: '5%',
                 left: '1%',

@@ -32,7 +32,7 @@ export class FailureAspectsChart extends AbstractViewModel {
     private _option: EChartsOption;
     @bindable failure_aspects_data: any[] = [];
     @bindable() onClick;
-    private _highlightedData = " ";
+    private _highlightedData = undefined;
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
 
     constructor(
@@ -47,7 +47,7 @@ export class FailureAspectsChart extends AbstractViewModel {
         this._chart.on('click', (params) => {
             let selectedData = params.name;
             if (this._highlightedData === selectedData) {
-                selectedData = " ";
+                selectedData = undefined;
             }
 
             if (params.data && this.onClick) {
@@ -61,7 +61,7 @@ export class FailureAspectsChart extends AbstractViewModel {
     private _highlightData(failureAspect: string) {
         const inactiveOpacity = this._opacityOfInactiveElements;
 
-        if (failureAspect === " ") {
+        if (failureAspect === undefined) {
             this._option.series[0].data.forEach(function (bar) {
                 bar.itemStyle.opacity = 1;
             });

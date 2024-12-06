@@ -354,6 +354,8 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     /**
      * This test calls the page https://weatherstack.com/ which uses your local IP address to show your local weather.
      * With the help of the Request fetcher you can modify the request to change to IP address.
+     *
+     * See details at https://chromedevtools.github.io/devtools-protocol/tot/Fetch/
      */
     @Test
     public void testT15_Network_changeRequest() {

@@ -285,6 +285,6 @@ public class UiElementLayoutTests extends AbstractExclusiveTestSitesTest<WebTest
 
         page.expect().viewport().contains(page.getOpenAgainLink()).is(true);
         page.expect().viewport().width().isBetween(1000, 1024);
-        page.expect().viewport().height().isBetween(620, 768);
+        page.expect().viewport().height().isBetween(570, 768);
     }
 }

@@ -1,4 +1,4 @@
-= Support of Chrome developer toos (CDP)
+= Support of Chrome developer tools (CDP)
 
 Selenium 4 supports the access to the Chrome developer tools. Testerra provides a simple API to interact with CDP.
 

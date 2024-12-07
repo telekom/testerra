@@ -30,6 +30,7 @@ import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import org.testng.annotations.Test;
+import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab.ScreenshotType;
 
 public class LayoutTest extends AbstractReportTest {
 
@@ -153,27 +154,31 @@ public class LayoutTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT06_checkLayoutDialog(){
+    public void testT06_checkLayoutDialog() {
         String methodName = "layoutTest01_layoutTestFailing";
         String className = "GenerateLayoutTestsTTReportTest";
-
-        String[] imageTitles = new String[]{
-                "Actual",
-                "Difference",
-                "Expected"
-        };
 
         TestStep.begin("Navigate to details page");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnAdditionalReport(WEB_DRIVER_MANAGER.getWebDriver());
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
         reportTestsPage.selectClassName(className);
         ReportDetailsTab reportDetailsTab = reportTestsPage.navigateToDetailsTab(methodName);
-        TestStep.begin("Open Layout Dialog");
-        for(String title: imageTitles){
-            ComparisonDialogOverlay comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(title);
-            comparisonDialogOverlay.checkSelectedAndContentFromStartingMatched(title);
-            reportDetailsTab = comparisonDialogOverlay.closeDialog();
-        }
+
+        TestStep.begin("Open Layout Dialog from actual image");
+        ComparisonDialogOverlay comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(ScreenshotType.Actual);
+        comparisonDialogOverlay.checkContent(ScreenshotType.Actual, ScreenshotType.Difference, "layout_compare_dialog");
+        reportDetailsTab = comparisonDialogOverlay.closeDialog();
+
+        TestStep.begin("Open Layout Dialog from difference image");
+        comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(ScreenshotType.Difference);
+        comparisonDialogOverlay.checkContent(ScreenshotType.Difference, ScreenshotType.Expected, "layout_compare_dialog");
+        reportDetailsTab = comparisonDialogOverlay.closeDialog();
+
+        TestStep.begin("Open Layout Dialog from expected image");
+        comparisonDialogOverlay = reportDetailsTab.openComparisonDialogByClickingOnScreenShot(ScreenshotType.Expected);
+        comparisonDialogOverlay.checkContent(ScreenshotType.Expected, ScreenshotType.Difference, "layout_compare_dialog");
+        reportDetailsTab = comparisonDialogOverlay.closeDialog();
+
     }
 
 }

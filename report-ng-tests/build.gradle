@@ -23,6 +23,7 @@ test {
 
     def preTest = findProperty("pretestRNG")
     def preTestExtended = findProperty("pretestRNGExtended")
+    def playground = findProperty("playground")
 
     if (preTest) {
         s = ['src/test/resources/testng/GenerateReport.xml']
@@ -34,6 +35,10 @@ test {
         s = ['src/test/resources/testng/GenerateExtendedReport.xml']
         System.setProperty("tt.report.dir", "src/test/resources/reports/report-extended-status")
         System.setProperty("tt.report.name", "Generated Report for Additional UI-Test")
+    }
+
+    if (playground) {
+        s = ['src/test/resources/testng/Playground.xml']
     }
 
     useTestNG() {

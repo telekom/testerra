@@ -114,8 +114,8 @@ export class RunHistory extends AbstractViewModel {
         const methods = this._historyStatistics.getMethodHistoryStatistics();
 
         const flakyMethods = methods
-            .filter(method => method.getFlakyness() > 0.2)
-            .sort((a, b) => b.getFlakyness() - a.getFlakyness())
+            .filter(method => method.flakiness > 0.2)
+            .sort((a, b) => b.flakiness - a.flakiness)
             .slice(0, 3);
 
         flakyMethods.forEach(method => {

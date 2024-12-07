@@ -149,7 +149,7 @@ export class Method {
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
             this._loading = false;
 
-            // TODO: Disable method-history-tab if there is no history (currently not working!)
+            // TODO: Disable method-history-tab if there is no history (currently a bugfest! -> check if.bind)
             let methodRunCount = 2;
             // this._statistics.getHistoryStatistics().then(history => {
             //     if (history.getTotalRuns() > 1) {
@@ -268,7 +268,7 @@ export class Method {
     }
 
     /**
-     * The replace strategy is necessary to reinitialize the navigation,
+     * The replacement strategy is necessary to reinitialize the navigation,
      * when some tabs have been disabled
      */
     determineActivationStrategy() {

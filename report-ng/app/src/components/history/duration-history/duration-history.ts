@@ -40,7 +40,7 @@ export class DurationHistory extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
     private _historyStatistics: HistoryStatistics;
-    private static readonly TEST_COLOR = '#6897EA';
+    private static readonly DURATION_COLOR = '#6897EA';
     private _chartData: any[] = [];
 
     constructor(
@@ -98,7 +98,7 @@ export class DurationHistory extends AbstractViewModel {
                     type: 'line',
                 },
                 borderWidth: 1,
-                borderColor: DurationHistory.TEST_COLOR,
+                borderColor: DurationHistory.DURATION_COLOR,
                 formatter: function (params) {
                     const valueData = params[0];
                     const testcases = valueData.value[2];
@@ -154,14 +154,16 @@ export class DurationHistory extends AbstractViewModel {
                     data: this._chartData,
                     z: 2,
                     lineStyle: {
-                        color: DurationHistory.TEST_COLOR
+                        color: DurationHistory.DURATION_COLOR
                     },
+                    symbol: 'circle',
+                    symbolSize: 5,
                     encode: {
                         x: 0,
                         y: 1
                     },
                     itemStyle: {
-                        color: DurationHistory.TEST_COLOR
+                        color: DurationHistory.DURATION_COLOR
                     },
                 },
                 {
@@ -174,7 +176,7 @@ export class DurationHistory extends AbstractViewModel {
                         y: 2
                     },
                     itemStyle: {
-                        color: DurationHistory.TEST_COLOR,
+                        color: DurationHistory.DURATION_COLOR,
                         opacity: 0.1
                     }
                 },

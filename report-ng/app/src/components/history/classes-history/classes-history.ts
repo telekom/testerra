@@ -31,28 +31,27 @@ import {
 import {
     IntlDateFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
-import {ExecutionStatistics, HistoryStatistics} from "../../../services/statistic-models";
+import {HistoryStatistics} from "../../../services/statistic-models";
 import {StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ClassName, ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
 import {MdcSelect} from "@aurelia-mdc-web/select";
-import {MdcCardActions} from "@aurelia-mdc-web/card/dist/types/mdc-card-actions/mdc-card-actions";
 
 @autoinject()
 export class ClassesHistory extends AbstractViewModel {
     private _selectedClass: string = null;
-    private _previousSelectedClass: string;
+    private _previousSelectedClass: string;           // Helper variable to prevent unnecessary option building
     private _historyStatistics: HistoryStatistics;
-    private _executionStatistics: ExecutionStatistics;
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
     private _data: any[] = [];
     private _singleClassData: any[] = [];
-    private _categorySize = 70;               // Height of y-axis categories in pixel
-    private _chartHeaderHeight = 50;          // Height of the top spacing including the scrollbar in pixel
+    private _categoryHeight = 80;             // Height of y-axis categories in pixel
+    private _categoryWidth = 70;              // Width of y-axis categories in pixel
     private _symbolSize = 60;                 // Width and height of chart symbol in pixel
-    private _maxYCategoryLength = 35;         // Number of characters for y-category names
+    private _chartHeaderHeight = 50;          // Height of the top spacing including the scrollbar in pixel
+    private _maxYCategoryLength = 35;         // Maximum number of characters for y-category names before linebreak
     private _gridLeftValue: number;
     @observable private _uniqueClasses: any[] = [];
     private _numberOfMethodsInClass = 0;
@@ -85,7 +84,7 @@ export class ClassesHistory extends AbstractViewModel {
             const classInParams = params.class;
             window.setTimeout(() => {
                 self._selectedClass = classInParams;
-                self.classSelect.value = self._executionStatistics.classStatistics.find(classStat => classStat.classIdentifier == classInParams);      // necessary to keep selection after refreshing the page
+                self.classSelect.value = self._uniqueClasses.find(classId => classId == classInParams);      // necessary to keep selection after refreshing the page
             }, 200);
         } else {
             this._selectedClass = null;
@@ -95,10 +94,6 @@ export class ClassesHistory extends AbstractViewModel {
     attached() {
         this._gridLeftValue = this._maxYCategoryLength * 7;
 
-        this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
-            this._executionStatistics = executionStatistics;
-            this._executionStatistics.classStatistics.sort((a, b) => this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))
-        });
         this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => {
             this._historyStatistics = historyStatistics;
             this._initDurationFormatter();
@@ -109,7 +104,7 @@ export class ClassesHistory extends AbstractViewModel {
 
         // Calculate the number of visible runs based on the container width
         const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - 10;
-        this._visibleRuns = Math.floor(dataGridWidth / this._categorySize);
+        this._visibleRuns = Math.floor(dataGridWidth / this._categoryWidth);
     };
 
     private _classChanged() {
@@ -208,17 +203,15 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _adaptChartSize(yItems: number) {
-        this._gridHeight = (yItems * this._categorySize);
+        this._gridHeight = (yItems * this._categoryHeight);
         this._cardHeight = this._gridHeight + 20 + this._chartHeaderHeight;
-        this._gridWidth = ((Math.min(this._visibleRuns, this._numberOfRuns)) * this._categorySize);
+        this._gridWidth = ((Math.min(this._visibleRuns, this._numberOfRuns)) * this._categoryWidth);
     }
 
     private _setChartOptionForSingleClass() {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
-
         let maxYCategoryLength = this._maxYCategoryLength;
-        let gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
 
         this._option = {
             tooltip: {
@@ -248,7 +241,7 @@ export class ClassesHistory extends AbstractViewModel {
                 }
             ]
         };
-        this._setCommonChartOptions(maxYCategoryLength, gridLeftValue);
+        this._setCommonChartOptions(maxYCategoryLength);
     }
 
     private _prepareChartData() {
@@ -322,11 +315,9 @@ export class ClassesHistory extends AbstractViewModel {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
 
+        // Variables to construct the custom chart elements
         const maxYCategoryLength = this._maxYCategoryLength;
-        const gridLeftValue = maxYCategoryLength * 7;   // Calculate the value for grid:left
-
-        const size = 60;
-        const subQuadWidth = Math.sqrt((size * size) / 4);
+        const subQuadWidth = Math.sqrt((this._symbolSize * this._symbolSize) / 4);
         const largeSubQuadLength = subQuadWidth * 2;
         const subQuadHeight = subQuadWidth * 2 / 3;
 
@@ -522,17 +513,17 @@ export class ClassesHistory extends AbstractViewModel {
                 }
             ]
         };
-        this._setCommonChartOptions(maxYCategoryLength, gridLeftValue);
+        this._setCommonChartOptions(maxYCategoryLength);
     }
 
-    private _setCommonChartOptions(maxYCategoryLength, gridLeftValue) {
+    private _setCommonChartOptions(maxYCategoryLength) {
         this._option.grid = {
             height: this._gridHeight,
-                width: this._gridWidth,
-                top: this._chartHeaderHeight,
-                bottom: 0,
-                left: gridLeftValue,
-                right: 0
+            width: this._gridWidth,
+            top: this._chartHeaderHeight,
+            bottom: 0,
+            left: this._gridLeftValue,
+            right: 0
         };
         this._option.yAxis = {
             type: 'category',
@@ -554,7 +545,7 @@ export class ClassesHistory extends AbstractViewModel {
             splitArea: {
                 show: true,
                 areaStyle: {
-                    color: ['rgb(255,255,255)', 'rgb(242,242,242)'],
+                    color: ['rgb(255,255,255)', 'rgb(239,239,239)'],
                     opacity: 1
                 }
             }

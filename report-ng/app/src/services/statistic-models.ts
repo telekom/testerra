@@ -277,10 +277,12 @@ export class MethodHistoryStatistics extends Statistics {
     private _runs: MethodRun[] = [];
     private _durations: number[] = [];
     private _errorCount = new Map<string, number>();
-    private _flakyness: number = 0;
+    private _flakiness: number = 0;
     private _relatedMethods: string[] = [];
     private _identifier: string = null;
     private _classIdentifier: string = null;
+    private _flakinessFullWeightRunCount = 10;
+    private _flakinessDecayFactor = 0.9;
 
     constructor(
         currentMethod: IMethodContext, history: HistoryStatistics
@@ -293,16 +295,7 @@ export class MethodHistoryStatistics extends Statistics {
         this._identifier = this.getIdentifier();
         const currentIdArray = currentMethod.relatedMethodContextIds;
         if (currentIdArray) {
-            this._relatedMethods = currentIdArray
-                .map(id => {
-                    history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getAllMethods().find(obj => obj.contextValues.id === id)
-                    const obj = history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getAllMethods().find(o => o.contextValues.id === id);
-                    if (obj) {
-                        return this._getMethodIdentifier(obj);
-                    }
-                    return undefined;
-                })
-                .filter(entry => entry !== undefined);
+            this._relatedMethods = this._findRelatedMethodIdentifiers(currentIdArray, history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1]);
         }
 
         this._classIdentifier = history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getClassStatistics().find(classStats => {
@@ -315,16 +308,7 @@ export class MethodHistoryStatistics extends Statistics {
                     let relatedMethods: string[] = [];
 
                     if (idArray) {
-                        relatedMethods = idArray
-                            .map(id => {
-                                historicalRun.getAllMethods().find(obj => obj.contextValues.id === id)
-                                const obj = historicalRun.getAllMethods().find(o => o.contextValues.id === id);
-                                if (obj) {
-                                    return this._getMethodIdentifier(obj);
-                                }
-                                return undefined;
-                            })
-                            .filter(entry => entry !== undefined);
+                        relatedMethods = this._findRelatedMethodIdentifiers(idArray, historicalRun);
                     }
                     const methodIdentifier = this._getParsedMethodIdentifier(method.testName, method.contextValues.name, method.parameters);
 
@@ -346,34 +330,63 @@ export class MethodHistoryStatistics extends Statistics {
                 }
             }
         });
-        this._flakyness = this._calculateFlakyness();
+        this._flakiness = this._calculateWeightedFlakiness();
     }
 
     get classIdentifier() {
         return this._classIdentifier;
     }
 
-    get relatedMethods() {
-        return this._relatedMethods;
+    private _findRelatedMethodIdentifiers(idArray: string[], historicalRun: HistoryAggregateStatistics) {
+        return idArray
+            .map(id => {
+                historicalRun.getAllMethods().find(obj => obj.contextValues.id === id)
+                const obj = historicalRun.getAllMethods().find(o => o.contextValues.id === id);
+                if (obj) {
+                    return this._getMethodIdentifier(obj);
+                }
+                return undefined;
+            })
+            .filter(entry => entry !== undefined);
     }
 
-    private _calculateFlakyness(): number {
-        if (this._runs.length < 2) {
+    private _calculateWeightedFlakiness(): number {
+        const runCount = this._runs.length;
+        if (runCount < 2) {
             return 0;
         }
 
-        let switchCount = 0;
-        for (let i = 1; i < this._runs.length; i++) {
-            if (this._runs[i].context.resultStatus !== this._runs[i - 1].context.resultStatus) {
-                switchCount++;
+        let weightedSwitchSum = 0;
+        let totalWeight = 0;
+
+        for (let i = 1; i < runCount; i++) {
+            let currentResultStatus: ResultStatusType = this._normalizePassedStatus(this._runs[i].context.resultStatus);
+            let previousResultStatus: ResultStatusType = this._normalizePassedStatus(this._runs[i - 1].context.resultStatus);
+
+            const isSwitch = currentResultStatus !== previousResultStatus ? 1 : 0;
+            let weight: number;
+            if (i > runCount - this._flakinessFullWeightRunCount) {
+                weight = 1;
+            } else {
+                weight = Math.pow(this._flakinessDecayFactor, (runCount - this._flakinessFullWeightRunCount) - i);
             }
+
+            weightedSwitchSum += isSwitch * weight;
+            totalWeight += weight;
         }
-        const maxSwitches = this._runs.length - 1;
-        return (switchCount / maxSwitches);
+
+        return (weightedSwitchSum / totalWeight);
     }
 
-    getFlakyness(): number {
-        return this._flakyness;
+    private _normalizePassedStatus(status: ResultStatusType): ResultStatusType {
+        if (status === ResultStatusType.REPAIRED || status === ResultStatusType.PASSED_RETRY) {
+            return ResultStatusType.PASSED;
+        }
+        return status;
+    }
+
+    get flakiness(): number {
+        return this._flakiness;
     }
 
     getAverageDuration(): number {
@@ -483,7 +496,6 @@ export class MethodHistoryStatistics extends Statistics {
 
     isConfigurationMethod(): boolean {
         return this.getRuns()[this.getRuns().length - 1].context.methodType === MethodType.CONFIGURATION_METHOD;
-
     }
 }
 

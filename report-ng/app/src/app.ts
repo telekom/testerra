@@ -62,13 +62,13 @@ export class App {
             // this._router.routes.filter(route => route.route == "exit-points").find(route => {
             //     route.settings.count = executionStatistics.exitPointStatistics.length;
             // });
-            this._statistics.getHistoryStatistics().then(historyStatistics => {
-                if (historyStatistics.getTotalRuns() < 2) {
-                    this._router.routes.filter(route => route.route == "history").find(route => {
-                        route.settings.disabled = true;
-                    });
-                }
-            });
+            // this._statistics.getHistoryStatistics().then(historyStatistics => {
+            //     if (historyStatistics.getTotalRuns() < 2) {
+            //         this._router.routes.filter(route => route.route == "history").find(route => {
+            //             route.settings.disabled = true;
+            //         });
+            //     }
+            // });
         });
     }
 

@@ -197,8 +197,8 @@ export class TestHistoryChart extends AbstractViewModel {
                 silent: true,
                 z: 10,
                 style: {
-                    text: 'No History Available',
-                    font: '28px Microsoft YaHei',
+                    text: 'No history available',
+                    font: '28px Roboto',
                     fill: '#55555'
                 }
             }

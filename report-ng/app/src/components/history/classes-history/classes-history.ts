@@ -62,6 +62,7 @@ export class ClassesHistory extends AbstractViewModel {
     private _visibleRuns: number;
     private _cardHeadline: string = null;
     private classSelect: MdcSelect;
+    private _historyAvailable = false;
 
     constructor(
         private _router: Router,
@@ -96,16 +97,18 @@ export class ClassesHistory extends AbstractViewModel {
 
         this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => {
             this._historyStatistics = historyStatistics;
+            if (historyStatistics.getTotalRuns() > 1) {
+                this._historyAvailable = true;
+                // Calculate the number of visible runs based on the container width
+                const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - 10;
+                this._visibleRuns = Math.floor(dataGridWidth / this._categoryWidth);
+            }
             this._initDurationFormatter();
             this._prepareChartData();
 
             this._classChanged();
         });
-
-        // Calculate the number of visible runs based on the container width
-        const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - 10;
-        this._visibleRuns = Math.floor(dataGridWidth / this._categoryWidth);
-    };
+    }
 
     private _classChanged() {
         if (this._selectedClass) {

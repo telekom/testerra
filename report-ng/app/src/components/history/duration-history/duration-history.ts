@@ -42,6 +42,7 @@ export class DurationHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     private static readonly DURATION_COLOR = '#6897EA';
     private _chartData: any[] = [];
+    private _historyAvailable = false;
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
@@ -57,6 +58,9 @@ export class DurationHistory extends AbstractViewModel {
         this._router = navInstruction.router;
 
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
+        if (this._historyStatistics.getTotalRuns() > 1) {
+            this._historyAvailable = true;
+        }
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const context = aggregate.historyAggregate.executionContext.contextValues;

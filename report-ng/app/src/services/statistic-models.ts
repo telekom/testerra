@@ -285,7 +285,7 @@ export class MethodHistoryStatistics extends Statistics {
     private _flakinessDecayFactor = 0.9;
 
     constructor(
-        currentMethod: IMethodContext, history: HistoryStatistics
+        currentMethod: IMethodContext, historyAggregateStatistics: HistoryAggregateStatistics[]
     ) {
         super();
 
@@ -295,14 +295,17 @@ export class MethodHistoryStatistics extends Statistics {
         this._identifier = this.getIdentifier();
         const currentIdArray = currentMethod.relatedMethodContextIds;
         if (currentIdArray) {
-            this._relatedMethods = this._findRelatedMethodIdentifiers(currentIdArray, history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1]);
+            this._relatedMethods = this._findRelatedMethodIdentifiers(currentIdArray, historyAggregateStatistics[historyAggregateStatistics.length - 1]);
         }
 
-        this._classIdentifier = history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1].getClassStatistics().find(classStats => {
+        const foundClassContext = historyAggregateStatistics[historyAggregateStatistics.length - 1].getClassStatistics().find(classStats => {
             return classStats.classContext.contextValues.id === currentMethod.classContextId;
-        }).classIdentifier;
+        });
+        if (foundClassContext) {
+            this._classIdentifier = foundClassContext.classIdentifier;
+        }
 
-        history.getHistoryAggregateStatistics().forEach(historicalRun => {
+        historyAggregateStatistics.forEach(historicalRun => {
             const methodInRun = historicalRun.getAllMethods().find(method => {
                     const idArray = method.relatedMethodContextIds;
                     let relatedMethods: string[] = [];
@@ -514,9 +517,10 @@ export class HistoryStatistics {
             this.historyAggregateStatistics.push(new HistoryAggregateStatistics(entry));
         });
 
+        // Create MethodHistoryStatistics for all Methods in the latest run
         const lastEntry = this.historyAggregateStatistics[this.historyAggregateStatistics.length - 1];
         lastEntry.getAllMethods().forEach(currentMethod => {
-            this.methodHistoryStatistics.push(new MethodHistoryStatistics(currentMethod, this));
+            this.methodHistoryStatistics.push(new MethodHistoryStatistics(currentMethod, this.historyAggregateStatistics));
         });
 
         this._totalRuns = this.history.entries.length;

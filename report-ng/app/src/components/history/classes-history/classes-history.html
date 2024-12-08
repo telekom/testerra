@@ -21,7 +21,7 @@
 
 <template>
     <mdc-layout-grid>
-        <mdc-layout-grid-inner>
+        <mdc-layout-grid-inner if.bind="_historyAvailable">
             <mdc-layout-grid-cell span="3">
                 <mdc-select label="Class"
                             ref="classSelect"
@@ -46,6 +46,15 @@
                     <mdc-card-actions id="classes-history-chart-container" class="classesHistoryChartContainer" css="height: ${_cardHeight}px;">
                         <echart chart.bind="_chart" class="echart-classes-history" options.bind="_option"></echart>
                     </mdc-card-actions>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+        </mdc-layout-grid-inner>
+        <mdc-layout-grid-inner else>
+            <mdc-layout-grid-cell span="12">
+                <mdc-card>
+                    <div class="short-card vcenter hcenter p1 card-content" mdc-body1>
+                        <div>No history available</div>
+                    </div>
                 </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

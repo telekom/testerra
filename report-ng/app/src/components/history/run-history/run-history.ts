@@ -43,6 +43,7 @@ export class RunHistory extends AbstractViewModel {
     private _availableStatuses: ResultStatusType[] = [];
     private _topFlakyTests: any[] = [];
     private statusSelect: MdcSelect;
+    private _historyAvailable = false;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -58,6 +59,9 @@ export class RunHistory extends AbstractViewModel {
         this._router = navInstruction.router;
 
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
+        if (this._historyStatistics.getTotalRuns() > 1) {
+            this._historyAvailable = true;
+        }
 
         let statusCount = new Map<ResultStatusType, number>();
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
@@ -125,7 +129,6 @@ export class RunHistory extends AbstractViewModel {
                 statistics: method
             });
         });
-        console.log(this._topFlakyTests);
     }
 
     private _statusChanged() {

@@ -21,7 +21,7 @@
 
 import {autoinject} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
-import {MethodDetails, StatisticsGenerator} from "services/statistics-generator";
+import {StatisticsGenerator} from "services/statistics-generator";
 import {AbstractViewModel} from "../abstract-view-model";
 import {HistoryStatistics, MethodHistoryStatistics} from "../../services/statistic-models";
 import "./method-history.scss";
@@ -31,13 +31,12 @@ import {ResultStatusType} from "../../services/report-model/framework_pb";
 @autoinject()
 export class MethodHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
-    private _methodDetails: MethodDetails;
     failureAspectsData: any[] = [];
     statusData: any[] = [];
     methodHistoryStatistics: MethodHistoryStatistics;
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
-    overallSuccessRate: number = 0;
+    flakiness: string = "0";
     public sharedData: string = null;
 
     constructor(
@@ -55,12 +54,8 @@ export class MethodHistory extends AbstractViewModel {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
 
         await this._statisticsGenerator.getMethodDetails(params.methodId).then(methodDetails => {
-            this._methodDetails = methodDetails;
-
-            this._historyStatistics.getMethodHistoryStatistics().find(method => {
-                if (method.isMatchingMethod(methodDetails.methodContext, this._historyStatistics.getHistoryAggregateStatistics()[this._historyStatistics.getHistoryAggregateStatistics().length - 1])) {
-                    this.methodHistoryStatistics = method;
-                }
+            this.methodHistoryStatistics = this._historyStatistics.getMethodHistoryStatistics().find(method => {
+                return method.idOfLatestRun === methodDetails.methodContext.contextValues.id
             });
         });
 
@@ -73,23 +68,30 @@ export class MethodHistory extends AbstractViewModel {
         style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
         style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
         style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        let statusKeys = Array.from(style.keys());
 
-        for (const status of statusKeys) {
-            const statusCount = this.methodHistoryStatistics.getStatusCount(status);
-            if (statusCount) {
+        const statusCounts = {
+            [ResultStatusType.PASSED]: this.methodHistoryStatistics.overallPassed,
+            [ResultStatusType.FAILED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.FAILED) +
+            this.methodHistoryStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED),
+            [ResultStatusType.SKIPPED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.SKIPPED),
+            [ResultStatusType.FAILED_EXPECTED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED),
+        };
+
+        Object.entries(statusCounts).forEach(([statusKey, count]) => {
+            const status = Number(statusKey);
+            if (count > 0) {
                 this.statusData.push({
-                    status: status,
+                    status,
                     statusName: this._statusConverter.getLabelForStatus(status),
-                    value: statusCount,
+                    value: count,
                     itemStyle: {color: style.get(status)}
                 });
             }
-        }
+        });
 
-        this.totalRunCount = this.methodHistoryStatistics.getMethodRunCount();
+        this.totalRunCount = this.methodHistoryStatistics.getRunCount();
         this.avgRunDuration = this.methodHistoryStatistics.getAverageDuration();
-        this.overallSuccessRate = this.methodHistoryStatistics.getSuccessRate();
+        this.flakiness = this.methodHistoryStatistics.flakiness.toFixed(3);
 
         this.failureAspectsData = Array.from(this.methodHistoryStatistics.getErrorCount()).sort((a, b) => b[1] - a[1]);
     }

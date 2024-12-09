@@ -58,7 +58,7 @@ export class DurationHistory extends AbstractViewModel {
         this._router = navInstruction.router;
 
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
-        if (this._historyStatistics.getTotalRuns() > 1) {
+        if (this._historyStatistics.getTotalRunCount() > 1) {
             this._historyAvailable = true;
         }
 
@@ -157,6 +157,7 @@ export class DurationHistory extends AbstractViewModel {
                     type: 'line',
                     data: this._chartData,
                     z: 2,
+                    cursor: 'default',
                     lineStyle: {
                         color: DurationHistory.DURATION_COLOR
                     },
@@ -174,6 +175,7 @@ export class DurationHistory extends AbstractViewModel {
                     type: 'bar',
                     yAxisIndex: 1,
                     z: 1,
+                    cursor: 'default',
                     data: this._chartData,
                     encode: {
                         x: 0,

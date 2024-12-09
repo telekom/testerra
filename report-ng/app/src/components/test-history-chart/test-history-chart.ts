@@ -91,32 +91,32 @@ export class TestHistoryChart extends AbstractViewModel {
         this._chart.setOption(this._option);
     }
 
-/*    private _handleZoomEvent(event: any) {
-        let start: number;
-        let end: number;
+    /*    private _handleZoomEvent(event: any) {
+            let start: number;
+            let end: number;
 
-        if (event.batch) {
-            start = event.batch[0].start;
-            end = event.batch[0].end;
-        } else {
-            start = event.start;
-            end = event.end;
+            if (event.batch) {
+                start = event.batch[0].start;
+                end = event.batch[0].end;
+            } else {
+                start = event.start;
+                end = event.end;
+            }
+
+            const totalDataPoints = this._chartData.length;
+            const startIndex = Math.ceil((start / 100) * totalDataPoints);
+            const endIndex = Math.ceil((end / 100) * totalDataPoints);
+
+            console.log('Zoom start:', startIndex, 'Zoom end:', endIndex);
         }
 
-        const totalDataPoints = this._chartData.length;
-        const startIndex = Math.ceil((start / 100) * totalDataPoints);
-        const endIndex = Math.ceil((end / 100) * totalDataPoints);
-
-        console.log('Zoom start:', startIndex, 'Zoom end:', endIndex);
-    }
-
-    private _chartChanged() {
-        this._chart.on('dataZoom', event => this._handleZoomEvent(event));
-    }*/
+        private _chartChanged() {
+            this._chart.on('dataZoom', event => this._handleZoomEvent(event));
+        }*/
 
     async attached() {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
-        this._historyAvailable = this._historyStatistics.history.entries.length >= 2;
+        this._historyAvailable = this._historyStatistics.getTotalRunCount() > 1;
         this._initDurationFormatter();
 
         if (this._historyAvailable) {
@@ -216,7 +216,6 @@ export class TestHistoryChart extends AbstractViewModel {
         const durationFormatter = this._durationFormatter;
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(entry => {
-
             const startTime = entry.historyAggregate.executionContext.contextValues.startTime;
             const endTime = entry.historyAggregate.executionContext.contextValues.endTime;
 

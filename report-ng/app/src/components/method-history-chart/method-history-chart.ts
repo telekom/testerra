@@ -122,7 +122,7 @@ export class MethodHistoryChart extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
-        this.method_history_statistics.getRuns().forEach(run => {
+        this.method_history_statistics.runs.forEach(run => {
             const startTime = run.context.contextValues.startTime;
             const endTime = run.context.contextValues.endTime;
             const status = run.context.resultStatus;
@@ -187,6 +187,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                     type: 'scatter',
                     symbolSize: 20,
                     data: this._data,
+                    cursor: 'default',
                     z: 2
                 },
                 {

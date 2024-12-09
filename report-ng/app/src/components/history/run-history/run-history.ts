@@ -59,7 +59,8 @@ export class RunHistory extends AbstractViewModel {
         this._router = navInstruction.router;
 
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
-        if (this._historyStatistics.getTotalRuns() > 1) {
+        this.totalRunCount = this._historyStatistics.getTotalRunCount();
+        if (this.totalRunCount > 1) {
             this._historyAvailable = true;
         }
 
@@ -90,7 +91,6 @@ export class RunHistory extends AbstractViewModel {
             }
         });
 
-        this.totalRunCount = this._historyStatistics.getTotalRuns();
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
 
@@ -125,7 +125,7 @@ export class RunHistory extends AbstractViewModel {
         flakyMethods.forEach(method => {
             const className = this._classNameValueConverter.toView(method.classIdentifier, ClassName.simpleName);
             this._topFlakyTests.push({
-                name: method.getIdentifier() + " (" + className + ")",
+                name: method.identifier + " (" + className + ")",
                 statistics: method
             });
         });
@@ -153,9 +153,10 @@ export class RunHistory extends AbstractViewModel {
         }
     }
 
-    private _gotoMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
+    private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
         this._router.navigateToRoute('method', {
-            methodId: methodHistoryStatistics.getIdOfLatestRun()
+            methodId: methodHistoryStatistics.idOfLatestRun,
+            subPage: "method-history"
         });
     }
 }

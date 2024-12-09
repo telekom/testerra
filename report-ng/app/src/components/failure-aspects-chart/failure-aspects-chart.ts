@@ -43,20 +43,22 @@ export class FailureAspectsChart extends AbstractViewModel {
         this._option = {};
     }
 
-    async attached() {
-        this._setChartOption();
-        this._chart.on('click', (params) => {
-            let selectedData = params.name;
-            if (this._highlightedData === selectedData) {
-                selectedData = undefined;
-            }
+    attached() {
+        if (this.failure_aspects_data.length > 0) {
+            this._setChartOption();
+            this._chart.on('click', (params) => {
+                let selectedData = params.name;
+                if (this._highlightedData === selectedData) {
+                    selectedData = undefined;
+                }
 
-            if (params.data && this.onClick) {
-                this.onClick(selectedData);
-                this._highlightData(selectedData);
-                this._highlightedData = selectedData;
-            }
-        });
+                if (params.data && this.onClick) {
+                    this.onClick(selectedData);
+                    this._highlightData(selectedData);
+                    this._highlightedData = selectedData;
+                }
+            });
+        }
     };
 
     private _highlightData(failureAspect: string) {

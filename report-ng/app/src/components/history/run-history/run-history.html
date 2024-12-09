@@ -72,7 +72,7 @@
                         single-selection
                         if.bind="_topFlakyTests.length > 0"
                     >
-                        <mdc-list-item repeat.for="methodHistory of _topFlakyTests" click.delegate="_gotoMethodHistory(methodHistory.statistics)" two-line>
+                        <mdc-list-item repeat.for="methodHistory of _topFlakyTests" click.delegate="_navigateToMethodHistory(methodHistory.statistics)" two-line>
                             <mdc-icon class="colored-icon status-failed sr1" mdc-list-item-leading>flaky</mdc-icon>
                             <mdc-list-item-primary-text>
                                 <span>${methodHistory.name}</span>

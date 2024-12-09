@@ -43,13 +43,22 @@
                         <span>Average run duration</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-                <mdc-list-item class="non-interactive" two-line>
+                <mdc-list-item if.bind="success_rate" class="non-interactive" two-line>
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>check_circle_outline</mdc-icon>
                     <mdc-list-item-primary-text>
                         <span>${success_rate.toFixed(1)}%</span>
                     </mdc-list-item-primary-text>
                     <mdc-list-item-secondary-text>
                         <span>Success rate</span>
+                    </mdc-list-item-secondary-text>
+                </mdc-list-item>
+                <mdc-list-item if.bind="flakiness" class="non-interactive" two-line>
+                    <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>flaky</mdc-icon>
+                    <mdc-list-item-primary-text>
+                        <span>${flakiness}</span>
+                    </mdc-list-item-primary-text>
+                    <mdc-list-item-secondary-text>
+                        <span>Flakiness</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
             </mdc-list>

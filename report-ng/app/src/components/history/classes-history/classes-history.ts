@@ -97,11 +97,14 @@ export class ClassesHistory extends AbstractViewModel {
 
         this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => {
             this._historyStatistics = historyStatistics;
-            if (historyStatistics.getTotalRuns() > 1) {
+            if (historyStatistics.getTotalRunCount() > 1) {
                 this._historyAvailable = true;
                 // Calculate the number of visible runs based on the container width
                 const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - 10;
                 this._visibleRuns = Math.floor(dataGridWidth / this._categoryWidth);
+            } else {
+                this._cardHeadline = "No history available"
+                return;
             }
             this._initDurationFormatter();
             this._prepareChartData();
@@ -122,7 +125,7 @@ export class ClassesHistory extends AbstractViewModel {
             this._selectedClass = null;
             delete this.queryParams.class;
             this._cardHeadline = "History of all test classes";
-            this._numberOfRuns = this._historyStatistics.getTotalRuns();
+            this._numberOfRuns = this._historyStatistics.getTotalRunCount();
             this._adaptChartSize(this._uniqueClasses.length);
             this._setChartOption();
         }
@@ -175,9 +178,9 @@ export class ClassesHistory extends AbstractViewModel {
         );
 
         methodsInClass.forEach(method => {
-            numberOfClassRuns = Math.max(numberOfClassRuns, method.getMethodRunCount());
-            const methodIdentifier = method.getIdentifier();
-            method.getRuns().forEach(methodRun => {
+            numberOfClassRuns = Math.max(numberOfClassRuns, method.getRunCount());
+            const methodIdentifier = method.identifier;
+            method.runs.forEach(methodRun => {
                 const historyIndex = methodRun.historyIndex;
                 const status = methodRun.context.resultStatus;
                 const startTime = methodRun.context.contextValues.startTime;
@@ -241,6 +244,7 @@ export class ClassesHistory extends AbstractViewModel {
                     symbol: 'rect',
                     data: this._singleClassData,
                     z: 2,
+                    cursor: 'default'
                 }
             ]
         };
@@ -261,10 +265,10 @@ export class ClassesHistory extends AbstractViewModel {
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const historyIndex = aggregate.historyAggregate.historyIndex;
 
-            const classes = aggregate.getClassStatistics();
+            const classes = Array.from(aggregate.classes.values());
 
             classes.forEach(testClass => {
-                const className = this._classNameValueConverter.toView(testClass.classIdentifier, ClassName.simpleName);
+                const className = this._classNameValueConverter.toView(testClass.identifier, ClassName.simpleName);
                 const relevantStatuses = testClass.statusConverter.relevantStatuses;
                 let classStatuses: any[] = [];
                 let testcases = 0;
@@ -284,8 +288,8 @@ export class ClassesHistory extends AbstractViewModel {
                     return;
                 }
 
-                if (!this._uniqueClasses.includes(testClass.classIdentifier)) {
-                    this._uniqueClasses.push(testClass.classIdentifier);
+                if (!this._uniqueClasses.includes(testClass.identifier)) {
+                    this._uniqueClasses.push(testClass.identifier);
                 }
 
                 const startTime = testClass.classContext.contextValues.startTime;
@@ -348,6 +352,7 @@ export class ClassesHistory extends AbstractViewModel {
             series: [
                 {
                     type: 'custom',
+                    cursor: 'default',
                     renderItem: function (params, api) {
                         const statuses = [api.value(2), api.value(3), api.value(4), api.value(5)];
                         const x = api.coord([api.value(0), api.value(1)])[0];

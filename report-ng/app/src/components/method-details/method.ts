@@ -150,13 +150,12 @@ export class Method {
 
             let methodRunCount = 0;
             this._statistics.getHistoryStatistics().then(history => {
-                if (history.getTotalRuns() > 1) {
+                if (history.getTotalRunCount() > 1) {
                     const methodInHistory = history.getMethodHistoryStatistics().find(method =>
-                        method.isMatchingMethod(this._methodDetails.methodContext,
-                            history.getHistoryAggregateStatistics()[history.getHistoryAggregateStatistics().length - 1])
+                        method.idOfLatestRun === methodDetails.methodContext.contextValues.id
                     );
                     if (methodInHistory) {
-                        methodRunCount = methodInHistory.getMethodRunCount();
+                        methodRunCount = methodInHistory.getRunCount();
                     }
                 }
                 this._loading = false;
@@ -257,6 +256,10 @@ export class Method {
                             }
                         });
                 });
+
+                if (params.subPage) {
+                    this._router.navigateToRoute(params.subPage);
+                }
             });
         });
     }

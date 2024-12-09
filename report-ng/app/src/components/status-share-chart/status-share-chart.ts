@@ -65,8 +65,10 @@ export class StatusShareChart extends AbstractViewModel {
                     startAngle: 180,
                     endAngle: 360,
                     data: this.status_data,
+                    cursor: 'default',
                     label: {
                         show: true,
+                        silent: true,
                         position: 'inner',
                         color: '#ffffff',
                         formatter: (params) => {

@@ -26,9 +26,11 @@
     <require from="../test-history-chart/test-history-chart"></require>
     <require from="../test-results-list/test-results-list"></require>
 
-    <mdc-linear-progress if.bind="_loading" open="true"></mdc-linear-progress>
     <mdc-layout-grid>
         <mdc-layout-grid-inner>
+            <mdc-layout-grid-cell if.bind="_loading" span="12">
+                <mdc-linear-progress open="true"></mdc-linear-progress>
+            </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
                 <mdc-card class.bind="class" class="tall-card">
                     <div mdc-subtitle2 class="card-headline">Breakdown</div>
@@ -58,20 +60,6 @@
                         <test-history-chart class="run-history-overview-chart"
                                             is_history_view.bind=false filter.bind="_filter"></test-history-chart>
                     </div>
-                </mdc-card>
-                <mdc-linear-progress if.bind="!_promptLogs" open="true" class="mt1"></mdc-linear-progress>
-                <mdc-card if.bind="_promptLogs.length > 0" class="mt1">
-                    <div mdc-subtitle2 class="card-headline">Priority messages</div>
-                    <mdc-list-divider></mdc-list-divider>
-                    <ul class="mdc-list mdc-list--dense m0 p0" mdc-caption>
-                        <li class="mdc-custom-list-item"
-                            class.bind="(logMessage.type===1?'status-failed':(logMessage.type===2?'status-skipped':''))"
-                            repeat.for="logMessage of _promptLogs"
-                        >
-                            <span class="two-lines"><class-name-markup
-                                namespace.bind="logMessage.loggerName">:</class-name-markup>${logMessage.message | html}</span>
-                        </li>
-                    </ul>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
@@ -141,6 +129,22 @@
                         <mdc-icon class="sr1">celebration</mdc-icon>
                         <div mdc-body1>No failure aspects</div>
                     </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell if.bind="_promptLogs.length > 0" span="6">
+                <mdc-linear-progress if.bind="!_promptLogs" open="true" class="mt1"></mdc-linear-progress>
+                <mdc-card class="mt1">
+                    <div mdc-subtitle2 class="card-headline">Priority messages</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <ul class="mdc-list mdc-list--dense m0 p0" mdc-caption>
+                        <li class="mdc-custom-list-item"
+                            class.bind="(logMessage.type===1?'status-failed':(logMessage.type===2?'status-skipped':''))"
+                            repeat.for="logMessage of _promptLogs"
+                        >
+                            <span class="two-lines"><class-name-markup
+                                namespace.bind="logMessage.loggerName">:</class-name-markup>${logMessage.message | html}</span>
+                        </li>
+                    </ul>
                 </mdc-card>
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="12">

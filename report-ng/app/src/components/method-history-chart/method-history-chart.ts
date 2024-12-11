@@ -130,7 +130,7 @@ export class MethodHistoryChart extends AbstractViewModel {
             this._data.push({
                 status: status,
                 statusName: this._statusConverter.getLabelForStatus(status),
-                errorMessage: run.getErrorMessage(),
+                errorMessage: run.errorMessage,
                 itemStyle: {
                     color: style.get(status),
                     opacity: 1

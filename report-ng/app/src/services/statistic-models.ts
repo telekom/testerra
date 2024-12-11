@@ -224,7 +224,7 @@ export class HistoryStatistics {
                 });
 
                 if (foundMethod) {
-                    methodHistory.addRun(foundMethod.context, entry.historyIndex);
+                    methodHistory.addRun(foundMethod, entry.historyIndex);
                 }
             });
         });
@@ -271,8 +271,8 @@ export class HistoryStatistics {
 }
 
 export class ClassHistoryStatistics extends Statistics {
+    private readonly _identifier: string;
     private _methods: HistoricalMethod[] = [];
-    private _identifier: string;
 
     constructor(
         readonly classContext: IClassContext
@@ -298,15 +298,15 @@ export class ClassHistoryStatistics extends Statistics {
 }
 
 export class HistoricalMethod {
-    private _methodContext: IMethodContext;
-    private _methodIdentifier: string;
+    private readonly _methodContext: IMethodContext;
+    private readonly _methodIdentifier: string;
+    private readonly _classIdentifier: string;
     private _relatedMethodIdentifiers: string[] = [];
-    private _classIdentifier: string;
 
     constructor(methodContext: IMethodContext, classIdentifier: string) {
         this._methodContext = methodContext;
-        this._classIdentifier = classIdentifier;
         this._methodIdentifier = this._getParsedMethodIdentifier();
+        this._classIdentifier = classIdentifier;
     }
 
     private _getParsedMethodIdentifier() {
@@ -324,6 +324,24 @@ export class HistoricalMethod {
             }
         }
         return methodName;
+    }
+
+    getErrorMessage() {
+        let errorMessage = "";
+        if (this._methodContext.resultStatus != ResultStatusType.PASSED) {
+            this._methodContext.testSteps.flatMap(value => value.actions)
+                .forEach(actionDetails => {
+                    actionDetails.entries.forEach(entry => {
+                        const errorContext = entry.errorContext;
+                        errorContext.stackTrace.forEach(stackTrace => {
+                            // TODO: How to handle multiple errorMessages
+                            const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
+                            errorMessage = errorClassName + ": " + errorMessage.concat(stackTrace.message + " ");
+                        })
+                    })
+                });
+        }
+        return errorMessage.trim();
     }
 
     addRelatedMethods(relatedMethod: string) {
@@ -403,30 +421,14 @@ export class HistoryAggregateStatistics extends Statistics {
 }
 
 export class HistoricalMethodRun {
-    private _historyIndex: number = 0;
-    private _context: IMethodContext;
+    private readonly _historyIndex: number = 0;
+    private readonly _context: IMethodContext;
+    private readonly _errorMessage: string;
 
-    constructor(context: IMethodContext, index: number) {
+    constructor(historicalMethod: HistoricalMethod, index: number) {
         this._historyIndex = index;
-        this._context = context;
-    }
-
-    getErrorMessage() {
-        let errorMessage = "";
-        if (this._context.resultStatus != ResultStatusType.PASSED) {
-            this._context.testSteps.flatMap(value => value.actions)
-                .forEach(actionDetails => {
-                    actionDetails.entries.forEach(entry => {
-                        const errorContext = entry.errorContext;
-                        errorContext.stackTrace.forEach(stackTrace => {
-                            // TODO: How to handle multiple errorMessages
-                            const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
-                            errorMessage = errorClassName + ": " + errorMessage.concat(stackTrace.message + " ");
-                        })
-                    })
-                });
-        }
-        return errorMessage.trim();
+        this._context = historicalMethod.context;
+        this._errorMessage = historicalMethod.getErrorMessage();
     }
 
     // Returns the overall status for flakiness calculation
@@ -447,16 +449,20 @@ export class HistoricalMethodRun {
     get context() {
         return this._context;
     }
+
+    get errorMessage() {
+        return this._errorMessage;
+    }
 }
 
 export class MethodHistoryStatistics extends Statistics {
-    private _identifier: string;
+    private readonly _identifier: string;
+    private readonly _relatedMethods: string[] = [];
+    private readonly _classIdentifier: string;
+    private readonly _idOfLatestRun: string;
     private _runs: HistoricalMethodRun[] = [];
-    private _relatedMethods: string[] = [];
-    private _classIdentifier: string;
     private _flakinessFullWeightRunCount = 10;
     private _flakinessDecayFactor = 0.9;
-    private _idOfLatestRun: string;
 
     constructor(method: HistoricalMethod) {
         super();
@@ -466,9 +472,9 @@ export class MethodHistoryStatistics extends Statistics {
         this._idOfLatestRun = method.context.contextValues.id;
     }
 
-    addRun(context: IMethodContext, historyIndex: number) {
-        this._runs.push(new HistoricalMethodRun(context, historyIndex));
-        this.addResultStatus(context.resultStatus);
+    addRun(historicalMethod: HistoricalMethod, historyIndex: number) {
+        this._runs.push(new HistoricalMethodRun(historicalMethod, historyIndex));
+        this.addResultStatus(historicalMethod.context.resultStatus);
     }
 
     getRunCount() {
@@ -524,14 +530,8 @@ export class MethodHistoryStatistics extends Statistics {
         let runCount = this._runs.length;
         let passedRuns = 0;
 
-        const validStatuses = [
-            ResultStatusType.PASSED,
-            ResultStatusType.PASSED_RETRY,
-            ResultStatusType.REPAIRED
-        ];
-
         this._runs.forEach(methodRun => {
-            if (validStatuses.includes(methodRun.context.resultStatus)) {
+            if (methodRun.getParsedResultStatus() === ResultStatusType.PASSED) {
                 passedRuns++;
             }
         });
@@ -545,7 +545,7 @@ export class MethodHistoryStatistics extends Statistics {
     getErrorCount() {
         let errorCount = new Map<string, number>();
         this._runs.forEach(run => {
-            const error = run.getErrorMessage();
+            const error = run.errorMessage;
             if (error) {
                 const currentErrorCount = errorCount.get(error) || 0;
                 errorCount.set(error, currentErrorCount + 1);

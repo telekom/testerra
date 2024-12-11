@@ -32,17 +32,16 @@ import {ClassName, ClassNameValueConverter} from "../../../value-converters/clas
 
 @autoinject()
 export class RunHistory extends AbstractViewModel {
-
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
     overallSuccessRate: number = 0;
-    private _historyStatistics: HistoryStatistics;
     statusData: any[] = [];
+    private _historyStatistics: HistoryStatistics;
     private _filter: IFilter;
     private _selectedStatus: ResultStatusType = null;
     private _availableStatuses: ResultStatusType[] = [];
     private _topFlakyTests: any[] = [];
-    private statusSelect: MdcSelect;
+    private _statusSelect: MdcSelect;
     private _historyAvailable = false;
 
     constructor(
@@ -107,7 +106,7 @@ export class RunHistory extends AbstractViewModel {
         if (this.queryParams.status || params.status) {
             window.setTimeout(() => {
                 self._selectedStatus = self._statusConverter.getStatusForClass(params.status);
-                self.statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
+                self._statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
             }, 200)
         } else {
             this._selectedStatus = null;

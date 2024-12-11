@@ -34,7 +34,7 @@ export class FailureAspectsChart extends AbstractViewModel {
     @bindable() onClick;
     private _highlightedData = undefined;
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
-    private _maxLength = 28;                    // Maximum shown length of x-axis label
+    private _maxXAxisLabelLength = 28;          // Maximum shown length of x-axis label
 
     constructor(
         private _statusConverter: StatusConverter
@@ -81,7 +81,7 @@ export class FailureAspectsChart extends AbstractViewModel {
     }
 
     private _setChartOption() {
-        const maxTextLength = this._maxLength;
+        const maxTextLength = this._maxXAxisLabelLength;
         const chartData: any[] = [];
         this.failure_aspects_data.forEach(failureAspect => {
             chartData.push({
@@ -104,7 +104,7 @@ export class FailureAspectsChart extends AbstractViewModel {
                 trigger: 'item',
                 formatter: function (params) {
                     return `<div class="tooltip-content">${params.name}</div>
-                        <br> (Occurences: ${params.value[1]})`
+                        <br> Occurrences: ${params.value[1]}`
                 }
             },
             xAxis: {

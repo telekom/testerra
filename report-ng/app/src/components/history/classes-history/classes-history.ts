@@ -61,7 +61,7 @@ export class ClassesHistory extends AbstractViewModel {
     private _numberOfRuns: number;
     private _visibleRuns: number;
     private _cardHeadline: string = null;
-    private classSelect: MdcSelect;
+    private _classSelect: MdcSelect;
     private _historyAvailable = false;
 
     constructor(
@@ -85,7 +85,7 @@ export class ClassesHistory extends AbstractViewModel {
             const classInParams = params.class;
             window.setTimeout(() => {
                 self._selectedClass = classInParams;
-                self.classSelect.value = self._uniqueClasses.find(classId => classId == classInParams);      // necessary to keep selection after refreshing the page
+                self._classSelect.value = self._uniqueClasses.find(classId => classId == classInParams);      // necessary to keep selection after refreshing the page
             }, 200);
         } else {
             this._selectedClass = null;
@@ -147,6 +147,12 @@ export class ClassesHistory extends AbstractViewModel {
         ]
     }
 
+    private _adaptChartSize(yItems: number) {
+        this._gridHeight = (yItems * this._categoryHeight);
+        this._cardHeight = this._gridHeight + 20 + this._chartHeaderHeight;
+        this._gridWidth = ((Math.min(this._visibleRuns, this._numberOfRuns)) * this._categoryWidth);
+    }
+
     private _initDurationFormatter() {
         const container = new Container();
         this._durationFormatter = container.get(DurationFormatValueConverter);
@@ -194,24 +200,29 @@ export class ClassesHistory extends AbstractViewModel {
                     },
                     status: status,
                     statusName: this._statusConverter.getLabelForStatus(status),
-                    errorMessage: methodRun.getErrorMessage(),
+                    errorMessage: methodRun.errorMessage,
                     startTime: startTime,
                     endTime: endTime,
                     duration: endTime - startTime
                 });
             });
         });
-        this._singleClassData.sort((a, b) => a.value[0] - b.value[0]);
+
+        // Sort the data by historyIndex and methodIdentifier
+        this._singleClassData.sort((a, b) => {
+            if (a.value[0] !== b.value[0]) {
+                return a.value[0] - b.value[0];
+            }
+            const identifierA = a.value[1];
+            const identifierB = b.value[1];
+            if (identifierA < identifierB) return -1;
+            if (identifierA > identifierB) return 1;
+            return 0;
+        });
 
         const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
         this._numberOfMethodsInClass = uniqueMethodNames.size;
         this._numberOfRuns = numberOfClassRuns;
-    }
-
-    private _adaptChartSize(yItems: number) {
-        this._gridHeight = (yItems * this._categoryHeight);
-        this._cardHeight = this._gridHeight + 20 + this._chartHeaderHeight;
-        this._gridWidth = ((Math.min(this._visibleRuns, this._numberOfRuns)) * this._categoryWidth);
     }
 
     private _setChartOptionForSingleClass() {
@@ -219,36 +230,34 @@ export class ClassesHistory extends AbstractViewModel {
         const durationFormatter = this._durationFormatter;
         let maxYCategoryLength = this._maxYCategoryLength;
 
-        this._option = {
-            tooltip: {
-                trigger: 'item',
-                formatter: function (params) {
-                    let tooltip = '<div class="header" style="background-color: ' +
-                        params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
-
-                    if (params.data.errorMessage) {
-                        tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
-                    }
-
-                    tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')
-                        + '<br>End time: ' + dateFormatter.toView(params.data.endTime, 'full')
-                        + '<br>Duration: ' + durationFormatter.toView(params.data.duration);
-
-                    return tooltip;
-                }
-            },
-            series: [
-                {
-                    type: 'scatter',
-                    symbolSize: this._symbolSize,
-                    symbol: 'rect',
-                    data: this._singleClassData,
-                    z: 2,
-                    cursor: 'default'
-                }
-            ]
-        };
         this._setCommonChartOptions(maxYCategoryLength);
+        this._option.tooltip = {
+            trigger: 'item',
+            formatter: function (params) {
+                let tooltip = '<div class="header" style="background-color: ' +
+                    params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
+
+                if (params.data.errorMessage) {
+                    tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
+                }
+
+                tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')
+                    + '<br>End time: ' + dateFormatter.toView(params.data.endTime, 'full')
+                    + '<br>Duration: ' + durationFormatter.toView(params.data.duration);
+
+                return tooltip;
+            }
+        };
+        this._option.series = [
+            {
+                type: 'scatter',
+                symbolSize: this._symbolSize,
+                symbol: 'rect',
+                data: this._singleClassData,
+                z: 2,
+                cursor: 'default'
+            }
+        ];
     }
 
     private _prepareChartData() {
@@ -328,17 +337,18 @@ export class ClassesHistory extends AbstractViewModel {
         const largeSubQuadLength = subQuadWidth * 2;
         const subQuadHeight = subQuadWidth * 2 / 3;
 
-        this._option = {
-            tooltip: {
-                trigger: 'item',
-                formatter: function (params) {
-                    const statuses = params.value.slice(2);
-                    const failed = statuses[1];
-                    const expectedFailed = statuses[2];
-                    const skipped = statuses[3];
-                    const passed = statuses[0];
+        this._setCommonChartOptions(maxYCategoryLength);
 
-                    return `<div class="class-history-chart-tooltip-header">Run ${params.value[0]}</div>
+        this._option.tooltip = {
+            trigger: 'item',
+            formatter: function (params) {
+                const statuses = params.value.slice(2);
+                const failed = statuses[1];
+                const expectedFailed = statuses[2];
+                const skipped = statuses[3];
+                const passed = statuses[0];
+
+                return `<div class="class-history-chart-tooltip-header">Run ${params.value[0]}</div>
                         <br>Testcases: ${params.data.testcases}
                         ${failed > 0 ? `<br><span class="status-dot status-failed"></span> Failed: ${failed}` : ''}
                         ${expectedFailed > 0 ? `<br><span class="status-dot status-failed-expected"></span> Expected Failed: ${expectedFailed}` : ''}
@@ -347,221 +357,221 @@ export class ClassesHistory extends AbstractViewModel {
                         <br><br>Start time: ${dateFormatter.toView(params.data.startTime, 'full')}
                         <br>End time: ${dateFormatter.toView(params.data.endTime, 'full')}
                         <br>Duration: ${durationFormatter.toView(params.data.duration)}`;
-                }
-            },
-            series: [
-                {
-                    type: 'custom',
-                    cursor: 'default',
-                    renderItem: function (params, api) {
-                        const statuses = [api.value(2), api.value(3), api.value(4), api.value(5)];
-                        const x = api.coord([api.value(0), api.value(1)])[0];
-                        const y = api.coord([api.value(0), api.value(1)])[1];
-
-                        const children = [];
-
-                        const statusCounts = [
-                            Number(api.value(2)),
-                            Number(api.value(3)),
-                            Number(api.value(4)),
-                            Number(api.value(5))
-                        ];
-
-                        // invisible rect as background
-                        if (statusCounts[0] === 0 || (statusCounts[1] === 0 && statusCounts[2] === 0) || statusCounts[3] === 0) {
-                            children.push(
-                                {
-                                    type: 'rect',
-                                    shape: {
-                                        x: x - subQuadWidth,
-                                        y: y - (subQuadHeight * 3 / 2),
-                                        width: largeSubQuadLength,
-                                        height: largeSubQuadLength
-                                    },
-                                    style: {fill: '#00000000'}
-                                });
-                        }
-
-                        // passed-rect
-                        if (statusCounts[0] > 0) {
-                            children.push(
-                                {
-                                    type: 'rect',
-                                    shape: {
-                                        x: x - subQuadWidth,
-                                        y: y - (subQuadHeight * 3 / 2),
-                                        width: largeSubQuadLength,
-                                        height: subQuadHeight
-                                    },
-                                    style: {fill: '#417336'}
-                                },
-                                {
-                                    type: 'text',
-                                    style: {
-                                        x: x,
-                                        y: y - subQuadHeight,
-                                        text: statuses[0].toString(),
-                                        fill: '#fff',
-                                        fontSize: 12,
-                                        align: 'center',
-                                        verticalAlign: 'middle'
-                                    }
-                                }
-                            );
-                        }
-
-                        // failed-rect
-                        if (statusCounts[1] > 0) {
-                            let failedWidth = subQuadWidth;
-                            let failedTextPos = (subQuadWidth / 2);
-                            if (statusCounts[2] === 0) {
-                                failedWidth = largeSubQuadLength;
-                                failedTextPos = 0;
-                            }
-                            children.push(
-                                {
-                                    type: 'rect',
-                                    shape: {
-                                        x: x - subQuadWidth,
-                                        y: y - (subQuadHeight / 2),
-                                        width: failedWidth,
-                                        height: subQuadHeight
-                                    },
-                                    style: {fill: '#e63946'}
-                                },
-                                {
-                                    type: 'text',
-                                    style: {
-                                        x: x - failedTextPos,
-                                        y: y,
-                                        text: statuses[1].toString(),
-                                        fill: '#fff',
-                                        fontSize: 12,
-                                        align: 'center',
-                                        verticalAlign: 'middle'
-                                    }
-                                }
-                            );
-                        }
-
-                        // failed_expected-rect
-                        if (statusCounts[2] > 0) {
-                            let expectedFailedWidth = subQuadWidth;
-                            let expectedFailedTextPos = (subQuadWidth / 2);
-                            let expectedFailedPosX = 0;
-                            if (statusCounts[1] === 0) {
-                                expectedFailedWidth = largeSubQuadLength;
-                                expectedFailedTextPos = 0;
-                                expectedFailedPosX = subQuadWidth;
-                            }
-                            children.push(
-                                {
-                                    type: 'rect',
-                                    shape: {
-                                        x: x - expectedFailedPosX,
-                                        y: y - (subQuadHeight / 2),
-                                        width: expectedFailedWidth,
-                                        height: subQuadHeight
-                                    },
-                                    style: {fill: '#4f031b'}
-                                },
-                                {
-                                    type: 'text',
-                                    style: {
-                                        x: x + expectedFailedTextPos,
-                                        y: y,
-                                        text: statuses[2].toString(),
-                                        fill: '#fff',
-                                        fontSize: 12,
-                                        align: 'center',
-                                        verticalAlign: 'middle'
-                                    }
-                                }
-                            );
-                        }
-
-                        // skipped-rect
-                        if (statusCounts[3] > 0) {
-                            children.push(
-                                {
-                                    type: 'rect',
-                                    shape: {
-                                        x: x - subQuadWidth,
-                                        y: y + (subQuadHeight / 2),
-                                        width: largeSubQuadLength,
-                                        height: subQuadHeight
-                                    },
-                                    style: {fill: '#f7af3e'}
-                                },
-                                {
-                                    type: 'text',
-                                    style: {
-                                        x: x,
-                                        y: y + subQuadHeight,
-                                        text: statuses[3].toString(),
-                                        fill: '#fff',
-                                        fontSize: 12,
-                                        align: 'center',
-                                        verticalAlign: 'middle'
-                                    }
-                                }
-                            );
-                        }
-
-                        return {
-                            type: 'group',
-                            children: children
-                        };
-                    },
-                    encode: {
-                        x: 0,
-                        y: 1
-                    },
-                    data: this._data
-                }
-            ]
-        };
-        this._setCommonChartOptions(maxYCategoryLength);
-    }
-
-    private _setCommonChartOptions(maxYCategoryLength) {
-        this._option.grid = {
-            height: this._gridHeight,
-            width: this._gridWidth,
-            top: this._chartHeaderHeight,
-            bottom: 0,
-            left: this._gridLeftValue,
-            right: 0
-        };
-        this._option.yAxis = {
-            type: 'category',
-            show: true,
-            axisLabel: {
-                formatter: function (value) {
-                    const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
-                    return value.match(regex)?.join('\n');
-                }
-            },
-            splitLine: {
-                show: true,
-                lineStyle: {
-                    color: '#c3c3c3',
-                    type: 'solid',
-                    width: 1
-                }
-            },
-            splitArea: {
-                show: true,
-                areaStyle: {
-                    color: ['rgb(255,255,255)', 'rgb(239,239,239)'],
-                    opacity: 1
-                }
             }
         };
-        this._option.xAxis = {
-            type: 'category',
-            position: 'top',
-            show: true
-        };
+        this._option.series = [
+            {
+                type: 'custom',
+                cursor: 'default',
+                renderItem: function (params, api) {
+                    const statuses = [api.value(2), api.value(3), api.value(4), api.value(5)];
+                    const x = api.coord([api.value(0), api.value(1)])[0];
+                    const y = api.coord([api.value(0), api.value(1)])[1];
+
+                    const children = [];
+
+                    const statusCounts = [
+                        Number(api.value(2)),
+                        Number(api.value(3)),
+                        Number(api.value(4)),
+                        Number(api.value(5))
+                    ];
+
+                    // invisible rect as background
+                    if (statusCounts[0] === 0 || (statusCounts[1] === 0 && statusCounts[2] === 0) || statusCounts[3] === 0) {
+                        children.push(
+                            {
+                                type: 'rect',
+                                shape: {
+                                    x: x - subQuadWidth,
+                                    y: y - (subQuadHeight * 3 / 2),
+                                    width: largeSubQuadLength,
+                                    height: largeSubQuadLength
+                                },
+                                style: {fill: '#00000000'}
+                            });
+                    }
+
+                    // passed-rect
+                    if (statusCounts[0] > 0) {
+                        children.push(
+                            {
+                                type: 'rect',
+                                shape: {
+                                    x: x - subQuadWidth,
+                                    y: y - (subQuadHeight * 3 / 2),
+                                    width: largeSubQuadLength,
+                                    height: subQuadHeight
+                                },
+                                style: {fill: '#417336'}
+                            },
+                            {
+                                type: 'text',
+                                style: {
+                                    x: x,
+                                    y: y - subQuadHeight,
+                                    text: statuses[0].toString(),
+                                    fill: '#fff',
+                                    fontSize: 12,
+                                    align: 'center',
+                                    verticalAlign: 'middle'
+                                }
+                            }
+                        );
+                    }
+
+                    // failed-rect
+                    if (statusCounts[1] > 0) {
+                        let failedWidth = subQuadWidth;
+                        let failedTextPos = (subQuadWidth / 2);
+                        if (statusCounts[2] === 0) {
+                            failedWidth = largeSubQuadLength;
+                            failedTextPos = 0;
+                        }
+                        children.push(
+                            {
+                                type: 'rect',
+                                shape: {
+                                    x: x - subQuadWidth,
+                                    y: y - (subQuadHeight / 2),
+                                    width: failedWidth,
+                                    height: subQuadHeight
+                                },
+                                style: {fill: '#e63946'}
+                            },
+                            {
+                                type: 'text',
+                                style: {
+                                    x: x - failedTextPos,
+                                    y: y,
+                                    text: statuses[1].toString(),
+                                    fill: '#fff',
+                                    fontSize: 12,
+                                    align: 'center',
+                                    verticalAlign: 'middle'
+                                }
+                            }
+                        );
+                    }
+
+                    // failed_expected-rect
+                    if (statusCounts[2] > 0) {
+                        let expectedFailedWidth = subQuadWidth;
+                        let expectedFailedTextPos = (subQuadWidth / 2);
+                        let expectedFailedPosX = 0;
+                        if (statusCounts[1] === 0) {
+                            expectedFailedWidth = largeSubQuadLength;
+                            expectedFailedTextPos = 0;
+                            expectedFailedPosX = subQuadWidth;
+                        }
+                        children.push(
+                            {
+                                type: 'rect',
+                                shape: {
+                                    x: x - expectedFailedPosX,
+                                    y: y - (subQuadHeight / 2),
+                                    width: expectedFailedWidth,
+                                    height: subQuadHeight
+                                },
+                                style: {fill: '#4f031b'}
+                            },
+                            {
+                                type: 'text',
+                                style: {
+                                    x: x + expectedFailedTextPos,
+                                    y: y,
+                                    text: statuses[2].toString(),
+                                    fill: '#fff',
+                                    fontSize: 12,
+                                    align: 'center',
+                                    verticalAlign: 'middle'
+                                }
+                            }
+                        );
+                    }
+
+                    // skipped-rect
+                    if (statusCounts[3] > 0) {
+                        children.push(
+                            {
+                                type: 'rect',
+                                shape: {
+                                    x: x - subQuadWidth,
+                                    y: y + (subQuadHeight / 2),
+                                    width: largeSubQuadLength,
+                                    height: subQuadHeight
+                                },
+                                style: {fill: '#f7af3e'}
+                            },
+                            {
+                                type: 'text',
+                                style: {
+                                    x: x,
+                                    y: y + subQuadHeight,
+                                    text: statuses[3].toString(),
+                                    fill: '#fff',
+                                    fontSize: 12,
+                                    align: 'center',
+                                    verticalAlign: 'middle'
+                                }
+                            }
+                        );
+                    }
+
+                    return {
+                        type: 'group',
+                        children: children
+                    };
+                },
+                encode: {
+                    x: 0,
+                    y: 1
+                },
+                data: this._data
+            }
+        ];
+    }
+
+    private _setCommonChartOptions(maxYCategoryLength: number) {
+        this._option = {
+            grid: {
+                height: this._gridHeight,
+                width: this._gridWidth,
+                top: this._chartHeaderHeight,
+                bottom: 0,
+                left: this._gridLeftValue,
+                right: 0
+            },
+            yAxis: {
+                type: 'category',
+                show: true,
+                axisLabel: {
+                    formatter: function (value) {
+                        const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
+                        return value.match(regex)?.join('\n');
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#c3c3c3',
+                        type: 'solid',
+                        width: 1
+                    }
+                },
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['rgb(255,255,255)', 'rgb(239,239,239)'],
+                        opacity: 1
+                    }
+                }
+            },
+            xAxis: {
+                type: 'category',
+                position: 'top',
+                show: true
+            }
+        }
     }
 }

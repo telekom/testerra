@@ -36,7 +36,12 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
                 <mdc-card class="short-history-card">
-                    <div mdc-subtitle2 class="card-headline">Status share</div>
+                    <div class="headline-container">
+                        <div mdc-subtitle2 class="card-headline">Status share</div>
+                        <div class="headline-info-icon secondary">
+                            <mdc-icon mdc-tooltip="The distribution of statuses across all executions of this method">info_outlined</mdc-icon>
+                        </div>
+                    </div>
                     <mdc-list-divider></mdc-list-divider>
                     <status-share-chart status_data.bind="statusData"></status-share-chart>
                 </mdc-card>
@@ -48,7 +53,7 @@
                 <mdc-card class="short-history-card">
                     <div mdc-subtitle2 class="card-headline">Common failure aspects</div>
                     <mdc-list-divider></mdc-list-divider>
-                    <failure-aspects-chart on-click.bind="handleChildAClick.bind($this)" failure_aspects_data.bind="failureAspectsData"></failure-aspects-chart>
+                    <failure-aspects-chart on-click.bind="handleFailureAspectsChartClicked.bind($this)" failure_aspects_data.bind="failureAspectsData"></failure-aspects-chart>
                 </mdc-card>
             </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>

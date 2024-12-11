@@ -54,7 +54,12 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell if.bind="_historyAvailable" span="3">
                 <mdc-card class="short-history-card">
-                    <div mdc-subtitle2 class="card-headline">Status share</div>
+                    <div class="headline-container">
+                        <div mdc-subtitle2 class="card-headline">Status share</div>
+                        <div class="headline-info-icon secondary">
+                            <mdc-icon mdc-tooltip="The distribution of statuses across all saved runs in the history">info_outlined</mdc-icon>
+                        </div>
+                    </div>
                     <mdc-list-divider></mdc-list-divider>
                     <status-share-chart status_data.bind="statusData"></status-share-chart>
                 </mdc-card>
@@ -65,7 +70,12 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell if.bind="_historyAvailable" span="6">
                 <mdc-card class="short-history-card">
-                    <div mdc-subtitle2 class="card-headline">Top 3 flaky tests</div>
+                    <div class="headline-container">
+                        <div mdc-subtitle2 class="card-headline">Top 3 flaky tests</div>
+                        <div class="headline-info-icon secondary">
+                            <mdc-icon mdc-tooltip="Test cases with a high frequency of status changes">info_outlined</mdc-icon>
+                        </div>
+                    </div>
                     <mdc-list-divider></mdc-list-divider>
                     <mdc-list
                         class="p0"

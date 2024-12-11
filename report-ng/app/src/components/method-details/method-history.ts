@@ -37,7 +37,7 @@ export class MethodHistory extends AbstractViewModel {
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
     flakiness: string = "0";
-    public sharedData: string = null;
+    sharedData: string = null;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -96,7 +96,7 @@ export class MethodHistory extends AbstractViewModel {
         this.failureAspectsData = Array.from(this.methodHistoryStatistics.getErrorCount()).sort((a, b) => b[1] - a[1]);
     }
 
-    handleChildAClick(data: string) {
+    handleFailureAspectsChartClicked(data: string) {
         this.sharedData = data;
     }
 }

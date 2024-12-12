@@ -334,7 +334,6 @@ export class HistoricalMethod {
                     actionDetails.entries.forEach(entry => {
                         const errorContext = entry.errorContext;
                         errorContext.stackTrace.forEach(stackTrace => {
-                            // TODO: How to handle multiple errorMessages
                             const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
                             errorMessage = errorClassName + ": " + errorMessage.concat(stackTrace.message + " ");
                         })
@@ -506,7 +505,7 @@ export class MethodHistoryStatistics extends Statistics {
             totalWeight += weight;
         }
 
-        return (weightedSwitchSum / totalWeight);
+        return (weightedSwitchSum / totalWeight * 100);
     }
 
     isConfigurationMethod(): boolean {
@@ -524,22 +523,6 @@ export class MethodHistoryStatistics extends Statistics {
             avg = Math.round(sum / durations.length);
         }
         return avg;
-    }
-
-    getSuccessRate(): number {
-        let runCount = this._runs.length;
-        let passedRuns = 0;
-
-        this._runs.forEach(methodRun => {
-            if (methodRun.getParsedResultStatus() === ResultStatusType.PASSED) {
-                passedRuns++;
-            }
-        });
-
-        if (runCount != 0) {
-            return (passedRuns / runCount) * 100
-        }
-        return 0;
     }
 
     getErrorCount() {

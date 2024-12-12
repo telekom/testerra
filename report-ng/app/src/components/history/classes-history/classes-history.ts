@@ -48,7 +48,7 @@ export class ClassesHistory extends AbstractViewModel {
     private _data: any[] = [];
     private _singleClassData: any[] = [];
     private _categoryHeight = 80;             // Height of y-axis categories in pixel
-    private _categoryWidth = 70;              // Width of y-axis categories in pixel
+    private _categoryWidth = 62;              // Width of y-axis categories in pixel
     private _symbolSize = 60;                 // Width and height of chart symbol in pixel
     private _chartHeaderHeight = 50;          // Height of the top spacing including the scrollbar in pixel
     private _maxYCategoryLength = 35;         // Maximum number of characters for y-category names before linebreak
@@ -178,46 +178,34 @@ export class ClassesHistory extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
-        const methodsInClass = this._historyStatistics.getMethodHistoryStatistics().filter(method =>
-            method.classIdentifier === this._selectedClass &&
-            method.isConfigurationMethod() === false
-        );
-
-        methodsInClass.forEach(method => {
-            numberOfClassRuns = Math.max(numberOfClassRuns, method.getRunCount());
-            const methodIdentifier = method.identifier;
-            method.runs.forEach(methodRun => {
-                const historyIndex = methodRun.historyIndex;
-                const status = methodRun.context.resultStatus;
-                const startTime = methodRun.context.contextValues.startTime;
-                const endTime = methodRun.context.contextValues.endTime;
-
-                this._singleClassData.push({
-                    value: [historyIndex, methodIdentifier],
-                    itemStyle: {
-                        color: style.get(status),
-                        opacity: 1
-                    },
-                    status: status,
-                    statusName: this._statusConverter.getLabelForStatus(status),
-                    errorMessage: methodRun.errorMessage,
-                    startTime: startTime,
-                    endTime: endTime,
-                    duration: endTime - startTime
+        this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
+            const historyIndex = aggregate.historyAggregate.historyIndex;
+            const foundClass = Array.from(aggregate.classes.values()).find(currentClass =>
+                currentClass.identifier === this._selectedClass
+            );
+            if (foundClass) {
+                numberOfClassRuns++;
+                foundClass.methods.forEach(method => {
+                    const status = method.context.resultStatus;
+                    let methodName = method.identifier;
+                    const color = style.get(status);
+                    const startTime = method.context.contextValues.startTime;
+                    const endTime = method.context.contextValues.endTime;
+                    this._singleClassData.push({
+                        value: [historyIndex, methodName],
+                        itemStyle: {
+                            color: color,
+                            opacity: 1
+                        },
+                        status: status,
+                        statusName: this._statusConverter.getLabelForStatus(status),
+                        errorMessage: method.getErrorMessage(),
+                        startTime: startTime,
+                        endTime: endTime,
+                        duration: endTime - startTime
+                    });
                 });
-            });
-        });
-
-        // Sort the data by historyIndex and methodIdentifier
-        this._singleClassData.sort((a, b) => {
-            if (a.value[0] !== b.value[0]) {
-                return a.value[0] - b.value[0];
             }
-            const identifierA = a.value[1];
-            const identifierB = b.value[1];
-            if (identifierA < identifierB) return -1;
-            if (identifierA > identifierB) return 1;
-            return 0;
         });
 
         const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
@@ -255,7 +243,10 @@ export class ClassesHistory extends AbstractViewModel {
                 symbol: 'rect',
                 data: this._singleClassData,
                 z: 2,
-                cursor: 'default'
+                cursor: 'default',
+                emphasis: {
+                    scale: false
+                }
             }
         ];
     }
@@ -549,14 +540,6 @@ export class ClassesHistory extends AbstractViewModel {
                     formatter: function (value) {
                         const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
                         return value.match(regex)?.join('\n');
-                    }
-                },
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: '#c3c3c3',
-                        type: 'solid',
-                        width: 1
                     }
                 },
                 splitArea: {

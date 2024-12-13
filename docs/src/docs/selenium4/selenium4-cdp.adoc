@@ -297,3 +297,66 @@ devTools.send(Emulation.setDeviceMetricsOverride(...);
 ----
 
 See here for more details: https://chromedevtools.github.io/devtools-protocol/tot/Emulation/#method-setDeviceMetricsOverride
+
+== Manipulate browser requests
+
+Change the web requests of your browser:
+
+[source, java]
+----
+
+public class ChromeDevToolsTests extends TesterraTest implements
+        ChromeDevToolsProvider,
+        UiElementFinderFactoryProvider,
+        WebDriverManagerProvider {
+
+    // https://weatherstack.com/ uses your client IP address to find out your location.
+    // There is a REST api call to https://weatherstack.com/ws_api.php?ip=<ip> to get
+    // the local weather information.
+    // This test updates the REST api call with a static public IP address
+    @Test
+    public void testCDP_Network_changeRequest() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        DevTools rawDevTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+        final String location1 = "213.136.89.121";  // free German proxy server in Munich
+
+        rawDevTools.send(Fetch.enable(Optional.empty(), Optional.empty()));
+        rawDevTools.addListener(Fetch.requestPaused(), requestConsumer -> {
+            Request request = requestConsumer.getRequest();
+            String currentUrl = request.getUrl();
+            if (currentUrl.contains("ws_api.php?ip=")) {
+                String updatedUrl = currentUrl.substring(0, currentUrl.indexOf("?")) + "?ip=" + location1;
+                rawDevTools.send(
+                        Fetch.continueRequest(
+                                requestConsumer.getRequestId(),
+                                Optional.of(updatedUrl),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty()));
+            } else {
+                // All other requests will be sent without any change
+                rawDevTools.send(
+                        Fetch.continueRequest(
+                                requestConsumer.getRequestId(),
+                                Optional.of(currentUrl),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty()));
+
+            }
+
+        });
+
+
+        webDriver.get("https://weatherstack.com/");
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.xpath("//div[@id = 'cookiescript_accept']")).click();
+        UiElement weatherLocation = uiElementFinder
+                .find(By.xpath("//span[@data-api = 'location']"));
+        weatherLocation.assertThat().text().isContaining("Munich");
+    }
+}
+----

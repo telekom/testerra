@@ -99,11 +99,13 @@ Every module contains tests that can be run like
 gradle test
 ```
 
-The following optional properties can be set.
+Additional test properties are listed in the module's README. 
 
-| Property     | Description                           |
-|--------------|---------------------------------------|
-| `withJacoco` | Enables Jacoco code coverage analysis |
+Activate Jacoco code coverage analysis by 
+```shell
+gradle testCodeCoverageReport
+```
+instead of ``gradle test``
 
 ### License report
 

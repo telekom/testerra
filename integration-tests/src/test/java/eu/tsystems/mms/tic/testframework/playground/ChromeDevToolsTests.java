@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.ChromeDevToolsProvider;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
@@ -37,9 +38,11 @@ import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
 import org.openqa.selenium.devtools.v130.emulation.Emulation;
+import org.openqa.selenium.devtools.v130.fetch.Fetch;
 import org.openqa.selenium.devtools.v130.log.Log;
 import org.openqa.selenium.devtools.v130.log.model.LogEntry;
 import org.openqa.selenium.devtools.v130.network.Network;
+import org.openqa.selenium.devtools.v130.network.model.Request;
 import org.openqa.selenium.devtools.v130.network.model.RequestWillBeSent;
 import org.openqa.selenium.devtools.v130.network.model.ResponseReceived;
 import org.openqa.selenium.logging.HasLogEvents;
@@ -346,6 +349,54 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
 
         webDriver.get("https://the-internet.herokuapp.com/broken_images");
 
+    }
+
+    /**
+     * This test calls the page https://weatherstack.com/ which uses your local IP address to show your local weather.
+     * With the help of the Request fetcher you can modify the request to change to IP address.
+     *
+     * See details at https://chromedevtools.github.io/devtools-protocol/tot/Fetch/
+     */
+    @Test
+    public void testT15_Network_changeRequest() {
+        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver();
+        DevTools rawDevTools = CHROME_DEV_TOOLS.getRawDevTools(webDriver);
+        final String location1 = "213.136.89.121";  // free German proxy server in Munich
+
+        rawDevTools.send(Fetch.enable(Optional.empty(), Optional.empty()));
+        rawDevTools.addListener(Fetch.requestPaused(), requestConsumer -> {
+            Request request = requestConsumer.getRequest();
+            String currentUrl = request.getUrl();
+            if (currentUrl.contains("ws_api.php?ip=")) {
+                String updatedUrl = currentUrl.substring(0, currentUrl.indexOf("?")) + "?ip=" + location1;
+                rawDevTools.send(
+                        Fetch.continueRequest(
+                                requestConsumer.getRequestId(),
+                                Optional.of(updatedUrl),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty()));
+            } else {
+                rawDevTools.send(
+                        Fetch.continueRequest(
+                                requestConsumer.getRequestId(),
+                                Optional.of(currentUrl),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty()));
+
+            }
+
+        });
+
+        webDriver.get("https://weatherstack.com/");
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
+        uiElementFinder.find(By.xpath("//div[@id = 'cookiescript_accept']")).click();
+        UiElement weatherLocation = uiElementFinder.find(By.xpath("//span[@data-api = 'location']"));
+        weatherLocation.assertThat().text().isContaining("Munich");
     }
 
 }

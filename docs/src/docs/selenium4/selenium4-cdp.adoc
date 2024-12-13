@@ -325,7 +325,8 @@ public class ChromeDevToolsTests extends TesterraTest implements
             Request request = requestConsumer.getRequest();
             String currentUrl = request.getUrl();
             if (currentUrl.contains("ws_api.php?ip=")) {
-                String updatedUrl = currentUrl.substring(0, currentUrl.indexOf("?")) + "?ip=" + location1;
+                String updatedUrl = currentUrl.substring(0, currentUrl.indexOf("?"))
+                        + "?ip=" + location1;
                 rawDevTools.send(
                         Fetch.continueRequest(
                                 requestConsumer.getRequestId(),

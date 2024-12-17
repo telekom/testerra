@@ -114,8 +114,9 @@ export class DurationHistory extends AbstractViewModel {
                 }
             },
             grid: {
-                left: '5%',
-                right: '2%'
+                left: '1%',
+                right: '1%',
+                containLabel: true
             },
             xAxis: {
                 type: 'category'

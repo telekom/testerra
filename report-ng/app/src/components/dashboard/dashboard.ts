@@ -159,9 +159,9 @@ export class Dashboard extends AbstractViewModel {
         this._lowCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_LOW];
         this._lowCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_LOW] || 0;
 
-        this._loading = false
+        this._loading = false;
 
-        this._promptLogs = await this.getPromptLogs()
+        this._promptLogs = await this.getPromptLogs();
     };
 
     async getPromptLogs() {

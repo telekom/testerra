@@ -143,8 +143,6 @@ export class TestResultsChart {
                     enabled: this.animationsEnabled
                 },
                 type: 'pie',
-                //width: '400px',
-                //height:'300px',
                 fontFamily: 'Roboto',
                 events: {
                     dataPointSelection: (event, chartContext, config) => {

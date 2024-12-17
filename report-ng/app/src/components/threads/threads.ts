@@ -38,8 +38,8 @@ import {
 } from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
 import {ResultStatusType} from "../../services/report-model/framework_pb";
 import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
-import MethodContext = data.MethodContext;
 import {MdcSelect} from "@aurelia-mdc-web/select";
+import MethodContext = data.MethodContext;
 
 interface MethodInfo {
     id: string;
@@ -105,7 +105,7 @@ export class Threads extends AbstractViewModel {
                 self._zoomInOnFilter(self._statusConverter.getStatusForClass(params.status), 7)
                 self.statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
             }, 200)
-        }  else {
+        } else {
             this._selectedStatus = null;
         }
 
@@ -115,7 +115,7 @@ export class Threads extends AbstractViewModel {
                 self._zoomInOnFilter(params.class, 8);
                 self.classSelect.value = self._executionStatistics.classStatistics.find(classStat => classStat.classIdentifier == self.queryParams.class).classIdentifier;      // necessary to keep selection after refreshing the page
             }, 200)
-        }  else {
+        } else {
             this._selectedClass = null;
         }
     };
@@ -186,7 +186,7 @@ export class Threads extends AbstractViewModel {
             this._resetColor();
         }
 
-        if(this._selectedStatus > 0){
+        if (this._selectedStatus > 0) {
             this._zoomInOnFilter(this._selectedStatus, 7)
             this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
         }
@@ -202,7 +202,7 @@ export class Threads extends AbstractViewModel {
             this._resetColor();
         }
 
-        if(this._selectedClass){
+        if (this._selectedClass) {
             this._zoomInOnFilter(this._selectedClass, 8);
             this.updateUrl({class: this._selectedClass});
         }
@@ -311,7 +311,7 @@ export class Threads extends AbstractViewModel {
                         .map(con => con.classContextId)
                         .filter((value, index, self) => self.indexOf(value) === index);
                     return classContextIds.includes(context.classContextId);
-                }).classIdentifier
+                }).classIdentifier;
 
                 data.push({
                     name: context.contextValues.name,
@@ -335,7 +335,7 @@ export class Threads extends AbstractViewModel {
             });
         });
 
-        // Some calculations for chard presentation
+        // Some calculations for chart presentation
         const gridHeight = threadCategories.size * this._threadHeight;
         const sliderFromTop = gridHeight + this._sliderSpacingFromChart
         const dateFormatter = this._dateFormatter;

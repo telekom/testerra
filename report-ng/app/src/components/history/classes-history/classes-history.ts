@@ -35,7 +35,7 @@ import {HistoryStatistics} from "../../../services/statistic-models";
 import {StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ClassName, ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
-import {ResultStatusType} from "../../../services/report-model/framework_pb";
+import {MethodType, ResultStatusType} from "../../../services/report-model/framework_pb";
 import {MdcSelect} from "@aurelia-mdc-web/select";
 
 @autoinject()
@@ -159,6 +159,15 @@ export class ClassesHistory extends AbstractViewModel {
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
     }
 
+    private compareByIndexAndName(a: any, b: any): number {
+        if (a.value[0] !== b.value[0]) {
+            return a.value[0] - b.value[0];
+        }
+        if (a.value[1] > b.value[1]) return -1;
+        if (a.value[1] < b.value[1]) return 1;
+        return 0;
+    }
+
     private _prepareSingleClassChartData() {
         if (this._previousSelectedClass === this._selectedClass) {
             return;
@@ -186,28 +195,31 @@ export class ClassesHistory extends AbstractViewModel {
             if (foundClass) {
                 numberOfClassRuns++;
                 foundClass.methods.forEach(method => {
-                    const status = method.context.resultStatus;
-                    let methodName = method.identifier;
-                    const color = style.get(status);
-                    const startTime = method.context.contextValues.startTime;
-                    const endTime = method.context.contextValues.endTime;
-                    this._singleClassData.push({
-                        value: [historyIndex, methodName],
-                        itemStyle: {
-                            color: color,
-                            opacity: 1
-                        },
-                        status: status,
-                        statusName: this._statusConverter.getLabelForStatus(status),
-                        errorMessage: method.getErrorMessage(),
-                        startTime: startTime,
-                        endTime: endTime,
-                        duration: endTime - startTime
-                    });
+                    if (method.context.methodType == MethodType.TEST_METHOD) {
+                        const status = method.context.resultStatus;
+                        let methodName = method.identifier;
+                        const color = style.get(status);
+                        const startTime = method.context.contextValues.startTime;
+                        const endTime = method.context.contextValues.endTime;
+                        this._singleClassData.push({
+                            value: [historyIndex, methodName],
+                            itemStyle: {
+                                color: color,
+                                opacity: 1
+                            },
+                            status: status,
+                            statusName: this._statusConverter.getLabelForStatus(status),
+                            errorMessage: method.getErrorMessage(),
+                            startTime: startTime,
+                            endTime: endTime,
+                            duration: endTime - startTime
+                        });
+                    }
                 });
             }
         });
 
+        this._singleClassData.sort(this.compareByIndexAndName);
         const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
         this._numberOfMethodsInClass = uniqueMethodNames.size;
         this._numberOfRuns = numberOfClassRuns;
@@ -239,7 +251,7 @@ export class ClassesHistory extends AbstractViewModel {
         this._option.series = [
             {
                 type: 'scatter',
-                symbolSize: this._symbolSize,
+                symbolSize: [this._symbolSize, this._symbolSize],
                 symbol: 'rect',
                 data: this._singleClassData,
                 z: 2,
@@ -292,9 +304,6 @@ export class ClassesHistory extends AbstractViewModel {
                     this._uniqueClasses.push(testClass.identifier);
                 }
 
-                const startTime = testClass.classContext.contextValues.startTime;
-                const endTime = testClass.classContext.contextValues.endTime;
-
                 this._data.push({
                     value: [
                         historyIndex,
@@ -308,20 +317,17 @@ export class ClassesHistory extends AbstractViewModel {
                         color: 'rgb(221,221,221)',
                         opacity: 1
                     },
-                    testcases: testcases,
-                    startTime: startTime,
-                    endTime: endTime,
-                    duration: endTime - startTime
+                    testcases: testcases
                 });
             });
         });
+
+        this._uniqueClasses.sort((a, b) => this._classNameValueConverter.toView(a, 1).localeCompare(this._classNameValueConverter.toView(b, 1)));
+        this._data.sort(this.compareByIndexAndName);
         this._adaptChartSize(this._uniqueClasses.length);
     }
 
     private _setChartOption() {
-        const dateFormatter = this._dateFormatter;
-        const durationFormatter = this._durationFormatter;
-
         // Variables to construct the custom chart elements
         const maxYCategoryLength = this._maxYCategoryLength;
         const subQuadWidth = Math.sqrt((this._symbolSize * this._symbolSize) / 4);
@@ -344,10 +350,7 @@ export class ClassesHistory extends AbstractViewModel {
                         ${failed > 0 ? `<br><span class="status-dot status-failed"></span> Failed: ${failed}` : ''}
                         ${expectedFailed > 0 ? `<br><span class="status-dot status-failed-expected"></span> Expected Failed: ${expectedFailed}` : ''}
                         ${skipped > 0 ? `<br><span class="status-dot status-skipped"></span> Skipped: ${skipped}` : ''}
-                        ${passed > 0 ? `<br><span class="status-dot status-passed"></span> Passed: ${passed}` : ''}
-                        <br><br>Start time: ${dateFormatter.toView(params.data.startTime, 'full')}
-                        <br>End time: ${dateFormatter.toView(params.data.endTime, 'full')}
-                        <br>Duration: ${durationFormatter.toView(params.data.duration)}`;
+                        ${passed > 0 ? `<br><span class="status-dot status-passed"></span> Passed: ${passed}` : ''}`;
             }
         };
         this._option.series = [

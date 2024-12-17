@@ -50,7 +50,7 @@ export class StatusShareChart extends AbstractViewModel {
             tooltip: {
                 formatter: function (params) {
                     return '<div class="header" style="background-color: ' +
-                        params.color + ';"> ' + params.data.statusName + ': ' + params.value + '</div>'
+                        params.color + ';"> ' + params.data.statusName + ': ' + params.value + '</div>';
                 }
             },
             legend: {
@@ -83,6 +83,28 @@ export class StatusShareChart extends AbstractViewModel {
                             color: '#000000',
                             width: 1
                         }
+                    }
+                }
+            ],
+            media: [
+                {
+                    query: {maxWidth: 280},
+                    option: {
+                        series: [
+                            {
+                                radius: ['30%', '100%'],
+                            }
+                        ]
+                    }
+                },
+                {
+                    query: {minWidth: 281},
+                    option: {
+                        series: [
+                            {
+                                radius: ['40%', '130%'],
+                            }
+                        ]
                     }
                 }
             ]

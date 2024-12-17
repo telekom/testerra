@@ -275,10 +275,10 @@ export class ClassHistoryStatistics extends Statistics {
     private _methods: HistoricalMethod[] = [];
 
     constructor(
-        readonly classContext: IClassContext
+        identifier: string
     ) {
         super();
-        this._identifier = classContext.testContextName || classContext.contextValues.name;
+        this._identifier = identifier;
     }
 
     addMethod(method: HistoricalMethod) {
@@ -333,11 +333,9 @@ export class HistoricalMethod {
                 .forEach(actionDetails => {
                     actionDetails.entries.forEach(entry => {
                         const errorContext = entry.errorContext;
-                        errorContext.stackTrace.forEach(stackTrace => {
-                            const errorClassName = stackTrace.className.substring(stackTrace.className.lastIndexOf(".") + 1);
-                            errorMessage = errorClassName + ": " + errorMessage.concat(stackTrace.message + " ");
-                        })
-                    })
+                        const errorClassName = errorContext.stackTrace[0].className.substring(errorContext.stackTrace[0].className.lastIndexOf(".") + 1);
+                        errorMessage += " " + (errorClassName + ": " + errorContext.stackTrace[0].message);
+                    });
                 });
         }
         return errorMessage.trim();
@@ -365,25 +363,33 @@ export class HistoricalMethod {
 }
 
 export class HistoryAggregateStatistics extends Statistics {
-    private _classMap: Map<string, ClassHistoryStatistics>;
-    private _methodMap: Map<string, HistoricalMethod>;
-    private _aggregate: HistoryAggregate;
-    private _historyIndex: number;
+    private readonly _classMap: Map<string, ClassHistoryStatistics>;
+    private readonly _classIdMap: Map<string, string>;
+    private readonly _methodMap: Map<string, HistoricalMethod>;
+    private readonly _aggregate: HistoryAggregate;
+    private readonly _historyIndex: number;
 
     constructor(historyEntry: HistoryAggregate) {
         super();
         this._aggregate = historyEntry;
         this._classMap = new Map();
+        this._classIdMap = new Map();
         this._methodMap = new Map();
         this._historyIndex = historyEntry.historyIndex;
 
         Object.values(historyEntry.classContexts).forEach(cls => {
+            const classIdentifier = cls.testContextName || cls.contextValues.name
+            this._classIdMap.set(cls.contextValues.id, classIdentifier);
+        });
+
+        const uniqueClasses = Array.from(new Set(this._classIdMap.values()));
+        uniqueClasses.forEach(cls => {
             let classStats = new ClassHistoryStatistics(cls);
-            this._classMap.set(cls.contextValues.id, classStats);
+            this._classMap.set(cls, classStats);
         });
 
         Object.values(historyEntry.methodContexts).forEach(method => {
-            this._methodMap.set(method.contextValues.id, new HistoricalMethod(method, this._classMap.get(method.classContextId).identifier));
+            this._methodMap.set(method.contextValues.id, new HistoricalMethod(method, this._classIdMap.get(method.classContextId)));
             if (method.methodType === MethodType.TEST_METHOD) {
                 this.addResultStatus(method.resultStatus);
             }
@@ -395,7 +401,8 @@ export class HistoryAggregateStatistics extends Statistics {
             });
 
             const classId = method.context.classContextId;
-            const classStats = this._classMap.get(classId);
+            const classIdentifier = this._classIdMap.get(classId);
+            const classStats = this._classMap.get(classIdentifier);
             if (classStats) {
                 classStats.addMethod(method);
             }

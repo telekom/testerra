@@ -77,18 +77,20 @@ export class RunHistory extends AbstractViewModel {
         });
 
         let overallTestCount = 0;
+        let statusData = [];
         statusCount.forEach((count, status) => {
             overallTestCount += count;
             if (count) {
-                this.statusData.push({
+                statusData.push({
                     status: status,
                     statusName: this._statusConverter.getLabelForStatus(status),
                     value: count,
                     itemStyle: {color: this._statusConverter.getColorForStatus(status)}
-                })
+                });
                 this._availableStatuses.push(status);
             }
         });
+        this.statusData = statusData;
 
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;

@@ -326,19 +326,31 @@ export class HistoricalMethod {
         return methodName;
     }
 
-    getErrorMessage() {
-        let errorMessage = "";
+    getFailureAspects(): string[] {
+        let failureAspects: string[] = [];
         if (this._methodContext.resultStatus != ResultStatusType.PASSED) {
             this._methodContext.testSteps.flatMap(value => value.actions)
                 .forEach(actionDetails => {
                     actionDetails.entries.forEach(entry => {
                         const errorContext = entry.errorContext;
                         const errorClassName = errorContext.stackTrace[0].className.substring(errorContext.stackTrace[0].className.lastIndexOf(".") + 1);
-                        errorMessage += " " + (errorClassName + ": " + errorContext.stackTrace[0].message);
+                        failureAspects.push((errorClassName + ": " + errorContext.stackTrace[0].message).trim());
                     });
                 });
         }
-        return errorMessage.trim();
+        return failureAspects;
+    }
+
+    getCombinedErrorMessage(): string {
+        let combinedErrorMessage = "";
+        const failureAspects = this.getFailureAspects();
+        if (failureAspects.length > 0) {
+            failureAspects.forEach(error => {
+                combinedErrorMessage += " " + error;
+            });
+            combinedErrorMessage = combinedErrorMessage.trim();
+        }
+        return combinedErrorMessage;
     }
 
     addRelatedMethods(relatedMethod: string) {
@@ -429,23 +441,24 @@ export class HistoryAggregateStatistics extends Statistics {
 export class HistoricalMethodRun {
     private readonly _historyIndex: number = 0;
     private readonly _context: IMethodContext;
-    private readonly _errorMessage: string;
+    private readonly _failureAspects: string[];
+    private readonly _combinedErrorMessage: string;
 
     constructor(historicalMethod: HistoricalMethod, index: number) {
         this._historyIndex = index;
         this._context = historicalMethod.context;
-        this._errorMessage = historicalMethod.getErrorMessage();
+        this._failureAspects = historicalMethod.getFailureAspects();
+        this._combinedErrorMessage = historicalMethod.getCombinedErrorMessage();
     }
 
     // Returns the overall status for flakiness calculation
     getParsedResultStatus(): ResultStatusType {
         let status = this._context.resultStatus;
         if (status === ResultStatusType.FAILED_RETRIED) {
-            status = ResultStatusType.FAILED;
+            return ResultStatusType.FAILED;
         } else if (status === ResultStatusType.PASSED_RETRY || status === ResultStatusType.REPAIRED) {
-            status = ResultStatusType.PASSED;
+            return ResultStatusType.PASSED;
         }
-        return status;
     }
 
     get historyIndex() {
@@ -456,8 +469,12 @@ export class HistoricalMethodRun {
         return this._context;
     }
 
-    get errorMessage() {
-        return this._errorMessage;
+    get failureAspects() {
+        return this._failureAspects;
+    }
+
+    get combinedErrorMessage() {
+        return this._combinedErrorMessage;
     }
 }
 
@@ -515,10 +532,6 @@ export class MethodHistoryStatistics extends Statistics {
         return (weightedSwitchSum / totalWeight * 100);
     }
 
-    isConfigurationMethod(): boolean {
-        return this._runs[this.getRunCount() - 1].context.methodType === MethodType.CONFIGURATION_METHOD;
-    }
-
     getAverageDuration(): number {
         let avg = 0;
         let durations: number[] = [];
@@ -535,10 +548,14 @@ export class MethodHistoryStatistics extends Statistics {
     getErrorCount() {
         let errorCount = new Map<string, number>();
         this._runs.forEach(run => {
-            const error = run.errorMessage;
-            if (error) {
-                const currentErrorCount = errorCount.get(error) || 0;
-                errorCount.set(error, currentErrorCount + 1);
+            const failureAspects = run.failureAspects;
+            if (failureAspects.length > 0) {
+                failureAspects.forEach(error => {
+                    if (error) {
+                        const currentErrorCount = errorCount.get(error) || 0;
+                        errorCount.set(error, currentErrorCount + 1);
+                    }
+                });
             }
         });
         return errorCount;

@@ -46,6 +46,8 @@ export class TestHistoryChart extends AbstractViewModel {
     @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
     @bindable is_history_view: boolean;
     private _chartData: any[] = [];
+    private _viewport: number[] = [];
+    @bindable({defaultBindingMode: bindingMode.twoWay}) status_data: any[] = [];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -91,29 +93,6 @@ export class TestHistoryChart extends AbstractViewModel {
         this._chart.setOption(this._option);
     }
 
-    /*    private _handleZoomEvent(event: any) {
-            let start: number;
-            let end: number;
-
-            if (event.batch) {
-                start = event.batch[0].start;
-                end = event.batch[0].end;
-            } else {
-                start = event.start;
-                end = event.end;
-            }
-
-            const totalDataPoints = this._chartData.length;
-            const startIndex = Math.ceil((start / 100) * totalDataPoints);
-            const endIndex = Math.ceil((end / 100) * totalDataPoints);
-
-            console.log('Zoom start:', startIndex, 'Zoom end:', endIndex);
-        }
-
-        private _chartChanged() {
-            this._chart.on('dataZoom', event => this._handleZoomEvent(event));
-        }*/
-
     async attached() {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
         this._historyAvailable = this._historyStatistics.getTotalRunCount() > 1;
@@ -129,6 +108,48 @@ export class TestHistoryChart extends AbstractViewModel {
             this.filterChanged();
         }
     };
+
+    private _handleZoomEvent(event: any) {
+        const options = this._chart.getOption();
+        const start = options.dataZoom[0].startValue;
+        const end = options.dataZoom[0].endValue;
+
+        if (this._viewport[0] != start || this._viewport[1] != end) {
+            this._viewport[0] = start;
+            this._viewport[1] = end;
+
+            let statusCount = new Map<ResultStatusType, number>();
+            for (let i = start; i <= end; i++) {
+                const currentFailed = statusCount.get(ResultStatusType.FAILED) || 0;
+                const currentExpectedFailed = statusCount.get(ResultStatusType.FAILED_EXPECTED) || 0;
+                const currentSkipped = statusCount.get(ResultStatusType.SKIPPED) || 0;
+                const currentPassed = statusCount.get(ResultStatusType.PASSED) || 0;
+
+                statusCount.set(ResultStatusType.FAILED, currentFailed + this._chartData[i].value[1]);
+                statusCount.set(ResultStatusType.FAILED_EXPECTED, currentExpectedFailed + this._chartData[i].value[2]);
+                statusCount.set(ResultStatusType.SKIPPED, currentSkipped + this._chartData[i].value[3]);
+                statusCount.set(ResultStatusType.PASSED, currentPassed + this._chartData[i].value[4]);
+            }
+
+            let newStatusData = [];
+            statusCount.forEach((count, status) => {
+                if (count) {
+                    newStatusData.push({
+                        status: status,
+                        statusName: this._statusConverter.getLabelForStatus(status),
+                        value: count,
+                        itemStyle: {color: this._statusConverter.getColorForStatus(status)}
+                    });
+                }
+            });
+
+            this.status_data = newStatusData;
+        }
+    }
+
+    private _chartChanged() {
+        this._chart.on('datazoom', event => this._handleZoomEvent(event));
+    }
 
     private _initDurationFormatter() {
         const container = new Container();

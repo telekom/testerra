@@ -75,7 +75,7 @@ export class MethodHistoryChart extends AbstractViewModel {
 
         if (failureAspect) {
             this._option.series[0].data.forEach(function (dot) {
-                if (dot.errorMessage.toString() === failureAspect) {
+                if (dot.errorMessage.toString().includes(failureAspect)) {
                     dot.itemStyle.opacity = 1;
                 } else {
                     dot.itemStyle.opacity = inactiveOpacity;
@@ -87,25 +87,6 @@ export class MethodHistoryChart extends AbstractViewModel {
             }
             this._option.series[0].data.forEach(function (dot) {
                 dot.itemStyle.opacity = 1;
-            });
-        }
-        this._chart.setOption(this._option);
-    }
-
-    private highlightData(failureAspect: string) {
-        const inactiveOpacity = this._opacityOfInactiveElements;
-
-        if (failureAspect === undefined) {
-            this._option.series[0].data.forEach(function (dot) {
-                dot.itemStyle.opacity = 1;
-            });
-        } else {
-            this._option.series[0].data.forEach(function (dot) {
-                if (dot.errorMessage.toString() === failureAspect) {
-                    dot.itemStyle.opacity = 1;
-                } else {
-                    dot.itemStyle.opacity = inactiveOpacity;
-                }
             });
         }
         this._chart.setOption(this._option);
@@ -130,7 +111,7 @@ export class MethodHistoryChart extends AbstractViewModel {
             this._data.push({
                 status: status,
                 statusName: this._statusConverter.getLabelForStatus(status),
-                errorMessage: run.errorMessage,
+                errorMessage: run.combinedErrorMessage,
                 itemStyle: {
                     color: style.get(status),
                     opacity: 1

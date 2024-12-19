@@ -23,21 +23,22 @@ import {autoinject, bindable, observable} from "aurelia-framework";
 import {AbstractViewModel} from "../abstract-view-model";
 import {ECharts, EChartsOption} from "echarts";
 import "./status-share-chart.scss"
+import {bindingMode} from "aurelia-binding";
 
 @autoinject()
 export class StatusShareChart extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
-    @bindable status_data: any[] = [];
+    @bindable({defaultBindingMode: bindingMode.twoWay}) statusData: any[] = [];
 
     constructor() {
         super();
         this._option = {};
     }
 
-    attached() {
+    statusDataChanged() {
         this._setChartOption();
-    };
+    }
 
     private _setChartOption() {
         this._option = {
@@ -64,7 +65,7 @@ export class StatusShareChart extends AbstractViewModel {
                     center: ['50%', '90%'],
                     startAngle: 180,
                     endAngle: 360,
-                    data: this.status_data,
+                    data: this.statusData,
                     cursor: 'default',
                     label: {
                         show: true,

@@ -31,7 +31,7 @@ import {
 import {
     IntlDateFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
-import {HistoryStatistics} from "../../../services/statistic-models";
+import {HistoryStatistics, MethodHistoryStatistics} from "../../../services/statistic-models";
 import {StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ClassName, ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
@@ -40,20 +40,20 @@ import {MdcSelect} from "@aurelia-mdc-web/select";
 
 @autoinject()
 export class ClassesHistory extends AbstractViewModel {
-    private _selectedClass: string = null;
-    private _previousSelectedClass: string;           // Helper variable to prevent unnecessary option building
     private _historyStatistics: HistoryStatistics;
     @observable() private _chart: ECharts;
+    @observable private _uniqueClasses: any[] = [];
     private _option: EChartsOption;
     private _data: any[] = [];
     private _singleClassData: any[] = [];
+    private _selectedClass: string = null;
+    private _previousSelectedClass: string;            // Helper variable to prevent unnecessary option building
     private _categoryHeight = 80;             // Height of y-axis categories in pixel
     private _categoryWidth = 62;              // Width of y-axis categories in pixel
     private _symbolSize = 60;                 // Width and height of chart symbol in pixel
     private _chartHeaderHeight = 50;          // Height of the top spacing including the scrollbar in pixel
-    private _maxYCategoryLength = 35;         // Maximum number of characters for y-category names before linebreak
+    private _maxYCategoryLength = 45;         // Maximum number of characters for y-category names before linebreak
     private _gridLeftValue: number;
-    @observable private _uniqueClasses: any[] = [];
     private _numberOfMethodsInClass = 0;
     private _cardHeight: number;
     private _gridHeight: number;
@@ -110,6 +110,22 @@ export class ClassesHistory extends AbstractViewModel {
             this._prepareChartData();
 
             this._classChanged();
+
+            this._chart.on('click', params => {
+                if (params.targetType === 'axisLabel') {
+                    if (this._selectedClass) {
+                        const foundMethod = this._historyStatistics.getMethodHistoryStatistics().find(method =>
+                            method.identifier === params.value &&
+                            method.classIdentifier === this._selectedClass
+                        );
+                        if (foundMethod) {
+                            this._navigateToMethodHistory(foundMethod)
+                        }
+                    } else {
+                        this._selectedClass = this._uniqueClasses.find(clsName => clsName.endsWith(params.value));
+                    }
+                }
+            })
         });
     }
 
@@ -201,6 +217,7 @@ export class ClassesHistory extends AbstractViewModel {
                         const color = style.get(status);
                         const startTime = method.context.contextValues.startTime;
                         const endTime = method.context.contextValues.endTime;
+
                         this._singleClassData.push({
                             value: [historyIndex, methodName],
                             itemStyle: {
@@ -209,7 +226,7 @@ export class ClassesHistory extends AbstractViewModel {
                             },
                             status: status,
                             statusName: this._statusConverter.getLabelForStatus(status),
-                            errorMessage: method.getErrorMessage(),
+                            errorMessage: method.getCombinedErrorMessage(),
                             startTime: startTime,
                             endTime: endTime,
                             duration: endTime - startTime
@@ -235,7 +252,8 @@ export class ClassesHistory extends AbstractViewModel {
             trigger: 'item',
             formatter: function (params) {
                 let tooltip = '<div class="header" style="background-color: ' +
-                    params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
+                    params.color + ';">' + params.data.statusName + '</div>' +
+                    '<br>Run ' + params.value[0];
 
                 if (params.data.errorMessage) {
                     tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
@@ -248,19 +266,57 @@ export class ClassesHistory extends AbstractViewModel {
                 return tooltip;
             }
         };
+
+        // Variables to construct the custom chart elements
+        const subQuadWidth = Math.sqrt((this._symbolSize * this._symbolSize) / 4);
+        const largeSubQuadLength = subQuadWidth * 2;
+        const subQuadHeight = subQuadWidth * 2 / 3;
+
         this._option.series = [
             {
-                type: 'scatter',
-                symbolSize: [this._symbolSize, this._symbolSize],
-                symbol: 'rect',
-                data: this._singleClassData,
-                z: 2,
+                type: 'custom',
                 cursor: 'default',
-                emphasis: {
-                    scale: false
-                }
+                renderItem: function (params, api) {
+                    const x = api.coord([api.value(0), api.value(1)])[0];
+                    const y = api.coord([api.value(0), api.value(1)])[1];
+
+                    const children = [];
+
+                    // invisible rect as background
+                    children.push(
+                        {
+                            type: 'rect',
+                            shape: {
+                                x: x - subQuadWidth,
+                                y: y - (subQuadHeight * 3 / 2),
+                                width: largeSubQuadLength,
+                                height: largeSubQuadLength
+                            },
+                            style: {fill: '#00000000'}
+                        });
+
+                    // status-rect
+                    children.push(
+                        {
+                            type: 'rect',
+                            shape: {
+                                x: x - subQuadWidth,
+                                y: y - (subQuadHeight / 2),
+                                width: largeSubQuadLength,
+                                height: subQuadHeight
+                            },
+                            style: {fill: api.visual("color")}
+                        }
+                    );
+
+                    return {
+                        type: 'group',
+                        children: children
+                    };
+                },
+                data: this._singleClassData
             }
-        ];
+        ]
     }
 
     private _prepareChartData() {
@@ -278,6 +334,9 @@ export class ClassesHistory extends AbstractViewModel {
             const historyIndex = aggregate.historyAggregate.historyIndex;
 
             const classes = Array.from(aggregate.classes.values());
+            const startTime = aggregate.historyAggregate.executionContext.contextValues.startTime;
+            const endTime = aggregate.historyAggregate.executionContext.contextValues.endTime;
+            const duration = endTime - startTime;
 
             classes.forEach(testClass => {
                 const className = this._classNameValueConverter.toView(testClass.identifier, ClassName.simpleName);
@@ -317,7 +376,10 @@ export class ClassesHistory extends AbstractViewModel {
                         color: 'rgb(221,221,221)',
                         opacity: 1
                     },
-                    testcases: testcases
+                    testcases: testcases,
+                    startTime: startTime,
+                    endTime: endTime,
+                    duration: duration
                 });
             });
         });
@@ -328,6 +390,9 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _setChartOption() {
+        const dateFormatter = this._dateFormatter;
+        const durationFormatter = this._durationFormatter;
+
         // Variables to construct the custom chart elements
         const maxYCategoryLength = this._maxYCategoryLength;
         const subQuadWidth = Math.sqrt((this._symbolSize * this._symbolSize) / 4);
@@ -339,18 +404,12 @@ export class ClassesHistory extends AbstractViewModel {
         this._option.tooltip = {
             trigger: 'item',
             formatter: function (params) {
-                const statuses = params.value.slice(2);
-                const failed = statuses[1];
-                const expectedFailed = statuses[2];
-                const skipped = statuses[3];
-                const passed = statuses[0];
-
-                return `<div class="class-history-chart-tooltip-header">Run ${params.value[0]}</div>
+                return `<div class="class-history-chart-tooltip-header">${params.value[1]}</div>
+                        <br>Run ${params.value[0]}
                         <br>Testcases: ${params.data.testcases}
-                        ${failed > 0 ? `<br><span class="status-dot status-failed"></span> Failed: ${failed}` : ''}
-                        ${expectedFailed > 0 ? `<br><span class="status-dot status-failed-expected"></span> Expected Failed: ${expectedFailed}` : ''}
-                        ${skipped > 0 ? `<br><span class="status-dot status-skipped"></span> Skipped: ${skipped}` : ''}
-                        ${passed > 0 ? `<br><span class="status-dot status-passed"></span> Passed: ${passed}` : ''}`;
+                        <br><br>Run start time: ${dateFormatter.toView(params.data.startTime, 'full')}
+                        <br>Run end time: ${dateFormatter.toView(params.data.endTime, 'full')}
+                        <br>Run duration: ${durationFormatter.toView(params.data.duration)}`;
             }
         };
         this._option.series = [
@@ -539,10 +598,16 @@ export class ClassesHistory extends AbstractViewModel {
             yAxis: {
                 type: 'category',
                 show: true,
+                triggerEvent: true,
                 axisLabel: {
                     formatter: function (value) {
                         const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
-                        return value.match(regex)?.join('\n');
+                        return `{link|${value.match(regex)?.join('\n')}}`;
+                    },
+                    rich: {
+                        link: {
+                            color: 'blue'
+                        }
                     }
                 },
                 splitArea: {
@@ -559,5 +624,12 @@ export class ClassesHistory extends AbstractViewModel {
                 show: true
             }
         }
+    }
+
+    private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
+        this._router.navigateToRoute('method', {
+            methodId: methodHistoryStatistics.idOfLatestRun,
+            subPage: "method-history"
+        });
     }
 }

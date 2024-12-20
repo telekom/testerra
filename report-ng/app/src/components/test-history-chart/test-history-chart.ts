@@ -47,7 +47,6 @@ export class TestHistoryChart extends AbstractViewModel {
     @bindable is_history_view: boolean;
     private _chartData: any[] = [];
     @bindable viewport: number[] = [];
-    @bindable({defaultBindingMode: bindingMode.twoWay}) status_data: any[] = [];
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -119,33 +118,6 @@ export class TestHistoryChart extends AbstractViewModel {
 
         if (this.viewport[0] != startIndex || this.viewport[1] != endIndex) {
             this.viewport = [startIndex, endIndex];
-
-            let statusCount = new Map<ResultStatusType, number>();
-            for (let i = start; i <= end; i++) {
-                const currentFailed = statusCount.get(ResultStatusType.FAILED) || 0;
-                const currentExpectedFailed = statusCount.get(ResultStatusType.FAILED_EXPECTED) || 0;
-                const currentSkipped = statusCount.get(ResultStatusType.SKIPPED) || 0;
-                const currentPassed = statusCount.get(ResultStatusType.PASSED) || 0;
-
-                statusCount.set(ResultStatusType.FAILED, currentFailed + this._chartData[i].value[1]);
-                statusCount.set(ResultStatusType.FAILED_EXPECTED, currentExpectedFailed + this._chartData[i].value[2]);
-                statusCount.set(ResultStatusType.SKIPPED, currentSkipped + this._chartData[i].value[3]);
-                statusCount.set(ResultStatusType.PASSED, currentPassed + this._chartData[i].value[4]);
-            }
-
-            let newStatusData = [];
-            statusCount.forEach((count, status) => {
-                if (count) {
-                    newStatusData.push({
-                        status: status,
-                        statusName: this._statusConverter.getLabelForStatus(status),
-                        value: count,
-                        itemStyle: {color: this._statusConverter.getColorForStatus(status)}
-                    });
-                }
-            });
-
-            this.status_data = newStatusData;
         }
     }
 

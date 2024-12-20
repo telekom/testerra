@@ -502,6 +502,10 @@ export class MethodHistoryStatistics extends Statistics {
         this._idOfLatestRun = method.context.contextValues.id;
     }
 
+    isTestMethod(): boolean {
+        return this._runs[this._runs.length - 1].context.methodType === MethodType.TEST_METHOD;
+    }
+
     addRun(historicalMethod: HistoricalMethod, historyIndex: number) {
         this._runs.push(new HistoricalMethodRun(historicalMethod, historyIndex));
         this.addResultStatus(historicalMethod.context.resultStatus);
@@ -511,7 +515,27 @@ export class MethodHistoryStatistics extends Statistics {
         return this._runs.length;
     }
 
+    _getFailingStreak(runs: HistoricalMethodRun[]): number {
+        let failingStreak = 0;
+
+        for (const run of runs.reverse()) {
+            if (run.getParsedResultStatus() === ResultStatusType.PASSED) {
+                break;
+            }
+            failingStreak++;
+        }
+        return failingStreak;
+    }
+
+    getFailingStreakInRange(startIndex: number, endIndex: number): number {
+        return this._getFailingStreak(this._getMethodRunsInRange(startIndex, endIndex));
+    }
+
     getFlakinessInRange(startIndex: number, endIndex: number): number {
+        return this._getFlakiness(this._getMethodRunsInRange(startIndex, endIndex));
+    }
+
+    private _getMethodRunsInRange(startIndex: number, endIndex: number) {
         let runsInRange: HistoricalMethodRun[] = [];
         for (let currentIndex = startIndex; currentIndex <= endIndex; currentIndex++) {
             const currentRun = this._runs.find(run => run.historyIndex === currentIndex);
@@ -519,7 +543,7 @@ export class MethodHistoryStatistics extends Statistics {
                 runsInRange.push(currentRun);
             }
         }
-        return this._getFlakiness(runsInRange);
+        return runsInRange;
     }
 
     private _getFlakiness(runs: HistoricalMethodRun[]): number {
@@ -552,6 +576,10 @@ export class MethodHistoryStatistics extends Statistics {
 
     get flakiness(): number {
         return this._getFlakiness(this._runs);
+    }
+
+    get failingStreak(): number {
+        return this._getFailingStreak(this._runs);
     }
 
     getAverageDuration(): number {

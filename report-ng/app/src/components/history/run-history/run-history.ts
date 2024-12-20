@@ -28,7 +28,7 @@ import {IFilter, StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
 import {MdcSelect} from "@aurelia-mdc-web/select";
-import {ClassName, ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
+import {ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
 
 @autoinject()
 export class RunHistory extends AbstractViewModel {
@@ -42,6 +42,7 @@ export class RunHistory extends AbstractViewModel {
     private _selectedStatus: ResultStatusType = null;
     private _availableStatuses: ResultStatusType[] = [];
     private _topFlakyTests: any[] = [];
+    private _topFailingTests: any[] = [];
     private _statusSelect: MdcSelect;
     private _historyAvailable = false;
 
@@ -97,6 +98,7 @@ export class RunHistory extends AbstractViewModel {
         this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
 
         this._getTopFlakyMethods();
+        this._getTopFailingMethods();
 
         if (this.queryParams.status) {
             this._filter = {
@@ -112,6 +114,43 @@ export class RunHistory extends AbstractViewModel {
         }
     }
 
+    private _statusChanged() {
+        if (!this._selectedStatus) {
+            this._setFilter(null);
+        } else {
+            this._setFilter({
+                status: this._selectedStatus
+            });
+        }
+        this._updateStatusData();
+    }
+
+    viewportChanged() {
+        if (this.viewport.length > 1) {
+            this._updateTopFlakyTests();
+            this._updateTopFailingTests();
+            this._updateStatusData();
+        }
+    }
+
+    private _getTopFailingMethods(): void {
+        const methods = this._historyStatistics.getMethodHistoryStatistics();
+
+        const failingMethods = methods
+            .filter(method => method.failingStreak > 0)
+            .filter(method => method.isTestMethod())
+            .sort((a, b) => b.failingStreak - a.failingStreak)
+            .slice(0, 3);
+
+        failingMethods.forEach(method => {
+            this._topFailingTests.push({
+                name: method.identifier,
+                failingStreak: method.failingStreak,
+                statistics: method
+            });
+        });
+    }
+
     private _getTopFlakyMethods(): void {
         const methods = this._historyStatistics.getMethodHistoryStatistics();
 
@@ -121,33 +160,64 @@ export class RunHistory extends AbstractViewModel {
             .slice(0, 3);
 
         flakyMethods.forEach(method => {
-            const className = this._classNameValueConverter.toView(method.classIdentifier, ClassName.simpleName);
             this._topFlakyTests.push({
                 name: method.identifier,
+                flakiness: method.flakiness.toFixed(1),
                 statistics: method
             });
         });
     }
 
-    private _statusChanged() {
-        if (!this._selectedStatus) {
-            this._setFilter(null);
-        } else {
-            this._setFilter({
-                status: this._selectedStatus
-            });
-        }
-    }
+    private _updateTopFailingTests() {
+        const methods = this._historyStatistics.getMethodHistoryStatistics();
 
-    viewportChanged() {
-        if (this.viewport.length > 1) {
-            this._updateTopFlakyTests();
-            // this._updateStatusData();
-        }
+        const failingMethods = methods
+            .filter(method => method.getFailingStreakInRange(this.viewport[0], this.viewport[1]) > 0)
+            .filter(method => method.isTestMethod())
+            .sort((a, b) => b.getFailingStreakInRange(this.viewport[0], this.viewport[1]) - a.getFailingStreakInRange(this.viewport[0], this.viewport[1]))
+            .slice(0, 3);
+
+        const topFailingMethods = [];
+
+        failingMethods.forEach(method => {
+            topFailingMethods.push({
+                name: method.identifier,
+                failingStreak: method.getFailingStreakInRange(this.viewport[0], this.viewport[1]),
+                statistics: method
+            });
+        });
+
+        this._topFailingTests = topFailingMethods;
     }
 
     private _updateStatusData() {
-        // TODO: Move the statusData manipulation here
+        let statusCount = new Map<ResultStatusType, number>();
+        this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
+            if ((aggregate.historyIndex >= this.viewport[0]) && (aggregate.historyIndex <= this.viewport[1])) {
+                const currentFailed = statusCount.get(ResultStatusType.FAILED) || 0;
+                const currentExpectedFailed = statusCount.get(ResultStatusType.FAILED_EXPECTED) || 0;
+                const currentSkipped = statusCount.get(ResultStatusType.SKIPPED) || 0;
+                const currentPassed = statusCount.get(ResultStatusType.PASSED) || 0;
+
+                statusCount.set(ResultStatusType.FAILED, currentFailed + aggregate.getStatusCount(ResultStatusType.FAILED));
+                statusCount.set(ResultStatusType.FAILED_EXPECTED, currentExpectedFailed + aggregate.getStatusCount(ResultStatusType.FAILED_EXPECTED));
+                statusCount.set(ResultStatusType.SKIPPED, currentSkipped + aggregate.getStatusCount(ResultStatusType.SKIPPED));
+                statusCount.set(ResultStatusType.PASSED, currentPassed + aggregate.overallPassed);
+            }
+        });
+
+        let statusData = [];
+        statusCount.forEach((count, status) => {
+            if (count) {
+                statusData.push({
+                    status: status,
+                    statusName: this._statusConverter.getLabelForStatus(status),
+                    value: count,
+                    itemStyle: {color: this._statusConverter.getColorForStatus(status)}
+                });
+            }
+        });
+        this.statusData = statusData;
     }
 
     private _updateTopFlakyTests() {
@@ -155,15 +225,15 @@ export class RunHistory extends AbstractViewModel {
 
         const flakyMethods = methods
             .filter(method => method.getFlakinessInRange(this.viewport[0], this.viewport[1]) > 0.1)
-            .sort((a, b) => b.flakiness - a.flakiness)
+            .sort((a, b) => b.getFlakinessInRange(this.viewport[0], this.viewport[1]) - a.getFlakinessInRange(this.viewport[0], this.viewport[1]))
             .slice(0, 3);
 
         const topFlakyMethods = [];
 
         flakyMethods.forEach(method => {
-            const className = this._classNameValueConverter.toView(method.classIdentifier, ClassName.simpleName);
             topFlakyMethods.push({
                 name: method.identifier,
+                flakiness: method.getFlakinessInRange(this.viewport[0], this.viewport[1]).toFixed(1),
                 statistics: method
             });
         });

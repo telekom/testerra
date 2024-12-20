@@ -43,11 +43,12 @@ export class ClassesHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     @observable() private _chart: ECharts;
     @observable private _uniqueClasses: any[] = [];
+    private _availableStatuses: ResultStatusType[] = [];
     private _option: EChartsOption;
     private _data: any[] = [];
     private _singleClassData: any[] = [];
     private _selectedClass: string = null;
-    private _previousSelectedClass: string;            // Helper variable to prevent unnecessary option building
+    private _selectedStatus: ResultStatusType = null;
     private _categoryHeight = 80;             // Height of y-axis categories in pixel
     private _categoryWidth = 62;              // Width of y-axis categories in pixel
     private _symbolSize = 60;                 // Width and height of chart symbol in pixel
@@ -76,17 +77,12 @@ export class ClassesHistory extends AbstractViewModel {
         this._option = {};
     }
 
-    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+    async activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
         super.activate(params, routeConfig, navInstruction);
         this._router = navInstruction.router;
 
-        const self = this;
         if (this.queryParams.class || params.class) {
-            const classInParams = params.class;
-            window.setTimeout(() => {
-                self._selectedClass = classInParams;
-                self._classSelect.value = self._uniqueClasses.find(classId => classId == classInParams);      // necessary to keep selection after refreshing the page
-            }, 200);
+            this._selectedClass = params.class;
         } else {
             this._selectedClass = null;
         }
@@ -130,6 +126,7 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _classChanged() {
+        this._selectedStatus = null;
         if (this._selectedClass) {
             this.updateUrl({class: this._selectedClass});
             this._cardHeadline = "History of all testcases in class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName);
@@ -145,7 +142,22 @@ export class ClassesHistory extends AbstractViewModel {
             this._adaptChartSize(this._uniqueClasses.length);
             this._setChartOption();
         }
+        this._addDataZoomSlider();
+    }
 
+    private _statusChanged() {
+        if (this._selectedClass) {
+            this._prepareSingleClassChartData();
+            this._adaptChartSize(this._numberOfMethodsInClass);
+            this._setChartOptionForSingleClass();
+        } else {
+            this._prepareChartData();
+            this._setChartOption();
+        }
+        this._addDataZoomSlider();
+    }
+
+    private _addDataZoomSlider() {
         let startValue = Math.max(0, ((this._numberOfRuns - this._visibleRuns) / this._numberOfRuns) * 100);
 
         this._option.dataZoom = [
@@ -185,13 +197,7 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _prepareSingleClassChartData() {
-        if (this._previousSelectedClass === this._selectedClass) {
-            return;
-        }
-
         this._singleClassData = [];
-        this._previousSelectedClass = this._selectedClass;
-        let numberOfClassRuns = 0;
 
         const style = new Map<number, string>();
         style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
@@ -203,25 +209,34 @@ export class ClassesHistory extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
+        let availableStatuses = new Set<ResultStatusType>();
+        let availableHistoryIndexes = new Set<number>();
+
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const historyIndex = aggregate.historyAggregate.historyIndex;
             const foundClass = Array.from(aggregate.classes.values()).find(currentClass =>
                 currentClass.identifier === this._selectedClass
             );
             if (foundClass) {
-                numberOfClassRuns++;
                 foundClass.methods.forEach(method => {
                     if (method.context.methodType == MethodType.TEST_METHOD) {
                         const status = method.context.resultStatus;
-                        let methodName = method.identifier;
-                        const color = style.get(status);
+                        if (this._selectedStatus) {
+                            if (this._selectedStatus != status) {
+                                return;
+                            }
+                        }
+
+                        availableStatuses.add(status);
                         const startTime = method.context.contextValues.startTime;
                         const endTime = method.context.contextValues.endTime;
 
+                        availableHistoryIndexes.add(historyIndex);
+
                         this._singleClassData.push({
-                            value: [historyIndex, methodName],
+                            value: [historyIndex, method.identifier],
                             itemStyle: {
-                                color: color,
+                                color: style.get(status),
                                 opacity: 1
                             },
                             status: status,
@@ -236,10 +251,15 @@ export class ClassesHistory extends AbstractViewModel {
             }
         });
 
+        if (!this._selectedStatus) {
+            this._availableStatuses = Array.from(availableStatuses.values());
+        }
+
         this._singleClassData.sort(this.compareByIndexAndName);
         const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
         this._numberOfMethodsInClass = uniqueMethodNames.size;
-        this._numberOfRuns = numberOfClassRuns;
+
+        this._numberOfRuns = availableHistoryIndexes.size;
     }
 
     private _setChartOptionForSingleClass() {
@@ -320,15 +340,9 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _prepareChartData() {
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+        this._data = [];
+        this._uniqueClasses = [];
+        let availableStatuses = new Set<ResultStatusType>();
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const historyIndex = aggregate.historyAggregate.historyIndex;
@@ -341,16 +355,21 @@ export class ClassesHistory extends AbstractViewModel {
             classes.forEach(testClass => {
                 const className = this._classNameValueConverter.toView(testClass.identifier, ClassName.simpleName);
                 const relevantStatuses = testClass.statusConverter.relevantStatuses;
+                let statusesInClass = new Map<ResultStatusType, number>();
                 let classStatuses: any[] = [];
                 let testcases = 0;
 
                 relevantStatuses.forEach(status => {
                     if (status === ResultStatusType.PASSED) {
-                        classStatuses.push(testClass.overallPassed);
-                        testcases += testClass.overallPassed;
+                        const count = testClass.overallPassed;
+                        statusesInClass.set(ResultStatusType.PASSED, count);
+                        classStatuses.push(count);
+                        testcases += count;
                     } else {
-                        classStatuses.push(testClass.getStatusCount(status));
-                        testcases += testClass.getStatusCount(status);
+                        const count = testClass.getStatusCount(status);
+                        statusesInClass.set(status, count);
+                        classStatuses.push(count);
+                        testcases += count;
                     }
                 });
 
@@ -358,6 +377,20 @@ export class ClassesHistory extends AbstractViewModel {
                 if (testcases === 0) {
                     return;
                 }
+
+                if (this._selectedStatus) {
+                    const availableStatusesInClass = Array.from(statusesInClass.entries())
+                        .filter(([key, value]) => value != 0)
+                        .map(([key, value]) => key);
+                    if (!availableStatusesInClass.includes(this._selectedStatus)) {
+                        return;
+                    }
+                }
+
+                const availableStatusesInClass = Array.from(statusesInClass.keys());
+                availableStatusesInClass.forEach(status => {
+                    availableStatuses.add(status);
+                });
 
                 if (!this._uniqueClasses.includes(testClass.identifier)) {
                     this._uniqueClasses.push(testClass.identifier);
@@ -367,10 +400,10 @@ export class ClassesHistory extends AbstractViewModel {
                     value: [
                         historyIndex,
                         className,
-                        classStatuses[3],
-                        classStatuses[0],
-                        classStatuses[1],
-                        classStatuses[2]
+                        classStatuses[3], // passed
+                        classStatuses[0], // failed
+                        classStatuses[1], // expected-failed
+                        classStatuses[2]  // skipped
                     ],
                     itemStyle: {
                         color: 'rgb(221,221,221)',
@@ -383,6 +416,10 @@ export class ClassesHistory extends AbstractViewModel {
                 });
             });
         });
+
+        if (!this._selectedStatus) {
+            this._availableStatuses = Array.from(availableStatuses.values());
+        }
 
         this._uniqueClasses.sort((a, b) => this._classNameValueConverter.toView(a, 1).localeCompare(this._classNameValueConverter.toView(b, 1)));
         this._data.sort(this.compareByIndexAndName);

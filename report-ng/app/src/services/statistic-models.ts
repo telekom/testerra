@@ -200,6 +200,7 @@ export class ExecutionStatistics extends Statistics {
 export class HistoryStatistics {
     private _historyAggregateStatistics: HistoryAggregateStatistics[] = [];
     private _methodHistoryStatistics: MethodHistoryStatistics[] = [];
+    private _availableRuns: number[] = [];
 
     constructor(
         readonly history: History
@@ -208,6 +209,7 @@ export class HistoryStatistics {
             return;
         }
         this.history.entries.forEach(entry => {
+            this._availableRuns.push(entry.historyIndex);
             this._historyAggregateStatistics.push(new HistoryAggregateStatistics(entry));
         });
 
@@ -228,6 +230,10 @@ export class HistoryStatistics {
                 }
             });
         });
+    }
+
+    get availableRuns(): number[] {
+        return this._availableRuns;
     }
 
     getLastEntry(): HistoryAggregateStatistics {
@@ -455,10 +461,11 @@ export class HistoricalMethodRun {
     getParsedResultStatus(): ResultStatusType {
         let status = this._context.resultStatus;
         if (status === ResultStatusType.FAILED_RETRIED) {
-            return ResultStatusType.FAILED;
+            status = ResultStatusType.FAILED;
         } else if (status === ResultStatusType.PASSED_RETRY || status === ResultStatusType.REPAIRED) {
-            return ResultStatusType.PASSED;
+            status = ResultStatusType.PASSED;
         }
+        return status;
     }
 
     get historyIndex() {
@@ -504,8 +511,19 @@ export class MethodHistoryStatistics extends Statistics {
         return this._runs.length;
     }
 
-    get flakiness(): number {
-        const runCount = this._runs.length;
+    getFlakinessInRange(startIndex: number, endIndex: number): number {
+        let runsInRange: HistoricalMethodRun[] = [];
+        for (let currentIndex = startIndex; currentIndex <= endIndex; currentIndex++) {
+            const currentRun = this._runs.find(run => run.historyIndex === currentIndex);
+            if (currentRun) {
+                runsInRange.push(currentRun);
+            }
+        }
+        return this._getFlakiness(runsInRange);
+    }
+
+    private _getFlakiness(runs: HistoricalMethodRun[]): number {
+        const runCount = runs.length;
         if (runCount < 2) {
             return 0;
         }
@@ -514,8 +532,8 @@ export class MethodHistoryStatistics extends Statistics {
         let totalWeight = 0;
 
         for (let i = 1; i < runCount; i++) {
-            let currentResultStatus: ResultStatusType = this._runs[i].getParsedResultStatus();
-            let previousResultStatus: ResultStatusType = this._runs[i - 1].getParsedResultStatus();
+            let currentResultStatus: ResultStatusType = runs[i].getParsedResultStatus();
+            let previousResultStatus: ResultStatusType = runs[i - 1].getParsedResultStatus();
 
             const isSwitch = currentResultStatus !== previousResultStatus ? 1 : 0;
             let weight: number;
@@ -530,6 +548,10 @@ export class MethodHistoryStatistics extends Statistics {
         }
 
         return (weightedSwitchSum / totalWeight * 100);
+    }
+
+    get flakiness(): number {
+        return this._getFlakiness(this._runs);
     }
 
     getAverageDuration(): number {

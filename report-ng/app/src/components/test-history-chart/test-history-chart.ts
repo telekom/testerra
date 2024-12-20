@@ -46,7 +46,7 @@ export class TestHistoryChart extends AbstractViewModel {
     @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
     @bindable is_history_view: boolean;
     private _chartData: any[] = [];
-    private _viewport: number[] = [];
+    @bindable viewport: number[] = [];
     @bindable({defaultBindingMode: bindingMode.twoWay}) status_data: any[] = [];
 
     constructor(
@@ -113,10 +113,12 @@ export class TestHistoryChart extends AbstractViewModel {
         const options = this._chart.getOption();
         const start = options.dataZoom[0].startValue;
         const end = options.dataZoom[0].endValue;
+        const historyIndexes = this._historyStatistics.availableRuns;
+        const startIndex = historyIndexes[start];
+        const endIndex = historyIndexes[end];
 
-        if (this._viewport[0] != start || this._viewport[1] != end) {
-            this._viewport[0] = start;
-            this._viewport[1] = end;
+        if (this.viewport[0] != startIndex || this.viewport[1] != endIndex) {
+            this.viewport = [startIndex, endIndex];
 
             let statusCount = new Map<ResultStatusType, number>();
             for (let i = start; i <= end; i++) {

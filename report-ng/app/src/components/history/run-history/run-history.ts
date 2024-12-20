@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {autoinject} from 'aurelia-framework';
+import {autoinject, observable} from 'aurelia-framework';
 import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
 import "./run-history.scss";
@@ -36,6 +36,7 @@ export class RunHistory extends AbstractViewModel {
     avgRunDuration: number = 0;
     overallSuccessRate: number = 0;
     statusData: any[] = [];
+    @observable viewport: number[] = [];
     private _historyStatistics: HistoryStatistics;
     private _filter: IFilter;
     private _selectedStatus: ResultStatusType = null;
@@ -104,12 +105,8 @@ export class RunHistory extends AbstractViewModel {
             this._selectedStatus = this.queryParams.status;
         }
 
-        const self = this
         if (this.queryParams.status || params.status) {
-            window.setTimeout(() => {
-                self._selectedStatus = self._statusConverter.getStatusForClass(params.status);
-                self._statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
-            }, 200)
+            this._selectedStatus = this._statusConverter.getStatusForClass(params.status);
         } else {
             this._selectedStatus = null;
         }
@@ -119,14 +116,14 @@ export class RunHistory extends AbstractViewModel {
         const methods = this._historyStatistics.getMethodHistoryStatistics();
 
         const flakyMethods = methods
-            .filter(method => method.flakiness > 0.2)
+            .filter(method => method.flakiness > 0.1)
             .sort((a, b) => b.flakiness - a.flakiness)
             .slice(0, 3);
 
         flakyMethods.forEach(method => {
             const className = this._classNameValueConverter.toView(method.classIdentifier, ClassName.simpleName);
             this._topFlakyTests.push({
-                name: method.identifier + " (" + className + ")",
+                name: method.identifier,
                 statistics: method
             });
         });
@@ -140,6 +137,38 @@ export class RunHistory extends AbstractViewModel {
                 status: this._selectedStatus
             });
         }
+    }
+
+    viewportChanged() {
+        if (this.viewport.length > 1) {
+            this._updateTopFlakyTests();
+            // this._updateStatusData();
+        }
+    }
+
+    private _updateStatusData() {
+        // TODO: Move the statusData manipulation here
+    }
+
+    private _updateTopFlakyTests() {
+        const methods = this._historyStatistics.getMethodHistoryStatistics();
+
+        const flakyMethods = methods
+            .filter(method => method.getFlakinessInRange(this.viewport[0], this.viewport[1]) > 0.1)
+            .sort((a, b) => b.flakiness - a.flakiness)
+            .slice(0, 3);
+
+        const topFlakyMethods = [];
+
+        flakyMethods.forEach(method => {
+            const className = this._classNameValueConverter.toView(method.classIdentifier, ClassName.simpleName);
+            topFlakyMethods.push({
+                name: method.identifier,
+                statistics: method
+            });
+        });
+
+        this._topFlakyTests = topFlakyMethods;
     }
 
     private _setFilter(filter: IFilter, updateUrl: boolean = true) {

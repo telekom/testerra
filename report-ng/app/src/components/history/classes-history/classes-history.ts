@@ -63,6 +63,7 @@ export class ClassesHistory extends AbstractViewModel {
     private _visibleRuns: number;
     private _cardHeadline: string = null;
     private _classSelect: MdcSelect;
+    private _statusSelect: MdcSelect;
     private _historyAvailable = false;
 
     constructor(

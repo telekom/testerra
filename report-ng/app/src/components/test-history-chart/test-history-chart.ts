@@ -396,7 +396,7 @@ export class TestHistoryChart extends AbstractViewModel {
                     end: 100,
                     minValueSpan: 1
                 }
-            ]
+            ];
 
             // Adapt grid for data-zoom slider
             this._option.grid = {
@@ -405,7 +405,7 @@ export class TestHistoryChart extends AbstractViewModel {
                 right: '3%',
                 bottom: '50px',
                 containLabel: true
-            }
+            };
         }
     }
 }

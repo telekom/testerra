@@ -74,19 +74,19 @@ export class MethodHistoryChart extends AbstractViewModel {
         const inactiveOpacity = this._opacityOfInactiveElements;
 
         if (failureAspect) {
-            this._option.series[0].data.forEach(function (dot) {
-                if (dot.errorMessage.toString().includes(failureAspect)) {
-                    dot.itemStyle.opacity = 1;
+            this._option.series[0].data.forEach(function (methodRunObject: any) {
+                if (methodRunObject.errorMessage.toString().includes(failureAspect)) {
+                    methodRunObject.itemStyle.opacity = 1;
                 } else {
-                    dot.itemStyle.opacity = inactiveOpacity;
+                    methodRunObject.itemStyle.opacity = inactiveOpacity;
                 }
             });
         } else {
             if (this._initialChartLoading) {
                 return;
             }
-            this._option.series[0].data.forEach(function (dot) {
-                dot.itemStyle.opacity = 1;
+            this._option.series[0].data.forEach(function (methodRunObject: any) {
+                methodRunObject.itemStyle.opacity = 1;
             });
         }
         this._chart.setOption(this._option);

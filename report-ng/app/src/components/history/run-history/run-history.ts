@@ -28,7 +28,6 @@ import {IFilter, StatusConverter} from "../../../services/status-converter";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
 import {MdcSelect} from "@aurelia-mdc-web/select";
-import {ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
 
 @autoinject()
 export class RunHistory extends AbstractViewModel {
@@ -37,6 +36,7 @@ export class RunHistory extends AbstractViewModel {
     overallSuccessRate: number = 0;
     statusData: any[] = [];
     @observable viewport: number[] = [];
+    private _fullViewport: number[] = [];
     private _historyStatistics: HistoryStatistics;
     private _filter: IFilter;
     private _selectedStatus: ResultStatusType = null;
@@ -49,8 +49,7 @@ export class RunHistory extends AbstractViewModel {
     constructor(
         private _statusConverter: StatusConverter,
         private _statisticsGenerator: StatisticsGenerator,
-        private _router: Router,
-        private _classNameValueConverter: ClassNameValueConverter
+        private _router: Router
     ) {
         super();
     }
@@ -65,6 +64,10 @@ export class RunHistory extends AbstractViewModel {
             this._historyAvailable = true;
         }
 
+        const availableRuns = this._historyStatistics.availableRuns;
+        this._fullViewport = [Math.min(...availableRuns), Math.max(...availableRuns)];
+        this.viewport = this._fullViewport;
+
         let statusCount = new Map<ResultStatusType, number>();
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const currentFailed = statusCount.get(ResultStatusType.FAILED) || 0;
@@ -77,28 +80,10 @@ export class RunHistory extends AbstractViewModel {
             statusCount.set(ResultStatusType.SKIPPED, currentSkipped + aggregate.getStatusCount(ResultStatusType.SKIPPED));
             statusCount.set(ResultStatusType.PASSED, currentPassed + aggregate.overallPassed);
         });
-
-        let overallTestCount = 0;
-        let statusData = [];
-        statusCount.forEach((count, status) => {
-            overallTestCount += count;
-            if (count) {
-                statusData.push({
-                    status: status,
-                    statusName: this._statusConverter.getLabelForStatus(status),
-                    value: count,
-                    itemStyle: {color: this._statusConverter.getColorForStatus(status)}
-                });
-                this._availableStatuses.push(status);
-            }
-        });
-        this.statusData = statusData;
+        const overallTestCount = Array.from(statusCount.values()).reduce((acc, value) => acc + value, 0);
 
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
-
-        this._getTopFlakyMethods();
-        this._getTopFailingMethods();
 
         if (this.queryParams.status) {
             this._filter = {
@@ -122,7 +107,7 @@ export class RunHistory extends AbstractViewModel {
                 status: this._selectedStatus
             });
         }
-        this._updateStatusData();
+        this.viewport = this._fullViewport;
     }
 
     viewportChanged() {
@@ -131,41 +116,6 @@ export class RunHistory extends AbstractViewModel {
             this._updateTopFailingTests();
             this._updateStatusData();
         }
-    }
-
-    private _getTopFailingMethods(): void {
-        const methods = this._historyStatistics.getMethodHistoryStatistics();
-
-        const failingMethods = methods
-            .filter(method => method.failingStreak > 0)
-            .filter(method => method.isTestMethod())
-            .sort((a, b) => b.failingStreak - a.failingStreak)
-            .slice(0, 3);
-
-        failingMethods.forEach(method => {
-            this._topFailingTests.push({
-                name: method.identifier,
-                failingStreak: method.failingStreak,
-                statistics: method
-            });
-        });
-    }
-
-    private _getTopFlakyMethods(): void {
-        const methods = this._historyStatistics.getMethodHistoryStatistics();
-
-        const flakyMethods = methods
-            .filter(method => method.flakiness > 0.1)
-            .sort((a, b) => b.flakiness - a.flakiness)
-            .slice(0, 3);
-
-        flakyMethods.forEach(method => {
-            this._topFlakyTests.push({
-                name: method.identifier,
-                flakiness: method.flakiness.toFixed(1),
-                statistics: method
-            });
-        });
     }
 
     private _updateTopFailingTests() {
@@ -188,6 +138,27 @@ export class RunHistory extends AbstractViewModel {
         });
 
         this._topFailingTests = topFailingMethods;
+    }
+
+    private _updateTopFlakyTests() {
+        const methods = this._historyStatistics.getMethodHistoryStatistics();
+
+        const flakyMethods = methods
+            .filter(method => method.getFlakinessInRange(this.viewport[0], this.viewport[1]) > 0.1)
+            .sort((a, b) => b.getFlakinessInRange(this.viewport[0], this.viewport[1]) - a.getFlakinessInRange(this.viewport[0], this.viewport[1]))
+            .slice(0, 3);
+
+        const topFlakyMethods = [];
+
+        flakyMethods.forEach(method => {
+            topFlakyMethods.push({
+                name: method.identifier,
+                flakiness: method.getFlakinessInRange(this.viewport[0], this.viewport[1]).toFixed(1),
+                statistics: method
+            });
+        });
+
+        this._topFlakyTests = topFlakyMethods;
     }
 
     private _updateStatusData() {
@@ -218,27 +189,6 @@ export class RunHistory extends AbstractViewModel {
             }
         });
         this.statusData = statusData;
-    }
-
-    private _updateTopFlakyTests() {
-        const methods = this._historyStatistics.getMethodHistoryStatistics();
-
-        const flakyMethods = methods
-            .filter(method => method.getFlakinessInRange(this.viewport[0], this.viewport[1]) > 0.1)
-            .sort((a, b) => b.getFlakinessInRange(this.viewport[0], this.viewport[1]) - a.getFlakinessInRange(this.viewport[0], this.viewport[1]))
-            .slice(0, 3);
-
-        const topFlakyMethods = [];
-
-        flakyMethods.forEach(method => {
-            topFlakyMethods.push({
-                name: method.identifier,
-                flakiness: method.getFlakinessInRange(this.viewport[0], this.viewport[1]).toFixed(1),
-                statistics: method
-            });
-        });
-
-        this._topFlakyTests = topFlakyMethods;
     }
 
     private _setFilter(filter: IFilter, updateUrl: boolean = true) {

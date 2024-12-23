@@ -518,7 +518,7 @@ export class MethodHistoryStatistics extends Statistics {
     _getFailingStreak(runs: HistoricalMethodRun[]): number {
         let failingStreak = 0;
 
-        for (const run of runs.reverse()) {
+        for (const run of [...runs].reverse()) {
             if (run.getParsedResultStatus() === ResultStatusType.PASSED) {
                 break;
             }
@@ -533,17 +533,6 @@ export class MethodHistoryStatistics extends Statistics {
 
     getFlakinessInRange(startIndex: number, endIndex: number): number {
         return this._getFlakiness(this._getMethodRunsInRange(startIndex, endIndex));
-    }
-
-    private _getMethodRunsInRange(startIndex: number, endIndex: number) {
-        let runsInRange: HistoricalMethodRun[] = [];
-        for (let currentIndex = startIndex; currentIndex <= endIndex; currentIndex++) {
-            const currentRun = this._runs.find(run => run.historyIndex === currentIndex);
-            if (currentRun) {
-                runsInRange.push(currentRun);
-            }
-        }
-        return runsInRange;
     }
 
     private _getFlakiness(runs: HistoricalMethodRun[]): number {
@@ -574,12 +563,15 @@ export class MethodHistoryStatistics extends Statistics {
         return (weightedSwitchSum / totalWeight * 100);
     }
 
-    get flakiness(): number {
-        return this._getFlakiness(this._runs);
-    }
-
-    get failingStreak(): number {
-        return this._getFailingStreak(this._runs);
+    private _getMethodRunsInRange(startIndex: number, endIndex: number) {
+        let runsInRange: HistoricalMethodRun[] = [];
+        for (let currentIndex = startIndex; currentIndex <= endIndex; currentIndex++) {
+            const currentRun = this._runs.find(run => run.historyIndex === currentIndex);
+            if (currentRun) {
+                runsInRange.push(currentRun);
+            }
+        }
+        return runsInRange;
     }
 
     getAverageDuration(): number {
@@ -609,6 +601,14 @@ export class MethodHistoryStatistics extends Statistics {
             }
         });
         return errorCount;
+    }
+
+    get flakiness(): number {
+        return this._getFlakiness(this._runs);
+    }
+
+    get failingStreak(): number {
+        return this._getFailingStreak(this._runs);
     }
 
     get identifier() {

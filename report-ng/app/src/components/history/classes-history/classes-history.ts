@@ -68,6 +68,7 @@ export class ClassesHistory extends AbstractViewModel {
     private _historyAvailable = false;
     private _initialChartLoading = true;
     private _skipChartReloading = false;
+    private _maxErrorMessageLength = 400;
 
     constructor(
         private _router: Router,
@@ -192,7 +193,6 @@ export class ClassesHistory extends AbstractViewModel {
         } else {
             this._prepareChartData();
             this._cardHeadline = "History of all test classes";
-            this._adaptChartSize(this._uniqueClasses.length);
             this._setChartOption();
         }
         this._addDataZoomSlider();
@@ -235,6 +235,13 @@ export class ClassesHistory extends AbstractViewModel {
         if (a.value[1] > b.value[1]) return -1;
         if (a.value[1] < b.value[1]) return 1;
         return 0;
+    }
+
+    private _truncateErrorMessage(str: string): string {
+        if (str.length <= this._maxErrorMessageLength) {
+            return str;
+        }
+        return str.slice(0, this._maxErrorMessageLength - 3) + '...';
     }
 
     private _prepareSingleClassChartData() {
@@ -311,6 +318,7 @@ export class ClassesHistory extends AbstractViewModel {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
         let maxYCategoryLength = this._maxYCategoryLength;
+        const self = this;
 
         this._setCommonChartOptions(maxYCategoryLength);
         this._option.tooltip = {
@@ -321,7 +329,7 @@ export class ClassesHistory extends AbstractViewModel {
                     '<br>Run ' + params.value[0];
 
                 if (params.data.errorMessage) {
-                    tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
+                    tooltip += '<br><div class="tooltip-content">' + self._truncateErrorMessage(params.data.errorMessage) + '</div>';
                 }
 
                 tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')

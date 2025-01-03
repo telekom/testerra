@@ -356,7 +356,7 @@ export class HistoricalMethod {
             });
             combinedErrorMessage = combinedErrorMessage.trim();
         }
-        return combinedErrorMessage;
+        return combinedErrorMessage.replaceAll('\n', ' ');
     }
 
     addRelatedMethods(relatedMethod: string) {

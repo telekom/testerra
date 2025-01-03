@@ -30,7 +30,6 @@ import {
 import {MethodHistoryStatistics} from "../../services/statistic-models";
 import {ECharts, EChartsOption} from "echarts";
 import {StatusConverter} from "../../services/status-converter";
-import {StatisticsGenerator} from "../../services/statistics-generator";
 import {Container} from "aurelia-dependency-injection";
 import "./method-history-chart.scss"
 import {ResultStatusType} from "../../services/report-model/framework_pb";
@@ -45,11 +44,12 @@ export class MethodHistoryChart extends AbstractViewModel {
     private _lineEnd: number[] = [];
     private _initialChartLoading = true;        // To prevent the access of _option in the first call of sharedDataChanged()
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
+    private _chartSymbolSize = 20;
+    private _maxErrorMessageLength = 400;
     @bindable() sharedData;
 
     constructor(
         private _statusConverter: StatusConverter,
-        private _statisticsGenerator: StatisticsGenerator,
         private _dateFormatter: IntlDateFormatValueConverter,
         private _durationFormatter: DurationFormatValueConverter
     ) {
@@ -125,11 +125,22 @@ export class MethodHistoryChart extends AbstractViewModel {
 
         this._lineStart = this._data[0].value;
         this._lineEnd = this._data[this._data.length - 1].value;
+        if (this._data.length > 50) {
+            this._chartSymbolSize = 14;
+        }
+    }
+
+    private _truncateErrorMessage(str: string): string {
+        if (str.length <= this._maxErrorMessageLength) {
+            return str;
+        }
+        return str.slice(0, this._maxErrorMessageLength - 3) + '...';
     }
 
     private _setChartOption() {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
+        const self = this;
 
         this._option = {
             grid: {
@@ -145,7 +156,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                         params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
 
                     if (params.data.errorMessage) {
-                        tooltip += '<br><div class="tooltip-content">' + params.data.errorMessage + '</div>';
+                        tooltip += '<br><div class="tooltip-content">' + self._truncateErrorMessage(params.data.errorMessage) + '</div>';
                     }
 
                     tooltip += '<br>Start time: ' + dateFormatter.toView(params.data.startTime, 'full')
@@ -166,13 +177,13 @@ export class MethodHistoryChart extends AbstractViewModel {
             series: [
                 {
                     type: 'scatter',
-                    symbolSize: 20,
+                    symbolSize: this._chartSymbolSize,
                     data: this._data,
                     cursor: 'default',
                     z: 2
                 },
                 {
-                    // This series represents a static line for visual reference, with no interaction or tooltip.
+                    // This series represents a static line in the background for visual reference, with no interaction or tooltip.
                     type: 'line',
                     symbol: 'none',
                     data: [

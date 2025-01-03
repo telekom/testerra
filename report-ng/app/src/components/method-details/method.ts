@@ -152,7 +152,7 @@ export class Method {
             this._statistics.getHistoryStatistics().then(history => {
                 if (history.getTotalRunCount() > 1) {
                     const methodInHistory = history.getMethodHistoryStatistics().find(method =>
-                        method.idOfLatestRun === methodDetails.methodContext.contextValues.id
+                        method.getIdOfLatestRun() === methodDetails.methodContext.contextValues.id
                     );
                     if (methodInHistory) {
                         methodRunCount = methodInHistory.getRunCount();

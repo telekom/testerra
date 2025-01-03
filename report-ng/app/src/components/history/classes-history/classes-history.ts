@@ -41,12 +41,13 @@ import {MdcSelect} from "@aurelia-mdc-web/select";
 @autoinject()
 export class ClassesHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
+    private _uniqueClasses: any[] = [];
     @observable() private _chart: ECharts;
-    @observable private _uniqueClasses: any[] = [];
+    private _availableClasses: any[] = [];
     private _availableStatuses: ResultStatusType[] = [];
+    private _availableOverviewStatuses: ResultStatusType[] = [];
     private _option: EChartsOption;
     private _data: any[] = [];
-    private _singleClassData: any[] = [];
     private _selectedClass: string = null;
     private _selectedStatus: ResultStatusType = null;
     private _categoryHeight = 80;             // Height of y-axis categories in pixel
@@ -62,9 +63,11 @@ export class ClassesHistory extends AbstractViewModel {
     private _numberOfRuns: number;
     private _visibleRuns: number;
     private _cardHeadline: string = null;
-    private _classSelect: MdcSelect;
-    private _statusSelect: MdcSelect;
+    private classSelect: MdcSelect;
+    private statusSelect: MdcSelect;
     private _historyAvailable = false;
+    private _initialChartLoading = true;
+    private _skipChartReloading = false;
 
     constructor(
         private _router: Router,
@@ -78,23 +81,13 @@ export class ClassesHistory extends AbstractViewModel {
         this._option = {};
     }
 
-    async activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
-        super.activate(params, routeConfig, navInstruction);
-        this._router = navInstruction.router;
-
-        if (this.queryParams.class || params.class) {
-            this._selectedClass = params.class;
-        } else {
-            this._selectedClass = null;
-        }
-    }
-
     attached() {
         this._gridLeftValue = this._maxYCategoryLength * 7;
 
         this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => {
             this._historyStatistics = historyStatistics;
-            if (historyStatistics.getTotalRunCount() > 1) {
+            this._numberOfRuns = this._historyStatistics.getTotalRunCount();
+            if (this._numberOfRuns > 1) {
                 this._historyAvailable = true;
                 // Calculate the number of visible runs based on the container width
                 const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - 10;
@@ -105,15 +98,16 @@ export class ClassesHistory extends AbstractViewModel {
             }
             this._initDurationFormatter();
             this._prepareChartData();
-
-            this._classChanged();
+            this._availableClasses = this._uniqueClasses;
+            this._updateChart();
 
             this._chart.on('click', params => {
                 if (params.targetType === 'axisLabel') {
                     if (this._selectedClass) {
                         const foundMethod = this._historyStatistics.getMethodHistoryStatistics().find(method =>
                             method.identifier === params.value &&
-                            method.classIdentifier === this._selectedClass
+                            method.classIdentifier === this._selectedClass &&
+                            method.getStatusOfLatestRun() != ResultStatusType.FAILED_RETRIED
                         );
                         if (foundMethod) {
                             this._navigateToMethodHistory(foundMethod)
@@ -122,37 +116,83 @@ export class ClassesHistory extends AbstractViewModel {
                         this._selectedClass = this._uniqueClasses.find(clsName => clsName.endsWith(params.value));
                     }
                 }
-            })
+            });
         });
     }
 
+    activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
+        super.activate(params, routeConfig, navInstruction);
+        this._router = navInstruction.router;
+
+        const self = this;
+        if ((this.queryParams.class || params.class) && (this.queryParams.status || params.status)) {
+            // Prevent that the chart is updated twice if both filters are set
+            this._skipChartReloading = true;
+        }
+        if (this.queryParams.class || params.class) {
+            window.setTimeout(() => {
+                self._selectedClass = params.class;
+                self.classSelect.value = self._uniqueClasses.find(cls => cls === self._selectedClass);      // necessary to keep selection after refreshing the page
+            }, 200);
+        } else {
+            this._selectedClass = null;
+        }
+        if (this.queryParams.status || params.status) {
+            window.setTimeout(() => {
+                self._selectedStatus = self._statusConverter.getStatusForClass(params.status);
+                self.statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
+            }, 200);
+        } else {
+            this._selectedStatus = null;
+        }
+        this._initialChartLoading = false;
+    }
+
     private _classChanged() {
-        this._selectedStatus = null;
+        this._filterChanged(true);
+    }
+
+    private _statusChanged() {
+        this._filterChanged();
+    }
+
+    private _filterChanged(resetSelectedStatus?: boolean) {
+        if (this._skipChartReloading) {
+            this._skipChartReloading = false;
+            return;
+        }
+        if (resetSelectedStatus) {
+            this._selectedStatus = null;
+        }
+
         if (this._selectedClass) {
-            this.updateUrl({class: this._selectedClass});
+            this.queryParams.class = this._selectedClass;
+        } else {
+            if (!this._initialChartLoading) {
+                delete this.queryParams.class;
+            }
+        }
+        if (this._selectedStatus) {
+            this.queryParams.status = this._statusConverter.getClassForStatus(this._selectedStatus);
+        } else {
+            if (!this._initialChartLoading) {
+                delete this.queryParams.status;
+            }
+        }
+        this.updateUrl(this.queryParams);
+        this._updateChart();
+    }
+
+    private _updateChart() {
+        if (this._selectedClass) {
             this._cardHeadline = "History of all testcases in class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName);
             this._prepareSingleClassChartData();
             this._adaptChartSize(this._numberOfMethodsInClass);
             this._setChartOptionForSingleClass();
         } else {
-            this.updateUrl({});
-            this._selectedClass = null;
-            delete this.queryParams.class;
-            this._cardHeadline = "History of all test classes";
-            this._numberOfRuns = this._historyStatistics.getTotalRunCount();
-            this._adaptChartSize(this._uniqueClasses.length);
-            this._setChartOption();
-        }
-        this._addDataZoomSlider();
-    }
-
-    private _statusChanged() {
-        if (this._selectedClass) {
-            this._prepareSingleClassChartData();
-            this._adaptChartSize(this._numberOfMethodsInClass);
-            this._setChartOptionForSingleClass();
-        } else {
             this._prepareChartData();
+            this._cardHeadline = "History of all test classes";
+            this._adaptChartSize(this._uniqueClasses.length);
             this._setChartOption();
         }
         this._addDataZoomSlider();
@@ -198,7 +238,7 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _prepareSingleClassChartData() {
-        this._singleClassData = [];
+        let newData = [];
 
         const style = new Map<number, string>();
         style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
@@ -211,7 +251,7 @@ export class ClassesHistory extends AbstractViewModel {
         style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
         let availableStatuses = new Set<ResultStatusType>();
-        let availableHistoryIndexes = new Set<number>();
+        let uniqueHistoryIndices = new Set<number>();
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const historyIndex = aggregate.historyAggregate.historyIndex;
@@ -220,8 +260,11 @@ export class ClassesHistory extends AbstractViewModel {
             );
             if (foundClass) {
                 foundClass.methods.forEach(method => {
-                    if (method.context.methodType == MethodType.TEST_METHOD) {
+                    if (method.context.methodType === MethodType.TEST_METHOD) {
                         const status = method.context.resultStatus;
+                        if (status === ResultStatusType.FAILED_RETRIED) {
+                            return;
+                        }
                         if (this._selectedStatus) {
                             if (this._selectedStatus != status) {
                                 return;
@@ -229,12 +272,12 @@ export class ClassesHistory extends AbstractViewModel {
                         }
 
                         availableStatuses.add(status);
+                        uniqueHistoryIndices.add(historyIndex);
+
                         const startTime = method.context.contextValues.startTime;
                         const endTime = method.context.contextValues.endTime;
 
-                        availableHistoryIndexes.add(historyIndex);
-
-                        this._singleClassData.push({
+                        newData.push({
                             value: [historyIndex, method.identifier],
                             itemStyle: {
                                 color: style.get(status),
@@ -252,15 +295,16 @@ export class ClassesHistory extends AbstractViewModel {
             }
         });
 
+        this._data = newData;
         if (!this._selectedStatus) {
             this._availableStatuses = Array.from(availableStatuses.values());
         }
 
-        this._singleClassData.sort(this.compareByIndexAndName);
-        const uniqueMethodNames = new Set(this._singleClassData.map(entry => entry.value[1]));
+        this._data.sort(this.compareByIndexAndName);
+        const uniqueMethodNames = new Set(this._data.map(entry => entry.value[1]));
         this._numberOfMethodsInClass = uniqueMethodNames.size;
 
-        this._numberOfRuns = availableHistoryIndexes.size;
+        this._numberOfRuns = uniqueHistoryIndices.size;
     }
 
     private _setChartOptionForSingleClass() {
@@ -335,15 +379,16 @@ export class ClassesHistory extends AbstractViewModel {
                         children: children
                     };
                 },
-                data: this._singleClassData
+                data: this._data
             }
         ]
     }
 
     private _prepareChartData() {
-        this._data = [];
+        let newData = [];
         this._uniqueClasses = [];
         let availableStatuses = new Set<ResultStatusType>();
+        let uniqueHistoryIndices = new Set<number>();
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const historyIndex = aggregate.historyAggregate.historyIndex;
@@ -388,6 +433,8 @@ export class ClassesHistory extends AbstractViewModel {
                     }
                 }
 
+                uniqueHistoryIndices.add(historyIndex);
+
                 const availableStatusesInClass = Array.from(statusesInClass.keys());
                 availableStatusesInClass.forEach(status => {
                     availableStatuses.add(status);
@@ -397,7 +444,7 @@ export class ClassesHistory extends AbstractViewModel {
                     this._uniqueClasses.push(testClass.identifier);
                 }
 
-                this._data.push({
+                newData.push({
                     value: [
                         historyIndex,
                         className,
@@ -422,6 +469,8 @@ export class ClassesHistory extends AbstractViewModel {
             this._availableStatuses = Array.from(availableStatuses.values());
         }
 
+        this._data = newData;
+        this._numberOfRuns = uniqueHistoryIndices.size;
         this._uniqueClasses.sort((a, b) => this._classNameValueConverter.toView(a, 1).localeCompare(this._classNameValueConverter.toView(b, 1)));
         this._data.sort(this.compareByIndexAndName);
         this._adaptChartSize(this._uniqueClasses.length);
@@ -666,7 +715,7 @@ export class ClassesHistory extends AbstractViewModel {
 
     private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
         this._router.navigateToRoute('method', {
-            methodId: methodHistoryStatistics.idOfLatestRun,
+            methodId: methodHistoryStatistics.getIdOfLatestRun(),
             subPage: "method-history"
         });
     }

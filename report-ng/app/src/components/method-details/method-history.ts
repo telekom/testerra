@@ -55,7 +55,7 @@ export class MethodHistory extends AbstractViewModel {
 
         await this._statisticsGenerator.getMethodDetails(params.methodId).then(methodDetails => {
             this.methodHistoryStatistics = this._historyStatistics.getMethodHistoryStatistics().find(method => {
-                return method.idOfLatestRun === methodDetails.methodContext.contextValues.id
+                return method.getIdOfLatestRun() === methodDetails.methodContext.contextValues.id
             });
         });
 

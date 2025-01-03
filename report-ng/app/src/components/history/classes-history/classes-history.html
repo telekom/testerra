@@ -32,7 +32,7 @@
                 >
                     <mdc-list>
                         <mdc-list-item>(All)</mdc-list-item>
-                        <mdc-list-item repeat.for="classIdentifier of _uniqueClasses"
+                        <mdc-list-item repeat.for="classIdentifier of _availableClasses"
                                        value.bind="classIdentifier"
                         >${classIdentifier | className:1}
                         </mdc-list-item>

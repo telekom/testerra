@@ -232,8 +232,14 @@ export class HistoryStatistics {
         });
     }
 
-    get availableRuns(): number[] {
-        return this._availableRuns;
+    private _compareRelatedMethods(arr1: string[], arr2: string[]): boolean {
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+        const sortedArr1 = [...arr1].sort();
+        const sortedArr2 = [...arr2].sort();
+
+        return sortedArr1.every((value, index) => value === sortedArr2[index]);
     }
 
     getLastEntry(): HistoryAggregateStatistics {
@@ -252,16 +258,6 @@ export class HistoryStatistics {
         return this.history.entries.length;
     }
 
-    private _compareRelatedMethods(arr1: string[], arr2: string[]): boolean {
-        if (arr1.length !== arr2.length) {
-            return false;
-        }
-        const sortedArr1 = [...arr1].sort();
-        const sortedArr2 = [...arr2].sort();
-
-        return sortedArr1.every((value, index) => value === sortedArr2[index]);
-    }
-
     getAverageDuration(): number {
         let durations: number[] = [];
         this.getHistoryAggregateStatistics().forEach(aggregate => {
@@ -273,6 +269,10 @@ export class HistoryStatistics {
             return Math.round(sum / durations.length);
         }
         return 0;
+    }
+
+    get availableRuns(): number[] {
+        return this._availableRuns;
     }
 }
 
@@ -489,7 +489,6 @@ export class MethodHistoryStatistics extends Statistics {
     private readonly _identifier: string;
     private readonly _relatedMethods: string[] = [];
     private readonly _classIdentifier: string;
-    private readonly _idOfLatestRun: string;
     private _runs: HistoricalMethodRun[] = [];
     private _flakinessFullWeightRunCount = 10;
     private _flakinessDecayFactor = 0.9;
@@ -499,40 +498,6 @@ export class MethodHistoryStatistics extends Statistics {
         this._identifier = method.identifier;
         this._relatedMethods = method.relatedMethods;
         this._classIdentifier = method.classIdentifier;
-        this._idOfLatestRun = method.context.contextValues.id;
-    }
-
-    isTestMethod(): boolean {
-        return this._runs[this._runs.length - 1].context.methodType === MethodType.TEST_METHOD;
-    }
-
-    addRun(historicalMethod: HistoricalMethod, historyIndex: number) {
-        this._runs.push(new HistoricalMethodRun(historicalMethod, historyIndex));
-        this.addResultStatus(historicalMethod.context.resultStatus);
-    }
-
-    getRunCount() {
-        return this._runs.length;
-    }
-
-    _getFailingStreak(runs: HistoricalMethodRun[]): number {
-        let failingStreak = 0;
-
-        for (const run of [...runs].reverse()) {
-            if (run.getParsedResultStatus() === ResultStatusType.PASSED) {
-                break;
-            }
-            failingStreak++;
-        }
-        return failingStreak;
-    }
-
-    getFailingStreakInRange(startIndex: number, endIndex: number): number {
-        return this._getFailingStreak(this._getMethodRunsInRange(startIndex, endIndex));
-    }
-
-    getFlakinessInRange(startIndex: number, endIndex: number): number {
-        return this._getFlakiness(this._getMethodRunsInRange(startIndex, endIndex));
     }
 
     private _getFlakiness(runs: HistoricalMethodRun[]): number {
@@ -574,6 +539,43 @@ export class MethodHistoryStatistics extends Statistics {
         return runsInRange;
     }
 
+    private _getContextOfLatestRun() {
+        return this.runs[this.runs.length - 1].context;
+    }
+
+    private _getFailingStreak(runs: HistoricalMethodRun[]): number {
+        let failingStreak = 0;
+
+        for (const run of [...runs].reverse()) {
+            if (run.getParsedResultStatus() === ResultStatusType.PASSED) {
+                break;
+            }
+            failingStreak++;
+        }
+        return failingStreak;
+    }
+
+    isTestMethod(): boolean {
+        return this._getContextOfLatestRun().methodType === MethodType.TEST_METHOD;
+    }
+
+    addRun(historicalMethod: HistoricalMethod, historyIndex: number) {
+        this._runs.push(new HistoricalMethodRun(historicalMethod, historyIndex));
+        this.addResultStatus(historicalMethod.context.resultStatus);
+    }
+
+    getRunCount() {
+        return this._runs.length;
+    }
+
+    getFailingStreakInRange(startIndex: number, endIndex: number): number {
+        return this._getFailingStreak(this._getMethodRunsInRange(startIndex, endIndex));
+    }
+
+    getFlakinessInRange(startIndex: number, endIndex: number): number {
+        return this._getFlakiness(this._getMethodRunsInRange(startIndex, endIndex));
+    }
+
     getAverageDuration(): number {
         let avg = 0;
         let durations: number[] = [];
@@ -603,6 +605,14 @@ export class MethodHistoryStatistics extends Statistics {
         return errorCount;
     }
 
+    getIdOfLatestRun() {
+        return this._getContextOfLatestRun().contextValues.id;
+    }
+
+    getStatusOfLatestRun() {
+        return this._getContextOfLatestRun().resultStatus;
+    }
+
     get flakiness(): number {
         return this._getFlakiness(this._runs);
     }
@@ -625,10 +635,6 @@ export class MethodHistoryStatistics extends Statistics {
 
     get classIdentifier() {
         return this._classIdentifier;
-    }
-
-    get idOfLatestRun() {
-        return this._idOfLatestRun;
     }
 }
 

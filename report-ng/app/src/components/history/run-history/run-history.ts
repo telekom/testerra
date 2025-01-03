@@ -82,6 +82,12 @@ export class RunHistory extends AbstractViewModel {
         });
         const overallTestCount = Array.from(statusCount.values()).reduce((acc, value) => acc + value, 0);
 
+        statusCount.forEach((value, key) => {
+            if (value > 0) {
+                this._availableStatuses.push(key);
+            }
+        });
+
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
 
@@ -205,7 +211,7 @@ export class RunHistory extends AbstractViewModel {
 
     private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
         this._router.navigateToRoute('method', {
-            methodId: methodHistoryStatistics.idOfLatestRun,
+            methodId: methodHistoryStatistics.getIdOfLatestRun(),
             subPage: "method-history"
         });
     }

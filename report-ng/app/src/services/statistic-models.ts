@@ -213,8 +213,8 @@ export class HistoryStatistics {
             this._historyAggregateStatistics.push(new HistoryAggregateStatistics(entry));
         });
 
-        this.getLastEntry().methods.forEach(currentMethod => {
-            this._methodHistoryStatistics.push(new MethodHistoryStatistics(currentMethod));
+        this.getLastEntry().methods.forEach(method => {
+            this._methodHistoryStatistics.push(new MethodHistoryStatistics(method));
         });
 
         this._methodHistoryStatistics.forEach(methodHistory => {
@@ -340,7 +340,7 @@ export class HistoricalMethod {
                     actionDetails.entries.forEach(entry => {
                         const errorContext = entry.errorContext;
                         const errorClassName = errorContext.stackTrace[0].className.substring(errorContext.stackTrace[0].className.lastIndexOf(".") + 1);
-                        failureAspects.push((errorClassName + ": " + errorContext.stackTrace[0].message).trim());
+                        failureAspects.push((errorClassName + ": " + errorContext.stackTrace[0].message).trim().replaceAll('\n', ' '));
                     });
                 });
         }
@@ -352,11 +352,11 @@ export class HistoricalMethod {
         const failureAspects = this.getFailureAspects();
         if (failureAspects.length > 0) {
             failureAspects.forEach(error => {
-                combinedErrorMessage += " " + error;
+                combinedErrorMessage += "\n" + error;
             });
             combinedErrorMessage = combinedErrorMessage.trim();
         }
-        return combinedErrorMessage.replaceAll('\n', ' ');
+        return combinedErrorMessage;
     }
 
     addRelatedMethods(relatedMethod: string) {

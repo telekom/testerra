@@ -123,11 +123,39 @@ export class MethodHistoryChart extends AbstractViewModel {
             });
         });
 
+        this._completeArray();
+
         this._lineStart = this._data[0].value;
         this._lineEnd = this._data[this._data.length - 1].value;
         if (this._data.length > 50) {
             this._chartSymbolSize = 14;
         }
+    }
+
+    private _completeArray() {
+        const values = this._data.map(item => item.value[0]);
+
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+
+        const fullRange = Array.from({length: max - min + 1}, (_, i) => min + i);
+        const missingValues = fullRange.filter(value => !values.includes(value));
+
+        const missingRuns = missingValues.map(value => ({
+            status: "no_run",
+            statusName: "No Run",
+            errorMessage: "",
+            itemStyle: {
+                color: "#808080",
+                opacity: 1,
+            },
+            startTime: 0,
+            endTime: 0,
+            duration: 0,
+            value: [value, 0],
+        }));
+
+        this._data = [...this._data, ...missingRuns].sort((a, b) => a.value[0] - b.value[0]);
     }
 
     private _truncateErrorMessage(str: string): string {
@@ -152,6 +180,11 @@ export class MethodHistoryChart extends AbstractViewModel {
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
+                    if (params.data.status === "no_run") {
+                        return '<div class="header" style="background-color: ' +
+                            params.color + ';">' + params.data.statusName + '</div>';
+                    }
+
                     let tooltip = '<div class="header" style="background-color: ' +
                         params.color + ';">Run ' + params.value[0] + ": " + params.data.statusName + '</div>'
 

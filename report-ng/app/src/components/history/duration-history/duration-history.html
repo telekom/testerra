@@ -29,6 +29,53 @@
                     </div>
                 </mdc-card>
             </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell if.bind="_historyAvailable" span="6">
+                <mdc-card class="short-history-card">
+                    <div mdc-subtitle2 class="card-headline">Longest runs</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <mdc-list
+                        class="p0"
+                        single-selection
+                    >
+                        <mdc-list-item class="non-interactive" repeat.for="run of _topLongestRuns" two-line>
+                            <mdc-icon class="duration-top-list-icon sr1" mdc-list-item-leading>timelapse</mdc-icon>
+                            <mdc-list-item-primary-text>
+                                <span>Run ${run.value[0]} (${run.value[2]} test cases)</span>
+                            </mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>
+                                <span>${run.value[1] | durationFormat:"h[h] m[min] s[s] S[ms]"}</span>
+                            </mdc-list-item-secondary-text>
+                        </mdc-list-item>
+                    </mdc-list>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell if.bind="_historyAvailable" span="6">
+                <mdc-card class="short-history-card">
+                    <div class="card-headline-container">
+                        <div mdc-subtitle2 class="card-headline">Longest methods</div>
+                        <div class="card-headline-info-icon secondary">
+                            <mdc-icon mdc-tooltip="The methods with the longest average execution durations in the selected range">info_outlined
+                            </mdc-icon>
+                        </div>
+                    </div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <mdc-list
+                        class="p0"
+                        single-selection
+                    >
+                        <mdc-list-item repeat.for="method of _topLongestTestCases"
+                                       click.delegate="_navigateToMethodHistory(method.statistics)" two-line>
+                            <mdc-icon class="duration-top-list-icon sr1" mdc-list-item-leading>av_timer</mdc-icon>
+                            <mdc-list-item-primary-text>
+                                <span>${method.statistics.identifier}</span>
+                            </mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>
+                                <span>${method.averageDuration | durationFormat:"h[h] m[min] s[s] S[ms]"}</span>
+                            </mdc-list-item-secondary-text>
+                        </mdc-list-item>
+                    </mdc-list>
+                </mdc-card>
+            </mdc-layout-grid-cell>
         </mdc-layout-grid-inner>
         <mdc-layout-grid-inner else>
             <mdc-layout-grid-cell span="12">

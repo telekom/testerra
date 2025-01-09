@@ -205,7 +205,7 @@ export class HistoryStatistics {
     constructor(
         readonly history: History
     ) {
-        if (history.entries.length === 0) {
+        if (history.entries.length < 2) {
             return;
         }
         this.history.entries.forEach(entry => {
@@ -555,6 +555,19 @@ export class MethodHistoryStatistics extends Statistics {
         return failingStreak;
     }
 
+    private _getAverageDuration(runs: HistoricalMethodRun[]): number {
+        let avg = 0;
+        let durations: number[] = [];
+        runs.forEach(run => {
+            durations.push(run.context.contextValues.endTime - run.context.contextValues.startTime);
+        });
+        if (durations.length > 0) {
+            let sum = durations.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            avg = Math.round(sum / durations.length);
+        }
+        return avg;
+    }
+
     isTestMethod(): boolean {
         return this._getContextOfLatestRun().methodType === MethodType.TEST_METHOD;
     }
@@ -576,17 +589,8 @@ export class MethodHistoryStatistics extends Statistics {
         return this._getFlakiness(this._getMethodRunsInRange(startIndex, endIndex));
     }
 
-    getAverageDuration(): number {
-        let avg = 0;
-        let durations: number[] = [];
-        this._runs.forEach(run => {
-            durations.push(run.context.contextValues.endTime - run.context.contextValues.startTime);
-        });
-        if (durations.length > 0) {
-            let sum = durations.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            avg = Math.round(sum / durations.length);
-        }
-        return avg;
+    getAverageDurationInRange(startIndex: number, endIndex: number): number {
+        return this._getAverageDuration(this._getMethodRunsInRange(startIndex, endIndex));
     }
 
     getErrorCount() {
@@ -611,6 +615,10 @@ export class MethodHistoryStatistics extends Statistics {
 
     getStatusOfLatestRun() {
         return this._getContextOfLatestRun().resultStatus;
+    }
+
+    get averageDuration(): number {
+        return this._getAverageDuration(this._runs);
     }
 
     get flakiness(): number {

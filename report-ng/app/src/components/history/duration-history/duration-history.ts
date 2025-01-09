@@ -24,7 +24,7 @@ import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
 import {ECharts, EChartsOption} from 'echarts';
 import "./duration-history.scss";
-import {HistoryStatistics} from "../../../services/statistic-models";
+import {HistoryStatistics, MethodHistoryStatistics} from "../../../services/statistic-models";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {Container} from "aurelia-dependency-injection";
 import {
@@ -38,11 +38,14 @@ import {ResultStatusType} from "../../../services/report-model/framework_pb";
 @autoinject()
 export class DurationHistory extends AbstractViewModel {
     @observable() private _chart: ECharts;
+    @observable() viewport: number[] = [];
     private _option: EChartsOption;
     private _historyStatistics: HistoryStatistics;
     private static readonly DURATION_COLOR = '#6897EA';
     private _chartData: any[] = [];
     private _historyAvailable = false;
+    private _topLongestRuns: any[] = [];
+    private _topLongestTestCases: any[] = [];
 
     constructor(
         private _statisticsGenerator: StatisticsGenerator,
@@ -61,6 +64,9 @@ export class DurationHistory extends AbstractViewModel {
         if (this._historyStatistics.getTotalRunCount() > 1) {
             this._historyAvailable = true;
         }
+
+        const availableRuns = this._historyStatistics.availableRuns;
+        this.viewport = [Math.min(...availableRuns), Math.max(...availableRuns)];
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const context = aggregate.historyAggregate.executionContext.contextValues;
@@ -83,6 +89,55 @@ export class DurationHistory extends AbstractViewModel {
 
         this._initDurationFormatter();
         this._setChartOption();
+        this.viewportChanged();
+    }
+
+    private _handleZoomEvent(event: any) {
+        const options = this._chart.getOption();
+        const start = options.dataZoom[0].startValue;
+        const end = options.dataZoom[0].endValue;
+        const historyIndexes = this._historyStatistics.availableRuns;
+        const startIndex = historyIndexes[start];
+        const endIndex = historyIndexes[end];
+
+        if (this.viewport[0] != startIndex || this.viewport[1] != endIndex) {
+            this.viewport = [startIndex, endIndex];
+        }
+    }
+
+    private _chartChanged() {
+        this._chart.on('datazoom', event => this._handleZoomEvent(event));
+    }
+
+    viewportChanged() {
+        if (this.viewport.length > 1) {
+            this._updateLongestRuns();
+            this._updateLongestTestCases();
+        }
+    }
+
+    private _calculateAverageDurations() {
+        return this._historyStatistics.getMethodHistoryStatistics().map(method => {
+            return {
+                statistics: method,
+                averageDuration: method.getAverageDurationInRange(this.viewport[0], this.viewport[1])
+            };
+        });
+    }
+
+    private _updateLongestTestCases() {
+        let methodAverages = this._calculateAverageDurations();
+        this._topLongestTestCases = methodAverages.sort((a, b) => b.averageDuration - a.averageDuration).slice(0, 3);
+    }
+
+    private _updateLongestRuns() {
+        this._topLongestRuns = this._chartData
+            .filter(item => {
+                const historyIndex = item.value[0];
+                return historyIndex >= this.viewport[0] && historyIndex <= this.viewport[1];
+            })
+            .sort((a, b) => b.value[1] - a.value[1])
+            .slice(0, 3);
     }
 
     private _initDurationFormatter() {
@@ -106,14 +161,15 @@ export class DurationHistory extends AbstractViewModel {
                 formatter: function (params) {
                     const valueData = params[0];
                     const testcases = valueData.value[2];
-
-                    return `<div class="duration-history-chart-tooltip-header">Run ${valueData.axisValue} (${durationFormatter.toView(valueData.value[1])})</div>
+                    return `<div class="duration-history-chart-tooltip-header">Run ${valueData.axisValue}</div>
+                        <br>Duration: ${durationFormatter.toView(valueData.value[1])}
                         <br>Testcases: ${testcases}
                         <br><br>Start time: ${dateFormatter.toView(valueData.data.startTime, 'full')}
                         <br>End time: ${dateFormatter.toView(valueData.data.endTime, 'full')}`;
                 }
             },
             grid: {
+                top: '18%',
                 left: '1%',
                 right: '1%',
                 containLabel: true
@@ -153,8 +209,18 @@ export class DurationHistory extends AbstractViewModel {
                     end: 100
                 }
             ],
+            legend: {
+                data: ['Duration', 'Testcases'],
+                itemGap: 30,
+                itemStyle: {
+                    color: '#6897EA',
+                    opacity: 1
+                },
+                selectedMode: false
+            },
             series: [
                 {
+                    name: 'Duration',
                     type: 'line',
                     data: this._chartData,
                     z: 2,
@@ -170,9 +236,10 @@ export class DurationHistory extends AbstractViewModel {
                     },
                     itemStyle: {
                         color: DurationHistory.DURATION_COLOR
-                    },
+                    }
                 },
                 {
+                    name: 'Testcases',
                     type: 'bar',
                     yAxisIndex: 1,
                     z: 1,
@@ -189,5 +256,34 @@ export class DurationHistory extends AbstractViewModel {
                 },
             ]
         };
+        this._addResetZoomButton();
+    }
+
+    private _addResetZoomButton() {
+        const resetZoomIconSvgPath = "M 4,1 V 5 H 0 M 3.9865238,4.9219293 C 1.602752,3.5367838 0,0.95556327 0,-2 c 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 0,4.418278 -3.581722,8 -8,8";
+
+        this._option.toolbox = {
+            itemSize: 20,
+            feature: {
+                myRestore: {
+                    show: true,
+                    title: 'Reset Zoom',
+                    icon: `path://${resetZoomIconSvgPath}`,
+                    onclick: () => {
+                        this._chart.dispatchAction({
+                            type: 'restore',
+                        });
+                        this._handleZoomEvent(null);
+                    }
+                }
+            }
+        };
+    }
+
+    private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
+        this._router.navigateToRoute('method', {
+            methodId: methodHistoryStatistics.getIdOfLatestRun(),
+            subPage: "method-history"
+        });
     }
 }

@@ -118,6 +118,17 @@ export class ClassesHistory extends AbstractViewModel {
                     }
                 }
             });
+
+            // Adjust the cursor-style to be consistent with the whole application
+            this._chart.on('mousemove', params => {
+                const zr = this._chart.getZr();
+
+                if (params.componentType === 'yAxis') {
+                    zr.setCursorStyle('pointer');
+                } else {
+                    zr.setCursorStyle('default');
+                }
+            });
         });
     }
 
@@ -348,7 +359,6 @@ export class ClassesHistory extends AbstractViewModel {
         this._option.series = [
             {
                 type: 'custom',
-                cursor: 'default',
                 renderItem: function (params, api) {
                     const x = api.coord([api.value(0), api.value(1)])[0];
                     const y = api.coord([api.value(0), api.value(1)])[1];
@@ -510,7 +520,6 @@ export class ClassesHistory extends AbstractViewModel {
         this._option.series = [
             {
                 type: 'custom',
-                cursor: 'default',
                 renderItem: function (params, api) {
                     const statuses = [api.value(2), api.value(3), api.value(4), api.value(5)];
                     const x = api.coord([api.value(0), api.value(1)])[0];
@@ -722,9 +731,11 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
-        this._router.navigateToRoute('method', {
-            methodId: methodHistoryStatistics.getIdOfLatestRun(),
-            subPage: "method-history"
-        });
+        if (methodHistoryStatistics.getRunCount() > 1) {
+            this._router.navigateToRoute('method', {
+                methodId: methodHistoryStatistics.getIdOfLatestRun(),
+                subPage: "method-history"
+            });
+        }
     }
 }

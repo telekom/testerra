@@ -58,9 +58,9 @@
                 <history-statistics-card total_run_count.bind="totalRunCount" average_run_duration.bind="avgRunDuration"
                                          success_rate.bind="overallSuccessRate"></history-statistics-card>
                 <mdc-card class="short-history-card mt1">
-                    <div class="headline-container">
+                    <div class="card-headline-container">
                         <div mdc-subtitle2 class="card-headline">Status share</div>
-                        <div class="headline-info-icon secondary">
+                        <div class="card-headline-info-icon secondary">
                             <mdc-icon
                                 mdc-tooltip="Displays the distribution of statuses for all runs currently visible in the overview chart">
                                 info_outlined
@@ -71,11 +71,23 @@
                     <status-share-chart status-data.bind="statusData"></status-share-chart>
                 </mdc-card>
             </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="3" else>
+                <mdc-card>
+                    <div class="p1 flex">
+                        <div mdc-body1 class="info-column left vcenter">
+                            <mdc-icon mdc-list-item-leading>help_outline</mdc-icon>
+                        </div>
+                        <div mdc-body1 class="info-column right">
+                            Run at least one more test execution to build a history and visualize the data in charts
+                        </div>
+                    </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
             <mdc-layout-grid-cell if.bind="_historyAvailable" span="6">
                 <mdc-card class="short-history-card">
-                    <div class="headline-container">
+                    <div class="card-headline-container">
                         <div mdc-subtitle2 class="card-headline">Top 3 flaky tests</div>
-                        <div class="headline-info-icon secondary">
+                        <div class="card-headline-info-icon secondary">
                             <mdc-icon
                                 mdc-tooltip="Test cases with a high frequency of status changes in the currently visible viewport of the overview chart">
                                 info_outlined
@@ -107,9 +119,9 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell if.bind="_historyAvailable" span="6">
                 <mdc-card class="short-history-card">
-                    <div class="headline-container">
+                    <div class="card-headline-container">
                         <div mdc-subtitle2 class="card-headline">Top 3 failing tests</div>
-                        <div class="headline-info-icon secondary">
+                        <div class="card-headline-info-icon secondary">
                             <mdc-icon mdc-tooltip="Test cases that aren't passed since multiple runs">info_outlined
                             </mdc-icon>
                         </div>

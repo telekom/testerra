@@ -398,9 +398,27 @@ export class TestHistoryChart extends AbstractViewModel {
                 }
             ];
 
-            // Adapt grid for data-zoom slider
+            const resetZoomIconSvgPath = "M 4,1 V 5 H 0 M 3.9865238,4.9219293 C 1.602752,3.5367838 0,0.95556327 0,-2 c 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 0,4.418278 -3.581722,8 -8,8";
+            this._option.toolbox = {
+                itemSize: 20,
+                feature: {
+                    myRestore: {
+                        show: true,
+                        title: 'Reset Zoom',
+                        icon: `path://${resetZoomIconSvgPath}`,
+                        onclick: () => {
+                            this._chart.dispatchAction({
+                                type: 'restore',
+                            });
+                            this._handleZoomEvent(null);
+                        }
+                    }
+                }
+            };
+
+            // Adapt grid for data-zoom slider & reset zoom button
             this._option.grid = {
-                top: '5%',
+                top: '50px',
                 left: '1%',
                 right: '3%',
                 bottom: '50px',

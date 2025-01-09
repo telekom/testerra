@@ -28,15 +28,14 @@
     height: 16em;
 }
 
-.headline-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.info-column {
+    float: left;
 }
 
-.headline-info-icon {
-    text-align: right;
-    margin-right: -12px;
-    padding-top: 4px;
-    cursor: default;
+.left {
+    width: 15%;
+}
+
+.right {
+    width: 85%;
 }

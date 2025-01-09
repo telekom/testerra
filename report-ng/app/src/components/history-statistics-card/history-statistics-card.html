@@ -52,7 +52,7 @@
                         <span>Success rate</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-                <mdc-list-item if.bind="flakiness" class="non-interactive" two-line>
+                <mdc-list-item if.bind="flakiness" class="non-interactive" two-line mdc-tooltip="Flakiness indicates how often the status changed. Higher values suggest instability. Older runs contribute less to the final calculation.">
                     <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>flaky</mdc-icon>
                     <mdc-list-item-primary-text>
                         <span>${flakiness}%</span>
@@ -60,6 +60,9 @@
                     <mdc-list-item-secondary-text>
                         <span>Flakiness</span>
                     </mdc-list-item-secondary-text>
+                    <mdc-icon class="material-icons" mdc-list-item-trailing>
+                        info_outlined
+                    </mdc-icon>
                 </mdc-list-item>
             </mdc-list>
         </mdc-card>

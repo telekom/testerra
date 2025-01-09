@@ -90,7 +90,7 @@ export class MethodHistory extends AbstractViewModel {
         });
 
         this.totalRunCount = this.methodHistoryStatistics.getRunCount();
-        this.avgRunDuration = this.methodHistoryStatistics.getAverageDuration();
+        this.avgRunDuration = this.methodHistoryStatistics.averageDuration;
         this.flakiness = this.methodHistoryStatistics.flakiness.toFixed(1);
 
         this.failureAspectsData = Array.from(this.methodHistoryStatistics.getErrorCount()).sort((a, b) => b[1] - a[1]);

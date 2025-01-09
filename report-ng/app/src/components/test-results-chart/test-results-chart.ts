@@ -145,6 +145,9 @@ export class TestResultsChart {
                 type: 'pie',
                 fontFamily: 'Roboto',
                 events: {
+                    dataPointMouseEnter: (event) => {
+                        event.target.style.cursor = 'pointer'
+                    },
                     dataPointSelection: (event, chartContext, config) => {
                         this._pieceToggled(event,chartContext,config)
                     }

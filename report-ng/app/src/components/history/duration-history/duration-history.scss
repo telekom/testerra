@@ -24,8 +24,16 @@
     height: 30em;
 }
 
-.short-card {
-    height: 11em;
+.short-history-card {
+    height: 16em;
+}
+
+.duration-top-list-icon {
+    color: #6897EA !important;
+}
+
+.non-interactive:hover {
+    cursor: default;
 }
 
 .duration-history-chart-tooltip-header {

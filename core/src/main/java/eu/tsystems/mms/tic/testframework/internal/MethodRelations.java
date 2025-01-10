@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
 import org.testng.IDataProviderMethod;
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeClass;
@@ -102,19 +103,23 @@ public class MethodRelations {
 
             // dependsOnGroups
             for (String dependsOnGroup : test.dependsOnGroups()) {
-                methodContext.getClassContext().readMethodContexts()
-                        .filter(MethodContext::isTestMethod)
-                        .filter(context -> !context.getClassContext().getName().concat(context.getName()).equals(methodContext.getClassContext().getName().concat(methodContext.getName())))
-                        .filter(context -> {
-                            Optional<ITestResult> testNgResult = methodContext.getTestNgResult();
+                // Methods for group dependency can be placed in other classes
+                TestContext testContext = methodContext.getClassContext().getTestContext();
+                testContext.readClassContexts().forEach(classContext -> {
+                    classContext.readMethodContexts()
+                            .filter(MethodContext::isTestMethod)
+                            .filter(context -> !context.getClassContext().getName().concat(context.getName()).equals(methodContext.getClassContext().getName().concat(methodContext.getName())))
+                            .filter(context -> {
+                                Optional<ITestResult> testNgResult = methodContext.getTestNgResult();
 //                            Optional<Test> internalTest = context.getAnnotation(Test.class);
-                            if (testNgResult.isPresent()) {
-                                String[] groups = testNgResult.get().getMethod().getGroupsDependedUpon();
-                                return Arrays.asList(groups).contains(dependsOnGroup);
-                            }
-                            return false;
-                        })
-                        .forEach(methodContext::addDependsOnMethod);
+                                if (testNgResult.isPresent()) {
+                                    String[] groups = testNgResult.get().getMethod().getGroupsDependedUpon();
+                                    return Arrays.asList(groups).contains(dependsOnGroup);
+                                }
+                                return false;
+                            })
+                            .forEach(methodContext::addDependsOnMethod);
+                });
             }
 
             methodContext.getTestNgResult().ifPresent(testNgResult -> {

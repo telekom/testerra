@@ -27,12 +27,10 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-import org.testng.SkipException;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -127,13 +125,12 @@ public class ClassContext extends AbstractContext implements Loggable {
 
         MethodContext methodContext;
         if (!found.isPresent()) {
-            MethodContext.Type methodType;
-
-            if (testNGMethod.isTest()) {
-                methodType = MethodContext.Type.TEST_METHOD;
-            } else {
-                methodType = MethodContext.Type.CONFIGURATION_METHOD;
-            }
+            MethodContext.Type methodType = getMethodContextType(testNGMethod);
+//            if (testNGMethod.isTest()) {
+//                methodType = MethodContext.Type.TEST_METHOD;
+//            } else {
+//                methodType = MethodContext.Type.CONFIGURATION_METHOD;
+//            }
 
             methodContext = new MethodContext(methodContextName, methodType, this);
             methodContext.setTestNgResult(testResult);
@@ -172,6 +169,22 @@ public class ClassContext extends AbstractContext implements Loggable {
             methodContext = found.get();
         }
         return methodContext;
+    }
+
+    private MethodContext.Type getMethodContextType(ITestNGMethod method) {
+        return method.isTest() ? MethodContext.Type.TEST_METHOD
+                : method.isBeforeSuiteConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_SUITE
+                : method.isBeforeTestConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_TEST
+                : method.isBeforeClassConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_CLASS
+                : method.isBeforeTestConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_METHOD
+                : method.isBeforeGroupsConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_GROUPS
+                : method.isBeforeMethodConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_METHOD
+                : method.isAfterMethodConfiguration() ? MethodContext.Type.CONFIGURATION_AFTER_METHOD
+                : method.isAfterGroupsConfiguration() ? MethodContext.Type.CONFIGURATION_AFTER_GROUPS
+                : method.isAfterClassConfiguration() ? MethodContext.Type.CONFIGURATION_AFTER_CLASS
+                : method.isAfterTestConfiguration() ? MethodContext.Type.CONFIGURATION_AFTER_TEST
+                : method.isAfterSuiteConfiguration() ? MethodContext.Type.CONFIGURATION_AFTER_SUITE
+                : MethodContext.Type.CONFIGURATION_METHOD;
     }
 
 //    public MethodContext safeAddSkipMethod(ITestResult testResult) {

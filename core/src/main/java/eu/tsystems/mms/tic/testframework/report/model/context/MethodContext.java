@@ -52,7 +52,18 @@ public class MethodContext extends AbstractContext {
 
     public enum Type {
         TEST_METHOD,
-        CONFIGURATION_METHOD
+        CONFIGURATION_BEFORE_SUITE,
+        CONFIGURATION_BEFORE_TEST,
+        CONFIGURATION_BEFORE_CLASS,
+        CONFIGURATION_BEFORE_METHOD,
+        CONFIGURATION_BEFORE_GROUPS,
+        CONFIGURATION_AFTER_GROUPS,
+        CONFIGURATION_AFTER_METHOD,
+        CONFIGURATION_AFTER_CLASS,
+        CONFIGURATION_AFTER_TEST,
+        CONFIGURATION_AFTER_SUITE,
+        CONFIGURATION_METHOD,       // only used as fallback
+        DATA_PROVIDER;
     }
 
     private ITestResult testResult;

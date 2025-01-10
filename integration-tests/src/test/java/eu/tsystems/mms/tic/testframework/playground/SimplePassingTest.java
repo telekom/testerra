@@ -23,10 +23,22 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class SimplePassingTest extends TesterraTest {
+public class SimplePassingTest extends AbstractTest {
 
+    @BeforeClass()
+    public void beforeClassPassingTest() {
+        log().info("Before class 1");
+    }
+
+    @BeforeMethod()
+    public void beforeMethodPassingTest() {
+
+    }
 
     @Test
     public void testPassing() {

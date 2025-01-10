@@ -277,11 +277,11 @@ public class MethodContext extends AbstractContext {
     }
 
     public boolean isConfigMethod() {
-        return methodType == Type.CONFIGURATION_METHOD;
+        return !isTestMethod();
     }
 
     public boolean isTestMethod() {
-        return !isConfigMethod();
+        return methodType == Type.TEST_METHOD;
     }
 
     public Status getStatus() {

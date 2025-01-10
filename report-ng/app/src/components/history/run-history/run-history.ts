@@ -125,7 +125,7 @@ export class RunHistory extends AbstractViewModel {
     }
 
     private _updateTopFailingTests() {
-        const methods = this._historyStatistics.getMethodHistoryStatistics();
+        const methods = this._historyStatistics.getClassHistory().flatMap(classItem => classItem.methods);
 
         const failingMethods = methods
             .filter(method => method.getFailingStreakInRange(this.viewport[0], this.viewport[1]) > 0)
@@ -147,7 +147,7 @@ export class RunHistory extends AbstractViewModel {
     }
 
     private _updateTopFlakyTests() {
-        const methods = this._historyStatistics.getMethodHistoryStatistics();
+        const methods = this._historyStatistics.getClassHistory().flatMap(classItem => classItem.methods);
 
         const flakyMethods = methods
             .filter(method => method.getFlakinessInRange(this.viewport[0], this.viewport[1]) > 0.1)
@@ -211,7 +211,7 @@ export class RunHistory extends AbstractViewModel {
 
     private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
         this._router.navigateToRoute('method', {
-            methodId: methodHistoryStatistics.getIdOfLatestRun(),
+            methodId: methodHistoryStatistics.getIdOfRun(this._historyStatistics.getLastEntry().historyIndex),
             subPage: "method-history"
         });
     }

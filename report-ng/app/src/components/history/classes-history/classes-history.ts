@@ -105,13 +105,15 @@ export class ClassesHistory extends AbstractViewModel {
             this._chart.on('click', params => {
                 if (params.targetType === 'axisLabel') {
                     if (this._selectedClass) {
-                        const foundMethod = this._historyStatistics.getMethodHistoryStatistics().find(method =>
-                            method.identifier === params.value &&
-                            method.classIdentifier === this._selectedClass &&
-                            method.getStatusOfLatestRun() != ResultStatusType.FAILED_RETRIED
-                        );
-                        if (foundMethod) {
-                            this._navigateToMethodHistory(foundMethod)
+                        const foundClass = this._historyStatistics.getClassHistory().find(cls => cls.identifier === this._selectedClass);
+                        if (foundClass) {
+                            const foundMethod = foundClass.methods.find(method =>
+                                method.identifier === params.value &&
+                                method.getStatusOfLatestRun() != ResultStatusType.FAILED_RETRIED
+                            );
+                            if (foundMethod) {
+                                this._navigateToMethodHistory(foundMethod)
+                            }
                         }
                     } else {
                         this._selectedClass = this._uniqueClasses.find(clsName => clsName.endsWith(params.value));
@@ -271,47 +273,47 @@ export class ClassesHistory extends AbstractViewModel {
         let availableStatuses = new Set<ResultStatusType>();
         let uniqueHistoryIndices = new Set<number>();
 
-        this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
-            const historyIndex = aggregate.historyAggregate.historyIndex;
-            const foundClass = Array.from(aggregate.classes.values()).find(currentClass =>
-                currentClass.identifier === this._selectedClass
-            );
-            if (foundClass) {
-                foundClass.methods.forEach(method => {
-                    if (method.context.methodType === MethodType.TEST_METHOD) {
-                        const status = method.context.resultStatus;
+        const foundClass = this._historyStatistics.getClassHistory().find(clsStats => clsStats.identifier === this._selectedClass);
+        if (foundClass) {
+            foundClass.methods.forEach(method => {
+
+                if (this._selectedStatus) {
+                    const statuses = method.availableStatuses.map(status => this._statusConverter.normalizeStatus(status));
+                    if (!statuses.includes(this._selectedStatus)) {
+                        return;
+                    }
+                }
+
+                method.runs.forEach(methodRun => {
+                    if (methodRun.context.methodType === MethodType.TEST_METHOD) {
+                        const status = methodRun.context.resultStatus;
                         if (status === ResultStatusType.FAILED_RETRIED) {
                             return;
                         }
-                        if (this._selectedStatus) {
-                            if (this._selectedStatus != status) {
-                                return;
-                            }
-                        }
 
                         availableStatuses.add(status);
-                        uniqueHistoryIndices.add(historyIndex);
+                        uniqueHistoryIndices.add(methodRun.historyIndex);
 
-                        const startTime = method.context.contextValues.startTime;
-                        const endTime = method.context.contextValues.endTime;
+                        const startTime = methodRun.context.contextValues.startTime;
+                        const endTime = methodRun.context.contextValues.endTime;
 
                         newData.push({
-                            value: [historyIndex, method.identifier],
+                            value: [methodRun.historyIndex, method.identifier],
                             itemStyle: {
                                 color: style.get(status),
                                 opacity: 1
                             },
                             status: status,
                             statusName: this._statusConverter.getLabelForStatus(status),
-                            errorMessage: method.getCombinedErrorMessage(),
+                            errorMessage: methodRun.combinedErrorMessage,
                             startTime: startTime,
                             endTime: endTime,
                             duration: endTime - startTime
                         });
                     }
                 });
-            }
-        });
+            });
+        }
 
         this._data = newData;
         if (!this._selectedStatus) {
@@ -408,6 +410,16 @@ export class ClassesHistory extends AbstractViewModel {
         let availableStatuses = new Set<ResultStatusType>();
         let uniqueHistoryIndices = new Set<number>();
 
+        let activeClasses: string[] = [];
+        if (this._selectedStatus) {
+            this._historyStatistics.getClassHistory().forEach(cls => {
+                const availableStatuses: number[] = cls.availableFinalStatuses.map(status => this._statusConverter.normalizeStatus(status));
+                if (availableStatuses.includes(this._selectedStatus)) {
+                    activeClasses.push(cls.identifier);
+                }
+            });
+        }
+
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const historyIndex = aggregate.historyAggregate.historyIndex;
 
@@ -443,10 +455,7 @@ export class ClassesHistory extends AbstractViewModel {
                 }
 
                 if (this._selectedStatus) {
-                    const availableStatusesInClass = Array.from(statusesInClass.entries())
-                        .filter(([key, value]) => value != 0)
-                        .map(([key, value]) => key);
-                    if (!availableStatusesInClass.includes(this._selectedStatus)) {
+                    if (!activeClasses.includes(testClass.identifier)) {
                         return;
                     }
                 }
@@ -733,7 +742,7 @@ export class ClassesHistory extends AbstractViewModel {
     private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
         if (methodHistoryStatistics.getRunCount() > 1) {
             this._router.navigateToRoute('method', {
-                methodId: methodHistoryStatistics.getIdOfLatestRun(),
+                methodId: methodHistoryStatistics.getIdOfRun(this._historyStatistics.getLastEntry().historyIndex),
                 subPage: "method-history"
             });
         }

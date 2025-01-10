@@ -199,7 +199,7 @@ export class ExecutionStatistics extends Statistics {
 
 export class HistoryStatistics {
     private _historyAggregateStatistics: HistoryAggregateStatistics[] = [];
-    private _methodHistoryStatistics: MethodHistoryStatistics[] = [];
+    private _classHistory: ClassHistory[] = [];
     private _availableRuns: number[] = [];
 
     constructor(
@@ -213,23 +213,36 @@ export class HistoryStatistics {
             this._historyAggregateStatistics.push(new HistoryAggregateStatistics(entry));
         });
 
-        this.getLastEntry().methods.forEach(method => {
-            this._methodHistoryStatistics.push(new MethodHistoryStatistics(method));
-        });
+        const classHistoryMap = new Map<string, ClassHistory>();
 
-        this._methodHistoryStatistics.forEach(methodHistory => {
-            this._historyAggregateStatistics.forEach(entry => {
-                const foundMethod = Array.from(entry.methods.values()).find(method => {
-                    return method.identifier === methodHistory.identifier &&
-                        method.classIdentifier === methodHistory.classIdentifier &&
-                        this._compareRelatedMethods(method.relatedMethods, methodHistory.relatedMethods)
-                });
+        this._historyAggregateStatistics.forEach(aggregate => {
+            const currentHistoryIndex = aggregate.historyIndex;
 
-                if (foundMethod) {
-                    methodHistory.addRun(foundMethod, entry.historyIndex);
+            aggregate.classes.forEach(clsStat => {
+                const classIdentifier = clsStat.identifier;
+                let classHistory = classHistoryMap.get(classIdentifier);
+
+                if (!classHistory) {
+                    classHistory = new ClassHistory(classIdentifier);
+                    classHistoryMap.set(classIdentifier, classHistory);
                 }
+
+                clsStat.methods.forEach((method) => {
+                    let methodHistory = classHistory.methods.find(
+                        methodHistoryStatistics => methodHistoryStatistics.identifier === method.identifier && this._compareRelatedMethods(methodHistoryStatistics.relatedMethods, method.relatedMethods)
+                    );
+
+                    if (!methodHistory) {
+                        methodHistory = new MethodHistoryStatistics(method);
+                        classHistory.addMethod(methodHistory);
+                    }
+
+                    methodHistory.addRun(method, currentHistoryIndex);
+                });
             });
         });
+
+        this._classHistory = Array.from(classHistoryMap.values());
     }
 
     private _compareRelatedMethods(arr1: string[], arr2: string[]): boolean {
@@ -250,8 +263,8 @@ export class HistoryStatistics {
         return this._historyAggregateStatistics;
     }
 
-    getMethodHistoryStatistics(): MethodHistoryStatistics[] {
-        return this._methodHistoryStatistics;
+    getClassHistory(): ClassHistory[] {
+        return this._classHistory;
     }
 
     getTotalRunCount(): number {
@@ -306,13 +319,11 @@ export class ClassHistoryStatistics extends Statistics {
 export class HistoricalMethod {
     private readonly _methodContext: IMethodContext;
     private readonly _methodIdentifier: string;
-    private readonly _classIdentifier: string;
     private _relatedMethodIdentifiers: string[] = [];
 
-    constructor(methodContext: IMethodContext, classIdentifier: string) {
+    constructor(methodContext: IMethodContext) {
         this._methodContext = methodContext;
         this._methodIdentifier = this._getParsedMethodIdentifier();
-        this._classIdentifier = classIdentifier;
     }
 
     private _getParsedMethodIdentifier() {
@@ -374,10 +385,6 @@ export class HistoricalMethod {
     get relatedMethods() {
         return this._relatedMethodIdentifiers;
     }
-
-    get classIdentifier() {
-        return this._classIdentifier;
-    }
 }
 
 export class HistoryAggregateStatistics extends Statistics {
@@ -395,19 +402,17 @@ export class HistoryAggregateStatistics extends Statistics {
         this._methodMap = new Map();
         this._historyIndex = historyEntry.historyIndex;
 
-        Object.values(historyEntry.classContexts).forEach(cls => {
-            const classIdentifier = cls.testContextName || cls.contextValues.name
-            this._classIdMap.set(cls.contextValues.id, classIdentifier);
+        Object.values(historyEntry.classContexts).forEach(classContext => {
+            const classIdentifier = classContext.testContextName || classContext.contextValues.name
+            this._classIdMap.set(classContext.contextValues.id, classIdentifier);
         });
 
-        const uniqueClasses = Array.from(new Set(this._classIdMap.values()));
-        uniqueClasses.forEach(cls => {
-            let classStats = new ClassHistoryStatistics(cls);
-            this._classMap.set(cls, classStats);
+        new Set(this._classIdMap.values()).forEach(cls => {
+            this._classMap.set(cls, new ClassHistoryStatistics(cls));
         });
 
         Object.values(historyEntry.methodContexts).forEach(method => {
-            this._methodMap.set(method.contextValues.id, new HistoricalMethod(method, this._classIdMap.get(method.classContextId)));
+            this._methodMap.set(method.contextValues.id, new HistoricalMethod(method));
             if (method.methodType === MethodType.TEST_METHOD) {
                 this.addResultStatus(method.resultStatus);
             }
@@ -429,10 +434,6 @@ export class HistoryAggregateStatistics extends Statistics {
 
     get classes() {
         return this._classMap;
-    }
-
-    get methods() {
-        return this._methodMap;
     }
 
     get historyIndex() {
@@ -485,10 +486,51 @@ export class HistoricalMethodRun {
     }
 }
 
+export class ClassHistory {
+    private readonly _identifier: string;
+    private _methods: MethodHistoryStatistics[] = [];
+
+    constructor(
+        identifier: string
+    ) {
+        this._identifier = identifier;
+    }
+
+    addMethod(method: MethodHistoryStatistics) {
+        this._methods.push(method);
+    }
+
+    get availableFinalStatuses() {
+        let availableFinalStatuses: Set<ResultStatusType> = new Set();
+        this._methods
+            .filter(method => method.isTestMethod())
+            .forEach(method => {
+                method.availableStatuses.forEach(status => {
+                    if (status === ResultStatusType.FAILED_RETRIED) {
+                        return;
+                    }
+                    availableFinalStatuses.add(
+                        status === ResultStatusType.REPAIRED || status === ResultStatusType.PASSED_RETRY
+                            ? ResultStatusType.PASSED
+                            : status
+                    );
+                });
+            });
+        return Array.from(availableFinalStatuses);
+    }
+
+    get identifier() {
+        return this._identifier;
+    }
+
+    get methods() {
+        return this._methods;
+    }
+}
+
 export class MethodHistoryStatistics extends Statistics {
     private readonly _identifier: string;
     private readonly _relatedMethods: string[] = [];
-    private readonly _classIdentifier: string;
     private _runs: HistoricalMethodRun[] = [];
     private _flakinessFullWeightRunCount = 10;
     private _flakinessDecayFactor = 0.9;
@@ -497,7 +539,6 @@ export class MethodHistoryStatistics extends Statistics {
         super();
         this._identifier = method.identifier;
         this._relatedMethods = method.relatedMethods;
-        this._classIdentifier = method.classIdentifier;
     }
 
     private _getFlakiness(runs: HistoricalMethodRun[]): number {
@@ -609,8 +650,12 @@ export class MethodHistoryStatistics extends Statistics {
         return errorCount;
     }
 
-    getIdOfLatestRun() {
-        return this._getContextOfLatestRun().contextValues.id;
+    getIdOfRun(historyIndex: number) {
+        const foundRun = this._runs.find(run => run.historyIndex === historyIndex);
+        if (foundRun) {
+            return foundRun.context.contextValues.id;
+        }
+        return null;
     }
 
     getStatusOfLatestRun() {
@@ -639,10 +684,6 @@ export class MethodHistoryStatistics extends Statistics {
 
     get relatedMethods() {
         return this._relatedMethods;
-    }
-
-    get classIdentifier() {
-        return this._classIdentifier;
     }
 }
 

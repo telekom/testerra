@@ -117,12 +117,14 @@ export class DurationHistory extends AbstractViewModel {
     }
 
     private _calculateAverageDurations() {
-        return this._historyStatistics.getMethodHistoryStatistics().map(method => {
-            return {
-                statistics: method,
-                averageDuration: method.getAverageDurationInRange(this.viewport[0], this.viewport[1])
-            };
-        });
+        return this._historyStatistics.getClassHistory()
+            .flatMap(classItem => classItem.methods)
+            .map(method => {
+                return {
+                    statistics: method,
+                    averageDuration: method.getAverageDurationInRange(this.viewport[0], this.viewport[1])
+                };
+            });
     }
 
     private _updateLongestTestCases() {
@@ -282,7 +284,7 @@ export class DurationHistory extends AbstractViewModel {
 
     private _navigateToMethodHistory(methodHistoryStatistics: MethodHistoryStatistics) {
         this._router.navigateToRoute('method', {
-            methodId: methodHistoryStatistics.getIdOfLatestRun(),
+            methodId: methodHistoryStatistics.getIdOfRun(this._historyStatistics.getLastEntry().historyIndex),
             subPage: "method-history"
         });
     }

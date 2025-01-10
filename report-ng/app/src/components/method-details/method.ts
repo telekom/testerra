@@ -151,11 +151,16 @@ export class Method {
             let methodRunCount = 0;
             this._statistics.getHistoryStatistics().then(history => {
                 if (history.getTotalRunCount() > 1) {
-                    const methodInHistory = history.getMethodHistoryStatistics().find(method =>
-                        method.getIdOfLatestRun() === methodDetails.methodContext.contextValues.id
-                    );
-                    if (methodInHistory) {
-                        methodRunCount = methodInHistory.getRunCount();
+                    const foundClass = history.getClassHistory().find(cls => cls.identifier === this._methodDetails.classStatistics.classIdentifier);
+                    if (foundClass) {
+                        const methodInHistory = foundClass.methods.find(method => {
+                                const historyIndexOfLatestRun = method.getIdOfRun(history.getLastEntry().historyIndex);
+                                return historyIndexOfLatestRun === methodDetails.methodContext.contextValues.id
+                            }
+                        );
+                        if (methodInHistory) {
+                            methodRunCount = methodInHistory.getRunCount();
+                        }
                     }
                 }
                 this._loading = false;

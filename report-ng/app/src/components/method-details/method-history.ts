@@ -54,9 +54,16 @@ export class MethodHistory extends AbstractViewModel {
         this._historyStatistics = await this._statisticsGenerator.getHistoryStatistics();
 
         await this._statisticsGenerator.getMethodDetails(params.methodId).then(methodDetails => {
-            this.methodHistoryStatistics = this._historyStatistics.getMethodHistoryStatistics().find(method => {
-                return method.getIdOfLatestRun() === methodDetails.methodContext.contextValues.id
-            });
+
+            const foundClass = this._historyStatistics.getClassHistory().find(cls => cls.identifier === methodDetails.classStatistics.classIdentifier);
+            if (foundClass) {
+                const methodInHistory = foundClass.methods.find(method =>
+                    method.getIdOfRun(this._historyStatistics.getLastEntry().historyIndex) === methodDetails.methodContext.contextValues.id
+                );
+                if (methodInHistory) {
+                    this.methodHistoryStatistics = methodInHistory;
+                }
+            }
         });
 
         const style = new Map<number, string>();

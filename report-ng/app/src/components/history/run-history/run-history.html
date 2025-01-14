@@ -140,7 +140,7 @@
                                 <span>${methodHistory.name}</span>
                             </mdc-list-item-primary-text>
                             <mdc-list-item-secondary-text>
-                                <span>Failing since ${methodHistory.failingStreak} runs</span>
+                                <span>Failing since ${methodHistory.failingStreak} ${methodHistory.failingStreak === 1 ? 'run' : 'runs'}</span>
                             </mdc-list-item-secondary-text>
                         </mdc-list-item>
                     </mdc-list>

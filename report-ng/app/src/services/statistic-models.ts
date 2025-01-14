@@ -585,15 +585,18 @@ export class MethodHistoryStatistics extends Statistics {
     }
 
     private _getFailingStreak(runs: HistoricalMethodRun[]): number {
-        let failingStreak = 0;
+        if ((runs.length < 2) || (runs[runs.length - 1].context.resultStatus === ResultStatusType.FAILED_RETRIED) || (runs[runs.length - 1].getParsedResultStatus() === ResultStatusType.PASSED)) {
+            return 0;
+        }
 
-        for (const run of [...runs].reverse()) {
-            if (run.getParsedResultStatus() === ResultStatusType.PASSED) {
+        let statusStreak = 1;
+        for (let i = runs.length - 2; i >= 0; i--) {
+            if ((runs[i].getParsedResultStatus() != runs[i + 1].getParsedResultStatus()) || (runs[i].historyIndex != runs[i + 1].historyIndex - 1)) {
                 break;
             }
-            failingStreak++;
+            statusStreak++;
         }
-        return failingStreak;
+        return statusStreak;
     }
 
     private _getAverageDuration(runs: HistoricalMethodRun[]): number {
@@ -623,7 +626,10 @@ export class MethodHistoryStatistics extends Statistics {
     }
 
     getFailingStreakInRange(startIndex: number, endIndex: number): number {
-        return this._getFailingStreak(this._getMethodRunsInRange(startIndex, endIndex));
+        if (this._runs.map(run => run.historyIndex).includes(endIndex)) {
+            return this._getFailingStreak(this._getMethodRunsInRange(startIndex, endIndex));
+        }
+        return 0;
     }
 
     getFlakinessInRange(startIndex: number, endIndex: number): number {
@@ -668,10 +674,6 @@ export class MethodHistoryStatistics extends Statistics {
 
     get flakiness(): number {
         return this._getFlakiness(this._runs);
-    }
-
-    get failingStreak(): number {
-        return this._getFailingStreak(this._runs);
     }
 
     get identifier() {

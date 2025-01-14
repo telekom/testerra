@@ -126,45 +126,45 @@ export class RunHistory extends AbstractViewModel {
 
     private _updateTopFailingTests() {
         const methods = this._historyStatistics.getClassHistory().flatMap(classItem => classItem.methods);
+        const startIndex = this.viewport[0];
+        const endIndex = this.viewport[1];
 
         const failingMethods = methods
-            .filter(method => method.getFailingStreakInRange(this.viewport[0], this.viewport[1]) > 0)
+            .filter(method => method.getFailingStreakInRange(startIndex, endIndex) > 0)
             .filter(method => method.isTestMethod())
-            .sort((a, b) => b.getFailingStreakInRange(this.viewport[0], this.viewport[1]) - a.getFailingStreakInRange(this.viewport[0], this.viewport[1]))
+            .map(method => ({
+                method,
+                failingStreak: method.getFailingStreakInRange(startIndex, endIndex),
+            }))
+            .sort((a, b) => b.failingStreak - a.failingStreak)
             .slice(0, 3);
 
-        const topFailingMethods = [];
-
-        failingMethods.forEach(method => {
-            topFailingMethods.push({
-                name: method.identifier,
-                failingStreak: method.getFailingStreakInRange(this.viewport[0], this.viewport[1]),
-                statistics: method
-            });
-        });
-
-        this._topFailingTests = topFailingMethods;
+        this._topFailingTests = failingMethods.map(({ method, failingStreak }) => ({
+            name: method.identifier,
+            failingStreak: failingStreak,
+            statistics: method,
+        }));
     }
 
     private _updateTopFlakyTests() {
         const methods = this._historyStatistics.getClassHistory().flatMap(classItem => classItem.methods);
+        const startIndex = this.viewport[0];
+        const endIndex = this.viewport[1];
 
         const flakyMethods = methods
-            .filter(method => method.getFlakinessInRange(this.viewport[0], this.viewport[1]) > 0.1)
-            .sort((a, b) => b.getFlakinessInRange(this.viewport[0], this.viewport[1]) - a.getFlakinessInRange(this.viewport[0], this.viewport[1]))
+            .map(method => ({
+                method,
+                flakiness: method.getFlakinessInRange(startIndex, endIndex),
+            }))
+            .filter(({ flakiness }) => flakiness > 0.1)
+            .sort((a, b) => b.flakiness - a.flakiness)
             .slice(0, 3);
 
-        const topFlakyMethods = [];
-
-        flakyMethods.forEach(method => {
-            topFlakyMethods.push({
-                name: method.identifier,
-                flakiness: method.getFlakinessInRange(this.viewport[0], this.viewport[1]).toFixed(1),
-                statistics: method
-            });
-        });
-
-        this._topFlakyTests = topFlakyMethods;
+        this._topFlakyTests = flakyMethods.map(({ method, flakiness }) => ({
+            name: method.identifier,
+            flakiness: flakiness.toFixed(1),
+            statistics: method,
+        }));
     }
 
     private _updateStatusData() {

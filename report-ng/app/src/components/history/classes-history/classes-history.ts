@@ -55,6 +55,7 @@ export class ClassesHistory extends AbstractViewModel {
     private _symbolSize = 60;                 // Width and height of chart symbol in pixel
     private _chartHeaderHeight = 50;          // Height of the top spacing including the scrollbar in pixel
     private _maxYCategoryLength = 45;         // Maximum number of characters for y-category names before linebreak
+    private _cardBorderSpacing = 20;          // To ensure the grid's width stays smaller than the card
     private _gridLeftValue: number;
     private _numberOfMethodsInClass = 0;
     private _cardHeight: number;
@@ -91,7 +92,7 @@ export class ClassesHistory extends AbstractViewModel {
             if (this._numberOfRuns > 1) {
                 this._historyAvailable = true;
                 // Calculate the number of visible runs based on the container width
-                const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - 10;
+                const dataGridWidth = document.getElementById('classes-history-chart-container').clientWidth - this._gridLeftValue - this._cardBorderSpacing;
                 this._visibleRuns = Math.floor(dataGridWidth / this._categoryWidth);
             } else {
                 this._cardHeadline = "No history available"

@@ -139,7 +139,7 @@ export class RunHistory extends AbstractViewModel {
             .sort((a, b) => b.failingStreak - a.failingStreak)
             .slice(0, 3);
 
-        this._topFailingTests = failingMethods.map(({ method, failingStreak }) => ({
+        this._topFailingTests = failingMethods.map(({method, failingStreak}) => ({
             name: method.identifier,
             failingStreak: failingStreak,
             statistics: method,
@@ -156,11 +156,11 @@ export class RunHistory extends AbstractViewModel {
                 method,
                 flakiness: method.getFlakinessInRange(startIndex, endIndex),
             }))
-            .filter(({ flakiness }) => flakiness > 0.1)
+            .filter(({flakiness}) => flakiness > 0.1)
             .sort((a, b) => b.flakiness - a.flakiness)
             .slice(0, 3);
 
-        this._topFlakyTests = flakyMethods.map(({ method, flakiness }) => ({
+        this._topFlakyTests = flakyMethods.map(({method, flakiness}) => ({
             name: method.identifier,
             flakiness: flakiness.toFixed(1),
             statistics: method,

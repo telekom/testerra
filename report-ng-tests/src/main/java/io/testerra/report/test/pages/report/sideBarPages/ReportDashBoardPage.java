@@ -63,7 +63,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement barChartPartPerTestStatus = barChartElement.find(By.xpath("//*[@class='apexcharts-series']"));
     private final UiElement segmentsOfBarsPerTestStatus = barChartPartPerTestStatus.find(By.xpath("//*"));
 
-    private final UiElement testTopFailureAspectsElement = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'Failure Aspects')]]"));
+    private final UiElement testTopFailureAspectsElement = pageContent.find(By.xpath(".//mdc-card[*/div[contains(text(), 'Failure Aspects')]]"));
     private final UiElement majorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Major')]"));
     private final UiElement minorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Minor')]"));
     private final UiElement topFailuresLink = testTopFailureAspectsElement.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));

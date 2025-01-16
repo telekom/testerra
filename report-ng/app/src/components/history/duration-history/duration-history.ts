@@ -226,7 +226,7 @@ export class DurationHistory extends AbstractViewModel {
                     type: 'line',
                     data: this._chartData,
                     z: 2,
-                    cursor: 'default',
+                    cursor: 'default', // This currently affects only the symbols, not the line itself: https://github.com/apache/echarts/issues/18133
                     lineStyle: {
                         color: DurationHistory.DURATION_COLOR
                     },

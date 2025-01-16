@@ -45,7 +45,6 @@ export class ClassesHistory extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _availableClasses: any[] = [];
     private _availableStatuses: ResultStatusType[] = [];
-    private _availableOverviewStatuses: ResultStatusType[] = [];
     private _option: EChartsOption;
     private _data: any[] = [];
     private _selectedClass: string = null;
@@ -463,9 +462,10 @@ export class ClassesHistory extends AbstractViewModel {
 
                 uniqueHistoryIndices.add(historyIndex);
 
-                const availableStatusesInClass = Array.from(statusesInClass.keys());
-                availableStatusesInClass.forEach(status => {
-                    availableStatuses.add(status);
+                statusesInClass.forEach((statusCount, status) => {
+                    if (statusCount > 0) {
+                        availableStatuses.add(status);
+                    }
                 });
 
                 if (!this._uniqueClasses.includes(testClass.identifier)) {

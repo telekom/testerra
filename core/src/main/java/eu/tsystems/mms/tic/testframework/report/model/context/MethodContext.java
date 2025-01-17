@@ -168,7 +168,9 @@ public class MethodContext extends AbstractContext {
     }
 
     public void addRelatedMethodContext(MethodContext relatedMethodContext) {
-        this.relatedMethodContexts.add(relatedMethodContext);
+        if (!this.relatedMethodContexts.contains(relatedMethodContext) && relatedMethodContext != this) {
+            this.relatedMethodContexts.add(relatedMethodContext);
+        }
     }
 
     public void addDependsOnMethod(MethodContext methodContext) {

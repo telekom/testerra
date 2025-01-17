@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.TestNGContextNameGenerator
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+import org.testng.annotations.DataProvider;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -172,6 +173,9 @@ public class ClassContext extends AbstractContext implements Loggable {
     }
 
     private MethodContext.Type getMethodContextType(ITestNGMethod method) {
+        if (method.getConstructorOrMethod().getMethod().getAnnotation(DataProvider.class) != null) {
+            return MethodContext.Type.DATA_PROVIDER;
+        }
         return method.isTest() ? MethodContext.Type.TEST_METHOD
                 : method.isBeforeSuiteConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_SUITE
                 : method.isBeforeTestConfiguration() ? MethodContext.Type.CONFIGURATION_BEFORE_TEST

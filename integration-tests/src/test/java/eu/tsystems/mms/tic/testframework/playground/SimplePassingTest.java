@@ -23,6 +23,8 @@ package eu.tsystems.mms.tic.testframework.playground;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -31,13 +33,32 @@ import org.testng.annotations.Test;
 public class SimplePassingTest extends AbstractTest {
 
     @BeforeClass()
-    public void beforeClassPassingTest() {
+    public void beforeClassPassingTest1() {
         log().info("Before class 1");
+    }
+//
+//    @BeforeClass()
+//    public void beforeClassPassingTest2() {
+//        log().info("Before class 2");
+//    }
+
+    @AfterClass()
+    public void afterClassPassingTest1() {
+        log().info("After class 1");
     }
 
     @BeforeMethod()
-    public void beforeMethodPassingTest() {
+    public void beforeMethodPassingTest1() {
 
+    }
+
+    @BeforeMethod()
+    public void beforeMethodPassingTest2() {
+
+    }
+
+    @AfterMethod
+    public void afterMethodPassingTest1() {
     }
 
     @Test

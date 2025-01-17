@@ -56,7 +56,6 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
          */
         if (methodContext.getTestNgResult().isPresent()) {
             ITestResult testResult = methodContext.getTestNgResult().get();
-            Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
             Throwable throwable = testResult.getThrowable();
 
             if (testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
@@ -69,7 +68,7 @@ public class TestStatusController implements TestStatusUpdateEvent.Listener, Log
             }
 
             // announce to run context
-            MethodRelations.announceRun(method, methodContext);
+            MethodRelations.announceRun(methodContext);
         }
         methodContext.updateEndTimeRecursive(new Date());
 

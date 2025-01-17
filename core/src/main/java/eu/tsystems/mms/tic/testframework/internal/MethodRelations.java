@@ -57,24 +57,6 @@ public class MethodRelations {
 
     }
 
-//    /**
-//     * This method stores all called configuration methods to handle relations.
-//     * <p>
-//     * Only at beforeMethod and afterMethod 'testNGMethod' contains the related testmethod.
-//     *
-//     * @param testResult ITestResult object of configuration method
-//     * @param testNGMethod ITestNGMethod object of the test method
-//     */
-//    public static void addConfigMethod(ITestResult testResult, ITestNGMethod testNGMethod) {
-//        if (testResult.getMethod().isBeforeMethodConfiguration() || testResult.getMethod().isAfterMethodConfiguration()) {
-//            Map<ITestResult, ITestNGMethod> map = beforeAfterConfigMap.get();
-//            if (map == null) {
-//                map = new HashMap<>();
-//                beforeAfterConfigMap.set(map);
-//            }
-//            map.put(testResult, testNGMethod);
-//        }
-//    }
 
 //    public static Map<ITestResult, ITestNGMethod> getBeforeConfig() {
 //        return beforeAfterConfigMap.get();

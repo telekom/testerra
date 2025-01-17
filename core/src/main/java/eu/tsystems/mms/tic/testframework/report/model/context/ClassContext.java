@@ -127,12 +127,6 @@ public class ClassContext extends AbstractContext implements Loggable {
         MethodContext methodContext;
         if (!found.isPresent()) {
             MethodContext.Type methodType = getMethodContextType(testNGMethod);
-//            if (testNGMethod.isTest()) {
-//                methodType = MethodContext.Type.TEST_METHOD;
-//            } else {
-//                methodType = MethodContext.Type.CONFIGURATION_METHOD;
-//            }
-
             methodContext = new MethodContext(methodContextName, methodType, this);
             methodContext.setTestNgResult(testResult);
             methodContext.setParameterValues(testResult.getParameters());

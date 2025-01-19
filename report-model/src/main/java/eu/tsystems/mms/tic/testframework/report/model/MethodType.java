@@ -17,9 +17,57 @@ public enum MethodType
    */
   TEST_METHOD(1),
   /**
+   * <pre>
+   * only used as fallback
+   * </pre>
+   *
    * <code>CONFIGURATION_METHOD = 2;</code>
    */
   CONFIGURATION_METHOD(2),
+  /**
+   * <code>CONFIGURATION_BEFORE_SUITE = 3;</code>
+   */
+  CONFIGURATION_BEFORE_SUITE(3),
+  /**
+   * <code>CONFIGURATION_BEFORE_TEST = 4;</code>
+   */
+  CONFIGURATION_BEFORE_TEST(4),
+  /**
+   * <code>CONFIGURATION_BEFORE_CLASS = 5;</code>
+   */
+  CONFIGURATION_BEFORE_CLASS(5),
+  /**
+   * <code>CONFIGURATION_BEFORE_METHOD = 6;</code>
+   */
+  CONFIGURATION_BEFORE_METHOD(6),
+  /**
+   * <code>CONFIGURATION_BEFORE_GROUPS = 7;</code>
+   */
+  CONFIGURATION_BEFORE_GROUPS(7),
+  /**
+   * <code>CONFIGURATION_AFTER_GROUPS = 8;</code>
+   */
+  CONFIGURATION_AFTER_GROUPS(8),
+  /**
+   * <code>CONFIGURATION_AFTER_METHOD = 9;</code>
+   */
+  CONFIGURATION_AFTER_METHOD(9),
+  /**
+   * <code>CONFIGURATION_AFTER_CLASS = 10;</code>
+   */
+  CONFIGURATION_AFTER_CLASS(10),
+  /**
+   * <code>CONFIGURATION_AFTER_TEST = 11;</code>
+   */
+  CONFIGURATION_AFTER_TEST(11),
+  /**
+   * <code>CONFIGURATION_AFTER_SUITE = 12;</code>
+   */
+  CONFIGURATION_AFTER_SUITE(12),
+  /**
+   * <code>DATA_PROVIDER = 13;</code>
+   */
+  DATA_PROVIDER(13),
   UNRECOGNIZED(-1),
   ;
 
@@ -32,9 +80,57 @@ public enum MethodType
    */
   public static final int TEST_METHOD_VALUE = 1;
   /**
+   * <pre>
+   * only used as fallback
+   * </pre>
+   *
    * <code>CONFIGURATION_METHOD = 2;</code>
    */
   public static final int CONFIGURATION_METHOD_VALUE = 2;
+  /**
+   * <code>CONFIGURATION_BEFORE_SUITE = 3;</code>
+   */
+  public static final int CONFIGURATION_BEFORE_SUITE_VALUE = 3;
+  /**
+   * <code>CONFIGURATION_BEFORE_TEST = 4;</code>
+   */
+  public static final int CONFIGURATION_BEFORE_TEST_VALUE = 4;
+  /**
+   * <code>CONFIGURATION_BEFORE_CLASS = 5;</code>
+   */
+  public static final int CONFIGURATION_BEFORE_CLASS_VALUE = 5;
+  /**
+   * <code>CONFIGURATION_BEFORE_METHOD = 6;</code>
+   */
+  public static final int CONFIGURATION_BEFORE_METHOD_VALUE = 6;
+  /**
+   * <code>CONFIGURATION_BEFORE_GROUPS = 7;</code>
+   */
+  public static final int CONFIGURATION_BEFORE_GROUPS_VALUE = 7;
+  /**
+   * <code>CONFIGURATION_AFTER_GROUPS = 8;</code>
+   */
+  public static final int CONFIGURATION_AFTER_GROUPS_VALUE = 8;
+  /**
+   * <code>CONFIGURATION_AFTER_METHOD = 9;</code>
+   */
+  public static final int CONFIGURATION_AFTER_METHOD_VALUE = 9;
+  /**
+   * <code>CONFIGURATION_AFTER_CLASS = 10;</code>
+   */
+  public static final int CONFIGURATION_AFTER_CLASS_VALUE = 10;
+  /**
+   * <code>CONFIGURATION_AFTER_TEST = 11;</code>
+   */
+  public static final int CONFIGURATION_AFTER_TEST_VALUE = 11;
+  /**
+   * <code>CONFIGURATION_AFTER_SUITE = 12;</code>
+   */
+  public static final int CONFIGURATION_AFTER_SUITE_VALUE = 12;
+  /**
+   * <code>DATA_PROVIDER = 13;</code>
+   */
+  public static final int DATA_PROVIDER_VALUE = 13;
 
 
   public final int getNumber() {
@@ -64,6 +160,17 @@ public enum MethodType
       case 0: return MT_NOT_SET;
       case 1: return TEST_METHOD;
       case 2: return CONFIGURATION_METHOD;
+      case 3: return CONFIGURATION_BEFORE_SUITE;
+      case 4: return CONFIGURATION_BEFORE_TEST;
+      case 5: return CONFIGURATION_BEFORE_CLASS;
+      case 6: return CONFIGURATION_BEFORE_METHOD;
+      case 7: return CONFIGURATION_BEFORE_GROUPS;
+      case 8: return CONFIGURATION_AFTER_GROUPS;
+      case 9: return CONFIGURATION_AFTER_METHOD;
+      case 10: return CONFIGURATION_AFTER_CLASS;
+      case 11: return CONFIGURATION_AFTER_TEST;
+      case 12: return CONFIGURATION_AFTER_SUITE;
+      case 13: return DATA_PROVIDER;
       default: return null;
     }
   }

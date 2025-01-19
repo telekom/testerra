@@ -28,9 +28,9 @@ test {
             'src/test/resources/Integration.xml',
     ]
 
-    def smokeTest = findProperty("smoke")
-    if (smokeTest) {
-        s = ['src/test/resources/Smoke.xml']
+    def playground = findProperty("play")
+    if (playground) {
+        s = ['src/test/resources/Playground.xml']
     }
 
     def preTest = findProperty("pretest")

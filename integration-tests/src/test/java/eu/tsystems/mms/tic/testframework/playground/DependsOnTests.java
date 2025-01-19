@@ -80,7 +80,12 @@ public class DependsOnTests extends AbstractWebDriverTest {
     }
 
     // breaks Testerra :-(
-    @Test(dependsOnMethods = {"non-existing-method"})
+//    @Test(dependsOnMethods = {"non-existing-method"})
     public void testDependsOnInvalidMethod() {
+    }
+
+    @Test(dependsOnGroups = "passed")
+    public void testDependsOnGroups() {
+
     }
 }

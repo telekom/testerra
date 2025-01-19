@@ -74,7 +74,7 @@ public final class ExecutionEndListener implements
     }
 
     private void finalizeExecutionContext() {
-        MethodRelations.flushAll();
+//        MethodRelations.flushAll();
 
         ExecutionContext currentExecutionContext = contextController.getExecutionContext();
         currentExecutionContext.updateEndTimeRecursive(new Date());

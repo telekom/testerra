@@ -208,7 +208,7 @@ export class ClassStatistics extends Statistics {
     }
 
     addMethodContext(methodContext : IMethodContext) {
-        if (methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
+        if (methodContext.methodType != MethodType.TEST_METHOD) {
             this._configStatistics.addResultStatus(methodContext.resultStatus);
         } else {
             this.addResultStatus(methodContext.resultStatus);

@@ -57,7 +57,6 @@ public class MethodRelations {
 
     }
 
-
 //    public static Map<ITestResult, ITestNGMethod> getBeforeConfig() {
 //        return beforeAfterConfigMap.get();
 //    }
@@ -134,6 +133,23 @@ public class MethodRelations {
             currentBeforeMethods.remove();
         }
 
+        // beforeGroup
+        if (methodContext.getMethodType() == MethodContext.Type.TEST_METHOD) {
+            List<String> groups1 = List.of(methodContext.getTestNgResult().get().getMethod().getGroups());
+            handleConfigurationMethods(
+                    methodContext,
+                    null,
+                    () -> methodContext.getClassContext().getTestContext().readClassContexts()
+                            .flatMap(ClassContext::readMethodContexts)
+                            .filter(context -> context.getMethodType() == MethodContext.Type.CONFIGURATION_BEFORE_GROUPS)
+                            .filter(context -> {
+                                List<String> configGroups1 = Arrays.asList(context.getTestNgResult().get().getMethod().getGroups());
+                                configGroups1.retainAll(groups1);
+                                return !configGroups1.isEmpty();
+                            })
+            );
+        }
+
         // beforeClass
         handleConfigurationMethods(
                 methodContext,
@@ -171,6 +187,21 @@ public class MethodRelations {
                     () -> Stream.of(currentTestMethodContext.get())
             );
         }
+
+        // afterGroup
+        List<String> groups1 = List.of(methodContext.getTestNgResult().get().getMethod().getGroups());
+        handleConfigurationMethods(
+                methodContext,
+                MethodContext.Type.CONFIGURATION_AFTER_GROUPS,
+                () -> methodContext.getClassContext().getTestContext().readClassContexts()
+                        .flatMap(ClassContext::readMethodContexts)
+                        .filter(context -> context.getMethodType() == MethodContext.Type.TEST_METHOD)
+                        .filter(context -> {
+                            List<String> configGroups1 = Arrays.asList(context.getTestNgResult().get().getMethod().getGroups());
+                            configGroups1.retainAll(groups1);
+                            return !configGroups1.isEmpty();
+                        })
+        );
 
         // afterClass
         handleConfigurationMethods(

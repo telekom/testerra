@@ -52,10 +52,10 @@ public class SimplePassingTest extends AbstractTest {
 
     }
 
-    @BeforeMethod()
-    public void beforeMethodPassingTest2() {
-
-    }
+//    @BeforeMethod()
+//    public void beforeMethodPassingTest2() {
+//
+//    }
 
     @AfterMethod
     public void afterMethodPassingTest1() {

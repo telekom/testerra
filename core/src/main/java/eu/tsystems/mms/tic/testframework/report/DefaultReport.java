@@ -73,12 +73,20 @@ public class DefaultReport implements Report, Loggable {
 
             if (tempReportDirectory.exists()) {
                 log().debug("Temporary directory is {}", tempReportDirectory);
-                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
+                FileUtils.copyFileToDirectory(tempReportDirectory, finalReportDirectory, true);
+//                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
                 currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());
             }
         } catch (IOException e) {
-            throw new RuntimeException("Could not move report dir: " + e.getMessage(), e);
+            throw new RuntimeException("Could not copy report dir: " + e.getMessage(), e);
+        }
+
+        // Clean report in temp dir
+        try {
+            FileUtils.deleteDirectory(tempReportDirectory);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not delete temp report directory: " + e.getMessage(), e);
         }
         return finalReportDirectory;
     }

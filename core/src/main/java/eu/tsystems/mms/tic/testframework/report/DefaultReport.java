@@ -73,7 +73,7 @@ public class DefaultReport implements Report, Loggable {
 
             if (tempReportDirectory.exists()) {
                 log().debug("Temporary directory is {}", tempReportDirectory);
-                FileUtils.copyFileToDirectory(tempReportDirectory, finalReportDirectory, true);
+                FileUtils.copyDirectory(tempReportDirectory, finalReportDirectory);
 //                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
                 currentReportDirectory = finalReportDirectory;
                 log().info("Report written to " + finalReportDirectory.getAbsolutePath());

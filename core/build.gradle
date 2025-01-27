@@ -6,7 +6,8 @@ dependencies {
 
     // <Testerra>
     // @see https://github.com/google/guice/issues/1256
-    api 'com.google.inject:guice:4.2.2:no_aop'
+//    api 'com.google.inject:guice:4.2.2:no_aop'
+    api 'com.google.inject:guice:5.1.0'
     api 'com.google.inject.extensions:guice-assistedinject:4.2.2'
     implementation 'org.reflections:reflections:0.9.12'
     // </Testerra>

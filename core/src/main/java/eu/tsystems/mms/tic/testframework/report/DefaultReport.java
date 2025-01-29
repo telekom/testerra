@@ -50,22 +50,16 @@ public class DefaultReport implements Report, Loggable {
         currentReportDirectory = tempReportDirectory;
     }
 
-    // TODO: Migrate to Path
-    private File addFile(File sourceFile, File directory, FileMode fileMode) {
+    private Path addFile(Path sourceFile, Path directory, FileMode fileMode) {
         try {
-            switch (fileMode) {
-                case COPY:
-                    FileUtils.copyFileToDirectory(sourceFile, directory, true);
-                    break;
-                default:
-                case MOVE:
-                    FileUtils.moveFileToDirectory(sourceFile, directory, true);
-                    break;
+            PathUtils.copyFileToDirectory(sourceFile, directory);
+            if (fileMode == FileMode.MOVE) {
+                Files.delete(sourceFile);
             }
         } catch (IOException e) {
             log().error("Could not add file", e);
         }
-        return new File(directory, sourceFile.getName());
+        return directory.resolve(sourceFile.getFileName());
     }
 
     public Path finalizeReport() {
@@ -95,11 +89,13 @@ public class DefaultReport implements Report, Loggable {
     private void addScreenshotFiles(Screenshot screenshot, FileMode fileMode) {
         Path screenshotsDirectory = getReportDirectory(SCREENSHOTS_FOLDER_NAME);
         if (screenshot.getScreenshotFile() != null) {
-            screenshot.setFile(addFile(screenshot.getScreenshotFile(), screenshotsDirectory.toFile(), fileMode));
+            Path path = addFile(screenshot.getScreenshotFile().toPath(), screenshotsDirectory, fileMode);
+            screenshot.setFile(path.toFile());
         }
 
         screenshot.getPageSourceFile().ifPresent(file -> {
-            screenshot.setPageSourceFile(addFile(file, screenshotsDirectory.toFile(), fileMode));
+            Path path = addFile(file.toPath(), screenshotsDirectory, fileMode);
+            screenshot.setPageSourceFile(path.toFile());
         });
     }
 
@@ -119,7 +115,8 @@ public class DefaultReport implements Report, Loggable {
     @Override
     public Report addVideo(Video video, FileMode fileMode) {
         Path videoDirectory = getReportDirectory(VIDEO_FOLDER_NAME);
-        video.setFile(addFile(video.getVideoFile(), videoDirectory.toFile(), fileMode));
+        Path path = addFile(video.getVideoFile().toPath(), videoDirectory, fileMode);
+        video.setFile(path.toFile());
         return this;
     }
 

@@ -24,13 +24,13 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import java.net.URL;
 import org.apache.commons.lang3.StringUtils;
-import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -40,15 +40,13 @@ import java.nio.file.ProviderNotFoundException;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.io.FileUtils;
 
 public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, Loggable {
 
-    private File targetDir;
+    private final Path targetPath;
 
-    // TODO: Migrate to Path
-    public CopyReportAppListener(File targetDir) {
-        this.targetDir = targetDir;
+    public CopyReportAppListener(Path targetPath) {
+        this.targetPath = targetPath;
     }
 
     @Subscribe
@@ -61,8 +59,9 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
                     if (resourceStream == null) {
                         throw new Exception("Could not open stream: " + stringRepresentationOfResourcePath);
                     }
-                    final File targetFile = new File(this.targetDir, resourcePath.toString());
-                    FileUtils.copyInputStreamToFile(resourceStream, targetFile);
+                    final Path finalPath = targetPath.resolve(resourcePath.toString());
+                    Files.createDirectories(finalPath.getParent());
+                    Files.copy(resourceStream, finalPath);
                 }
             }
         } catch (Exception e) {
@@ -73,19 +72,20 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
     /**
      * This methods tries to read all files from a resource directory.
      * When this methods runs inside a JAR, it reads the directory listing from the JAR's resource folder:
-     *      application.jar#/folder/...
+     * application.jar#/folder/...
      * and maps them to relative resource paths:
-     *      /folder/file1.jpg
-     *      /folder/file2.js
-     *      ...
+     * /folder/file1.jpg
+     * /folder/file2.js
+     * ...
      * Otherwise, it reads the directory listing from the local resource folder:
-     *      ../build/resources/main/folder/...
+     * ../build/resources/main/folder/...
      * and maps the files to relative resource paths:
-     *       /folder/file1.jpg
-     *       /folder/file2.js
-     *       ...
-     *
+     * /folder/file1.jpg
+     * /folder/file2.js
+     * ...
+     * <p>
      * In both cases, you need to read the actual resource by {@link ClassLoader#getResource(String)}.
+     *
      * @see {https://mkyong.com/java/java-read-a-file-from-resources-folder/}
      */
     private Stream<Path> getPathsFromResource(String folder) throws URISyntaxException, IOException {

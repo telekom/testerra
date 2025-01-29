@@ -40,7 +40,7 @@ public class ReportNgHook extends AbstractModule implements ModuleHook {
 
         Report report = Testerra.getInjector().getInstance(Report.class);
 
-        eventBus.register(new CopyReportAppListener(report.getReportDirectory().toFile()));
+        eventBus.register(new CopyReportAppListener(report.getReportDirectory()));
         eventBus.register(new GenerateReportNgModelListener(report.getReportDirectory().resolve(Path.of("report-ng/model")).toFile()));
     }
 

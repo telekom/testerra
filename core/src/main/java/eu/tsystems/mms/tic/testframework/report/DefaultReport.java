@@ -24,30 +24,33 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import org.apache.commons.io.file.PathUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultReport implements Report, Loggable {
 
-    private File currentReportDirectory;
+    private Path currentReportDirectory;
     private final String baseDir = Properties.BASE_DIR.asString();
-    private final File finalReportDirectory = new File(baseDir);
-    private final File tempReportDirectory;
+    private final Path finalReportPath = Path.of(baseDir);
+    private final Path tempReportDirectory;
     private final ConcurrentHashMap<Class<? extends Annotation>, AnnotationConverter> annotationConverters = new ConcurrentHashMap<>();
 
     public DefaultReport() {
         FileUtils fileUtils = new FileUtils();
         tempReportDirectory = fileUtils.createTempDir(baseDir);
-        log().debug("Prepare report in " + tempReportDirectory.getAbsolutePath());
-
+        log().debug("Prepare report in " + tempReportDirectory.toAbsolutePath());
         currentReportDirectory = tempReportDirectory;
     }
 
+    // TODO: Migrate to Path
     private File addFile(File sourceFile, File directory, FileMode fileMode) {
         try {
             switch (fileMode) {
@@ -65,32 +68,38 @@ public class DefaultReport implements Report, Loggable {
         return new File(directory, sourceFile.getName());
     }
 
-    public File finalizeReport() {
+    public Path finalizeReport() {
         try {
-            if (finalReportDirectory.exists()) {
-                FileUtils.deleteDirectory(finalReportDirectory);
+            if (Files.exists(finalReportPath)) {
+                PathUtils.deleteDirectory(finalReportPath);
             }
 
-            if (tempReportDirectory.exists()) {
+            if (Files.exists(tempReportDirectory)) {
                 log().debug("Temporary directory is {}", tempReportDirectory);
-                FileUtils.moveDirectory(tempReportDirectory, finalReportDirectory);
-                currentReportDirectory = finalReportDirectory;
-                log().info("Report written to " + finalReportDirectory.getAbsolutePath());
+                PathUtils.copyDirectory(tempReportDirectory, finalReportPath);
+                currentReportDirectory = finalReportPath;
+                log().info("Report written to " + finalReportPath.toAbsolutePath());
+            }
+
+            try {
+                PathUtils.deleteDirectory(tempReportDirectory);
+            } catch (IOException e) {
+                log().warn("Could not delete temporary directory {}", tempReportDirectory);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Could not move report dir: " + e.getMessage(), e);
+            throw new RuntimeException("Could not copy report dir: " + e.getMessage(), e);
         }
-        return finalReportDirectory;
+        return finalReportPath;
     }
 
     private void addScreenshotFiles(Screenshot screenshot, FileMode fileMode) {
-        File screenshotsDirectory = getReportDirectory(SCREENSHOTS_FOLDER_NAME);
+        Path screenshotsDirectory = getReportDirectory(SCREENSHOTS_FOLDER_NAME);
         if (screenshot.getScreenshotFile() != null) {
-            screenshot.setFile(addFile(screenshot.getScreenshotFile(), screenshotsDirectory, fileMode));
+            screenshot.setFile(addFile(screenshot.getScreenshotFile(), screenshotsDirectory.toFile(), fileMode));
         }
 
         screenshot.getPageSourceFile().ifPresent(file -> {
-            screenshot.setPageSourceFile(addFile(file, screenshotsDirectory, fileMode));
+            screenshot.setPageSourceFile(addFile(file, screenshotsDirectory.toFile(), fileMode));
         });
     }
 
@@ -109,8 +118,8 @@ public class DefaultReport implements Report, Loggable {
 
     @Override
     public Report addVideo(Video video, FileMode fileMode) {
-        File videoDirectory = getReportDirectory(VIDEO_FOLDER_NAME);
-        video.setFile(addFile(video.getVideoFile(), videoDirectory, fileMode));
+        Path videoDirectory = getReportDirectory(VIDEO_FOLDER_NAME);
+        video.setFile(addFile(video.getVideoFile(), videoDirectory.toFile(), fileMode));
         return this;
     }
 
@@ -124,23 +133,23 @@ public class DefaultReport implements Report, Loggable {
     /**
      * @return Final report directory defined by the user
      */
-    public File getReportDirectory() {
+    public Path getReportDirectory() {
         return currentReportDirectory;
     }
 
     /**
      * @return Final report directory defined by the user
      */
-    public File getFinalReportDirectory() {
-        return finalReportDirectory;
+    public Path getFinalReportDirectory() {
+        return finalReportPath;
     }
 
     @Override
     public String getRelativePath(File file) {
         String absFilePath = file.getAbsolutePath();
 
-        for (File dir : Arrays.asList(tempReportDirectory, finalReportDirectory)) {
-            String absDirPath = dir.getAbsolutePath();
+        for (Path path : Arrays.asList(tempReportDirectory, finalReportPath)) {
+            String absDirPath = path.toAbsolutePath().toString();
             if (absFilePath.startsWith(absDirPath)) {
                 return absFilePath.replace(absDirPath, "");
             }

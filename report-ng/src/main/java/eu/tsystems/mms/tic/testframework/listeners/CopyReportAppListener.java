@@ -46,6 +46,7 @@ public class CopyReportAppListener implements FinalizeExecutionEvent.Listener, L
 
     private File targetDir;
 
+    // TODO: Migrate to Path
     public CopyReportAppListener(File targetDir) {
         this.targetDir = targetDir;
     }

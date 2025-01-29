@@ -45,7 +45,7 @@ public class DefaultReport implements Report, Loggable {
 
     public DefaultReport() {
         FileUtils fileUtils = new FileUtils();
-        tempReportDirectory = fileUtils.createTempDir(baseDir);
+        tempReportDirectory = fileUtils.createTempDir("test-report");
         log().debug("Prepare report in " + tempReportDirectory.toAbsolutePath());
         currentReportDirectory = tempReportDirectory;
     }

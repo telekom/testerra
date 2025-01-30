@@ -198,7 +198,7 @@ public class GenerateJUnitXML2ReportListener implements
 
         document.pop();
 
-        Utils.writeUtf8File(report.getReportDirectory(Report.XML_FOLDER_NAME).getAbsolutePath(), XML_RESULT_FILENAME, document.toXML());
+        Utils.writeUtf8File(report.getReportDirectory(Report.XML_FOLDER_NAME).toAbsolutePath().toString(), XML_RESULT_FILENAME, document.toXML());
     }
 
     static String formattedTime() {

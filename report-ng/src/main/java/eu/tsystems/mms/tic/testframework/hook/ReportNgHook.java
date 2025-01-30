@@ -30,6 +30,8 @@ import eu.tsystems.mms.tic.testframework.listeners.CopyReportAppListener;
 import eu.tsystems.mms.tic.testframework.listeners.GenerateReportNgModelListener;
 import eu.tsystems.mms.tic.testframework.report.Report;
 
+import java.nio.file.Path;
+
 public class ReportNgHook extends AbstractModule implements ModuleHook {
 
     @Override
@@ -39,7 +41,7 @@ public class ReportNgHook extends AbstractModule implements ModuleHook {
         Report report = Testerra.getInjector().getInstance(Report.class);
 
         eventBus.register(new CopyReportAppListener(report.getReportDirectory()));
-        eventBus.register(new GenerateReportNgModelListener(report.getReportDirectory("report-ng/model")));
+        eventBus.register(new GenerateReportNgModelListener(report.getReportDirectory().resolve(Path.of("report-ng/model")).toFile()));
     }
 
     @Override

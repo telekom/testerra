@@ -142,7 +142,7 @@ export class MethodHistoryChart extends AbstractViewModel {
         const missingValues = fullRange.filter(value => !values.includes(value));
 
         const missingRuns = missingValues.map(value => ({
-            status: "no_run",
+            status: ResultStatusType.NO_RUN,
             statusName: "No Run",
             errorMessage: "",
             itemStyle: {
@@ -180,7 +180,7 @@ export class MethodHistoryChart extends AbstractViewModel {
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
-                    if (params.data.status === "no_run") {
+                    if (params.data.status === ResultStatusType.NO_RUN) {
                         return '<div class="header" style="background-color: ' +
                             params.color + ';">' + params.data.statusName + '</div>';
                     }

@@ -36,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -280,9 +281,8 @@ public final class PdfUtils {
         }
 
         FileUtils utils = new FileUtils();
-        File tempDir = utils.createTempDir(fileName);
-
-        return tempDir.getAbsolutePath() + File.separator + fileName;
+        Path tempDir = utils.createTempDir(fileName);
+        return tempDir.resolve(fileName).toAbsolutePath().toString();
     }
 
     private static void closeDocument(PDDocument pdDoc) {

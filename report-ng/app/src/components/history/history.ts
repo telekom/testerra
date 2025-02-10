@@ -63,6 +63,16 @@ export class History {
                     icon: "view_comfy",
                 }
             },
+            {
+                route: 'run-comparison',
+                moduleId: PLATFORM.moduleName('./run-comparison/run-comparison'),
+                nav: true,
+                name: "run-comparison",
+                title: 'Run comparison',
+                settings: {
+                    icon: "compare_arrows",
+                }
+            },
         ]);
     }
 
@@ -74,6 +84,9 @@ export class History {
             const navOptions = {replace: true};
             const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
             this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
+            if (params.subPage) {
+                this._router.navigateToRoute(params.subPage, {}, navOptions);
+            }
         }
     }
 

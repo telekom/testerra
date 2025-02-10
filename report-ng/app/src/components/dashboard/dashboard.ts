@@ -216,6 +216,10 @@ export class Dashboard extends AbstractViewModel {
         }
     }
 
+    private _compareRunsClicked() {
+        this.navInstruction.router.navigateToRoute("history", { subPage: "run-comparison" });
+    }
+
     private _gotoFailureAspect(failureAspect: FailureAspectStatistics) {
         this.navInstruction.router.navigateToRoute("tests", {
             failureAspect: failureAspect.index + 1,

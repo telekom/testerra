@@ -24,8 +24,12 @@ package eu.tsystems.mms.tic.testframework.report;
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 public interface Report {
@@ -84,32 +88,35 @@ public interface Report {
 
     Report addVideo(Video video, FileMode fileMode);
     Video provideVideo(File file, FileMode fileMode);
-    File finalizeReport();
+    Path finalizeReport();
 
-    File getReportDirectory();
+    Path getReportDirectory();
 
     /**
      * @param childName Child directory or file name
      * @return Final report sub directory defined by the user
      */
-    default File getReportDirectory(String childName) {
-        File dir = new File(getReportDirectory(), childName);
-        if (!dir.exists()) {
-            dir.mkdirs();
+    default Path getReportDirectory(String childName) {
+        Path path = getReportDirectory().resolve(childName);
+        if (!Files.exists(path)) {
+            new FileUtils().createDirectoriesSafely(path);
         }
-        return dir;
+        return path;
     }
-    default File getReportFile(String filePath) {
-        File file = new File(getReportDirectory(), filePath);
-        File dir = file.getParentFile();
-        if (!dir.exists()) {
-            dir.mkdirs();
+
+    default Path getReportFile(String filePath) {
+        Path path = getReportDirectory().resolve(Path.of(filePath));
+        Path dir = path.getParent();
+        if (!Files.exists(dir)) {
+            new FileUtils().createDirectoriesSafely(dir);
         }
-        return file;
+        return path;
     }
-    File getFinalReportDirectory();
-    default File getFinalReportDirectory(String childName) {
-        return new File(getFinalReportDirectory(), childName);
+
+    Path getFinalReportDirectory();
+
+    default Path getFinalReportDirectory(String childName) {
+        return getFinalReportDirectory().resolve(Path.of(childName));
     }
 
     /**

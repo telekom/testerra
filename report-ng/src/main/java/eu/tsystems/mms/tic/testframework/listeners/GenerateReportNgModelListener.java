@@ -40,7 +40,9 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -149,12 +151,12 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
 
         History.Builder history = History.newBuilder();
         Report report = Testerra.getInjector().getInstance(Report.class);
-        File currentHistoryFile = report.getFinalReportDirectory("report-ng/model/history");
+        Path currentHistoryPath = report.getFinalReportDirectory("report-ng/model/history");
 
         // Check if a history file already exists and read its content
-        if (currentHistoryFile.exists()) {
+        if (Files.exists(currentHistoryPath)) {
             log().info("History file already exists. Appending new entry.");
-            try (FileInputStream stream = new FileInputStream(currentHistoryFile)) {
+            try (InputStream stream = Files.newInputStream(currentHistoryPath)) {
                 history.mergeFrom(stream);
                 HistoryAggregate lastEntry = history.getEntries(history.getEntriesCount() - 1);
                 historyIndex = lastEntry.getHistoryIndex() + 1;
@@ -163,7 +165,7 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
                 return;
             }
         } else {
-            log().info("No history file found: {}. Creating new one.", currentHistoryFile.getAbsolutePath());
+            log().info("No history file found: {}. Creating new one.", currentHistoryPath.toAbsolutePath());
         }
 
         newHistoryEntry.setHistoryIndex(historyIndex);

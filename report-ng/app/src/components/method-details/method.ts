@@ -235,6 +235,10 @@ export class Method {
                     const navOptions = {replace: true};
                     const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
                     this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
+
+                    if (params.subPage) {
+                        this._router.navigateToRoute(params.subPage, {}, navOptions);
+                    }
                 }
 
                 this._statistics.getExecutionStatistics().then(executionStatistics => {
@@ -261,10 +265,6 @@ export class Method {
                             }
                         });
                 });
-
-                if (params.subPage) {
-                    this._router.navigateToRoute(params.subPage);
-                }
             });
         });
     }

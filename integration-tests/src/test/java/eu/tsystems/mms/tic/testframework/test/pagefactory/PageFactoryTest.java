@@ -36,7 +36,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Tests the responsive page factory for correct instantiated classes.
@@ -44,23 +46,23 @@ import java.io.File;
 public class PageFactoryTest extends AbstractTestSitesTest implements PageFactoryProvider, PropertyManagerProvider {
 
     @Test
-    public void testT08_CheckPage_ScreenshotOnLoad() {
+    public void testT08_CheckPage_ScreenshotOnLoad() throws IOException {
 
-        final File reportScreenshotDirectory = Testerra.getInjector().getInstance(Report.class).getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
+        final Path reportScreenshotDirectory = Testerra.getInjector().getInstance(Report.class).getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
 
         final WebDriver driver = getWebDriver();
 
-        final int fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
+        final long fileCountBeforeAction = getNumFiles(reportScreenshotDirectory);
         PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.SCREENSHOT_ON_PAGELOAD, false);
         PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
 
-        final int fileCountAfterCheckPageWithoutScreenshot = getNumFiles(reportScreenshotDirectory);
+        final long fileCountAfterCheckPageWithoutScreenshot = getNumFiles(reportScreenshotDirectory);
         Assert.assertEquals(fileCountBeforeAction, fileCountAfterCheckPageWithoutScreenshot, "Record Screenshot count not altered.");
 
         PROPERTY_MANAGER.setTestLocalProperty(Testerra.Properties.SCREENSHOT_ON_PAGELOAD, true);
         PAGE_FACTORY.createPage(PageWithExistingElement.class, driver);
-        final int fileCountAfterCheckPageWithScreenshot = getNumFiles(reportScreenshotDirectory);
+        final long fileCountAfterCheckPageWithScreenshot = getNumFiles(reportScreenshotDirectory);
 
         Assert.assertNotEquals(fileCountAfterCheckPageWithoutScreenshot, fileCountAfterCheckPageWithScreenshot, "Record Screenshot count altered.");
     }
@@ -112,13 +114,8 @@ public class PageFactoryTest extends AbstractTestSitesTest implements PageFactor
         }
     }
 
-    private int getNumFiles(File directory) {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            return 0;
-        } else {
-            return files.length;
-        }
+    private long getNumFiles(Path directory) throws IOException {
+        return Files.list(directory).count();
     }
 
 }

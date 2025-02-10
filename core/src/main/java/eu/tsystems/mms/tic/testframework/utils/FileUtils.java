@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.apache.commons.io.FilenameUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +38,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -261,9 +265,26 @@ public final class FileUtils extends org.apache.commons.io.FileUtils implements 
                 (extension.length() > 0 ? "." + extension : ""));
     }
 
-    public File createTempDir(String dirName) {
-        File dir = new File(System.getProperty("java.io.tmpdir") + "/" + dirName + "-" + UUID.randomUUID());
-        dir.mkdirs();
-        return dir;
+    public Path createTempDir(String dirName) {
+        try {
+//            Path dir = Path.of(System.getProperty("java.io.tmpdir"), dirName + "-" + UUID.randomUUID());
+
+            return Files.createTempDirectory(dirName + "_");
+        } catch (IOException e) {
+            throw new SystemException("Cannot create temporary folder " + dirName, e);
+        }
+    }
+
+    public boolean createDirectoriesSafely(Path path) {
+        try {
+            Files.createDirectories(path);
+            return true;
+        } catch (FileAlreadyExistsException e) {
+            log().error("Folder already exists: {}", path.toAbsolutePath());
+            return false;
+        } catch (IOException e) {
+            log().error("Cannot create folder {}: {}", path.toAbsolutePath(), e.getMessage());
+            return false;
+        }
     }
 }

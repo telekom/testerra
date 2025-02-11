@@ -5,9 +5,14 @@
     <test name="test1">
         <classes>
 <!--            <class name="eu.tsystems.mms.tic.testframework.test.common.PropertyManagerTest"></class>-->
-            <class name="eu.tsystems.mms.tic.testframework.playground.DriverAndGuiElementTest">
+<!--            <class name="eu.tsystems.mms.tic.testframework.playground.DriverAndGuiElementTest">-->
+<!--                <methods>-->
+<!--                    <include name="testFailing"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+            <class name="eu.tsystems.mms.tic.testframework.test.layoutcheck.LayoutCheckTest">
                 <methods>
-                    <include name="testFailing"/>
+                    <include name="testT01_CheckElementLayout"/>
                 </methods>
             </class>
         </classes>

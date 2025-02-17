@@ -50,6 +50,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementFinderFac
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementLabelLocator;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
+import eu.tsystems.mms.tic.testframework.testing.DefaultSeleniumBiDiTools;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.testing.UiElementOverrides;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
@@ -58,7 +59,8 @@ import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
-import eu.tsystems.mms.tic.testframework.testing.SeleniumChromeDevTools;
+import eu.tsystems.mms.tic.testframework.testing.DefaultChromeDevTools;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.SeleniumBiDiTools;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
@@ -79,7 +81,8 @@ public class DriverUiHook extends AbstractModule implements ModuleHook {
 
         // Instances
         bind(BrowserInformation.class).to(UapBrowserInformation.class);
-        bind(ChromeDevTools.class).to(SeleniumChromeDevTools.class);
+        bind(ChromeDevTools.class).to(DefaultChromeDevTools.class);
+        bind(SeleniumBiDiTools.class).to(DefaultSeleniumBiDiTools.class);
         bind(UiElementHighlighter.class).to(DefaultUiElementHighlighter.class);
     }
 

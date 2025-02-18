@@ -48,6 +48,15 @@ test {
         s = ['src/test/resources/Pretest_Tests.xml']
     }
 
+    def historyIndex = findProperty("pretestHistoryIndex") as Integer
+    if (historyIndex) {
+        if (historyIndex > 5) {
+            s = ['src/test/resources/Pretest_HistoryTest_2.xml']
+        } else {
+            s = ['src/test/resources/Pretest_HistoryTest_1.xml']
+        }
+    }
+
     def pg = findProperty("pg")
     if (pg) {
         s = ['src/test/resources/Smoke.xml']

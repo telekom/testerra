@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2024, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2025, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -25,10 +25,12 @@ import {AbstractViewModel} from "../../abstract-view-model";
 import "./run-comparison.scss";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {HistoryStatistics} from "../../../services/statistic-models";
+import {ResultStatusType} from "../../../services/report-model/framework_pb";
 
 @autoinject()
 export class RunComparison extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
+    private _methodsToCompare;
     private _historyAvailable = false;
     private _availableRuns: number[] = [];
     private _currentRunStatistics;
@@ -60,7 +62,31 @@ export class RunComparison extends AbstractViewModel {
 
     private _historyIndexChanged() {
         this._selectedRunStatistics = this._historyStatistics.getHistoryAggregateStatistics().find(historyAggregate => historyAggregate.historyIndex === this._selectedHistoryIndex);
-        // TODO: Visualize the data
+        this._methodsToCompare = this._historyStatistics.getClassHistory().flatMap(classItem =>
+            classItem.methods.map(method => {
+                const currentRun = method.runs.find(run => run.historyIndex === this._currentRunStatistics.historyIndex);
+                const pastRun = method.runs.find(run => run.historyIndex === this._selectedHistoryIndex);
+                if (!pastRun || !currentRun) return null;
+
+                return {
+                    classIdentifier: classItem.identifier,
+                    methodIdentifier: method.identifier,
+                    methodRunId: currentRun.context.contextValues.id,
+                    currentStatus: currentRun.context.resultStatus,
+                    pastStatus: pastRun.context.resultStatus
+                }
+            })
+        ).filter(methodObj => methodObj !== null && !(methodObj.currentStatus === ResultStatusType.PASSED && methodObj.pastStatus === ResultStatusType.PASSED)
+        ).sort((a, b) => {
+            const aChanged = a.currentStatus !== a.pastStatus ? 0 : 1;
+            const bChanged = b.currentStatus !== b.pastStatus ? 0 : 1;
+
+            if (aChanged !== bChanged) {
+                return aChanged - bChanged;
+            }
+
+            return a.methodIdentifier.localeCompare(b.methodIdentifier);
+        });
     }
 
     async activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {

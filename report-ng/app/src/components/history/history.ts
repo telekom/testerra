@@ -85,7 +85,12 @@ export class History {
             const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
             this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
             if (params.subPage) {
-                this._router.navigateToRoute(params.subPage, {}, navOptions);
+                // TODO: Optimize param-handling
+                if (params.class) {
+                    this._router.navigateToRoute(params.subPage, {class: params.class}, navOptions);
+                } else {
+                    this._router.navigateToRoute(params.subPage, {params}, navOptions);
+                }
             }
         }
     }

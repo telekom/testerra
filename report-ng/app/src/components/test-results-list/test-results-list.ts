@@ -24,7 +24,7 @@ import {autoinject, bindable} from "aurelia-framework";
 import {ResultStatusType} from "../../services/report-model/framework_pb";
 import {IFilter, StatusConverter} from "../../services/status-converter";
 import {StatisticsGenerator} from "../../services/statistics-generator";
-import {ExecutionStatistics} from "../../services/statistic-models";
+import {ExecutionStatistics, HistoryAggregateStatistics} from "../../services/statistic-models";
 import {NavigationInstruction, RouteConfig} from "aurelia-router";
 import {bindingMode} from "aurelia-binding";
 
@@ -32,6 +32,7 @@ interface IItem {
     status: ResultStatusType,
     counts: (string | number)[],
     labels: string[],
+    trend: number,
 }
 
 @autoinject
@@ -41,6 +42,8 @@ export class TestResultsList {
 
     @bindable({defaultBindingMode: bindingMode.toView})
     executionStatistics: ExecutionStatistics;
+    private _previousRun: HistoryAggregateStatistics;
+    private _historyAvailable = false;
     @bindable({defaultBindingMode: bindingMode.twoWay})
     setFilter: (p: { filter: any; updateUrl: boolean }) => void;
     protected queryParams: any = {};
@@ -70,54 +73,113 @@ export class TestResultsList {
         this._statisticsGenerator.getExecutionStatistics().then(executionStatistics => {
             this.executionStatistics = executionStatistics;
 
-            this._filterItems = [];
-            const failed = this.executionStatistics.overallFailed;
-            const failedRetried = this.executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
-            const counts = []
-            const labels = []
-            counts.push(failed)
-            labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
-            if (failedRetried > 0) {
-                counts.push("( + " + failedRetried + ")")
-                labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
-            }
-            this._filterItems.push({
-                status: ResultStatusType.FAILED,
-                counts: counts,
-                labels: labels,
-            });
+            this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => {
 
-            const failedExpected = this.executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-            this._filterItems.push({
-                status: ResultStatusType.FAILED_EXPECTED,
-                counts: [failedExpected],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-            });
+                if (historyStatistics.getTotalRunCount() >= 2) {
+                    this._previousRun = historyStatistics.getHistoryAggregateStatistics()[historyStatistics.getHistoryAggregateStatistics().length - 2];
+                    this._historyAvailable = true;
+                }
+                this._filterItems = [];
 
-            const skipped = this.executionStatistics.overallSkipped;
-            this._filterItems.push({
-                status: ResultStatusType.SKIPPED,
-                counts: [skipped],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-            });
+                // Failed
+                const failed = this.executionStatistics.overallFailed;
+                let failedTrend: number;
+                const failedRetried = this.executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
+                const counts = [];
+                const labels = [];
+                counts.push(failed);
+                labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED));
+                if (failedRetried > 0) {
+                    counts.push("( + " + failedRetried + ")");
+                    labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED));
+                }
 
-            const passed = this.executionStatistics.overallPassed;
-            const recovered = this.executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
-            const repaired = this.executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
-            this._filterItems.push({
-                status: ResultStatusType.PASSED,
-                counts: [
-                    passed,
-                    (repaired > 0 ? `&sup; ${repaired}` : null),
-                    (recovered > 0 ? `&sup; ${recovered}` : null),
-                ],
-                labels: [
-                    this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                    (repaired > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED) : null),
-                    (recovered > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY) : null),
-                ],
+                // Expected failed
+                const failedExpected = this.executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
+                let failedExpectedTrend: number;
+
+                // Skipped
+                const skipped = this.executionStatistics.overallSkipped;
+                let skippedTrend: number;
+
+                // Passed
+                const passed = this.executionStatistics.overallPassed;
+                let passedTrend: number;
+                const recovered = this.executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
+                const repaired = this.executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
+
+                if (this._historyAvailable) {
+                    failedTrend = failed - (this._previousRun.overallFailed ?? 0);
+                    failedExpectedTrend = failedExpected - (this._previousRun.getStatusCount(ResultStatusType.FAILED_EXPECTED) ?? 0);
+                    skippedTrend = skipped - (this._previousRun.overallSkipped ?? 0);
+                    passedTrend = passed - (this._previousRun.overallPassed ?? 0)
+                }
+
+                this._filterItems.push({
+                    status: ResultStatusType.FAILED,
+                    counts: counts,
+                    labels: labels,
+                    trend: failedTrend,
+                });
+                this._filterItems.push({
+                    status: ResultStatusType.FAILED_EXPECTED,
+                    counts: [failedExpected],
+                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
+                    trend: failedExpectedTrend,
+                });
+                this._filterItems.push({
+                    status: ResultStatusType.SKIPPED,
+                    counts: [skipped],
+                    labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
+                    trend: skippedTrend,
+                });
+                this._filterItems.push({
+                    status: ResultStatusType.PASSED,
+                    counts: [
+                        passed,
+                        (repaired > 0 ? `&sup; ${repaired}` : null),
+                        (recovered > 0 ? `&sup; ${recovered}` : null),
+                    ],
+                    labels: [
+                        this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
+                        (repaired > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED) : null),
+                        (recovered > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY) : null),
+                    ],
+                    trend: passedTrend,
+                });
             });
-        })
+        });
+    }
+
+    // TODO: Make "compare with previous run" have link color
+    private _getTrendIcon(trend: number): string {
+        if (trend > 0) {
+            return 'arrow_upward'; // TODO: Adapt icons to be consistent
+        } else if (trend < 0) {
+            return 'arrow_downward';
+        } else {
+            return 'arrow_forward';
+        }
+    }
+
+    // TODO: Is this even possible and useful?
+    private _getTrendColor(item: IItem): string {
+        switch (item.status) {
+            case ResultStatusType.PASSED:
+                return item.trend > 0 ? '#11fb00'
+                    : item.trend < 0 ? '#c33030'
+                        : '#fbdc70';
+
+            case ResultStatusType.FAILED:
+            case ResultStatusType.FAILED_EXPECTED:
+            case ResultStatusType.SKIPPED:
+                return item.trend < 0 ? '#11fb00'
+                    : item.trend > 0 ? '#c33030'
+                        : '#fbdc70';
+
+            default:
+                return '#fbdc70';
+        }
     }
 
     private _resultItemClicked(item: IItem) {

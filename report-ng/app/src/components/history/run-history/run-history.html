@@ -78,7 +78,8 @@
                             <mdc-icon mdc-list-item-leading>help_outline</mdc-icon>
                         </div>
                         <div mdc-body1 class="info-column right">
-                            Run at least one more test execution with an available history-file in the report folder to build a history and visualize the data in charts
+                            Run at least one more test execution with an available history-file in the report folder to
+                            build a history and visualize the data in charts
                         </div>
                     </div>
                 </mdc-card>
@@ -107,7 +108,12 @@
                                 <span>${methodHistory.name}</span>
                             </mdc-list-item-primary-text>
                             <mdc-list-item-secondary-text>
-                                <span>Flakiness: ${methodHistory.flakiness}%</span>
+                               <span>
+                                    Flakiness: ${methodHistory.flakiness}%
+                                    (${methodHistory.passingStreak === 0
+                                    ? 'Currently failing'
+                                    : `Passed since ${methodHistory.passingStreak} ${methodHistory.passingStreak === 1 ? 'run' : 'runs'}`})
+                                </span>
                             </mdc-list-item-secondary-text>
                         </mdc-list-item>
                     </mdc-list>

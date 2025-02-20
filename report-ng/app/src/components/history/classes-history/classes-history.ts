@@ -199,13 +199,13 @@ export class ClassesHistory extends AbstractViewModel {
 
     private _updateChart() {
         if (this._selectedClass) {
-            this._cardHeadline = "History of all testcases in class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName);
             this._prepareSingleClassChartData();
+            this._cardHeadline = "History of all testcases in class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName) + " (" + this._numberOfMethodsInClass + ")";
             this._adaptChartSize(this._numberOfMethodsInClass);
             this._setChartOptionForSingleClass();
         } else {
             this._prepareChartData();
-            this._cardHeadline = "History of all test classes";
+            this._cardHeadline = "History of all test classes" + " (" + this._uniqueClasses.length + ")";
             this._setChartOption();
         }
         this._addDataZoomSlider();

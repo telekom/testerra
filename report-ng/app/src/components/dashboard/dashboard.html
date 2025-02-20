@@ -46,11 +46,16 @@
                     <div class="card-headline-container">
                         <div mdc-subtitle2 class="card-headline">Tests: ${_numberOfTestcases}</div>
                         <div class="card-headline-linked-icon secondary">
+                            <a href="" class="icon-link">
                             <mdc-icon
                                 mdc-tooltip="Compare with previous run"
-                                click.delegate="_compareRunsClicked()">
+                                click.delegate="_compareRunsClicked()"
+                                class="colored-icon"
+                                role="link"
+                                style="color: inherit !important;">
                                 compare_arrows
                             </mdc-icon>
+                            </a>
                         </div>
                     </div>
                     <mdc-list-divider></mdc-list-divider>

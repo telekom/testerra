@@ -18,3 +18,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+.content {
+    display: flex;
+}
+
+.chart-container {
+    width: 50%;
+    height: 18em;
+}
+
+.echart-run-overview {
+    width: 100%;
+    height: 100%;
+}
+
+.stats {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

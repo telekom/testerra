@@ -1,0 +1,70 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2025, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <mdc-card>
+        <div class="content">
+            <div id="chart" class="chart-container">
+                <echart class="echart-run-overview" chart.bind="_chart" options.bind="_option"></echart>
+            </div>
+            <div class="stats">
+                <mdc-list class="p0">
+                    <mdc-list-item class="non-interactive" two-line>
+                        <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>flag</mdc-icon>
+                        <mdc-list-item-primary-text>
+                            <span>${history_index}</span>
+                        </mdc-list-item-primary-text>
+                        <mdc-list-item-secondary-text>
+                            <span>Execution index</span>
+                        </mdc-list-item-secondary-text>
+                    </mdc-list-item>
+                    <mdc-list-item class="non-interactive" two-line>
+                        <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>calendar_today</mdc-icon>
+                        <mdc-list-item-primary-text>
+                            <span innerhtml.bind="date_time_started | dateFormat:'full'"></span>
+                        </mdc-list-item-primary-text>
+                        <mdc-list-item-secondary-text>
+                            <span>Started</span>
+                        </mdc-list-item-secondary-text>
+                    </mdc-list-item>
+                    <mdc-list-item class="non-interactive" two-line>
+                        <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>timer</mdc-icon>
+                        <mdc-list-item-primary-text>
+                            <span>${run_duration | durationFormat:"h[h] m[min] s[s] S[ms]"}</span>
+                        </mdc-list-item-primary-text>
+                        <mdc-list-item-secondary-text>
+                            <span>Run duration</span>
+                        </mdc-list-item-secondary-text>
+                    </mdc-list-item>
+                    <mdc-list-item class="non-interactive" two-line>
+                        <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>bar_chart</mdc-icon>
+                        <mdc-list-item-primary-text>
+                            <span>${executed_test_cases}</span>
+                        </mdc-list-item-primary-text>
+                        <mdc-list-item-secondary-text>
+                            <span>Executed test cases</span>
+                        </mdc-list-item-secondary-text>
+                    </mdc-list-item>
+                </mdc-list>
+            </div>
+        </div>
+    </mdc-card>
+</template>

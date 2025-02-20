@@ -32,9 +32,9 @@ export class RunComparison extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     private _methodsToCompare;
     private _historyAvailable = false;
-    private _availableRuns: number[] = [];
-    private _currentRunStatistics;
-    private _selectedRunStatistics;
+    private _availableRuns: any[] = [];
+    currentRunStatistics;
+    selectedRunStatistics;
     private _selectedHistoryIndex: number;
 
     constructor(
@@ -52,19 +52,26 @@ export class RunComparison extends AbstractViewModel {
             }
             this._historyAvailable = true;
 
-            this._availableRuns = this._historyStatistics.availableRuns.slice(0, -1); // Get all runs except the current run
+            this._availableRuns = this._historyStatistics.getHistoryAggregateStatistics().slice(0, -1).map(aggregate => {
+                return {
+                    historyIndex: aggregate.historyIndex,
+                    startTime: aggregate.historyAggregate.executionContext.contextValues.startTime
+                }
+            });
+
+            // this._availableRuns = this._historyStatistics.availableRuns.slice(0, -1); // Get all runs except the current run
             this._availableRuns.reverse();
-            this._currentRunStatistics = this._historyStatistics.getLastEntry();
-            this._selectedHistoryIndex = this._availableRuns[0];
+            this.currentRunStatistics = this._historyStatistics.getLastEntry();
+            this._selectedHistoryIndex = this._availableRuns[0].historyIndex;
             this._historyIndexChanged();
         });
     }
 
     private _historyIndexChanged() {
-        this._selectedRunStatistics = this._historyStatistics.getHistoryAggregateStatistics().find(historyAggregate => historyAggregate.historyIndex === this._selectedHistoryIndex);
+        this.selectedRunStatistics = this._historyStatistics.getHistoryAggregateStatistics().find(historyAggregate => historyAggregate.historyIndex === this._selectedHistoryIndex);
         this._methodsToCompare = this._historyStatistics.getClassHistory().flatMap(classItem =>
             classItem.methods.map(method => {
-                const currentRun = method.runs.find(run => run.historyIndex === this._currentRunStatistics.historyIndex);
+                const currentRun = method.runs.find(run => run.historyIndex === this.currentRunStatistics.historyIndex);
                 const pastRun = method.runs.find(run => run.historyIndex === this._selectedHistoryIndex);
                 if (!pastRun || !currentRun) return null;
 

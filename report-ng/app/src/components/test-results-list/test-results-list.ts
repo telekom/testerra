@@ -151,34 +151,13 @@ export class TestResultsList {
         });
     }
 
-    // TODO: Make "compare with previous run" have link color
     private _getTrendIcon(trend: number): string {
         if (trend > 0) {
-            return 'arrow_upward'; // TODO: Adapt icons to be consistent
+            return 'arrow_upward';
         } else if (trend < 0) {
             return 'arrow_downward';
         } else {
             return 'arrow_forward';
-        }
-    }
-
-    // TODO: Is this even possible and useful?
-    private _getTrendColor(item: IItem): string {
-        switch (item.status) {
-            case ResultStatusType.PASSED:
-                return item.trend > 0 ? '#11fb00'
-                    : item.trend < 0 ? '#c33030'
-                        : '#fbdc70';
-
-            case ResultStatusType.FAILED:
-            case ResultStatusType.FAILED_EXPECTED:
-            case ResultStatusType.SKIPPED:
-                return item.trend < 0 ? '#11fb00'
-                    : item.trend > 0 ? '#c33030'
-                        : '#fbdc70';
-
-            default:
-                return '#fbdc70';
         }
     }
 

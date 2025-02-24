@@ -26,4 +26,8 @@ public class ReportTestRunTab extends AbstractReportHistoryPage {
     public ReportTestRunTab(WebDriver driver) {
         super(driver);
     }
+
+    public void assertHistoryChartMatchesScreenshot(double pixelDistance) {
+        this.testHistoryChart.expect().screenshot().pixelDistance("TestHistoryChart").isLowerThan(pixelDistance);
+    }
 }

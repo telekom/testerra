@@ -31,7 +31,7 @@ public class ReportMethodHistoryTab extends AbstractReportMethodPage {
     @Check
     protected final UiElement methodHistoryChart = pageContent.find(By.xpath(".//method-history-chart"));
     @Check
-    private final UiElement statusShareChart = pageContent.find(By.xpath(".//status-share-chart//echart[.//canvas]"));
+    protected final UiElement statusShareChart = pageContent.find(By.xpath(".//status-share-chart//echart[.//canvas]"));
     @Check
     protected final UiElement historyStatisticsCard = pageContent.find(By.xpath(".//history-statistics-card"));
     @Check
@@ -41,4 +41,17 @@ public class ReportMethodHistoryTab extends AbstractReportMethodPage {
         super(driver);
     }
 
+    private By getXpathToStatistics(String statisticsName) {
+        final String xPathToStatisticsItemTemplate = ".//mdc-list-item[.//span[text()='%s']]";
+        return By.xpath(String.format(xPathToStatisticsItemTemplate, statisticsName));
+    }
+
+    public void assertMethodHistoryChartMatchesScreenshot(double pixelDistance) {
+        this.methodHistoryChart.expect().screenshot().pixelDistance("MethodHistoryChart").isLowerThan(pixelDistance);
+    }
+
+    public void checkStatistics(String statisticsName, String value) {
+        final UiElement testsStatusElement = historyStatisticsCard.find((getXpathToStatistics(statisticsName)));
+        testsStatusElement.expect().text().contains(value).is(true);
+    }
 }

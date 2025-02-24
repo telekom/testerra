@@ -6,8 +6,8 @@
         </packages>
 
         <classes>
-            <class name="io.testerra.test.pretest_history.HistoryTest"/>
-            <class name="io.testerra.test.pretest_history.DynamicHistoryTest">
+            <class name="io.testerra.report.test.pretest_history.HistoryTest"/>
+            <class name="io.testerra.report.test.pretest_history.DynamicHistoryTest">
                 <methods>
                     <exclude name="test_removedLater"/>
                 </methods>

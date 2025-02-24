@@ -24,12 +24,6 @@ package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-
-import java.util.List;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.AbstractReportPage;
@@ -38,6 +32,10 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.DateTimeUtils;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class ReportDashBoardPageTest extends AbstractReportTest {
 
@@ -202,5 +200,13 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         Assert.assertEquals(topFailureAspectsOnReportDashboardPage, topFailureAspectsOnReportFailureAspectsPage.subList(0, 3), "Shown Top failure aspects on 'ReportDashBoardPage' and 'FailureAspectsPage' are the same");
     }
 
+    @Test
+    public void testT13_historyChartLayout() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Check if the layout of the history chart is correct");
+        reportDashBoardPage.assertHistoryChartMatchesScreenshot(1.0);
+    }
 
 }

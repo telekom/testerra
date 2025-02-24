@@ -45,6 +45,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     @Check
     private final UiElement testsElement = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'Tests')]]"));
+    @Check
+    private final UiElement historyChart = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'History')]]"));
 
     @Check
     private final UiElement testDurationElement = pageContent.find(By.tagName("test-duration-card"));
@@ -353,9 +355,13 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     private void assertPriorityInfo(final String[] infos) {
-        for (final String info : infos){
+        for (final String info : infos) {
             final UiElement priorityMessageElement = priorityMessagesElement.find(By.xpath(String.format("//*[contains(@class,'%s')]", info)));
             priorityMessageElement.assertThat().displayed();
         }
+    }
+
+    public void assertHistoryChartMatchesScreenshot(double pixelDistance) {
+        this.historyChart.expect().screenshot().pixelDistance("HistoryChartDashboard").isLowerThan(pixelDistance);
     }
 }

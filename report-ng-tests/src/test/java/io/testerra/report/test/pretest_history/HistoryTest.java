@@ -1,4 +1,4 @@
-package io.testerra.test.pretest_history;
+package io.testerra.report.test.pretest_history;
 
 import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;

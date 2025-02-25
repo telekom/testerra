@@ -59,24 +59,29 @@ export class RunComparison extends AbstractViewModel {
                 }
             });
 
-            // this._availableRuns = this._historyStatistics.availableRuns.slice(0, -1); // Get all runs except the current run
             this._availableRuns.reverse();
             this.currentRunStatistics = this._historyStatistics.getLastEntry();
-            this._selectedHistoryIndex = this._availableRuns[0].historyIndex;
+            if (this.queryParams.run) {
+                this._selectedHistoryIndex = Number(this.queryParams.run);
+            } else {
+                this._selectedHistoryIndex = this._availableRuns[0].historyIndex;
+            }
             this._historyIndexChanged();
         });
     }
 
     private _historyIndexChanged() {
-        this.selectedRunStatistics = this._historyStatistics.getHistoryAggregateStatistics().find(historyAggregate => historyAggregate.historyIndex === this._selectedHistoryIndex);
-        this._methodsToCompare = this._historyStatistics.getClassHistory().flatMap(classItem =>
-            classItem.methods.map(method => {
-                const currentRun = method.runs.find(run => run.historyIndex === this.currentRunStatistics.historyIndex);
-                const pastRun = method.runs.find(run => run.historyIndex === this._selectedHistoryIndex);
+        this.selectedRunStatistics = this._historyStatistics.getRunWithHistoryIndex(this._selectedHistoryIndex);
+        this.queryParams.run = this._selectedHistoryIndex;
+        this.updateUrl(this.queryParams);
+        this._methodsToCompare = this._historyStatistics.getClassHistory().flatMap(cls =>
+            cls.methods.map(method => {
+                const currentRun = method.getRunWithHistoryIndex(this.currentRunStatistics.historyIndex);
+                const pastRun = method.getRunWithHistoryIndex(this._selectedHistoryIndex);
                 if (!pastRun || !currentRun) return null;
 
                 return {
-                    classIdentifier: classItem.identifier,
+                    classIdentifier: cls.identifier,
                     methodIdentifier: method.identifier,
                     methodRunId: currentRun.context.contextValues.id,
                     currentStatus: currentRun.context.resultStatus,
@@ -94,10 +99,5 @@ export class RunComparison extends AbstractViewModel {
 
             return a.methodIdentifier.localeCompare(b.methodIdentifier);
         });
-    }
-
-    async activate(params: any, routeConfig: RouteConfig, navInstruction: NavigationInstruction) {
-        super.activate(params, routeConfig, navInstruction);
-        this._router = navInstruction.router;
     }
 }

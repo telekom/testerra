@@ -27,8 +27,8 @@ import "./history-statistics-card.scss";
 export class HistoryStatisticsCard extends AbstractViewModel {
     @bindable total_run_count: number;
     @bindable average_run_duration: number;
-    @bindable success_rate: number;
     @bindable flakiness: string;
+    @bindable recent_changes: boolean;
 
     constructor() {
         super();

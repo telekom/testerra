@@ -153,11 +153,11 @@ export class TestResultsList {
 
     private _getTrendIcon(trend: number): string {
         if (trend > 0) {
-            return 'arrow_upward';
+            return 'north_east';
         } else if (trend < 0) {
-            return 'arrow_downward';
+            return 'south_east';
         } else {
-            return 'arrow_forward';
+            return 'east';
         }
     }
 

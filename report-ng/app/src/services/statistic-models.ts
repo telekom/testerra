@@ -255,8 +255,34 @@ export class HistoryStatistics {
         return sortedArr1.every((value, index) => value === sortedArr2[index]);
     }
 
+    getRunWithHistoryIndex(historyIndex): HistoryAggregateStatistics {
+        return this._historyAggregateStatistics.find(aggregate => aggregate.historyIndex === historyIndex);
+    }
+
     getLastEntry(): HistoryAggregateStatistics {
         return this._historyAggregateStatistics[this._historyAggregateStatistics.length - 1];
+    }
+
+    lastEntryDifferentFrom(runToCompare: HistoryAggregateStatistics): boolean {
+        return this.runsAreDifferent(this.getLastEntry(), runToCompare);
+    }
+
+    runsAreDifferent(runA: HistoryAggregateStatistics, runB: HistoryAggregateStatistics): boolean {
+        if (runA.overallTestCases != runB.overallTestCases) {
+            return true;
+        }
+
+        for (const cls of this._classHistory) {
+            for (const method of cls.methods) {
+                const methodRunA = method.getRunWithHistoryIndex(runA.historyIndex);
+                const methodRunB = method.getRunWithHistoryIndex(runB.historyIndex);
+
+                if (methodRunA && methodRunB && methodRunA.context.resultStatus !== methodRunB.context.resultStatus) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     getHistoryAggregateStatistics(): HistoryAggregateStatistics[] {
@@ -656,8 +682,12 @@ export class MethodHistoryStatistics extends Statistics {
         return errorCount;
     }
 
+    getRunWithHistoryIndex(historyIndex: number) {
+        return this._runs.find(run => run.historyIndex === historyIndex);
+    }
+
     getIdOfRun(historyIndex: number) {
-        const foundRun = this._runs.find(run => run.historyIndex === historyIndex);
+        const foundRun = this.getRunWithHistoryIndex(historyIndex);
         if (foundRun) {
             return foundRun.context.contextValues.id;
         }

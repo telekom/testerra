@@ -46,30 +46,32 @@ export class RunOverviewCard extends AbstractViewModel {
     }
 
     history_aggregate_statisticsChanged() {
-        this._data = [];
-        let overallTestcases = 0;
-        for (const status of this._statusConverter.relevantStatuses) {
-            const statusGroup = this._statusConverter.groupStatus(status);
-            const statusCount = this.history_aggregate_statistics.getSummarizedStatusCount(statusGroup);
-            overallTestcases += statusCount;
+        if (this.history_aggregate_statistics) {
+            this._data = [];
+            let overallTestcases = 0;
+            for (const status of this._statusConverter.relevantStatuses) {
+                const statusGroup = this._statusConverter.groupStatus(status);
+                const statusCount = this.history_aggregate_statistics.getSummarizedStatusCount(statusGroup);
+                overallTestcases += statusCount;
 
-            if (statusCount) {
-                this._data.push({
-                    status: status,
-                    name: this._statusConverter.getLabelForStatus(status),
-                    value: statusCount,
-                    itemStyle: {
-                        color: this._statusConverter.getColorForStatus(status),
-                        opacity: 1
-                    }
-                });
+                if (statusCount) {
+                    this._data.push({
+                        status: status,
+                        name: this._statusConverter.getLabelForStatus(status),
+                        value: statusCount,
+                        itemStyle: {
+                            color: this._statusConverter.getColorForStatus(status),
+                            opacity: 1
+                        }
+                    });
+                }
             }
+            this.history_index = this.history_aggregate_statistics.historyIndex;
+            this.date_time_started = this.history_aggregate_statistics.historyAggregate.executionContext.contextValues.startTime;
+            this.run_duration = this.history_aggregate_statistics.historyAggregate.executionContext.contextValues.endTime - this.date_time_started;
+            this.executed_test_cases = overallTestcases;
+            this.setOption();
         }
-        this.history_index = this.history_aggregate_statistics.historyIndex;
-        this.date_time_started = this.history_aggregate_statistics.historyAggregate.executionContext.contextValues.startTime;
-        this.run_duration = this.history_aggregate_statistics.historyAggregate.executionContext.contextValues.endTime - this.date_time_started;
-        this.executed_test_cases = overallTestcases;
-        this.setOption();
     }
 
     private _prepareChartData() {
@@ -95,7 +97,7 @@ export class RunOverviewCard extends AbstractViewModel {
                         silent: true,
                         color: '#ffffff',
                         formatter: (params: any) => `${params.percent.toFixed(1)}%`,
-                        distance : 0.8
+                        distance: 0.8
                     },
                     data: this._data
                 }

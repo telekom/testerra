@@ -33,7 +33,7 @@ import {MdcSelect} from "@aurelia-mdc-web/select";
 export class RunHistory extends AbstractViewModel {
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
-    overallSuccessRate: number = 0;
+    recentChanges: boolean = false;
     statusData: any[] = [];
     @observable viewport: number[] = [];
     private _fullViewport: number[] = [];
@@ -80,7 +80,6 @@ export class RunHistory extends AbstractViewModel {
             statusCount.set(ResultStatusType.SKIPPED, currentSkipped + aggregate.getStatusCount(ResultStatusType.SKIPPED));
             statusCount.set(ResultStatusType.PASSED, currentPassed + aggregate.overallPassed);
         });
-        const overallTestCount = Array.from(statusCount.values()).reduce((acc, value) => acc + value, 0);
 
         statusCount.forEach((value, key) => {
             if (value > 0) {
@@ -89,7 +88,7 @@ export class RunHistory extends AbstractViewModel {
         });
 
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
-        this.overallSuccessRate = (statusCount.get(ResultStatusType.PASSED) / overallTestCount) * 100;
+        this.recentChanges = this._historyStatistics.lastEntryDifferentFrom(this._historyStatistics.getHistoryAggregateStatistics()[this._historyStatistics.getHistoryAggregateStatistics().length - 2]);
 
         if (this.queryParams.status) {
             this._filter = {

@@ -36,7 +36,6 @@ import {
 import {
     DurationFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
-import {ResultStatusType} from "../../services/report-model/framework_pb";
 import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
 import {MdcSelect} from "@aurelia-mdc-web/select";
 import MethodContext = data.MethodContext;
@@ -290,21 +289,12 @@ export class Threads extends AbstractViewModel {
         });
 
         const chartStartTime = Math.min.apply(Math, startTimes) - this._gapFromBorderToStart;
-
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+        const statusConverter = this._statusConverter;
 
         threadCategories.forEach(function (methodContexts, threadName) {
             methodContexts.forEach((context: MethodContext) => {
 
-                const itemColor = style.get(context.resultStatus);
+                const itemColor = statusConverter.getColorForStatus(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
                 const classId = executionStatistics.classStatistics.find(classStat => {
                     const classContextIds = classStat.methodContexts
@@ -394,7 +384,14 @@ export class Threads extends AbstractViewModel {
                 }
             },
             yAxis: {
-                data: Array.from(threadCategories.keys())
+                data: Array.from(threadCategories.keys()),
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['rgb(255,255,255)', 'rgb(239,239,239)'],
+                        opacity: 1
+                    }
+                }
             },
             series: [
                 {

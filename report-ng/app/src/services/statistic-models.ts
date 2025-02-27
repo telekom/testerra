@@ -237,10 +237,7 @@ export class HistoryStatistics {
                         classHistory.addMethod(methodHistory);
                     }
 
-                    // TODO: Find out where this problem comes from
-                    if (method.context.contextValues.endTime != 0) {
-                        methodHistory.addRun(method, currentHistoryIndex);
-                    }
+                    methodHistory.addRun(method, currentHistoryIndex);
                 });
             });
         });
@@ -304,9 +301,11 @@ export class ClassHistoryStatistics extends Statistics {
     }
 
     addMethod(method: HistoricalMethod) {
-        this._methods.push(method);
-        if (method.context.methodType === MethodType.TEST_METHOD) {
-            this.addResultStatus(method.context.resultStatus);
+        if (method.context.contextValues.endTime != 0) {
+            this._methods.push(method);
+            if (method.context.methodType === MethodType.TEST_METHOD) {
+                this.addResultStatus(method.context.resultStatus);
+            }
         }
     }
 

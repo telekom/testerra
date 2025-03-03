@@ -49,12 +49,6 @@ export class ClassesHistory extends AbstractViewModel {
     private _data: any[] = [];
     private _selectedClass: string = null;
     private _selectedStatus: ResultStatusType = null;
-    private _categoryHeight = 80;             // Height of y-axis categories in pixel
-    private _categoryWidth = 62;              // Width of y-axis categories in pixel
-    private _symbolSize = 60;                 // Width and height of chart symbol in pixel
-    private _chartHeaderHeight = 50;          // Height of the top spacing including the scrollbar in pixel
-    private _maxYCategoryLength = 45;         // Maximum number of characters for y-category names before linebreak
-    private _cardBorderSpacing = 20;          // To ensure the grid's width stays smaller than the card
     private _gridLeftValue: number;
     private _numberOfMethodsInClass = 0;
     private _cardHeight: number;
@@ -68,6 +62,15 @@ export class ClassesHistory extends AbstractViewModel {
     private _historyAvailable = false;
     private _initialChartLoading = true;
     private _skipChartReloading = false;
+    private _xAxisLabels: number[] = [];
+
+    private _categoryHeight = 80;           // Height of y-axis categories in pixel
+    private _categoryWidth = 62;            // Width of y-axis categories in pixel
+    private _symbolSize = 60;               // Width and height of chart symbol in pixel
+    private _chartHeaderHeight = 50;        // Height of the top spacing including the scrollbar in pixel
+    private _maxYCategoryLineLength = 45;   // Maximum number of characters for y-category names before linebreak
+    private _maxYLabelLength = 220;         // Total maximum length of y-category names
+    private _cardBorderSpacing = 20;        // To ensure the grid's width stays smaller than the card
     private _maxErrorMessageLength = 400;
 
     constructor(
@@ -83,7 +86,7 @@ export class ClassesHistory extends AbstractViewModel {
     }
 
     attached() {
-        this._gridLeftValue = this._maxYCategoryLength * 7;
+        this._gridLeftValue = this._maxYCategoryLineLength * 7;
 
         this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => {
             this._historyStatistics = historyStatistics;
@@ -98,6 +101,8 @@ export class ClassesHistory extends AbstractViewModel {
                 return;
             }
             this._initDurationFormatter();
+            this._xAxisLabels = this._historyStatistics.availableRuns;
+            this._numberOfRuns = this._xAxisLabels.length;
             this._prepareChartData();
             this._availableClasses = this._uniqueClasses;
             this._updateChart();
@@ -109,7 +114,9 @@ export class ClassesHistory extends AbstractViewModel {
                         if (foundClass) {
                             const foundMethod = foundClass.methods.find(method =>
                                 method.identifier === params.value &&
-                                method.getStatusOfLatestRun() != ResultStatusType.FAILED_RETRIED
+                                method.getStatusOfLatestRun() != ResultStatusType.FAILED_RETRIED &&
+                                method.runs.map(run => run.historyIndex).includes(this._historyStatistics.getLastEntry().historyIndex) &&
+                                method.runs.length > 1
                             );
                             if (foundMethod) {
                                 this._navigateToMethodHistory(foundMethod)
@@ -199,13 +206,15 @@ export class ClassesHistory extends AbstractViewModel {
 
     private _updateChart() {
         if (this._selectedClass) {
-            this._cardHeadline = "History of all testcases in class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName);
             this._prepareSingleClassChartData();
+            this._cardHeadline = "History of all test cases " + "(" + this._numberOfMethodsInClass + ")" + " in class: " + this._classNameValueConverter.toView(this._selectedClass.toString(), ClassName.simpleName);
             this._adaptChartSize(this._numberOfMethodsInClass);
             this._setChartOptionForSingleClass();
         } else {
+            this._xAxisLabels = this._historyStatistics.availableRuns;
+            this._numberOfRuns = this._xAxisLabels.length;
             this._prepareChartData();
-            this._cardHeadline = "History of all test classes";
+            this._cardHeadline = "History of all test classes" + " (" + this._uniqueClasses.length + ")";
             this._setChartOption();
         }
         this._addDataZoomSlider();
@@ -241,15 +250,6 @@ export class ClassesHistory extends AbstractViewModel {
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
     }
 
-    private compareByIndexAndName(a: any, b: any): number {
-        if (a.value[0] !== b.value[0]) {
-            return a.value[0] - b.value[0];
-        }
-        if (a.value[1] > b.value[1]) return -1;
-        if (a.value[1] < b.value[1]) return 1;
-        return 0;
-    }
-
     private _truncateErrorMessage(str: string): string {
         if (str.length <= this._maxErrorMessageLength) {
             return str;
@@ -259,16 +259,6 @@ export class ClassesHistory extends AbstractViewModel {
 
     private _prepareSingleClassChartData() {
         let newData = [];
-
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
 
         let availableStatuses = new Set<ResultStatusType>();
         let uniqueHistoryIndices = new Set<number>();
@@ -298,9 +288,9 @@ export class ClassesHistory extends AbstractViewModel {
                         const endTime = methodRun.context.contextValues.endTime;
 
                         newData.push({
-                            value: [methodRun.historyIndex, method.identifier],
+                            value: [methodRun.historyIndex.toString(), method.identifier],
                             itemStyle: {
-                                color: style.get(status),
+                                color: this._statusConverter.getColorForStatus(status),
                                 opacity: 1
                             },
                             status: status,
@@ -320,17 +310,29 @@ export class ClassesHistory extends AbstractViewModel {
             this._availableStatuses = Array.from(availableStatuses.values());
         }
 
-        this._data.sort(this.compareByIndexAndName);
+        this._data.sort((a, b) => b.value[1].localeCompare(a.value[1]));
         const uniqueMethodNames = new Set(this._data.map(entry => entry.value[1]));
         this._numberOfMethodsInClass = uniqueMethodNames.size;
 
-        this._numberOfRuns = uniqueHistoryIndices.size;
+        const sortedHistoryIndices = Array.from(uniqueHistoryIndices).sort((a, b) => a - b);
+        const completeHistoryIndices: number[] = [];
+        if (sortedHistoryIndices.length > 0) {
+            const minIndex = sortedHistoryIndices[0];
+            const maxIndex = sortedHistoryIndices[sortedHistoryIndices.length - 1];
+
+            for (let i = minIndex; i <= maxIndex; i++) {
+                completeHistoryIndices.push(i);
+            }
+        }
+
+        this._xAxisLabels = completeHistoryIndices;
+        this._numberOfRuns = this._xAxisLabels.length;
     }
 
     private _setChartOptionForSingleClass() {
         const dateFormatter = this._dateFormatter;
         const durationFormatter = this._durationFormatter;
-        let maxYCategoryLength = this._maxYCategoryLength;
+        let maxYCategoryLength = this._maxYCategoryLineLength;
         const self = this;
 
         this._setCommonChartOptions(maxYCategoryLength);
@@ -474,7 +476,7 @@ export class ClassesHistory extends AbstractViewModel {
 
                 newData.push({
                     value: [
-                        historyIndex,
+                        historyIndex.toString(),
                         className,
                         classStatuses[3], // passed
                         classStatuses[0], // failed
@@ -498,9 +500,8 @@ export class ClassesHistory extends AbstractViewModel {
         }
 
         this._data = newData;
-        this._numberOfRuns = uniqueHistoryIndices.size;
         this._uniqueClasses.sort((a, b) => this._classNameValueConverter.toView(a, 1).localeCompare(this._classNameValueConverter.toView(b, 1)));
-        this._data.sort(this.compareByIndexAndName);
+        this._data.sort((a, b) => b.value[1].localeCompare(a.value[1]));
         this._adaptChartSize(this._uniqueClasses.length);
     }
 
@@ -509,7 +510,7 @@ export class ClassesHistory extends AbstractViewModel {
         const durationFormatter = this._durationFormatter;
 
         // Variables to construct the custom chart elements
-        const maxYCategoryLength = this._maxYCategoryLength;
+        const maxYCategoryLength = this._maxYCategoryLineLength;
         const subQuadWidth = Math.sqrt((this._symbolSize * this._symbolSize) / 4);
         const largeSubQuadLength = subQuadWidth * 2;
         const subQuadHeight = subQuadWidth * 2 / 3;
@@ -699,7 +700,8 @@ export class ClassesHistory extends AbstractViewModel {
         ];
     }
 
-    private _setCommonChartOptions(maxYCategoryLength: number) {
+    private _setCommonChartOptions(maxYCategoryLineLength: number) {
+        const maxYLabelLength = this._maxYLabelLength;
         this._option = {
             grid: {
                 height: this._gridHeight,
@@ -715,8 +717,14 @@ export class ClassesHistory extends AbstractViewModel {
                 triggerEvent: true,
                 axisLabel: {
                     formatter: function (value) {
-                        const regex = new RegExp(`.{1,${maxYCategoryLength}}`, 'g');
-                        return `{link|${value.match(regex)?.join('\n')}}`;
+                        const cleanedValue = value.replace(/\n/g, ' ');
+                        const regexValue = new RegExp(`.{1,${maxYCategoryLineLength}}`, 'g');
+                        const processedValue = cleanedValue.match(regexValue)?.join('\n') || value;
+                        if (processedValue.length > maxYLabelLength) {
+                            return `{link|${processedValue.substring(0, maxYLabelLength - 2)}...}`;
+                        } else {
+                            return `{link|${processedValue}}`;
+                        }
                     },
                     rich: {
                         link: {
@@ -735,7 +743,8 @@ export class ClassesHistory extends AbstractViewModel {
             xAxis: {
                 type: 'category',
                 position: 'top',
-                show: true
+                show: true,
+                data: this._xAxisLabels
             }
         }
     }

@@ -154,14 +154,16 @@ export class RunHistory extends AbstractViewModel {
             .map(method => ({
                 method,
                 flakiness: method.getFlakinessInRange(startIndex, endIndex),
+                passingStreak: method.getPassingStreakInRange(startIndex, endIndex),
             }))
             .filter(({flakiness}) => flakiness > 0.1)
             .sort((a, b) => b.flakiness - a.flakiness)
             .slice(0, 3);
 
-        this._topFlakyTests = flakyMethods.map(({method, flakiness}) => ({
+        this._topFlakyTests = flakyMethods.map(({method, flakiness, passingStreak}) => ({
             name: method.identifier,
             flakiness: flakiness.toFixed(1),
+            passingStreak: passingStreak,
             statistics: method,
         }));
     }

@@ -327,9 +327,11 @@ export class ClassHistoryStatistics extends Statistics {
     }
 
     addMethod(method: HistoricalMethod) {
-        this._methods.push(method);
-        if (method.context.methodType === MethodType.TEST_METHOD) {
-            this.addResultStatus(method.context.resultStatus);
+        if (method.context.contextValues.endTime != 0) {
+            this._methods.push(method);
+            if (method.context.methodType === MethodType.TEST_METHOD) {
+                this.addResultStatus(method.context.resultStatus);
+            }
         }
     }
 
@@ -610,11 +612,23 @@ export class MethodHistoryStatistics extends Statistics {
         return this.runs[this.runs.length - 1].context;
     }
 
+    private _getPassingStreak(runs: HistoricalMethodRun[]): number {
+        if ((runs.length < 2) || (runs[runs.length - 1].getParsedResultStatus() != ResultStatusType.PASSED)) {
+            return 0;
+        }
+
+        return this._getStatusStreak(runs);
+    }
+
     private _getFailingStreak(runs: HistoricalMethodRun[]): number {
         if ((runs.length < 2) || (runs[runs.length - 1].context.resultStatus === ResultStatusType.FAILED_RETRIED) || (runs[runs.length - 1].getParsedResultStatus() === ResultStatusType.PASSED)) {
             return 0;
         }
 
+        return this._getStatusStreak(runs);
+    }
+
+    private _getStatusStreak(runs: HistoricalMethodRun[]): number {
         let statusStreak = 1;
         for (let i = runs.length - 2; i >= 0; i--) {
             if ((runs[i].getParsedResultStatus() != runs[i + 1].getParsedResultStatus()) || (runs[i].historyIndex != runs[i + 1].historyIndex - 1)) {
@@ -651,6 +665,13 @@ export class MethodHistoryStatistics extends Statistics {
         return this._runs.length;
     }
 
+    getPassingStreakInRange(startIndex: number, endIndex: number): number {
+        if (this._runs.map(run => run.historyIndex).includes(endIndex)) {
+            return this._getPassingStreak(this._getMethodRunsInRange(startIndex, endIndex));
+        }
+        return 0;
+    }
+
     getFailingStreakInRange(startIndex: number, endIndex: number): number {
         if (this._runs.map(run => run.historyIndex).includes(endIndex)) {
             return this._getFailingStreak(this._getMethodRunsInRange(startIndex, endIndex));
@@ -659,7 +680,10 @@ export class MethodHistoryStatistics extends Statistics {
     }
 
     getFlakinessInRange(startIndex: number, endIndex: number): number {
-        return this._getFlakiness(this._getMethodRunsInRange(startIndex, endIndex));
+        if (this._runs.map(run => run.historyIndex).includes(endIndex)) {
+            return this._getFlakiness(this._getMethodRunsInRange(startIndex, endIndex));
+        }
+        return 0;
     }
 
     getAverageDurationInRange(startIndex: number, endIndex: number): number {

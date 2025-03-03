@@ -114,6 +114,18 @@ export class Method {
                     // icon: "sync_alt"
                 }
             },
+            ,
+            {
+                route: 'dependencies2',
+                moduleId: PLATFORM.moduleName('./dependency-network2'),
+                nav: true,
+                name: "dependencies2",
+                title: 'Dependencies NEW',
+                settings: {
+                    icon: "account_tree",
+                    // icon: "sync_alt"
+                }
+            },
         ]);
     }
 
@@ -146,6 +158,16 @@ export class Method {
                         break;
                     }
                     case "dependencies": {
+                        const count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
+                        if (count > 0) {
+                            routeConfig.nav = true;
+                            routeConfig.settings.count = count;
+                        } else {
+                            disableRoute(routeConfig);
+                        }
+                        break;
+                    }
+                    case "dependencies2": {
                         const count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
                         if (count > 0) {
                             routeConfig.nav = true;

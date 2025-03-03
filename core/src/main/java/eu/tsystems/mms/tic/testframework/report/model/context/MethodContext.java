@@ -52,7 +52,18 @@ public class MethodContext extends AbstractContext {
 
     public enum Type {
         TEST_METHOD,
-        CONFIGURATION_METHOD
+        CONFIGURATION_BEFORE_SUITE,
+        CONFIGURATION_BEFORE_TEST,
+        CONFIGURATION_BEFORE_CLASS,
+        CONFIGURATION_BEFORE_METHOD,
+        CONFIGURATION_BEFORE_GROUPS,
+        CONFIGURATION_AFTER_GROUPS,
+        CONFIGURATION_AFTER_METHOD,
+        CONFIGURATION_AFTER_CLASS,
+        CONFIGURATION_AFTER_TEST,
+        CONFIGURATION_AFTER_SUITE,
+        CONFIGURATION_METHOD,       // only used as fallback
+        DATA_PROVIDER;
     }
 
     private ITestResult testResult;
@@ -157,7 +168,9 @@ public class MethodContext extends AbstractContext {
     }
 
     public void addRelatedMethodContext(MethodContext relatedMethodContext) {
-        this.relatedMethodContexts.add(relatedMethodContext);
+        if (!this.relatedMethodContexts.contains(relatedMethodContext) && relatedMethodContext != this) {
+            this.relatedMethodContexts.add(relatedMethodContext);
+        }
     }
 
     public void addDependsOnMethod(MethodContext methodContext) {
@@ -266,11 +279,11 @@ public class MethodContext extends AbstractContext {
     }
 
     public boolean isConfigMethod() {
-        return methodType == Type.CONFIGURATION_METHOD;
+        return !isTestMethod();
     }
 
     public boolean isTestMethod() {
-        return !isConfigMethod();
+        return methodType == Type.TEST_METHOD;
     }
 
     public Status getStatus() {

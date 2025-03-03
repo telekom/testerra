@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="playground" parallel="none" thread-count="20">
+
+    <test name="test1">
+        <groups>
+            <run>
+                <include name="group1"/>
+            </run>
+        </groups>
+        <classes>
+            <!--            <class name="eu.tsystems.mms.tic.testframework.test.common.PropertyManagerTest"></class>-->
+            <!--            <class name="eu.tsystems.mms.tic.testframework.playground.DependsOnTests">-->
+            <!--                <methods>-->
+            <!--                    <include name="testPassed"/>-->
+            <!--                    <include name="testPassed2"/>-->
+            <!--                </methods>-->
+            <!--            </class>-->
+            <!--            <class name="eu.tsystems.mms.tic.testframework.playground.DependsOnTests2"/>-->
+            <!--            <class name="eu.tsystems.mms.tic.testframework.playground.SimplePassingTest"/>-->
+            <!--            <class name="eu.tsystems.mms.tic.testframework.playground.SimpleFailingTest"/>-->
+            <class name="eu.tsystems.mms.tic.testframework.playground.DependsOnTests3"/>
+            <class name="eu.tsystems.mms.tic.testframework.playground.DependsOnTests4"/>
+        </classes>
+    </test>
+</suite>
+

@@ -93,16 +93,6 @@ export class MethodHistoryChart extends AbstractViewModel {
     }
 
     private _prepareChartData() {
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
-
         this.method_history_statistics.runs.forEach(run => {
             const startTime = run.context.contextValues.startTime;
             const endTime = run.context.contextValues.endTime;
@@ -113,7 +103,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                 statusName: this._statusConverter.getLabelForStatus(status),
                 errorMessage: run.combinedErrorMessage,
                 itemStyle: {
-                    color: style.get(status),
+                    color: this._statusConverter.getColorForStatus(status),
                     opacity: 1
                 },
                 startTime: startTime,
@@ -122,7 +112,6 @@ export class MethodHistoryChart extends AbstractViewModel {
                 value: [run.historyIndex, 0]
             });
         });
-
         this._completeArray();
 
         this._lineStart = this._data[0].value;

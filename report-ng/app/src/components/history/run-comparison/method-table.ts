@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2024, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2025, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -22,12 +22,18 @@
 import {autoinject} from "aurelia-framework";
 import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
+import "./method-table.scss";
+import {IComparableMethod} from "./run-comparison";
 
 @autoinject()
 export class MethodTable {
 
     @bindable({defaultBindingMode: bindingMode.toView})
-    private methods;
+    private methods: IComparableMethod[];
+    @bindable({defaultBindingMode: bindingMode.toView})
+    private pastRun: number;
+    @bindable({defaultBindingMode: bindingMode.toView})
+    private currentRun: number;
 
     constructor() {
     }

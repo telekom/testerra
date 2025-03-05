@@ -20,21 +20,29 @@
  */
 
 import {autoinject} from 'aurelia-framework';
-import {NavigationInstruction, RouteConfig, Router} from "aurelia-router";
+import {Router} from "aurelia-router";
 import {AbstractViewModel} from "../../abstract-view-model";
-import "./run-comparison.scss";
 import {StatisticsGenerator} from "../../../services/statistics-generator";
-import {HistoryStatistics} from "../../../services/statistic-models";
+import {HistoryAggregateStatistics, HistoryStatistics} from "../../../services/statistic-models";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
+
+export interface IComparableMethod {
+    classIdentifier: string,
+    methodIdentifier: string,
+    methodRunId: number,
+    currentStatus: ResultStatusType,
+    pastStatus: ResultStatusType,
+    changedFailureAspect: boolean
+}
 
 @autoinject()
 export class RunComparison extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
-    private _methodsToCompare;
-    private _historyAvailable = false;
+    private _methodsToCompare: IComparableMethod[];
+    private _historyAvailable: boolean = false;
     private _availableRuns: any[] = [];
-    currentRunStatistics;
-    selectedRunStatistics;
+    currentRunStatistics: HistoryAggregateStatistics;
+    selectedRunStatistics: HistoryAggregateStatistics;
     private _selectedHistoryIndex: number;
 
     constructor(
@@ -78,17 +86,43 @@ export class RunComparison extends AbstractViewModel {
             cls.methods.map(method => {
                 const currentRun = method.getRunWithHistoryIndex(this.currentRunStatistics.historyIndex);
                 const pastRun = method.getRunWithHistoryIndex(this._selectedHistoryIndex);
-                if (!pastRun || !currentRun) return null;
+
+                let currentStatus = null;
+                let pastStatus = null;
+                let methodRunId = null;
+                if (currentRun) {
+                    methodRunId = currentRun.context.contextValues.id
+                    currentStatus = currentRun.context.resultStatus;
+                }
+                if (pastRun) {
+                    pastStatus = pastRun.context.resultStatus;
+                }
+
+                if (currentStatus === ResultStatusType.PASSED && pastStatus === ResultStatusType.PASSED) {
+                    return null;
+                }
+
+                let differentFailureAspect = false;
+                if (pastRun && currentRun) {
+                    if (currentRun.combinedErrorMessage != pastRun.combinedErrorMessage) {
+                        differentFailureAspect = true;
+                    }
+                }
+
+                if (currentStatus === pastStatus && !differentFailureAspect) {
+                    return null;
+                }
 
                 return {
                     classIdentifier: cls.identifier,
                     methodIdentifier: method.identifier,
-                    methodRunId: currentRun.context.contextValues.id,
-                    currentStatus: currentRun.context.resultStatus,
-                    pastStatus: pastRun.context.resultStatus
+                    methodRunId: methodRunId,
+                    currentStatus: currentStatus,
+                    pastStatus: pastStatus,
+                    changedFailureAspect: differentFailureAspect
                 }
             })
-        ).filter(methodObj => methodObj !== null && !(methodObj.currentStatus === ResultStatusType.PASSED && methodObj.pastStatus === ResultStatusType.PASSED)
+        ).filter(methodObj => methodObj !== null
         ).sort((a, b) => {
             const aChanged = a.currentStatus !== a.pastStatus ? 0 : 1;
             const bChanged = b.currentStatus !== b.pastStatus ? 0 : 1;

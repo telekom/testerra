@@ -42,9 +42,11 @@
                       innerhtml="${item.counts[$index]} ${subLabel} &nbsp;">
                 </span>
             </mdc-list-item-secondary-text>
-            <mdc-icon mdc-list-item-trailing title="Trend" if.bind="_historyAvailable">
-                ${_getTrendIcon(item.trend)}
-            </mdc-icon>
+
+            <div mdc-list-item-trailing title="Trend" class="hcenter">
+                <span if.bind="item.trend !== 0">${item.trend > 0 ? '+' + item.trend : item.trend}</span>
+                <mdc-icon>${_getTrendIcon(item.trend)}</mdc-icon>
+            </div>
         </mdc-list-item>
     </mdc-list>
 </template>

@@ -29,22 +29,35 @@ import {StatisticsGenerator} from "../../../services/statistics-generator";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
 import {MdcSelect} from "@aurelia-mdc-web/select";
 
+export interface IStatusShare {
+    status: number,
+    statusName: string,
+    value: number,
+    itemStyle: { color: string }
+}
+
+export interface IHistoryChartViewport {
+    start: number,
+    end: number
+}
+
 @autoinject()
 export class RunHistory extends AbstractViewModel {
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
     recentChanges: boolean = false;
-    statusData: any[] = [];
-    @observable viewport: number[] = [];
-    private _fullViewport: number[] = [];
+    statusData: IStatusShare[] = [];
+    @observable viewport: IHistoryChartViewport;
+    private _fullViewport: IHistoryChartViewport;
     private _historyStatistics: HistoryStatistics;
     private _filter: IFilter;
     private _selectedStatus: ResultStatusType = null;
     private _availableStatuses: ResultStatusType[] = [];
-    private _topFlakyTests: any[] = [];
-    private _topFailingTests: any[] = [];
+    private _topFlakyTests: IFlakyTest[] = [];
+    private _topFailingTests: IFailingTest[] = [];
     private _statusSelect: MdcSelect;
     private _historyAvailable = false;
+    private _initialLoading = true;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -65,27 +78,8 @@ export class RunHistory extends AbstractViewModel {
         }
 
         const availableRuns = this._historyStatistics.availableRuns;
-        this._fullViewport = [Math.min(...availableRuns), Math.max(...availableRuns)];
+        this._fullViewport = {start: Math.min(...availableRuns), end: Math.max(...availableRuns)};
         this.viewport = this._fullViewport;
-
-        let statusCount = new Map<ResultStatusType, number>();
-        this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
-            const currentFailed = statusCount.get(ResultStatusType.FAILED) || 0;
-            const currentExpectedFailed = statusCount.get(ResultStatusType.FAILED_EXPECTED) || 0;
-            const currentSkipped = statusCount.get(ResultStatusType.SKIPPED) || 0;
-            const currentPassed = statusCount.get(ResultStatusType.PASSED) || 0;
-
-            statusCount.set(ResultStatusType.FAILED, currentFailed + aggregate.getStatusCount(ResultStatusType.FAILED));
-            statusCount.set(ResultStatusType.FAILED_EXPECTED, currentExpectedFailed + aggregate.getStatusCount(ResultStatusType.FAILED_EXPECTED));
-            statusCount.set(ResultStatusType.SKIPPED, currentSkipped + aggregate.getStatusCount(ResultStatusType.SKIPPED));
-            statusCount.set(ResultStatusType.PASSED, currentPassed + aggregate.overallPassed);
-        });
-
-        statusCount.forEach((value, key) => {
-            if (value > 0) {
-                this._availableStatuses.push(key);
-            }
-        });
 
         this.avgRunDuration = this._historyStatistics.getAverageDuration();
         this.recentChanges = this._historyStatistics.lastEntryDifferentFrom(this._historyStatistics.getHistoryAggregateStatistics()[this._historyStatistics.getHistoryAggregateStatistics().length - 2]);
@@ -102,6 +96,8 @@ export class RunHistory extends AbstractViewModel {
         } else {
             this._selectedStatus = null;
         }
+
+        this._initialLoading = false;
     }
 
     private _statusChanged() {
@@ -116,7 +112,7 @@ export class RunHistory extends AbstractViewModel {
     }
 
     viewportChanged() {
-        if (this.viewport.length > 1) {
+        if (this.viewport) {
             this._updateTopFlakyTests();
             this._updateTopFailingTests();
             this._updateStatusData();
@@ -125,8 +121,8 @@ export class RunHistory extends AbstractViewModel {
 
     private _updateTopFailingTests() {
         const methods = this._historyStatistics.getClassHistory().flatMap(classItem => classItem.methods);
-        const startIndex = this.viewport[0];
-        const endIndex = this.viewport[1];
+        const startIndex = this.viewport.start;
+        const endIndex = this.viewport.end;
 
         const failingMethods = methods
             .filter(method => method.getFailingStreakInRange(startIndex, endIndex) > 0)
@@ -147,8 +143,8 @@ export class RunHistory extends AbstractViewModel {
 
     private _updateTopFlakyTests() {
         const methods = this._historyStatistics.getClassHistory().flatMap(classItem => classItem.methods);
-        const startIndex = this.viewport[0];
-        const endIndex = this.viewport[1];
+        const startIndex = this.viewport.start;
+        const endIndex = this.viewport.end;
 
         const flakyMethods = methods
             .map(method => ({
@@ -171,7 +167,7 @@ export class RunHistory extends AbstractViewModel {
     private _updateStatusData() {
         let statusCount = new Map<ResultStatusType, number>();
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
-            if ((aggregate.historyIndex >= this.viewport[0]) && (aggregate.historyIndex <= this.viewport[1])) {
+            if ((aggregate.historyIndex >= this.viewport.start) && (aggregate.historyIndex <= this.viewport.end)) {
                 const currentFailed = statusCount.get(ResultStatusType.FAILED) || 0;
                 const currentExpectedFailed = statusCount.get(ResultStatusType.FAILED_EXPECTED) || 0;
                 const currentSkipped = statusCount.get(ResultStatusType.SKIPPED) || 0;
@@ -187,6 +183,9 @@ export class RunHistory extends AbstractViewModel {
         let statusData = [];
         statusCount.forEach((count, status) => {
             if (count) {
+                if (this._initialLoading) {
+                    this._availableStatuses.push(status);
+                }
                 statusData.push({
                     status: status,
                     statusName: this._statusConverter.getLabelForStatus(status),
@@ -216,4 +215,17 @@ export class RunHistory extends AbstractViewModel {
             subPage: "method-history"
         });
     }
+}
+
+interface IFailingTest {
+    name: string,
+    failingStreak: number,
+    statistics: MethodHistoryStatistics
+}
+
+interface IFlakyTest {
+    name: string,
+    flakiness: string,
+    passingStreak: number,
+    statistics: MethodHistoryStatistics
 }

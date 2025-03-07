@@ -11,20 +11,21 @@ public class DynamicHistoryTest extends TesterraTest implements AssertProvider {
 
     @Test
     public void test_highFlakiness() {
-        int historyIndex = Integer.parseInt(PROPERTY_MANAGER.getProperty("historyIndex"));
+        int historyIndex = Math.toIntExact(PROPERTY_MANAGER.getLongProperty("history.index"));
+        System.out.println(historyIndex);
         boolean x = (historyIndex % 2 != 0);
         ASSERT.assertTrue(x);
     }
 
     @Test
     public void test_passedToFailed() {
-        int historyIndex = Integer.parseInt(PROPERTY_MANAGER.getProperty("historyIndex"));
+        int historyIndex = Math.toIntExact(PROPERTY_MANAGER.getLongProperty("history.index"));
         ASSERT.assertTrue(historyIndex < 5);
     }
 
     @Test
     public void test_longDuration() {
-        int historyIndex = Integer.parseInt(PROPERTY_MANAGER.getProperty("historyIndex"));
+        int historyIndex = Math.toIntExact(PROPERTY_MANAGER.getLongProperty("history.index"));
         switch (historyIndex) {
             case 5:
                 TimerUtils.sleep(3000);
@@ -41,7 +42,7 @@ public class DynamicHistoryTest extends TesterraTest implements AssertProvider {
 
     @Test
     public void test_multipleFailureAspects() {
-        int historyIndex = Integer.parseInt(PROPERTY_MANAGER.getProperty("historyIndex"));
+        int historyIndex = Math.toIntExact(PROPERTY_MANAGER.getLongProperty("history.index"));
         switch (historyIndex) {
             case 5:
                 ASSERT.assertTrue(false);

@@ -12,5 +12,6 @@ public class HistoryTest extends TesterraTest implements AssertProvider {
 
     @Test
     public void test_alwaysFailed() {
+        ASSERT.assertTrue(false);
     }
 }

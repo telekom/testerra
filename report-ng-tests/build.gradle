@@ -39,6 +39,9 @@ test {
     }
 
     if (historyIndex) {
+        System.setProperty("history.index", historyIndex as String)
+        System.setProperty("tt.report.dir", "src/test/resources/reports/report-history")
+        System.setProperty("tt.report.name", "Generated Report for History UI-Test")
         if (historyIndex > 5) {
             s = ['src/test/resources/testng/Pretest_HistoryTest_2.xml']
         } else {

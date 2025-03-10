@@ -87,7 +87,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
         return createPage(ReportMethodHistoryTab.class);
     }
 
-    private void assertMethodNamesAreCorrect(String methodName) {
+    public void assertMethodNamesAreCorrect(String methodName) {
         // testPrimeCardHeadline.asserts("Displayed method name should match the corresponding link").assertTextContains(methodName);
         testPrimeCardHeadline.expect().text().contains(methodName).is(true, "Displayed method name should match the corresponding link");
 

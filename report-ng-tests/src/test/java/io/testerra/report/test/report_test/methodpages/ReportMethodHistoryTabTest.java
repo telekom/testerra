@@ -22,7 +22,6 @@
 package io.testerra.report.test.report_test.methodpages;
 
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
@@ -40,7 +39,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin(String.format("Navigate to the method history tab of %s.", method));
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);
@@ -57,7 +56,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin(String.format("Navigate to the method history tab of %s.", method));
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);
@@ -74,7 +73,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin(String.format("Navigate to the method history tab of %s.", method));
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);
@@ -91,7 +90,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
-        TestStep.begin("Navigate to tests page.");
+        TestStep.begin(String.format("Navigate to the method history tab of %s.", method));
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
         ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);

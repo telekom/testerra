@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.historyPages.ReportTestRunTab;
+import io.testerra.report.test.pages.report.methodReport.ReportMethodHistoryTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import org.testng.annotations.Test;
 
@@ -51,7 +52,12 @@ public class ReportHistoryTestRunTabTest extends AbstractReportTest {
         ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
 
         TestStep.begin("Check the top flaky test.");
-        ASSERT.assertTrue(reportHistoryTestRunTab.getOrderListOfTopFlakyTests().get(0).contains("test_highFlakiness"));
+        String topFlakyTest = reportHistoryTestRunTab.getOrderListOfTopFlakyTests().get(0);
+        ASSERT.assertTrue(topFlakyTest.contains("test_highFlakiness"));
+
+        TestStep.begin("Navigate to the top flaky test.");
+        ReportMethodHistoryTab reportMethodHistoryTab = reportHistoryTestRunTab.clickOnTopFlakyTest();
+        reportMethodHistoryTab.assertMethodNamesAreCorrect(topFlakyTest);
     }
 
     @Test

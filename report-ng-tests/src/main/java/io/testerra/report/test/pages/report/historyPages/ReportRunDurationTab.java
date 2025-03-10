@@ -23,6 +23,7 @@ package io.testerra.report.test.pages.report.historyPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import io.testerra.report.test.pages.report.methodReport.ReportMethodHistoryTab;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -60,5 +61,10 @@ public class ReportRunDurationTab extends AbstractReportHistoryPage {
                 .stream()
                 .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toList());
+    }
+
+    public ReportMethodHistoryTab clickOnLongestTest() {
+        topLongestTestsLink.list().first().click();
+        return createPage(ReportMethodHistoryTab.class);
     }
 }

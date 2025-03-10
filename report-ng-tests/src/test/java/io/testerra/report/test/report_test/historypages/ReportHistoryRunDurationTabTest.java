@@ -26,6 +26,7 @@ import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.historyPages.ReportRunDurationTab;
 import io.testerra.report.test.pages.report.historyPages.ReportTestRunTab;
+import io.testerra.report.test.pages.report.methodReport.ReportMethodHistoryTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import org.testng.annotations.Test;
 
@@ -54,6 +55,11 @@ public class ReportHistoryRunDurationTabTest extends AbstractReportTest {
         ReportRunDurationTab reportRunDurationTab = reportHistoryTestRunTab.navigateToRunDurationTab();
 
         TestStep.begin("Check the longest tests.");
-        ASSERT.assertTrue(reportRunDurationTab.getOrderListOfLongestTests().get(0).contains("test_longDuration"));
+        String longestTest = reportRunDurationTab.getOrderListOfLongestTests().get(0);
+        ASSERT.assertTrue(longestTest.contains("test_longDuration"));
+
+        TestStep.begin("Navigate to the longest test.");
+        ReportMethodHistoryTab reportMethodHistoryTab = reportRunDurationTab.clickOnLongestTest();
+        reportMethodHistoryTab.assertMethodNamesAreCorrect(longestTest);
     }
 }

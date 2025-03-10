@@ -23,6 +23,7 @@ package io.testerra.report.test.pages.report.historyPages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import io.testerra.report.test.pages.report.methodReport.ReportMethodHistoryTab;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -80,5 +81,10 @@ public class ReportTestRunTab extends AbstractReportHistoryPage {
     public void checkStatistics(String statisticsName, String value) {
         final UiElement testsStatusElement = historyStatisticsCard.find((getXpathToStatistics(statisticsName)));
         testsStatusElement.expect().text().contains(value).is(true);
+    }
+
+    public ReportMethodHistoryTab clickOnTopFlakyTest() {
+        topFlakyTestsLink.list().first().click();
+        return createPage(ReportMethodHistoryTab.class);
     }
 }

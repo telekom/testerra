@@ -6,10 +6,15 @@
         </packages>
 
         <classes>
-            <class name="io.testerra.report.test.pretest_history.HistoryTest"/>
+            <class name="io.testerra.report.test.pretest_history.StaticHistoryTest"/>
             <class name="io.testerra.report.test.pretest_history.DynamicHistoryTest">
                 <methods>
                     <exclude name="test_addedLater"/>
+                </methods>
+            </class>
+            <class name="io.testerra.report.test.pretest_history.SimpleHistoryTest">
+                <methods>
+                    <exclude name="test_simplePassedAddedLater"/>
                 </methods>
             </class>
         </classes>

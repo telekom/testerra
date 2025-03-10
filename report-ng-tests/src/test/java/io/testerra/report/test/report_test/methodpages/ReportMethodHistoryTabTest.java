@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2022, Marc Dietrich, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2025, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,7 +17,6 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 package io.testerra.report.test.report_test.methodpages;
@@ -25,8 +24,8 @@ package io.testerra.report.test.report_test.methodpages;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.pages.ReportSidebarPageType;
+import io.testerra.report.test.pages.report.methodReport.ReportDetailsTab;
 import io.testerra.report.test.pages.report.methodReport.ReportMethodHistoryTab;
-import io.testerra.report.test.pages.report.methodReport.ReportStepsTab;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import org.testng.annotations.Test;
@@ -43,7 +42,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
+        ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);
         ReportMethodHistoryTab methodHistoryTab = reportStepsTab.navigateToMethodHistoryTab();
 
         TestStep.begin("Check if the layout of the method history chart is correct.");
@@ -60,7 +59,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
+        ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);
         ReportMethodHistoryTab methodHistoryTab = reportStepsTab.navigateToMethodHistoryTab();
 
         TestStep.begin("Check if the layout of the failure aspects chart is correct.");
@@ -69,7 +68,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
 
     @Test
     public void testT03_statusShareChartLayout() {
-        String method = "test_multipleFailureAspects";
+        String method = "test_highFlakiness";
 
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
@@ -77,7 +76,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
+        ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);
         ReportMethodHistoryTab methodHistoryTab = reportStepsTab.navigateToMethodHistoryTab();
 
         TestStep.begin("Check if the layout of the status share chart is correct.");
@@ -94,11 +93,11 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
 
-        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
+        ReportDetailsTab reportStepsTab = reportTestsPage.navigateToDetailsTab(method);
         ReportMethodHistoryTab methodHistoryTab = reportStepsTab.navigateToMethodHistoryTab();
 
         TestStep.begin("Check history statistics.");
         methodHistoryTab.checkStatistics("Total runs", "10");
-        methodHistoryTab.checkStatistics("Flakiness", "100%");
+        methodHistoryTab.checkStatistics("Flakiness", "100.0%");
     }
 }

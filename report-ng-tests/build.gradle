@@ -20,7 +20,6 @@ test {
         'src/test/resources/testng/TestReport.xml',
     ]
 
-
     def preTest = findProperty("pretestRNG")
     def preTestExtended = findProperty("pretestRNGExtended")
     def playground = findProperty("playground")

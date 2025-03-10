@@ -20,7 +20,7 @@ public class DynamicHistoryTest extends TesterraTest implements AssertProvider {
     @Test
     public void test_passedToFailed() {
         int historyIndex = Math.toIntExact(PROPERTY_MANAGER.getLongProperty("history.index"));
-        ASSERT.assertTrue(historyIndex < 5);
+        ASSERT.assertTrue(historyIndex <= 5);
     }
 
     @Test

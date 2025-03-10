@@ -203,10 +203,9 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
     @Test
     public void testT13_historyChartLayout() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check if the layout of the history chart is correct");
         reportDashBoardPage.assertHistoryChartMatchesScreenshot(1.0);
     }
-
 }

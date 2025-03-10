@@ -47,7 +47,15 @@ public class ReportMethodHistoryTab extends AbstractReportMethodPage {
     }
 
     public void assertMethodHistoryChartMatchesScreenshot(double pixelDistance) {
-        this.methodHistoryChart.expect().screenshot().pixelDistance("MethodHistoryChart").isLowerThan(pixelDistance);
+        this.methodHistoryChart.expect().screenshot().pixelDistance("method_history_chart").isLowerThan(pixelDistance);
+    }
+
+    public void assertStatusShareChartMatchesScreenshot(double pixelDistance) {
+        this.statusShareChart.expect().screenshot().pixelDistance("status_share_chart").isLowerThan(pixelDistance);
+    }
+
+    public void assertFailureAspectsChartMatchesScreenshot(double pixelDistance) {
+        this.failureAspectsChart.expect().screenshot().pixelDistance("failure_aspects_chart").isLowerThan(pixelDistance);
     }
 
     public void checkStatistics(String statisticsName, String value) {

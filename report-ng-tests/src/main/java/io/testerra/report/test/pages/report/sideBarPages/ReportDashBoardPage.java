@@ -362,6 +362,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     public void assertHistoryChartMatchesScreenshot(double pixelDistance) {
-        this.historyChart.expect().screenshot().pixelDistance("HistoryChartDashboard").isLowerThan(pixelDistance);
+        this.historyChart.expect().screenshot().pixelDistance("history_chart_dashboard").isLowerThan(pixelDistance);
     }
 }

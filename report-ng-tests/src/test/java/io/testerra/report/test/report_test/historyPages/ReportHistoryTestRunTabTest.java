@@ -34,12 +34,36 @@ public class ReportHistoryTestRunTabTest extends AbstractReportTest {
     @Test
     public void testT01_testHistoryChartLayout() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to history page.");
         ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
 
-        TestStep.begin("Check if the layout of the history chart is correct");
+        TestStep.begin("Check if the layout of the history chart is correct.");
         reportHistoryTestRunTab.assertHistoryChartMatchesScreenshot(1.0);
+    }
+
+    @Test
+    public void testT02_topFlakyTests() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Navigate to history page.");
+        ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
+
+        TestStep.begin("Check the top flaky test.");
+        ASSERT.assertTrue(reportHistoryTestRunTab.getOrderListOfTopFlakyTests().get(0).equals("test_highFlakiness"));
+    }
+
+    @Test
+    public void testT03_historyStatistics() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Navigate to history page.");
+        ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
+
+        TestStep.begin("Check history statistics.");
+        reportHistoryTestRunTab.checkStatistics("Total runs", "10");
     }
 }

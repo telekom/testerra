@@ -36,14 +36,14 @@ public class ReportHistoryTestClassesTabTest extends AbstractReportTest {
     @Test
     public void testT01_classesHistoryChartLayout() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to test classes tab of history page.");
         ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
         ReportTestClassesTab reportTestClassesTab = reportHistoryTestRunTab.navigateToTestClassesTab();
 
-        TestStep.begin("Check if the layout of the history chart is correct");
-        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "ClassesHistoryChart");
+        TestStep.begin("Check if the layout of the history chart is correct.");
+        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "classes_history_chart");
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ReportHistoryTestClassesTabTest extends AbstractReportTest {
         String className = "DynamicHistoryTest";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to test classes tab of history page.");
         ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
@@ -60,8 +60,8 @@ public class ReportHistoryTestClassesTabTest extends AbstractReportTest {
         TestStep.begin("Select a class.");
         reportTestClassesTab = reportTestClassesTab.selectClassName(className);
 
-        TestStep.begin("Check if the layout of the history chart is correct");
-        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "SelectedClassHistoryChart");
+        TestStep.begin("Check if the layout of the history chart is correct.");
+        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "selected_class_history_chart");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ReportHistoryTestClassesTabTest extends AbstractReportTest {
         String className = "DynamicHistoryTest";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to test classes tab of history page.");
         ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
@@ -78,8 +78,8 @@ public class ReportHistoryTestClassesTabTest extends AbstractReportTest {
         TestStep.begin("Select a status.");
         reportTestClassesTab = reportTestClassesTab.selectTestStatus(Status.FAILED);
 
-        TestStep.begin("Check if the layout of the history chart is correct");
-        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "FilteredClassesHistoryChart");
+        TestStep.begin("Check if the layout of the history chart is correct.");
+        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "filtered_classes_history_chart");
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ReportHistoryTestClassesTabTest extends AbstractReportTest {
         String className = "DynamicHistoryTest";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to test classes tab of history page.");
         ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
@@ -97,7 +97,7 @@ public class ReportHistoryTestClassesTabTest extends AbstractReportTest {
         reportTestClassesTab = reportTestClassesTab.selectClassName(className);
         reportTestClassesTab = reportTestClassesTab.selectTestStatus(Status.FAILED);
 
-        TestStep.begin("Check if the layout of the history chart is correct");
-        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "FilteredSelectedClassHistoryChart");
+        TestStep.begin("Check if the layout of the history chart is correct.");
+        reportTestClassesTab.assertClassesHistoryChartMatchesScreenshot(1.0, "filtered_selected_class_history_chart");
     }
 }

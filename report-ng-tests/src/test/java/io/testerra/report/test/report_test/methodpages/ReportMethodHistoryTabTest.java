@@ -38,7 +38,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         String method = "test_highFlakiness";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -51,11 +51,45 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT02_checkMethodHistoryStatistics() {
+    public void testT02_failureAspectsChartLayout() {
+        String method = "test_multipleFailureAspects";
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Navigate to tests page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+
+        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
+        ReportMethodHistoryTab methodHistoryTab = reportStepsTab.navigateToMethodHistoryTab();
+
+        TestStep.begin("Check if the layout of the failure aspects chart is correct.");
+        methodHistoryTab.assertFailureAspectsChartMatchesScreenshot(1.0);
+    }
+
+    @Test
+    public void testT03_statusShareChartLayout() {
+        String method = "test_multipleFailureAspects";
+
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Navigate to tests page.");
+        ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
+
+        ReportStepsTab reportStepsTab = reportTestsPage.navigateToStepsTab(method);
+        ReportMethodHistoryTab methodHistoryTab = reportStepsTab.navigateToMethodHistoryTab();
+
+        TestStep.begin("Check if the layout of the status share chart is correct.");
+        methodHistoryTab.assertStatusShareChartMatchesScreenshot(1.0);
+    }
+
+    @Test
+    public void testT04_checkMethodHistoryStatistics() {
         String method = "test_highFlakiness";
 
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to tests page.");
         ReportTestsPage reportTestsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.TESTS, ReportTestsPage.class);
@@ -64,6 +98,7 @@ public class ReportMethodHistoryTabTest extends AbstractReportTest {
         ReportMethodHistoryTab methodHistoryTab = reportStepsTab.navigateToMethodHistoryTab();
 
         TestStep.begin("Check history statistics.");
+        methodHistoryTab.checkStatistics("Total runs", "10");
         methodHistoryTab.checkStatistics("Flakiness", "100%");
     }
 }

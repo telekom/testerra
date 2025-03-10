@@ -35,11 +35,26 @@ public class ReportHistoryRunDurationTabTest extends AbstractReportTest {
     @Test
     public void testT01_checkLongestRuns() {
         TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Navigate to run duration tab of history page.");
         ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
         ReportRunDurationTab reportRunDurationTab = reportHistoryTestRunTab.navigateToRunDurationTab();
-        // TODO: Check longest runs
+
+        TestStep.begin("Check the longest runs.");
+        ASSERT.assertTrue(reportRunDurationTab.getOrderListOfLongestRuns().get(0).contains("Run 10"));
+    }
+
+    @Test
+    public void testT02_checkLongestTests() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Navigate to run duration tab of history page.");
+        ReportTestRunTab reportHistoryTestRunTab = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.HISTORY, ReportTestRunTab.class);
+        ReportRunDurationTab reportRunDurationTab = reportHistoryTestRunTab.navigateToRunDurationTab();
+
+        TestStep.begin("Check the longest tests.");
+        ASSERT.assertTrue(reportRunDurationTab.getOrderListOfLongestTests().get(0).equals("test_longDuration"));
     }
 }

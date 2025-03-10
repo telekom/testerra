@@ -23,6 +23,7 @@ package io.testerra.report.test.pages.report.methodReport;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -50,10 +51,12 @@ public class ReportMethodHistoryTab extends AbstractReportMethodPage {
     }
 
     public void assertStatusShareChartMatchesScreenshot(double pixelDistance) {
+        failureAspectsChart.scrollIntoView();
         this.statusShareChart.expect().screenshot().pixelDistance("status_share_chart").isLowerThan(pixelDistance);
     }
 
     public void assertFailureAspectsChartMatchesScreenshot(double pixelDistance) {
+        failureAspectsChart.scrollIntoView();
         this.failureAspectsChart.expect().screenshot().pixelDistance("failure_aspects_chart").isLowerThan(pixelDistance);
     }
 

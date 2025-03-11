@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2022, Clemens Große, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2025, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,8 +19,20 @@
  * under the License.
  */
 
-package io.testerra.report.test.pages;
+package io.testerra.report.test.pretest_history;
 
-public enum ReportSidebarPageType {
-    DASHBOARD, TESTS, FAILURE_ASPECTS, LOGS, THREADS, HISTORY, PRINT_REPORT
+import eu.tsystems.mms.tic.testframework.testing.AssertProvider;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.testng.annotations.Test;
+
+public class StaticHistoryTest extends TesterraTest implements AssertProvider {
+
+    @Test
+    public void test_alwaysPassed() {
+    }
+
+    @Test
+    public void test_alwaysFailed() {
+        ASSERT.assertTrue(false);
+    }
 }

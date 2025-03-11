@@ -54,6 +54,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     private final UiElement testStepsTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Steps')]]"));
     private final UiElement testBrowserInfoTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Browser Info')]]"));
     private final UiElement testVideoTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Video')]]"));
+    private final UiElement testMethodHistoryTab = testTabBar.find(By.xpath("//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Method History')]]"));
 
     protected final UiElement testLastScreenshot = pageContent.find(By.xpath("//mdc-card[contains(.,'Last Screenshot')]//img"));
 
@@ -81,7 +82,12 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
         return createPage(ReportVideoTab.class);
     }
 
-    private void assertMethodNamesAreCorrect(String methodName) {
+    public ReportMethodHistoryTab navigateToMethodHistoryTab() {
+        testMethodHistoryTab.click();
+        return createPage(ReportMethodHistoryTab.class);
+    }
+
+    public void assertMethodNamesAreCorrect(String methodName) {
         // testPrimeCardHeadline.asserts("Displayed method name should match the corresponding link").assertTextContains(methodName);
         testPrimeCardHeadline.expect().text().contains(methodName).is(true, "Displayed method name should match the corresponding link");
 

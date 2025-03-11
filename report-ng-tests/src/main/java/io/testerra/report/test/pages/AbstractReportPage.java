@@ -29,7 +29,7 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractReportPage extends ReportSideBar {
 
     @Check
-    protected final UiElement pageContent = find(By.tagName("mdc-layout-grid"));
+    protected final UiElement pageContent = find(By.tagName("mdc-drawer-app-content"));
 
     /**
      * Constructor for existing sessions.

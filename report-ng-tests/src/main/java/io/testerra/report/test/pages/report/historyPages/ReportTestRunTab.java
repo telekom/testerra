@@ -79,8 +79,8 @@ public class ReportTestRunTab extends AbstractReportHistoryPage {
     }
 
     public void checkStatistics(String statisticsName, String value) {
-        final UiElement testsStatusElement = historyStatisticsCard.find((getXpathToStatistics(statisticsName)));
-        testsStatusElement.expect().text().contains(value).is(true);
+        final UiElement statisticsElement = historyStatisticsCard.find((getXpathToStatistics(statisticsName)));
+        statisticsElement.expect().text().contains(value).is(true);
     }
 
     public ReportMethodHistoryTab clickOnTopFlakyTest() {

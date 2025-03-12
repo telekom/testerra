@@ -83,28 +83,28 @@ export class TestResultsList {
 
                 // Failed
                 const failed = this.executionStatistics.overallFailed;
-                let failedTrend: number;
+                let failedTrend = 0;
                 const failedRetried = this.executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
                 const counts = [];
                 const labels = [];
                 counts.push(failed);
                 labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED));
                 if (failedRetried > 0) {
-                    counts.push("( + " + failedRetried + ")");
+                    counts.push("+ " + failedRetried);
                     labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED));
                 }
 
                 // Expected failed
                 const failedExpected = this.executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-                let failedExpectedTrend: number;
+                let failedExpectedTrend = 0;
 
                 // Skipped
                 const skipped = this.executionStatistics.overallSkipped;
-                let skippedTrend: number;
+                let skippedTrend = 0;
 
                 // Passed
                 const passed = this.executionStatistics.overallPassed;
-                let passedTrend: number;
+                let passedTrend = 0;
                 const recovered = this.executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
                 const repaired = this.executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
 

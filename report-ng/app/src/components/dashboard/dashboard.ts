@@ -54,6 +54,7 @@ export class Dashboard extends AbstractViewModel {
     private _loading = true;
     private _promptLogs = undefined;
     private _numberOfTestcases = 0;
+    private _historyAvailable: boolean;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -73,6 +74,7 @@ export class Dashboard extends AbstractViewModel {
 
     async attached() {
         this._executionStatistics = await this._statisticsGenerator.getExecutionStatistics();
+        this._historyAvailable = await this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => historyStatistics.getTotalRunCount()) > 1;
         this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0, 3);
         this._numberOfTestcases = this._executionStatistics.overallFailed + this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED) + this._executionStatistics.overallSkipped + this._executionStatistics.overallPassed;
 

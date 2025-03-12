@@ -40,13 +40,11 @@ export class MethodHistoryChart extends AbstractViewModel {
     @bindable method_history_statistics: MethodHistoryStatistics;
     private _option: EChartsOption;
     private _data: any[] = [];
-    private _lineStart: number[] = [];
-    private _lineEnd: number[] = [];
-    private _initialChartLoading = true;        // To prevent the access of _option in the first call of sharedDataChanged()
+    private _initialChartLoading = true;        // To prevent the access of _option at the first call of sharedDataChanged()
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
     private _chartSymbolSize = 20;
     private _maxErrorMessageLength = 400;
-    @bindable() sharedData;
+    @bindable() sharedData: string;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -114,8 +112,6 @@ export class MethodHistoryChart extends AbstractViewModel {
         });
         this._completeArray();
 
-        this._lineStart = this._data[0].value;
-        this._lineEnd = this._data[this._data.length - 1].value;
         if (this._data.length > 50) {
             this._chartSymbolSize = 14;
         }
@@ -209,7 +205,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                     type: 'line',
                     symbol: 'none',
                     data: [
-                        this._lineStart, this._lineEnd
+                        this._data[0].value, this._data[this._data.length - 1].value
                     ],
                     lineStyle: {
                         color: '#A0A0A0',

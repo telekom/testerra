@@ -40,7 +40,7 @@ export class RunComparison extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     private _methodsToCompare: IComparableMethod[];
     private _historyAvailable: boolean = false;
-    private _availableRuns: any[] = [];
+    private _availableRuns: IRunToCompare[] = [];
     currentRunStatistics: HistoryAggregateStatistics;
     selectedRunStatistics: HistoryAggregateStatistics;
     private _selectedHistoryIndex: number;
@@ -134,4 +134,9 @@ export class RunComparison extends AbstractViewModel {
             return a.methodIdentifier.localeCompare(b.methodIdentifier);
         });
     }
+}
+
+interface IRunToCompare {
+    historyIndex: number,
+    startTime: number
 }

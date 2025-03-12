@@ -45,7 +45,7 @@
                 <mdc-card class="tall-card">
                     <div class="card-headline-container">
                         <div mdc-subtitle2 class="card-headline">Tests: ${_numberOfTestcases}</div>
-                        <div class="card-headline-linked-icon secondary">
+                        <div class="card-headline-linked-icon secondary" if.bind="_historyAvailable">
                             <a href="" class="icon-link">
                                 <mdc-icon
                                     mdc-tooltip="Compare with previous run"

@@ -38,12 +38,12 @@
             </mdc-list-item-primary-text>
 
             <mdc-list-item-secondary-text if.bind="item.labels.length > 1">
-                <span class="item-label" repeat.for="subLabel of item.labels" if.bind="$index > 0"
+                <span class="item-label" repeat.for="subLabel of item.labels" if.bind="$index > 0 && subLabel"
                       innerhtml="${item.counts[$index]} ${subLabel} &nbsp;">
                 </span>
             </mdc-list-item-secondary-text>
 
-            <div mdc-list-item-trailing title="Trend" class="hcenter">
+            <div mdc-list-item-trailing title="Trend" class="hcenter" if.bind="_historyAvailable">
                 <span if.bind="item.trend !== 0">${item.trend > 0 ? '+' + item.trend : item.trend}</span>
                 <mdc-icon>${_getTrendIcon(item.trend)}</mdc-icon>
             </div>

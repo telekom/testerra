@@ -43,7 +43,21 @@
             </mdc-layout-grid-cell>
             <mdc-layout-grid-cell span="3">
                 <mdc-card class="tall-card">
-                    <div mdc-subtitle2 class="card-headline">Tests: ${_numberOfTestcases}</div>
+                    <div class="card-headline-container">
+                        <div mdc-subtitle2 class="card-headline">Tests: ${_numberOfTestcases}</div>
+                        <div class="card-headline-linked-icon secondary" if.bind="_historyAvailable">
+                            <a href="" class="icon-link">
+                                <mdc-icon
+                                    mdc-tooltip="Compare with previous run"
+                                    click.delegate="_compareRunsClicked()"
+                                    class="colored-icon"
+                                    role="link"
+                                    style="color: inherit !important;">
+                                    compare_arrows
+                                </mdc-icon>
+                            </a>
+                        </div>
+                    </div>
                     <mdc-list-divider></mdc-list-divider>
                     <test-results-list class="test-results-card"
                                        filter.bind="_filter"
@@ -109,12 +123,15 @@
                 <mdc-card class="short-card">
                     <div class="card-headline-container">
                         <div mdc-subtitle2 class="card-headline">Top 3 Failure Aspects
-                            (<a route-href="route: failureAspects; params.bind: {type: 'major'}">${_majorFailures} Major</a>
+                            (<a route-href="route: failureAspects; params.bind: {type: 'major'}">${_majorFailures}
+                                Major</a>
                             <span class="secondary" mdc-body2>|</span>
-                            <a route-href="route: failureAspects; params.bind: {type: 'minor'}">${_minorFailures} Minor</a>)
+                            <a route-href="route: failureAspects; params.bind: {type: 'minor'}">${_minorFailures}
+                                Minor</a>)
                         </div>
                         <div class="card-headline-info-icon secondary">
                             <mdc-icon
+                                mdc-list-item-trailing
                                 mdc-tooltip="The most critical errors that caused the highest number of failed test cases">
                                 info_outlined
                             </mdc-icon>

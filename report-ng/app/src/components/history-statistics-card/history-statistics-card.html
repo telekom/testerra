@@ -43,13 +43,15 @@
                         <span>Average run duration</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
-                <mdc-list-item if.bind="success_rate" class="non-interactive" two-line>
-                    <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>check_circle_outline</mdc-icon>
+                <mdc-list-item if.bind="recent_changes !== undefined" class="non-interactive" two-line>
+                    <mdc-icon class="history-statistics-icon sr1" mdc-list-item-leading>
+                        ${recent_changes ? 'published_with_changes' : 'done_all'}
+                    </mdc-icon>
                     <mdc-list-item-primary-text>
-                        <span>${success_rate.toFixed(1)}%</span>
+                        <span>${recent_changes ? 'Latest runs are not equal' : 'No changes to previous run'}</span>
                     </mdc-list-item-primary-text>
                     <mdc-list-item-secondary-text>
-                        <span>Success rate</span>
+                        <span>Run comparison</span>
                     </mdc-list-item-secondary-text>
                 </mdc-list-item>
                 <mdc-list-item if.bind="flakiness" class="non-interactive" two-line mdc-tooltip="Flakiness indicates how often the status changed. Higher values suggest instability. Older runs contribute less to the final calculation.">

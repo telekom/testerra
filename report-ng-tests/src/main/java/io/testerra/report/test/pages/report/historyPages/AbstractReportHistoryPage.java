@@ -33,6 +33,8 @@ public class AbstractReportHistoryPage extends AbstractReportPage {
     @Check
     private final UiElement historyTestRunTab = historyTabBar.find(By.xpath(".//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Test run')]]"));
     @Check
+    private final UiElement historyRunComparisonTab = historyTabBar.find(By.xpath(".//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Run comparison')]]"));
+    @Check
     private final UiElement historyRunDurationTab = historyTabBar.find(By.xpath(".//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Run duration')]]"));
     @Check
     private final UiElement historyTestClassesTab = historyTabBar.find(By.xpath(".//mdc-tab[.//span[@class='mdc-tab__text-label' and contains(text(),'Test classes')]]"));
@@ -49,6 +51,11 @@ public class AbstractReportHistoryPage extends AbstractReportPage {
     public ReportTestRunTab navigateToTestRunTab() {
         historyTestRunTab.click();
         return createPage(ReportTestRunTab.class);
+    }
+
+    public ReportRunComparisonTab navigateToRunComparisonTab() {
+        historyRunComparisonTab.click();
+        return createPage(ReportRunComparisonTab.class);
     }
 
     public ReportRunDurationTab navigateToRunDurationTab() {

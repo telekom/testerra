@@ -27,12 +27,13 @@ import {HistoryStatistics, MethodHistoryStatistics} from "../../services/statist
 import "./method-history.scss";
 import {StatusConverter} from "../../services/status-converter";
 import {ResultStatusType} from "../../services/report-model/framework_pb";
+import {IStatusShare} from "../history/run-history/run-history";
 
 @autoinject()
 export class MethodHistory extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
     failureAspectsData: any[] = [];
-    statusData: any[] = [];
+    statusData: IStatusShare[] = [];
     methodHistoryStatistics: MethodHistoryStatistics;
     totalRunCount: number = 0;
     avgRunDuration: number = 0;
@@ -66,16 +67,6 @@ export class MethodHistory extends AbstractViewModel {
             }
         });
 
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-
         const statusCounts = {
             [ResultStatusType.PASSED]: this.methodHistoryStatistics.overallPassed,
             [ResultStatusType.FAILED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.FAILED) +
@@ -91,7 +82,7 @@ export class MethodHistory extends AbstractViewModel {
                     status,
                     statusName: this._statusConverter.getLabelForStatus(status),
                     value: count,
-                    itemStyle: {color: style.get(status)}
+                    itemStyle: {color: this._statusConverter.getColorForStatus(status)}
                 });
             }
         });

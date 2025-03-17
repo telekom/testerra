@@ -1,7 +1,7 @@
-/*
+/*!
  * Testerra
  *
- * (C) 2024, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2025, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,21 +19,8 @@
  * under the License.
  */
 
-import {autoinject, bindable} from 'aurelia-framework';
-import {AbstractViewModel} from "../abstract-view-model";
-import "./history-statistics-card.scss";
-
-@autoinject()
-export class HistoryStatisticsCard extends AbstractViewModel {
-    @bindable total_run_count: number;
-    @bindable average_run_duration: number;
-    @bindable flakiness: string;
-    @bindable recent_changes: boolean;
-
-    constructor() {
-        super();
-    }
-
-    async attached() {
-    };
+.icon-column {
+    width: 24px;
+    padding: 0;
+    margin: 0;
 }

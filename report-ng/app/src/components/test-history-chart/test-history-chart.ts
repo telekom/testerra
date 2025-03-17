@@ -35,6 +35,7 @@ import {Container} from "aurelia-dependency-injection";
 import "./test-history-chart.scss"
 import {bindingMode} from "aurelia-binding";
 import {ResultStatusType} from "../../services/report-model/framework_pb";
+import {IHistoryChartViewport} from "../history/run-history/run-history";
 
 @autoinject()
 export class TestHistoryChart extends AbstractViewModel {
@@ -46,7 +47,7 @@ export class TestHistoryChart extends AbstractViewModel {
     @bindable({defaultBindingMode: bindingMode.toView}) filter: IFilter;
     @bindable is_history_view: boolean;
     private _chartData: any[] = [];
-    @bindable viewport: number[] = [];
+    @bindable viewport: IHistoryChartViewport;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -116,8 +117,8 @@ export class TestHistoryChart extends AbstractViewModel {
         const startIndex = historyIndexes[start];
         const endIndex = historyIndexes[end];
 
-        if (this.viewport[0] != startIndex || this.viewport[1] != endIndex) {
-            this.viewport = [startIndex, endIndex];
+        if (this.viewport.start != startIndex || this.viewport.end != endIndex) {
+            this.viewport = {start: startIndex, end: endIndex};
         }
     }
 

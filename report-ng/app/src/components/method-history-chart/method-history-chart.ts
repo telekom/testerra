@@ -40,13 +40,11 @@ export class MethodHistoryChart extends AbstractViewModel {
     @bindable method_history_statistics: MethodHistoryStatistics;
     private _option: EChartsOption;
     private _data: any[] = [];
-    private _lineStart: number[] = [];
-    private _lineEnd: number[] = [];
-    private _initialChartLoading = true;        // To prevent the access of _option in the first call of sharedDataChanged()
+    private _initialChartLoading = true;        // To prevent the access of _option at the first call of sharedDataChanged()
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
     private _chartSymbolSize = 20;
     private _maxErrorMessageLength = 400;
-    @bindable() sharedData;
+    @bindable() sharedData: string;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -93,16 +91,6 @@ export class MethodHistoryChart extends AbstractViewModel {
     }
 
     private _prepareChartData() {
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
-
         this.method_history_statistics.runs.forEach(run => {
             const startTime = run.context.contextValues.startTime;
             const endTime = run.context.contextValues.endTime;
@@ -113,7 +101,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                 statusName: this._statusConverter.getLabelForStatus(status),
                 errorMessage: run.combinedErrorMessage,
                 itemStyle: {
-                    color: style.get(status),
+                    color: this._statusConverter.getColorForStatus(status),
                     opacity: 1
                 },
                 startTime: startTime,
@@ -122,11 +110,8 @@ export class MethodHistoryChart extends AbstractViewModel {
                 value: [run.historyIndex, 0]
             });
         });
-
         this._completeArray();
 
-        this._lineStart = this._data[0].value;
-        this._lineEnd = this._data[this._data.length - 1].value;
         if (this._data.length > 50) {
             this._chartSymbolSize = 14;
         }
@@ -220,7 +205,7 @@ export class MethodHistoryChart extends AbstractViewModel {
                     type: 'line',
                     symbol: 'none',
                     data: [
-                        this._lineStart, this._lineEnd
+                        this._data[0].value, this._data[this._data.length - 1].value
                     ],
                     lineStyle: {
                         color: '#A0A0A0',

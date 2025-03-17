@@ -23,12 +23,13 @@ import {autoinject, bindable, observable} from "aurelia-framework";
 import {AbstractViewModel} from "../abstract-view-model";
 import {ECharts, EChartsOption} from "echarts";
 import "./status-share-chart.scss"
+import {IStatusShare} from "../history/run-history/run-history";
 
 @autoinject()
 export class StatusShareChart extends AbstractViewModel {
     @observable() private _chart: ECharts;
     private _option: EChartsOption;
-    @bindable statusData: any[] = [];
+    @bindable statusData: IStatusShare[] = [];
 
     constructor() {
         super();

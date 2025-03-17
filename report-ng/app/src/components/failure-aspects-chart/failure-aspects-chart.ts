@@ -32,7 +32,7 @@ export class FailureAspectsChart extends AbstractViewModel {
     private _option: EChartsOption;
     @bindable failure_aspects_data: any[] = [];
     @bindable() onClick;
-    private _highlightedData = undefined;
+    private _highlightedData: string = undefined;
     private _opacityOfInactiveElements = 0.38;  // Default opacity of disabled elements https://m2.material.io/design/interaction/states.html#disabled
     private _maxXAxisLabelLength = 28;          // Maximum shown length of x-axis label
     private _maxErrorMessageLength = 400;
@@ -81,11 +81,11 @@ export class FailureAspectsChart extends AbstractViewModel {
         this._chart.setOption(this._option);
     }
 
-    private _truncateErrorMessage(str: string): string {
-        if (str.length <= this._maxErrorMessageLength) {
-            return str;
+    private _truncateErrorMessage(errorMessage: string): string {
+        if (errorMessage.length <= this._maxErrorMessageLength) {
+            return errorMessage;
         }
-        return str.slice(0, this._maxErrorMessageLength - 3) + '...';
+        return errorMessage.slice(0, this._maxErrorMessageLength - 3) + '...';
     }
 
     private _setChartOption() {

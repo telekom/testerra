@@ -44,6 +44,16 @@ export class History {
                 }
             },
             {
+                route: 'run-comparison',
+                moduleId: PLATFORM.moduleName('./run-comparison/run-comparison'),
+                nav: true,
+                name: "run-comparison",
+                title: 'Run comparison',
+                settings: {
+                    icon: "compare_arrows",
+                }
+            },
+            {
                 route: 'duration-history',
                 moduleId: PLATFORM.moduleName('./duration-history/duration-history'),
                 nav: true,
@@ -73,7 +83,13 @@ export class History {
         if (!routeConfig.hasChildRouter) {
             const navOptions = {replace: true};
             const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
-            this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
+            if (enabledRouteConfig) {
+                this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
+            }
+            if (params.subPage) {
+                const routeParams = params.class ? {class: params.class} : {...params};
+                this._router.navigateToRoute(params.subPage, routeParams, navOptions);
+            }
         }
     }
 

@@ -34,11 +34,12 @@ import {
     IntlDateFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/intl-date-format-value-converter";
 import {ResultStatusType} from "../../../services/report-model/framework_pb";
+import {IHistoryChartViewport} from "../run-history/run-history";
 
 @autoinject()
 export class DurationHistory extends AbstractViewModel {
     @observable() private _chart: ECharts;
-    @observable() viewport: number[] = [];
+    @observable() viewport: IHistoryChartViewport;
     private _option: EChartsOption;
     private _historyStatistics: HistoryStatistics;
     private static readonly DURATION_COLOR = '#6897EA';
@@ -66,7 +67,7 @@ export class DurationHistory extends AbstractViewModel {
         }
 
         const availableRuns = this._historyStatistics.availableRuns;
-        this.viewport = [Math.min(...availableRuns), Math.max(...availableRuns)];
+        this.viewport = {start: Math.min(...availableRuns), end: Math.max(...availableRuns)};
 
         this._historyStatistics.getHistoryAggregateStatistics().forEach(aggregate => {
             const context = aggregate.historyAggregate.executionContext.contextValues;
@@ -100,8 +101,8 @@ export class DurationHistory extends AbstractViewModel {
         const startIndex = historyIndexes[start];
         const endIndex = historyIndexes[end];
 
-        if (this.viewport[0] != startIndex || this.viewport[1] != endIndex) {
-            this.viewport = [startIndex, endIndex];
+        if (this.viewport.start != startIndex || this.viewport.end != endIndex) {
+            this.viewport = {start: startIndex, end: endIndex};
         }
     }
 
@@ -110,7 +111,7 @@ export class DurationHistory extends AbstractViewModel {
     }
 
     viewportChanged() {
-        if (this.viewport.length > 1) {
+        if (this.viewport) {
             this._updateLongestRuns();
             this._updateLongestTestCases();
         }
@@ -122,7 +123,7 @@ export class DurationHistory extends AbstractViewModel {
             .map(method => {
                 return {
                     statistics: method,
-                    averageDuration: method.getAverageDurationInRange(this.viewport[0], this.viewport[1])
+                    averageDuration: method.getAverageDurationInRange(this.viewport.start, this.viewport.end)
                 };
             });
     }
@@ -136,7 +137,7 @@ export class DurationHistory extends AbstractViewModel {
         this._topLongestRuns = this._chartData
             .filter(item => {
                 const historyIndex = item.value[0];
-                return historyIndex >= this.viewport[0] && historyIndex <= this.viewport[1];
+                return historyIndex >= this.viewport.start && historyIndex <= this.viewport.end;
             })
             .sort((a, b) => b.value[1] - a.value[1])
             .slice(0, 3);

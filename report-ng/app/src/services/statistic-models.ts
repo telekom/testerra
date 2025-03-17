@@ -373,16 +373,14 @@ export class HistoricalMethod {
 
     getFailureAspects(): string[] {
         let failureAspects: string[] = [];
-        if (this._methodContext.resultStatus != ResultStatusType.PASSED) {
-            this._methodContext.testSteps.flatMap(value => value.actions)
-                .forEach(actionDetails => {
-                    actionDetails.entries.forEach(entry => {
-                        const errorContext = entry.errorContext;
-                        const errorClassName = errorContext.stackTrace[0].className.substring(errorContext.stackTrace[0].className.lastIndexOf(".") + 1);
-                        failureAspects.push((errorClassName + ": " + errorContext.stackTrace[0].message).trim().replaceAll('\n', ' '));
-                    });
+        this._methodContext.testSteps.flatMap(value => value.actions)
+            .forEach(actionDetails => {
+                actionDetails.entries.forEach(entry => {
+                    const errorContext = entry.errorContext;
+                    const errorClassName = errorContext.stackTrace[0].className.substring(errorContext.stackTrace[0].className.lastIndexOf(".") + 1);
+                    failureAspects.push((errorClassName + ": " + errorContext.stackTrace[0].message).trim().replaceAll('\n', ' '));
                 });
-        }
+            });
         return failureAspects;
     }
 

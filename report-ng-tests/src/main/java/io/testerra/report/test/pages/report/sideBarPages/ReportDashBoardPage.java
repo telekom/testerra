@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 public class ReportDashBoardPage extends AbstractReportPage {
 
     @Check
-    private final UiElement testsElement = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'Tests')]]"));
+    private final UiElement testsElement = pageContent.find(By.xpath(".//mdc-card[.//div[contains(text(), 'Tests')]]"));
     @Check
     private final UiElement historyChart = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'History')]]"));
 

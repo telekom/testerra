@@ -128,7 +128,8 @@ export class FailureAspectsChart extends AbstractViewModel {
                 }
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                interval: 1
             },
             series: [
                 {

@@ -32,7 +32,8 @@ export interface IComparableMethod {
     methodRunId: number,
     currentStatus: ResultStatusType,
     pastStatus: ResultStatusType,
-    changedFailureAspect: boolean
+    changedFailureAspect: boolean,
+    methodHistoryAvailable: boolean
 }
 
 @autoinject()
@@ -86,6 +87,7 @@ export class RunComparison extends AbstractViewModel {
             cls.methods.map(method => {
                 const currentRun = method.getRunWithHistoryIndex(this.currentRunStatistics.historyIndex);
                 const pastRun = method.getRunWithHistoryIndex(this._selectedHistoryIndex);
+                let methodHistoryAvailable = false;
 
                 let currentStatus = null;
                 let pastStatus = null;
@@ -100,6 +102,10 @@ export class RunComparison extends AbstractViewModel {
 
                 if (currentStatus === ResultStatusType.PASSED && pastStatus === ResultStatusType.PASSED) {
                     return null;
+                }
+
+                if (method.runs.length > 1) {
+                    methodHistoryAvailable = true;
                 }
 
                 let differentFailureAspect = false;
@@ -119,7 +125,8 @@ export class RunComparison extends AbstractViewModel {
                     methodRunId: methodRunId,
                     currentStatus: currentStatus,
                     pastStatus: pastStatus,
-                    changedFailureAspect: differentFailureAspect
+                    changedFailureAspect: differentFailureAspect,
+                    methodHistoryAvailable: methodHistoryAvailable
                 }
             })
         ).filter(methodObj => methodObj !== null

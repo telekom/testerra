@@ -56,7 +56,7 @@
                     ></a>
                 </td>
                 <td class="p1 wrapable" mdc-body1>
-                    <a if.bind="methodHistory.methodRunId && methodHistory.currentStatus"
+                    <a if.bind="methodHistory.methodRunId && methodHistory.methodHistoryAvailable"
                        innerhtml.bind="methodHistory.methodIdentifier"
                        route-href="route: method; params.bind: {methodId: methodHistory.methodRunId, subPage: 'method-history'}"
                     ></a>

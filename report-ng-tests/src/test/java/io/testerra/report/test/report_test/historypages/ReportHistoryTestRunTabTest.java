@@ -45,6 +45,8 @@ public class ReportHistoryTestRunTabTest extends AbstractReportTest {
 
     @Test
     public void testT02_topFlakyTests() {
+        String flakyTestName = "test_highFlakiness";
+
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
@@ -53,11 +55,11 @@ public class ReportHistoryTestRunTabTest extends AbstractReportTest {
 
         TestStep.begin("Check the top flaky test.");
         String topFlakyTest = reportHistoryTestRunTab.getOrderListOfTopFlakyTests().get(0);
-        ASSERT.assertTrue(topFlakyTest.contains("test_highFlakiness"));
+        ASSERT.assertTrue(topFlakyTest.contains(flakyTestName));
 
         TestStep.begin("Navigate to the top flaky test.");
         ReportMethodHistoryTab reportMethodHistoryTab = reportHistoryTestRunTab.clickOnTopFlakyTest();
-        reportMethodHistoryTab.assertMethodNamesAreCorrect(topFlakyTest);
+        reportMethodHistoryTab.assertMethodNamesAreCorrect(flakyTestName);
     }
 
     @Test

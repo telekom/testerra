@@ -45,7 +45,7 @@ public abstract class AbstractReportMethodPage extends AbstractReportPage {
     @Check
     protected final UiElement tabPagesContent = find(By.xpath("//router-view[./mdc-layout-grid]/router-view"));
     @Check
-    private final UiElement testPrimeCardHeadline = testMethodCard.find(By.xpath("/div"));
+    private final UiElement testPrimeCardHeadline = testMethodCard.find(By.xpath("/div[1]"));
     @Check
     private final UiElement testClassText = testMethodCard.find(By.xpath("//li[.//span[contains(text(), 'Class')]]//a"));
     @Check

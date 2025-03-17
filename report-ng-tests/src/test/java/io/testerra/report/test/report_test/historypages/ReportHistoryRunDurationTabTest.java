@@ -47,6 +47,8 @@ public class ReportHistoryRunDurationTabTest extends AbstractReportTest {
 
     @Test
     public void testT02_checkLongestTests() {
+        String longTestName = "test_longDuration";
+
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
@@ -56,10 +58,10 @@ public class ReportHistoryRunDurationTabTest extends AbstractReportTest {
 
         TestStep.begin("Check the longest tests.");
         String longestTest = reportRunDurationTab.getOrderListOfLongestTests().get(0);
-        ASSERT.assertTrue(longestTest.contains("test_longDuration"));
+        ASSERT.assertTrue(longestTest.contains(longTestName));
 
         TestStep.begin("Navigate to the longest test.");
         ReportMethodHistoryTab reportMethodHistoryTab = reportRunDurationTab.clickOnLongestTest();
-        reportMethodHistoryTab.assertMethodNamesAreCorrect(longestTest);
+        reportMethodHistoryTab.assertMethodNamesAreCorrect(longTestName);
     }
 }

@@ -41,10 +41,10 @@ public class ReportTestRunTab extends AbstractReportHistoryPage {
     private final UiElement statusShareChart = pageContent.find(By.xpath(".//status-share-chart//echart[.//canvas]"));
     @Check
     protected final UiElement topFlakyTestsCard = pageContent.find(By.xpath(".//mdc-card[.//div[text()='Top 3 flaky tests']]"));
-    private final UiElement topFlakyTestsLink = topFlakyTestsCard.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
+    private final UiElement topFlakyTestsLink = topFlakyTestsCard.find(By.xpath("/mdc-list//mdc-list-item"));
     @Check
     protected final UiElement topFailingTestsCard = pageContent.find(By.xpath(".//mdc-card[.//div[text()='Top 3 failing tests']]"));
-    private final UiElement topFailingTestsLink = topFailingTestsCard.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
+    private final UiElement topFailingTestsLink = topFailingTestsCard.find(By.xpath("/mdc-list//mdc-list-item"));
 
     /**
      * Constructor for existing sessions.

@@ -35,10 +35,10 @@ public class ReportRunDurationTab extends AbstractReportHistoryPage {
     private final UiElement durationHistoryChart = pageContent.find(By.xpath(".//echart[.//canvas]"));
     @Check
     protected final UiElement topLongestRunsCard = pageContent.find(By.xpath(".//mdc-card[.//div[text()='Longest runs']]"));
-    private final UiElement topLongestRunsLabel = topLongestRunsCard.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
+    private final UiElement topLongestRunsLabel = topLongestRunsCard.find(By.xpath("/mdc-list//mdc-list-item"));
     @Check
     protected final UiElement topLongestTestsCard = pageContent.find(By.xpath(".//mdc-card[.//div[text()='Longest methods']]"));
-    private final UiElement topLongestTestsLink = topLongestTestsCard.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
+    private final UiElement topLongestTestsLink = topLongestTestsCard.find(By.xpath("/mdc-list//mdc-list-item"));
 
     /**
      * Constructor for existing sessions.

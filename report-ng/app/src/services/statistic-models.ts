@@ -268,6 +268,9 @@ export class HistoryStatistics {
     }
 
     runsAreDifferent(runA: HistoryAggregateStatistics, runB: HistoryAggregateStatistics): boolean {
+        if (!runA || !runB) {
+            return true;
+        }
         if (runA.overallTestCases != runB.overallTestCases) {
             return true;
         }

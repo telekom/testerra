@@ -29,7 +29,9 @@ import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.UiElementFinderFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
@@ -63,8 +65,10 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
-        // Empty baseUrl of Chrome
-        Assert.assertTrue(currentUrl.contains("data"), "Current URL is invalid - actual: " + currentUrl);
+        // Empty baseUrl
+        String browser = IWebDriverManager.Properties.BROWSER.asString();
+        String expectedURL = browser.equals(Browsers.firefox) ? "about:blank" : "data";
+        Assert.assertTrue(currentUrl.contains(expectedURL), "Current URL is invalid - actual: " + currentUrl);
     }
 
     @Test
@@ -111,6 +115,10 @@ public class DesktopWebDriverFactoryTest extends TesterraTest implements WebDriv
         customCaps.put("t05UserAgent", "yesyes");
         WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chromeHeadless,
                 (ChromeConfig) options -> options.setCapability("custom:caps", customCaps));
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.chrome,
+                (ChromeConfig) options -> options.setCapability("custom:caps", customCaps));
+        WEB_DRIVER_MANAGER.setUserAgentConfig(Browsers.firefox,
+                (FirefoxConfig) options -> options.setCapability("custom:caps", customCaps));
 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
 

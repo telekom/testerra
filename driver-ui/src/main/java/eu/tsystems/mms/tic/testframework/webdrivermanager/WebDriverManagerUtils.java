@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.useragents.BrowserInformation;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,6 +93,9 @@ public final class WebDriverManagerUtils {
         }
         try {
             driver.quit();
+        } catch (final NoSuchSessionException e) {
+            // Closing all tabs likely also closed the whole session
+            LOGGER.debug("WebDriver has already quit.", e);
         } catch (final Throwable e) {
             LOGGER.warn("WebDriver could not be quit. May someone did before.", e);
         }

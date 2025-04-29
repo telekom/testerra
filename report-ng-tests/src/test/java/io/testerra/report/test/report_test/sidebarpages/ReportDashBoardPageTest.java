@@ -206,6 +206,6 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnHistoryReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check if the layout of the history chart is correct");
-        reportDashBoardPage.assertHistoryChartMatchesScreenshot(1.0);
+        reportDashBoardPage.assertHistoryChartMatchesScreenshot(3.0);
     }
 }

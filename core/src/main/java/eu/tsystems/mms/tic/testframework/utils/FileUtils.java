@@ -24,8 +24,9 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,9 +47,11 @@ import java.util.UUID;
 
 import static java.lang.Thread.currentThread;
 
-public final class FileUtils extends org.apache.commons.io.FileUtils implements Loggable {
+public final class FileUtils extends org.apache.commons.io.FileUtils {
 
     private static String lineBreak = "\n";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
     public FileUtils() {
     }
@@ -267,24 +270,37 @@ public final class FileUtils extends org.apache.commons.io.FileUtils implements 
 
     public Path createTempDir(String dirName) {
         try {
-//            Path dir = Path.of(System.getProperty("java.io.tmpdir"), dirName + "-" + UUID.randomUUID());
-
             return Files.createTempDirectory(dirName + "_");
         } catch (IOException e) {
             throw new SystemException("Cannot create temporary folder " + dirName, e);
         }
     }
 
-    public boolean createDirectoriesSafely(Path path) {
+    public static boolean createDirectoriesSafely(Path path) {
         try {
             Files.createDirectories(path);
             return true;
         } catch (FileAlreadyExistsException e) {
-            log().error("Folder already exists: {}", path.toAbsolutePath());
+            LOGGER.error("Folder already exists: {}", path.toAbsolutePath());
             return false;
         } catch (IOException e) {
-            log().error("Cannot create folder {}: {}", path.toAbsolutePath(), e.getMessage());
+            LOGGER.error("Cannot create folder {}: {}", path.toAbsolutePath(), e.getMessage());
             return false;
         }
+    }
+
+    public static int findIndexOfPath(Path originalPath, final Path subPath) {
+        int segmentIndex = -1;
+        if (originalPath == null || subPath == null) {
+            return segmentIndex;
+        }
+        final int subPathCount = subPath.getNameCount();
+        for (int i = 0; i < originalPath.getNameCount(); i++) {
+            if (originalPath.subpath(i, Math.min(i + subPathCount, originalPath.getNameCount())).toString().equals(subPath.toString())) {
+                segmentIndex = i;
+                break;
+            }
+        }
+        return segmentIndex;
     }
 }

@@ -99,7 +99,7 @@ public interface Report {
     default Path getReportDirectory(String childName) {
         Path path = getReportDirectory().resolve(childName);
         if (!Files.exists(path)) {
-            new FileUtils().createDirectoriesSafely(path);
+            FileUtils.createDirectoriesSafely(path);
         }
         return path;
     }
@@ -108,7 +108,7 @@ public interface Report {
         Path path = getReportDirectory().resolve(Path.of(filePath));
         Path dir = path.getParent();
         if (!Files.exists(dir)) {
-            new FileUtils().createDirectoriesSafely(dir);
+            FileUtils.createDirectoriesSafely(dir);
         }
         return path;
     }

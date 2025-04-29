@@ -52,7 +52,7 @@ public final class PropertyManager {
     private static final PropertyResolver filePropertyResolver = new PropertiesPropertyResolver(FILEPROPERTIES);
     private static final PropertyResolver systemPropertyResolver = new PropertiesPropertyResolver(System.getProperties());
     private static final ThreadLocal<List<PropertyResolver>> priorityPropertyResolvers = new ThreadLocal<>();
-    private static final String TEST_PROPERTIES = "test.properties";
+    public static final String TEST_PROPERTIES = "test.properties";
 
     /*
      * Static constructor, creating static Properties object.

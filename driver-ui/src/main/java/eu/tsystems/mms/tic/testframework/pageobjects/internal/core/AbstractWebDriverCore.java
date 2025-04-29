@@ -739,7 +739,7 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
             ImageIO.write(eleScreenshot, "png", elementScreenshot);
             return elementScreenshot;
         } catch (RasterFormatException e) {
-            String message = String.format("Unable to take screenshot from %s. Element seems to be outside of viewport.", guiElementData);
+            final String message = String.format("Unable to take screenshot from %s. Element seems to be outside of viewport.", guiElementData);
             throw new RuntimeException(message, e);
         } catch (IOException e) {
             final String message = String.format("Unable to take screenshot from %s ", guiElementData);

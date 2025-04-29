@@ -55,6 +55,7 @@ import org.openqa.selenium.interactions.Actions;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -737,11 +738,13 @@ public abstract class AbstractWebDriverCore extends AbstractGuiElementCore imple
             File elementScreenshot = new File(viewPortScreenshot.getPath());
             ImageIO.write(eleScreenshot, "png", elementScreenshot);
             return elementScreenshot;
+        } catch (RasterFormatException e) {
+            String message = String.format("Unable to take screenshot from %s. Element seems to be outside of viewport.", guiElementData);
+            throw new RuntimeException(message, e);
         } catch (IOException e) {
-            log().error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
+            final String message = String.format("Unable to take screenshot from %s ", guiElementData);
+            throw new RuntimeException(message, e);
         }
-
-        return null;
     }
 
     // Calculate the global position of an element by going to all parent elements

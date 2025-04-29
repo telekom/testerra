@@ -68,15 +68,15 @@ export class MethodHistory extends AbstractViewModel {
         });
 
         const statusCounts = {
-            [ResultStatusType.PASSED]: this.methodHistoryStatistics.overallPassed,
             [ResultStatusType.FAILED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.FAILED) +
             this.methodHistoryStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED),
-            [ResultStatusType.SKIPPED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.SKIPPED),
             [ResultStatusType.FAILED_EXPECTED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED),
+            [ResultStatusType.SKIPPED]: this.methodHistoryStatistics.getStatusCount(ResultStatusType.SKIPPED),
+            [ResultStatusType.PASSED]: this.methodHistoryStatistics.overallPassed,
         };
 
-        Object.entries(statusCounts).forEach(([statusKey, count]) => {
-            const status = Number(statusKey);
+        this._statusConverter.relevantStatuses.forEach(status => {
+            const count = statusCounts[status];
             if (count > 0) {
                 this.statusData.push({
                     status,

@@ -172,16 +172,17 @@ public class GenerateReportNgModelListener extends AbstractReportModelListener i
 
         // Add the new entry from the current execution
         history.addEntries(newHistoryEntry);
-        List<HistoryAggregate> historyEntryList = history.getEntriesList();
-        int entriesCount = historyEntryList.size();
-        int entriesToRemove = entriesCount - maxHistoryEntries;
-        if (entriesToRemove > 0) {
+        int totalEntries = history.getEntriesCount();
+
+        if (totalEntries > maxHistoryEntries) {
             // Cut the history to the correct size
-            historyEntryList = historyEntryList.subList(entriesToRemove, entriesCount);
+            List<HistoryAggregate> allEntries = history.getEntriesList();
+            int entriesToKeepStart = totalEntries - maxHistoryEntries;
+            History.Builder trimmedHistory = History.newBuilder();
+            trimmedHistory.addAllEntries(allEntries.subList(entriesToKeepStart, totalEntries));
+            history = trimmedHistory;
         }
 
-        history.clear();
-        history.addAllEntries(historyEntryList);
         writeBuilderToFile(history, file);
     }
 }

@@ -2,14 +2,15 @@
 
 == Overview
 
-The dashboard view gives an overview of the last test execution. It shows the total number of executed tests and of passed, skipped or failed tests.
+The dashboard view provides an overview of the latest test execution.
+It displays the total number of executed tests, along with counts of passed, skipped, and failed tests.
 
-image::report-ng-05.png[align="center", alt="Dashboard"]
+image::report-ng-dashboard-components.png[align="center",alt="Dashboard"]
 
-On the Breakdown panel is a pie chart that shows the proportions, displayed with different colors according to the test status.
+The Breakdown panel includes a pie chart showing the proportions of test results, color-coded by test status.
 
-Right beside the Breakdown pie chart you find another panel with the Top 3 failure types (aspects).
-There are two more panels below, one displaying detailed information about test execution duration, start and end times and another panel with a list of test classes that reports how many tests did pass, fail or were skipped in the individual test classes.
+Directly below the pie chart, a panel displays detailed information about test execution duration, as well as start and end times.
+Beneath that, another panel lists the executed test classes, showing how many tests passed, failed, or were skipped within each class.
 
 == Status definitions
 
@@ -53,7 +54,8 @@ Additional to the statuses above Testerra defines some more _sub statuses_:
 [NOTE]
 ====
 * The dashboard only shows the final statuses in the 'Breakdown' and 'Test Classes' charts.
-* The 'Tests' table summarize all executed tests inclusive retried tests. Recovered and repaired tests belong to passed tests.
+* The 'Tests' table summarize all executed tests inclusive retried tests.
+Recovered and repaired tests belong to passed tests.
 * The tests view shows all tests with their detailed status.
 ====
 

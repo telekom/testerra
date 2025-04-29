@@ -3,6 +3,7 @@
 <suite name="Test Testerra Report" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="5">
     <test name="Parallel" parallel="methods">
         <packages>
+            <package name="io.testerra.report.test.report_test.historypages"/>
             <package name="io.testerra.report.test.report_test.methodpages"/>
             <package name="io.testerra.report.test.report_test.sidebarpages"/>
             <package name="io.testerra.report.test.report_test.common"/>

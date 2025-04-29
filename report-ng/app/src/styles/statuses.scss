@@ -82,6 +82,12 @@
     border-color: $failedExpected;
 }
 
+.status-no-run {
+    @extend .status;
+    background: $crashed;
+    border-color: $crashed;
+}
+
 .status-retried {
     @extend .status-failed
 }

@@ -20,10 +20,10 @@ test {
         'src/test/resources/testng/TestReport.xml',
     ]
 
-
     def preTest = findProperty("pretestRNG")
     def preTestExtended = findProperty("pretestRNGExtended")
     def playground = findProperty("playground")
+    def historyIndex = findProperty("pretestHistoryIndex") as Integer
 
     if (preTest) {
         s = ['src/test/resources/testng/GenerateReport.xml']
@@ -35,6 +35,17 @@ test {
         s = ['src/test/resources/testng/GenerateExtendedReport.xml']
         System.setProperty("tt.report.dir", "src/test/resources/reports/report-extended-status")
         System.setProperty("tt.report.name", "Generated Report for Additional UI-Test")
+    }
+
+    if (historyIndex) {
+        System.setProperty("history.index", historyIndex as String)
+        System.setProperty("tt.report.dir", "src/test/resources/reports/report-history")
+        System.setProperty("tt.report.name", "Generated Report for History UI-Test")
+        if (historyIndex > 5) {
+            s = ['src/test/resources/testng/Pretest_HistoryTest_2.xml']
+        } else {
+            s = ['src/test/resources/testng/Pretest_HistoryTest_1.xml']
+        }
     }
 
     if (playground) {

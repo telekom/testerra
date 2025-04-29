@@ -31,21 +31,22 @@
             <mdc-icon class="colored-icon status-${item.status|statusClass}"
                       mdc-list-item-leading
                       title="${item.status|statusName}"
-            >${item.status|statusIconName}
+            >${item.status | statusIconName}
             </mdc-icon>
             <mdc-list-item-primary-text>
-                <span class="item-label"
-                      repeat.for="count of item.counts"
-                      if.bind="count!=null"
-                      innerhtml="${count}"
-                ></span>
+                <span class="item-label" innerhtml="${item.counts[0]} ${item.labels[0]}"></span>
             </mdc-list-item-primary-text>
-            <mdc-list-item-secondary-text>
-                <span class="item-label"
-                      repeat.for="label of item.labels"
-                      if.bind="label"
-                      innerhtml="${label}"
-                ></span></mdc-list-item-secondary-text>
+
+            <mdc-list-item-secondary-text if.bind="item.labels.length > 1">
+                <span class="item-label" repeat.for="subLabel of item.labels" if.bind="$index > 0 && subLabel"
+                      innerhtml="${item.counts[$index]} ${subLabel} &nbsp;">
+                </span>
+            </mdc-list-item-secondary-text>
+
+            <div mdc-list-item-trailing title="Trend" class="hcenter" if.bind="_historyAvailable">
+                <span if.bind="item.trend !== 0">${item.trend > 0 ? '+' + item.trend : item.trend}</span>
+                <mdc-icon>${_getTrendIcon(item.trend)}</mdc-icon>
+            </div>
         </mdc-list-item>
     </mdc-list>
 </template>

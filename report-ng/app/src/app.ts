@@ -20,7 +20,7 @@
  */
 
 import {autoinject, PLATFORM} from "aurelia-framework";
-import {NavModel, Router, RouterConfiguration} from 'aurelia-router';
+import {NavigationInstruction, NavModel, Next, Router, RouterConfiguration} from 'aurelia-router';
 import {DataLoader} from "./services/data-loader";
 import {StatusConverter} from "./services/status-converter";
 import {data} from "./services/report-model";
@@ -28,15 +28,16 @@ import {MdcDrawer} from "@aurelia-mdc-web/drawer";
 import "./app.scss"
 import {StatisticsGenerator} from "./services/statistics-generator";
 import Logo from 'assets/logo.png'
-import IExecutionContext = data.ExecutionContext;
 import {MdcDialogService} from "@aurelia-mdc-web/dialog";
 import {PrintDialog} from "./components/print-dialog/print-dialog";
+import IExecutionContext = data.ExecutionContext;
+
 PLATFORM.moduleName('./components/print-dialog/print-dialog')   // necessary to display dialog according to https://discourse.aurelia.io/t/solved-error-cannot-determine-default-view-strategy-for-object/3589/5
 
 @autoinject()
 export class App {
     private _router: Router;
-    private _drawer:MdcDrawer;
+    private _drawer: MdcDrawer;
     private _executionContext: IExecutionContext;
     private _routeConfig: RouterConfiguration;
     private _logo = Logo;
@@ -59,9 +60,6 @@ export class App {
             this._router.routes.filter(route => route.route == "tests").find(route => {
                 route.settings.count = executionStatistics.overallTestCases;
             });
-            // this._router.routes.filter(route => route.route == "exit-points").find(route => {
-            //     route.settings.count = executionStatistics.exitPointStatistics.length;
-            // });
         });
     }
 
@@ -69,13 +67,25 @@ export class App {
         router.title = "Report NG";
         this._router = router;
         this._routeConfig = config;
+
+        // Scroll to the top of the page on new routes: https://github.com/aurelia/router/issues/170#issuecomment-359535312
+        config.addPostRenderStep({
+            run(navigationInstruction: NavigationInstruction, next: Next) {
+                if (navigationInstruction.router.isNavigatingNew) {
+                    window.scroll(0, 0);
+                }
+                return next();
+            }
+        });
+
         config.map([
             {
                 route: '',
                 moduleId: PLATFORM.moduleName('components/dashboard/dashboard'),
                 nav: true,
                 name: "dashboard",
-                title: 'Dashboard'
+                title: 'Dashboard',
+
             },
             {
                 route: 'tests',
@@ -133,6 +143,16 @@ export class App {
                 title: 'Timings'
             },
             {
+                route: 'history',
+                name: 'history',
+                moduleId: PLATFORM.moduleName('components/history/history'),
+                nav: true,
+                title: 'History',
+                settings: {
+                    disabled: false
+                }
+            },
+            {
                 route: 'printable',
                 name: 'printable',
                 moduleId: PLATFORM.moduleName('components/print-dialog/printable'),
@@ -149,7 +169,7 @@ export class App {
         ]);
     }
 
-    navigateTo(nav:NavModel|string) {
+    navigateTo(nav: NavModel | string) {
         if (nav instanceof NavModel) {
             this._router.navigate(nav.href);
         } else {
@@ -167,8 +187,11 @@ export class App {
             const index = currentPath.indexOf("#/");
             currentPath = currentPath.slice(0, index + 2);
         }
-        
-        this._dialogService.open({ viewModel: PrintDialog, model: { title: this._router.title, iFrameSrc: currentPath + "printable"}});
+
+        this._dialogService.open({
+            viewModel: PrintDialog,
+            model: {title: this._router.title, iFrameSrc: currentPath + "printable"}
+        });
     }
 }
 

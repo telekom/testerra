@@ -135,6 +135,9 @@ export class TestClassesCard {
                     show: false,
                 },
                 events: {
+                    dataPointMouseEnter: (event) => {
+                        event.target.style.cursor = 'pointer'
+                    },
                     dataPointSelection: (event, chartContext, config) => {
                         this._barClicked(event, chartContext, config);
                     }

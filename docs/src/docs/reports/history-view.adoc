@@ -1,0 +1,29 @@
+= History View
+
+== Test Run tab pane
+
+The Test Run view provides an overview of the most important aspects of the history and highlights test cases with problematic behavior:
+
+image::report-ng-history-page-testrun.png[align="center",alt="Test Run history"]
+
+== Run Comparison tab pane
+
+You can compare any previous run with the current one in the Run Comparison tab:
+
+image::report-ng-history-page-comparison.png[align="center",alt="Run Comparison"]
+
+== Run Duration tab pane
+
+The Run Duration tab offers more insights into timing-related aspects of the history:
+
+image::report-ng-history-page-duration.png[align="center",alt="Run Duration history"]
+
+== Test Classes tab pane
+
+The Classes view displays all executed test classes along with their previous executions:
+
+image::report-ng-history-page-classes.png[align="center",alt="Classes history"]
+
+You can also select a class to view the history of all methods within that class:
+
+image::report-ng-history-page-classes.png[align="center",alt="Single class history"]

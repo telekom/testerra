@@ -44,7 +44,9 @@ import java.util.stream.Collectors;
 public class ReportDashBoardPage extends AbstractReportPage {
 
     @Check
-    private final UiElement testsElement = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'Tests')]]"));
+    private final UiElement testsElement = pageContent.find(By.xpath(".//mdc-card[.//div[contains(text(), 'Tests')]]"));
+    @Check
+    private final UiElement historyChart = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'History')]]"));
 
     @Check
     private final UiElement testDurationElement = pageContent.find(By.tagName("test-duration-card"));
@@ -63,7 +65,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement barChartPartPerTestStatus = barChartElement.find(By.xpath("//*[@class='apexcharts-series']"));
     private final UiElement segmentsOfBarsPerTestStatus = barChartPartPerTestStatus.find(By.xpath("//*"));
 
-    private final UiElement testTopFailureAspectsElement = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'Failure Aspects')]]"));
+    private final UiElement testTopFailureAspectsElement = pageContent.find(By.xpath(".//mdc-card[*/div[contains(text(), 'Failure Aspects')]]"));
     private final UiElement majorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Major')]"));
     private final UiElement minorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Minor')]"));
     private final UiElement topFailuresLink = testTopFailureAspectsElement.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
@@ -353,9 +355,13 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     private void assertPriorityInfo(final String[] infos) {
-        for (final String info : infos){
+        for (final String info : infos) {
             final UiElement priorityMessageElement = priorityMessagesElement.find(By.xpath(String.format("//*[contains(@class,'%s')]", info)));
             priorityMessageElement.assertThat().displayed();
         }
+    }
+
+    public void assertHistoryChartMatchesScreenshot(double pixelDistance) {
+        this.historyChart.expect().screenshot().pixelDistance("history_chart_dashboard").isLowerThan(pixelDistance);
     }
 }

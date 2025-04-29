@@ -83,6 +83,26 @@ html {
     bottom: 0;
 }
 
+.card-headline-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-headline-info-icon {
+    text-align: right;
+    margin-right: -12px;
+    padding-top: 4px;
+    cursor: default;
+}
+
+.card-headline-linked-icon {
+    text-align: right;
+    margin-right: 12px;
+    padding-top: 4px;
+    cursor: pointer;
+}
+
 //a {
 //    mdc-icon {
 //        text-decoration: none !important;

@@ -5,6 +5,7 @@ include::property-attributes.adoc[]
 | Property | default | Description
 | {reportdir} | /target/surefire-reports/report/ | Creates the report in the specified directory below the working directory.
 | {reportname} | na. | Names the report (e.g. the project where Testerra is used)
+| {reporthistorymaxtestruns} | 50 | Defines the maximum number of test runs that will be retained in the test history
 | {runcfg} | na. | Set a run configuration to use different variations (test sets) of a test scope within a build task.
 | {screenshotter_active} | true | If true, screenshots are fetched and added to the report.
 | {screenshot_on_pageload} | false | If true, screenshot after page is loaded will be taken

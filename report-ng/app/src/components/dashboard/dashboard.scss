@@ -41,3 +41,37 @@
         opacity: 1;
     }
 }
+
+.run-history-overview-chart {
+    width: 100%;
+    height: 16em;
+}
+
+.tall-card {
+    height: 21em;
+}
+
+.short-card {
+    height: 11em;
+}
+
+.card-content-vertical {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-row {
+    display: flex;
+    justify-content: center;
+}
+
+.breakdown-chart {
+    width: 100%;
+    max-width: 22em;
+    max-height: 22em;
+    margin: 0 auto;
+    padding-top: 1em;
+}

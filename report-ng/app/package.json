@@ -43,7 +43,7 @@
         "aurelia-templating": "^1.11.1",
         "aurelia-typed-observable-plugin": "^0.5.1",
         "aurelia-ui-virtualization": "^1.0.0-rc2",
-        "echarts": "^5.4.3",
+        "echarts": "^5.5.1",
         "highlight.js": "^11.8.0",
         "moment": "^2.29.4",
         "moment-duration-format": "^2.3.2",

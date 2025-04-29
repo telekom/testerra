@@ -1,0 +1,79 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2025, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <mdc-data-table class="w100">
+        <table>
+            <thead>
+            <th class="status-column centered-text">Status (Run ${pastRun})</th>
+            <th class="icon-column mdc-data-table__header-cell"></th>
+            <th class="status-column centered-text">Status (Run ${currentRun})</th>
+            <th class="mdc-data-table__header-cell">Class</th>
+            <th class="mdc-data-table__header-cell">Method</th>
+            </thead>
+            <tbody>
+            <tr repeat.for="methodHistory of methods">
+                <td>
+                    <div class="vcenter hcenter">
+                        <a if.bind="methodHistory.pastStatus"
+                           class="badge status-${methodHistory.pastStatus|statusClass}">${methodHistory.pastStatus | statusName}</a>
+                        <a else class="badge status-no-run">No run</a>
+                    </div>
+                </td>
+                <td class="wrapable">
+                    <div class="vcenter hcenter">
+                        <mdc-icon>arrow_forward</mdc-icon>
+                    </div>
+                </td>
+                <td>
+                    <div class="vcenter hcenter">
+                        <a if.bind="methodHistory.currentStatus"
+                           class="badge status-${methodHistory.currentStatus|statusClass}">${methodHistory.currentStatus | statusName}</a>
+                        <a else class="badge status-no-run">No run</a>
+                    </div>
+                </td>
+                <td class="p1 wrapable">
+                    <a innerhtml.bind="methodHistory.classIdentifier | className:1"
+                       route-href="route: history; params.bind: {subPage: 'classes-history', class: methodHistory.classIdentifier}"
+                    ></a>
+                </td>
+                <td class="p1 wrapable" mdc-body1>
+                    <a if.bind="methodHistory.methodRunId && !methodHistory.methodHistoryAvailable"
+                       innerhtml.bind="methodHistory.methodIdentifier"
+                       route-href="route: method; params.bind: {methodId: methodHistory.methodRunId}"
+                    ></a>
+                    <a if.bind="methodHistory.methodRunId && methodHistory.methodHistoryAvailable"
+                       innerhtml.bind="methodHistory.methodIdentifier"
+                       route-href="route: method; params.bind: {methodId: methodHistory.methodRunId, subPage: 'method-history'}"
+                    ></a>
+                    <a if.bind="!methodHistory.methodRunId && !methodHistory.methodHistoryAvailable"
+                       innerhtml.bind="methodHistory.methodIdentifier"></a>
+                    <div
+                        if.bind="methodHistory.changedFailureAspect && methodHistory.pastStatus === methodHistory.currentStatus"
+                        class="st1"
+                        mdc-body2> Changed failure aspect
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </mdc-data-table>
+</template>

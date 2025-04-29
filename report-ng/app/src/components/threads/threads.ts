@@ -36,10 +36,9 @@ import {
 import {
     DurationFormatValueConverter
 } from "t-systems-aurelia-components/src/value-converters/duration-format-value-converter";
-import {ResultStatusType} from "../../services/report-model/framework_pb";
 import {ClassName, ClassNameValueConverter} from "../../value-converters/class-name-value-converter";
-import MethodContext = data.MethodContext;
 import {MdcSelect} from "@aurelia-mdc-web/select";
+import MethodContext = data.MethodContext;
 
 interface MethodInfo {
     id: string;
@@ -63,10 +62,6 @@ export class Threads extends AbstractViewModel {
     @observable()
     private _chart: echarts.ECharts;
 
-    // Aurelia Value Converters
-    private _dateFormatter: IntlDateFormatValueConverter;
-    private _durationFormatter: DurationFormatValueConverter;
-
     // Values for presentation
     private _gapFromBorderToStart = 400;        // To prevent that the beginning of the first test is located ON the y-axis.
     private _threadHeight = 50;                 // Height of y-axis categories in pixel
@@ -79,7 +74,9 @@ export class Threads extends AbstractViewModel {
         private _statisticsGenerator: StatisticsGenerator,
         private _statistics: StatisticsGenerator,
         private _router: Router,
-        private _classNameValueConverter: ClassNameValueConverter
+        private _classNameValueConverter: ClassNameValueConverter,
+        private _dateFormatter: IntlDateFormatValueConverter,
+        private _durationFormatter: DurationFormatValueConverter
     ) {
         super();
     }
@@ -90,7 +87,6 @@ export class Threads extends AbstractViewModel {
             this._executionStatistics.classStatistics.sort((a, b) => this._classNameValueConverter.toView(a.classIdentifier, 1).localeCompare(this._classNameValueConverter.toView(b.classIdentifier, 1)))
             this._availableStatuses = [];
             this._availableStatuses = executionStatistics.availableStatuses;
-            this._initDateFormatter();
             this._initDurationFormatter();
             this._prepareTimeline(executionStatistics);
             this._initialChartLoading = false;
@@ -108,7 +104,7 @@ export class Threads extends AbstractViewModel {
                 self._zoomInOnFilter(self._statusConverter.getStatusForClass(params.status), 7)
                 self.statusSelect.value = self._statusConverter.normalizeStatus(self._statusConverter.getStatusForClass(self.queryParams.status)).toString();       // necessary to keep selection after refreshing the page
             }, 200)
-        }  else {
+        } else {
             this._selectedStatus = null;
         }
 
@@ -118,7 +114,7 @@ export class Threads extends AbstractViewModel {
                 self._zoomInOnFilter(params.class, 8);
                 self.classSelect.value = self._executionStatistics.classStatistics.find(classStat => classStat.classIdentifier == self.queryParams.class).classIdentifier;      // necessary to keep selection after refreshing the page
             }, 200)
-        }  else {
+        } else {
             this._selectedClass = null;
         }
     };
@@ -189,7 +185,7 @@ export class Threads extends AbstractViewModel {
             this._resetColor();
         }
 
-        if(this._selectedStatus > 0){
+        if (this._selectedStatus > 0) {
             this._zoomInOnFilter(this._selectedStatus, 7)
             this.updateUrl({status: this._statusConverter.getClassForStatus(this._selectedStatus)});
         }
@@ -205,8 +201,8 @@ export class Threads extends AbstractViewModel {
             this._resetColor();
         }
 
-        if(this._selectedClass){
-            this._zoomInOnFilter(this._selectedClass, 8)
+        if (this._selectedClass) {
+            this._zoomInOnFilter(this._selectedClass, 8);
             this.updateUrl({class: this._selectedClass});
         }
         // prevent overwriting of method and class filter when _selectedClass is set undefined by their observers
@@ -275,23 +271,6 @@ export class Threads extends AbstractViewModel {
         this._durationFormatter.setDefaultFormat("h[h] m[min] s[s] S[ms]");
     }
 
-    private _initDateFormatter() {
-        const container = new Container();
-        this._dateFormatter = container.get(IntlDateFormatValueConverter);
-        this._dateFormatter.setLocale('en-GB');
-        this._dateFormatter.setOptions('date', {year: 'numeric', month: 'short', day: 'numeric'});
-        this._dateFormatter.setOptions('time', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false});
-        this._dateFormatter.setOptions('full', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: false
-        });
-    }
-
     /**
      * Build Thread timeline according https://echarts.apache.org/examples/en/editor.html?c=custom-profile
      * and https://echarts.apache.org/en/option.html#series-custom
@@ -310,28 +289,19 @@ export class Threads extends AbstractViewModel {
         });
 
         const chartStartTime = Math.min.apply(Math, startTimes) - this._gapFromBorderToStart;
-
-        const style = new Map<number, string>();
-        style.set(ResultStatusType.PASSED, this._statusConverter.getColorForStatus(ResultStatusType.PASSED));
-        style.set(ResultStatusType.REPAIRED, this._statusConverter.getColorForStatus(ResultStatusType.REPAIRED));
-        style.set(ResultStatusType.PASSED_RETRY, this._statusConverter.getColorForStatus(ResultStatusType.PASSED_RETRY));
-        style.set(ResultStatusType.SKIPPED, this._statusConverter.getColorForStatus(ResultStatusType.SKIPPED));
-        style.set(ResultStatusType.FAILED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED));
-        style.set(ResultStatusType.FAILED_EXPECTED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_EXPECTED));
-        style.set(ResultStatusType.FAILED_MINOR, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_MINOR));
-        style.set(ResultStatusType.FAILED_RETRIED, this._statusConverter.getColorForStatus(ResultStatusType.FAILED_RETRIED));
+        const statusConverter = this._statusConverter;
 
         threadCategories.forEach(function (methodContexts, threadName) {
             methodContexts.forEach((context: MethodContext) => {
 
-                const itemColor = style.get(context.resultStatus);
+                const itemColor = statusConverter.getColorForStatus(context.resultStatus);
                 const duration = context.contextValues.endTime - context.contextValues.startTime;
                 const classId = executionStatistics.classStatistics.find(classStat => {
                     const classContextIds = classStat.methodContexts
                         .map(con => con.classContextId)
                         .filter((value, index, self) => self.indexOf(value) === index);
                     return classContextIds.includes(context.classContextId);
-                }).classIdentifier
+                }).classIdentifier;
 
                 data.push({
                     name: context.contextValues.name,
@@ -355,7 +325,7 @@ export class Threads extends AbstractViewModel {
             });
         });
 
-        // Some calculations for chard presentation
+        // Some calculations for chart presentation
         const gridHeight = threadCategories.size * this._threadHeight;
         const sliderFromTop = gridHeight + this._sliderSpacingFromChart
         const dateFormatter = this._dateFormatter;
@@ -414,7 +384,14 @@ export class Threads extends AbstractViewModel {
                 }
             },
             yAxis: {
-                data: Array.from(threadCategories.keys())
+                data: Array.from(threadCategories.keys()),
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['rgb(255,255,255)', 'rgb(239,239,239)'],
+                        opacity: 1
+                    }
+                }
             },
             series: [
                 {

@@ -143,10 +143,11 @@ export class TestResultsChart {
                     enabled: this.animationsEnabled
                 },
                 type: 'pie',
-                //width: '400px',
-                //height:'300px',
                 fontFamily: 'Roboto',
                 events: {
+                    dataPointMouseEnter: (event) => {
+                        event.target.style.cursor = 'pointer'
+                    },
                     dataPointSelection: (event, chartContext, config) => {
                         this._pieceToggled(event,chartContext,config)
                     }

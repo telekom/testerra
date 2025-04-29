@@ -22,6 +22,7 @@
 package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.SystemException;
@@ -46,6 +47,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
@@ -103,31 +105,20 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         String consecutiveTargetImageName;
         public boolean takeReferenceOnly;
         public double distance = NO_DISTANCE;
+
     }
+    private static final Logger LOGGER = LoggerFactory.getLogger(LayoutCheck.class);
 
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
-
-    private LayoutCheck() {
-    }
 
     private static final double NO_DISTANCE = 0;
     private static final double RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asDouble();
     private static final double RGB_MAX_DEVIATION = 255;
-
     private static final HashMap<String, Integer> runCount = new HashMap<>();
+    // base dir for all layoutcheck images, will be filled in findRealBaseDir method
+    private static Path baseDir = null;
 
-    /**
-     * Logger.
-     */
-    @Deprecated
-    private static final Logger LOGGER = LoggerFactory.getLogger(LayoutCheck.class);
-
-    public static Path getDir(String basePath) {
-        File baseDir = new File(basePath);
-        if (!baseDir.exists()) {
-            baseDir.mkdirs();
-        }
-        return baseDir.toPath();
+    private LayoutCheck() {
     }
 
     /**
@@ -137,11 +128,20 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             final File screenshot,
             final String targetImageName
     ) {
-        final MatchStep step = new MatchStep();
+        if (baseDir == null) {
+            findRealBaseDir();
+        }
 
-        Path referenceImagesDir = getDir(Properties.REFERENCE_PATH.asString());
-        Path actualImagesDir = getDir(Properties.ACTUAL_PATH.asString());
-        Path distanceImagesDir = getDir(Properties.DISTANCE_PATH.asString());
+        final MatchStep step = new MatchStep();
+        step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();
+
+        Path referenceImagesDir = baseDir.resolve(Properties.REFERENCE_PATH.asString());
+        Path actualImagesDir = baseDir.resolve(Properties.ACTUAL_PATH.asString());
+        Path distanceImagesDir = baseDir.resolve(Properties.DISTANCE_PATH.asString());
+
+        FileUtils.createDirectoriesSafely(referenceImagesDir);
+        FileUtils.createDirectoriesSafely(actualImagesDir);
+        FileUtils.createDirectoriesSafely(distanceImagesDir);
 
         step.referenceFileName = referenceImagesDir.resolve(String.format(
                 PROPERTY_MANAGER.getProperty(Properties.REFERENCE_NAMETEMPLATE, "Reference%s.png"),
@@ -157,7 +157,6 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             runCountModifier = String.format("-%03d", newCount);
         }
 
-        step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();
         if (step.takeReferenceOnly) {
             // create reference image
             try {
@@ -522,6 +521,27 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             // Needed for assertion errors
             LayoutCheck.toReport(matchStep);
             throw t;
+        }
+    }
+
+    /**
+     * Try to find out the real base path with the help of the default property file.
+     * This is needed because in case of Gradle runs in multi-module projects the user.dir is the project root
+     * but all layoutcheck images will stored in the module directory.
+     * Default location is project/(submodule)/src/test/resources/...
+     */
+    private static void findRealBaseDir() {
+        baseDir = Path.of(System.getProperty("user.dir"));
+        try {
+            Path testFile = new FileUtils().getLocalOrResourceFile(PropertyManager.TEST_PROPERTIES).toPath();
+            Path resourcePath = Path.of("build", "resources");
+            if (FileUtils.findIndexOfPath(testFile, resourcePath) < 0) {
+                return;
+            }
+            int segmentIndex = FileUtils.findIndexOfPath(testFile, resourcePath);
+            baseDir = baseDir.getRoot().resolve(testFile.subpath(0, segmentIndex));
+        } catch (IOException e) {
+            LOGGER.warn("Cannot find real base dir, use default", e.getMessage());
         }
     }
 }

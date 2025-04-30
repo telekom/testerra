@@ -130,7 +130,7 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
             HasAuthentication authenticator = (HasAuthentication) webDriver;
             Predicate<URI> uriPredicate = null;
             if (hosts != null && hosts.length > 0) {
-                uriPredicate = uri -> Arrays.stream(hosts).anyMatch(host -> uri.getHost().contains(host));
+                uriPredicate = uri -> Arrays.stream(hosts).anyMatch(host -> uri.toString().contains(host));
             } else {
                 uriPredicate = uri -> true;
             }

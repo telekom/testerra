@@ -41,7 +41,7 @@ public class ChromeDevToolsTests extends TesterraTest implements
 }
 ----
 
-You can restrict the basic authentication to special hosts or parts of URLs.
+You can restrict the basic authentication to special hosts.
 [source, java]
 ----
 CHROME_DEV_TOOLS
@@ -49,7 +49,7 @@ CHROME_DEV_TOOLS
             webDriver,
             UsernameAndPassword.of("admin", "admin"),
             "herokuapp.com",
-            "example.com/authenticated/path");
+            "example.com");
 ----
 
 

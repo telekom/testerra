@@ -120,14 +120,14 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
         if (!isSupported(webDriver)) {
             throw new RuntimeException("The current browser does not support DevTools");
         }
-        // Just for activating DevTools
-        DevTools devTools = this.getRawDevTools(webDriver);
 
         try {
             if (!(credentials.get() instanceof UsernameAndPassword)) {
                 throw new RuntimeException("Unsupported type of Credentials");
             }
-            HasAuthentication authenticator = (HasAuthentication) webDriver;
+            WebDriver augementedDriver = new Augmenter().augment(webDriver);
+
+            HasAuthentication authenticator = (HasAuthentication) augementedDriver;
             Predicate<URI> uriPredicate = null;
             if (hosts != null && hosts.length > 0) {
                 uriPredicate = uri -> Arrays.stream(hosts).anyMatch(host -> uri.toString().contains(host));

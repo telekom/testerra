@@ -27,6 +27,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.devtools.DevTools;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -35,7 +36,7 @@ import java.util.function.Supplier;
  *
  * @author mgn
  */
-public interface ChromeDevTools extends WebDriverManagerProvider {
+public interface ChromeDevTools extends BiDiTools {
 
     DevTools getRawDevTools(WebDriver webDriver);
 
@@ -45,17 +46,19 @@ public interface ChromeDevTools extends WebDriverManagerProvider {
 
     void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials);
 
-    default boolean isSupported(WebDriver driver) {
-        Optional<String> requestedBrowser = WEB_DRIVER_MANAGER.getRequestedBrowser(driver);
-        return Optional.ofNullable(requestedBrowser)
-                .map(Optional::get)
-                .map(browser -> browser.toLowerCase().contains(Browsers.chrome))
-                .orElse(false);
-    }
+//    default boolean isSupported(WebDriver driver) {
+//        Optional<String> requestedBrowser = WEB_DRIVER_MANAGER.getRequestedBrowser(driver);
+//        return Optional.ofNullable(requestedBrowser)
+//                .map(Optional::get)
+//                .map(browser -> browser.toLowerCase().contains(Browsers.chrome))
+//                .orElse(false);
+//    }
 
-    default boolean isRemoteDriver(WebDriver webDriver) {
-        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
-        return webDriverRequest.getServerUrl().isPresent();
+    //    default boolean isRemoteDriver(WebDriver webDriver) {
+//        WebDriverRequest webDriverRequest = WEB_DRIVER_MANAGER.getSessionContext(webDriver).get().getWebDriverRequest();
+//        return webDriverRequest.getServerUrl().isPresent();
+    default List<String> getSupportedBrowsers() {
+        return List.of(Browsers.chrome, Browsers.chromeHeadless);
     }
 
 }

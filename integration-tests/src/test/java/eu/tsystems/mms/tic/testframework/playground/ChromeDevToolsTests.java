@@ -196,7 +196,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
-        CHROME_DEV_TOOLS.setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"));
+        CHROME_DEV_TOOLS.setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"), "herokuapp.com");
 
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");

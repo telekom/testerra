@@ -43,7 +43,7 @@ public interface ChromeDevTools extends WebDriverManagerProvider {
 
     void setDevice(WebDriver webDriver, Dimension dimension, int scaleFactor, boolean mobile);
 
-    void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials);
+    void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials, String... hosts);
 
     default boolean isSupported(WebDriver driver) {
         Optional<String> requestedBrowser = WEB_DRIVER_MANAGER.getRequestedBrowser(driver);

@@ -49,6 +49,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
 /**
@@ -107,6 +108,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         public double distance = NO_DISTANCE;
 
     }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LayoutCheck.class);
 
     private static final Report report = Testerra.getInjector().getInstance(Report.class);
@@ -125,7 +127,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
      * Takes reference screenshots and prepares file paths for discrete matching modes
      */
     private static MatchStep prepare(
-            final File screenshot,
+            final Path screenshot,
             final String targetImageName
     ) {
         if (baseDir == null) {
@@ -160,7 +162,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         if (step.takeReferenceOnly) {
             // create reference image
             try {
-                FileUtils.copyFile(screenshot, step.referenceFileName.toFile());
+                Files.copy(screenshot, step.referenceFileName, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
                 throw new SystemException("Error when saving reference image.", e);
@@ -174,7 +176,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
             );
 
             try {
-                FileUtils.copyFile(screenshot, step.actualFileName.toFile());
+                Files.copy(screenshot, step.actualFileName, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
                 throw new SystemException("Error when saving image.", e);
@@ -200,7 +202,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     }
 
     public static MatchStep matchPixels(final File screenshot, final String targetImageName) {
-        final MatchStep step = prepare(screenshot, targetImageName);
+        final MatchStep step = prepare(screenshot.toPath(), targetImageName);
         if (!step.takeReferenceOnly) {
             matchPixels(step);
         }
@@ -210,18 +212,18 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
     private static void matchPixels(final MatchStep matchStep) {
         try {
             // read images
-            File refFile = matchStep.referenceFileName.toFile();
-            File actualFile = matchStep.actualFileName.toFile();
+            Path refFile = matchStep.referenceFileName;
+            Path actualFile = matchStep.actualFileName;
 
-            if (!refFile.exists()) {
+            if (!Files.exists(refFile)) {
                 throw new FileNotFoundException(matchStep.referenceFileName.toString());
             }
-            if (!actualFile.exists()) {
+            if (!Files.exists(actualFile)) {
                 throw new FileNotFoundException(matchStep.actualFileName.toString());
             }
 
-            final BufferedImage referenceImage = ImageIO.read(refFile);
-            final BufferedImage actualImage = ImageIO.read(actualFile);
+            final BufferedImage referenceImage = ImageIO.read(Files.newInputStream(refFile));
+            final BufferedImage actualImage = ImageIO.read(Files.newInputStream(actualFile));
 
             matchStep.referenceFileDimension = new Dimension(referenceImage.getWidth(), referenceImage.getHeight());
             matchStep.actualFileDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());

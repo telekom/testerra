@@ -153,4 +153,16 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
 
         WEB_DRIVER_MANAGER.getWebDriver(request);
     }
+
+    @Test
+    public void testLayoutCheckOutsideViewport() {
+        WebDriver driver = getWebDriver();
+        UiElementFinder finder = UI_ELEMENT_FINDER_FACTORY.create(driver);
+
+        finder.getWebDriver().get("https://www.telekom.de/start");
+        finder.find(By.id("rejectAll")).click();
+        UiElement uiElement = finder.find(By.xpath("//div[@class='body-container']//section[@class='page_modules_page__3KcU-']//div[@id='PHX_home_r1c1']//p"));
+        uiElement.screenshotToReport();
+
+    }
 }

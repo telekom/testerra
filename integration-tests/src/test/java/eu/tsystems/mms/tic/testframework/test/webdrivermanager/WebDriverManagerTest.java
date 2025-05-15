@@ -344,7 +344,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
     public void testT14_UnwrapFromDecorated() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chromeHeadless);
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         Assert.assertTrue(driver instanceof Decorated);
 
         Optional<ChromeDriver> chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(driver, ChromeDriver.class);
@@ -355,7 +355,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
     public void testT15_UnwrapWrongTypeFromDecorated() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chromeHeadless);
-        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
+        WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver(request);
         Assert.assertTrue(driver instanceof Decorated);
 
         Optional<FirefoxDriver> chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(driver, FirefoxDriver.class);

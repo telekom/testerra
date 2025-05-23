@@ -125,7 +125,9 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
             if (!(credentials.get() instanceof UsernameAndPassword)) {
                 throw new RuntimeException("Unsupported type of Credentials");
             }
-            WebDriver augementedDriver = new Augmenter().augment(webDriver);
+            // To auguement the driver we have to use the origin webdriver, not the decorated one.
+            WebDriver originalWebDriver = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
+            WebDriver augementedDriver = new Augmenter().augment(originalWebDriver);
 
             HasAuthentication authenticator = (HasAuthentication) augementedDriver;
             Predicate<URI> uriPredicate = null;

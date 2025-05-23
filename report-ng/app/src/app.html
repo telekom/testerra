@@ -69,9 +69,10 @@
             <mdc-drawer-content>
                 <mdc-list repeat.for="nav of _router.navigation" aria-orientation="vertical">
                     <mdc-list-item
-                        click.delegate="navigateTo(nav)"
+                        click.delegate="nav.settings.disabled ? null: navigateTo(nav)"
                         class="mdc-list-item mdc-ripple-upgraded"
                         class.bind="nav.isActive ? 'mdc-list-item--activated' : ''"
+                        disabled.bind="nav.settings.disabled"
                         if.bind="nav.title != 'printable'"
                     >
                         <div class="mdc-list-item__ripple"></div>

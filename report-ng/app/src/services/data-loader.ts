@@ -65,11 +65,11 @@ export class DataLoader {
         });
     }
 
-    protected responseToProtobufJSMessage<T>(response: Response, protobufMessageType: ProtobufMessage<T>){
+    protected responseToProtobufJSMessage<T>(response: Response, protobufMessageType: ProtobufMessage<T>) {
         return response.arrayBuffer().then(buffer => protobufMessageType.decode(new Uint8Array(buffer)))
     }
 
-    getExecutionAggregate(){
+    getExecutionAggregate() {
         return this.get("model/execution")
             .then(response => {
                 return this.responseToProtobufJSMessage(response, ExecutionAggregate)
@@ -83,7 +83,14 @@ export class DataLoader {
             })
     }
 
-    getFile(id: string){
+    getHistory() {
+        return this.get("model/history")
+            .then(response => {
+                return this.responseToProtobufJSMessage(response, data.History)
+            })
+    }
+
+    getFile(id: string) {
         return this.get("model/files/" + id)
             .then(response => {
                 return this.responseToProtobufJSMessage(response, File)

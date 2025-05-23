@@ -40,6 +40,7 @@
 // report
 :reportdir:                                     tt.report.dir
 :reportname:                                    tt.report.name
+:reporthistorymaxtestruns:                      tt.report.history.maxtestruns
 :runcfg:                                        tt.runcfg
 :screenshotter_active:                          tt.screenshotter.active
 :screenshot_on_pageload:                        tt.screenshot.on.pageload

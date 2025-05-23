@@ -1,0 +1,61 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2024, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <require from="../method-history-chart/method-history-chart"></require>
+    <require from="../status-share-chart/status-share-chart"></require>
+    <require from="../history-statistics-card/history-statistics-card"></require>
+    <require from="../failure-aspects-chart/failure-aspects-chart"></require>
+
+    <mdc-layout-grid>
+        <mdc-layout-grid-inner>
+            <mdc-layout-grid-cell span="12">
+                <mdc-card class="method-history-card">
+                    <div mdc-subtitle2 class="card-headline">Previous runs</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <method-history-chart shared-data.bind="sharedData" method_history_statistics.bind="methodHistoryStatistics"></method-history-chart>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="3">
+                <mdc-card class="short-history-card">
+                    <div class="card-headline-container">
+                        <div mdc-subtitle2 class="card-headline">Status share</div>
+                        <div class="card-headline-info-icon secondary">
+                            <mdc-icon mdc-tooltip="Displays the distribution of statuses across all executions of this method">info_outlined</mdc-icon>
+                        </div>
+                    </div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <status-share-chart status-data.bind="statusData"></status-share-chart>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="3">
+                <history-statistics-card total_run_count.bind="totalRunCount" average_run_duration.bind="avgRunDuration" flakiness.bind="flakiness"></history-statistics-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="6">
+                <mdc-card class="short-history-card">
+                    <div mdc-subtitle2 class="card-headline">Common failure aspects</div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <failure-aspects-chart on-click.bind="handleFailureAspectsChartClicked.bind($this)" failure_aspects_data.bind="failureAspectsData"></failure-aspects-chart>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+        </mdc-layout-grid-inner>
+    </mdc-layout-grid>
+</template>

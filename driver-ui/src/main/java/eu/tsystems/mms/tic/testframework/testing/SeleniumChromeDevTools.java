@@ -24,22 +24,20 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.ChromeDevTools;
 import org.openqa.selenium.Credentials;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.v130.emulation.Emulation;
-import org.openqa.selenium.devtools.v130.network.Network;
-import org.openqa.selenium.devtools.v130.network.model.Headers;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URI;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -118,28 +116,29 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
     }
 
     @Override
-    public void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials) {
+    public void setBasicAuthentication(WebDriver webDriver, Supplier<Credentials> credentials, String... hosts) {
         if (!isSupported(webDriver)) {
             throw new RuntimeException("The current browser does not support DevTools");
         }
-        DevTools devTools = this.getRawDevTools(webDriver);
 
         try {
-            Map<String, Object> headers = new HashMap<>();
-            byte[] authByteArray = "".getBytes();
-
-            if (credentials.get() instanceof UsernameAndPassword) {
-                UsernameAndPassword usernameAndPassword = (UsernameAndPassword) credentials.get();
-                authByteArray = String.format("%s:%s", usernameAndPassword.username(), usernameAndPassword.password()).getBytes("UTF-8");
-            } else {
+            if (!(credentials.get() instanceof UsernameAndPassword)) {
                 throw new RuntimeException("Unsupported type of Credentials");
             }
+            // To auguement the driver we have to use the origin webdriver, not the decorated one.
+            WebDriver originalWebDriver = WEB_DRIVER_MANAGER.getOriginalFromDecorated(webDriver);
+            WebDriver augementedDriver = new Augmenter().augment(originalWebDriver);
 
-            headers.put("authorization", "Basic " + Base64.getEncoder().encodeToString(authByteArray));
-            devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
-            devTools.send(Network.setExtraHTTPHeaders(new Headers(headers)));
+            HasAuthentication authenticator = (HasAuthentication) augementedDriver;
+            Predicate<URI> uriPredicate = null;
+            if (hosts != null && hosts.length > 0) {
+                uriPredicate = uri -> Arrays.stream(hosts).anyMatch(host -> uri.toString().contains(host));
+            } else {
+                uriPredicate = uri -> true;
+            }
+            authenticator.register(uriPredicate, credentials);
             log().info("Set credentials for basic authentication");
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Cannot set basic authentication", e);
         }
 

@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.testing.ChromeDevToolsProvider;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -196,10 +197,11 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
 
-        CHROME_DEV_TOOLS.setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"));
+        CHROME_DEV_TOOLS.setBasicAuthentication(webDriver, UsernameAndPassword.of("admin", "admin"), "herokuapp.com");
 
         webDriver.get("https://the-internet.herokuapp.com/basic_auth");
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
+        UITestUtils.takeScreenshot(webDriver, true);
     }
 
     /**

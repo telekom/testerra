@@ -68,7 +68,6 @@ export class Logs extends AbstractViewModel {
         } else {
             this._searchRegexp = undefined;
         }
-        console.log(this._logMessages);
     }
 
     private async _filter() {

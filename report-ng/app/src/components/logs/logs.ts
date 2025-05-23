@@ -27,7 +27,6 @@ import {StatusConverter} from "services/status-converter";
 import {data} from "services/report-model";
 import "./logs.scss"
 import {VirtualLogView} from "../log-view/virtual-log-view";
-import {ExecutionStatistics} from "../../services/statistic-models";
 
 @autoinject()
 export class Logs extends AbstractViewModel {
@@ -38,7 +37,6 @@ export class Logs extends AbstractViewModel {
     private _logView: VirtualLogView;
     private _prevSearch: string;
     private _searchRegexp: RegExp = null;
-    private _executionStatistics: ExecutionStatistics;
 
     constructor(
         private _statistics: StatisticsGenerator,

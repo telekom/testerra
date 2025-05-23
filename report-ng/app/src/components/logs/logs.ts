@@ -105,9 +105,6 @@ export class Logs extends AbstractViewModel {
                         logEntry.methodContext = methodContext;
                         return logEntry;
                     })
-                    .map(collectLogLevel)
-                    .filter(filterPredicate)
-                    .forEach(add)
             });
 
         this._logMessages = logMessages.sort((a, b) => a.timestamp - b.timestamp);

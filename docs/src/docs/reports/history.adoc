@@ -1,0 +1,15 @@
+include::../properties/property-attributes.adoc[]
+
+= History
+
+The Testerra report can display historical data from previous test runs.
+By default, results from up to 50 executions are stored and displayed.
+This limit can be adjusted by setting the {reporthistorymaxtestruns} property to a different value.
+If the limit is exceeded, the oldest results are automatically deleted.
+
+== How to use the history?
+
+When executing a test set for the first time, placeholders are shown because there is no previous run available yet.
+You need to execute the test set at least twice to view historical data in the report.
+Testerra uses the locally saved test results, stored in the report directory (which can be configured via the {reportdir} property), to build the history.
+Therefore, ensure that previous test results are locally available to enable history features.

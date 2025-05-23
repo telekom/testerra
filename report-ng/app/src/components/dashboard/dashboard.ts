@@ -41,12 +41,6 @@ class FailureCorridor {
     }
 }
 
-interface IItem {
-    status: ResultStatusType,
-    counts: (string|number)[],
-    labels: string[],
-}
-
 @autoinject()
 export class Dashboard extends AbstractViewModel {
     private _executionStatistics: ExecutionStatistics;
@@ -55,11 +49,12 @@ export class Dashboard extends AbstractViewModel {
     private _highCorridor = new FailureCorridor();
     private _midCorridor = new FailureCorridor();
     private _lowCorridor = new FailureCorridor();
-    private _filterItems:IItem[];
-    private _filter:IFilter;
-    private _topFailureAspects:FailureAspectStatistics[];
+    private _filter: IFilter;
+    private _topFailureAspects: FailureAspectStatistics[];
     private _loading = true;
-    private _promptLogs = undefined
+    private _promptLogs = undefined;
+    private _numberOfTestcases = 0;
+    private _historyAvailable: boolean;
 
     constructor(
         private _statusConverter: StatusConverter,
@@ -79,63 +74,9 @@ export class Dashboard extends AbstractViewModel {
 
     async attached() {
         this._executionStatistics = await this._statisticsGenerator.getExecutionStatistics();
+        this._historyAvailable = await this._statisticsGenerator.getHistoryStatistics().then(historyStatistics => historyStatistics.getTotalRunCount()) > 1;
         this._topFailureAspects = this._executionStatistics.uniqueFailureAspects.slice(0, 3);
-
-        this._filterItems = [];
-        const failed = this._executionStatistics.overallFailed;
-        const failedRetried = this._executionStatistics.getStatusCount(data.ResultStatusType.FAILED_RETRIED);
-        if (failed > 0 || failedRetried > 0) {
-            const counts = []
-            const labels = []
-            counts.push(failed)
-            labels.push(this._statusConverter.getLabelForStatus(ResultStatusType.FAILED))
-            if (failedRetried > 0) {
-                counts.push(" + " + failedRetried)
-                labels.push(this._statusConverter.getLabelForStatus(data.ResultStatusType.FAILED_RETRIED))
-            }
-            this._filterItems.push({
-                status: ResultStatusType.FAILED,
-                counts: counts,
-                labels: labels,
-            });
-        }
-
-        const failedExpected = this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
-        if (failedExpected > 0) {
-            this._filterItems.push({
-                status: ResultStatusType.FAILED_EXPECTED,
-                counts: [failedExpected],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.FAILED_EXPECTED)],
-            });
-        }
-
-        const skipped = this._executionStatistics.overallSkipped;
-        if (skipped > 0) {
-            this._filterItems.push({
-                status: ResultStatusType.SKIPPED,
-                counts: [skipped],
-                labels: [this._statusConverter.getLabelForStatus(ResultStatusType.SKIPPED)],
-            });
-        }
-
-        const passed = this._executionStatistics.overallPassed;
-        if (passed > 0) {
-            const recovered = this._executionStatistics.getStatusCount(data.ResultStatusType.PASSED_RETRY);
-            const repaired = this._executionStatistics.getStatusCount(data.ResultStatusType.REPAIRED);
-            this._filterItems.push({
-                status: ResultStatusType.PASSED,
-                counts: [
-                    passed,
-                    (repaired > 0 ? `&sup; ${repaired}` : null),
-                    (recovered > 0 ? `&sup; ${recovered}` : null),
-                ],
-                labels: [
-                    this._statusConverter.getLabelForStatus(ResultStatusType.PASSED),
-                    (repaired > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.REPAIRED) : null),
-                    (recovered > 0 ? this._statusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY) : null),
-                ],
-            });
-        }
+        this._numberOfTestcases = this._executionStatistics.overallFailed + this._executionStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED) + this._executionStatistics.overallSkipped + this._executionStatistics.overallPassed;
 
         this._executionStatistics.uniqueFailureAspects.forEach(failureAspectStatistics => {
             if (failureAspectStatistics.isMinor) {
@@ -156,9 +97,9 @@ export class Dashboard extends AbstractViewModel {
         this._lowCorridor.limit = executionAggregate.executionContext.failureCorridorLimits[FailureCorridorValue.FCV_LOW];
         this._lowCorridor.count = executionAggregate.executionContext.failureCorridorCounts[FailureCorridorValue.FCV_LOW] || 0;
 
-        this._loading = false
+        this._loading = false;
 
-        this._promptLogs = await this.getPromptLogs()
+        this._promptLogs = await this.getPromptLogs();
     };
 
     async getPromptLogs() {
@@ -166,7 +107,7 @@ export class Dashboard extends AbstractViewModel {
         return Object.values(logMessages).filter(logMessage => logMessage.prompt && this._executionStatistics.executionContextLogMessageIds.includes(logMessage.id))
     }
 
-    private _setFilter(filter:IFilter, updateUrl:boolean = true) {
+    private _setFilter(filter: IFilter, updateUrl: boolean = true) {
         this._filter = filter;
         if (filter) {
             this.queryParams.status = this._statusConverter.getClassForStatus(this._filter.status);
@@ -179,21 +120,7 @@ export class Dashboard extends AbstractViewModel {
         }
     }
 
-    private _resultItemClicked(item:IItem) {
-        /**
-         * It still happens that items keep selected when they shouldn't
-         * https://gist.dumber.app/?gist=f09831456ae377d1121e8a41eece1c42
-         */
-        if (item.status === this._filter?.status) {
-            this._setFilter(null);
-        } else {
-            this._setFilter({
-                status: item.status
-            });
-        }
-    }
-
-    private _piePieceClicked(ev:PieceClickedEvent) {
+    private _piePieceClicked(ev: PieceClickedEvent) {
         if (ev.detail.filter?.status === this._filter?.status) {
             this._setFilter(null);
         } else {
@@ -201,7 +128,7 @@ export class Dashboard extends AbstractViewModel {
         }
     }
 
-    private _classBarClicked(ev:ClassBarClick) {
+    private _classBarClicked(ev: ClassBarClick) {
         this._setFilter(ev.detail.filter, false);
         if (ev.detail.mouseEvent.button == 0) {
             this.navInstruction.router.navigateToRoute("tests", this.queryParams);
@@ -213,9 +140,13 @@ export class Dashboard extends AbstractViewModel {
         }
     }
 
-    private _gotoFailureAspect(failureAspect:FailureAspectStatistics) {
+    private _compareRunsClicked() {
+        this.navInstruction.router.navigateToRoute("history", {subPage: "run-comparison"});
+    }
+
+    private _gotoFailureAspect(failureAspect: FailureAspectStatistics) {
         this.navInstruction.router.navigateToRoute("tests", {
-            failureAspect: failureAspect.index+1,
+            failureAspect: failureAspect.index + 1,
             status: this._statusConverter.getClassForStatus(failureAspect.getUpmostStatus())
         });
     }

@@ -21,7 +21,7 @@
 
 import {autoinject} from "aurelia-framework";
 import {DataLoader} from "./data-loader";
-import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics} from "./statistic-models";
+import {ClassStatistics, ExecutionStatistics, FailureAspectStatistics, HistoryStatistics} from "./statistic-models";
 import {CacheService} from "t-systems-aurelia-components/src/services/cache-service";
 import {Config} from "./config-dev";
 import {data} from "./report-model";
@@ -98,7 +98,7 @@ export class MethodDetails {
         return (this.methodContext.failedStepIndex >= 0 ? this.methodContext.testSteps[this.methodContext.failedStepIndex] : null);
     }
 
-    private _decode(from:{ [k: string]: string }|null, name:string, to: { [k: string]: any }):any {
+    private _decode(from: { [k: string]: string } | null, name: string, to: { [k: string]: any }): any {
         if (to[name] === undefined) {
             if (from[name]) {
                 to[name] = JSON.parse(from[name]);
@@ -109,11 +109,11 @@ export class MethodDetails {
         return to[name];
     }
 
-    decodeCustomContext(name:string):any {
+    decodeCustomContext(name: string): any {
         return this._decode(this.methodContext.customContexts, name, this._decodedCustomContexts);
     }
 
-    decodeAnnotation(name:string):any {
+    decodeAnnotation(name: string): any {
         return this._decode(this.methodContext.annotations, name, this._decodedAnnotations);
     }
 
@@ -142,9 +142,9 @@ export class StatisticsGenerator {
 
     constructor(
         private _dataLoader: DataLoader,
-        private _cacheService:CacheService,
-        private _config:Config,
-        private _statusConverter:StatusConverter,
+        private _cacheService: CacheService,
+        private _config: Config,
+        private _statusConverter: StatusConverter,
     ) {
         this._cacheService.setDefaultCacheTtl(120);
     }
@@ -160,7 +160,7 @@ export class StatisticsGenerator {
                     const methodContext = executionAggregate.methodContexts[id];
                     const classContext = executionAggregate.classContexts[methodContext.classContextId];
 
-                    let currentClassStatistics:ClassStatistics = new ClassStatistics(classContext);
+                    let currentClassStatistics: ClassStatistics = new ClassStatistics(classContext);
                     if (!classStatistics[currentClassStatistics.classIdentifier]) {
                         classStatistics[currentClassStatistics.classIdentifier] = currentClassStatistics;
                     } else {
@@ -172,6 +172,14 @@ export class StatisticsGenerator {
                 executionStatistics.setClassStatistics(Object.values(classStatistics));
                 return executionStatistics;
             });
+        })
+    }
+
+    getHistoryStatistics(): Promise<HistoryStatistics> {
+        return this._cacheService.getForKeyWithLoadingFunction("historyStatistics", () => {
+            return this._dataLoader.getHistory().then(history => {
+                return new HistoryStatistics(history);
+            })
         })
     }
 
@@ -230,20 +238,20 @@ export class StatisticsGenerator {
             .map(value => value.screenshotId);
     }
 
-    getFilesForIds(fileIds:string[]) {
+    getFilesForIds(fileIds: string[]) {
         const files: data.File[] = [];
         const allFilePromises = [];
         fileIds.forEach(fileId => {
             const loadingPromise = this._getFileForId(fileId).then(file => {
-               files.push(file);
+                files.push(file);
             });
             allFilePromises.push(loadingPromise);
         })
-        return Promise.all(allFilePromises).then(()=>files);
+        return Promise.all(allFilePromises).then(() => files);
     }
 
-    private _getFileForId(fileId:string) {
-        return this._cacheService.getForKeyWithLoadingFunction("file:"+fileId, () => {
+    private _getFileForId(fileId: string) {
+        return this._cacheService.getForKeyWithLoadingFunction("file:" + fileId, () => {
             return this._dataLoader.getFile(fileId).then(file => {
                 file.relativePath = this._config.correctRelativePath(file.relativePath);
                 return file;

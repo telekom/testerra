@@ -25,8 +25,8 @@ import {MethodDetails, StatisticsGenerator} from "../../services/statistics-gene
 import {IScreenshotsDialogParams, ScreenshotsDialog} from "../screenshots-dialog/screenshots-dialog";
 import {MdcDialogService} from '@aurelia-mdc-web/dialog';
 import {data} from "../../services/report-model";
-import MethodType = data.MethodType;
 import "./method.scss"
+import MethodType = data.MethodType;
 
 @autoinject()
 export class Method {
@@ -114,6 +114,16 @@ export class Method {
                     // icon: "sync_alt"
                 }
             },
+            {
+                route: 'method-history',
+                moduleId: PLATFORM.moduleName('./method-history'),
+                nav: true,
+                name: "method-history",
+                title: 'Method History',
+                settings: {
+                    icon: "history",
+                }
+            },
         ]);
     }
 
@@ -137,98 +147,126 @@ export class Method {
             this._methodDetails = methodDetails;
             this._allScreenshotIds = this._statistics.getScreenshotIdsFromMethodContext(methodDetails.methodContext);
             this._lastScreenshotId = this._allScreenshotIds.reverse().find(() => true);
-            this._loading = false;
 
-            this._router.routes.forEach(routeConfig => {
-                switch (routeConfig.name) {
-                    case "steps": {
-                        routeConfig.settings.count = methodDetails.methodContext.testSteps.length;
-                        break;
-                    }
-                    case "dependencies": {
-                        const count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
-                        if (count > 0) {
-                            routeConfig.nav = true;
-                            routeConfig.settings.count = count;
-                        } else {
-                            disableRoute(routeConfig);
+            let methodRunCount = 0;
+            this._statistics.getHistoryStatistics().then(history => {
+                if (history.getTotalRunCount() > 1) {
+                    const foundClass = history.getClassHistory().find(cls => cls.identifier === this._methodDetails.classStatistics.classIdentifier);
+                    if (foundClass) {
+                        const methodInHistory = foundClass.methods.find(method => {
+                                const historyIndexOfLatestRun = method.getIdOfRun(history.getLastEntry().historyIndex);
+                                return historyIndexOfLatestRun === methodDetails.methodContext.contextValues.id
+                            }
+                        );
+                        if (methodInHistory) {
+                            methodRunCount = methodInHistory.getRunCount();
                         }
-                        break;
                     }
-                    case "browser-info": {
-                        if (methodDetails.sessionContexts.length > 0) {
-                            routeConfig.settings.count = methodDetails.sessionContexts.length;
-                            routeConfig.nav = true;
-                        } else {
-                            disableRoute(routeConfig);
-                        }
-                        break;
-                    }
-                    case "video":{
-                        const contextsWithVideos = methodDetails.sessionContexts.filter(context => context.videoId?.length > 0)
-                        if(contextsWithVideos.length > 0){
-                            routeConfig.settings.count = contextsWithVideos.length;
-                            routeConfig.nav = true;
-                        } else {
-                            disableRoute(routeConfig);
-                        }
-                        break;
-                    }
-                    case "details": {
-                        if (methodDetails.numDetails > 0) {
-                            routeConfig.nav = true;
-                            //routeConfig.settings.count = methodDetails.numDetails;
-                        } else {
-                            disableRoute(routeConfig);
-                        }
-                        break;
-                    }
-                    // case "assertions": {
-                    //     const numErrorContexts = methodDetails.errorContexts.length;
-                    //     if (numErrorContexts > 0) {
-                    //         routeConfig.nav = true;
-                    //         routeConfig.settings.count = numErrorContexts;
-                    //     } else {
-                    //         disableRoute(routeConfig);
-                    //     }
-                    //     break;
-                    // }
                 }
-                return routeConfig;
-            });
+                this._loading = false;
 
-            if (!routeConfig.hasChildRouter) {
-                const navOptions = {replace: true};
-                const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
-                this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
-            }
-
-            this._statistics.getExecutionStatistics().then(executionStatistics => {
-                const myRunIndex = this._methodDetails.methodContext.methodRunIndex;
-                /*
-                * Handling all methodContexts
-                * - filter for 'real' test methods (no setups)
-                * - sort for run index
-                * - create MethodDetails
-                * - filter for failed test methods
-                * - find the previous and the next failed test method to current.
-                 */
-                executionStatistics.classStatistics
-                    .flatMap(methodContext => methodContext.methodContexts)
-                    .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
-                    .sort((a, b) => a.methodRunIndex - b.methodRunIndex)
-                    .map(methodContext => new MethodDetails(methodContext, this._methodDetails.classStatistics))
-                    .filter(methodDetails => methodDetails.numDetails != 0)
-                    .forEach(methodDetails => {
-                        if (methodDetails.methodContext.methodRunIndex < myRunIndex) {
-                            this._prevMethod = methodDetails;
-                        } else if (methodDetails.methodContext.methodRunIndex > myRunIndex && this._nextMethod === undefined) {
-                            this._nextMethod = methodDetails;
+                this._router.routes.forEach(routeConfig => {
+                    switch (routeConfig.name) {
+                        case "steps": {
+                            routeConfig.settings.count = methodDetails.methodContext.testSteps.length;
+                            break;
                         }
-                    });
+                        case "dependencies": {
+                            const count = methodDetails.methodContext.relatedMethodContextIds.length + methodDetails.methodContext.dependsOnMethodContextIds.length;
+                            if (count > 0) {
+                                routeConfig.nav = true;
+                                routeConfig.settings.count = count;
+                            } else {
+                                disableRoute(routeConfig);
+                            }
+                            break;
+                        }
+                        case "browser-info": {
+                            if (methodDetails.sessionContexts.length > 0) {
+                                routeConfig.settings.count = methodDetails.sessionContexts.length;
+                                routeConfig.nav = true;
+                            } else {
+                                disableRoute(routeConfig);
+                            }
+                            break;
+                        }
+                        case "video": {
+                            const contextsWithVideos = methodDetails.sessionContexts.filter(context => context.videoId?.length > 0)
+                            if (contextsWithVideos.length > 0) {
+                                routeConfig.settings.count = contextsWithVideos.length;
+                                routeConfig.nav = true;
+                            } else {
+                                disableRoute(routeConfig);
+                            }
+                            break;
+                        }
+                        case "method-history": {
+                            if (methodRunCount > 1) {
+                                routeConfig.nav = true;
+                            } else {
+                                disableRoute(routeConfig);
+                            }
+                            break;
+                        }
+                        case "details": {
+                            if (methodDetails.numDetails > 0) {
+                                routeConfig.nav = true;
+                                //routeConfig.settings.count = methodDetails.numDetails;
+                            } else {
+                                disableRoute(routeConfig);
+                            }
+                            break;
+                        }
+                        // case "assertions": {
+                        //     const numErrorContexts = methodDetails.errorContexts.length;
+                        //     if (numErrorContexts > 0) {
+                        //         routeConfig.nav = true;
+                        //         routeConfig.settings.count = numErrorContexts;
+                        //     } else {
+                        //         disableRoute(routeConfig);
+                        //     }
+                        //     break;
+                        // }
+                    }
+                    return routeConfig;
+                });
+
+                if (!routeConfig.hasChildRouter) {
+                    const navOptions = {replace: true};
+                    const enabledRouteConfig = this._router.routes.find(routeConfig => routeConfig.nav);
+                    this._router.navigateToRoute(enabledRouteConfig.name, {}, navOptions);
+
+                    if (params.subPage) {
+                        this._router.navigateToRoute(params.subPage, {}, navOptions);
+                    }
+                }
+
+                this._statistics.getExecutionStatistics().then(executionStatistics => {
+                    const myRunIndex = this._methodDetails.methodContext.methodRunIndex;
+                    /*
+                    * Handling all methodContexts
+                    * - filter for 'real' test methods (no setups)
+                    * - sort for run index
+                    * - create MethodDetails
+                    * - filter for failed test methods
+                    * - find the previous and the next failed test method to current.
+                     */
+                    executionStatistics.classStatistics
+                        .flatMap(methodContext => methodContext.methodContexts)
+                        .filter(methodContext => methodContext.methodType == MethodType.TEST_METHOD)
+                        .sort((a, b) => a.methodRunIndex - b.methodRunIndex)
+                        .map(methodContext => new MethodDetails(methodContext, this._methodDetails.classStatistics))
+                        .filter(methodDetails => methodDetails.numDetails != 0)
+                        .forEach(methodDetails => {
+                            if (methodDetails.methodContext.methodRunIndex < myRunIndex) {
+                                this._prevMethod = methodDetails;
+                            } else if (methodDetails.methodContext.methodRunIndex > myRunIndex && this._nextMethod === undefined) {
+                                this._nextMethod = methodDetails;
+                            }
+                        });
+                });
             });
         });
-
     }
 
     private _tabClicked(routeConfig: RouteConfig) {
@@ -236,7 +274,7 @@ export class Method {
     }
 
     /**
-     * The replace strategy is necessary to reinitialize the navigation,
+     * The replacement strategy is necessary to reinitialize the navigation,
      * when some tabs have been disabled
      */
     determineActivationStrategy() {

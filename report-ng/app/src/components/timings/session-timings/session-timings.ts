@@ -158,6 +158,7 @@ export class SessionTimings extends AbstractViewModel {
                         }
                     },
                     ],
+                    cursor: 'default',
                     // enables highlighting only items of the series (session load and connected baseurl load) when hovering
                     emphasis: {
                         focus: 'series',

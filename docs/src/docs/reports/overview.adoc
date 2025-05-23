@@ -9,18 +9,20 @@ A report generated with `Report-NG` consists of these different views:
 * Logs - a panel that contains detailed logging information
 * Threads - a graphical view of the thread activities during the parallel test execution
 * Timings - a detailed overview of the execution time of test cases and loading time of sessions
+* History - an overview of past test runs, highlighting issues, their durations, and the ability to compare runs
 
-image::report-ng-01.png[align="center", alt="Report-NG Dashboard"]
+image::report-ng-dashboard.png[align="center",alt="Report-NG Dashboard"]
 
 The report is generated after the test execution and can be viewed with this html file:
+
 [source]
 ----
 test-report/report-ng/index.html
 ----
 
-
 [IMPORTANT]
 ====
-Unfortunately, because the report is a highly dynamic application based on java script, the security settings of most browsers do not allow to directly view the report in your local folder. In this case you can use one of the simple http servers from https://gist.github.com/willurd/5720255[this list] to serve the files and to access the report.
+Unfortunately, because the report is a highly dynamic application based on java script, the security settings of most browsers do not allow to directly view the report in your local folder.
+In this case you can use one of the simple http servers from https://gist.github.com/willurd/5720255[this list] to serve the files and to access the report.
 
 ====

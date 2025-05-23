@@ -1,0 +1,161 @@
+<!--
+  ~ Testerra
+  ~
+  ~ (C) 2024, Tobias Adler, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+  ~
+  ~ Deutsche Telekom AG and all other contributors /
+  ~ copyright owners license this file to you under the Apache
+  ~ License, Version 2.0 (the "License"); you may not use this
+  ~ file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<template>
+    <require from="../../test-history-chart/test-history-chart"></require>
+    <require from="../../status-share-chart/status-share-chart"></require>
+    <require from="../../history-statistics-card/history-statistics-card"></require>
+
+    <mdc-layout-grid>
+        <mdc-layout-grid-inner>
+            <mdc-layout-grid-cell if.bind="_historyAvailable" span="2">
+                <mdc-select label="Status"
+                            ref="statusSelect"
+                            value.bind="_selectedStatus"
+                            change.delegate="_statusChanged()"
+                            outlined
+                            class="w100"
+                >
+                    <mdc-list>
+                        <mdc-list-item>(All)</mdc-list-item>
+                        <mdc-list-item repeat.for="status of _availableStatuses"
+                                       value.bind="status"
+                        >
+                            <span class="badge status-${status|statusClass}">${status | statusName}</span>
+                        </mdc-list-item>
+                    </mdc-list>
+                </mdc-select>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="10">
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="9">
+                <mdc-card>
+                    <div class="hcenter vcenter card-content" mdc-body1>
+                        <test-history-chart is_history_view.bind=true filter.bind="_filter" viewport.two-way="viewport"
+                                            class="run-history-chart"></test-history-chart>
+                    </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell if.bind="_historyAvailable" span="3">
+                <history-statistics-card total_run_count.bind="totalRunCount" average_run_duration.bind="avgRunDuration"
+                                         recent_changes.bind="recentChanges"></history-statistics-card>
+                <mdc-card class="short-history-card mt1">
+                    <div class="card-headline-container">
+                        <div mdc-subtitle2 class="card-headline">Status share</div>
+                        <div class="card-headline-info-icon secondary">
+                            <mdc-icon
+                                mdc-tooltip="Displays the distribution of statuses for all runs currently visible in the overview chart">
+                                info_outlined
+                            </mdc-icon>
+                        </div>
+                    </div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <status-share-chart status-data.bind="statusData"></status-share-chart>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell span="3" else>
+                <mdc-card>
+                    <div class="p1 flex">
+                        <div mdc-body1 class="info-column left vcenter">
+                            <mdc-icon mdc-list-item-leading>help_outline</mdc-icon>
+                        </div>
+                        <div mdc-body1 class="info-column right">
+                            Run at least one more test execution with an available history-file in the report folder to
+                            build a history and visualize the data in charts
+                        </div>
+                    </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell if.bind="_historyAvailable" span="6">
+                <mdc-card class="short-history-card">
+                    <div class="card-headline-container">
+                        <div mdc-subtitle2 class="card-headline">Top 3 flaky tests</div>
+                        <div class="card-headline-info-icon secondary">
+                            <mdc-icon
+                                mdc-tooltip="Test cases with a high frequency of status changes in the currently visible viewport of the overview chart">
+                                info_outlined
+                            </mdc-icon>
+                        </div>
+                    </div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <mdc-list
+                        class="p0"
+                        single-selection
+                        if.bind="_topFlakyTests.length > 0"
+                    >
+                        <mdc-list-item repeat.for="methodHistory of _topFlakyTests"
+                                       click.delegate="_navigateToMethodHistory(methodHistory.statistics)" two-line>
+                            <mdc-icon class="colored-icon status-failed sr1" mdc-list-item-leading>flaky</mdc-icon>
+                            <mdc-list-item-primary-text>
+                                <span>${methodHistory.name}</span>
+                            </mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>
+                               <span>
+                                    Flakiness: ${methodHistory.flakiness}%
+                                    (${methodHistory.passingStreak === 0
+                                    ? 'Currently failing'
+                                    : `Passed since ${methodHistory.passingStreak} ${methodHistory.passingStreak === 1 ? 'run' : 'runs'}`})
+                                </span>
+                            </mdc-list-item-secondary-text>
+                        </mdc-list-item>
+                    </mdc-list>
+                    <div class="vcenter hcenter p1 short-history-card" else>
+                        <mdc-icon class="sr1">celebration</mdc-icon>
+                        <div mdc-body1>No flaky tests</div>
+                    </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+            <mdc-layout-grid-cell if.bind="_historyAvailable" span="6">
+                <mdc-card class="short-history-card">
+                    <div class="card-headline-container">
+                        <div mdc-subtitle2 class="card-headline">Top 3 failing tests</div>
+                        <div class="card-headline-info-icon secondary">
+                            <mdc-icon mdc-tooltip="Test cases that aren't passed since multiple runs">info_outlined
+                            </mdc-icon>
+                        </div>
+                    </div>
+                    <mdc-list-divider></mdc-list-divider>
+                    <mdc-list
+                        class="p0"
+                        single-selection
+                        if.bind="_topFailingTests.length > 0"
+                    >
+                        <mdc-list-item repeat.for="methodHistory of _topFailingTests"
+                                       click.delegate="_navigateToMethodHistory(methodHistory.statistics)" two-line>
+                            <mdc-icon class="colored-icon status-failed sr1" mdc-list-item-leading>highlight_off
+                            </mdc-icon>
+                            <mdc-list-item-primary-text>
+                                <span>${methodHistory.name}</span>
+                            </mdc-list-item-primary-text>
+                            <mdc-list-item-secondary-text>
+                                <span>Failing since ${methodHistory.failingStreak} ${methodHistory.failingStreak === 1 ? 'run' : 'runs'}</span>
+                            </mdc-list-item-secondary-text>
+                        </mdc-list-item>
+                    </mdc-list>
+                    <div class="vcenter hcenter p1 short-history-card" else>
+                        <mdc-icon class="sr1">celebration</mdc-icon>
+                        <div mdc-body1>No failing tests</div>
+                    </div>
+                </mdc-card>
+            </mdc-layout-grid-cell>
+        </mdc-layout-grid-inner>
+    </mdc-layout-grid>
+</template>

@@ -31,16 +31,16 @@ import {VirtualLogView} from "../log-view/virtual-log-view";
 @autoinject()
 export class Logs extends AbstractViewModel {
     private _loading = false;
-    private _logMessages:ILogEntry[];
+    private _logMessages: ILogEntry[];
     private _availableLogLevels;
     private _selectedLogLevel;
-    private _logView:VirtualLogView;
-    private _prevSearch:string;
-    private _searchRegexp:RegExp = null;
+    private _logView: VirtualLogView;
+    private _prevSearch: string;
+    private _searchRegexp: RegExp = null;
 
     constructor(
         private _statistics: StatisticsGenerator,
-        private _statusConverter:StatusConverter
+        private _statusConverter: StatusConverter
     ) {
         super();
     }
@@ -82,7 +82,7 @@ export class Logs extends AbstractViewModel {
             return logMessage;
         }
 
-        const add = (logEntry:ILogEntry) => {
+        const add = (logEntry: ILogEntry) => {
             logMessages.push(logEntry)
         }
 
@@ -91,6 +91,21 @@ export class Logs extends AbstractViewModel {
             .map(collectLogLevel)
             .filter(filterPredicate)
             .forEach(add)
+
+        // Find methodContext to every log entry to create links from log view to method details view
+        const executionStatistics = await this._statistics.getExecutionStatistics()
+        Object.values(executionStatistics.executionAggregate.methodContexts)
+            .forEach(methodContext => {
+                methodContext.testSteps
+                    .flatMap(value => value.actions)
+                    .flatMap(value => value.entries)
+                    .filter(value => value.logMessageId)
+                    .map(value => {
+                        const logEntry: ILogEntry = logMessages.find(log => log.id == value.logMessageId);
+                        logEntry.methodContext = methodContext;
+                        return logEntry;
+                    })
+            });
 
         this._logMessages = logMessages.sort((a, b) => a.timestamp - b.timestamp);
 

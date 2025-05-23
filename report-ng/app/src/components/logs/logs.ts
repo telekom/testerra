@@ -27,6 +27,7 @@ import {StatusConverter} from "services/status-converter";
 import {data} from "services/report-model";
 import "./logs.scss"
 import {VirtualLogView} from "../log-view/virtual-log-view";
+import {cloneDeep} from "lodash";
 
 @autoinject()
 export class Logs extends AbstractViewModel {
@@ -83,7 +84,8 @@ export class Logs extends AbstractViewModel {
         }
 
         const add = (logEntry: ILogEntry) => {
-            logMessages.push(logEntry)
+            const clonedEntry = cloneDeep(logEntry);
+            logMessages.push(clonedEntry)
         }
 
         const logs = await this._statistics.getLogs()
@@ -102,8 +104,10 @@ export class Logs extends AbstractViewModel {
                     .filter(value => value.logMessageId)
                     .map(value => {
                         const logEntry: ILogEntry = logMessages.find(log => log.id == value.logMessageId);
-                        logEntry.methodContext = methodContext;
-                        return logEntry;
+                        if (logEntry) {
+                            logEntry.methodContext = methodContext;
+                            return logEntry;
+                        }
                     })
             });
 

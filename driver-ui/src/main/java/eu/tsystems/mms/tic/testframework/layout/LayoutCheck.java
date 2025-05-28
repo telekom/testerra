@@ -49,6 +49,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
@@ -128,7 +129,7 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
      */
     private static MatchStep prepare(
             final Path screenshot,
-            final String targetImageName
+            final String targetImagePath
     ) {
         if (baseDir == null) {
             findRealBaseDir();
@@ -140,6 +141,15 @@ public final class LayoutCheck implements PropertyManagerProvider, AssertProvide
         Path referenceImagesDir = baseDir.resolve(Properties.REFERENCE_PATH.asString());
         Path actualImagesDir = baseDir.resolve(Properties.ACTUAL_PATH.asString());
         Path distanceImagesDir = baseDir.resolve(Properties.DISTANCE_PATH.asString());
+
+        // Check targetImageName for subfolders
+        Path targetImage = Paths.get(targetImagePath);
+        String targetImageName = targetImage.getFileName().toString();
+        if (targetImage.getParent() != null) {
+            referenceImagesDir = referenceImagesDir.resolve(targetImage.getParent());
+            actualImagesDir = actualImagesDir.resolve(targetImage.getParent());
+            distanceImagesDir = distanceImagesDir.resolve(targetImage.getParent());
+        }
 
         FileUtils.createDirectoriesSafely(referenceImagesDir);
         FileUtils.createDirectoriesSafely(actualImagesDir);

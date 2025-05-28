@@ -19,7 +19,7 @@ ext {
     core = project(':core')
     report = project(':report-ng')
 
-    seleniumVersion = '4.26.0'
+    seleniumVersion = '4.28.1'
     // Must be the same like in Selenium 4
     guavaVersion = "33.3.1-jre"
 

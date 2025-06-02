@@ -38,14 +38,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
-import org.openqa.selenium.devtools.v130.emulation.Emulation;
-import org.openqa.selenium.devtools.v130.fetch.Fetch;
-import org.openqa.selenium.devtools.v130.log.Log;
-import org.openqa.selenium.devtools.v130.log.model.LogEntry;
-import org.openqa.selenium.devtools.v130.network.Network;
-import org.openqa.selenium.devtools.v130.network.model.Request;
-import org.openqa.selenium.devtools.v130.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v130.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v137.emulation.Emulation;
+import org.openqa.selenium.devtools.v137.fetch.Fetch;
+import org.openqa.selenium.devtools.v137.log.Log;
+import org.openqa.selenium.devtools.v137.log.model.LogEntry;
+import org.openqa.selenium.devtools.v137.network.Network;
+import org.openqa.selenium.devtools.v137.network.model.Request;
+import org.openqa.selenium.devtools.v137.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v137.network.model.ResponseReceived;
 import org.openqa.selenium.logging.HasLogEvents;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -91,51 +91,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     private Optional<Number> longitude = Optional.of(13.40943);
 
     @Test
-    public void testT01_GeoLocation_localDriver() {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBrowser(Browsers.chrome);
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-
-        ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
-
-        DevTools devTools = chromeDriver.getDevTools();
-        devTools.createSession();
-        devTools.send(Emulation.setGeolocationOverride(
-                latitude,
-                longitude,
-                Optional.of(1)));
-        webDriver.get("https://my-location.org/");
-        uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
-        uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
-
-    }
-
-    @Test
-    public void testT02_GeoLocation_remoteDriver() {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBrowser(Browsers.chrome);
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-
-        RemoteWebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
-        webDriver = new Augmenter().augment(remoteWebDriver);
-
-        DevTools devTools = ((HasDevTools) webDriver).getDevTools();
-        devTools.createSession();
-
-        devTools.send(Emulation.setGeolocationOverride(
-                latitude,
-                longitude,
-                Optional.of(1)));
-
-        webDriver.get("https://my-location.org/");
-        uiElementFinder.find(By.xpath("//button[@aria-label = 'Consent']")).click();
-        uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
-        uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
-    }
-
-    @Test
     public void testT03_GeoLocation_generic() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.setBrowser(Browsers.chrome);
@@ -150,45 +105,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
     }
 
-    /**
-     * The following example set basic authentication via driver augumentation. This solution works only remote, not local.
-     * A more flexible solution is implemented in SeleniumChromeDevTools
-     * <p>
-     * Update: With Selenium 4.17 this example does not work anymore.
-     */
-    @Test(enabled = false)
-    public void testT04_BasicAuth_remoteDriver() {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBrowser(Browsers.chrome);
-//        request.setBrowserVersion("106");
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-
-        WebDriver remoteWebDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, RemoteWebDriver.class).get();
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-
-        AtomicReference<DevTools> devToolsAtomicReference = new AtomicReference<>();
-
-        remoteWebDriver = new Augmenter()
-                .addDriverAugmentation(
-                        "chrome",
-                        HasAuthentication.class,
-                        (caps, exec) -> (whenThisMatches, useTheseCredentials) -> {
-                            devToolsAtomicReference.get().createSessionIfThereIsNotOne();
-                            devToolsAtomicReference.get().getDomains()
-                                    .network()
-                                    .addAuthHandler(whenThisMatches, useTheseCredentials);
-                        })
-                .augment(remoteWebDriver);
-
-        DevTools devTools = ((HasDevTools) remoteWebDriver).getDevTools();
-        devTools.createSession();
-        devToolsAtomicReference.set(devTools);
-        ((HasAuthentication) remoteWebDriver).register(UsernameAndPassword.of("admin", "admin"));
-
-        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
-        uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
-
-    }
 
     @Test
     public void testT05_BasicAuth_DevTools() {
@@ -204,27 +120,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         UITestUtils.takeScreenshot(webDriver, true);
     }
 
-    /**
-     * The following example uses the BiDi implementation of Chrome to add basic authentication information
-     * <p>
-     * Works only with local ChromeDriver, RemoteWebDriver is not supported
-     * https://github.com/SeleniumHQ/seleniumhq.github.io/blob/612f4e52b95b26d6af8135310a351ed82622779e/examples/java/src/test/java/dev/selenium/bidirectional/chrome_devtools/BidiApiTest.java#L74C15-L74C15
-     */
-    @Test
-    public void testT06_BasicAuth_ChromeBiDiAPI() {
-        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.setBrowser(Browsers.chrome);
-//        request.setBrowserVersion("106");
-        WebDriver webDriver = WEB_DRIVER_MANAGER.getWebDriver(request);
-        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
-        Predicate<URI> uriPredicate = uri -> uri.getHost().contains("the-internet.herokuapp.com");
-
-        ChromeDriver chromeDriver = WEB_DRIVER_MANAGER.unwrapWebDriver(webDriver, ChromeDriver.class).get();
-        ((HasAuthentication) chromeDriver).register(uriPredicate, UsernameAndPassword.of("admin", "admin"));
-
-        webDriver.get("https://the-internet.herokuapp.com/basic_auth");
-        uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
-    }
 
     /**
      * The following example uses the BiDi implementation of Chrome to add basic authentication information

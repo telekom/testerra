@@ -30,15 +30,12 @@ import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.HasAuthentication;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
-import org.openqa.selenium.devtools.v137.emulation.Emulation;
 import org.openqa.selenium.devtools.v137.fetch.Fetch;
 import org.openqa.selenium.devtools.v137.log.Log;
 import org.openqa.selenium.devtools.v137.log.model.LogEntry;
@@ -47,19 +44,14 @@ import org.openqa.selenium.devtools.v137.network.model.Request;
 import org.openqa.selenium.devtools.v137.network.model.RequestWillBeSent;
 import org.openqa.selenium.devtools.v137.network.model.ResponseReceived;
 import org.openqa.selenium.logging.HasLogEvents;
-import org.openqa.selenium.remote.Augmenter;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import static org.openqa.selenium.devtools.events.CdpEventTypes.consoleEvent;
 
@@ -105,7 +97,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
     }
 
-
     @Test
     public void testT05_BasicAuth_DevTools() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
@@ -119,7 +110,6 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         uiElementFinder.find(By.tagName("p")).assertThat().text().isContaining("Congratulations");
         UITestUtils.takeScreenshot(webDriver, true);
     }
-
 
     /**
      * The following example uses the BiDi implementation of Chrome to add basic authentication information

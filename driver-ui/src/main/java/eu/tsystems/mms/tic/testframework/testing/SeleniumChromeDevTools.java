@@ -30,7 +30,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v130.emulation.Emulation;
+import org.openqa.selenium.devtools.v137.emulation.Emulation;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -85,7 +85,11 @@ public class SeleniumChromeDevTools implements ChromeDevTools, Loggable {
         devTools.send(Emulation.setGeolocationOverride(
                 Optional.of(latitude),
                 Optional.of(longitude),
-                Optional.of(accuracy)));
+                Optional.of(accuracy),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()));
         log().info("Changed geolocation information to lat={}, long={}", latitude, longitude);
     }
 

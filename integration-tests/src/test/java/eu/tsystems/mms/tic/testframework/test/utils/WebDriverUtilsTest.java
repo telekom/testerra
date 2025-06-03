@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
+package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.TestClassContext;
@@ -27,8 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverKeepAliveSequence;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import java.util.Optional;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -136,10 +134,8 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT13_WebDriverKeepAliveRemovedByDriverShutdown() {
-//        WEB_DRIVER_MANAGER.getConfig().reset();
-//        WebDriver driver = getWebDriver();
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
-        final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
+        final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 2, 10);
         TimerUtils.sleep(3_000);
 
         WEB_DRIVER_MANAGER.shutdownAllThreadSessions();

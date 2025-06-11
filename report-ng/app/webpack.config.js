@@ -62,7 +62,8 @@ module.exports = ({production} = {}, {analyze, tests, hmr, port, host} = {}) => 
             runtimeChunk: true,  // separates the runtime chunk, required for long term cacheability
             // moduleIds is the replacement for HashedModuleIdsPlugin and NamedModulesPlugin deprecated in https://github.com/webpack/webpack/releases/tag/v4.16.0
             // changes module id's to use hashes be based on the relative path of the module, required for long term cacheability
-            moduleIds: 'deterministic',
+            // https://webpack.js.org/migrate/5/#clean-up-configuration
+            // moduleIds: 'deterministic',
             // Use splitChunks to breakdown the App/Aurelia bundle down into smaller chunks
             // https://webpack.js.org/plugins/split-chunks-plugin/
             splitChunks: {

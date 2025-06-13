@@ -15,7 +15,7 @@ ext {
     developerName = 'Testerra Team MMS'
     developerEmail = 'testerra@telekom-mms.com'
     developerOrganization = 'Deutsche Telekom MMS GmbH'
-    developerOrganizationUrl = 'https://www.t-systems-mms.com/'
+    developerOrganizationUrl = 'https://www.telekom-mms.com/'
 
 
     licenseName = 'The Apache Software License, Version 2.0'

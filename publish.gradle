@@ -5,7 +5,7 @@
 // Maven pom.xml attributes
 ext {
     libraryName = 'Testerra'
-    packagingType = 'jar'
+    libraryDescription = "Testerra test automation framework"
 
     siteUrl = 'https://testerra.io'
     gitUrl = 'scm:git:git://github.com/telekom/testerra.git'
@@ -17,23 +17,14 @@ ext {
     developerOrganization = 'Deutsche Telekom MMS GmbH'
     developerOrganizationUrl = 'https://www.telekom-mms.com/'
 
-
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
-
-}
-
-nexusStaging {
-    serverUrl = "https://s01.oss.sonatype.org/service/local/"
-    packageGroup = "io.testerra"
-    username = System.getProperty("deployUsername")
-    password = System.getProperty("deployPassword")
 }
 
 subprojects {
 
-    def libraryDescription = "Testerra test automation framework - ${project.getName()} module"
+    def libraryDescription = "Testerra test automation framework"
 
     javadoc {
         // Support JDK 8 annotations
@@ -46,67 +37,68 @@ subprojects {
         options.addStringOption('Xdoclint:none', '-quiet')
     }
 
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        archiveClassifier.set('sources')
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar) {
-        archiveClassifier.set('javadoc')
-        from javadoc
-    }
-
     artifacts {
         archives sourcesJar
         archives javadocJar
+    }
+
+    publishOnCentral {
+        repoOwner.set("martingrossmann")
+        projectDescription.set(rootProject.ext.libraryDescription)
+
+        projectLongName.set(project.name)
+        licenseName.set(rootProject.ext.licenseName)
+        licenseUrl.set(rootProject.ext.licenseUrl)
+        projectUrl.set(rootProject.ext.gitHttpsUrl)
+        scmConnection.set(rootProject.ext.gitUrl)
     }
 
     publishing {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
-                artifact sourcesJar
-                artifact javadocJar
 
                 // Custom pom
                 pom {
 
-                    name = libraryName
-                    description = libraryDescription
-                    url = siteUrl
+                    name = rootProject.ext.libraryName
+                    description = rootProject.ext.libraryDescription
+                    url = rootProject.ext.siteUrl
 
                     licenses {
                         license {
-                            name = licenseName
-                            url = licenseUrl
+                            name = rootProject.ext.licenseName
+                            url = rootProject.ext.licenseUrl
                         }
                     }
 
                     developers {
                         developer {
-                            id = developerId
-                            name = developerName
-                            email = developerEmail
-                            organization = developerOrganization
-                            organizationUrl = developerOrganizationUrl
+                            id = rootProject.ext.developerId
+                            name = rootProject.ext.developerName
+                            email = rootProject.ext.developerEmail
+                            organization = rootProject.ext.developerOrganization
+                            organizationUrl = rootProject.ext.developerOrganizationUrl
                         }
                     }
 
                     scm {
-                        connection = gitUrl
-                        developerConnection = gitUrl
-                        url = gitHttpsUrl
+                        connection = rootProject.ext.gitUrl
+                        developerConnection = rootProject.ext.gitUrl
+                        url = rootProject.ext.gitHttpsUrl
                     }
                 }
             }
         }
 
-        repositories {
-            maven {
-                url System.getProperty("deployUrl", "none")
-                credentials {
-                    username System.getProperty("deployUsername", "none")
-                    password System.getProperty("deployPassword", "none")
+        if (project.version.endsWith("-SNAPSHOT")) {
+            repositories {
+                maven {
+                    url "https://central.sonatype.com/repository/maven-snapshots/"
+                    credentials {
+                        username System.getenv("MAVEN_CENTRAL_PORTAL_USERNAME")
+                        password System.getenv("MAVEN_CENTRAL_PORTAL_PASSWORD")
+                    }
                 }
             }
         }

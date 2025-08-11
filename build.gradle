@@ -1,5 +1,5 @@
 plugins {
-    id "io.codearte.nexus-staging" version "0.30.0"
+    id "org.danilopianini.publish-on-central" version "9.0.2"
     id 'com.github.jk1.dependency-license-report' version '1.16'
     id 'org.cyclonedx.bom' version '1.8.2' apply false
 }
@@ -8,7 +8,6 @@ plugins {
 import com.github.jk1.license.filter.*
 import com.github.jk1.license.render.*
 
-apply plugin: 'io.codearte.nexus-staging'
 
 ext {
     /*
@@ -48,7 +47,7 @@ subprojects {
     version moduleVersion
     base.archivesName = "testerra"
 
-    apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+    apply plugin: 'maven-publish'
     apply plugin: 'jacoco-report-aggregation'
     apply plugin: 'signing'
 
@@ -56,9 +55,7 @@ subprojects {
 
     apply plugin: 'org.cyclonedx.bom'
 
-    // important!
     repositories {
-//        mavenLocal()
         mavenCentral()
     }
 

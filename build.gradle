@@ -29,7 +29,12 @@ ext {
     }
 }
 
+
+
 allprojects {
+    group 'io.testerra'
+    version moduleVersion
+
     apply plugin: 'java-library'
     apply plugin: 'project-report'
 
@@ -42,9 +47,17 @@ allprojects {
 
 }
 
+// Deactivate JAR publishing for the root project
+project.afterEvaluate {
+    println "Deactivate publishing for " + project.name
+    project.tasks.each { t ->
+        if (t.name.startsWith("publish")) {
+            t.enabled = false
+        }
+    }
+}
+
 subprojects {
-    group 'io.testerra'
-    version moduleVersion
     base.archivesName = "testerra"
 
     apply plugin: 'maven-publish'
@@ -78,15 +91,15 @@ subprojects {
         }
     }
 
-    tasks.whenTaskAdded { t ->
-        if (t.name.startsWith("publish")) {
-            boolean e = t.project.publish.enabled
-            if (!e) {
-                println "Not running publish for " + t.project.name
-                t.enabled = false
-            }
-        }
-    }
+//    tasks.whenTaskAdded { t ->
+//        if (t.name.startsWith("publish")) {
+//            boolean e = t.project.publish.enabled
+//            if (!e) {
+//                println "Not running publish for " + t.project.name
+//                t.enabled = false
+//            }
+//        }
+//    }
 
     clean.dependsOn(cleanDist)
 
@@ -104,6 +117,21 @@ subprojects {
         outputFormat = "json"
         outputName = project.name
         destination = file("../build/sbom")
+    }
+
+
+
+    // Enable publishing for specific subprojects
+    if (!(project.name in ['core', 'driver-ui', 'driver-ui-desktop'])) {
+        tasks.publish.enabled = false
+        tasks.publishToMavenLocal.enabled = false
+//        publishing {
+//            enabled = true
+//        }
+//    } else {
+//        publishing {
+//            enabled = false
+//        }
     }
 }
 

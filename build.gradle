@@ -57,7 +57,7 @@ project.afterEvaluate {
     }
 }
 
-subprojects {
+allprojects {
     base.archivesName = "testerra"
 
     apply plugin: 'maven-publish'

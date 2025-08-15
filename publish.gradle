@@ -22,7 +22,7 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-subprojects {
+allprojects {
 
     def libraryDescription = "Testerra test automation framework"
 

@@ -105,6 +105,10 @@ subprojects {
     }
 
     signing {
+        def signingKeyId = System.getenv("ORG_GRADLE_PROJECT_signingKeyId")
+        def signingKey = System.getenv("ORG_GRADLE_PROJECT_signingKey")
+        def signingPassword = System.getenv("ORG_GRADLE_PROJECT_signingPassword")
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
         sign publishing.publications.mavenJava
     }
 

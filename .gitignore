@@ -29,4 +29,4 @@ build
 /report-ng-tests/src/test/resources/screenreferences/actual/
 /integration-tests/geckodriver.exe
 /integration-tests/report-pretest-status/
-/publish_win.cmd
+/publish_*.*

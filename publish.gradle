@@ -24,8 +24,6 @@ ext {
 
 allprojects {
 
-    def libraryDescription = "Testerra test automation framework"
-
     javadoc {
         // Support JDK 8 annotations
         options.tags = [
@@ -43,7 +41,6 @@ allprojects {
     }
 
     publishOnCentral {
-        repoOwner.set("martingrossmann")
         projectDescription.set(rootProject.ext.libraryDescription)
 
         projectLongName.set(project.name)
@@ -54,6 +51,7 @@ allprojects {
     }
 
     publishing {
+
         publications {
             mavenJava(MavenPublication) {
                 from components.java
@@ -102,7 +100,6 @@ allprojects {
                 }
             }
         }
-    }
 
     signing {
         def signingKeyId = System.getenv("ORG_GRADLE_PROJECT_signingKeyId")
@@ -112,4 +109,5 @@ allprojects {
         sign publishing.publications.mavenJava
     }
 
+    }
 }

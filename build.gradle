@@ -1,12 +1,12 @@
 plugins {
-    id "org.danilopianini.publish-on-central" version "9.0.2"
+    id "org.danilopianini.publish-on-central" version "9.1.0"
     id 'com.github.jk1.dependency-license-report' version '1.16'
     id 'org.cyclonedx.bom' version '1.8.2' apply false
 }
 
 // Plugin dependency-license-report
-import com.github.jk1.license.filter.*
-import com.github.jk1.license.render.*
+import com.github.jk1.license.filter.ExcludeTransitiveDependenciesFilter
+import com.github.jk1.license.render.InventoryMarkdownReportRenderer
 
 
 ext {
@@ -29,14 +29,18 @@ ext {
     }
 }
 
-
-
 allprojects {
     group 'io.testerra'
     version moduleVersion
 
     apply plugin: 'java-library'
     apply plugin: 'project-report'
+    apply plugin: 'maven-publish'
+    apply plugin: 'jacoco-report-aggregation'
+    apply plugin: 'signing'
+    apply plugin: 'org.danilopianini.publish-on-central'
+    apply plugin: 'com.github.jk1.dependency-license-report'
+    apply plugin: 'org.cyclonedx.bom'
 
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = "UTF-8"
@@ -45,28 +49,7 @@ allprojects {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-}
-
-// Deactivate JAR publishing for the root project
-project.afterEvaluate {
-    println "Deactivate publishing for " + project.name
-    project.tasks.each { t ->
-        if (t.name.startsWith("publish")) {
-            t.enabled = false
-        }
-    }
-}
-
-allprojects {
     base.archivesName = "testerra"
-
-    apply plugin: 'maven-publish'
-    apply plugin: 'jacoco-report-aggregation'
-    apply plugin: 'signing'
-
-    apply plugin: 'com.github.jk1.dependency-license-report'
-
-    apply plugin: 'org.cyclonedx.bom'
 
     repositories {
         mavenCentral()
@@ -91,16 +74,6 @@ allprojects {
         }
     }
 
-//    tasks.whenTaskAdded { t ->
-//        if (t.name.startsWith("publish")) {
-//            boolean e = t.project.publish.enabled
-//            if (!e) {
-//                println "Not running publish for " + t.project.name
-//                t.enabled = false
-//            }
-//        }
-//    }
-
     clean.dependsOn(cleanDist)
 
     // Plugin dependency-license-report
@@ -119,21 +92,16 @@ allprojects {
         destination = file("../build/sbom")
     }
 
-
-
-    // Enable publishing for specific subprojects
-    if (!(project.name in ['core', 'driver-ui', 'driver-ui-desktop'])) {
-        tasks.publish.enabled = false
-        tasks.publishToMavenLocal.enabled = false
-//        publishing {
-//            enabled = true
-//        }
-//    } else {
-//        publishing {
-//            enabled = false
-//        }
-    }
 }
 
+// Deactivate JAR publishing for the root project
+project.afterEvaluate {
+    println "Deactivate publishing for " + project.name
+    project.tasks.each { t ->
+        if (t.name.startsWith("publish") || t.name.contains("MavenCentral")) {
+            t.enabled = false
+        }
+    }
+}
 // Do not move this integration because `group` and `version` is needed for publishing
 apply from: rootProject.file('publish.gradle')

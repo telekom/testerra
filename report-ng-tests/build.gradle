@@ -9,7 +9,7 @@ dependencies {
 project.afterEvaluate {
     println "Deactivate publishing for " + project.name
     project.tasks.each { t ->
-        if (t.name.startsWith("publish")) {
+        if (t.name.startsWith("publish") || t.name.contains("MavenCentral")) {
             t.enabled = false
         }
     }

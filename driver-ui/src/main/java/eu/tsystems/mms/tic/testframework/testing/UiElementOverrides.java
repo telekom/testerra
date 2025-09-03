@@ -15,4 +15,19 @@ public class UiElementOverrides extends DefaultTestControllerOverrides {
         }
         return timeoutInSeconds;
     }
+
+    /**
+     * A custom timeout with CONTROL.withTimeout with default settings will be ignored.
+     * Otherwise, the previous timeout (maybe the default) is set as new thread local value in DefaultTestControllerOverrides. But
+     * this has an impact on other custom timeout settings with @PageOptions or @Check.
+     */
+    @Override
+    public int setTimeout(int seconds) {
+        int defaultTimeoutInSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
+        if (seconds == defaultTimeoutInSeconds) {
+            return super.setTimeout(-1);
+        } else {
+            return super.setTimeout(seconds);
+        }
+    }
 }

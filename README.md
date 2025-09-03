@@ -127,21 +127,30 @@ You will find the JSON files under ``<root-project>/build/sbom``
 
 Testerra is deployed and published to Maven Central. All JAR files are signed via Gradle signing plugin.
 
-The following properties have to be set via command line or ``~/.gradle/gradle.properties``
+For the signing and publishing the following environment variables have to be set:
 
-| Property                    | Description                                           |
-|-----------------------------|-------------------------------------------------------|
-| `ttVersion`                 | Version of deployed Testerra, default is `2-SNAPSHOT` |
-| `deployUrl`                 | Maven repository URL                                  |
-| `deployUsername`            | Maven repository username                             |
-| `deployPassword`            | Maven repository password                             |
-| `signing.keyId`             | GPG private key ID (short form)                       |
-| `signing.password`          | GPG private key password                              |
-| `signing.secretKeyRingFile` | Path to GPG private key                               |
+| Property                             | Description                             |
+|--------------------------------------|-----------------------------------------|
+| `ORG_GRADLE_PROJECT_signingKeyId`    | GPG private key ID (short form)         |
+| `ORG_GRADLE_PROJECT_signingPassword` | GPG private key password                |
+| `ORG_GRADLE_PROJECT_signingKey`      | GPG private key in ASCII-armored format |
+| `MAVEN_CENTRAL_PORTAL_USERNAME`      | Maven Central publishing user           | 
+| `MAVEN_CENTRAL_PORTAL_PASSWORD`      | Maven Central publishing token          | 
 
-If all properties are set, call the following to build, deploy and release Testerra:
+### Publish snapshots
+
+Publishing snapshots the default ``maven-publish`` plugin is used:
+
 ````shell
-gradle buildReport publish closeAndReleaseRepository
+gradle publish
+````
+
+### Publish release
+
+Publishing releases the ``org.danilopianini.publish-on-central`` plugin is used:
+
+````shell
+gradle buildReport publishMavenJavaPublicationToProjectLocalRepository zipMavenCentralPortalPublication releaseMavenCentralPortalPublication -DttVersion=2.1 
 ````
 
 ## Code of Conduct

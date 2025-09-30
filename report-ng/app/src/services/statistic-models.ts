@@ -229,20 +229,29 @@ export class HistoryStatistics {
 
                 clsStat.methods.forEach((method) => {
                     let methodHistory = classHistory.methods.find(
-                        methodHistoryStatistics => methodHistoryStatistics.identifier === method.identifier && this._compareRelatedMethods(methodHistoryStatistics.relatedMethods, method.relatedMethods)
+                        methodHistoryStatistics => {
+                            // Retried methods have the same identifier, so we have duplicates in related methods array.
+                            const uniqueHistoryRelatedMethods = this._filterUniqueItems(methodHistoryStatistics.relatedMethods);
+                            const uniqueRelatedMethods = this._filterUniqueItems(method.relatedMethods);
+                            return methodHistoryStatistics.identifier === method.identifier
+                                && this._compareRelatedMethods(uniqueHistoryRelatedMethods, uniqueRelatedMethods);
+                        }
                     );
-
                     if (!methodHistory) {
                         methodHistory = new MethodHistoryStatistics(method);
                         classHistory.addMethod(methodHistory);
                     }
-
                     methodHistory.addRun(method, currentHistoryIndex);
                 });
             });
         });
 
         this._classHistory = Array.from(classHistoryMap.values());
+    }
+
+    private _filterUniqueItems(arr: string[]): string[] {
+        const uniqueItems = new Set(arr);
+        return Array.from(uniqueItems);
     }
 
     private _compareRelatedMethods(arr1: string[], arr2: string[]): boolean {

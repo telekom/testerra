@@ -100,9 +100,13 @@ export class RunComparison extends AbstractViewModel {
                     pastStatus = pastRun.context.resultStatus;
                 }
 
-                if (currentStatus === ResultStatusType.PASSED && pastStatus === ResultStatusType.PASSED) {
+                if (
+                    (currentStatus === ResultStatusType.PASSED && pastStatus === ResultStatusType.PASSED)
+                    || pastStatus === ResultStatusType.FAILED_RETRIED
+                    || currentStatus === ResultStatusType.FAILED_RETRIED) {
                     return null;
                 }
+
 
                 if (method.runs.length > 1) {
                     methodHistoryAvailable = true;

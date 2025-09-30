@@ -24,6 +24,7 @@ import {bindable} from "aurelia-templating";
 import {bindingMode} from "aurelia-binding";
 import "./method-table.scss";
 import {IComparableMethod} from "./run-comparison";
+import {ClassName, ClassNameValueConverter} from "../../../value-converters/class-name-value-converter";
 
 @autoinject()
 export class MethodTable {
@@ -36,5 +37,19 @@ export class MethodTable {
     private currentRun: number;
 
     constructor() {
+    }
+
+    methodsChanged() {
+        if (this.methods) {
+            let converter = new ClassNameValueConverter();
+            this.methods = this.methods.sort((a, b) => {
+                const aClass = converter.toView(a.classIdentifier, ClassName.simpleName);
+                const bClass = converter.toView(b.classIdentifier, ClassName.simpleName);
+                if (aClass < bClass) return -1;
+                if (aClass > bClass) return 1;
+                return 0;
+            });
+        }
+
     }
 }

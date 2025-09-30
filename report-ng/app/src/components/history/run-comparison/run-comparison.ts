@@ -36,6 +36,12 @@ export interface IComparableMethod {
     methodHistoryAvailable: boolean
 }
 
+interface IRunToCompare {
+    historyIndex: number,
+    startTime: number
+}
+
+
 @autoinject()
 export class RunComparison extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
@@ -147,7 +153,3 @@ export class RunComparison extends AbstractViewModel {
     }
 }
 
-interface IRunToCompare {
-    historyIndex: number,
-    startTime: number
-}

@@ -36,6 +36,12 @@ export interface IComparableMethod {
     methodHistoryAvailable: boolean
 }
 
+interface IRunToCompare {
+    historyIndex: number,
+    startTime: number
+}
+
+
 @autoinject()
 export class RunComparison extends AbstractViewModel {
     private _historyStatistics: HistoryStatistics;
@@ -100,9 +106,13 @@ export class RunComparison extends AbstractViewModel {
                     pastStatus = pastRun.context.resultStatus;
                 }
 
-                if (currentStatus === ResultStatusType.PASSED && pastStatus === ResultStatusType.PASSED) {
+                if (
+                    (currentStatus === ResultStatusType.PASSED && pastStatus === ResultStatusType.PASSED)
+                    || pastStatus === ResultStatusType.FAILED_RETRIED
+                    || currentStatus === ResultStatusType.FAILED_RETRIED) {
                     return null;
                 }
+
 
                 if (method.runs.length > 1) {
                     methodHistoryAvailable = true;
@@ -143,7 +153,3 @@ export class RunComparison extends AbstractViewModel {
     }
 }
 
-interface IRunToCompare {
-    historyIndex: number,
-    startTime: number
-}

@@ -28,13 +28,13 @@ export class ClassNameValueConverter {
         switch (mode) {
             case ClassName.package:
                 if (value.lastIndexOf('.') > 0) {
-                    return value.substr(0, value.lastIndexOf('.'));
+                    return value.substring(0, value.lastIndexOf('.'));
                 } else {
                     return '';
                 }
             case ClassName.simpleName:
                 if (value.lastIndexOf('.') > 0) {
-                    return value.substr(value.lastIndexOf('.') + 1);
+                    return value.substring(value.lastIndexOf('.') + 1);
                 }
             case ClassName.full:
                 return value;

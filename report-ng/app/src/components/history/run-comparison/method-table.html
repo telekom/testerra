@@ -66,6 +66,7 @@
                     ></a>
                     <a if.bind="!methodHistory.methodRunId && !methodHistory.methodHistoryAvailable"
                        innerhtml.bind="methodHistory.methodIdentifier"></a>
+                    <div if.bind="!methodHistory.currentStatus">(${methodHistory.methodIdentifier})</div>
                     <div
                         if.bind="methodHistory.changedFailureAspect && methodHistory.pastStatus === methodHistory.currentStatus"
                         class="st1"

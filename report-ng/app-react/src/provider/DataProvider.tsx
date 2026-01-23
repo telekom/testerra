@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import React, {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
 
-import {ExecutionAggregate} from "./report-model/report_pb.ts";
+import {ExecutionAggregate, HistoryAggregate, LogMessageAggregate} from "./report-model/report_pb.ts";
 
 const ProtobufContext = createContext<ProtobufContextType | undefined>(undefined);
 
@@ -12,14 +12,20 @@ interface Props {
 //     decode(reader: Uint8Array, length?: number): T
 // }
 
+export interface AllProtoData {
+    execution: ExecutionAggregate;
+    logging: LogMessageAggregate;
+    history: HistoryAggregate;
+}
+
 export interface ProtobufContextType {
-    protoData: ExecutionAggregate | null;
+    protoData: AllProtoData | null;
     isLoading: boolean;
     error: Error | null;
 }
 
-export const DataProvider: React.FC<Props> = ({ children }) => {
-    const [protoData, setProtoData] = useState<ExecutionAggregate | null>(null);
+export const DataProvider: React.FC<Props> = ({children}) => {
+    const [protoData, setProtoData] = useState<AllProtoData | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
 
@@ -37,13 +43,11 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
     useEffect(() => {
         async function loadBinaryData() {
             try {
-                // 1. Nur noch die binären Daten laden
+
+                /*
                 const response = await fetch("model/execution");
                 if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
                 const arrayBuffer = await response.arrayBuffer();
-
-                // 2. Direkt das generierte Model zum Dekodieren nutzen
                 const decodedMessage = ExecutionAggregate.decode(new Uint8Array(arrayBuffer));
                 console.table(decodedMessage);
                 // // 3. In ein Plain-Object umwandeln (für React State empfohlen)
@@ -54,6 +58,16 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
                 // });
 
                 setProtoData(decodedMessage);
+                */
+
+                const [execution, logging, history] = await Promise.all([
+                    fetchAndDecode<ExecutionAggregate>("execution", ExecutionAggregate),
+                    fetchAndDecode<LogMessageAggregate>("logMessages", LogMessageAggregate),
+                    fetchAndDecode<HistoryAggregate>("history", HistoryAggregate)
+                ]);
+
+                setProtoData({execution, logging, history});
+
             } catch (err) {
                 setError(err instanceof Error ? err : new Error("Unknown error"));
             } finally {
@@ -64,8 +78,29 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
         loadBinaryData();
     }, []);
 
+    const fetchAndDecode = async <T, >(
+        file: string,
+        // model: { decode: (d: Uint8Array) => any, toObject: (m: any, o?: any) => T }
+        model: any
+    ): Promise<T> => {
+        const resp = await fetch("model/" + file);
+        console.log(resp)
+        if (!resp.ok) {
+            if (resp.status === 404) {
+                console.error(`Cannot find file ${file}.`);
+            } else {
+                throw new Error(`Cannot load ${file}: ${resp.status} - ${resp.body}`);
+            }
+        }
+        const buffer = await resp.arrayBuffer();
+        const message = model.decode(new Uint8Array(buffer));
+        // TODO: model.toObject is not a function -> outdated version?
+        // return model.toObject(message, {longs: Number, enums: String}) as T;
+        return message
+    };
+
     return (
-        <ProtobufContext.Provider value={{ protoData, isLoading, error }}>
+        <ProtobufContext.Provider value={{protoData, isLoading, error}}>
             {children}
         </ProtobufContext.Provider>
     );

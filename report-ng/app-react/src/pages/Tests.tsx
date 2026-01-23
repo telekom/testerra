@@ -15,7 +15,7 @@ const Tests = () => {
             <Box>
                 <Typography variant="h6">Test view</Typography>
                 <Typography>
-                    {protoData.executionContext?.runConfig?.reportName}
+                    {protoData.execution.executionContext?.runConfig?.reportName}
                 </Typography>
             </Box>
         </>

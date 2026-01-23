@@ -7,7 +7,7 @@ import App from './Dashboard';
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <StyledEngineProvider injectFirst>
-            <App disableCustomTheme={true}/>
+            <App disableCustomTheme={false}/>
         </StyledEngineProvider>
     </React.StrictMode>
 );

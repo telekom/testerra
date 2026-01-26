@@ -17,7 +17,7 @@
       },
       "devDependencies": {
         "@eslint/js": "^9.39.1",
-        "@protobuf-ts/protoc": "^2.9.0",
+        "@protobuf-ts/protoc": "^2.11.1",
         "@types/node": "^24.10.1",
         "@types/react": "^19.2.5",
         "@types/react-dom": "^19.2.3",
@@ -28,7 +28,7 @@
         "globals": "^16.5.0",
         "protoc": "^33.2.0",
         "sass": "^1.97.2",
-        "ts-proto": "^1.155.1",
+        "ts-proto": "^1.181.2",
         "typescript": "~5.9.3",
         "typescript-eslint": "^8.46.4",
         "vite": "^7.2.4",

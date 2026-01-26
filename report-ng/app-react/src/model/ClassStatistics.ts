@@ -1,7 +1,6 @@
 import {Statistics} from "./Statistics.ts";
-// import type { data } from "../report-model/index.ts";
-import {type MethodContext as IMethodContext, MethodType} from "../provider/report-model/framework_pb.ts";
 import type {ClassContext as IClassContext} from "../provider/report-model/framework_pb.ts";
+import {type MethodContext as IMethodContext, MethodType} from "../provider/report-model/framework_pb.ts";
 
 export class ClassStatistics extends Statistics {
 
@@ -20,6 +19,9 @@ export class ClassStatistics extends Statistics {
     }
 
     addMethodContext(methodContext: IMethodContext) {
+        if (!methodContext.resultStatus) {
+            return;
+        }
         if (methodContext.methodType == MethodType.CONFIGURATION_METHOD) {
             this._configStatistics.addResultStatus(methodContext.resultStatus);
         } else {

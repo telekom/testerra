@@ -50,7 +50,7 @@ export class ExecutionStatistics extends Statistics{
     // }
 
     get executionContextLogMessageIds() {
-        return this.executionAggregate.executionContext.logMessageIds
+        return this.executionAggregate.executionContext?.logMessageIds
     }
 
     get methodContextLogMessageIds() {

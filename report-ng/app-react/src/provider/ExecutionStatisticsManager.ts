@@ -1,23 +1,23 @@
-import type {ExecutionAggregate} from "./report-model/report_pb.ts";
-import type {ClassContext, RunConfig} from "./report-model/framework_pb.ts";
+import type {ExecutionAggregate, HistoryAggregate, LogMessageAggregate} from "./report-model/report_pb.ts";
+import type {ClassContext} from "./report-model/framework_pb.ts";
 import {ExecutionStatistics} from "../model/ExecutionStatistics.ts";
 import {ClassStatistics} from "../model/ClassStatistics.ts";
 
 
 export class ExecutionStatisticsManager {
-    private runConfig: RunConfig | undefined = undefined;
-
     private readonly executionAggregate: ExecutionAggregate;
+    private readonly logMessageAggregate: LogMessageAggregate;
+    private readonly historyAggregate: HistoryAggregate;
     private executionStatistics: ExecutionStatistics;
 
-    constructor(executionAggregate: ExecutionAggregate) {
+    constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate, historyAggregate: HistoryAggregate) {
         this.executionAggregate = executionAggregate;
+        this.logMessageAggregate = logMessageAggregate;
+        this.historyAggregate = historyAggregate;
         this.executionStatistics = new ExecutionStatistics(this.executionAggregate);
     }
 
     public async init() {
-        this.runConfig = this.executionAggregate.executionContext?.runConfig;
-
         if (this.executionAggregate.methodContexts && this.executionAggregate.classContexts) {
 
             const classStatistics: { [key: string]: ClassStatistics } = {};
@@ -41,10 +41,14 @@ export class ExecutionStatisticsManager {
 
     }
 
-    // TODO: Just for testing
-    public getRunConfig() {
-        return this.runConfig;
+    public getExecutionAggregate() {
+        return this.executionAggregate;
     }
+
+    public getExecutionStatistics(): ExecutionStatistics {
+        return this.executionStatistics;
+    }
+
 
     // TODO: Add all the other methods here...
 

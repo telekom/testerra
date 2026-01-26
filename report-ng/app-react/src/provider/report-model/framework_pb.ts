@@ -7,90 +7,140 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
-export enum ClickPathEventType {
-  CPET_NOT_SET = 0,
-  CPET_WINDOW = 1,
-  CPET_CLICK = 2,
-  CPET_VALUE = 3,
-  CPET_PAGE = 4,
-  CPET_URL = 5,
+export const ClickPathEventType = {
+  CPET_NOT_SET: 0,
+  CPET_WINDOW: 1,
+  CPET_CLICK: 2,
+  CPET_VALUE: 3,
+  CPET_PAGE: 4,
+  CPET_URL: 5,
+} as const;
+
+export type ClickPathEventType = typeof ClickPathEventType[keyof typeof ClickPathEventType];
+
+export namespace ClickPathEventType {
+  export type CPET_NOT_SET = typeof ClickPathEventType.CPET_NOT_SET;
+  export type CPET_WINDOW = typeof ClickPathEventType.CPET_WINDOW;
+  export type CPET_CLICK = typeof ClickPathEventType.CPET_CLICK;
+  export type CPET_VALUE = typeof ClickPathEventType.CPET_VALUE;
+  export type CPET_PAGE = typeof ClickPathEventType.CPET_PAGE;
+  export type CPET_URL = typeof ClickPathEventType.CPET_URL;
 }
 
-export enum LogMessageType {
-  LMT_OFF = 0,
-  LMT_ERROR = 1,
-  LMT_WARN = 2,
-  LMT_INFO = 3,
-  LMT_DEBUG = 4,
+export const LogMessageType = { LMT_OFF: 0, LMT_ERROR: 1, LMT_WARN: 2, LMT_INFO: 3, LMT_DEBUG: 4 } as const;
+
+export type LogMessageType = typeof LogMessageType[keyof typeof LogMessageType];
+
+export namespace LogMessageType {
+  export type LMT_OFF = typeof LogMessageType.LMT_OFF;
+  export type LMT_ERROR = typeof LogMessageType.LMT_ERROR;
+  export type LMT_WARN = typeof LogMessageType.LMT_WARN;
+  export type LMT_INFO = typeof LogMessageType.LMT_INFO;
+  export type LMT_DEBUG = typeof LogMessageType.LMT_DEBUG;
 }
 
-export enum FailureCorridorValue {
-  FCV_NOT_SET = 0,
-  FCV_HIGH = 1,
-  FCV_MID = 2,
-  FCV_LOW = 3,
+export const FailureCorridorValue = { FCV_NOT_SET: 0, FCV_HIGH: 1, FCV_MID: 2, FCV_LOW: 3 } as const;
+
+export type FailureCorridorValue = typeof FailureCorridorValue[keyof typeof FailureCorridorValue];
+
+export namespace FailureCorridorValue {
+  export type FCV_NOT_SET = typeof FailureCorridorValue.FCV_NOT_SET;
+  export type FCV_HIGH = typeof FailureCorridorValue.FCV_HIGH;
+  export type FCV_MID = typeof FailureCorridorValue.FCV_MID;
+  export type FCV_LOW = typeof FailureCorridorValue.FCV_LOW;
 }
 
-export enum MethodType {
-  MT_NOT_SET = 0,
-  TEST_METHOD = 1,
-  CONFIGURATION_METHOD = 2,
+export const MethodType = { MT_NOT_SET: 0, TEST_METHOD: 1, CONFIGURATION_METHOD: 2 } as const;
+
+export type MethodType = typeof MethodType[keyof typeof MethodType];
+
+export namespace MethodType {
+  export type MT_NOT_SET = typeof MethodType.MT_NOT_SET;
+  export type TEST_METHOD = typeof MethodType.TEST_METHOD;
+  export type CONFIGURATION_METHOD = typeof MethodType.CONFIGURATION_METHOD;
 }
 
 /** All status elements for an actual executed test method */
-export enum ResultStatusType {
-  RST_NOT_SET = 0,
+export const ResultStatusType = {
+  RST_NOT_SET: 0,
   /** NO_RUN - default status when entity is spawned, basically an illegal end status */
-  NO_RUN = 1,
+  NO_RUN: 1,
   /**
    * INFO - info status, not representative
    *
    * @deprecated
    */
-  INFO = 2,
+  INFO: 2,
   /** SKIPPED - skipped */
-  SKIPPED = 3,
+  SKIPPED: 3,
   /** PASSED - passed status, without any issue */
-  PASSED = 4,
+  PASSED: 4,
   /**
    * MINOR - passed, but with minor, non-blocking issues
    *
    * @deprecated
    */
-  MINOR = 5,
+  MINOR: 5,
   /** FAILED - failed status, with hard failing issues */
-  FAILED = 7,
+  FAILED: 7,
   /**
    * FAILED_MINOR - failed with additional minor issues
    *
    * @deprecated
    */
-  FAILED_MINOR = 8,
+  FAILED_MINOR: 8,
   /** FAILED_RETRIED - failed and retry is triggered */
-  FAILED_RETRIED = 9,
+  FAILED_RETRIED: 9,
   /** FAILED_EXPECTED - entity was expected to fail (with or without an explicit issue), it may or may not be representative */
-  FAILED_EXPECTED = 10,
+  FAILED_EXPECTED: 10,
   /** PASSED_RETRY - passed after a retry */
-  PASSED_RETRY = 11,
+  PASSED_RETRY: 11,
   /**
    * MINOR_RETRY - minor after a retry
    *
    * @deprecated
    */
-  MINOR_RETRY = 12,
+  MINOR_RETRY: 12,
   /** REPAIRED - passed with fail annotation */
-  REPAIRED = 13,
+  REPAIRED: 13,
+} as const;
+
+export type ResultStatusType = typeof ResultStatusType[keyof typeof ResultStatusType];
+
+export namespace ResultStatusType {
+  export type RST_NOT_SET = typeof ResultStatusType.RST_NOT_SET;
+  export type NO_RUN = typeof ResultStatusType.NO_RUN;
+  export type INFO = typeof ResultStatusType.INFO;
+  export type SKIPPED = typeof ResultStatusType.SKIPPED;
+  export type PASSED = typeof ResultStatusType.PASSED;
+  export type MINOR = typeof ResultStatusType.MINOR;
+  export type FAILED = typeof ResultStatusType.FAILED;
+  export type FAILED_MINOR = typeof ResultStatusType.FAILED_MINOR;
+  export type FAILED_RETRIED = typeof ResultStatusType.FAILED_RETRIED;
+  export type FAILED_EXPECTED = typeof ResultStatusType.FAILED_EXPECTED;
+  export type PASSED_RETRY = typeof ResultStatusType.PASSED_RETRY;
+  export type MINOR_RETRY = typeof ResultStatusType.MINOR_RETRY;
+  export type REPAIRED = typeof ResultStatusType.REPAIRED;
 }
 
-export enum MetricType {
+export const MetricType = {
   /** BASEURL_LOAD - time information of loading the base url */
-  BASEURL_LOAD = 0,
+  BASEURL_LOAD: 0,
   /** SESSION_LOAD - time information of loading a new browser session */
-  SESSION_LOAD = 1,
+  SESSION_LOAD: 1,
   /** SESSION_DURATION - time information of the lifetime of a browser session */
-  SESSION_DURATION = 2,
+  SESSION_DURATION: 2,
   /** METHOD_DURATION - time information of the lifetime of a test method */
-  METHOD_DURATION = 3,
+  METHOD_DURATION: 3,
+} as const;
+
+export type MetricType = typeof MetricType[keyof typeof MetricType];
+
+export namespace MetricType {
+  export type BASEURL_LOAD = typeof MetricType.BASEURL_LOAD;
+  export type SESSION_LOAD = typeof MetricType.SESSION_LOAD;
+  export type SESSION_DURATION = typeof MetricType.SESSION_DURATION;
+  export type METHOD_DURATION = typeof MetricType.METHOD_DURATION;
 }
 
 export interface SuiteContext {

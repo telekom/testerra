@@ -50,7 +50,7 @@ export const DataProvider: React.FC<Props> = ({children}) => {
                     fetchAndDecode<HistoryAggregate>("history", HistoryAggregate)
                 ]);
 
-                let executionStatisticsManager = new ExecutionStatisticsManager(execution);
+                let executionStatisticsManager = new ExecutionStatisticsManager(execution, logging, history);
                 await executionStatisticsManager.init();
 
                 setManagers({

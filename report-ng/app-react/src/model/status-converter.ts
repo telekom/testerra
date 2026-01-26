@@ -72,6 +72,7 @@ export class StatusConverter {
         }
     }
 
+    // TODO should be always int, not string
     static normalizeStatus(status: ResultStatusType | string): number {
         if (typeof status === "string") {
             status = Number.parseInt(status);

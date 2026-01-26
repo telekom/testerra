@@ -34,7 +34,7 @@
     "globals": "^16.5.0",
     "protoc": "^33.2.0",
     "sass": "^1.97.2",
-    "ts-proto": "^1.181.2",
+    "ts-proto": "^2.11.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"

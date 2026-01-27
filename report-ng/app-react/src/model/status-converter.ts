@@ -20,8 +20,8 @@
  */
 
 
-import {ResultStatusType} from "../provider/report-model/framework_pb.ts";
-import type {data} from "../provider/report-model";
+import {ResultStatusType} from "./report-model/framework_pb.ts";
+import type {data} from "./report-model";
 
 class GraphColors {
     static readonly PASSED = '#417336'; // $success

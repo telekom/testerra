@@ -1,5 +1,5 @@
-import type {ExecutionAggregate, HistoryAggregate, LogMessageAggregate} from "./report-model/report_pb.ts";
-import type {ClassContext} from "./report-model/framework_pb.ts";
+import type {ExecutionAggregate, HistoryAggregate, LogMessageAggregate} from "../model/report-model/report_pb.ts";
+import type {ClassContext, LogMessage} from "../model/report-model/framework_pb.ts";
 import {ExecutionStatistics} from "../model/ExecutionStatistics.ts";
 import {ClassStatistics} from "../model/ClassStatistics.ts";
 
@@ -8,7 +8,10 @@ export class ExecutionStatisticsManager {
     private readonly executionAggregate: ExecutionAggregate;
     private readonly logMessageAggregate: LogMessageAggregate;
     private readonly historyAggregate: HistoryAggregate;
+
     private executionStatistics: ExecutionStatistics;
+    private logMessages : { [key: string]: LogMessage } = {};
+
 
     constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate, historyAggregate: HistoryAggregate) {
         this.executionAggregate = executionAggregate;
@@ -18,8 +21,8 @@ export class ExecutionStatisticsManager {
     }
 
     public async init() {
-        if (this.executionAggregate.methodContexts && this.executionAggregate.classContexts) {
 
+        if (this.executionAggregate.methodContexts && this.executionAggregate.classContexts) {
             const classStatistics: { [key: string]: ClassStatistics } = {};
             for (const id of Object.keys(this.executionAggregate.methodContexts)) {
                 const methodContext = this.executionAggregate.methodContexts[id];
@@ -39,6 +42,10 @@ export class ExecutionStatisticsManager {
             this.executionStatistics.setClassStatistics(Object.values(classStatistics));
         }
 
+        if (this.logMessageAggregate.logMessages) {
+            this.logMessages = this.logMessageAggregate.logMessages;
+            console.info(this.logMessages);
+        }
     }
 
     public getExecutionAggregate() {

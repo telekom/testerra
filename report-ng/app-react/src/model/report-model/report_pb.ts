@@ -15,7 +15,7 @@ import {
   SuiteContext,
   TestContext,
   TestMetrics,
-} from "./framework_pb";
+} from "./framework_pb.ts";
 
 export interface ExecutionAggregate {
   executionContext?: ExecutionContext | undefined;

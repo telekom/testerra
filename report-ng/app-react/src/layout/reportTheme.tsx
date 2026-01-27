@@ -20,6 +20,7 @@ declare module '@mui/material/Chip' {
     }
 }
 
+
 export const reportTheme = createTheme({
     custom: {
         statusColors,

@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generateProto": "npx protoc --plugin=.\\node_modules\\.bin\\protoc-gen-ts_proto --ts_proto_opt=outputJsonMethods=false --ts_proto_opt=outputPartialMethods=false --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=outputIndex=true --ts_proto_opt=forceLong=number --ts_proto_opt=useOptionals=all --ts_proto_opt=esModuleInterop=true --ts_proto_opt=fileSuffix=_pb --ts_proto_out=src/model --proto_path=../../report-model/src/main/proto report.proto"
+    "generateProto": "npx protoc --plugin=.\\node_modules\\.bin\\protoc-gen-ts_proto --ts_proto_opt=outputJsonMethods=false --ts_proto_opt=outputPartialMethods=false --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=outputIndex=true --ts_proto_opt=forceLong=number --ts_proto_opt=useOptionals=all --ts_proto_opt=esModuleInterop=true --ts_proto_opt=enumsAsLiterals=true --ts_proto_opt=fileSuffix=_pb --ts_proto_out=src/provider/report-model --proto_path=../../report-model/src/main/proto report.proto"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -23,7 +23,7 @@
     "react-router-dom": "^7.11.0"
   },
   "devDependencies": {
-    "@protobuf-ts/protoc": "^2.9.0",
+    "@protobuf-ts/protoc": "^2.11.1",
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
@@ -35,7 +35,7 @@
     "globals": "^16.5.0",
     "protoc": "^33.2.0",
     "sass": "^1.97.2",
-    "ts-proto": "^1.155.1",
+    "ts-proto": "^2.11.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"

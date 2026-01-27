@@ -1,6 +1,6 @@
 import {Statistics} from "./Statistics.ts";
-import type {ClassContext as IClassContext} from "../provider/report-model/framework_pb.ts";
-import {type MethodContext as IMethodContext, MethodType} from "../provider/report-model/framework_pb.ts";
+import type {ClassContext as IClassContext} from "./report-model/framework_pb.ts";
+import {type MethodContext as IMethodContext, MethodType} from "./report-model/framework_pb.ts";
 
 export class ClassStatistics extends Statistics {
 

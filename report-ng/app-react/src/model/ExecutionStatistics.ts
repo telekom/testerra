@@ -1,5 +1,5 @@
 import {Statistics} from "./Statistics.ts";
-import type {ExecutionAggregate} from "../provider/report-model/report_pb.ts";
+import type {ExecutionAggregate} from "./report-model/report_pb.ts";
 import type {ClassStatistics} from "./ClassStatistics.ts";
 
 export class ExecutionStatistics extends Statistics{

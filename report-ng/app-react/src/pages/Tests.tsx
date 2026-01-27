@@ -1,7 +1,7 @@
 import {useReportData} from "../provider/DataProvider.tsx";
 import Box from "@mui/material/Box";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
-import {ResultStatusType} from "../provider/report-model/framework_pb.ts";
+import {ResultStatusType} from "../model/report-model/framework_pb.ts";
 
 function createRow(
     key: string,

@@ -1,5 +1,5 @@
-import {ResultStatusType} from "../provider/report-model/framework_pb.ts";
-import {data} from "../provider/report-model";
+import {ResultStatusType} from "./report-model/framework_pb.ts";
+import {data} from "./report-model";
 import {StatusConverter} from "./status-converter.ts";
 
 export class Statistics {

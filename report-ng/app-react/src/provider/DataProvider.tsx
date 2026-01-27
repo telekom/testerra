@@ -1,6 +1,6 @@
 import React, {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
 
-import {ExecutionAggregate, HistoryAggregate, LogMessageAggregate} from "./report-model/report_pb.ts";
+import {ExecutionAggregate, HistoryAggregate, LogMessageAggregate} from "../model/report-model/report_pb.ts";
 import {ExecutionStatisticsManager} from "./ExecutionStatisticsManager.ts";
 
 const ProtobufContext = createContext<ProtobufContextType | undefined>(undefined);

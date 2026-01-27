@@ -32,6 +32,7 @@ import IClassContext = data.ClassContext;
 import IErrorContext = data.ErrorContext;
 import IStackTraceCause = data.StackTraceCause;
 
+// migrated: ok
 class Statistics {
     private _statusConverter: StatusConverter;
     private _resultStatuses: { [key: number]: number } = {};
@@ -753,6 +754,7 @@ export class MethodHistoryStatistics extends Statistics {
     }
 }
 
+// migrated OK
 export class ClassStatistics extends Statistics {
     private _configStatistics = new Statistics();
     private _methodContexts: IMethodContext[] = [];

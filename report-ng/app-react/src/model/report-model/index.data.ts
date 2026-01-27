@@ -5,4 +5,5 @@
 
 /* eslint-disable */
 
-export * as data from "./index.data";
+export * from "./framework_pb.ts";
+export * from "./report_pb.ts";

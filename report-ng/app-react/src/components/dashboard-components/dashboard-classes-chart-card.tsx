@@ -41,7 +41,7 @@ const DashboardClassesChartCard: React.FC = () => {
     };
 
     return (
-        <ReportCard label="Breakdown" sx={{p: 0}}>
+        <ReportCard label="Test Classes" sx={{p: 0}}>
             <EChart option={option} height={100}/>
         </ReportCard>
     );

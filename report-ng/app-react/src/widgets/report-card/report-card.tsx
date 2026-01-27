@@ -5,12 +5,13 @@ export interface CardProps {
     label: string;
     children: any;
     sx?: SxProps<Theme>;
+    className: string;
 }
 
-const ReportCard = ({label, children, sx = {pt: 1, pb: 1}}: CardProps) => {
+const ReportCard = ({label, children, sx = {pt: 1, pb: 1}, className}: CardProps) => {
 
     return (
-        <Card sx={{p: 0}}>
+        <Card sx={{p: 0}} className={className}>
             <CardContent
                 sx={{pt: 1, pb: 1}}
             >

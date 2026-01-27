@@ -1,11 +1,13 @@
 import {Typography, useTheme} from "@mui/material";
-import React from "react";
 import ReportCard from "../../widgets/report-card/report-card";
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
 
-const DashboardFailureCorridorCard: React.FC = () => {
+interface DashboardFailureCorridorProps {
+    className: string;
+}
+
+const DashboardFailureCorridorCard = ({className}: DashboardFailureCorridorProps) => {
     const theme = useTheme();
 
     const chipList = [
@@ -15,13 +17,12 @@ const DashboardFailureCorridorCard: React.FC = () => {
     ]
 
     return (
-        <ReportCard label="Failure Corridor" sx={{":last-child": {padding: 2}}}>
-            <Stack direction="row" spacing={2} sx={{justifyContent: "center"}}
-                   divider={<Divider orientation="vertical" flexItem/>}>
+        <ReportCard label="Failure Corridor" sx={{":last-child": {padding: 2}}} className={className}>
+            <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
                 {chipList.map((chip) => (
                     <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>
                         <Chip label={chip.label} sx={{background: chip.chipColor, color: chip.textColor}}/>
-                        <Typography> of {chip.total} </Typography>
+                        <Typography color="primary"> of {chip.total} </Typography>
                     </Stack>
                 ))}
             </Stack>

@@ -1,10 +1,13 @@
 import {useTheme} from "@mui/material";
-import React from "react";
 import ReportCard from "../../widgets/report-card/report-card";
 import ButtonList from "../../widgets/button-list/button-list";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-const DashboardFailureAspectsCard: React.FC = () => {
+interface DashboardFailureAspectsProps {
+    className: string;
+}
+
+const DashboardFailureAspectsCard = ({className}: DashboardFailureAspectsProps) => {
     const theme = useTheme();
 
     const itemList = [
@@ -23,7 +26,7 @@ const DashboardFailureAspectsCard: React.FC = () => {
     ]
 
     return (
-        <ReportCard label="Top 3 Failure Aspects" sx={{p: 0, ":last-child": {padding: 0}}}>
+        <ReportCard label="Top 3 Failure Aspects" sx={{p: 0, ":last-child": {padding: 0}}} className={className}>
             <ButtonList list={itemList} disablePadding={true}/>
         </ReportCard>
     );

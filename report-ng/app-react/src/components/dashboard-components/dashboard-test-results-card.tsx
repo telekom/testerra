@@ -1,11 +1,13 @@
-import React from "react";
 import ReportCard from "../../widgets/report-card/report-card";
 import ButtonList from "../../widgets/button-list/button-list";
 import CancelIcon from "@mui/icons-material/Cancel";
 import {useTheme} from "@mui/material";
 
+interface DashboardTestResultsProps {
+    className: string;
+}
 
-const DashboardTestResultsCard: React.FC = () => {
+const DashboardTestResultsCard = ({className}: DashboardTestResultsProps) => {
     const theme = useTheme();
 
     const itemList = [
@@ -14,7 +16,7 @@ const DashboardTestResultsCard: React.FC = () => {
     ]
 
     return (
-        <ReportCard label="Tests: 7" sx={{p: 0, ":last-child": {padding: 0}}}>
+        <ReportCard label="Tests: 7" sx={{p: 0, ":last-child": {padding: 0}}} className={className}>
             <ButtonList list={itemList}/>
         </ReportCard>
     );

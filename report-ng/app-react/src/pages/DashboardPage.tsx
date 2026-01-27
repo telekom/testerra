@@ -7,6 +7,8 @@ import DashboardFailureCorridorCard from "../components/dashboard-components/das
 import Stack from '@mui/material/Stack';
 import DashboardDurationCard from "../components/dashboard-components/dashboard-duration-card";
 import DashboardClassesChartCard from "../components/dashboard-components/dashboard-classes-chart-card";
+import DashboardHistoryChartCard from "../components/dashboard-components/dashboard-history-chart-card";
+import "../components/dashboard-components/dashboard.scss"
 
 const DashboardPage = () => {
     return (
@@ -19,18 +21,21 @@ const DashboardPage = () => {
                 columns={12}
             >
                 <Grid size={3}>
-                    <Stack direction="column" spacing={2}>
-                        <DashboardTestResultsCard/>
-                        <DashboardDurationCard/>
+                    <Stack direction="column" spacing={2} >
+                        <DashboardPieChartCard className="tall-card"/>
+                        <DashboardDurationCard className="short-card"/>
                     </Stack>
                 </Grid>
                 <Grid size={3}>
-                    <DashboardPieChartCard/>
+                    <Stack direction="column" spacing={2}>
+                        <DashboardTestResultsCard className="tall-card"/>
+                        <DashboardFailureCorridorCard className="short-card"/>
+                    </Stack>
                 </Grid>
                 <Grid size={6}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardFailureAspectsCard/>
-                        <DashboardFailureCorridorCard/>
+                        <DashboardHistoryChartCard className="tall-card"/>
+                        <DashboardFailureAspectsCard className="short-card"/>
                     </Stack>
                 </Grid>
                 <Grid size={12}>

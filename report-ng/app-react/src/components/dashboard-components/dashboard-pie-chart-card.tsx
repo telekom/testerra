@@ -1,9 +1,12 @@
 import {useTheme} from "@mui/material";
 import EChart from "../../widgets/echart/echart";
-import React from "react";
 import ReportCard from "../../widgets/report-card/report-card";
 
-const DashboardPieChartCard: React.FC = () => {
+interface DashboardPieChartProps {
+    className: string;
+}
+
+const DashboardPieChartCard = ({className}: DashboardPieChartProps) => {
     const theme = useTheme();
 
     const option = {
@@ -32,7 +35,7 @@ const DashboardPieChartCard: React.FC = () => {
     };
 
     return (
-        <ReportCard label="Breakdown">
+        <ReportCard label="Breakdown" className={className}>
             <EChart option={option}/>
         </ReportCard>
     );

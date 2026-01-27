@@ -1,5 +1,10 @@
 import {createTheme} from "@mui/material";
 
+const statusColors = {
+    "errorColor": "#FF0000"
+}
+
+
 
 export const reportTheme = createTheme({
     cssVariables: {

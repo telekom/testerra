@@ -9,19 +9,21 @@ type ListItem = {
     primaryText: string,
     secondaryText?: string,
     icon: any,
+    selected?: boolean;
 }
 
 type ButtonListProps = {
     list: ListItem[],
-    disablePadding?: boolean
+    disablePadding?: boolean,
+    handleClick?: (newValue: string) => void;
 }
 
-const ButtonList = ({list, disablePadding}: ButtonListProps) => {
+const ButtonList = ({list, disablePadding, handleClick}: ButtonListProps) => {
     return (
         <List sx={!disablePadding ? {p: 0} : undefined}>
             {list.map((item) => (
                 <ListItem disablePadding>
-                    <ListItemButton sx={disablePadding ? {pt: 0, pb: 0} : undefined}>
+                    <ListItemButton sx={disablePadding ? {pt: 0, pb: 0} : undefined} selected={item.selected} onClick={() => handleClick?.(item.primaryText)}>
                         <ListItemIcon>
                             {item.icon}
                         </ListItemIcon>

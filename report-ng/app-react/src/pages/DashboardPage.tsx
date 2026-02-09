@@ -10,6 +10,7 @@ import DashboardClassesChartCard from "../components/dashboard-components/dashbo
 import DashboardHistoryChartCard from "../components/dashboard-components/dashboard-history-chart-card";
 import "../components/dashboard-components/dashboard.scss"
 import {useReportData} from "../provider/DataProvider";
+import {useSearchParams} from "react-router-dom";
 
 const DashboardPage = () => {
     const {executionMngr, isLoading, error} = useReportData();
@@ -18,6 +19,15 @@ const DashboardPage = () => {
     if (!executionMngr) return null;
 
     const execStatistics = executionMngr.getExecutionStatistics();
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const selectedStatus = searchParams.get("status");
+
+    const handleStatusChange = (statusName: string) => {
+        const params = new URLSearchParams(searchParams);
+        params.set("status", statusName);
+        setSearchParams(params);
+    };
 
     return (
         <Box
@@ -30,13 +40,13 @@ const DashboardPage = () => {
             >
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2} >
-                        <DashboardPieChartCard className="tall-card" execStatistics={execStatistics}/>
+                        <DashboardPieChartCard className="tall-card" execStatistics={execStatistics} onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
                         <DashboardDurationCard className="short-card"/>
                     </Stack>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardTestResultsCard className="tall-card" execStatistics={execStatistics}/>
+                        <DashboardTestResultsCard className="tall-card" execStatistics={execStatistics} onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
                         <DashboardFailureCorridorCard className="short-card"/>
                     </Stack>
                 </Grid>

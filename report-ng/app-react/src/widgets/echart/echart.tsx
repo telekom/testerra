@@ -6,9 +6,11 @@ export interface EChartProps {
     option: EChartsOption;
     width?: number;
     height?: number;
+    onEvents?: Record<string, (params: any, chart: any) => void>;
+    notMerge?: boolean;
 }
 
-const EChart: React.FC<EChartProps> = ({option, width, height}) => {
+const EChart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerge}) => {
     const style: React.CSSProperties = {
         ...(width !== undefined ? {width} : {}),
         ...(height !== undefined ? {height} : {}),
@@ -22,7 +24,7 @@ const EChart: React.FC<EChartProps> = ({option, width, height}) => {
 
     return (
         <div style={style}>
-            <ReactECharts option={option} opts={opts} autoResize={false}/>
+            <ReactECharts option={option} opts={opts} autoResize={false} onEvents={onEvents} notMerge={notMerge}/>
         </div>
     )
 };

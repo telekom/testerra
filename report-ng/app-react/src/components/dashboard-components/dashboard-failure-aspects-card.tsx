@@ -2,6 +2,7 @@ import {useTheme} from "@mui/material";
 import ReportCard from "../../widgets/report-card/report-card";
 import ButtonList from "../../widgets/button-list/button-list";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Link from '@mui/material/Link';
 
 interface DashboardFailureAspectsProps {
     className: string;
@@ -9,6 +10,16 @@ interface DashboardFailureAspectsProps {
 
 const DashboardFailureAspectsCard = ({className}: DashboardFailureAspectsProps) => {
     const theme = useTheme();
+
+    const failureAspectsLabel = (
+        <>
+            Top 3 Failure Aspects (
+            <Link href="#/Tests">Major</Link>
+            {" | "}
+            <Link href="#/Tests">Minor</Link>
+            )
+        </>
+    );
 
     const itemList = [
         {
@@ -26,7 +37,7 @@ const DashboardFailureAspectsCard = ({className}: DashboardFailureAspectsProps) 
     ]
 
     return (
-        <ReportCard label="Top 3 Failure Aspects" sx={{p: 0, ":last-child": {padding: 0}}} className={className}>
+        <ReportCard label={failureAspectsLabel} sx={{p: 0, ":last-child": {padding: 0}}} className={className} tooltipText="The most critical errors that caused the highest number of failed test cases">
             <ButtonList list={itemList} disablePadding={true}/>
         </ReportCard>
     );

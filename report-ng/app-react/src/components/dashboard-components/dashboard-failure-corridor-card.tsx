@@ -17,7 +17,7 @@ const DashboardFailureCorridorCard = ({className}: DashboardFailureCorridorProps
     ]
 
     return (
-        <ReportCard label="Failure Corridor" sx={{":last-child": {padding: 2}}} className={className}>
+        <ReportCard label="Failure Corridor" sx={{":last-child": {padding: 2}}} className={className} tooltipText="The severity distribution of failed test cases in relation to the defined test goal">
             <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
                 {chipList.map((chip) => (
                     <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>

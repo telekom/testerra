@@ -1,22 +1,53 @@
 import ReportCard from "../../widgets/report-card/report-card";
 import ButtonList from "../../widgets/button-list/button-list";
-import CancelIcon from "@mui/icons-material/Cancel";
-import {useTheme} from "@mui/material";
+import {ResultStatusType} from "../../model/report-model/framework_pb";
+import {StatusConverter} from "../../model/status-converter";
 
 interface DashboardTestResultsProps {
     className: string;
+    execStatistics: any;
 }
 
-const DashboardTestResultsCard = ({className}: DashboardTestResultsProps) => {
-    const theme = useTheme();
+const getSecondaryStatusLabel = (
+    status: ResultStatusType, execStatistics: any
+) => {
+    switch (status) {
+        case ResultStatusType.FAILED:
+            return " + " + execStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED) + " Retried";
 
-    const itemList = [
-        { primaryText: "1", secondaryText: "Failed", icon: <CancelIcon sx={{color: theme.custom.statusColors.failed}}/>},
-        { primaryText: "1", secondaryText: "Expected Failed", icon: <CancelIcon sx={{color: theme.custom.statusColors.expected_failed}}/>},
-    ]
+        case ResultStatusType.PASSED: {
+            const repairedCount = execStatistics.getStatusCount(ResultStatusType.REPAIRED);
+            const recoveredCount = execStatistics.getStatusCount(ResultStatusType.PASSED_RETRY);
+
+            const parts: string[] = [];
+            if (repairedCount > 0) {
+                parts.push(`⊃ ${repairedCount} ${StatusConverter.getLabelForStatus(ResultStatusType.REPAIRED)}`);
+            }
+            if (recoveredCount > 0) {
+                parts.push(`⊃ ${recoveredCount} ${StatusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY)}`);
+            }
+            return parts.join(" ");
+        }
+
+        default:
+            return "";
+    }
+};
+
+const DashboardTestResultsCard = ({className, execStatistics}: DashboardTestResultsProps) => {
+
+    const itemList = StatusConverter.relevantStatuses
+        .filter((status) => execStatistics.getStatusCount(status) > 0)
+        .map((status) => ({
+            primaryText: execStatistics.getStatusCount(status) + " " + StatusConverter.getLabelForStatus(status),
+            secondaryText: getSecondaryStatusLabel(status, execStatistics),
+            icon: StatusConverter.getIconForStatus(status)
+        }));
+
+    const label = "Tests: " + execStatistics.overallTestCases
 
     return (
-        <ReportCard label="Tests: 7" sx={{p: 0, ":last-child": {padding: 0}}} className={className}>
+        <ReportCard label={label} sx={{p: 0, ":last-child": {padding: 0}}} className={className}>
             <ButtonList list={itemList}/>
         </ReportCard>
     );

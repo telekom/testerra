@@ -30,7 +30,7 @@ const ButtonList = ({list, disablePadding}: ButtonListProps) => {
                             The advantage of this is, that we can use the provided noWrap property which automatically truncates the text.*/}
                         <ListItemText disableTypography={true}>
                             <Typography noWrap>{item.primaryText}</Typography>
-                            <Typography color="primary" sx={{fontSize: 14}}>{item.secondaryText}</Typography>
+                            <Typography color="primary" sx={{fontSize: 14}} noWrap>{item.secondaryText}</Typography>
                         </ListItemText>
 
                     </ListItemButton>

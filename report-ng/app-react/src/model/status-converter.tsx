@@ -22,6 +22,9 @@
 
 import {ResultStatusType} from "./report-model/framework_pb.ts";
 import type {data} from "./report-model";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 class GraphColors {
     static readonly PASSED = '#417336'; // $success
@@ -114,8 +117,23 @@ export class StatusConverter {
         }
     }
 
+    static getIconForStatus(status: ResultStatusType | string) {
+        switch (status) {
+            case ResultStatusType.SKIPPED:
+                return (<RemoveCircleIcon sx={{color: this.getColorForStatus(status)}}/>)
+            case ResultStatusType.FAILED_RETRIED:
+                return (<CancelIcon sx={{color: this.getColorForStatus(status)}}/>)
+            case ResultStatusType.FAILED_EXPECTED:
+                return (<CancelIcon sx={{color: this.getColorForStatus(status)}}/>)
+            case ResultStatusType.FAILED:
+                return (<CancelIcon sx={{color: this.getColorForStatus(status)}}/>)
+            case ResultStatusType.PASSED:
+                return (<CheckCircleIcon sx={{color: this.getColorForStatus(status)}}/>)
+        }
+    }
+
     static getColorForStatus(status: ResultStatusType): string {
-        switch (this.normalizeStatus(status)) {
+        switch (status) {
             case ResultStatusType.PASSED:
             case ResultStatusType.PASSED_RETRY:
             case ResultStatusType.REPAIRED:

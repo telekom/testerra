@@ -1,6 +1,6 @@
 import {ResultStatusType} from "./report-model/framework_pb.ts";
 import {data} from "./report-model";
-import {StatusConverter} from "./status-converter.ts";
+import {StatusConverter} from "./status-converter.tsx";
 
 export class Statistics {
     private _resultStatuses = new Map<ResultStatusType, number>;

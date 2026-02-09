@@ -7,7 +7,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Drawer, {drawerClasses} from "@mui/material/Drawer";
-
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import * as React from "react";
 import {useEffect} from "react";
 import styled from "@emotion/styled";
 import {Divider, ListItemIcon, Typography} from "@mui/material";
@@ -35,6 +38,11 @@ const MainNavigation = () => {
 
     const menuRoutes = routesConfig[0].children || [];
     const location = useLocation();
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const toggleDrawer = (open: boolean) => () => {
+        setMobileOpen(open);
+    };
 
     const itemClasses = {
         selectedItem: {
@@ -62,19 +70,9 @@ const MainNavigation = () => {
         return regex.test(location.pathname);
     }
 
-    return (
-        <MenuDrawer
-            variant="permanent"
-            sx={{
-                display: {xs: 'none', md: 'block'},
-                [`& .${drawerClasses.paper}`]: {
-                    backgroundColor: 'background.paper',
-                },
-            }}
-        >
-
+    const drawerContent = (
+        <Box sx={{height: '100%', overflow: 'hidden'}}>
             <Box>
-
                 <Toolbar
                     sx={{
                         backgroundColor: 'primary.main',
@@ -125,6 +123,7 @@ const MainNavigation = () => {
                                     <ListItemButton
                                         component={Link}
                                         to={path}
+                                        onClick={() => setMobileOpen(false)}
                                     >
                                         <ListItemIcon
                                             sx={
@@ -142,7 +141,59 @@ const MainNavigation = () => {
                 </List>
 
             </Box>
-        </MenuDrawer>
+        </Box>
+    );
+
+    return (
+        <>
+            {/* Horizontal top bar with burger button that appears if the screen width is too small */}
+            <AppBar
+                position="fixed"
+                sx={{
+                    display: {xs: 'block', md: 'none'},
+                    bgcolor: 'background.paper',
+                    color: 'text.primary',
+                }}
+            >
+                <Toolbar>
+                    <Typography variant="h6" sx={{flexGrow: 1}}>
+                        Test project
+                    </Typography>
+
+                    <IconButton onClick={toggleDrawer(true)}>
+                        <MenuIcon/>
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+
+            {/* Drawer that opens after user hits burger icon if screen width is too small*/}
+            <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                onClose={toggleDrawer(false)}
+                sx={{
+                    display: {xs: 'block', md: 'none'},
+                    [`& .${drawerClasses.paper}`]: {
+                        width: drawerWidth,
+                    },
+                }}
+            >
+                {drawerContent}
+            </Drawer>
+
+            {/* Default menu drawer */}
+            <MenuDrawer
+                variant="permanent"
+                sx={{
+                    display: {xs: 'none', md: 'block'},
+                    [`& .${drawerClasses.paper}`]: {
+                        backgroundColor: 'background.paper',
+                    },
+                }}
+            >
+                {drawerContent}
+            </MenuDrawer>
+        </>
     );
 };
 export default MainNavigation;

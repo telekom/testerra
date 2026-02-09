@@ -20,19 +20,19 @@ const DashboardPage = () => {
                 spacing={2}
                 columns={12}
             >
-                <Grid size={3}>
+                <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2} >
                         <DashboardPieChartCard className="tall-card"/>
                         <DashboardDurationCard className="short-card"/>
                     </Stack>
                 </Grid>
-                <Grid size={3}>
+                <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
                         <DashboardTestResultsCard className="tall-card"/>
                         <DashboardFailureCorridorCard className="short-card"/>
                     </Stack>
                 </Grid>
-                <Grid size={6}>
+                <Grid size={{sm: 12, lg: 6}}>
                     <Stack direction="column" spacing={2}>
                         <DashboardHistoryChartCard className="tall-card"/>
                         <DashboardFailureAspectsCard className="short-card"/>

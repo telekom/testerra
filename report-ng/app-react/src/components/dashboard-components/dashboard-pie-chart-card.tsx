@@ -1,6 +1,6 @@
 import EChart from "../../widgets/echart/echart";
 import ReportCard from "../../widgets/report-card/report-card";
-import {StatusConverter} from "../../model/status-converter";
+import {StatusService} from "../../model/status-service";
 
 interface DashboardPieChartProps {
     className: string;
@@ -12,15 +12,18 @@ interface DashboardPieChartProps {
 const DashboardPieChartCard = ({className, execStatistics, onChartPieceClick, selectedStatus}: DashboardPieChartProps) => {
 
     let data = []
-    for (const status of StatusConverter.relevantStatuses) {
-        const statusGroup = StatusConverter.groupStatus(status);
+    for (const status of StatusService.getRelevantStatuses()) {
+        const statusGroup = StatusService.getGroup(status);
+        const statusInformation = StatusService.get(status);
+        if (!statusInformation) return null;
+
         const dataItem = {
             value: execStatistics.getSummarizedStatusCount(statusGroup),
-            name: StatusConverter.getLabelForStatus(status),
+            name: statusInformation.label,
             itemStyle: {
-                color: StatusConverter.getColorForStatus(status)
+                color: statusInformation.color
             },
-            selected: selectedStatus === StatusConverter.getLabelForStatus(status)  // highlighting if selected
+            selected: selectedStatus === statusInformation.label  // highlighting if selected
         }
         data.push(dataItem)
     }

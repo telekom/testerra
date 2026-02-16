@@ -3,19 +3,18 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import ReportChip from "../report-chip/report-chip";
 import type {SxProps, Theme} from "@mui/material/styles";
-import {useTheme} from '@mui/material/styles';
-import type {Status} from "../../layout/reportTheme";
+import {StatusService} from "../../model/status-service";
+import type {ResultStatus} from "../../model/status-service";
 
 type SelectInputProps = {
     label: string
-    selectedStatuses?: Status[] | [],
-    onChange: (value: Status[]) => void;
-    menuItems: { value: Status, label: string }[];
+    selectedStatuses?: ResultStatus[] | [],
+    onChange: (value: ResultStatus[]) => void;
+    menuItems: ResultStatus[];
     sx?: SxProps<Theme>;
 }
 
 const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: SelectInputProps) => {
-    const theme = useTheme();
 
     return (
         <Box sx={sx}>
@@ -26,16 +25,21 @@ const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: S
                     value={selectedStatuses}
                     label={label}
                     onChange={(e) =>
-                        onChange(e.target.value as Status[])
+                        onChange(e.target.value as ResultStatus[])
                     }
                     sx={{height: "56px"}}
                 >
-                    {menuItems.map(menuItem => (
-                        <MenuItem key={menuItem.value} value={menuItem.value}>
-                            <ReportChip label={menuItem.label}
-                                        sx={{background: theme.custom.statusColors[menuItem.value], color: "white"}}/>
-                        </MenuItem>
-                    ))}
+                    {menuItems.map(status => {
+                        const statusInformation = StatusService.get(status);
+                        if (!statusInformation) return null;
+
+                        return (
+                            <MenuItem key={status} value={status}>
+                                <ReportChip label={statusInformation.label}
+                                            sx={{background: statusInformation.color, color: "white"}}/>
+                            </MenuItem>
+                        )
+                    })}
                 </Select>
             </FormControl>
         </Box>

@@ -1,6 +1,6 @@
 import {ResultStatusType} from "./report-model/framework_pb.ts";
 import {data} from "./report-model";
-import {StatusConverter} from "./status-converter.tsx";
+import {StatusService} from "./status-service";
 
 export class Statistics {
     private _resultStatuses = new Map<ResultStatusType, number>;
@@ -41,7 +41,7 @@ export class Statistics {
     }
 
     get overallPassed() {
-        return this.getSummarizedStatusCount(StatusConverter.passedStatuses);
+        return this.getSummarizedStatusCount(StatusService.getPassedStatuses());
     }
 
     get overallSkipped() {

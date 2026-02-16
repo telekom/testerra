@@ -3,15 +3,15 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import type {SxProps, Theme} from "@mui/material/styles";
 
-type SelectInputProps = {
+type SelectInputProps<T> = {
     label: string,
-    value: string,
-    onChange: (value: string) => void,
-    menuItems: { value: string, label: string }[];
+    value: T,
+    onChange: (value: T) => void,
+    menuItems: { value: T; label: string }[]
     sx?: SxProps<Theme>;
 }
 
-const SelectInput = ({label, value, onChange, menuItems, sx}: SelectInputProps) => {
+const SelectInput = <T extends string | number>({label, value, onChange, menuItems, sx}: SelectInputProps<T>) => {
 
     return (
         <Box sx={sx}>
@@ -22,7 +22,7 @@ const SelectInput = ({label, value, onChange, menuItems, sx}: SelectInputProps) 
                     id="demo-simple-select"
                     value={value}
                     label={label}
-                    onChange={e => onChange?.(e.target.value)}
+                    onChange={e => onChange?.(e.target.value as T)}
                 >
                     {menuItems.map(menuItem => (
                         <MenuItem key={menuItem.value} value={menuItem.value}>

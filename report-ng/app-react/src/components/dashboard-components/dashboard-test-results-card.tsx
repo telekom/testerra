@@ -1,7 +1,7 @@
 import ReportCard from "../../widgets/report-card/report-card";
 import ButtonList from "../../widgets/button-list/button-list";
 import {ResultStatusType} from "../../model/report-model/framework_pb";
-import {StatusConverter} from "../../model/status-converter";
+import {StatusService} from "../../model/status-service";
 
 interface DashboardTestResultsProps {
     className: string;
@@ -23,10 +23,10 @@ const getSecondaryStatusLabel = (
 
             const parts: string[] = [];
             if (repairedCount > 0) {
-                parts.push(`⊃ ${repairedCount} ${StatusConverter.getLabelForStatus(ResultStatusType.REPAIRED)}`);
+                parts.push(`⊃ ${repairedCount} ${StatusService.getLabel(ResultStatusType.REPAIRED)}`);
             }
             if (recoveredCount > 0) {
-                parts.push(`⊃ ${recoveredCount} ${StatusConverter.getLabelForStatus(ResultStatusType.PASSED_RETRY)}`);
+                parts.push(`⊃ ${recoveredCount} ${StatusService.getLabel(ResultStatusType.PASSED_RETRY)}`);
             }
             return parts.join(" ");
         }
@@ -38,14 +38,14 @@ const getSecondaryStatusLabel = (
 
 const DashboardTestResultsCard = ({className, execStatistics, onListItemClick, selectedStatus}: DashboardTestResultsProps) => {
 
-    const itemList = StatusConverter.relevantStatuses
+    const itemList = StatusService.getRelevantStatuses()
         .filter((status) => execStatistics.getStatusCount(status) > 0)
         .map((status) => ({
-            key: StatusConverter.getLabelForStatus(status),
-            primaryText: execStatistics.getStatusCount(status) + " " + StatusConverter.getLabelForStatus(status),
+            key: StatusService.getLabel(status),
+            primaryText: execStatistics.getStatusCount(status) + " " + StatusService.getLabel(status),
             secondaryText: getSecondaryStatusLabel(status, execStatistics),
-            icon: StatusConverter.getIconForStatus(status),
-            selected: selectedStatus === StatusConverter.getLabelForStatus(status)
+            icon: StatusService.getIcon(status),
+            selected: selectedStatus === StatusService.getLabel(status)
         }));
 
     const label = "Tests: " + execStatistics.overallTestCases

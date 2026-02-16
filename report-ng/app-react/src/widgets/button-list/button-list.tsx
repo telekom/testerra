@@ -28,7 +28,7 @@ const ButtonList = ({list, disablePadding, handleClick}: ButtonListProps) => {
                             {item.icon}
                         </ListItemIcon>
 
-                        {/* This ListItemText uses disabledTypography (to explicity forbid using the built in typography) to add a separate typography element as its child component
+                        {/* This ListItemText uses disabledTypography (to explicitly forbid using the built in typography) to add a separate typography element as its child component
                             The advantage of this is, that we can use the provided noWrap property which automatically truncates the text.*/}
                         <ListItemText disableTypography={true}>
                             <Typography noWrap>{item.primaryText}</Typography>

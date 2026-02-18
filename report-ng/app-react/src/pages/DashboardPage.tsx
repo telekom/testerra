@@ -8,11 +8,13 @@ import Stack from '@mui/material/Stack';
 import DashboardDurationCard from "../components/dashboard-components/dashboard-duration-card";
 import DashboardClassesChartCard from "../components/dashboard-components/dashboard-classes-chart-card";
 import DashboardHistoryChartCard from "../components/dashboard-components/dashboard-history-chart-card";
-import "../components/dashboard-components/dashboard.scss"
 import {useReportData} from "../provider/DataProvider";
 import {useSearchParams} from "react-router-dom";
+import { useTheme } from '@mui/material/styles';
 
 const DashboardPage = () => {
+
+    const theme = useTheme()
     const {executionMngr, isLoading, error} = useReportData();
     if (isLoading) return <div>Lade Konfiguration...</div>;
     if (error) return <div>Fehler: {error.message}</div>;
@@ -40,20 +42,20 @@ const DashboardPage = () => {
             >
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2} >
-                        <DashboardPieChartCard className="tall-card" execStatistics={execStatistics} onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
-                        <DashboardDurationCard className="short-card"/>
+                        <DashboardPieChartCard sx={theme.mixins.gridHeight(theme.customSizes.cardTall)} execStatistics={execStatistics} onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
+                        <DashboardDurationCard sx={theme.mixins.gridHeight(theme.customSizes.cardShort)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardTestResultsCard className="tall-card" execStatistics={execStatistics} onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
-                        <DashboardFailureCorridorCard className="short-card"/>
+                        <DashboardTestResultsCard sx={theme.mixins.gridHeight(theme.customSizes.cardTall)} execStatistics={execStatistics} onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
+                        <DashboardFailureCorridorCard sx={theme.mixins.gridHeight(theme.customSizes.cardShort)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{sm: 12, lg: 6}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardHistoryChartCard className="tall-card"/>
-                        <DashboardFailureAspectsCard className="short-card"/>
+                        <DashboardHistoryChartCard sx={theme.mixins.gridHeight(theme.customSizes.cardTall)}/>
+                        <DashboardFailureAspectsCard sx={theme.mixins.gridHeight(theme.customSizes.cardShort)}/>
                     </Stack>
                 </Grid>
                 <Grid size={12}>

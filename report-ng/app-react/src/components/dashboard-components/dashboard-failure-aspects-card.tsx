@@ -3,12 +3,13 @@ import ReportCard from "../../widgets/report-card/report-card";
 import ButtonList from "../../widgets/button-list/button-list";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Link from '@mui/material/Link';
+import type {SxProps, Theme} from "@mui/material/styles";
 
 interface DashboardFailureAspectsProps {
-    className: string;
+    sx?: SxProps<Theme>
 }
 
-const DashboardFailureAspectsCard = ({className}: DashboardFailureAspectsProps) => {
+const DashboardFailureAspectsCard = ({sx}: DashboardFailureAspectsProps) => {
     const theme = useTheme();
 
     const failureAspectsLabel = (
@@ -37,7 +38,9 @@ const DashboardFailureAspectsCard = ({className}: DashboardFailureAspectsProps) 
     ]
 
     return (
-        <ReportCard label={failureAspectsLabel} sx={{p: 0, ":last-child": {padding: 0}}} className={className} tooltipText="The most critical errors that caused the highest number of failed test cases">
+        <ReportCard label={failureAspectsLabel} sxContent={{p: 0, ":last-child": {padding: 0}}}
+                    tooltipText="The most critical errors that caused the highest number of failed test cases"
+                    sxCard={sx}>
             <ButtonList list={itemList} disablePadding={true}/>
         </ReportCard>
     );

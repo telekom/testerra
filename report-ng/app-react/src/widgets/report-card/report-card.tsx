@@ -6,15 +6,15 @@ import React from "react";
 export interface CardProps {
     label: string | React.ReactNode;
     children: any;
-    sx?: SxProps<Theme>;
-    className: string;
+    sxCard?: SxProps<Theme>;
+    sxContent?: SxProps<Theme>;
     tooltipText?: string;
 }
 
-const ReportCard = ({label, children, sx = {pt: 1, pb: 1}, className, tooltipText}: CardProps) => {
+const ReportCard = ({label, children, sxCard, sxContent = {pt: 1, pb: 1}, tooltipText}: CardProps) => {
 
     return (
-        <Card sx={{p: 0}} className={className}>
+        <Card sx={{p: 0, ...sxCard}}>
             <CardContent
                 sx={{pt: 1, pb: 1}}
             >
@@ -24,7 +24,7 @@ const ReportCard = ({label, children, sx = {pt: 1, pb: 1}, className, tooltipTex
                 </Stack>
             </CardContent>
             <Divider/>
-            <CardContent sx={sx}>
+            <CardContent sx={sxContent}>
                 {children}
             </CardContent>
         </Card>

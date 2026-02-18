@@ -1,11 +1,12 @@
 import EChart from "../../widgets/echart/echart";
 import ReportCard from "../../widgets/report-card/report-card";
+import type {SxProps, Theme} from "@mui/material/styles";
 
 interface DashboardHistoryChartProps {
-    className: string;
+    sx?: SxProps<Theme>
 }
 
-const DashboardHistoryChartCard = ({className}: DashboardHistoryChartProps) => {
+const DashboardHistoryChartCard = ({sx}: DashboardHistoryChartProps) => {
 
     const option = {
         grid: {
@@ -75,7 +76,7 @@ const DashboardHistoryChartCard = ({className}: DashboardHistoryChartProps) => {
     };
 
     return (
-        <ReportCard label="Test Classes" sx={{p: 0}} className={className}>
+        <ReportCard label="Test Classes" sxContent={{p: 0}} sxCard={sx}>
             <EChart option={option}/>
         </ReportCard>
     );

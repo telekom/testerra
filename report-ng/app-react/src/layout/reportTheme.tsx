@@ -1,4 +1,5 @@
 import {createTheme} from "@mui/material";
+import React from "react";
 
 const statusColors = {
     passed: '#417336',
@@ -59,36 +60,37 @@ export const reportTheme = createTheme({
             contrastText: '#884AB9',
         }
     },
+    mixins: {
+        gridHeight: (units: number) => ({
+            height: units * 8, // oder theme.spacing(units)
+        }),
+    },
+    customSizes: {
+        cardTall: 44,
+        cardShort: 24,
+    },
 });
 
 declare module "@mui/material/styles" {
     // expand theme to add "custom" (necessary to use colors from theme in other files)
     interface Theme {
         custom: {
-            statusColors: {
-                passed: string;
-                skipped: string;
-                failed: string;
-                crashed: string;
-                running: string;
-                failed_minor: string;
-                expected_failed: string;
-            };
-        };
+            statusColors: typeof statusColors;
+        },
+        customSizes: {
+            cardTall: number,
+            cardShort: number
+        }
     }
 
     // expand "ThemeOptions" to add "statusColors"
     interface ThemeOptions {
         custom?: {
-            statusColors?: {
-                passed?: string;
-                skipped?: string;
-                failed?: string;
-                crashed?: string;
-                running?: string;
-                failed_minor?: string;
-                expected_failed?: string;
-            };
+            statusColors?: Partial<typeof statusColors>;
+        },
+        customSizes?: {
+            cardTall?: number;
+            cardShort?: number;
         };
     }
 
@@ -102,5 +104,12 @@ declare module "@mui/material/styles" {
         blue?: PaletteOptions['primary'];
         green?: PaletteOptions['primary'];
         purple?: PaletteOptions['primary'];
+    }
+
+    interface Mixins {
+        gridHeight: (units: number) => React.CSSProperties;
+    }
+    interface MixinsOptions {
+        gridHeight?: (units: number) => React.CSSProperties;
     }
 }

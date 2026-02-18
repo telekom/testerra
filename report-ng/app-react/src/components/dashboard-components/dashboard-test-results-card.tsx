@@ -2,12 +2,13 @@ import ReportCard from "../../widgets/report-card/report-card";
 import ButtonList from "../../widgets/button-list/button-list";
 import {ResultStatusType} from "../../model/report-model/framework_pb";
 import {StatusService} from "../../model/status-service";
+import type {SxProps, Theme} from "@mui/material/styles";
 
 interface DashboardTestResultsProps {
-    className: string;
     execStatistics: any;
     onListItemClick: (newItem: string) => void;
     selectedStatus: string | null;
+    sx?: SxProps<Theme>
 }
 
 const getSecondaryStatusLabel = (
@@ -36,7 +37,7 @@ const getSecondaryStatusLabel = (
     }
 };
 
-const DashboardTestResultsCard = ({className, execStatistics, onListItemClick, selectedStatus}: DashboardTestResultsProps) => {
+const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStatus, sx}: DashboardTestResultsProps) => {
 
     const itemList = StatusService.getRelevantStatuses()
         .filter((status) => execStatistics.getStatusCount(status) > 0)
@@ -57,7 +58,7 @@ const DashboardTestResultsCard = ({className, execStatistics, onListItemClick, s
     }
 
     return (
-        <ReportCard label={label} sx={{p: 0, ":last-child": {padding: 0}}} className={className}>
+        <ReportCard label={label} sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}>
             <ButtonList list={itemList} handleClick={handleClick}/>
         </ReportCard>
     );

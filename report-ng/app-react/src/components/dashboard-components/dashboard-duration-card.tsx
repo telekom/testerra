@@ -3,14 +3,15 @@ import ReportCard from "../../widgets/report-card/report-card";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import TimerIcon from '@mui/icons-material/Timer';
+import type {SxProps, Theme} from "@mui/material/styles";
 
 interface DashboardDurationProps {
-    className: string;
+    sx?: SxProps<Theme>;
 }
 
-const DashboardDurationCard = ({className}: DashboardDurationProps) => {
+const DashboardDurationCard = ({sx}: DashboardDurationProps) => {
     return (
-        <ReportCard label="Top 3 Failure Aspects" sx={{p: 0, ":last-child": {padding: 0}}} className={className}>
+        <ReportCard label="Top 3 Failure Aspects" sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}>
             <Stack direction="column" spacing={2}
                    divider={<Divider orientation="horizontal" sx={{mt: "0 !important" as any}}/>}>
                 <Stack direction="row" spacing={1} sx={{alignItems: "center", justifyContent: "center", p: 2}}>

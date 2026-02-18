@@ -2,12 +2,13 @@ import {Typography, useTheme} from "@mui/material";
 import ReportCard from "../../widgets/report-card/report-card";
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
+import type {SxProps, Theme} from "@mui/material/styles";
 
 interface DashboardFailureCorridorProps {
-    className: string;
+    sx?: SxProps<Theme>
 }
 
-const DashboardFailureCorridorCard = ({className}: DashboardFailureCorridorProps) => {
+const DashboardFailureCorridorCard = ({sx}: DashboardFailureCorridorProps) => {
     const theme = useTheme();
 
     const chipList = [
@@ -17,7 +18,9 @@ const DashboardFailureCorridorCard = ({className}: DashboardFailureCorridorProps
     ]
 
     return (
-        <ReportCard label="Failure Corridor" sx={{":last-child": {padding: 2}}} className={className} tooltipText="The severity distribution of failed test cases in relation to the defined test goal">
+        <ReportCard label="Failure Corridor" sxContent={{":last-child": {padding: 2}}}
+                    tooltipText="The severity distribution of failed test cases in relation to the defined test goal"
+                    sxCard={sx} >
             <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
                 {chipList.map((chip) => (
                     <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>

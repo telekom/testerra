@@ -1,15 +1,16 @@
 import EChart from "../../widgets/echart/echart";
 import ReportCard from "../../widgets/report-card/report-card";
 import {StatusService} from "../../model/status-service";
+import type {SxProps, Theme} from "@mui/material/styles";
 
 interface DashboardPieChartProps {
-    className: string;
     execStatistics: any;
     onChartPieceClick: (newPiece: string) => void;
     selectedStatus: string | null;
+    sx?: SxProps<Theme>
 }
 
-const DashboardPieChartCard = ({className, execStatistics, onChartPieceClick, selectedStatus}: DashboardPieChartProps) => {
+const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx}: DashboardPieChartProps) => {
 
     let data = []
     for (const status of StatusService.getRelevantStatuses()) {
@@ -57,7 +58,7 @@ const DashboardPieChartCard = ({className, execStatistics, onChartPieceClick, se
     };
 
     return (
-        <ReportCard label="Breakdown" className={className}>
+        <ReportCard label="Breakdown" sxCard={sx}>
             <EChart option={option} onEvents={onEvents} notMerge={true}/>
         </ReportCard>
     );

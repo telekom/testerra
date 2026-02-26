@@ -15,7 +15,7 @@ const Item = styled('div')(({theme}) => ({
     }),
 }));
 
-const About = () => {
+const AboutPage = () => {
 
     return (
         <Box
@@ -55,4 +55,4 @@ const About = () => {
         </Box>
     );
 };
-export default About;
+export default AboutPage;

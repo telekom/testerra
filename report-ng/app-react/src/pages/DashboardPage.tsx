@@ -42,20 +42,20 @@ const DashboardPage = () => {
             >
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2} >
-                        <DashboardPieChartCard sx={theme.mixins.gridHeight(theme.customSizes.cardTall)} execStatistics={execStatistics} onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
-                        <DashboardDurationCard sx={theme.mixins.gridHeight(theme.customSizes.cardShort)}/>
+                        <DashboardPieChartCard sx={theme.mixins.cardHeight(2)} execStatistics={execStatistics} onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
+                        <DashboardDurationCard sx={theme.mixins.cardHeight(1)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardTestResultsCard sx={theme.mixins.gridHeight(theme.customSizes.cardTall)} execStatistics={execStatistics} onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
-                        <DashboardFailureCorridorCard sx={theme.mixins.gridHeight(theme.customSizes.cardShort)}/>
+                        <DashboardTestResultsCard sx={theme.mixins.cardHeight(2)} execStatistics={execStatistics} onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
+                        <DashboardFailureCorridorCard sx={theme.mixins.cardHeight(1)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{sm: 12, lg: 6}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardHistoryChartCard sx={theme.mixins.gridHeight(theme.customSizes.cardTall)}/>
-                        <DashboardFailureAspectsCard sx={theme.mixins.gridHeight(theme.customSizes.cardShort)}/>
+                        <DashboardHistoryChartCard sx={theme.mixins.cardHeight(2)}/>
+                        <DashboardFailureAspectsCard sx={theme.mixins.cardHeight(1)}/>
                     </Stack>
                 </Grid>
                 <Grid size={12}>

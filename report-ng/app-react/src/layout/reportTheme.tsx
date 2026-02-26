@@ -61,14 +61,10 @@ export const reportTheme = createTheme({
         }
     },
     mixins: {
-        gridHeight: (units: number) => ({
-            height: units * 8, // oder theme.spacing(units)
+        cardHeight: (units: number) => ({
+            height: units * 192,
         }),
-    },
-    customSizes: {
-        cardTall: 44,
-        cardShort: 24,
-    },
+    }
 });
 
 declare module "@mui/material/styles" {
@@ -76,10 +72,6 @@ declare module "@mui/material/styles" {
     interface Theme {
         custom: {
             statusColors: typeof statusColors;
-        },
-        customSizes: {
-            cardTall: number,
-            cardShort: number
         }
     }
 
@@ -87,11 +79,7 @@ declare module "@mui/material/styles" {
     interface ThemeOptions {
         custom?: {
             statusColors?: Partial<typeof statusColors>;
-        },
-        customSizes?: {
-            cardTall?: number;
-            cardShort?: number;
-        };
+        }
     }
 
     // augment palette to include colors for chips
@@ -107,9 +95,9 @@ declare module "@mui/material/styles" {
     }
 
     interface Mixins {
-        gridHeight: (units: number) => React.CSSProperties;
+        cardHeight: (units: number) => React.CSSProperties;
     }
     interface MixinsOptions {
-        gridHeight?: (units: number) => React.CSSProperties;
+        cardHeight?: (units: number) => React.CSSProperties;
     }
 }

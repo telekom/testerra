@@ -30,6 +30,9 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import {ResultStatusType} from "./report-model/framework_pb";
 import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
 
+// direct import -> this way it does not need to be in a component, but this will not be working for multiple themes
+import { reportTheme } from "../layout/reportTheme";
+
 // Union of numeric status values -> ResultStatus = 0 | 1 | 2 | ...
 export type ResultStatus = typeof ResultStatusType[keyof typeof ResultStatusType];
 
@@ -53,7 +56,7 @@ const STATUS_CONFIG: Record<ResultStatus, StatusInformation> = {
     },
     [ResultStatusType.NO_RUN]: {
         label: "Running",
-        color: "#5d6f81",
+        color: reportTheme.custom.statusColors.crashed,
         key: "running",
     },
     [ResultStatusType.INFO]: {
@@ -64,13 +67,13 @@ const STATUS_CONFIG: Record<ResultStatus, StatusInformation> = {
     },
     [ResultStatusType.SKIPPED]: {
         label: "Skipped",
-        color: "#f7af3e",
+        color: reportTheme.custom.statusColors.skipped,
         icon: RemoveCircleIcon,
         key: "skipped",
     },
     [ResultStatusType.PASSED]: {
         label: "Passed",
-        color: "#417336",
+        color: reportTheme.custom.statusColors.passed,
         icon: CheckCircleIcon,
         key: "passed",
         group: [
@@ -81,67 +84,60 @@ const STATUS_CONFIG: Record<ResultStatus, StatusInformation> = {
     },
     [ResultStatusType.MINOR]: {
         label: "Minor",
-        color: "#417336",
+        color: reportTheme.custom.statusColors.passed,
         icon: CheckCircleIcon,
         key: "minor",
     },
     [ResultStatusType.FAILED]: {
         label: "Failed",
-        color: "#e63946",
+        color: reportTheme.custom.statusColors.failed,
         icon: CancelIcon,
         key: "failed",
     },
     [ResultStatusType.FAILED_MINOR]: {
         label: "Failed Minor",
-        color: "#e63946",
+        color: reportTheme.custom.statusColors.failed,
         icon: CancelIcon,
         key: "failed-minor",
     },
     [ResultStatusType.FAILED_RETRIED]: {
         label: "Retried",
-        color: "#e63946",
+        color: reportTheme.custom.statusColors.failed,
         icon: CancelIcon,
         key: "retried",
     },
     [ResultStatusType.FAILED_EXPECTED]: {
         label: "Expected Failed",
-        color: "#4f031b",
+        color: reportTheme.custom.statusColors.expected_failed,
         icon: CancelIcon,
         key: "failed-expected",
     },
     [ResultStatusType.PASSED_RETRY]: {
         label: "Recovered",
-        color: "#417336",
+        color: reportTheme.custom.statusColors.passed,
         icon: CheckCircleIcon,
         key: "recovered",
     },
     [ResultStatusType.MINOR_RETRY]: {
         label: "Minor Retry",
-        color: "#417336",
+        color: reportTheme.custom.statusColors.passed,
         icon: CancelIcon,
         key: "minor-retry",
     },
     [ResultStatusType.REPAIRED]: {
         label: "Repaired",
-        color: "#417336",
+        color: reportTheme.custom.statusColors.passed,
         icon: CheckCircleIcon,
         key: "repaired",
     },
 };
 
-// Normalize string status to ResultStatus (= number/index of ResultStatusType)
-function normalizeStatus(status: ResultStatus | string): ResultStatus {
-    if (typeof status === "string") {
-        return Number.parseInt(status, 10) as ResultStatus;
-    }
-    return status;
-}
-
 // Public API
 export const StatusService = {
     //Returns the full status information object
     get(status: ResultStatus | string): StatusInformation | null {
-        const normalized = normalizeStatus(status);
+        // Normalize string status to ResultStatus (= number/index of ResultStatusType)
+        const normalized = typeof status === "string" ? Number.parseInt(status, 10) as ResultStatus : status;
         return STATUS_CONFIG[normalized] ?? null;
     },
 

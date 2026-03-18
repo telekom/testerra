@@ -75,12 +75,7 @@ const STATUS_CONFIG: Record<ResultStatus, StatusInformation> = {
         label: "Passed",
         color: reportTheme.custom.statusColors.passed,
         icon: CheckCircleIcon,
-        key: "passed",
-        group: [
-            ResultStatusType.PASSED,
-            ResultStatusType.PASSED_RETRY,
-            ResultStatusType.REPAIRED,
-        ],
+        key: "passed"
     },
     [ResultStatusType.MINOR]: {
         label: "Minor",

@@ -33,20 +33,18 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
         tooltip: {
             formatter: '{b}: {c}'
         },
-        label: {
-            show: false
-        },
-        labelLine: {
-            show: false
-        },
         series: [
             {
-                name: 'Access From',
+                name: 'Tests',
                 type: 'pie',
-                radius: '50%',
+                radius: [50, 120],
                 selectedMode: 'single', // how many items can be selected at once
                 selectedOffset: 5,      // how far slice is away from rest of the pie
-                data: data
+                data: data,
+                label: {
+                    formatter: '{d}%',
+                    position: 'inside'
+                }
             }
         ]
     };

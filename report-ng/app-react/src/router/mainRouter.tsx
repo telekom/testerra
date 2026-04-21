@@ -13,9 +13,11 @@ import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ListIcon from '@mui/icons-material/List';
+import SmsFailedIcon from '@mui/icons-material/SmsFailed';
 import type {JSX} from "react";
 import TestTimings from "../components/timings-tab-components/TestTimings";
 import Sessions from "../components/timings-tab-components/Sessions";
+import FailureAspectsPage from "../pages/FailureAspectsPage";
 
 // Custom attributes for menu elements
 export interface RouteHandle {
@@ -38,6 +40,11 @@ export const routesConfig: RouteObject[] = [
                 path: "Tests",
                 element: <TestsPage/>,
                 handle: {label: "Tests", show: true, icon: <AnalyticsRoundedIcon />} as RouteHandle
+            },
+            {
+                path: "failureAspects",
+                element: <FailureAspectsPage/>,
+                handle: {label: "Failure Aspects", show: true, icon: <SmsFailedIcon />} as RouteHandle
             },
             {
                 path: "about",

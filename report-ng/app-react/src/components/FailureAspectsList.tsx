@@ -13,6 +13,10 @@ import Stack from "@mui/material/Stack";
 import HighlightText from "../utils/highlightText";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import {ResultStatusType} from "../model/report-model/framework_pb";
+import Link from '@mui/material/Link';
+import {useNavigate} from "react-router-dom";
+import {FailureAspectStatistics} from "../model/FailureAspectStatistics";
+import NoResultsCard from "./NoResultsCard";
 
 interface FailureAspectListProps {
     searchText: string;
@@ -22,9 +26,11 @@ interface FailureAspectListProps {
 
 const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAspectListProps) => {
 
+    const navigate = useNavigate();
     const {executionMngr} = useReportData();
-    if (!executionMngr) return;
+
     const filteredFailureAspects = useMemo(() => {
+        if (!executionMngr) return [];
         const execStatistics = executionMngr?.getExecutionStatistics()
         return execStatistics.uniqueFailureAspects
             .filter(failureAspect => {
@@ -51,7 +57,21 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
         [searchText]
     );
 
-    // @ts-ignore
+    const clickStatusChip = (failureAspect: FailureAspectStatistics, status: string) => {
+        const params = new URLSearchParams(location.search);
+        params.set("failureAspect", String(failureAspect.index));
+        params.set("status", status);
+
+        navigate({
+            pathname: "/tests",
+            search: params.toString(),
+        });
+    }
+
+    if(filteredFailureAspects.length < 1){
+        return <NoResultsCard title="No failure aspects mathing this criteria"/>
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{
@@ -75,10 +95,19 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                                 {failureAspect.index + 1}
                             </TableCell>
                             <TableCell component="th" scope="row" sx={{lineBreak: "anywhere"}}>
-                                {failureAspect.relevantCause?.className && <HighlightText
-                                    text={classNameConverter(failureAspect.relevantCause.className, ClassName.simpleName) + ": " + failureAspect.message}
-                                    searchWord={activeSearchTerms}
-                                />}
+                                <Link onClick={() => {
+                                    const params = new URLSearchParams(location.search);
+                                    params.set("failureAspect", String(failureAspect.index));
+                                    navigate({
+                                        pathname: "/tests",
+                                        search: params.toString(),
+                                    });
+                                }}>
+                                    {failureAspect.relevantCause?.className && <HighlightText
+                                        text={classNameConverter(failureAspect.relevantCause.className, ClassName.simpleName) + ": " + failureAspect.message}
+                                        searchWord={activeSearchTerms}
+                                    />}
+                                </Link>
                             </TableCell>
                             <TableCell component="th" scope="row" align="center">
                                 {failureAspect.isMinor ? "Minor" : "Major"}
@@ -92,7 +121,9 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                                         return (
                                             <ReportChip label={label}
                                                         size="small"
-                                                        sx={{background: statusInformation.color, color: "white"}}/>
+                                                        handleClick={() => clickStatusChip(failureAspect, statusInformation?.key)}
+                                                        sx={{background: statusInformation.color, color: "white", textDecoration: "underline",
+                                                            '&:hover': {background: statusInformation.color}}}/>
                                         )
                                     })}
                                 </Stack>

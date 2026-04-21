@@ -21,8 +21,8 @@ import NoResultsCard from "./NoResultsCard";
 import {formatDuration} from "../utils/durationFormatter"
 import {useTestListSort} from "../hooks/useTestListSort";
 import TableSort from "../widgets/TableSort";
-
-
+import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
 
 interface TestListProps {
     filters: FiltersState;
@@ -127,12 +127,12 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         [filteredMethodDetails],
     );
 
-    if (isLoading) return <div>Lade Konfiguration...</div>;
-    if (error) return <div>Fehler: {error.message}</div>;
+    if (isLoading) return <LinearProgress aria-label="Loading…" />;
+    if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
     if (!executionMngr) return null;
 
     if(filteredMethodDetails.length < 1){
-        return <NoResultsCard/>
+        return <NoResultsCard title="No methods matching this criteria" subtitle="Please note, that your filter criteria may only match configuration methods."/>
     }
 
     return (

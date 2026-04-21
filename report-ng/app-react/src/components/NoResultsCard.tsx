@@ -1,16 +1,21 @@
 import {Card, CardContent, Stack, Typography} from "@mui/material";
 import FindInPageIcon from '@mui/icons-material/FindInPage';
 
-const NoResultsCard = () => {
+interface NoResultsCardProps {
+    title: string,
+    subtitle?: string
+}
+
+const NoResultsCard = ({title, subtitle}: NoResultsCardProps) => {
     return (
         <Card>
             <CardContent>
                 <Stack direction="column" spacing={2} sx={{alignItems: "center", p: 2}}>
                     <Stack direction="row" spacing={1}>
                         <FindInPageIcon fontSize="large"/>
-                        <Typography variant="h4"> No methods matching this criteria </Typography>
+                        <Typography variant="h4">{title} </Typography>
                     </Stack>
-                    <Typography variant="subtitle1">Please note, that your filter criteria may only match configuration methods.</Typography>
+                    {subtitle ?? <Typography variant="subtitle1">{subtitle}</Typography>}
                 </Stack>
             </CardContent>
         </Card>

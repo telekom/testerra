@@ -1,5 +1,5 @@
-import EChart from "../../widgets/echart/echart";
-import ReportCard from "../../widgets/report-card/report-card";
+import Echart from "../../widgets/Echart";
+import ReportCard from "../../widgets/ReportCard";
 import type {SxProps, Theme} from "@mui/material/styles";
 
 interface DashboardHistoryChartProps {
@@ -77,7 +77,7 @@ const DashboardHistoryChartCard = ({sx}: DashboardHistoryChartProps) => {
 
     return (
         <ReportCard label="Test Classes" sxContent={{p: 0}} sxCard={sx}>
-            <EChart option={option}/>
+            <Echart option={option}/>
         </ReportCard>
     );
 };

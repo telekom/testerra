@@ -1,7 +1,7 @@
 import {useTheme} from "@mui/material";
-import EChart from "../../widgets/echart/echart";
+import Echart from "../../widgets/Echart";
 import React from "react";
-import ReportCard from "../../widgets/report-card/report-card";
+import ReportCard from "../../widgets/ReportCard";
 
 const DashboardClassesChartCard: React.FC = () => {
     const theme = useTheme();
@@ -42,7 +42,7 @@ const DashboardClassesChartCard: React.FC = () => {
 
     return (
         <ReportCard label="Test Classes" sxContent={{p: 0}}>
-            <EChart option={option} height={100}/>
+            <Echart option={option} height={100}/>
         </ReportCard>
     );
 };

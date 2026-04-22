@@ -18,6 +18,7 @@ declare module '@mui/material/Chip' {
         blue: true;
         green: true;
         purple: true;
+        lightGrey: true;
     }
 }
 
@@ -58,13 +59,52 @@ export const reportTheme = createTheme({
             light: '#884AB920',
             dark: '#884AB920',
             contrastText: '#884AB9',
+        },
+        lightGrey: {
+            main: '#0000008A',
+            light: '#0000008A',
+            dark: '#0000008A',
+            contrastText: '#0000008A',
         }
     },
     mixins: {
         cardHeight: (units: number) => ({
             height: units * 192,
         }),
-    }
+    },
+    components: {
+        MuiTableContainer: {
+            styleOverrides: {
+                root: {
+                    border: "1px solid rgba(0, 0, 0, 0.12)",
+                    boxShadow: "none"
+                },
+            },
+        },
+        MuiTableHead: {
+            styleOverrides: {
+                root: {
+                    "& .MuiTableCell-root": {
+                        borderBottomColor: "rgba(0, 0, 0, 0.12)",
+                    },
+                },
+            },
+        },
+        MuiLink: {
+            styleOverrides: {
+                root: () => ({
+                    color: "blue",
+                    textDecoration: "underline",
+                    textDecorationColor: "blue",
+                    "&:visited": {
+                        color: "purple",
+                        textDecoration: "underline",
+                        textDecorationColor: "purple",
+                    },
+                }),
+            },
+        }
+    },
 });
 
 declare module "@mui/material/styles" {
@@ -87,11 +127,13 @@ declare module "@mui/material/styles" {
         blue: Palette['primary'];
         green: Palette['primary'];
         purple: Palette['primary'];
+        lightGrey: Palette['primary']
     }
     interface PaletteOptions {
         blue?: PaletteOptions['primary'];
         green?: PaletteOptions['primary'];
         purple?: PaletteOptions['primary'];
+        lightGrey?: PaletteOptions['primary'];
     }
 
     interface Mixins {

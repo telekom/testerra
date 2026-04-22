@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import TabNavigation from "../widgets/tab-navigation/tab-navigation";
+import TabNavigation from "../widgets/TabNavigation";
 import {Outlet} from 'react-router-dom';
 import { generateTabsFromRoutes } from "../utils/generateTabsFromRoutes";
 import { routesConfig } from "../router/mainRouter.tsx";

@@ -5,17 +5,18 @@ import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import {Typography} from "@mui/material";
 
-type ListItem = {
+export type ButtonListItem = {
     primaryText: string,
     secondaryText?: string,
     icon: any,
     selected?: boolean;
+    value?: any;
 }
 
 type ButtonListProps = {
-    list: ListItem[],
+    list: ButtonListItem[],
     disablePadding?: boolean,
-    handleClick?: (newValue: string) => void;
+    handleClick?: (item: ButtonListItem) => void
 }
 
 const ButtonList = ({list, disablePadding, handleClick}: ButtonListProps) => {
@@ -23,7 +24,7 @@ const ButtonList = ({list, disablePadding, handleClick}: ButtonListProps) => {
         <List sx={!disablePadding ? {p: 0} : undefined}>
             {list.map((item) => (
                 <ListItem disablePadding>
-                    <ListItemButton sx={disablePadding ? {pt: 0, pb: 0} : undefined} selected={item.selected} onClick={() => handleClick?.(item.primaryText)}>
+                    <ListItemButton sx={disablePadding ? {pt: 0, pb: 0} : undefined} selected={item.selected} onClick={() => handleClick?.(item)}>
                         <ListItemIcon>
                             {item.icon}
                         </ListItemIcon>

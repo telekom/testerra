@@ -1,6 +1,6 @@
 import React, {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
 
-import {ExecutionAggregate, HistoryAggregate, LogMessageAggregate} from "../model/report-model/report_pb.ts";
+import {ExecutionAggregate, /*HistoryAggregate,*/ LogMessageAggregate} from "../model/report-model/report_pb.ts";
 import {ExecutionStatisticsManager} from "./ExecutionStatisticsManager.ts";
 
 const ProtobufContext = createContext<ProtobufContextType | undefined>(undefined);
@@ -16,7 +16,7 @@ interface Props {
 export interface AllProtoData {
     execution: ExecutionAggregate;
     logging: LogMessageAggregate;
-    history: HistoryAggregate;
+    // history: HistoryAggregate;
 }
 
 export interface ProtobufContextType {
@@ -44,13 +44,13 @@ export const DataProvider: React.FC<Props> = ({children}) => {
         async function initDataManagers() {
             try {
 
-                const [execution, logging, history] = await Promise.all([
+                const [execution, logging/*, history*/] = await Promise.all([
                     fetchAndDecode<ExecutionAggregate>("execution", ExecutionAggregate),
                     fetchAndDecode<LogMessageAggregate>("logMessages", LogMessageAggregate),
-                    fetchAndDecode<HistoryAggregate>("history", HistoryAggregate)
+                    // fetchAndDecode<HistoryAggregate>("history", HistoryAggregate)
                 ]);
 
-                let executionStatisticsManager = new ExecutionStatisticsManager(execution, logging, history);
+                let executionStatisticsManager = new ExecutionStatisticsManager(execution, logging/*, history*/);
                 await executionStatisticsManager.init();
 
                 setManagers({

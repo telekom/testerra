@@ -5,17 +5,17 @@ export class FailureAspectStatistics extends Statistics {
     private _irrelevantClassNameNeedles = ["TimeoutException"];
     private _methodContexts: MethodContext[] = [];
     private _errorContext: ErrorContext;
-    readonly identifier: string;
+    readonly identifier: string = "";
     readonly relevantCause: StackTraceCause | undefined;
-    readonly message: string;
-    public index: number;
+    readonly message: string = "";
+    public index: number = 0;
 
     constructor(
         errorContext: ErrorContext
     ) {
         super();
         this._errorContext = errorContext;
-        this.relevantCause = this._findRelevantCause(this._errorContext.stackTrace);
+        this.relevantCause = this._findRelevantCause(this._errorContext.stackTrace!);
         if (this._errorContext.description) {
             this.identifier = this._errorContext.description;
             this.message = this._errorContext.description;
@@ -33,10 +33,10 @@ export class FailureAspectStatistics extends Statistics {
      */
     private _findRelevantCause(causes: StackTraceCause[]): StackTraceCause | undefined {
         let relevantCause = causes.find(cause => {
-            return !this._irrelevantClassNameNeedles.find(needle => cause.className.indexOf(needle) >= 0);
+            return !this._irrelevantClassNameNeedles.find(needle => cause.className!.indexOf(needle) >= 0);
         })
         if (!relevantCause) {
-            relevantCause = causes.find(value => true);
+            relevantCause = causes.find(_ => true);
         }
         return relevantCause;
     }

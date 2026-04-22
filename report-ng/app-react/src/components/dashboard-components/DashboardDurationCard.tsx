@@ -1,5 +1,5 @@
 import {Grid, Typography} from "@mui/material";
-import ReportCard from "../../widgets/report-card/report-card";
+import ReportCard from "../../widgets/ReportCard";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import TimerIcon from '@mui/icons-material/Timer';

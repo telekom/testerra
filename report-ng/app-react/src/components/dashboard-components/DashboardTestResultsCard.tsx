@@ -1,5 +1,6 @@
-import ReportCard from "../../widgets/report-card/report-card";
-import ButtonList from "../../widgets/button-list/button-list";
+import ReportCard from "../../widgets/ReportCard";
+import ButtonList from "../../widgets/ButtonList";
+import type {ButtonListItem} from "../../widgets/ButtonList";
 import {ResultStatusType} from "../../model/report-model/framework_pb";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
@@ -52,8 +53,8 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
     const label = "Tests: " + execStatistics.overallTestCases
 
     // from "12 Passed" to Passed
-    const handleClick = (buttonListLabel: string) => {
-        const clickedItem = buttonListLabel.split(" ").slice(1).join(" ");
+    const handleClick = (buttonListItem: ButtonListItem) => {
+        const clickedItem = buttonListItem.primaryText.split(" ").slice(1).join(" ");
         onListItemClick(clickedItem);
     }
 

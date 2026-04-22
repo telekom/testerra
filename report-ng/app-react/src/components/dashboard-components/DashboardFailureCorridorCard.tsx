@@ -1,5 +1,5 @@
 import {Typography, useTheme} from "@mui/material";
-import ReportCard from "../../widgets/report-card/report-card";
+import ReportCard from "../../widgets/ReportCard";
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import type {SxProps, Theme} from "@mui/material/styles";

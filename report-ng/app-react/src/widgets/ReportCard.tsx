@@ -1,6 +1,6 @@
 import {Card, CardContent, Divider, Stack, Typography} from "@mui/material";
 import type {SxProps, Theme} from '@mui/material/styles';
-import InfoTooltip from "../tooltip-button/info-tooltip"
+import InfoTooltip from "./InfoTooltip"
 import React from "react";
 
 export interface CardProps {

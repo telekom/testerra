@@ -1,16 +1,17 @@
 import {Grid} from "@mui/material";
 import Box from "@mui/material/Box";
-import DashboardPieChartCard from "../components/dashboard-components/dashboard-pie-chart-card";
-import DashboardTestResultsCard from "../components/dashboard-components/dashboard-test-results-card";
-import DashboardFailureAspectsCard from "../components/dashboard-components/dashboard-failure-aspects-card";
-import DashboardFailureCorridorCard from "../components/dashboard-components/dashboard-failure-corridor-card";
+import DashboardPieChartCard from "../components/dashboard-components/DashboardPieChartCard";
+import DashboardTestResultsCard from "../components/dashboard-components/DashboardTestResultsCard";
+import DashboardFailureAspectsCard from "../components/dashboard-components/DashboardFailureAspectsCard";
+import DashboardFailureCorridorCard from "../components/dashboard-components/DashboardFailureCorridorCard";
 import Stack from '@mui/material/Stack';
-import DashboardDurationCard from "../components/dashboard-components/dashboard-duration-card";
-import DashboardClassesChartCard from "../components/dashboard-components/dashboard-classes-chart-card";
-import DashboardHistoryChartCard from "../components/dashboard-components/dashboard-history-chart-card";
+import DashboardDurationCard from "../components/dashboard-components/DashboardDurationCard";
+import DashboardClassesChartCard from "../components/dashboard-components/DashboardClassesChartCard";
+import DashboardHistoryChartCard from "../components/dashboard-components/DashboardHistoryChartCard";
 import {useReportData} from "../provider/DataProvider";
 import {useSearchParams} from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
+import {ExecutionStatistics} from "../model/ExecutionStatistics";
 
 const DashboardPage = () => {
 
@@ -20,7 +21,7 @@ const DashboardPage = () => {
     if (error) return <div>Fehler: {error.message}</div>;
     if (!executionMngr) return null;
 
-    const execStatistics = executionMngr.getExecutionStatistics();
+    const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();
 
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedStatus = searchParams.get("status");
@@ -55,7 +56,7 @@ const DashboardPage = () => {
                 <Grid size={{sm: 12, lg: 6}}>
                     <Stack direction="column" spacing={2}>
                         <DashboardHistoryChartCard sx={theme.mixins.cardHeight(2)}/>
-                        <DashboardFailureAspectsCard sx={theme.mixins.cardHeight(1)}/>
+                        <DashboardFailureAspectsCard sx={theme.mixins.cardHeight(1)} execStatistics={execStatistics}/>
                     </Stack>
                 </Grid>
                 <Grid size={12}>

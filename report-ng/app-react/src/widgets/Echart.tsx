@@ -10,7 +10,7 @@ export interface EChartProps {
     notMerge?: boolean;
 }
 
-const EChart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerge}) => {
+const Echart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerge}) => {
     const style: React.CSSProperties = {
         ...(width !== undefined ? {width} : {}),
         ...(height !== undefined ? {height} : {}),
@@ -29,4 +29,4 @@ const EChart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerg
     )
 };
 
-export default EChart;
+export default Echart;

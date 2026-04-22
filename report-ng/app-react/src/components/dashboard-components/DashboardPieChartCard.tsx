@@ -1,5 +1,5 @@
-import EChart from "../../widgets/echart/echart";
-import ReportCard from "../../widgets/report-card/report-card";
+import Echart from "../../widgets/Echart";
+import ReportCard from "../../widgets/ReportCard";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
 
@@ -59,7 +59,7 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
 
     return (
         <ReportCard label="Breakdown" sxCard={sx}>
-            <EChart option={option} onEvents={onEvents} notMerge={true}/>
+            <Echart option={option} onEvents={onEvents} notMerge={true}/>
         </ReportCard>
     );
 };

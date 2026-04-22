@@ -1,10 +1,10 @@
-import SelectInput from "../../widgets/select-input/select-input";
+import SelectInput from "../../widgets/SelectInput";
 import * as React from "react";
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Autocomplete from '@mui/material/Autocomplete';
 import {Box, Card, CardContent, Divider, Grid, Switch, Typography} from "@mui/material";
-import EChart from "../../widgets/echart/echart";
+import Echart from "../../widgets/Echart";
 import type {EChartsOption} from "echarts-for-react";
 
 const TestTimings = () => {
@@ -87,7 +87,7 @@ const TestTimings = () => {
                         <CardContent
                             sx={{pt: 1, pb: 1}}
                         >
-                            <EChart option={option}/>
+                            <Echart option={option}/>
                         </CardContent>
                     </Card>
                 </Grid>

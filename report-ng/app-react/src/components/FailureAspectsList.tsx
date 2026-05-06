@@ -9,12 +9,13 @@ import {useReportData} from "../provider/DataProvider";
 import {useMemo} from "react";
 import ReportChip from "../widgets/ReportChip";
 import {StatusService} from "../model/status-service";
-import Stack from "@mui/material/Stack";
+import {Stack, Typography} from "@mui/material";
 import HighlightText from "../utils/highlightText";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import {ResultStatusType} from "../model/report-model/framework_pb";
-import Link from '@mui/material/Link';
-import {useNavigate} from "react-router-dom";
+import Link from "@mui/material/Link";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
+
 import {FailureAspectStatistics} from "../model/FailureAspectStatistics";
 import NoResultsCard from "./NoResultsCard";
 
@@ -47,7 +48,7 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                 ));
             })
             .filter(failureAspectStatistics => {
-                return (!searchText || failureAspectStatistics.identifier.match(searchText));
+                return (!searchText || failureAspectStatistics.identifier.toLowerCase().includes(searchText.trim().toLowerCase()));
             })
     }, [executionMngr, expectedFailedChecked, searchText, type]);
 
@@ -90,23 +91,24 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                 </TableHead>
                 <TableBody>
                     {filteredFailureAspects.map(failureAspect => (
-                        <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                        <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}} key={failureAspect.identifier}>
                             <TableCell component="th" scope="row" align="center">
                                 {failureAspect.index + 1}
                             </TableCell>
                             <TableCell component="th" scope="row" sx={{lineBreak: "anywhere"}}>
-                                <Link onClick={() => {
-                                    const params = new URLSearchParams(location.search);
-                                    params.set("failureAspect", String(failureAspect.index));
-                                    navigate({
+                                <Link
+                                    component={RouterLink}
+                                    to={{
                                         pathname: "/tests",
-                                        search: params.toString(),
-                                    });
-                                }}>
+                                        search: `failureAspect=${failureAspect.index}`,
+                                    }}
+                                >
+                                    <Typography>
                                     {failureAspect.relevantCause?.className && <HighlightText
                                         text={classNameConverter(failureAspect.relevantCause.className, ClassName.simpleName) + ": " + failureAspect.message}
                                         searchWord={activeSearchTerms}
                                     />}
+                                    </Typography>
                                 </Link>
                             </TableCell>
                             <TableCell component="th" scope="row" align="center">
@@ -123,7 +125,9 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                                                         size="small"
                                                         handleClick={() => clickStatusChip(failureAspect, statusInformation?.key)}
                                                         sx={{background: statusInformation.color, color: "white", textDecoration: "underline",
-                                                            '&:hover': {background: statusInformation.color}}}/>
+                                                            '&:hover': {background: statusInformation.color}}}
+                                                        key={label}
+                                            />
                                         )
                                     })}
                                 </Stack>

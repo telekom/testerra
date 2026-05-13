@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -64,13 +85,13 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
         params.set("status", status);
 
         navigate({
-            pathname: "/tests",
+            pathname: "/Tests",
             search: params.toString(),
         });
     }
 
-    if(filteredFailureAspects.length < 1){
-        return <NoResultsCard title="No failure aspects mathing this criteria"/>
+    if (filteredFailureAspects.length < 1) {
+        return <NoResultsCard title="No failure aspects matching this criteria"/>
     }
 
     return (
@@ -83,7 +104,7 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                 <TableHead>
                     <TableRow>
                         <TableCell style={{width: "5%"}} align="center">Rank</TableCell>
-                        <TableCell style={{width: "70%"}}>Failure Aspect</TableCell>
+                        <TableCell style={{width: "70%"}}>Failure Aspect ({filteredFailureAspects.length})</TableCell>
                         <TableCell style={{width: "10%"}} align="center">Type</TableCell>
                         <TableCell style={{width: "15%"}}>Status</TableCell>
 
@@ -99,15 +120,15 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                                 <Link
                                     component={RouterLink}
                                     to={{
-                                        pathname: "/tests",
+                                        pathname: "/Tests",
                                         search: `failureAspect=${failureAspect.index}`,
                                     }}
                                 >
                                     <Typography>
-                                    {failureAspect.relevantCause?.className && <HighlightText
-                                        text={classNameConverter(failureAspect.relevantCause.className, ClassName.simpleName) + ": " + failureAspect.message}
-                                        searchWord={activeSearchTerms}
-                                    />}
+                                        {failureAspect.relevantCause?.className && <HighlightText
+                                            text={classNameConverter(failureAspect.relevantCause.className, ClassName.simpleName) + ": " + failureAspect.message}
+                                            searchWord={activeSearchTerms}
+                                        />}
                                     </Typography>
                                 </Link>
                             </TableCell>
@@ -124,8 +145,12 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                                             <ReportChip label={label}
                                                         size="small"
                                                         handleClick={() => clickStatusChip(failureAspect, statusInformation?.key)}
-                                                        sx={{background: statusInformation.color, color: "white", textDecoration: "underline",
-                                                            '&:hover': {background: statusInformation.color}}}
+                                                        sx={{
+                                                            background: statusInformation.color,
+                                                            color: "white",
+                                                            textDecoration: "underline",
+                                                            '&:hover': {background: statusInformation.color}
+                                                        }}
                                                         key={label}
                                             />
                                         )

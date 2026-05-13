@@ -12,13 +12,15 @@ import {useReportData} from "../provider/DataProvider";
 import {useSearchParams} from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
 import {ExecutionStatistics} from "../model/ExecutionStatistics";
+import LinearProgress from "@mui/material/LinearProgress";
+import Alert from "@mui/material/Alert";
 
 const DashboardPage = () => {
 
     const theme = useTheme()
     const {executionMngr, isLoading, error} = useReportData();
-    if (isLoading) return <div>Lade Konfiguration...</div>;
-    if (error) return <div>Fehler: {error.message}</div>;
+    if (isLoading) return <LinearProgress aria-label="Loading…" />;
+    if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
     if (!executionMngr) return null;
 
     const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();

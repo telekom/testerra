@@ -38,8 +38,6 @@ const FailureAspectsPage = () => {
     // live search text for highlighting while typing (not yet confirmed)
     const [searchText, setSearchText] = useState("");
 
-    const [type, setType] = useState("");
-
     const [searchParams, setSearchParams] = useSearchParams();
 
     const expectedFailedChecked = React.useMemo(
@@ -50,6 +48,8 @@ const FailureAspectsPage = () => {
         [searchParams]
     );
 
+    const type = searchParams.get("type") ?? "";
+
     const handleExpectedFailedChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
         const checked = event.target.checked;
         const params = new URLSearchParams(searchParams);
@@ -58,6 +58,16 @@ const FailureAspectsPage = () => {
             params.set("expectedFailed", "true");
         } else {
             params.set("expectedFailed", "false");
+        }
+        setSearchParams(params);
+    };
+
+    const handleTypeChanged = (value: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (value) {
+            params.set("type", value);  // "major" oder "minor"
+        } else {
+            params.delete("type");                // (All)
         }
         setSearchParams(params);
     };
@@ -77,9 +87,9 @@ const FailureAspectsPage = () => {
                         <Select
                             value={type}
                             label="Type"
-                            onChange={(e) => setType(e.target.value)}
+                            onChange={(e) => handleTypeChanged(e.target.value)}
                         >
-                            <MenuItem>(All)</MenuItem>
+                            <MenuItem value="">(All)</MenuItem>
                             <MenuItem value="major">Major</MenuItem>
                             <MenuItem value="minor">Minor</MenuItem>
                         </Select>

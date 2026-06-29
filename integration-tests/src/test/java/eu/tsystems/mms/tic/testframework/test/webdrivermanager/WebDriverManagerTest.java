@@ -61,6 +61,7 @@ import java.util.stream.Stream;
  *
  * @author Eric Kubenka
  */
+@Test(singleThreaded=true)
 public class WebDriverManagerTest extends TesterraTest implements WebDriverManagerProvider, PropertyManagerProvider {
 
     private IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);

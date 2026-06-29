@@ -14,17 +14,6 @@
             <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
             <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
             <package name="eu.tsystems.mms.tic.testframework.test.events"/>
-        </packages>
-    </test>
-
-    <test name="Core2" parallel="classes">
-        <groups>
-            <run>
-                <exclude name="SEQUENTIAL"/>
-                <exclude name="SEQUENTIAL_SINGLE"/>
-            </run>
-        </groups>
-        <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
         </packages>
     </test>

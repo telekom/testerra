@@ -86,11 +86,11 @@ public class CheckDryRunStatusTest extends TesterraTest {
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
                 {"*** Stats: ClassContexts:  17", "ClassContext"},
-                {"*** Stats: MethodContexts: 78", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 51 (51 relevant)", "Test methods"},
+                {"*** Stats: MethodContexts: 79", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 52 (52 relevant)", "Test methods"},
                 {"*** Stats: Failed: 1", "Failed tests"},
                 {"*** Stats: Skipped: 3", "Skipped tests"},
-                {"*** Stats: Passed: 47 ⊃ Repaired: 11", "Passed tests"}
+                {"*** Stats: Passed: 48 ⊃ Repaired: 11", "Passed tests"}
         };
     }
 

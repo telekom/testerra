@@ -315,15 +315,14 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         desktopWebDriverRequest.setShutdownAfterTest(false);
         desktopWebDriverRequest.setSessionKey(sessionKey);
         WEB_DRIVER_MANAGER.getWebDriver(desktopWebDriverRequest);
-        new DefaultExecutionContextController().getCurrentSessionContext().ifPresent(sessionContext -> reusedSessionId = sessionContext.getRemoteSessionId().get());
+        this.executionContextController.getCurrentSessionContext().ifPresent(sessionContext -> reusedSessionId = sessionContext.getRemoteSessionId().get());
     }
 
     @Test(dependsOnMethods = "testT12_ReuseSession1")
-    public void testT13_ResuseSession2() {
-        DefaultExecutionContextController executionContextController = new DefaultExecutionContextController();
+    public void testT13_ReuseSession2() {
         WEB_DRIVER_MANAGER.getWebDriver(sessionKey);
 
-        Assert.assertEquals(this.reusedSessionId, executionContextController.getCurrentSessionContext().get().getRemoteSessionId().get());
+        Assert.assertEquals(this.reusedSessionId, this.executionContextController.getCurrentSessionContext().get().getRemoteSessionId().get());
         Optional<SessionContext> foundSessionContext = this.readSessionContextFromMethodContext().filter(
                 sessionContext -> sessionContext.getSessionKey().equals(sessionKey)).findFirst();
         Assert.assertTrue(foundSessionContext.isPresent(), "Method context should contain the reused session context");
@@ -337,7 +336,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         WEB_DRIVER_MANAGER.getWebDriver();
         Assert.assertEquals(this.readSessionContextFromMethodContext().count(), 2, "Current method context should have 2 sessions.");
 
-        WEB_DRIVER_MANAGER.shutdownAllThreadSessions();
+        WEB_DRIVER_MANAGER.shutdownSession(sessionKey);
     }
 
     @Test

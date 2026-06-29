@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.DefaultExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.IExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.testing.WebDriverManagerProvider;
@@ -53,15 +52,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-/**
- * Tests for WebDriverManager
- *
- * Class is annotated to be executed in only one thread:
- * https://github.com/testng-team/testng/issues/3262#issuecomment-4021290016
- *
- * Some tests needs to be run one thread
- */
-@Test(singleThreaded=true)
 public class WebDriverManagerTest extends TesterraTest implements WebDriverManagerProvider, PropertyManagerProvider {
 
     private IExecutionContextController executionContextController = Testerra.getInjector().getInstance(IExecutionContextController.class);

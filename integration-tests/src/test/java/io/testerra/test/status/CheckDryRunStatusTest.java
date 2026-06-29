@@ -90,7 +90,7 @@ public class CheckDryRunStatusTest extends TesterraTest {
                 {"*** Stats: Test Methods Count: 52 (52 relevant)", "Test methods"},
                 {"*** Stats: Failed: 1", "Failed tests"},
                 {"*** Stats: Skipped: 3", "Skipped tests"},
-                {"*** Stats: Passed: 48 ⊃ Repaired: 11", "Passed tests"}
+                {"*** Stats: Passed: 48 ⊃ Repaired: 8", "Passed tests"}
         };
     }
 

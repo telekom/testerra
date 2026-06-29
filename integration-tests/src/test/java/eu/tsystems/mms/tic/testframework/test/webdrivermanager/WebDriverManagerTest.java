@@ -310,7 +310,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
     private String reusedSessionId;
     private final String sessionKey = "reuse";
 
-    @Test
+    @Test(groups = "SEQUENTIAL_SINGLE")
     public void testT12_ReuseSession1() {
         DesktopWebDriverRequest desktopWebDriverRequest = new DesktopWebDriverRequest();
         desktopWebDriverRequest.setShutdownAfterTest(false);
@@ -319,7 +319,7 @@ public class WebDriverManagerTest extends TesterraTest implements WebDriverManag
         this.executionContextController.getCurrentSessionContext().ifPresent(sessionContext -> reusedSessionId = sessionContext.getRemoteSessionId().get());
     }
 
-    @Test(dependsOnMethods = "testT12_ReuseSession1")
+    @Test(dependsOnMethods = "testT12_ReuseSession1", groups = "SEQUENTIAL_SINGLE")
     public void testT13_ReuseSession2() {
         WEB_DRIVER_MANAGER.getWebDriver(sessionKey);
 

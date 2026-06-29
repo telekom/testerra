@@ -54,6 +54,7 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"test_invalidExpectedFailed_withMethod", Status.FAILED},
                 {"test_validExpectedFailed_withClass", Status.FAILED_EXPECTED},
                 {"test_invalidExpectedFailed_withClass", Status.FAILED},
+                {"test_invalidExpectedFailed_mustPassed", Status.PASSED},
                 {"testT04_DataProviderWithFailedTests(failed)", Status.FAILED},
                 {"testT04_DataProviderWithFailedTests(passed)", Status.PASSED},
                 {"testT05_DataProviderWithFailedTestsOptional(passed)", Status.PASSED},
@@ -133,13 +134,13 @@ public class CheckTestStatusTest extends TesterraTest {
                 {"*** Stats: SuiteContexts:  3", "SuiteContext"},
                 {"*** Stats: TestContexts:   3", "TestContext"},
                 {"*** Stats: ClassContexts:  17", "ClassContext"},
-                {"*** Stats: MethodContexts: 89", "MethodContexts"},
-                {"*** Stats: Test Methods Count: 62 (51 relevant)", "Test methods"},
+                {"*** Stats: MethodContexts: 90", "MethodContexts"},
+                {"*** Stats: Test Methods Count: 63 (52 relevant)", "Test methods"},
                 {"*** Stats: Failed: 10", "Failed tests"},
                 {"*** Stats: Retried: 11", "Retried tests"},
                 {"*** Stats: Expected Failed: 7", "Expected failed tests"},
                 {"*** Stats: Skipped: 12", "Skipped tests"},
-                {"*** Stats: Passed: 22 ⊃ Recovered: 5 ⊃ Repaired: 1", "Passed tests"}
+                {"*** Stats: Passed: 23 ⊃ Recovered: 5 ⊃ Repaired: 1", "Passed tests"}
         };
     }
 

@@ -80,6 +80,11 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
     }
 
     @Test(groups = {"ExpectedFailsTests"})
+    @Fails(validator = "failedExpectedIsNotValid")
+    public void test_invalidExpectedFailed_mustPassed() {
+    }
+
+    @Test(groups = {"ExpectedFailsTests"})
     @Fails(validatorClass = ExpectedFailedValidator.class, validator = "failedExpectedIsNotValid")
     public void test_invalidExpectedFailed_withClass() {
         Assert.fail();

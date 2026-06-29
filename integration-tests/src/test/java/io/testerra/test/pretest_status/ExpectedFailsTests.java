@@ -43,6 +43,10 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
         return false;
     }
 
+    /**
+     * Normal run --> Expected failed
+     * Dry run --> Repaired
+     */
     @Test(groups = {"ExpectedFailsTests"})
     @Fails
     @Retry(maxRetries = 2)
@@ -50,35 +54,68 @@ public class ExpectedFailsTests extends TesterraTest implements TestStatusTest {
         Assert.fail();
     }
 
+    /**
+     * Normal run --> Expected failed
+     * Dry run --> Repaired
+     */
     @Test(groups = {"ExpectedFailsTests"})
     @Fails
     public void test_expectedFailed() {
         Assert.fail();
     }
 
+    /**
+     * Normal run --> Repaired
+     * Dry run --> Repaired
+     */
     @Test(groups = {"ExpectedFailsTests"})
     @Fails(description = "not failing anymore")
     public void test_expectedFailedPassed() {
     }
 
+    /**
+     * Normal run --> Expected failed
+     * Dry run --> Repaired
+     */
     @Test(groups = {"ExpectedFailsTests"})
     @Fails(validator = "failedExpectedIsValid")
     public void test_validExpectedFailed_withMethod() {
         Assert.fail();
     }
 
+    /**
+     * Normal run --> Failed
+     * Dry run --> Passed
+     */
     @Test(groups = {"ExpectedFailsTests"})
     @Fails(validator = "failedExpectedIsNotValid")
     public void test_invalidExpectedFailed_withMethod() {
         Assert.fail();
     }
 
+    /**
+     * Normal run --> Expected failed
+     * Dry run --> Repaired
+     */
     @Test(groups = {"ExpectedFailsTests"})
     @Fails(validatorClass = ExpectedFailedValidator.class, validator = "failedExpectedIsValid")
     public void test_validExpectedFailed_withClass() {
         Assert.fail();
     }
 
+    /**
+     * Normal run --> Passed
+     * Dry run --> Passed
+     */
+    @Test(groups = {"ExpectedFailsTests"})
+    @Fails(validator = "failedExpectedIsNotValid")
+    public void test_invalidExpectedFailed_mustPassed() {
+    }
+
+    /**
+     * Normal run --> Failed
+     * Dry run --> Passed
+     */
     @Test(groups = {"ExpectedFailsTests"})
     @Fails(validatorClass = ExpectedFailedValidator.class, validator = "failedExpectedIsNotValid")
     public void test_invalidExpectedFailed_withClass() {

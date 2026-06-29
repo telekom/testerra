@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import org.apache.commons.lang3.StringUtils;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.reflect.Constructor;
@@ -93,22 +94,7 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
              */
             Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
             failsAnnotation.ifPresent(fails -> {
-                Boolean isFailsAnnotationValid = false;
-
-                if (!fails.intoReport()) {
-                    String validatorMethodName = fails.validator();
-                    if (StringUtils.isNotBlank(validatorMethodName)) {
-                        try {
-                            Object validatorInstance = getValidatorInstance(fails).orElse(event.getTestMethod().getInstance());
-                            Method validatorMethod = validatorInstance.getClass().getMethod(validatorMethodName, MethodContext.class);
-                            isFailsAnnotationValid = (Boolean) validatorMethod.invoke(validatorInstance, methodContext);
-                        } catch (Throwable t) {
-                            methodContext.addError(t);
-                        }
-                    } else {
-                        isFailsAnnotationValid = true;
-                    }
-                }
+                boolean isFailsAnnotationValid = this.isFailsAnnotationValid(fails, methodContext, event.getTestMethod());
                 if (isFailsAnnotationValid) {
                     methodContext.setStatus(Status.FAILED_EXPECTED);
                 }
@@ -123,9 +109,30 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             RetryAnalyzer.methodHasBeenPassed(methodContext);
 
             methodContext.getFailsAnnotation().ifPresent(fails -> {
-                methodContext.setStatus(Status.REPAIRED);
+                boolean isFailsAnnotationValid = this.isFailsAnnotationValid(fails, methodContext, event.getTestMethod());
+                if (isFailsAnnotationValid) {
+                    methodContext.setStatus(Status.REPAIRED);
+                }
             });
         }
+    }
+
+    private boolean isFailsAnnotationValid(Fails fails, MethodContext methodContext, ITestNGMethod testMethod) {
+        if (!fails.intoReport()) {
+            String validatorMethodName = fails.validator();
+            if (StringUtils.isNotBlank(validatorMethodName)) {
+                try {
+                    Object validatorInstance = getValidatorInstance(fails).orElse(testMethod.getInstance());
+                    Method validatorMethod = validatorInstance.getClass().getMethod(validatorMethodName, MethodContext.class);
+                    return (Boolean) validatorMethod.invoke(validatorInstance, methodContext);
+                } catch (Throwable t) {
+                    methodContext.addError(t);
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

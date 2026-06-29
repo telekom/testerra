@@ -18,16 +18,4 @@
         </packages>
     </test>
 
-<!--    <test name="Core2" parallel="classes">-->
-<!--        <groups>-->
-<!--            <run>-->
-<!--                <exclude name="SEQUENTIAL"/>-->
-<!--                <exclude name="SEQUENTIAL_SINGLE"/>-->
-<!--            </run>-->
-<!--        </groups>-->
-<!--        <packages>-->
-<!--            -->
-<!--        </packages>-->
-<!--    </test>-->
-
 </suite>

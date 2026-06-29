@@ -95,23 +95,6 @@ public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
             Optional<Fails> failsAnnotation = methodContext.getFailsAnnotation();
             failsAnnotation.ifPresent(fails -> {
                 boolean isFailsAnnotationValid = this.isFailsAnnotationValid(fails, methodContext, event.getTestMethod());
-
-//                Boolean isFailsAnnotationValid = false;
-
-//                if (!fails.intoReport()) {
-//                    String validatorMethodName = fails.validator();
-//                    if (StringUtils.isNotBlank(validatorMethodName)) {
-//                        try {
-//                            Object validatorInstance = getValidatorInstance(fails).orElse(event.getTestMethod().getInstance());
-//                            Method validatorMethod = validatorInstance.getClass().getMethod(validatorMethodName, MethodContext.class);
-//                            isFailsAnnotationValid = (Boolean) validatorMethod.invoke(validatorInstance, methodContext);
-//                        } catch (Throwable t) {
-//                            methodContext.addError(t);
-//                        }
-//                    } else {
-//                        isFailsAnnotationValid = true;
-//                    }
-//                }
                 if (isFailsAnnotationValid) {
                     methodContext.setStatus(Status.FAILED_EXPECTED);
                 }

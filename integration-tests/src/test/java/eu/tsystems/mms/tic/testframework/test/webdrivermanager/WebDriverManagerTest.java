@@ -55,11 +55,11 @@ import java.util.stream.Stream;
 
 /**
  * Tests for WebDriverManager
- * <p>
- * Date: 27.04.2020
- * Time: 06:49
  *
- * @author Eric Kubenka
+ * Class is annotated to be executed in only one thread:
+ * https://github.com/testng-team/testng/issues/3262#issuecomment-4021290016
+ *
+ * Some tests needs to be run one thread
  */
 @Test(singleThreaded=true)
 public class WebDriverManagerTest extends TesterraTest implements WebDriverManagerProvider, PropertyManagerProvider {

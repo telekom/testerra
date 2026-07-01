@@ -19,25 +19,28 @@
  * under the License.
  */
 
-import {FormControl, Grid, MenuItem} from "@mui/material";
+import {FormControl, Grid, MenuItem, Stack, Tooltip} from "@mui/material";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {LogConsole} from "../components/LogConsole";
 import {useReportData} from "../provider/DataProvider";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
 import type {ILogEntry} from "../model/Logs";
 import {logLevelNameConverter} from "../utils/logLevelNameConverter";
+import {checkMatches} from "../utils/logSearch";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const LogsPage = () => {
     const {executionMngr, isLoading, error} = useReportData();
     const [searchText, setSearchText] = useState("");
     const [logLevel, setLogLevel] = useState<string>("");
+    const [currentMatchPosition, setCurrentMatchPosition] = useState(-1); // "cursor" in match list: which match is active (1./2./3./...)
 
     const logs = useMemo<ILogEntry[]>(() => {
         if (!executionMngr) {
@@ -100,6 +103,46 @@ const LogsPage = () => {
         logs.filter((logEntry) => !logLevel || String(logEntry.type) === logLevel)
     ), [logs, logLevel]);
 
+    // array with indices of logs that match: [0,2,5,7] => currentMatchPosition is index of current match in this array (e.g. 1 =>
+    const matchedIndexes = useMemo(() => {
+        if (!searchTerm) return [];
+
+        return filteredLogs
+            .map((log, index) => ({
+                index,
+                matched: checkMatches(log, searchTerm).matched,     // decides per log if it's a match
+            }))
+            .filter((entry) => entry.matched)
+            .map((entry) => entry.index);
+    }, [filteredLogs, searchTerm]);
+
+    // reset current match position after new search or changed filter
+    useEffect(() => {
+        setCurrentMatchPosition(matchedIndexes.length > 0 ? 0 : -1);
+    }, [searchTerm, logLevel, matchedIndexes.length]);
+
+    // log entry that is currently active (selected, open, focused)
+    const activeLogIndex =
+        currentMatchPosition >= 0 ? matchedIndexes[currentMatchPosition] ?? -1 : -1;
+
+    const helperText = useMemo(() => {
+        if (!searchTerm) {
+            return <span>&nbsp;</span>; // empty but visible placeholder (avoid layout jumps if no helpertext is visible)
+        }
+        if (matchedIndexes.length === 0) return "No messages found";
+
+        return (
+            <Stack direction="row" useFlexGap spacing={0.5} sx={{alignItems: "center"}}>
+                <span>
+                  Messages found: {currentMatchPosition + 1}/{matchedIndexes.length}
+                </span>
+                <Tooltip title="Use Enter / Shift+Enter to navigate matches.">
+                    <InfoOutlinedIcon sx={{fontSize: 14}}/>
+                </Tooltip>
+            </Stack>
+        );
+    }, [searchTerm, matchedIndexes.length, currentMatchPosition]);
+
     if (isLoading) return <LinearProgress aria-label="Loading…"/>;
     if (error)
         return <Alert severity="error">An error occured: {error?.message}</Alert>;
@@ -129,8 +172,28 @@ const LogsPage = () => {
                     <TextField
                         label="Search"
                         value={searchText}
+                        helperText={helperText}
                         onChange={(e) => {
                             setSearchText(e.target.value);
+                        }}
+
+                        onKeyDown={(e) => {
+                            // Enter for jumping to the next match; Shift+Enter for jumping to previous match
+                            if (e.key === "Enter") {
+                                e.preventDefault();
+
+                                if (matchedIndexes.length === 0) return;
+
+                                if (e.shiftKey) {
+                                    setCurrentMatchPosition((previousMatchPosition) =>
+                                        previousMatchPosition <= 0 ? matchedIndexes.length - 1 : previousMatchPosition - 1,
+                                    );
+                                } else {
+                                    setCurrentMatchPosition((previousMatchPosition) =>
+                                        previousMatchPosition >= matchedIndexes.length - 1 ? 0 : previousMatchPosition + 1,
+                                    );
+                                }
+                            }
                         }}
                         slotProps={{
                             input: {
@@ -148,6 +211,7 @@ const LogsPage = () => {
                     <LogConsole
                         logs={filteredLogs}
                         searchText={searchTerm}
+                        activeLogIndex={activeLogIndex}
                     />
                 </Grid>
             </Grid>

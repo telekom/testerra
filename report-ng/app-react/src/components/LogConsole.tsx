@@ -22,15 +22,30 @@
 import {Box, List, ListItem, Paper, Typography} from "@mui/material";
 import type {ILogEntry} from "../model/Logs";
 import {LogLine} from "./LogLine";
+import React, {useEffect, useRef} from "react";
 
 export interface LogConsoleProps {
     logs: ILogEntry[];
     searchText?: string | null;
     height?: number | string;
-    autoScroll?: boolean;
+    activeLogIndex?: number;
 }
 
-export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)",}) => {
+export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1,}) => {
+
+    // refs and scroll effect (useRef = saves changable value across renders without causing re-renders; HTMLLIElement for <li>)
+    const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+    useEffect(() => {
+        if (activeLogIndex < 0) return;
+
+        const element = itemRefs.current[activeLogIndex];
+        if (element) {
+            element.scrollIntoView({
+                block: "start",
+            });
+        }
+    }, [activeLogIndex]);
+
     if (logs.length === 0) {
         return (
             <Paper sx={{p: 1, bgcolor: "#2b2b2b", color: "#c0dee0", fontSize: 14}}>
@@ -43,13 +58,23 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
         <Paper sx={{p: 1, bgcolor: "#2b2b2b", color: "#c0dee0", fontSize: 14}}>
             <Box sx={{maxHeight: height, overflowY: "auto"}}>
                 <List disablePadding>
-                    {logs.map((log) => (
+                    {logs.map((log, index) => (
                         <ListItem
+                            ref={(element) => {
+                                itemRefs.current[index] = element;
+                            }}
                             key={log.id ?? `${log.timestamp ?? 0}-${log.loggerName ?? ""}-${log.message ?? ""}`}
                             disableGutters
-                            sx={{alignItems: "flex-start", py: 0}}
+                            sx={{
+                                alignItems: "flex-start",
+                                py: 0,
+                            }}
                         >
-                            <LogLine log={log} searchText={searchText ?? undefined}/>
+                            <LogLine
+                                log={log}
+                                searchText={searchText ?? undefined}
+                                isActiveMatch={index === activeLogIndex}
+                            />
                         </ListItem>
                     ))}
                 </List>

@@ -92,6 +92,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         });
 
         boolean passed = atomicPassed.get();
+        String subject = safeCreateSubject();
 
         if (!passed) {
             failedFinallyRecursive();
@@ -117,10 +118,15 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                     finalThrowable = throwable;
                 }
 
+                if (message != null) {
+                    log().error("Assertion failed: {}", message);
+                } else {
+                    log().error("Assertion failed: {}", subject, finalThrowable);
+                }
+
                 useAssertion.fail(wrapAssertionErrorRecursive(new AssertionError(message, finalThrowable)));
             }
         } else {
-            String subject = safeCreateSubject();
             log().info("Assertion passed: {}", subject);
             passedRecursive();
         }

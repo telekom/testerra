@@ -19,10 +19,13 @@
  * under the License.
  */
 
-import {Box, List, ListItem, Paper, Typography} from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
+import React, {useEffect, useMemo} from "react";
 import type {ILogEntry} from "../model/Logs";
 import {LogLine} from "./LogLine";
-import React, {useEffect, useRef} from "react";
+
+// use react window library (https://react-window.vercel.app/) according to MUI recommendation (https://mui.com/material-ui/react-list/#virtualized-list)
+import {List, type RowComponentProps, useDynamicRowHeight, useListRef,} from "react-window";
 
 export interface LogConsoleProps {
     logs: ILogEntry[];
@@ -32,20 +35,6 @@ export interface LogConsoleProps {
 }
 
 export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1,}) => {
-
-    // refs and scroll effect (useRef = saves changable value across renders without causing re-renders; HTMLLIElement for <li>)
-    const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
-    useEffect(() => {
-        if (activeLogIndex < 0) return;
-
-        const element = itemRefs.current[activeLogIndex];
-        if (element) {
-            element.scrollIntoView({
-                block: "start",
-            });
-        }
-    }, [activeLogIndex]);
-
     if (logs.length === 0) {
         return (
             <Paper sx={{p: 1, bgcolor: "#2b2b2b", color: "#c0dee0", fontSize: 14}}>
@@ -54,30 +43,59 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
         )
     }
 
+    // calculate height
+    const listHeight = useMemo(() => {
+        if (typeof height === "number") return height;
+        return window.innerHeight - 200;
+    }, [height]);
+
+    // dynamic row height
+    const rowHeight = useDynamicRowHeight({
+        defaultRowHeight: 21, // height of default log line (1 row)
+    });
+
+    // Ref for imperative API (scrollToRow)
+    const listRef = useListRef(null);
+
+    // row-component for react-window
+    const Row = ({index, style,}: RowComponentProps<{}>) => {
+        const log = logs[index];
+
+        return (
+            <div style={style}>
+                <LogLine
+                    log={log}
+                    searchText={searchText ?? undefined}
+                    isActiveMatch={index === activeLogIndex}
+                />
+            </div>
+        );
+    };
+
+    // scroll to active log if activeLogIndex changes
+    useEffect(() => {
+        if (activeLogIndex < 0) return;
+        const list = listRef.current;
+        if (!list) return;
+
+        list.scrollToRow({
+            index: activeLogIndex,
+            align: "start",
+            behavior: "auto",
+        });
+    }, [activeLogIndex, listRef]);
+
     return (
         <Paper sx={{p: 1, bgcolor: "#2b2b2b", color: "#c0dee0", fontSize: 14}}>
-            <Box sx={{maxHeight: height, overflowY: "auto"}}>
-                <List disablePadding>
-                    {logs.map((log, index) => (
-                        <ListItem
-                            ref={(element) => {
-                                itemRefs.current[index] = element;
-                            }}
-                            key={log.id ?? `${log.timestamp ?? 0}-${log.loggerName ?? ""}-${log.message ?? ""}`}
-                            disableGutters
-                            sx={{
-                                alignItems: "flex-start",
-                                py: 0,
-                            }}
-                        >
-                            <LogLine
-                                log={log}
-                                searchText={searchText ?? undefined}
-                                isActiveMatch={index === activeLogIndex}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
+            <Box sx={{maxHeight: listHeight}}>
+                <List
+                    listRef={listRef}
+                    rowComponent={Row}
+                    rowCount={logs.length}
+                    rowHeight={rowHeight}
+                    rowProps={{}}
+                    style={{height: listHeight, width: "100%"}}
+                />
             </Box>
         </Paper>
     );

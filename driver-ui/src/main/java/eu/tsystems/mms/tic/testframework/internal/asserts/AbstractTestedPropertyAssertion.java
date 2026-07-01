@@ -120,8 +120,18 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 useAssertion.fail(wrapAssertionErrorRecursive(new AssertionError(message, finalThrowable)));
             }
         } else {
+            String subject = safeCreateSubject();
+            log().info("Assertion passed: {}", subject);
             passedRecursive();
         }
         return passed;
+    }
+
+    private String safeCreateSubject() {
+        try {
+            return createFailMessage(null);
+        } catch (Throwable throwable) {
+            return String.format("%s [subject unavailable: %s]", getClass().getSimpleName(), throwable.getMessage());
+        }
     }
 }

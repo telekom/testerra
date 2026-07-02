@@ -178,4 +178,14 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest implements Ui
         uiElement.screenshotToReport();
 
     }
+
+    @Test
+    public void testsimpleUiElementWithSubject() {
+        WebDriver driver = getWebDriver();
+
+        UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(driver);
+        UiElement element = uiElementFinder.find(By.id("1"));
+        element.assertThat().displayed().is(true);
+        element.assertThat().displayed().is(true, "MyCustomElement");
+    }
 }

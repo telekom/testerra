@@ -54,13 +54,13 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
      * This is the general test sequence
      * @param actualProperty The {@link ActualProperty} to test
      * @param testFunction The test {@link Predicate}
-     * @param failMessageSupplier The fail message {@link Supplier} when the test finally fails.
+     * @param assertMessageSupplier The assert message {@link Supplier} for logging information and Assertion error message.
      * @return True if the test passed
      */
     protected boolean testSequence(
             ActualProperty<T> actualProperty,
             Predicate<T> testFunction,
-            Function<T, String> failMessageSupplier
+            Function<T, String> assertMessageSupplier
     ) {
         int useTime = config.useTimeout;
         if (useTime < 0) {
@@ -110,18 +110,28 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 String message = null;
                 Throwable finalThrowable;
                 try {
-                    message = failMessageSupplier.apply(atomicActual.get());
+                    message = assertMessageSupplier.apply(atomicActual.get());
                     finalThrowable = atomicThrowable.get();
                 // When something happens during message retrieval
                 } catch (Throwable throwable) {
                     finalThrowable = throwable;
                 }
 
+                if (message != null) {
+                    log().error("Assertion failed: {}", message);
+                } else {
+                    String subject = String.format("%s [subject unavailable: %s]", getClass().getSimpleName(), finalThrowable.getMessage());
+                    log().error("Assertion failed: {}", subject, finalThrowable);
+                }
+
                 useAssertion.fail(wrapAssertionErrorRecursive(new AssertionError(message, finalThrowable)));
             }
         } else {
+            String message = assertMessageSupplier.apply(atomicActual.get());
+            log().info("Assertion passed: {}", message);
             passedRecursive();
         }
         return passed;
     }
+
 }

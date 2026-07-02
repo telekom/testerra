@@ -22,11 +22,8 @@
 package eu.tsystems.mms.tic.testframework.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import java.util.Arrays;
-import java.util.Objects;
+
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * An abstract property assertion without any test implementations.
@@ -50,7 +47,7 @@ public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> 
         return provider.getActual();
     }
 
-    protected String createFailMessage(String givenSubject) {
+    protected String createAssertMessage(String givenSubject) {
         if (givenSubject != null && givenSubject.length() > 0) {
             return givenSubject;
         }

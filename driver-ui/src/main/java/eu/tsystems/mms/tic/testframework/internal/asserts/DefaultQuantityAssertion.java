@@ -48,7 +48,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultObjectAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> assertionImpl.isGreaterThan(toBigDecimal(actual), expected),
-                (actual) -> assertionImpl.formatExpectGreaterThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
+                (actual) -> assertionImpl.formatExpectGreaterThan(toBigDecimal(actual), expected, createAssertMessage(failMessage))
         );
     }
 
@@ -57,7 +57,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultObjectAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> assertionImpl.isLowerThan(toBigDecimal(actual), expected),
-                (actual) -> assertionImpl.formatExpectLowerThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
+                (actual) -> assertionImpl.formatExpectLowerThan(toBigDecimal(actual), expected, createAssertMessage(failMessage))
         );
     }
 
@@ -66,7 +66,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultObjectAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> assertionImpl.isGreaterEqualThan(toBigDecimal(actual), expected),
-                (actual) -> assertionImpl.formatExpectGreaterEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
+                (actual) -> assertionImpl.formatExpectGreaterEqualThan(toBigDecimal(actual), expected, createAssertMessage(failMessage))
         );
     }
 
@@ -75,7 +75,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultObjectAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> assertionImpl.isLowerEqualThan(toBigDecimal(actual), expected),
-                (actual) -> assertionImpl.formatExpectLowerEqualThan(toBigDecimal(actual), expected, createFailMessage(failMessage))
+                (actual) -> assertionImpl.formatExpectLowerEqualThan(toBigDecimal(actual), expected, createAssertMessage(failMessage))
         );
     }
 
@@ -84,7 +84,7 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultObjectAssertion<TYPE>
         return testSequence(
                 provider,
                 (actual) -> assertionImpl.isBetween(toBigDecimal(actual), lower, higher),
-                (actual) -> assertionImpl.formatExpectIsBetween(toBigDecimal(actual), lower, higher, createFailMessage(failMessage))
+                (actual) -> assertionImpl.formatExpectIsBetween(toBigDecimal(actual), lower, higher, createAssertMessage(failMessage))
         );
     }
 

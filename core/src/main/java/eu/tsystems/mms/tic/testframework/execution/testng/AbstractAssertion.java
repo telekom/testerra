@@ -21,6 +21,7 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.testng.Assert;
 
 import java.math.BigDecimal;
@@ -35,13 +36,39 @@ import java.util.Set;
  *
  * @author Mike Reiche
  */
-public abstract class AbstractAssertion implements Assertion {
+public abstract class AbstractAssertion implements Assertion, Loggable {
 
     /*
     Big decimal values are round by default with given scale and RoundingMode.HALF_UP
     eg. 1.005 -> 1.01, 1.114 -> 1.11
     */
     private static final int BIGDECIMAL_ROUND_SCALE = 3;
+
+    protected void logPassed(String check) {
+        log().info("Assertion passed: {}", check);
+    }
+
+    protected void failWithLog(String failMessage) {
+        log().warn("Assertion failed: {}", failMessage);
+        fail(failMessage);
+    }
+
+    protected void verifyAssertion(boolean condition, String failMessage) {
+        if (condition) {
+            logPassed(failMessage);
+        } else {
+            failWithLog(failMessage);
+        }
+    }
+
+    private void runAssert(Runnable assertion, String failMessage) {
+        try {
+            assertion.run();
+            logPassed(failMessage);
+        } catch (AssertionError e) {
+            failWithLog(failMessage);
+        }
+    }
 
     public String format(Object actual, Object expected, Object subject) {
         StringBuilder builder = new StringBuilder();
@@ -75,9 +102,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertTrue(boolean actual, Object subject) {
-        if (!isTrue(actual)) {
-            fail(formatExpectTrue(actual, subject));
-        }
+        verifyAssertion(isTrue(actual), formatExpectTrue(actual, subject));
     }
 
     @Override
@@ -92,9 +117,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertFalse(boolean actual, Object subject) {
-        if (!isFalse(actual)) {
-            fail(formatExpectFalse(actual, subject));
-        }
+        verifyAssertion(isFalse(actual), formatExpectFalse(actual, subject));
     }
 
     @Override
@@ -109,9 +132,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertSame(Object actual, Object expected, Object subject) {
-        if (!isSame(actual, expected)) {
-            fail(formatExpectSame(actual, expected, subject));
-        }
+        verifyAssertion(isSame(actual, expected), formatExpectSame(actual, expected, subject));
     }
 
     @Override
@@ -126,9 +147,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertNotSame(Object actual, Object expected, Object subject) {
-        if (!isNotSame(actual, expected)) {
-            fail(formatExpectNotSame(actual, expected, subject));
-        }
+        verifyAssertion(isNotSame(actual, expected), formatExpectNotSame(actual, expected, subject));
     }
 
     @Override
@@ -143,9 +162,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertNull(Object actual, Object subject) {
-        if (!isNull(actual)) {
-            fail(formatExpectNull(actual, subject));
-        }
+        verifyAssertion(isNull(actual), formatExpectNull(actual, subject));
     }
 
     @Override
@@ -160,9 +177,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertNotNull(Object actual, Object subject) {
-        if (!isNotNull(actual)) {
-            fail(formatExpectNotNull(actual, subject));
-        }
+        verifyAssertion(isNotNull(actual), formatExpectNotNull(actual, subject));
     }
 
     @Override
@@ -181,9 +196,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertContains(String actual, String expected, Object subject) {
-        if (!contains(actual, expected)) {
-            fail(formatExpectContains(actual, expected, subject));
-        }
+        verifyAssertion(contains(actual, expected), formatExpectContains(actual, expected, subject));
     }
 
     @Override
@@ -198,9 +211,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertContainsNot(String actual, String expected, Object subject) {
-        if (!containsNot(actual, expected)) {
-            fail(formatExpectContainsNot(actual, expected, subject));
-        }
+        verifyAssertion(containsNot(actual, expected), formatExpectContainsNot(actual, expected, subject));
     }
 
     @Override
@@ -215,9 +226,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertGreaterThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        if (!isGreaterThan(actual, expected)) {
-            fail(formatExpectGreaterThan(actual, expected, subject));
-        }
+        verifyAssertion(isGreaterThan(actual, expected), formatExpectGreaterThan(actual, expected, subject));
     }
 
     @Override
@@ -232,9 +241,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        if (!isGreaterEqualThan(actual, expected)) {
-            fail(formatExpectGreaterEqualThan(actual, expected, subject));
-        }
+        verifyAssertion(isGreaterEqualThan(actual, expected), formatExpectGreaterEqualThan(actual, expected, subject));
     }
 
     @Override
@@ -249,9 +256,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertLowerThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        if (!isLowerThan(actual, expected)) {
-            fail(formatExpectLowerThan(actual, expected, subject));
-        }
+        verifyAssertion(isLowerThan(actual, expected), formatExpectLowerThan(actual, expected, subject));
     }
 
     @Override
@@ -266,9 +271,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, Object subject) {
-        if (!isLowerEqualThan(actual, expected)) {
-            fail(formatExpectLowerEqualThan(actual, expected, subject));
-        }
+        verifyAssertion(isLowerEqualThan(actual, expected), formatExpectLowerEqualThan(actual, expected, subject));
     }
 
     @Override
@@ -283,9 +286,10 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object subject) {
-        if (!isBetween(actual, lower, higher)) {
-            fail(formatExpectIsBetween(scaleBigDecimal(actual), scaleBigDecimal(lower), scaleBigDecimal(higher), subject));
-        }
+        verifyAssertion(
+                isBetween(actual, lower, higher),
+                formatExpectIsBetween(scaleBigDecimal(actual), scaleBigDecimal(lower), scaleBigDecimal(higher), subject)
+        );
     }
 
     @Override
@@ -305,110 +309,62 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertEquals(Object actual, Object expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(long actual, long expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(double actual, double expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(Collection<?> actual, Collection<?> expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(Iterator<?> actual, Iterator<?> expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(Iterable<?> actual, Iterable<?> expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(Object[] actual, Object[] expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEqualsNoOrder(Object[] actual, Object[] expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(Set<?> actual, Set<?> expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEqualsDeep(Set<?> actual, Set<?> expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEquals(Map<?, ?> actual, Map<?, ?> expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
     public void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, Object subject) {
-        try {
-            Assert.assertEquals(actual, expected);
-        } catch (AssertionError e) {
-            fail(formatExpectEquals(actual, expected, subject));
-        }
+        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
@@ -428,29 +384,17 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertNotEquals(Object actual1, Object actual2, Object subject) {
-        try {
-            Assert.assertNotEquals(actual1, actual2);
-        } catch (AssertionError e) {
-            fail(formatExpectNotEquals(actual1, actual2, subject));
-        }
+        runAssert(() -> Assert.assertNotEquals(actual1, actual2), formatExpectNotEquals(actual1, actual2, subject));
     }
 
     @Override
     public void assertNotEquals(Set<?> actual1, Set<?> actual2, Object subject) {
-        try {
-            Assert.assertNotEquals(actual1, actual2);
-        } catch (AssertionError e) {
-            fail(formatExpectNotEquals(actual1, actual2, subject));
-        }
+        runAssert(() -> Assert.assertNotEquals(actual1, actual2), formatExpectNotEquals(actual1, actual2, subject));
     }
 
     @Override
     public void assertNotEquals(Map<?, ?> actual1, Map<?, ?> actual2, Object subject) {
-        try {
-            Assert.assertNotEquals(actual1, actual2);
-        } catch (AssertionError e) {
-            fail(formatExpectNotEquals(actual1, actual2, subject));
-        }
+        runAssert(() -> Assert.assertNotEquals(actual1, actual2), formatExpectNotEquals(actual1, actual2, subject));
     }
 
     @Override
@@ -467,9 +411,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertStartsWith(Object actual, Object expected, Object subject) {
-        if (!startsWith(actual, expected)) {
-            fail(formatExpectStartsWith(actual, expected, subject));
-        }
+        verifyAssertion(startsWith(actual, expected), formatExpectStartsWith(actual, expected, subject));
     }
 
     @Override
@@ -486,16 +428,15 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public void assertEndsWith(Object actual, Object expected, Object subject) {
-        if (!endsWith(actual, expected)) {
-            fail(formatExpectEndsWith(actual, expected, subject));
-        }
+        verifyAssertion(endsWith(actual, expected), formatExpectEndsWith(actual, expected, subject));
     }
 
     @Override
     public void assertInstanceOf(Object actual, Class expected, Object subject) {
-        if (!expected.isInstance(actual)) {
-            fail(formatExpectEquals(actual, String.format("instance of [%s]", expected), subject));
-        }
+        verifyAssertion(
+                expected.isInstance(actual),
+                formatExpectEquals(actual, String.format("instance of [%s]", expected), subject)
+        );
     }
 
     private BigDecimal scaleBigDecimal(BigDecimal value) {

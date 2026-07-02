@@ -92,7 +92,6 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         });
 
         boolean passed = atomicPassed.get();
-        String subject = safeCreateSubject();
 
         if (!passed) {
             failedFinallyRecursive();
@@ -121,23 +120,18 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 if (message != null) {
                     log().error("Assertion failed: {}", message);
                 } else {
+                    String subject = String.format("%s [subject unavailable: %s]", getClass().getSimpleName(), finalThrowable.getMessage());
                     log().error("Assertion failed: {}", subject, finalThrowable);
                 }
 
                 useAssertion.fail(wrapAssertionErrorRecursive(new AssertionError(message, finalThrowable)));
             }
         } else {
-            log().info("Assertion passed: {}", subject);
+            String message = failMessageSupplier.apply(atomicActual.get());
+            log().info("Assertion passed: {}", message);
             passedRecursive();
         }
         return passed;
     }
 
-    private String safeCreateSubject() {
-        try {
-            return createFailMessage(null);
-        } catch (Throwable throwable) {
-            return String.format("%s [subject unavailable: %s]", getClass().getSimpleName(), throwable.getMessage());
-        }
-    }
 }

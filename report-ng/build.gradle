@@ -10,15 +10,13 @@ dependencies {
     implementation "com.google.protobuf:protobuf-java:$protobufVersion"
 }
 
-task destClean {
-    doLast {
-        delete "src/main/resources/report-ng"
+def appReact = project(':report-ng:app-react')
+
+tasks.named('processResources') {
+    dependsOn(appReact.tasks.named('buildReport'))
+
+    from(appReact.layout.projectDirectory.dir('dist')) {
+        into 'report-ng'
+        exclude 'model/**'
     }
 }
-
-clean.dependsOn(destClean)
-
-processResources.dependsOn(project("app").build)
-
-// Build the report app into resources before building the librar
-//compileJava.dependsOn(project("app").build)

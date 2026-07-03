@@ -38,6 +38,8 @@ export class MethodDetails {
     testContext!: TestContext;
     suiteContext!: SuiteContext;
     sessionContexts!: SessionContext[];
+    readonly classStatistics: ClassStatistics;
+    readonly methodContext: MethodContext;
     promptLogs!: LogMessage[];
     private _identifier: string | null = null;
     static readonly FAILS_ANNOTATION_NAME = "eu.tsystems.mms.tic.testframework.annotations.Fails";
@@ -45,10 +47,11 @@ export class MethodDetails {
     private _failureAspects: FailureAspectStatistics[] | null = null;
 
 
-    constructor(
-        readonly methodContext: MethodContext,
-        readonly classStatistics: ClassStatistics
-    ) {}
+    constructor(methodContext: MethodContext, classStatistics: ClassStatistics)
+     {
+         this.methodContext = methodContext;
+         this.classStatistics = classStatistics;
+     }
 
     get failsAnnotation() {
         return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);

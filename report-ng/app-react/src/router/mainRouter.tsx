@@ -18,6 +18,7 @@ import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
 import DevicesIcon from '@mui/icons-material/Devices';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 import type {JSX} from "react";
 import TestTimings from "../components/timings-tab-components/TestTimings";
 import Sessions from "../components/timings-tab-components/Sessions";
@@ -27,6 +28,7 @@ import Steps from "../components/method-details-tab-components/Steps.tsx";
 import BrowserInfo from "../components/method-details-tab-components/BrowserInfo.tsx";
 import Dependencies from "../components/method-details-tab-components/Dependencies.tsx";
 import Video from "../components/method-details-tab-components/Video.tsx";
+import ThreadsPage from "../pages/ThreadsPage.tsx";
 
 // Custom attributes for menu elements
 export interface RouteHandle {
@@ -59,6 +61,11 @@ export const routesConfig: RouteObject[] = [
                 path: "about",
                 element: <AboutPage/>,
                 handle: {label: "About", show: true, icon: <InfoRoundedIcon />} as RouteHandle
+            },
+            {
+                path: "threads/:methodId?",
+                element: <ThreadsPage/>,
+                handle: {label: "Threads", show: true, icon: <ClearAllIcon />} as RouteHandle
             },
             {
                 path: "timings",
@@ -97,7 +104,7 @@ export const routesConfig: RouteObject[] = [
                         handle: {label: "Error Details", show: true, icon: <CenterFocusStrongIcon />} as RouteHandle
                     },
                     {
-                        path: "steps",
+                        path: "steps/:stepId?",
                         element: <Steps/>,
                         handle: {label: "Steps", show: true, icon: <ListIcon />} as RouteHandle
                     },

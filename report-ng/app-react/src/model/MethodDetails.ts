@@ -75,6 +75,14 @@ export class MethodDetails {
         return this._identifier;
     }
 
+    get failedStep() {
+        const { testSteps, failedStepIndex } = this.methodContext;
+        if (testSteps && failedStepIndex !== undefined && failedStepIndex >= 0) {
+            return testSteps[failedStepIndex] ?? null;
+        }
+        return null;
+    }
+
     private _decode(from: { [p: string]: string } | undefined, name: string, to: { [p: string]: any }): any {
         if (to[name] === undefined) {
             if (from?.[name]) {

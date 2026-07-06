@@ -2,6 +2,7 @@ import {Box, FormControl, MenuItem} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import type {SxProps, Theme} from "@mui/material/styles";
+import {useState} from "react";
 
 type MultiSelectInputProps = {
     label: string,
@@ -14,6 +15,7 @@ type MultiSelectInputProps = {
 
 const MultiSelectInput = ({label, values, onChange, menuItems, sx, renderValue}: MultiSelectInputProps) => {
 
+    const [isOpen, setIsOpen] = useState(false);
     const availableMenuItems = menuItems.filter(className => !values?.includes(className));
 
     return (
@@ -24,8 +26,12 @@ const MultiSelectInput = ({label, values, onChange, menuItems, sx, renderValue}:
                     multiple
                     value={values}
                     label={label}
+                    open={isOpen}
+                    onOpen={() => setIsOpen(true)}
+                    onClose={() => setIsOpen(false)}
                     onChange={(e) => {
                         onChange(e.target.value as unknown as string[]);
+                        setIsOpen(false);
                     }}
                     renderValue={renderValue}
                     MenuProps={{

@@ -5,6 +5,7 @@ import ReportChip from "./ReportChip";
 import type {SxProps, Theme} from "@mui/material/styles";
 import {StatusService} from "../model/status-service";
 import type {ResultStatus} from "../model/status-service";
+import {useState} from "react";
 
 type SelectInputProps = {
     label: string
@@ -21,6 +22,7 @@ type StatusMenuItem = {
 
 const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: SelectInputProps) => {
 
+    const [isOpen, setIsOpen] = useState(false);
     const availableMenuItems = menuItems
         .filter(status => !selectedStatuses?.includes(status as ResultStatus))
         .map(status => ({
@@ -38,9 +40,13 @@ const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: S
                     multiple
                     value={selectedStatuses}
                     label={label}
-                    onChange={(e) =>
-                        onChange(e.target.value as ResultStatus[])
-                    }
+                    open={isOpen}
+                    onOpen={() => setIsOpen(true)}
+                    onClose={() => setIsOpen(false)}
+                    onChange={(e) => {
+                        onChange(e.target.value as ResultStatus[]);
+                        setIsOpen(false);
+                    }}
                     sx={{height: "56px"}}
                     renderValue={(selected: ResultStatus[]) => {
                         if (!selected?.length) return "";

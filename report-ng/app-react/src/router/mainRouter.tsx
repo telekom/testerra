@@ -14,10 +14,19 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ListIcon from '@mui/icons-material/List';
 import SmsFailedIcon from '@mui/icons-material/SmsFailed';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import DevicesIcon from '@mui/icons-material/Devices';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import type {JSX} from "react";
 import TestTimings from "../components/timings-tab-components/TestTimings";
 import Sessions from "../components/timings-tab-components/Sessions";
 import FailureAspectsPage from "../pages/FailureAspectsPage";
+import ErrorDetails from "../components/method-details-tab-components/ErrorDetails.tsx";
+import Steps from "../components/method-details-tab-components/Steps.tsx";
+import BrowserInfo from "../components/method-details-tab-components/BrowserInfo.tsx";
+import Dependencies from "../components/method-details-tab-components/Dependencies.tsx";
+import Video from "../components/method-details-tab-components/Video.tsx";
 
 // Custom attributes for menu elements
 export interface RouteHandle {
@@ -75,7 +84,39 @@ export const routesConfig: RouteObject[] = [
             },
             {
                 path: "method/:methodId?",
-                element: <MethodDetailsPage />
+                element: <MethodDetailsPage />,
+                children: [
+                    // makes sure that never only /method/{id} is rendered but always /method/{id}/details
+                    {
+                        index: true,
+                        element: <Navigate to="details" replace />
+                    },
+                    {
+                        path: "details",
+                        element: <ErrorDetails/>,
+                        handle: {label: "Error Details", show: true, icon: <CenterFocusStrongIcon />} as RouteHandle
+                    },
+                    {
+                        path: "steps",
+                        element: <Steps/>,
+                        handle: {label: "Steps", show: true, icon: <ListIcon />} as RouteHandle
+                    },
+                    {
+                        path: "browser-info",
+                        element: <BrowserInfo/>,
+                        handle: {label: "Browser Info", show: true, icon: <DevicesIcon />} as RouteHandle
+                    },
+                    {
+                        path: "dependencies",
+                        element: <Dependencies/>,
+                        handle: {label: "Dependencies ", show: true, icon: <AccountTreeIcon />} as RouteHandle
+                    },
+                    {
+                        path: "video",
+                        element: <Video/>,
+                        handle: {label: "Video ", show: true, icon: <PlayCircleIcon />} as RouteHandle
+                    }
+                ]
             },
             {
                 path: '*',

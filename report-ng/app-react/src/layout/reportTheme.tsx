@@ -1,16 +1,15 @@
-import {createTheme} from "@mui/material";
+import {createTheme} from "@mui/material/styles";
 import React from "react";
+import {
+    logConsole,
+    logLine,
+    statusColors,
+    type ReportThemeLogConsoleStyles,
+    type ReportThemeLogLineStyles,
+    type Status
+} from "./reportThemeCustom";
 
-const statusColors = {
-    passed: '#417336',
-    skipped: '#f7af3e',
-    failed: '#e63946',
-    crashed: '#5d6f81',
-    running: '#0089b6',
-    failed_minor: '#f7af3e',
-    expected_failed: '#4f031b'
-}
-export type Status = keyof typeof statusColors;
+export type {Status};
 
 // Update the Chip's color options to include blue, purple and green option
 declare module '@mui/material/Chip' {
@@ -26,6 +25,8 @@ declare module '@mui/material/Chip' {
 export const reportTheme = createTheme({
     custom: {
         statusColors,
+        logLine,
+        logConsole,
     },
     cssVariables: {
         nativeColor: true,
@@ -112,6 +113,8 @@ declare module "@mui/material/styles" {
     interface Theme {
         custom: {
             statusColors: typeof statusColors;
+            logLine: ReportThemeLogLineStyles;
+            logConsole: ReportThemeLogConsoleStyles;
         }
     }
 
@@ -119,6 +122,8 @@ declare module "@mui/material/styles" {
     interface ThemeOptions {
         custom?: {
             statusColors?: Partial<typeof statusColors>;
+            logLine?: Partial<ReportThemeLogLineStyles>;
+            logConsole?: Partial<ReportThemeLogConsoleStyles>;
         }
     }
 

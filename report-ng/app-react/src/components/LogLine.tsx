@@ -59,41 +59,23 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
     return (
         <Box
             className={`line ${lvlClass}`}
-            sx={{
-                display: "grid",
-                gridTemplateColumns: "20px minmax(0, 1fr)",
-                columnGap: 1,
-                alignItems: "start",
-                fontFamily: "monospace",
-                overflowWrap: "anywhere",
-                width: "100%",
-                "&.error": {background: "#5c0c12"},
-                "&.warn": {background: "#784b05"},
-                a: {color: "#6e95ed", textDecorationColor: "#6e95ed"},
-            }}
+            sx={(theme) => theme.custom.logLine.root}
         >
             <Box
                 component="span"
-                sx={{
-                    display: "inline-flex",
-                    justifyContent: "center",
-                    width: 20,
-                }}
+                sx={(theme) => theme.custom.logLine.expandToggleWrapper}
             >
                 {stackTraceLines.length > 0 && (
                     <Box
                         component="span"
-                        sx={{
-                            cursor: "pointer",
-                            userSelect: "none",
-                        }}
+                        sx={(theme) => theme.custom.logLine.expandToggle}
                         onClick={onToggleExpanded}
                     >
                         {showDetails ? "-" : "+"}
                     </Box>
                 )}
             </Box>
-            <Box sx={{minWidth: 0}}>
+            <Box sx={(theme) => theme.custom.logLine.content}>
                 <HighlightText
                     text={dateFormatter(log.timestamp, "short")}
                     searchWord={searchTerms}
@@ -104,7 +86,7 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
                         <Link
                             href={`#/method/${methodId}`}
                             underline="hover"
-                            sx={{color: "inherit"}}
+                            sx={(theme) => theme.custom.logLine.methodLink}
                         >
                             [{log.threadName ?? "method"}]
                         </Link>
@@ -116,16 +98,11 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
           <HighlightText text={logger.class} searchWord={searchTerms}/>
         </span>
                 <span> - </span>
-                <Box component="span" sx={{whiteSpace: "pre-wrap"}}>
+                <Box component="span" sx={(theme) => theme.custom.logLine.message}>
                     <HighlightText text={log.message ?? ""} searchWord={searchTerms}/>
                 </Box>
                 {showDetails && stackTraceLines.length > 0 && (
-                    <Box
-                        sx={{
-                            mt: 0.5,
-                            whiteSpace: "pre-wrap",
-                        }}
-                    >
+                    <Box sx={(theme) => theme.custom.logLine.details}>
                         {stackTraceLines.map((line, index) => (
                             <Box key={`${log.id ?? log.timestamp ?? 0}-stack-${index}`}>
                                 <HighlightText text={line} searchWord={searchTerms}/>

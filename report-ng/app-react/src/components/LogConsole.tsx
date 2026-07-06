@@ -21,6 +21,7 @@
 
 import {Box, Paper} from "@mui/material";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
+import {useTheme} from "@mui/material/styles";
 import type {ILogEntry} from "../model/Logs";
 import {LogLine} from "./LogLine";
 
@@ -36,7 +37,7 @@ interface LogConsoleRowProps {
     onToggleExpanded: (logKey: string) => void;
 }
 
-// row-component for react-window (virtualization)
+// render function for row-component for react-window (virtualization)
 function LogConsoleRow({
     index,
     style,
@@ -70,6 +71,8 @@ export interface LogConsoleProps {
 }
 
 export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1,}) => {
+    const theme = useTheme();
+
     // Hooks must stay before the early return so renders remain stable.
     const listHeight = useMemo(() => {
         if (typeof height === "number") return height;
@@ -137,15 +140,15 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
     }
 
     return (
-        <Paper sx={{p: 1, bgcolor: "#2b2b2b", color: "#c0dee0", fontSize: 14}}>
-            <Box sx={{maxHeight: listHeight}}>
+        <Paper sx={(theme) => theme.custom.logConsole.paper}>
+            <Box sx={(theme) => theme.custom.logConsole.listContainer(listHeight)}>
                 <List
                     listRef={listRef}
                     rowComponent={LogConsoleRow}
                     rowCount={logs.length}
                     rowHeight={rowHeight}
                     rowProps={rowProps}
-                    style={{height: listHeight, width: "100%"}}
+                    style={theme.custom.logConsole.list(listHeight)}
                 />
             </Box>
         </Paper>

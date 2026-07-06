@@ -14,9 +14,21 @@ type SelectInputProps = {
     sx?: SxProps<Theme>;
 }
 
+type StatusMenuItem = {
+    status: ResultStatus;
+    statusInformation: NonNullable<ReturnType<typeof StatusService.get>>;
+}
+
 const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: SelectInputProps) => {
 
-    const availableMenuItems = menuItems.filter(status => !selectedStatuses?.includes(status as ResultStatus));
+    const availableMenuItems = menuItems
+        .filter(status => !selectedStatuses?.includes(status as ResultStatus))
+        .map(status => ({
+            status: status as ResultStatus,
+            statusInformation: StatusService.get(String(status)),
+        }))
+        .filter((item): item is StatusMenuItem => item.statusInformation !== null)
+        .toSorted((a, b) => a.statusInformation.label.localeCompare(b.statusInformation.label));
 
     return (
         <Box sx={sx}>
@@ -41,19 +53,13 @@ const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: S
                             <em>All status selected</em>
                         </MenuItem>
                     )}
-                    {availableMenuItems
-                        .map(status => {
-                        const statusInformation = StatusService.get(String(status));
-                        if (!statusInformation) return null;
-
-                        return (
-                            <MenuItem key={status} value={status}>
-                                <ReportChip label={statusInformation.label}
-                                            size="small"
-                                            sx={{background: statusInformation.color, color: "white"}}/>
-                            </MenuItem>
-                        )
-                    })}
+                    {availableMenuItems.map(({status, statusInformation}) => (
+                        <MenuItem key={status} value={status}>
+                            <ReportChip label={statusInformation.label}
+                                        size="small"
+                                        sx={{background: statusInformation.color, color: "white"}}/>
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
         </Box>

@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useMemo} from "react";
 import {Box, Link} from "@mui/material";
 import type {ILogEntry} from "../model/Logs";
 import HighlightText from "../utils/highlightText";
@@ -32,6 +32,8 @@ interface LogLineProps {
     log: ILogEntry;
     searchText?: string;
     isActiveMatch?: boolean;
+    isExpanded?: boolean;
+    onToggleExpanded?: () => void;
 }
 
 function levelClass(type?: number) {
@@ -40,9 +42,8 @@ function levelClass(type?: number) {
     return "";
 }
 
-export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false}) => {
+export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false, isExpanded = false, onToggleExpanded,}) => {
     const stackTraceLines = flattenStackTrace(log);
-    const [showDetails, setShowDetails] = useState(false);
     const logger = StatusService.separateNamespace(log.loggerName ?? "");
     const lvlClass = levelClass(log.type);
     const searchTerms = searchText?.trim() ? [searchText.trim()] : [];
@@ -52,15 +53,8 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
         [log, searchText],
     );
 
-    // open stacktrace if match is inside
-    useEffect(() => {
-        if (isActiveMatch && matchResult.matchedInStackTrace) {
-            setShowDetails(true);
-        }
-    }, [isActiveMatch, matchResult.matchedInStackTrace]);
-
-
     const methodId = log.methodContext?.contextValues?.id;
+    const showDetails = isExpanded || (isActiveMatch && matchResult.matchedInStackTrace);
 
     return (
         <Box
@@ -93,7 +87,7 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
                             cursor: "pointer",
                             userSelect: "none",
                         }}
-                        onClick={() => setShowDetails((value) => !value)}
+                        onClick={onToggleExpanded}
                     >
                         {showDetails ? "-" : "+"}
                     </Box>

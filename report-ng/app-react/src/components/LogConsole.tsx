@@ -19,13 +19,48 @@
  * under the License.
  */
 
-import {Box, Paper, Typography} from "@mui/material";
-import React, {useEffect, useMemo} from "react";
+import {Box, Paper} from "@mui/material";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import type {ILogEntry} from "../model/Logs";
 import {LogLine} from "./LogLine";
 
 // use react window library (https://react-window.vercel.app/) according to MUI recommendation (https://mui.com/material-ui/react-list/#virtualized-list)
 import {List, type RowComponentProps, useDynamicRowHeight, useListRef,} from "react-window";
+import NoResultsCard from "./NoResultsCard.tsx";
+
+interface LogConsoleRowProps {
+    logs: ILogEntry[];
+    searchText?: string | null;
+    activeLogIndex: number;
+    expandedLogIds: Record<string, true>;
+    onToggleExpanded: (logKey: string) => void;
+}
+
+// row-component for react-window (virtualization)
+function LogConsoleRow({
+    index,
+    style,
+    logs,
+    searchText,
+    activeLogIndex,
+    expandedLogIds,
+    onToggleExpanded,
+}: RowComponentProps<LogConsoleRowProps>) {
+    const log = logs[index];
+    const logKey = log.id ?? `${log.timestamp ?? 0}-${log.loggerName ?? ""}-${log.threadName ?? ""}-${log.message ?? ""}`;
+
+    return (
+        <div style={style}>
+            <LogLine
+                log={log}
+                searchText={searchText ?? undefined}
+                isActiveMatch={index === activeLogIndex}
+                isExpanded={expandedLogIds[logKey] ?? false}
+                onToggleExpanded={() => onToggleExpanded(logKey)}
+            />
+        </div>
+    );
+}
 
 export interface LogConsoleProps {
     logs: ILogEntry[];
@@ -35,15 +70,7 @@ export interface LogConsoleProps {
 }
 
 export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1,}) => {
-    if (logs.length === 0) {
-        return (
-            <Paper sx={{p: 1, bgcolor: "#2b2b2b", color: "#c0dee0", fontSize: 14}}>
-                <Typography>(No log messages matching this criteria)</Typography>
-            </Paper>
-        )
-    }
-
-    // calculate height
+    // Hooks must stay before the early return so renders remain stable.
     const listHeight = useMemo(() => {
         if (typeof height === "number") return height;
         return window.innerHeight - 200;
@@ -57,23 +84,43 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
     // Ref for imperative API (scrollToRow)
     const listRef = useListRef(null);
 
-    // row-component for react-window
-    const Row = ({index, style,}: RowComponentProps<{}>) => {
-        const log = logs[index];
+    /* separate store for expanded logs:
+    if this would not exist, the information about expansion is lost when this log entry leaves the dom due to virtualization
+    since this can cause confusion for the user (entrys collapse when not visible), these states are stored separately
+    only expanded rows are stored; collapsed rows are simply absent from the map */
+    const [expandedLogIds, setExpandedLogIds] = useState<Record<string, true>>({})
+    const toggleExpanded = useCallback((logKey: string) => {
+        setExpandedLogIds((previous) => {
+            if (previous[logKey]) {
+                const next = {...previous};
+                delete next[logKey];
+                return next;
+            }
 
-        return (
-            <div style={style}>
-                <LogLine
-                    log={log}
-                    searchText={searchText ?? undefined}
-                    isActiveMatch={index === activeLogIndex}
-                />
-            </div>
-        );
-    };
+            return {
+                ...previous,
+                [logKey]: true,
+            };
+        });
+    }, []);
+
+    const rowProps = useMemo(
+        () => ({
+            logs,
+            searchText,
+            activeLogIndex,
+            expandedLogIds,
+            onToggleExpanded: toggleExpanded,
+        }),
+        [logs, searchText, activeLogIndex, expandedLogIds, toggleExpanded],
+    );
 
     // scroll to active log if activeLogIndex changes
     useEffect(() => {
+        if (logs.length === 0) {
+            return;
+        }
+
         if (activeLogIndex < 0) return;
         const list = listRef.current;
         if (!list) return;
@@ -83,17 +130,21 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
             align: "start",
             behavior: "auto",
         });
-    }, [activeLogIndex, listRef]);
+    }, [activeLogIndex, listRef, logs.length]);
+
+    if (logs.length === 0) {
+        return <NoResultsCard title="No log messages matching this criteria"/>
+    }
 
     return (
         <Paper sx={{p: 1, bgcolor: "#2b2b2b", color: "#c0dee0", fontSize: 14}}>
             <Box sx={{maxHeight: listHeight}}>
                 <List
                     listRef={listRef}
-                    rowComponent={Row}
+                    rowComponent={LogConsoleRow}
                     rowCount={logs.length}
                     rowHeight={rowHeight}
-                    rowProps={{}}
+                    rowProps={rowProps}
                     style={{height: listHeight, width: "100%"}}
                 />
             </Box>

@@ -70,7 +70,7 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
     }
 
     if(filteredFailureAspects.length < 1){
-        return <NoResultsCard title="No failure aspects mathing this criteria"/>
+        return <NoResultsCard title="No failure aspects matching this criteria"/>
     }
 
     return (

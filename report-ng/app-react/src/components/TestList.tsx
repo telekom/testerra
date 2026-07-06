@@ -135,9 +135,17 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         return filtered;
     }, [methodDetails, filters, showConfigurationMethods, executionMngr]);
 
-    const sortedMethodDetails = useMemo(() =>
-        [...filteredMethodDetails].sort(buildComparator(orderDirection, orderBy)),
-        [filteredMethodDetails, orderDirection, orderBy],
+    // Keep comparator memoized separately so React Compiler can preserve memoization.
+    // Logic-wise, sorting depends on filteredMethodDetails + orderDirection + orderBy.
+    // Hook-wise, the memo callback also references buildComparator, so we memoize a stable
+    // comparator function and depend on it to avoid stale closures and compiler warnings.
+    const comparator = useMemo(
+        () => buildComparator(orderDirection, orderBy),
+        [buildComparator, orderDirection, orderBy],
+    );
+    const sortedMethodDetails = useMemo(
+        () => [...filteredMethodDetails].sort(comparator),
+        [filteredMethodDetails, comparator],
     );
     const statusCount = useMemo(() =>
             new Set(filteredMethodDetails.map((m) => m.methodContext.resultStatus)).size,
@@ -186,10 +194,10 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                                   sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                             <TableCell component="th" scope="row">
                                 <ReportChip key={filteredMethodDetail?.methodContext.resultStatus}
-                                            label={StatusService.getLabel(filteredMethodDetail?.methodContext.resultStatus!)}
+                                            label={StatusService.getLabel(filteredMethodDetail?.methodContext.resultStatus ?? "")}
                                             size="small"
                                             sx={{
-                                                background: StatusService.getColor(filteredMethodDetail?.methodContext.resultStatus!),
+                                                background: StatusService.getColor(filteredMethodDetail?.methodContext.resultStatus ?? ""),
                                                 color: "white"
                                             }}/>
                             </TableCell>
@@ -219,7 +227,10 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                                 <Stack direction="column">
                                     <Stack direction="row" sx={{gap: 1, alignItems: "center"}}>
                                         <ReadMoreIcon/>
-                                        <Link href="#/Tests">
+                                        <Link
+                                            href={`#/method/${filteredMethodDetail?.methodContext.contextValues?.id}`}
+                                            underline="hover"
+                                        >
                                             <Typography>
                                                 <HighlightText text={filteredMethodDetail?.identifier}
                                                                searchWord={activeSearchTerms}

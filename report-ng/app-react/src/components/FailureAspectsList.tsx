@@ -139,7 +139,6 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                                 <Stack direction="column" spacing={1} alignItems="flex-start">
                                     {failureAspect.availableStatuses.map(status => {
                                         const statusInformation = StatusService.get(String(status));
-                                        if (!statusInformation) return null;
                                         const label = String(failureAspect.getStatusCount(status)) + " " + statusInformation.label
                                         return (
                                             <ReportChip label={label}

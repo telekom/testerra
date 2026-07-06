@@ -132,18 +132,18 @@ const packageRegexp = new RegExp("^(.+)\\.(\\w+)$");
 // Public API
 export const StatusService = {
     //Returns the full status information object
-    get(status: ResultStatus | string): StatusInformation | null {
+    get(status: ResultStatus | string): StatusInformation {
         // Normalize string status to ResultStatus (= number/index of ResultStatusType)
         const normalized = typeof status === "string" ? Number.parseInt(status, 10) as ResultStatus : status;
-        return STATUS_CONFIG[normalized] ?? null;
+        return STATUS_CONFIG[normalized] ?? STATUS_CONFIG[ResultStatusType.RST_NOT_SET];
     },
 
     getLabel(status: ResultStatus | string): string {
-        return this.get(status)?.label ?? "no label available";
+        return this.get(status).label;
     },
 
     getColor(status: ResultStatus | string): string {
-        return this.get(status)?.color ?? "black";
+        return this.get(status).color;
     },
 
     // Returns rendered MUI icon

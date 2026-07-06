@@ -64,14 +64,14 @@ export const FILTERS: { [K in FilterType]: FilterDef<K> } = {
         convertToURLString: (statuses) => {
             if (!statuses.length) return null;
             const value = statuses
-                .map(s => StatusService.get(s)?.key)
+                .map(s => StatusService.get(s).key)
                 .filter(Boolean)
                 .join("~");
             return value || null;
         },
         color: "blue",
         getLabel: (value) => {
-            return StatusService.get(value as ResultStatus)?.label ?? String(value);
+            return StatusService.get(value as ResultStatus).label ?? String(value);
         },
         tooltipText: "Status"
     },

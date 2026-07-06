@@ -16,7 +16,6 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
     for (const status of StatusService.getRelevantStatuses()) {
         const statusGroup = StatusService.getGroup(status);
         const statusInformation = StatusService.get(status);
-        if (!statusInformation) return null;
 
         const dataItem = {
             value: execStatistics.getSummarizedStatusCount(statusGroup),

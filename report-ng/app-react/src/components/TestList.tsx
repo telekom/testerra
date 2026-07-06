@@ -181,15 +181,18 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedMethodDetails && sortedMethodDetails.length > 0 && sortedMethodDetails.map(filteredMethodDetail => (
+                    {sortedMethodDetails && sortedMethodDetails.length > 0 && sortedMethodDetails.map(filteredMethodDetail => {
+                        const className = StatusService.separateNamespace(filteredMethodDetail?.classStatistics.classIdentifier ?? "").class;
+                        const testStatus = StatusService.get(filteredMethodDetail?.methodContext.resultStatus!)
+                        return (
                         <TableRow key={filteredMethodDetail?.methodContext.methodRunIndex}
                                   sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                             <TableCell component="th" scope="row">
                                 <ReportChip key={filteredMethodDetail?.methodContext.resultStatus}
-                                            label={StatusService.getLabel(filteredMethodDetail?.methodContext.resultStatus!)}
+                                            label={testStatus.label}
                                             size="small"
                                             sx={{
-                                                background: StatusService.getColor(filteredMethodDetail?.methodContext.resultStatus!),
+                                                background: testStatus.color,
                                                 color: "white"
                                             }}/>
                             </TableCell>
@@ -197,10 +200,10 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                                 <Typography> {filteredMethodDetail?.methodContext.methodRunIndex} </Typography>
                             </TableCell>
                             <TableCell sx={{overflowWrap: "anywhere"}}>
-                                <Link href="#/Tests">
+                                <Link href={`#/Tests?class=${encodeURIComponent(className)}`}>
                                     <Typography>
                                         <HighlightText
-                                            text={StatusService.separateNamespace(filteredMethodDetail?.classStatistics.classIdentifier ?? "").class}
+                                            text={className}
                                             searchWord={activeSearchTerms}
                                         />
                                     </Typography>
@@ -262,7 +265,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
 
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )})}
                 </TableBody>
             </Table>
         </TableContainer>

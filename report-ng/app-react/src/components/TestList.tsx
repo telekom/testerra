@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import {useMemo} from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -144,11 +165,11 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                    aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell style={{width: "15%"}}>Status ({statusCount})</TableCell>
+                        <TableCell style={{width: "10%"}}>Status ({statusCount})</TableCell>
                         <TableCell align={"center"} style={{width: "10%"}} sortDirection={orderBy === "runIndex" ? orderDirection : false}>
                             <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="runIndex" label="Run Index"/>
                         </TableCell>
-                        <TableCell style={{width: "25%"}} sortDirection={orderBy === "class" ? orderDirection : false}>
+                        <TableCell style={{width: "20%"}} sortDirection={orderBy === "class" ? orderDirection : false}>
                             <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="class" label={`Class (${classCount})`}/>
                         </TableCell>
                         <TableCell style={{width: "10%"}} sortDirection={orderBy === "startTime" ? orderDirection : false}>

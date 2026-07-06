@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import FailureAspectsList from "../components/FailureAspectsList";
 import {FormControl, Grid, MenuItem, Switch, Typography} from "@mui/material";
 import Stack from "@mui/material/Stack";
@@ -17,14 +38,17 @@ const FailureAspectsPage = () => {
     // live search text for highlighting while typing (not yet confirmed)
     const [searchText, setSearchText] = useState("");
 
-    const [type, setType] = useState("");
-
     const [searchParams, setSearchParams] = useSearchParams();
 
     const expectedFailedChecked = React.useMemo(
-        () => searchParams.get("expectedFailed") === "true",
+        () => {
+            const param = searchParams.get("expectedFailed");
+            return param === null ? true : param === "true";
+        },
         [searchParams]
     );
+
+    const type = searchParams.get("type") ?? "";
 
     const handleExpectedFailedChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
         const checked = event.target.checked;
@@ -33,7 +57,17 @@ const FailureAspectsPage = () => {
         if (checked) {
             params.set("expectedFailed", "true");
         } else {
-            params.delete("expectedFailed");
+            params.set("expectedFailed", "false");
+        }
+        setSearchParams(params);
+    };
+
+    const handleTypeChanged = (value: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (value) {
+            params.set("type", value);  // "major" oder "minor"
+        } else {
+            params.delete("type");                // (All)
         }
         setSearchParams(params);
     };
@@ -53,9 +87,9 @@ const FailureAspectsPage = () => {
                         <Select
                             value={type}
                             label="Type"
-                            onChange={(e) => setType(e.target.value)}
+                            onChange={(e) => handleTypeChanged(e.target.value)}
                         >
-                            <MenuItem>(All)</MenuItem>
+                            <MenuItem value="">(All)</MenuItem>
                             <MenuItem value="major">Major</MenuItem>
                             <MenuItem value="minor">Minor</MenuItem>
                         </Select>

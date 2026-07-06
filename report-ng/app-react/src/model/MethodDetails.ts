@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import type {
     MethodContext,
     TestContext,
@@ -17,6 +38,8 @@ export class MethodDetails {
     testContext!: TestContext;
     suiteContext!: SuiteContext;
     sessionContexts!: SessionContext[];
+    readonly classStatistics: ClassStatistics;
+    readonly methodContext: MethodContext;
     promptLogs!: LogMessage[];
     private _identifier: string | null = null;
     static readonly FAILS_ANNOTATION_NAME = "eu.tsystems.mms.tic.testframework.annotations.Fails";
@@ -24,10 +47,11 @@ export class MethodDetails {
     private _failureAspects: FailureAspectStatistics[] | null = null;
 
 
-    constructor(
-        readonly methodContext: MethodContext,
-        readonly classStatistics: ClassStatistics
-    ) {}
+    constructor(methodContext: MethodContext, classStatistics: ClassStatistics)
+     {
+         this.methodContext = methodContext;
+         this.classStatistics = classStatistics;
+     }
 
     get failsAnnotation() {
         return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);

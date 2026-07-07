@@ -45,7 +45,7 @@ export class MethodDetails {
     static readonly FAILS_ANNOTATION_NAME = "eu.tsystems.mms.tic.testframework.annotations.Fails";
     private _decodedAnnotations = {};
     private _failureAspects: FailureAspectStatistics[] | null = null;
-
+    private _numDetails = -1;
 
     constructor(methodContext: MethodContext, classStatistics: ClassStatistics)
      {
@@ -73,6 +73,15 @@ export class MethodDetails {
             }
         }
         return this._identifier;
+    }
+
+    get numDetails() {
+        if (this._numDetails === -1) {
+            this._numDetails = this.failureAspects.length
+                + Object.keys(this.methodContext.customContexts!).length
+            ;
+        }
+        return this._numDetails;
     }
 
     get failedStep() {

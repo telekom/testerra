@@ -80,9 +80,12 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
     }
 
     return (
-        <ReportCard label={label} sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}>
-            <ButtonList list={itemList} handleClick={handleClick}/>
-        </ReportCard>
+        <ReportCard
+            label={label}
+            sxContent={{p: 0, ":last-child": {padding: 0}}}
+            sxCard={sx}
+            content={<ButtonList list={itemList} handleClick={handleClick}/>}
+        />
     );
 };
 export default DashboardTestResultsCard;

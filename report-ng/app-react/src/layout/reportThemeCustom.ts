@@ -82,3 +82,41 @@ export const logConsole: ReportThemeLogConsoleStyles = {
         width: "100%",
     }),
 };
+
+export type ReportThemeGeneralDetailsStyles = {
+    listItem: SystemStyleObject<Theme>;
+    nowrapLabel: SystemStyleObject<Theme>
+    wrapText: SystemStyleObject<Theme>;
+    truncateText: SystemStyleObject<Theme>;
+    blockLink: SystemStyleObject<Theme>;
+    compactWrappedText: SystemStyleObject<Theme>
+};
+
+export const generalDetails: ReportThemeGeneralDetailsStyles = {
+    listItem: {
+        gap: 1,
+        alignItems: "flex-start",
+    },
+    nowrapLabel: {
+        whiteSpace: "nowrap",
+    },
+    wrapText: {
+        whiteSpace: "normal",
+        overflowWrap: "anywhere",
+    },
+    truncateText: {
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+    },
+    blockLink: {
+        minWidth: 0,
+        display: "block",
+        maxWidth: "100%",
+    },
+    compactWrappedText: {
+        display: "block",
+        lineHeight: 1.15,
+        m: 0,
+    },
+};
+

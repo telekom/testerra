@@ -3,15 +3,18 @@ import type {SxProps, Theme} from '@mui/material/styles';
 import InfoTooltip from "./InfoTooltip"
 import React from "react";
 
-export interface CardProps {
-    label: string | React.ReactNode;
-    children: any;
+export interface ReportCardProps {
+    label: React.ReactNode;
+    content: React.ReactNode;
+    details?: React.ReactNode;
+    footer?: React.ReactNode;
     sxCard?: SxProps<Theme>;
     sxContent?: SxProps<Theme>;
     tooltipText?: string;
 }
 
-const ReportCard = ({label, children, sxCard, sxContent = {pt: 1, pb: 1}, tooltipText}: CardProps) => {
+const ReportCard = ({label, content, details, footer, sxCard, sxContent = {pt: 1, pb: 1}, tooltipText}: ReportCardProps) => {
+    const sections = [details, content, footer].filter((section): section is React.ReactNode => section !== undefined && section !== null);
 
     return (
         <Card sx={{p: 0, ...sxCard}}>
@@ -24,9 +27,14 @@ const ReportCard = ({label, children, sxCard, sxContent = {pt: 1, pb: 1}, toolti
                 </Stack>
             </CardContent>
             <Divider/>
-            <CardContent sx={sxContent}>
-                {children}
-            </CardContent>
+            {sections.map((section, index) => (
+                <React.Fragment key={index}>
+                    {index > 0 && <Divider/>}
+                    <CardContent sx={sxContent}>
+                        {section}
+                    </CardContent>
+                </React.Fragment>
+            ))}
         </Card>
     )
 };

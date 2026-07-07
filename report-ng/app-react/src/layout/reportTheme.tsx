@@ -4,10 +4,12 @@ import {
     logConsole,
     logLine,
     statusColors,
+    generalDetails,
     type ReportThemeLogConsoleStyles,
     type ReportThemeLogLineStyles,
     type Status
 } from "./reportThemeCustom";
+import type {ReportThemeGeneralDetailsStyles} from "./reportThemeCustom.ts";
 
 export type {Status};
 
@@ -27,6 +29,7 @@ export const reportTheme = createTheme({
         statusColors,
         logLine,
         logConsole,
+        generalDetails,
     },
     cssVariables: {
         nativeColor: true,
@@ -115,6 +118,7 @@ declare module "@mui/material/styles" {
             statusColors: typeof statusColors;
             logLine: ReportThemeLogLineStyles;
             logConsole: ReportThemeLogConsoleStyles;
+            generalDetails: ReportThemeGeneralDetailsStyles;
         }
     }
 
@@ -124,6 +128,7 @@ declare module "@mui/material/styles" {
             statusColors?: Partial<typeof statusColors>;
             logLine?: Partial<ReportThemeLogLineStyles>;
             logConsole?: Partial<ReportThemeLogConsoleStyles>;
+            generalDetails?: Partial<ReportThemeGeneralDetailsStyles>;
         }
     }
 

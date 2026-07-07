@@ -36,7 +36,7 @@ interface DashboardDurationProps {
 
 const DashboardDurationCard = ({sx}: DashboardDurationProps) => {
 
-    const { executionMngr } = useReportData();
+    const {executionMngr} = useReportData();
 
     const executionInfo = React.useMemo(() => {
         if (!executionMngr) {
@@ -66,30 +66,35 @@ const DashboardDurationCard = ({sx}: DashboardDurationProps) => {
 
 
     return (
-        <ReportCard label="Duration" sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}>
-            <Stack direction="column" spacing={2}
-                   divider={<Divider orientation="horizontal" sx={{mt: "0 !important" as any}}/>}>
-                <Stack direction="row" spacing={1} sx={{alignItems: "center", justifyContent: "center", p: 2}}>
-                    <TimerIcon/>
-                    <Typography variant="h5">{formatDuration(executionInfo.duration)}</Typography>
-                </Stack>
-                <Grid container sx={{px: 2, py: 1, mt: "0 !important" as any}}>
-                    <Grid size={3}>
-                        <Typography variant="caption" color="primary">Started</Typography>
-                    </Grid>
-                    <Grid size={9}>
-                        <Typography variant="caption">{dateFormatter(executionInfo.started, "long")}</Typography>
-                    </Grid>
-                    <Grid size={3}>
-                        <Typography variant="caption" color="primary">Ended</Typography>
-                    </Grid>
-                    <Grid size={9}>
-                        <Typography variant="caption">{dateFormatter(executionInfo.ended, "long")}</Typography>
-                    </Grid>
+        <ReportCard label="Duration" sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}
+                    content={
+                        <Stack direction="column" spacing={2}
+                               divider={<Divider orientation="horizontal" sx={{mt: "0 !important" as any}}/>}>
+                            <Stack direction="row" spacing={1}
+                                   sx={{alignItems: "center", justifyContent: "center", p: 2}}>
+                                <TimerIcon/>
+                                <Typography variant="h5">{formatDuration(executionInfo.duration)}</Typography>
+                            </Stack>
+                            <Grid container sx={{px: 2, py: 1, mt: "0 !important" as any}}>
+                                <Grid size={3}>
+                                    <Typography variant="caption" color="primary">Started</Typography>
+                                </Grid>
+                                <Grid size={9}>
+                                    <Typography
+                                        variant="caption">{dateFormatter(executionInfo.started, "long")}</Typography>
+                                </Grid>
+                                <Grid size={3}>
+                                    <Typography variant="caption" color="primary">Ended</Typography>
+                                </Grid>
+                                <Grid size={9}>
+                                    <Typography
+                                        variant="caption">{dateFormatter(executionInfo.ended, "long")}</Typography>
+                                </Grid>
 
-                </Grid>
-            </Stack>
-        </ReportCard>
+                            </Grid>
+                        </Stack>
+                    }
+        />
     );
 };
 export default DashboardDurationCard;

@@ -42,7 +42,7 @@ public class TestDataProvider {
         };
     }
 
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public static Object[][] dataProviderForDashBoardTestStates() {
         return new Object[][]{
                 {Status.PASSED},

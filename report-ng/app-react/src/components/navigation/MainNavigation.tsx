@@ -71,7 +71,9 @@ const MainNavigation = () => {
     }
 
     const drawerContent = (
-        <Box sx={{height: '100%', overflow: 'hidden'}}>
+        <Box
+            data-testid="sidebar"
+            sx={{height: '100%', overflow: 'hidden'}}>
             <Box>
                 <Toolbar
                     sx={{
@@ -99,7 +101,9 @@ const MainNavigation = () => {
                     </ListItem>
                 </List>
                 <Divider/>
-                <List>
+                <List
+                    data-testid="main-nav"
+                >
                     {menuRoutes
                         .filter((route) => (route.handle as RouteHandle)?.show)
                         .map((route, index) => {
@@ -112,7 +116,7 @@ const MainNavigation = () => {
                             return (
                                 <ListItem
                                     disablePadding
-                                    qa-item={'menu-' + label}
+                                    data-testid={'menu-' + label}
                                     key={index}
                                     sx={
                                         isActive

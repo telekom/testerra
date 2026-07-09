@@ -22,6 +22,7 @@
 package io.testerra.report.test.pages;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -29,7 +30,8 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractReportPage extends ReportSideBar {
 
     @Check
-    protected final UiElement pageContent = find(By.tagName("mdc-drawer-app-content"));
+    protected final UiElement pageContent = find(By.tagName("main"));
+    protected PreparedLocator cardboxLocator = LOCATE.prepare("//div[contains(@class, 'MuiCard-root') and .//h6[contains(text(), '%s')]]");
 
     /**
      * Constructor for existing sessions.

@@ -44,42 +44,39 @@ import java.util.stream.Collectors;
 public class ReportDashBoardPage extends AbstractReportPage {
 
     @Check
-    private final UiElement testsElement = pageContent.find(By.xpath(".//mdc-card[.//div[contains(text(), 'Tests')]]"));
+    private final UiElement testResultCard = pageContent.find(this.cardboxLocator.with("Tests"));
     @Check
-    private final UiElement historyChart = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'History')]]"));
+    private final UiElement historyCard = pageContent.find(this.cardboxLocator.with("History"));
+
+    // Duration card
+    @Check
+    private final UiElement durationCard = pageContent.find(this.cardboxLocator.with("Duration"));
+    private final UiElement testStartElement = durationCard.find(By.xpath("//span[contains(text(), 'Started')]/following-sibling::span"));
+    private final UiElement testEndElement = durationCard.find(By.xpath("//span[contains(text(), 'Ended')]/following-sibling::span"));
 
     @Check
-    private final UiElement testDurationElement = pageContent.find(By.tagName("test-duration-card"));
+    private final UiElement breakdownCard = pageContent.find(this.cardboxLocator.with("Breakdown"));    //pieChart
 
-    private final UiElement testStartElement = testDurationElement.find(By.xpath("//span[contains(text(), 'Started')]/following-sibling::span"));
-    private final UiElement testEndElement = testDurationElement.find(By.xpath("//span[contains(text(), 'Ended')]/following-sibling::span"));
-
+    // Test classes
     @Check
-    private final UiElement testResultElement = pageContent.find(By.tagName("test-results-chart"));    //pieChart
-    @Check
-    private final UiElement testClassesElement = pageContent.find(By.tagName("test-classes-card"));
-
-    private final UiElement barChartElement = testClassesElement
+    private final UiElement testclassesCard = pageContent.find(this.cardboxLocator.with("Test Classes"));
+    private final UiElement barChartElement = testclassesCard
             .find(By.xpath("//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]"));
-
     private final UiElement barChartPartPerTestStatus = barChartElement.find(By.xpath("//*[@class='apexcharts-series']"));
     private final UiElement segmentsOfBarsPerTestStatus = barChartPartPerTestStatus.find(By.xpath("//*"));
 
-    private final UiElement testTopFailureAspectsElement = pageContent.find(By.xpath(".//mdc-card[*/div[contains(text(), 'Failure Aspects')]]"));
-    private final UiElement majorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Major')]"));
-    private final UiElement minorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Minor')]"));
-    private final UiElement topFailuresLink = testTopFailureAspectsElement.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
+    // Failure aspects
+    private final UiElement failureAspectsCard = pageContent.find(this.cardboxLocator.with("Failure Aspects"));
+    private final UiElement majorLink = failureAspectsCard.find(By.xpath("//*[contains(text(), 'Major')]"));
+    private final UiElement minorLink = failureAspectsCard.find(By.xpath("//*[contains(text(), 'Minor')]"));
+    private final UiElement topFailuresLink = failureAspectsCard.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
 
-    private final UiElement priorityMessagesElement = find(By.xpath("//mdc-card[./div[text()='Priority messages']]"));
+    private final UiElement priorityMessagesElement = find(this.cardboxLocator.with("Priority messages"));
 
     private final String xPathToPieChartPart = "//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']";
 
     public ReportDashBoardPage(WebDriver driver) {
         super(driver);
-    }
-
-    public void pageLoaded() {
-        verifyReportPage(ReportSidebarPageType.DASHBOARD);
     }
 
     public String getTestsPerStatus(final Status testStatus) {
@@ -90,16 +87,16 @@ public class ReportDashBoardPage extends AbstractReportPage {
         switch (testStatus) {
             // retried status is within element of failed status
             case RETRIED:
-                testsStatusElement = testsElement.find((getXpathToTestsPerStatus(Status.FAILED)));
+                testsStatusElement = testResultCard.find((getXpathToTestsPerStatus(Status.FAILED)));
                 break;
             // repaired and recovered status are within element of passed status
             case REPAIRED:
             case RECOVERED:
-                testsStatusElement = testsElement.find((getXpathToTestsPerStatus(Status.PASSED)));
+                testsStatusElement = testResultCard.find((getXpathToTestsPerStatus(Status.PASSED)));
                 break;
             // remaining test status have dedicated elements
             default:
-                testsStatusElement = testsElement.find((getXpathToTestsPerStatus(testStatus)));
+                testsStatusElement = testResultCard.find((getXpathToTestsPerStatus(testStatus)));
                 break;
         }
 
@@ -138,13 +135,14 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return createPage(ReportDashBoardPage.class);
     }
 
+    // TODO: cannot get elements of PieChart
     private UiElement getPieChartPart(final Status status) {
-        return testResultElement.find(
+        return breakdownCard.find(
                 By.xpath(String.format(xPathToPieChartPart, getTitleWithSpaceReplacement(status))));
     }
 
     public ReportDashBoardPage clickNumberChartPart(Status status) {
-        UiElement testClassesNumberChartElement = testsElement.find(By.xpath(String.format("//mdc-list-item[.//mdc-icon[@title='%s']]", status.title)));
+        UiElement testClassesNumberChartElement = testResultCard.find(By.xpath(String.format("//mdc-list-item[.//mdc-icon[@title='%s']]", status.title)));
         testClassesNumberChartElement.click();
         return createPage(ReportDashBoardPage.class);
     }
@@ -157,7 +155,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     public void assertNumbersChartContainsTestState(Status status) {
         String testClassesNumberChartPath = String.format("//mdc-list-item//mdc-icon[@title='%s']", status.title);
-        UiElement testClassesNumberChart = testsElement.find(By.xpath(testClassesNumberChartPath));
+        UiElement testClassesNumberChart = testResultCard.find(By.xpath(testClassesNumberChartPath));
         testClassesNumberChart.expect().displayed().is(true, "<there should be a chart displayed, containing the amounts of each test state>");
         //testClassesNumberChart.asserts("There should be a chart displayed containing the amounts of each test state!").assertIsDisplayed();
     }
@@ -171,7 +169,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     public String getTestDuration() {
-        UiElement durationGuiElement = testDurationElement.find(By.xpath("//div[contains(@class,'card-content')]"));
+        UiElement durationGuiElement = durationCard.find(By.xpath("//div[contains(@class,'card-content')]"));
         return durationGuiElement.expect().text().getActual().split("\n")[1];
     }
 
@@ -182,7 +180,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     public void assertPieChartPercentages(int expectedAmount, Status status) {
         //iterate through tests card and sum up all "main" numbers of all test states (f.e. not retried or recovered)
-        int amountOfTests = testsElement.find(By.xpath("//mdc-list-item")).list()
+        int amountOfTests = testResultCard.find(By.xpath("//mdc-list-item")).list()
                 .stream()
                 .map(uiElement -> uiElement.expect().text().getActual())
                 .map(i -> RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, i))
@@ -195,10 +193,10 @@ public class ReportDashBoardPage extends AbstractReportPage {
         //even if there is an attribute "data:realIndex", it is somehow not accessible, BUT: there is another attribute "rel" which is accessible
         //"data:realIndex" = "rel" - 1
         int index = Integer.parseInt(
-                testResultElement.find(
+                breakdownCard.find(
                         By.xpath(String.format(xPathToPieChartPart, getTitleWithSpaceReplacement(status)))
                 ).expect().attribute("rel").getActual()) - 1;
-        UiElement pieChartPart = testResultElement.find(By.xpath("//*[@class='apexcharts-datalabels']")).list().stream().collect(Collectors.toList()).get(index);
+        UiElement pieChartPart = breakdownCard.find(By.xpath("//*[@class='apexcharts-datalabels']")).list().stream().collect(Collectors.toList()).get(index);
         String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTests);
         //pieChartPart.asserts(String.format("The pie chart should contain percentage labels with correct content.[Actual:%s]", pieChartPart.getText())).assertText(percentageString);
         pieChartPart.expect().text().is(percentageString, String.format("The pie chart should contain percentage labels with correct content.[Actual:%s]", pieChartPart.expect().text().getActual()));
@@ -215,7 +213,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
             bar.hover();
             TimerUtils.sleep(5_000);
             PreparedLocator tooltip = LOCATE.prepare("//div[contains(@class, 'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-y-label' and contains(text(), '%s')]");
-            UiElement tooltipElement = testClassesElement.find(tooltip.with(status.title));
+            UiElement tooltipElement = testclassesCard.find(tooltip.with(status.title));
             tooltipElement.assertThat().present(true);
         }
     }
@@ -321,7 +319,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     public void assertTopFailureAspectsAreDisplayed() {
-        testTopFailureAspectsElement.expect().displayed().is(true);
+        failureAspectsCard.expect().displayed().is(true);
     }
 
     public ReportFailureAspectsPage clickMajorFailureAspectsLink() {
@@ -362,6 +360,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     public void assertHistoryChartMatchesScreenshot(double pixelDistance) {
-        this.historyChart.expect().screenshot().pixelDistance("history_chart_dashboard").isLowerThan(pixelDistance);
+        this.historyCard.expect().screenshot().pixelDistance("history_chart_dashboard").isLowerThan(pixelDistance);
     }
 }

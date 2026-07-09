@@ -47,6 +47,8 @@ public abstract class AbstractReportTest extends AbstractTest implements Propert
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
+        PROPERTY_MANAGER.loadProperties("local.properties");
+
         try {
             staticServer.start(8081);
         } catch (BindException e) {

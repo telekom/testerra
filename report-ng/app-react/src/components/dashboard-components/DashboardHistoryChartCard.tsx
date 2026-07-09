@@ -76,7 +76,7 @@ const DashboardHistoryChartCard = ({sx}: DashboardHistoryChartProps) => {
     };
 
     return (
-        <ReportCard label="Test Classes" sxContent={{p: 0}} sxCard={sx}>
+        <ReportCard label="History" sxContent={{p: 0}} sxCard={sx}>
             <Echart option={option}/>
         </ReportCard>
     );

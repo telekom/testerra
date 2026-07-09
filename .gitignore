@@ -31,3 +31,4 @@ build
 /integration-tests/report-pretest-status/
 /publish_*.*
 /gradle.properties
+/report-ng-tests/src/test/resources/local.properties

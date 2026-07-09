@@ -30,7 +30,13 @@ const DashboardPage = () => {
 
     const handleStatusChange = (statusName: string) => {
         const params = new URLSearchParams(searchParams);
-        params.set("status", statusName);
+        const currentStatus = params.get("status");
+        if (statusName == currentStatus) {
+            // Deactivate status filter by selecting again the same status
+            params.delete("status");
+        } else {
+            params.set("status", statusName);
+        }
         setSearchParams(params);
     };
 

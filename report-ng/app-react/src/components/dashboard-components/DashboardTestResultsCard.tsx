@@ -62,7 +62,6 @@ const getSecondaryStatusLabel = (
 const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStatus, sx}: DashboardTestResultsProps) => {
 
     const itemList = StatusService.getRelevantStatuses()
-        .filter((status) => execStatistics.getStatusCount(status) > 0)
         .map((status) => ({
             key: StatusService.getLabel(status),
             primaryText: execStatistics.getStatusCount(status) + " " + StatusService.getLabel(status),
@@ -81,7 +80,7 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
 
     return (
         <ReportCard label={label} sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}>
-            <ButtonList list={itemList} handleClick={handleClick}/>
+            <ButtonList list={itemList} fixedItemHeight={72} handleClick={handleClick}/>
         </ReportCard>
     );
 };

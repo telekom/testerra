@@ -11,12 +11,23 @@ dependencies {
 }
 
 def appReact = project(':report-ng:app-react')
+def buildReportRequested = gradle.startParameter.taskNames.any { taskName ->
+    taskName == 'buildReport' || taskName == ':report-ng:buildReport'
+}
 
 tasks.named('processResources') {
-    dependsOn(appReact.tasks.named('buildReport'))
+    if (buildReportRequested) {
+        dependsOn(appReact.tasks.named('buildReport'))
+    }
 
     from(appReact.layout.projectDirectory.dir('dist')) {
         into 'report-ng'
         exclude 'model/**'
     }
+}
+
+tasks.register('buildReport') {
+    group = 'build'
+    description = 'Builds and packages the report-ng frontend into the report-ng artifact.'
+    dependsOn(tasks.named('jar'))
 }

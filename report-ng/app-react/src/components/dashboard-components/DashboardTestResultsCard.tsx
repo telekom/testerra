@@ -62,13 +62,17 @@ const getSecondaryStatusLabel = (
 const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStatus, sx}: DashboardTestResultsProps) => {
 
     const itemList = StatusService.getRelevantStatuses()
-        .map((status) => ({
-            key: StatusService.getLabel(status),
-            primaryText: execStatistics.getStatusCount(status) + " " + StatusService.getLabel(status),
-            secondaryText: getSecondaryStatusLabel(status, execStatistics),
-            icon: StatusService.getIcon(status),
-            selected: selectedStatus === StatusService.getLabel(status)
-        }));
+        .map((status) => {
+            const statusInformation = StatusService.get(status);
+
+            return {
+                key: statusInformation.label,
+                primaryText: execStatistics.getStatusCount(status) + " " + statusInformation.label,
+                secondaryText: getSecondaryStatusLabel(status, execStatistics),
+                icon: StatusService.getIcon(status),
+                selected: selectedStatus === statusInformation.label
+            };
+        });
 
     const label = "Tests: " + (execStatistics.overallFailed + execStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED) + execStatistics.overallSkipped + execStatistics.overallPassed);
 

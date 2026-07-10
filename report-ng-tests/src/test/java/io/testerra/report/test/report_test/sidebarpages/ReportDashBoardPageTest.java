@@ -24,7 +24,6 @@ package io.testerra.report.test.report_test.sidebarpages;
 
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.AbstractReportTest;
 import io.testerra.report.test.TestDataProvider;
 import io.testerra.report.test.pages.AbstractReportPage;
@@ -35,7 +34,6 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.DateTimeUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.util.TimeUtils;
 
 import java.util.List;
 
@@ -85,11 +83,8 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
-        TestStep.begin("Check whether the start is displayed");
-        reportDashBoardPage.assertStartTimeIsDisplayed();
-
-        TestStep.begin("Check whether the end is displayed");
-        reportDashBoardPage.assertEndedTimeIsDisplayed();
+        TestStep.begin("Check whether the start and end is displayed");
+        reportDashBoardPage.assertDurationCard();
 
         TestStep.begin("Check whether the duration is displayed and correct");
         final String testDuration = reportDashBoardPage.getTestDuration();

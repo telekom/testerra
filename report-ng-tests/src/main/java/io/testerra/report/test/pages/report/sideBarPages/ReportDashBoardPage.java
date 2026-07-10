@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -51,8 +50,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
     // Duration card
     @Check
     private final UiElement durationCard = pageContent.find(this.cardboxLocator.with("Duration"));
-    private final UiElement testStartElement = durationCard.find(By.xpath("//span[contains(text(), 'Started')]/following-sibling::span"));
-    private final UiElement testEndElement = durationCard.find(By.xpath("//span[contains(text(), 'Ended')]/following-sibling::span"));
+    private final UiElement testStartElement = durationCard.find(By.xpath("//span[contains(text(), 'Started')]"));
+    private final UiElement testEndElement = durationCard.find(By.xpath("//span[contains(text(), 'Ended')]"));
 
     @Check
     private final UiElement breakdownCard = pageContent.find(this.cardboxLocator.with("Breakdown"));    //pieChart
@@ -160,17 +159,14 @@ public class ReportDashBoardPage extends AbstractReportPage {
         //testClassesNumberChart.asserts("There should be a chart displayed containing the amounts of each test state!").assertIsDisplayed();
     }
 
-    public void assertStartTimeIsDisplayed() {
-        testStartElement.expect().displayed().is(true, "Test Start Element is displayed");
-    }
-
-    public void assertEndedTimeIsDisplayed() {
-        testEndElement.expect().displayed().is(true, "Test End Element is displayed");
+    public void assertDurationCard() {
+        testStartElement.assertThat().displayed().is(true, "Test Start Element is displayed");
+        testEndElement.assertThat().displayed().is(true, "Test End Element is displayed");
     }
 
     public String getTestDuration() {
-        UiElement durationGuiElement = durationCard.find(By.xpath("//div[contains(@class,'card-content')]"));
-        return durationGuiElement.expect().text().getActual().split("\n")[1];
+        UiElement durationGuiElement = durationCard.find(By.xpath("//h5"));
+        return durationGuiElement.waitFor().text().getActual().trim();
     }
 
     public ReportTestsPage navigateToFilteredTestPageByClickingBarChartBar() {

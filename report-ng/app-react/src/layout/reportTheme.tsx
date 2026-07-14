@@ -39,7 +39,7 @@ export const reportTheme = createTheme({
             main: "#4b4b4b"
         },
         secondary: {
-            main: "#f6a821"
+            main: "#ffffff"
         },
         background: {
             default: '#fafafa'

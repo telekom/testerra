@@ -24,7 +24,7 @@ export default function TabNavigation({ tabs }: TabNavigationProps) {
 
     return (
         <Box
-            sx={{width: '100%', maxWidth: {sm: '100%', md: '1700px'}, p: '24px 32px'}}
+            sx={{width: '100%', maxWidth: {sm: '100%', md: '1700px'}, p: '24px 0px'}}
         >
             <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={currentTab} onChange={handleChange} variant="fullWidth">

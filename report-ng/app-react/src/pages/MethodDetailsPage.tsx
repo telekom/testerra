@@ -59,7 +59,7 @@ const MethodDetailsPage = () => {
         <GeneralDetails methodDetail={methodDetail} previousDetail={previousDetail} nextDetail={nextDetail}/>
         <TabNavigation tabs={tabs}/>
 
-        <Box sx={{p: '24px 32px'}}>
+        <Box sx={{p: '24px 0px'}}>
             {/* Placeholder to render child component from router */}
             <Outlet context={methodDetail}/>
         </Box>

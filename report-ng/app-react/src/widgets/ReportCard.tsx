@@ -9,23 +9,27 @@ export interface ReportCardProps {
     details?: React.ReactNode;
     footer?: React.ReactNode;
     sxCard?: SxProps<Theme>;
+    sxHeader?: SxProps<Theme>;
     sxContent?: SxProps<Theme>;
     tooltipText?: string;
 }
 
-const ReportCard = ({label, content, details, footer, sxCard, sxContent = {pt: 1, pb: 1}, tooltipText}: ReportCardProps) => {
+const ReportCard = ({label, content, details, footer, sxCard, sxHeader, sxContent = {pt: 1, pb: 1}, tooltipText}: ReportCardProps) => {
     const sections = [details, content, footer]
         .filter((section): section is Exclude<React.ReactNode, boolean | null | undefined> =>
             section !== undefined && section !== null && typeof section !== "boolean"
         );
+    const labelContent = (typeof label === "string" || typeof label === "number")
+        ? <Typography variant="subtitle2" color="primary">{label}</Typography>
+        : label;
 
     return (
         <Card sx={{p: 0, ...sxCard}}>
             <CardContent
-                sx={{pt: 1, pb: 1}}
+                sx={{pt: 1, pb: 1, ...sxHeader}}
             >
                 <Stack direction="row" sx={{justifyContent: "space-between", alignItems: "center"}}>
-                    <Typography variant="subtitle2" color="primary">{label}</Typography>
+                    {labelContent}
                     {tooltipText && <InfoTooltip text={tooltipText}/>}
                 </Stack>
             </CardContent>

@@ -95,7 +95,6 @@ const ErrorDetails = () => {
                                 {errorDetail.layoutCheckContext && (
                                     <LayoutComparison
                                         layoutCheckContext={errorDetail.layoutCheckContext}
-                                        sessionContexts={methodDetail.sessionContexts}
                                     />
                                 )}
                             </Box>

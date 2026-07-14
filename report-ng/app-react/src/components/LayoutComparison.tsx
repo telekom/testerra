@@ -1,14 +1,13 @@
 import {useMemo, useState} from "react";
-import type {LayoutCheckContext, SessionContext} from "../model/report-model/framework_pb.ts";
+import type {LayoutCheckContext} from "../model/report-model/framework_pb.ts";
 import {Card, Stack, Typography} from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import LazyImage from "../widgets/LazyImage.tsx";
-import Modal from "../widgets/Modal.tsx";
+import ScreenshotComparisonModal, {type ComparisonImage} from "./ScreenshotComparisonModal.tsx";
 
 interface LayoutComparisonProps {
     layoutCheckContext: LayoutCheckContext;
-    sessionContexts?: SessionContext[];
 }
 
 type CompareImageKey = "actual" | "diff" | "expected";
@@ -17,10 +16,30 @@ type CompareImage = {
     title: string;
 };
 
-const LayoutComparison = ({layoutCheckContext, sessionContexts}: LayoutComparisonProps) => {
-    const [isScreenshotModalOpen, setIsScreenshotModalOpen] = useState(false);
-    const [selectedScreenshotId, setSelectedScreenshotId] = useState<string | undefined>(undefined);
-    const [modalScreenshotIds, setModalScreenshotIds] = useState<string[]>([]);
+interface ComparisonThumbnailProps {
+    image: CompareImage;
+    onClick: () => void;
+}
+
+const ComparisonThumbnail = ({image, onClick}: ComparisonThumbnailProps) => (
+    <Stack sx={{alignItems: "start"}}>
+        {image.id && (
+            <Card variant="outlined" sx={{height: 120}}>
+                <LazyImage
+                    fileId={image.id}
+                    style={{width: 120, height: 120, objectFit: "cover", cursor: "pointer"}}
+                    onClick={onClick}
+                />
+            </Card>
+        )}
+        <Typography variant="caption" color="textSecondary">{image.title}</Typography>
+    </Stack>
+);
+
+const LayoutComparison = ({layoutCheckContext}: LayoutComparisonProps) => {
+    const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+    const [initialLeftId, setInitialLeftId] = useState<string | undefined>(undefined);
+    const [initialRightId, setInitialRightId] = useState<string | undefined>(undefined);
 
     const images = useMemo<Record<CompareImageKey, CompareImage>>(() => ({
         actual: {
@@ -37,9 +56,10 @@ const LayoutComparison = ({layoutCheckContext, sessionContexts}: LayoutCompariso
         },
     }), [layoutCheckContext]);
 
-    const imageIds = Object.values(images)
-        .map(image => image.id)
-        .filter((id): id is string => Boolean(id));
+    const imageIds = Object.values(images).map(image => image.id).filter((id): id is string => Boolean(id));
+    const comparisonImages = Object.values(images)
+        .filter((image): image is CompareImage & {id: string} => Boolean(image.id))
+        .map((image): ComparisonImage => ({id: image.id, title: image.title}));
 
     if (imageIds.length === 0) {
         return null;
@@ -54,63 +74,30 @@ const LayoutComparison = ({layoutCheckContext, sessionContexts}: LayoutCompariso
             return;
         }
 
-        setModalScreenshotIds(comparisonIds);
-        setSelectedScreenshotId(left.id);
-        setIsScreenshotModalOpen(true);
+        setInitialLeftId(left.id);
+        setInitialRightId(comparisonIds.find(id => id !== left.id));
+        setIsComparisonOpen(true);
     };
 
     return (
         <>
             <Stack direction="row" spacing={0.5} sx={{alignItems: "center", mt: 1, flexWrap: "wrap"}}>
-                <Stack sx={{alignItems: "start"}}>
-                    {images.actual.id && (
-                        <Card variant="outlined" sx={{p: 0.5}}>
-                            <LazyImage
-                                fileId={images.actual.id}
-                                style={{width: 120, height: 120, objectFit: "cover", cursor: "pointer"}}
-                                onClick={() => imageClicked("actual")}
-                            />
-                        </Card>
-                    )}
-                    <Typography variant="caption" color="textSecondary">{images.actual.title}</Typography>
-                </Stack>
+                <ComparisonThumbnail image={images.actual} onClick={() => imageClicked("actual")}/>
 
-                <ArrowRightIcon fontSize="medium" color="secondary"/>
+                <ArrowRightIcon fontSize="medium" color="inherit"/>
 
-                <Stack sx={{alignItems: "start"}}>
-                    {images.diff.id && (
-                        <Card variant="outlined" sx={{p: 0.5}}>
-                            <LazyImage
-                                fileId={images.diff.id}
-                                style={{width: 120, height: 120, objectFit: "cover", cursor: "pointer"}}
-                                onClick={() => imageClicked("diff")}
-                            />
-                        </Card>
-                    )}
-                    <Typography variant="caption" color="textSecondary">{images.diff.title}</Typography>
-                </Stack>
+                <ComparisonThumbnail image={images.diff} onClick={() => imageClicked("diff")}/>
 
-                <ArrowLeftIcon fontSize="medium" color="secondary"/>
+                <ArrowLeftIcon fontSize="medium" color="inherit"/>
 
-                <Stack sx={{alignItems: "start"}}>
-                    {images.expected.id && (
-                        <Card variant="outlined" sx={{p: 0.5}}>
-                            <LazyImage
-                                fileId={images.expected.id}
-                                style={{width: 120, height: 120, objectFit: "cover", cursor: "pointer"}}
-                                onClick={() => imageClicked("expected")}
-                            />
-                        </Card>
-                    )}
-                    <Typography variant="caption" color="textSecondary">{images.expected.title}</Typography>
-                </Stack>
+                <ComparisonThumbnail image={images.expected} onClick={() => imageClicked("expected")}/>
             </Stack>
-            <Modal
-                open={isScreenshotModalOpen}
-                screenshotIds={modalScreenshotIds}
-                initialScreenshotId={selectedScreenshotId}
-                sessionContexts={sessionContexts}
-                onClose={() => setIsScreenshotModalOpen(false)}
+            <ScreenshotComparisonModal
+                open={isComparisonOpen}
+                images={comparisonImages}
+                initialLeftId={initialLeftId}
+                initialRightId={initialRightId}
+                onClose={() => setIsComparisonOpen(false)}
             />
         </>
     );

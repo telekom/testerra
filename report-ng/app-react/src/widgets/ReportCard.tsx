@@ -14,7 +14,10 @@ export interface ReportCardProps {
 }
 
 const ReportCard = ({label, content, details, footer, sxCard, sxContent = {pt: 1, pb: 1}, tooltipText}: ReportCardProps) => {
-    const sections = [details, content, footer].filter((section): section is React.ReactNode => section !== undefined && section !== null);
+    const sections = [details, content, footer]
+        .filter((section): section is Exclude<React.ReactNode, boolean | null | undefined> =>
+            section !== undefined && section !== null && typeof section !== "boolean"
+        );
 
     return (
         <Card sx={{p: 0, ...sxCard}}>

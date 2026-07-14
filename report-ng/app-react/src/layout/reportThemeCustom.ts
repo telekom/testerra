@@ -95,7 +95,7 @@ export type ReportThemeGeneralDetailsStyles = {
 export const generalDetails: ReportThemeGeneralDetailsStyles = {
     listItem: {
         gap: 1,
-        alignItems: "flex-start",
+        alignItems: "baseline",
     },
     nowrapLabel: {
         whiteSpace: "nowrap",
@@ -119,4 +119,3 @@ export const generalDetails: ReportThemeGeneralDetailsStyles = {
         m: 0,
     },
 };
-

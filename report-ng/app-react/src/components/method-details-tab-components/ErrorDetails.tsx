@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {useOutletContext} from "react-router-dom";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
 import type {ErrorContext, LayoutCheckContext, StackTraceCause} from "../../model/report-model/framework_pb.ts";
@@ -30,10 +30,12 @@ import {
     AccordionSummary,
     Box,
     IconButton,
+    Snackbar,
     Stack,
     Typography,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
@@ -48,6 +50,7 @@ type ErrorDetail = {
 
 const ErrorDetails = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
+    const [stackTraceCopiedSnackbarOpen, setStackTraceCopiedSnackbarOpen] = useState(false);
 
     const errorDetails = useMemo<ErrorDetail[]>(() => {
         if (!methodDetail) {
@@ -78,16 +81,20 @@ const ErrorDetails = () => {
         await navigator.clipboard.writeText(composeStackTraceText(stackTrace));
     };
 
+    const handleCopyStackTrace = async (stackTrace: StackTraceCause[] = []) => {
+        await copyStackTraceToClipboard(stackTrace);
+        setStackTraceCopiedSnackbarOpen(true);
+    };
+
     if (!methodDetail) return;
 
     return (
         <>
-            <Stack spacing={2}>
+            <Stack spacing={6}>
                 {errorDetails.map((errorDetail, index) => {
                     const statusColor = StatusService.getColor(methodDetail.methodContext.resultStatus ?? "");
                     const stackTrace = errorDetail.errorContext?.stackTrace ?? [];
                     const scriptSource = errorDetail.errorContext?.scriptSource;
-                    const methodName = methodDetail.methodContext.contextValues?.name ?? "";
 
                     return (
                         <ReportCard
@@ -116,7 +123,6 @@ const ErrorDetails = () => {
                                         Origin ({scriptSource?.fileName ?? "unknown"})
                                     </Typography>
                                     <CodeView source={scriptSource}/>
-                                    {/*    TODO continue here */}
                                 </>
                             )}
                             content={(
@@ -128,49 +134,45 @@ const ErrorDetails = () => {
                                             size="small"
                                             title="Copy to clipboard"
                                             onClick={() => {
-                                                void copyStackTraceToClipboard(stackTrace);
+                                                void handleCopyStackTrace(stackTrace);
                                             }}
                                         >
                                             <ContentCopyIcon fontSize="small"/>
                                         </IconButton>
                                     </Stack>
-
                                     <Stack spacing={1}>
-                                        {stackTrace.map((cause, causeIndex) => (
-                                            <Accordion key={`cause-${causeIndex}`} disableGutters>
-                                                <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-                                                    <Typography variant="body2" sx={{overflowWrap: "anywhere"}}>
-                                                        {cause.className
-                                                            ? classNameConverter(cause.className, ClassName.simpleName)
-                                                            : "UnknownClass"}
-                                                        {cause.message ? `: ${cause.message}` : ""}
-                                                    </Typography>
-                                                </AccordionSummary>
-                                                <AccordionDetails sx={{pt: 0}}>
-                                                    <Box sx={{
-                                                        fontFamily: "monospace",
-                                                        fontSize: 13,
-                                                        border: "1px solid",
-                                                        borderColor: "divider",
-                                                        borderRadius: 1,
-                                                        p: 1
-                                                    }}>
-                                                        {(cause.stackTraceElements ?? []).map((line, lineIndex) => (
-                                                            <Box
-                                                                key={`stack-line-${lineIndex}`}
-                                                                sx={{
-                                                                    whiteSpace: "pre-wrap",
-                                                                    overflowWrap: "anywhere",
-                                                                    color: methodName && line.includes(methodName) ? "error.main" : "inherit"
-                                                                }}
-                                                            >
-                                                                {line}
-                                                            </Box>
-                                                        ))}
-                                                    </Box>
-                                                </AccordionDetails>
-                                            </Accordion>
-                                        ))}
+                                        {stackTrace.map((cause, causeIndex) => {
+                                            const stackTraceElements = cause.stackTraceElements ?? [];
+                                            const stackTraceSource = {
+                                                fileName: cause.className ?? "StackTrace",
+                                                lines: stackTraceElements.map((line, lineIndex) => ({
+                                                    line,
+                                                    lineNumber: lineIndex + 1,
+                                                })),
+                                            };
+
+                                            return (
+                                                <Accordion key={`cause-${causeIndex}`} disableGutters>
+                                                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                                        <Typography variant="body2" sx={{overflowWrap: "anywhere"}}>
+                                                            {cause.className
+                                                                ? classNameConverter(cause.className, ClassName.simpleName)
+                                                                : "UnknownClass"}
+                                                            {cause.message ? `: ${cause.message}` : ""}
+                                                        </Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails sx={{p: 0}}>
+                                                        {stackTraceElements.length > 0 ? (
+                                                            <CodeView source={stackTraceSource} showNumbers={false} markingName={methodDetail.methodContext.contextValues?.name}/>
+                                                        ) : (
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                No stack trace elements available.
+                                                            </Typography>
+                                                        )}
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            );
+                                        })}
                                     </Stack>
                                 </>
                             )}
@@ -178,6 +180,22 @@ const ErrorDetails = () => {
                     );
                 })}
             </Stack>
+            <Snackbar
+                open={stackTraceCopiedSnackbarOpen}
+                autoHideDuration={3000}
+                message="Stacktrace copied to clipboard"
+                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                action={(
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={() => setStackTraceCopiedSnackbarOpen(false)}
+                    >
+                        <CloseIcon fontSize="small"/>
+                    </IconButton>
+                )}
+            />
         </>
     );
 };

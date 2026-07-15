@@ -32,9 +32,11 @@ if (!hljs.getLanguage("java")) {
 interface CodeViewProps {
     source?: ScriptSource;
     markClass?: "error" | "warning";
+    showNumbers?: boolean;
+    markingName?: string;
 }
 
-const CodeView = ({source, markClass = "error"}: CodeViewProps) => {
+const CodeView = ({source, markClass = "error", showNumbers = true, markingName}: CodeViewProps) => {
     return (
         <Box sx={(theme) => theme.custom.codeView.codeView}>
             {(source?.lines ?? []).map((sourceLine, lineIndex) => (
@@ -42,14 +44,16 @@ const CodeView = ({source, markClass = "error"}: CodeViewProps) => {
                     key={`source-line-${lineIndex}`}
                     sx={(theme) => ({
                         ...theme.custom.codeView.line,
-                        ...(sourceLine.lineNumber === source?.mark
+                        ...(sourceLine.lineNumber === source?.mark || (markingName && sourceLine.line?.includes(markingName))
                            ? (markClass === "warning" ? theme.custom.codeView.warn : theme.custom.codeView.error)
                            : {}),
                     })}
                 >
-                    <Box component="span" sx={(theme) => theme.custom.codeView.number}>
-                        {sourceLine.lineNumber ?? ""}
-                    </Box>
+                    {showNumbers && (
+                        <Box component="span" sx={(theme) => theme.custom.codeView.number}>
+                            {sourceLine.lineNumber ?? ""}
+                        </Box>
+                    )}
                     <Box component="span"
                          dangerouslySetInnerHTML={{
                             __html: hljs.highlight(sourceLine.line ?? "", {

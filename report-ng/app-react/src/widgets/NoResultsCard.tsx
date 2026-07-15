@@ -29,7 +29,7 @@ interface NoResultsCardProps {
 
 const NoResultsCard = ({title, subtitle}: NoResultsCardProps) => {
     return (
-        <Card>
+        <Card sx={{width: "100%"}}>
             <CardContent>
                 <Stack direction="column" spacing={2} sx={{alignItems: "center", p: 2}}>
                     <Stack direction="row" spacing={1}>

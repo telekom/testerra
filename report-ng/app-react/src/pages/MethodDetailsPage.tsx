@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import { useParams } from "react-router";
 import TabNavigation from "../widgets/TabNavigation.tsx";
 import Box from "@mui/material/Box";
@@ -11,6 +32,7 @@ import Alert from "@mui/material/Alert";
 import {MethodDetails} from "../model/MethodDetails.ts";
 import {useMemo} from "react";
 import {MethodType} from "../model/report-model/framework_pb.ts";
+import NoResultsCard from "../widgets/NoResultsCard.tsx";
 
 const MethodDetailsPage = () => {
     const params = useParams();
@@ -53,6 +75,8 @@ const MethodDetailsPage = () => {
     if (isLoading) return <LinearProgress aria-label="Loading…" />;
     if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
     if (!executionMngr) return null;
+
+    if (!methodDetail) return <NoResultsCard title="No method selected" />;
 
     return (
     <Box sx={{width: '100%', p: '24px 32px'}}>

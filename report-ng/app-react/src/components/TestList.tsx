@@ -38,7 +38,7 @@ import type {ChipColor, FiltersState} from "../hooks/useTestListFilters";
 import {MethodDetails} from "../model/MethodDetails";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import HighlightText from "../utils/highlightText";
-import NoResultsCard from "./NoResultsCard";
+import NoResultsCard from "../widgets/NoResultsCard.tsx";
 import {formatDuration} from "../utils/durationFormatter"
 import {useTestListSort} from "../hooks/useTestListSort";
 import TableSort from "../widgets/TableSort";

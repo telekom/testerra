@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import ReportCard from "../../widgets/ReportCard.tsx";
 import ReportChip from "../../widgets/ReportChip.tsx";
 import {StatusService} from "../../model/status-service.tsx";
@@ -15,7 +36,7 @@ import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import LazyImage from "../../widgets/LazyImage.tsx";
 import {useState} from "react";
 import Modal from "../../widgets/Modal.tsx";
-
+import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 
 interface GeneralDetailsProps {
     methodDetail?: MethodDetails;
@@ -28,7 +49,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
         const [selectedScreenshotId, setSelectedScreenshotId] = useState<string | undefined>(undefined);
 
         if (!methodDetail) {
-            return <ReportCard label="Method details" content="No method selected."/>;
+            return <NoResultsCard title="This method has no error context information"/>;
         }
 
         const allScreenshotIds = methodDetail.methodContext.testSteps

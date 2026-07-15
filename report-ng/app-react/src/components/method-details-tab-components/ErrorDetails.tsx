@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import {useMemo} from "react";
 import {useOutletContext} from "react-router-dom";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
@@ -7,7 +28,6 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-    Alert,
     Box,
     IconButton,
     Stack,
@@ -18,6 +38,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import LayoutComparison from "../LayoutComparison.tsx";
+import CodeView from "../CodeView.tsx";
 
 type ErrorDetail = {
     failureAspect: MethodDetails["failureAspects"][number];
@@ -57,134 +78,105 @@ const ErrorDetails = () => {
         await navigator.clipboard.writeText(composeStackTraceText(stackTrace));
     };
 
-    if (!methodDetail) {
-        return <Alert severity="info">No method selected.</Alert>;
-    }
-
-    if (!methodDetail.numDetails) {
-        return <Alert severity="info">This method has no error context information</Alert>;
-    }
+    if (!methodDetail) return;
 
     return (
         <>
             <Stack spacing={2}>
-            {errorDetails.map((errorDetail, index) => {
-                const statusColor = StatusService.getColor(methodDetail.methodContext.resultStatus ?? "");
-                const stackTrace = errorDetail.errorContext?.stackTrace ?? [];
-                const scriptSource = errorDetail.errorContext?.scriptSource;
-                const scriptMark = scriptSource?.mark;
-                const methodName = methodDetail.methodContext.contextValues?.name ?? "";
+                {errorDetails.map((errorDetail, index) => {
+                    const statusColor = StatusService.getColor(methodDetail.methodContext.resultStatus ?? "");
+                    const stackTrace = errorDetail.errorContext?.stackTrace ?? [];
+                    const scriptSource = errorDetail.errorContext?.scriptSource;
+                    const methodName = methodDetail.methodContext.contextValues?.name ?? "";
 
-                return (
-                    <ReportCard
-                        key={`${errorDetail.failureAspect.identifier}-${index}`}
-                        sxCard={{boxShadow: 4}}
-                        sxHeader={{
-                            backgroundColor: statusColor,
-                            color: "white",
-                            "& .MuiTypography-root": {color: "inherit"},
-                        }}
-                        label={(
-                            <Box>
-                                <Typography variant="h5" sx={{overflowWrap: "anywhere"}}>
-                                    {errorDetail.failureAspect.relevantCause?.className
-                                        ? `${classNameConverter(errorDetail.failureAspect.relevantCause.className, ClassName.simpleName)}: `
-                                        : ""}
-                                    {errorDetail.failureAspect.message}
-                                </Typography>
-                                {errorDetail.layoutCheckContext && (
-                                    <LayoutComparison
-                                        layoutCheckContext={errorDetail.layoutCheckContext}
-                                    />
-                                )}
-                            </Box>
-                        )}
-                        details={(
-                            <>
-                                <Typography variant="subtitle2" sx={{mb: 1}}>
-                                    Origin ({scriptSource?.fileName ?? "unknown"})
-                                </Typography>
-                                <Box sx={{
-                                    border: "1px solid",
-                                    borderColor: "divider",
-                                    borderRadius: 1,
-                                    p: 1,
-                                    fontFamily: "monospace",
-                                    fontSize: 13
-                                }}>
-                                    {(scriptSource?.lines ?? []).map((sourceLine, lineIndex) => (
-                                        <Box
-                                            key={`source-line-${lineIndex}`}
-                                            sx={{
-                                                whiteSpace: "pre-wrap",
-                                                overflowWrap: "anywhere",
-                                                backgroundColor: sourceLine.lineNumber === scriptMark ? "action.hover" : "transparent",
-                                                px: 0.5
+                    return (
+                        <ReportCard
+                            key={`${errorDetail.failureAspect.identifier}-${index}`}
+                            sxCard={{boxShadow: 4}}
+                            sxHeader={{
+                                backgroundColor: statusColor,
+                                color: "white",
+                                "& .MuiTypography-root": {color: "inherit"},
+                            }}
+                            label={(
+                                <Box>
+                                    <Typography variant="h5" sx={{overflowWrap: "anywhere"}}>
+                                        {errorDetail.failureAspect.relevantCause?.className
+                                            ? `${classNameConverter(errorDetail.failureAspect.relevantCause.className, ClassName.simpleName)}: `
+                                            : ""}
+                                        {errorDetail.failureAspect.message}
+                                    </Typography>
+                                    {errorDetail.layoutCheckContext && (
+                                        <LayoutComparison layoutCheckContext={errorDetail.layoutCheckContext}/>)}
+                                </Box>
+                            )}
+                            details={(
+                                <>
+                                    <Typography variant="subtitle2" sx={{mb: 1}} color="textSecondary">
+                                        Origin ({scriptSource?.fileName ?? "unknown"})
+                                    </Typography>
+                                    <CodeView source={scriptSource}/>
+                                    {/*    TODO continue here */}
+                                </>
+                            )}
+                            content={(
+                                <>
+                                    <Stack direction="row"
+                                           sx={{justifyContent: "space-between", alignItems: "center", mb: 1}}>
+                                        <Typography variant="subtitle2" color="textSecondary">Stacktrace</Typography>
+                                        <IconButton
+                                            size="small"
+                                            title="Copy to clipboard"
+                                            onClick={() => {
+                                                void copyStackTraceToClipboard(stackTrace);
                                             }}
                                         >
-                                            {(sourceLine.lineNumber ?? 0).toString().padStart(4, " ")}: {sourceLine.line ?? ""}
-                                        </Box>
-                                    ))}
-                                </Box>
-                            </>
-                        )}
-                        content={(
-                            <>
-                                <Stack direction="row" sx={{justifyContent: "space-between", alignItems: "center", mb: 1}}>
-                                    <Typography variant="subtitle2">Stacktrace</Typography>
-                                    <IconButton
-                                        size="small"
-                                        title="Copy to clipboard"
-                                        onClick={() => {
-                                            void copyStackTraceToClipboard(stackTrace);
-                                        }}
-                                    >
-                                        <ContentCopyIcon fontSize="small"/>
-                                    </IconButton>
-                                </Stack>
+                                            <ContentCopyIcon fontSize="small"/>
+                                        </IconButton>
+                                    </Stack>
 
-                                <Stack spacing={1}>
-                                    {stackTrace.map((cause, causeIndex) => (
-                                        <Accordion key={`cause-${causeIndex}`} disableGutters>
-                                            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-                                                <Typography variant="body2" sx={{overflowWrap: "anywhere"}}>
-                                                    {cause.className
-                                                        ? classNameConverter(cause.className, ClassName.simpleName)
-                                                        : "UnknownClass"}
-                                                    {cause.message ? `: ${cause.message}` : ""}
-                                                </Typography>
-                                            </AccordionSummary>
-                                            <AccordionDetails sx={{pt: 0}}>
-                                                <Box sx={{
-                                                    fontFamily: "monospace",
-                                                    fontSize: 13,
-                                                    border: "1px solid",
-                                                    borderColor: "divider",
-                                                    borderRadius: 1,
-                                                    p: 1
-                                                }}>
-                                                    {(cause.stackTraceElements ?? []).map((line, lineIndex) => (
-                                                        <Box
-                                                            key={`stack-line-${lineIndex}`}
-                                                            sx={{
-                                                                whiteSpace: "pre-wrap",
-                                                                overflowWrap: "anywhere",
-                                                                color: methodName && line.includes(methodName) ? "error.main" : "inherit"
-                                                            }}
-                                                        >
-                                                            {line}
-                                                        </Box>
-                                                    ))}
-                                                </Box>
-                                            </AccordionDetails>
-                                        </Accordion>
-                                    ))}
-                                </Stack>
-                            </>
-                        )}
-                    />
-                );
-            })}
+                                    <Stack spacing={1}>
+                                        {stackTrace.map((cause, causeIndex) => (
+                                            <Accordion key={`cause-${causeIndex}`} disableGutters>
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                                    <Typography variant="body2" sx={{overflowWrap: "anywhere"}}>
+                                                        {cause.className
+                                                            ? classNameConverter(cause.className, ClassName.simpleName)
+                                                            : "UnknownClass"}
+                                                        {cause.message ? `: ${cause.message}` : ""}
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails sx={{pt: 0}}>
+                                                    <Box sx={{
+                                                        fontFamily: "monospace",
+                                                        fontSize: 13,
+                                                        border: "1px solid",
+                                                        borderColor: "divider",
+                                                        borderRadius: 1,
+                                                        p: 1
+                                                    }}>
+                                                        {(cause.stackTraceElements ?? []).map((line, lineIndex) => (
+                                                            <Box
+                                                                key={`stack-line-${lineIndex}`}
+                                                                sx={{
+                                                                    whiteSpace: "pre-wrap",
+                                                                    overflowWrap: "anywhere",
+                                                                    color: methodName && line.includes(methodName) ? "error.main" : "inherit"
+                                                                }}
+                                                            >
+                                                                {line}
+                                                            </Box>
+                                                        ))}
+                                                    </Box>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        ))}
+                                    </Stack>
+                                </>
+                            )}
+                        />
+                    );
+                })}
             </Stack>
         </>
     );

@@ -27,7 +27,7 @@ import {LogLine} from "./LogLine";
 
 // use react window library (https://react-window.vercel.app/) according to MUI recommendation (https://mui.com/material-ui/react-list/#virtualized-list)
 import {List, type RowComponentProps, useDynamicRowHeight, useListRef,} from "react-window";
-import NoResultsCard from "./NoResultsCard.tsx";
+import NoResultsCard from "../widgets/NoResultsCard.tsx";
 
 interface LogConsoleRowProps {
     logs: ILogEntry[];

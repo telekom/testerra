@@ -1,6 +1,28 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import type {Theme} from "@mui/material/styles";
 import type {SystemStyleObject} from "@mui/system";
 import type {CSSProperties} from "react";
+import {darken} from "@mui/material";
 
 export const statusColors = {
     passed: '#417336',
@@ -119,3 +141,44 @@ export const generalDetails: ReportThemeGeneralDetailsStyles = {
         m: 0,
     },
 };
+
+export type ReportThemeCodeViewStyles = {
+    codeView: SystemStyleObject<Theme>;
+    error: SystemStyleObject<Theme>;
+    warn: SystemStyleObject<Theme>;
+    number: SystemStyleObject<Theme>;
+    line: SystemStyleObject<Theme>;
+    pre: SystemStyleObject<Theme>;
+};
+
+export const codeView: ReportThemeCodeViewStyles = {
+    codeView: {
+        //padding: 0.5em;
+        fontSize: "14px",
+        backgroundColor: "#2b2b2b",
+        color: "#c0dee0",
+        lineHeight: "1.5em",
+        fontFamily: "monospace",
+        //word-break: break-all;
+        width: "fit-content",
+        minWidth: "100%",
+        whiteSpace: "pre-line",
+    },
+    error: {
+        background: darken(statusColors.failed, 0.36)
+    },
+    warn: {
+        background: darken(statusColors.skipped, 0.36)
+    },
+    number: {
+        width: "2rem",
+        color: "#808080",
+        paddingRight: "32px"
+    },
+    line: {
+        padding: "2px 4px",
+    },
+    pre: {
+        whiteSpace: "pre-wrap",
+    }
+}

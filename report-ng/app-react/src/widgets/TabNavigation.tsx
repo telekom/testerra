@@ -29,7 +29,13 @@ export default function TabNavigation({ tabs }: TabNavigationProps) {
             <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={currentTab} onChange={handleChange} variant="fullWidth">
                     {tabs.map((tab) => (
-                        <Tab key={tab.label} label={tab.label} icon={tab.icon} iconPosition="start" sx={{ flex: 1 }}/>
+                        <Tab
+                            key={tab.label}
+                            label={tab.count !== undefined ? `${tab.label} (${tab.count})` : tab.label}
+                            icon={tab.icon}
+                            iconPosition="start"
+                            sx={{ flex: 1 }}
+                        />
                     ))}
                 </Tabs>
             </Box>

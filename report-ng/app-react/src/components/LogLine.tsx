@@ -35,6 +35,7 @@ interface LogLineProps {
     isExpanded?: boolean;
     onToggleExpanded?: () => void;
     isInStepsList?: boolean;
+    showMetadata?: boolean;
 }
 
 function levelClass(type?: number) {
@@ -43,7 +44,7 @@ function levelClass(type?: number) {
     return "";
 }
 
-export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false, isExpanded = false, onToggleExpanded, isInStepsList = false}) => {
+export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false, isExpanded = false, onToggleExpanded, isInStepsList = false, showMetadata = true}) => {
     const stackTraceLines = flattenStackTrace(log);
     const logger = StatusService.separateNamespace(log.loggerName ?? "");
     const lvlClass = levelClass(log.type);
@@ -83,28 +84,32 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
                 )}
             </Box>
             <Box sx={(theme) => theme.custom.logLine.content}>
-                <HighlightText
-                    text={dateFormatter(log.timestamp, "short")}
-                    searchWord={searchTerms}
-                />
-                {log.methodContext && methodId && (
+                {showMetadata && (
                     <>
+                        <HighlightText
+                            text={dateFormatter(log.timestamp, "short")}
+                            searchWord={searchTerms}
+                        />
+                        {log.methodContext && methodId && (
+                            <>
+                                {" "}
+                                <Link
+                                    href={`#/method/${methodId}`}
+                                    underline="hover"
+                                    sx={(theme) => theme.custom.logLine.methodLink}
+                                >
+                                    [{log.threadName ?? "method"}]
+                                </Link>
+                            </>
+                        )}
                         {" "}
-                        <Link
-                            href={`#/method/${methodId}`}
-                            underline="hover"
-                            sx={(theme) => theme.custom.logLine.methodLink}
-                        >
-                            [{log.threadName ?? "method"}]
-                        </Link>
+                        [{logLevelNameConverter(log.type)}]:{" "}
+                        <span title={`${logger.package}.${logger.class}`}>
+                            <HighlightText text={logger.class} searchWord={searchTerms}/>
+                        </span>
+                        <span> - </span>
                     </>
                 )}
-                {" "}
-                [{logLevelNameConverter(log.type)}]:{" "}
-                <span title={`${logger.package}.${logger.class}`}>
-          <HighlightText text={logger.class} searchWord={searchTerms}/>
-        </span>
-                <span> - </span>
                 <Box component="span" sx={(theme) => theme.custom.logLine.message}>
                     <HighlightText text={log.message ?? ""} searchWord={searchTerms}/>
                 </Box>

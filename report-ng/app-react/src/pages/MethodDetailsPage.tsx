@@ -46,6 +46,17 @@ const MethodDetailsPage = () => {
         return executionMngr.getMethodDetails(params.methodId);
     }, [executionMngr, params.methodId]);
 
+    const tabsWithCounts = useMemo(() => {
+        if (!methodDetail) return tabs;
+        return tabs.map(tab => {
+            if (tab.route === "details") return {...tab, count: methodDetail.errorContexts.length};
+            if (tab.route.startsWith("steps")) return {...tab, count: methodDetail.methodContext.testSteps?.length ?? 0};
+            if (tab.route === "browser-info") return {...tab, count: methodDetail.sessionContexts.length};
+            if (tab.route === "video") return {...tab, count: methodDetail.sessionContexts.filter(s => s.videoId).length};
+            return tab;
+        });
+    }, [tabs, methodDetail]);
+
     const {previousDetail, nextDetail} = useMemo<{
         previousDetail?: MethodDetails;
         nextDetail?: MethodDetails;
@@ -81,7 +92,7 @@ const MethodDetailsPage = () => {
     return (
     <Box sx={{width: '100%', p: '24px 32px'}}>
         <GeneralDetails methodDetail={methodDetail} previousDetail={previousDetail} nextDetail={nextDetail}/>
-        <TabNavigation tabs={tabs}/>
+        <TabNavigation tabs={tabsWithCounts}/>
 
         <Box sx={{p: '24px 0px'}}>
             {/* Placeholder to render child component from router */}

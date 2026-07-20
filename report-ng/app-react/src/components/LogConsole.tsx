@@ -36,6 +36,7 @@ interface LogConsoleRowProps {
     expandedLogIds: Record<string, true>;
     onToggleExpanded: (logKey: string) => void;
     isInStepsList: boolean;
+    showMetadata: boolean;
 }
 
 // render function for row-component for react-window (virtualization)
@@ -48,6 +49,7 @@ function LogConsoleRow({
     expandedLogIds,
     onToggleExpanded,
     isInStepsList,
+    showMetadata,
 }: RowComponentProps<LogConsoleRowProps>) {
     const log = logs[index];
     const logKey = log.id ?? `${log.timestamp ?? 0}-${log.loggerName ?? ""}-${log.threadName ?? ""}-${log.message ?? ""}`;
@@ -61,6 +63,7 @@ function LogConsoleRow({
                 isExpanded={expandedLogIds[logKey] ?? false}
                 onToggleExpanded={() => onToggleExpanded(logKey)}
                 isInStepsList={isInStepsList}
+                showMetadata={showMetadata}
             />
         </div>
     );
@@ -72,9 +75,10 @@ export interface LogConsoleProps {
     height?: number | string;
     activeLogIndex?: number;
     isInStepsList?: boolean;
+    showMetadata?: boolean;
 }
 
-export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1, isInStepsList = false}) => {
+export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1, isInStepsList = false, showMetadata = true}) => {
     const theme = useTheme();
 
     // Hooks must stay before the early return so renders remain stable.
@@ -118,9 +122,10 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
             activeLogIndex,
             expandedLogIds,
             onToggleExpanded: toggleExpanded,
-            isInStepsList
+            isInStepsList,
+            showMetadata,
         }),
-        [logs, searchText, activeLogIndex, expandedLogIds, toggleExpanded, isInStepsList],
+        [logs, searchText, activeLogIndex, expandedLogIds, toggleExpanded, isInStepsList, showMetadata],
     );
 
     // scroll to active log if activeLogIndex changes

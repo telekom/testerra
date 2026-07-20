@@ -5,6 +5,7 @@ export type TabConfig = {
     label: string;
     route: string;
     icon: ReactElement;
+    count?: number;
 };
 
 // generates tabs based on the children of a route

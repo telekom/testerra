@@ -221,7 +221,9 @@ export const steps: ReportThemeStepsStyles = {
         textAlign: "right",
         width: "20%",
         whiteSpace: "wrap",
-        overflowWrap: "anywhere"
+        overflowWrap: "anywhere",
+        position: "sticky",
+        top: "24px"
     },
     actionGroupContainer: {
         position: "relative",
@@ -278,4 +280,4 @@ export const steps: ReportThemeStepsStyles = {
         cursor: "pointer",
         display: "block",
     }
-}
+}

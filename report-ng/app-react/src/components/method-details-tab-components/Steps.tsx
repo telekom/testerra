@@ -191,8 +191,8 @@ const Steps = () => {
                     {groupedSteps.map((testStep, stepIndex) => {
                         const stepNumber = stepIndex + 1;
                         return (
-                            <Stack key={`step-${stepIndex}`}
-                                   sx={{position: "relative", pb: 0, mb: 6}} spacing={4}>
+                            <Box key={`step-${stepIndex}`}
+                                   sx={{position: "relative", pb: 0, mb: 6}}>
                                 <Typography
                                     variant="h5"
                                     id={`step${stepNumber}`}
@@ -201,7 +201,7 @@ const Steps = () => {
                                     {stepNumber} {testStep.name}
                                 </Typography>
                                 {(testStep.actions ?? []).map((action, actionIndex) => (
-                                    <Box key={`step-${stepIndex}-action-${actionIndex}`}>
+                                    <Box key={`step-${stepIndex}-action-${actionIndex}`} sx={{mt: 4}}>
                                         <Typography
                                             variant="body1"
                                             sx={theme.custom.steps.actionLabel}
@@ -306,7 +306,7 @@ const Steps = () => {
                                         </Stack>
                                     </Box>
                                 ))}
-                            </Stack>
+                            </Box>
                         );
                     })}
                 </Stack>

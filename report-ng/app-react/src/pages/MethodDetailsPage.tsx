@@ -52,6 +52,11 @@ const MethodDetailsPage = () => {
             if (tab.route === "details") return {...tab, count: methodDetail.errorContexts.length};
             if (tab.route.startsWith("steps")) return {...tab, count: methodDetail.methodContext.testSteps?.length ?? 0};
             if (tab.route === "browser-info") return {...tab, count: methodDetail.sessionContexts.length};
+            if (tab.route === "dependencies") {
+                const mc = methodDetail.methodContext;
+                const count = (mc.relatedMethodContextIds?.length ?? 0) + (mc.dependsOnMethodContextIds?.length ?? 0);
+                return {...tab, count};
+            }
             if (tab.route === "video") return {...tab, count: methodDetail.sessionContexts.filter(s => s.videoId).length};
             return tab;
         });

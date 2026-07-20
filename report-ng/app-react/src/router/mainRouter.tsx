@@ -121,14 +121,14 @@ export const routesConfig: RouteObject[] = [
                         handle: {label: "Browser Info", show: true, icon: <DevicesIcon />} as RouteHandle
                     },
                     {
-                        path: "dependencies",
-                        element: <Dependencies/>,
-                        handle: {label: "Dependencies ", show: true, icon: <AccountTreeIcon />} as RouteHandle
-                    },
-                    {
                         path: "video",
                         element: <Video/>,
                         handle: {label: "Video ", show: true, icon: <PlayCircleIcon />} as RouteHandle
+                    },
+                    {
+                        path: "dependencies",
+                        element: <Dependencies/>,
+                        handle: {label: "Dependencies ", show: true, icon: <AccountTreeIcon />} as RouteHandle
                     }
                 ]
             },

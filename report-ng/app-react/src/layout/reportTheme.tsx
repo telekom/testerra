@@ -27,10 +27,12 @@ import {
     statusColors,
     generalDetails,
     codeView,
+    steps,
     type ReportThemeLogConsoleStyles,
     type ReportThemeLogLineStyles,
     type ReportThemeCodeViewStyles,
     type ReportThemeGeneralDetailsStyles,
+    type ReportThemeStepsStyles,
     type Status
 } from "./reportThemeCustom";
 
@@ -53,7 +55,8 @@ export const reportTheme = createTheme({
         logLine,
         logConsole,
         generalDetails,
-        codeView
+        codeView,
+        steps
     },
     cssVariables: {
         nativeColor: true,
@@ -144,6 +147,7 @@ declare module "@mui/material/styles" {
             logConsole: ReportThemeLogConsoleStyles;
             generalDetails: ReportThemeGeneralDetailsStyles;
             codeView: ReportThemeCodeViewStyles;
+            steps: ReportThemeStepsStyles;
         }
     }
 
@@ -155,6 +159,7 @@ declare module "@mui/material/styles" {
             logConsole?: Partial<ReportThemeLogConsoleStyles>;
             generalDetails?: Partial<ReportThemeGeneralDetailsStyles>;
             codeView?: Partial<ReportThemeCodeViewStyles>;
+            steps?: Partial<ReportThemeStepsStyles>;
         }
     }
 

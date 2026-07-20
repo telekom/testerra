@@ -48,8 +48,8 @@ export type ReportThemeLogLineStyles = {
 
 export type ReportThemeLogConsoleStyles = {
     paper: SystemStyleObject<Theme>;
-    listContainer: (height: number) => SystemStyleObject<Theme>;
-    list: (height: number) => CSSProperties;
+    listContainer: (height: number | "auto") => SystemStyleObject<Theme>;
+    list: (height: number | "auto") => CSSProperties;
 };
 
 export const logLine: ReportThemeLogLineStyles = {
@@ -91,15 +91,16 @@ export const logLine: ReportThemeLogLineStyles = {
 
 export const logConsole: ReportThemeLogConsoleStyles = {
     paper: {
-        p: 1,
         bgcolor: "#2b2b2b",
         color: "#c0dee0",
         fontSize: 14,
+        borderRadius: 1,
+        overflow: "hidden",
     },
-    listContainer: (height: number) => ({
+    listContainer: (height: number | "auto") => ({
         maxHeight: height,
     }),
-    list: (height: number) => ({
+    list: (height: number | "auto") => ({
         height,
         width: "100%",
     }),
@@ -160,9 +161,9 @@ export const codeView: ReportThemeCodeViewStyles = {
         lineHeight: "1.5em",
         fontFamily: "monospace",
         //word-break: break-all;
-        width: "fit-content",
-        minWidth: "100%",
-        whiteSpace: "pre-line",
+        width: "100%",
+        minWidth: 0,
+        whiteSpace: "normal",
     },
     error: {
         background: darken(statusColors.failed, 0.36)
@@ -173,12 +174,108 @@ export const codeView: ReportThemeCodeViewStyles = {
     number: {
         width: "2rem",
         color: "#808080",
-        paddingRight: "32px"
     },
     line: {
         padding: "2px 4px",
+        whiteSpace: "pre-wrap",
+        overflowWrap: "break-word",
+        wordBreak: "break-word",
     },
     pre: {
         whiteSpace: "pre-wrap",
     }
 }
+
+export type ReportThemeStepsStyles = {
+    timelineContainer: SystemStyleObject<Theme>;
+    stepNumber: SystemStyleObject<Theme>;
+    actionLabel: SystemStyleObject<Theme>;
+    actionGroupContainer: SystemStyleObject<Theme>;
+    errorContextAccordion: SystemStyleObject<Theme>;
+    errorContextAccordionSummary: (statusColor: string) => SystemStyleObject<Theme>;
+    errorContextCodeView: SystemStyleObject<Theme>;
+    screenshotCard: SystemStyleObject<Theme>;
+    screenshotImage: CSSProperties;
+};
+
+export const steps: ReportThemeStepsStyles = {
+    timelineContainer: {
+        position: "relative",
+        "&:after": {
+            content: '""',
+            width: "2px",
+            position: "absolute",
+            top: "0.5rem",
+            bottom: 0,
+            left: "calc(20% + 21px)",
+            zIndex: 1,
+            background: "#C5C5C5",
+        }
+    },
+    stepNumber: {
+        textAlign: "right",
+        width: "20%",
+        overflowWrap: "break-word",
+    },
+    actionLabel: {
+        textAlign: "right",
+        width: "20%",
+        whiteSpace: "wrap",
+        overflowWrap: "anywhere"
+    },
+    actionGroupContainer: {
+        position: "relative",
+        left: "20%",
+        width: "60%",
+        mt: "-2em",
+        "&:before": {
+            content: '""',
+            width: "14px",
+            height: "14px",
+            background: "#C5C5C5",
+            border: "2px solid #FFFFFF",
+            borderRadius: "50%",
+            position: "absolute",
+            left: "15px",
+            top: "3px",
+            zIndex: 2,
+        }
+    },
+    errorContextAccordion: {
+        borderRadius: 1,
+        overflow: "hidden",
+    },
+    errorContextAccordionSummary: (statusColor: string) => ({
+        background: statusColor,
+        color: "white",
+        borderTopLeftRadius: "inherit",
+        borderTopRightRadius: "inherit",
+        "& .MuiAccordionSummary-expandIconWrapper": {
+            color: "inherit",
+        },
+    }),
+    errorContextCodeView: {
+        maxWidth: "100%",
+        overflowX: "visible",
+        "& > .MuiBox-root": {
+            width: "100% !important",
+            minWidth: 0,
+        },
+        "& .hljs, & .hljs *": {
+            whiteSpace: "pre-wrap",
+            overflowWrap: "break-word",
+            wordBreak: "break-word",
+        },
+    },
+    screenshotCard: {
+        width: 160,
+        height: 90
+    },
+    screenshotImage: {
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        cursor: "pointer",
+        display: "block",
+    }
+}

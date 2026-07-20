@@ -34,6 +34,7 @@ interface LogLineProps {
     isActiveMatch?: boolean;
     isExpanded?: boolean;
     onToggleExpanded?: () => void;
+    isInStepsList?: boolean;
 }
 
 function levelClass(type?: number) {
@@ -42,7 +43,7 @@ function levelClass(type?: number) {
     return "";
 }
 
-export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false, isExpanded = false, onToggleExpanded,}) => {
+export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false, isExpanded = false, onToggleExpanded, isInStepsList = false}) => {
     const stackTraceLines = flattenStackTrace(log);
     const logger = StatusService.separateNamespace(log.loggerName ?? "");
     const lvlClass = levelClass(log.type);
@@ -59,13 +60,19 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
     return (
         <Box
             className={`line ${lvlClass}`}
-            sx={(theme) => theme.custom.logLine.root}
+            sx={(theme) => ({
+                ...theme.custom.logLine.root,
+                ...(isInStepsList && {
+                    ml: 0,
+                    pl: 0,
+                }),
+            })}
         >
             <Box
                 component="span"
                 sx={(theme) => theme.custom.logLine.expandToggleWrapper}
             >
-                {stackTraceLines.length > 0 && (
+                {stackTraceLines.length > 0 && isInStepsList && (
                     <Box
                         component="span"
                         sx={(theme) => theme.custom.logLine.expandToggle}

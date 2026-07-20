@@ -35,6 +35,7 @@ interface LogConsoleRowProps {
     activeLogIndex: number;
     expandedLogIds: Record<string, true>;
     onToggleExpanded: (logKey: string) => void;
+    isInStepsList: boolean;
 }
 
 // render function for row-component for react-window (virtualization)
@@ -46,6 +47,7 @@ function LogConsoleRow({
     activeLogIndex,
     expandedLogIds,
     onToggleExpanded,
+    isInStepsList,
 }: RowComponentProps<LogConsoleRowProps>) {
     const log = logs[index];
     const logKey = log.id ?? `${log.timestamp ?? 0}-${log.loggerName ?? ""}-${log.threadName ?? ""}-${log.message ?? ""}`;
@@ -58,6 +60,7 @@ function LogConsoleRow({
                 isActiveMatch={index === activeLogIndex}
                 isExpanded={expandedLogIds[logKey] ?? false}
                 onToggleExpanded={() => onToggleExpanded(logKey)}
+                isInStepsList={isInStepsList}
             />
         </div>
     );
@@ -68,16 +71,17 @@ export interface LogConsoleProps {
     searchText?: string | null;
     height?: number | string;
     activeLogIndex?: number;
+    isInStepsList?: boolean;
 }
 
-export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1,}) => {
+export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height = "calc(100dvh - 200px)", activeLogIndex = -1, isInStepsList = false}) => {
     const theme = useTheme();
 
     // Hooks must stay before the early return so renders remain stable.
     const listHeight = useMemo(() => {
         if (typeof height === "number") return height;
-        return window.innerHeight - 200;
-    }, [height]);
+        return isInStepsList ? "auto" : window.innerHeight - 200;
+    }, [height, isInStepsList]);
 
     // dynamic row height
     const rowHeight = useDynamicRowHeight({
@@ -114,12 +118,16 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
             activeLogIndex,
             expandedLogIds,
             onToggleExpanded: toggleExpanded,
+            isInStepsList
         }),
-        [logs, searchText, activeLogIndex, expandedLogIds, toggleExpanded],
+        [logs, searchText, activeLogIndex, expandedLogIds, toggleExpanded, isInStepsList],
     );
 
     // scroll to active log if activeLogIndex changes
     useEffect(() => {
+        if (isInStepsList) {
+            return;
+        }
         if (logs.length === 0) {
             return;
         }
@@ -133,7 +141,7 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
             align: "start",
             behavior: "auto",
         });
-    }, [activeLogIndex, listRef, logs.length]);
+    }, [activeLogIndex, listRef, logs.length, isInStepsList]);
 
     if (logs.length === 0) {
         return <NoResultsCard title="No log messages matching this criteria"/>

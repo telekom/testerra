@@ -1,4 +1,25 @@
-import {useEffect, useMemo, useState} from "react";
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import {useMemo, useState} from "react";
 import {useOutletContext, useParams} from "react-router-dom";
 import {Accordion, AccordionDetails, AccordionSummary, Box, Card, Stack, Typography, useTheme} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -20,6 +41,7 @@ import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 import {LogConsole} from "../LogConsole.tsx";
 import type {ILogEntry} from "../../model/Logs.ts";
 import {StatusService} from "../../model/status-service.tsx";
+import {useScrollToElementById} from "../../hooks/useScrollToElementById.ts";
 
 const EntryType = {
     SCREENSHOT: "SCREENSHOT",
@@ -163,16 +185,7 @@ const Steps = () => {
             .filter((id): id is string => Boolean(id)) ?? []
     ), [methodDetail]);
 
-    useEffect(() => {
-        if (!stepId) {
-            return;
-        }
-        const timeoutId = window.setTimeout(() => {
-            const stepHeadline = window.document.getElementById(`step${stepId}`);
-            stepHeadline?.scrollIntoView();
-        }, 0);
-        return () => window.clearTimeout(timeoutId);
-    }, [stepId, groupedSteps.length]);
+    useScrollToElementById(stepId ? `step${stepId}` : undefined, groupedSteps.length);
 
     if (!methodDetail) {
         return <NoResultsCard title="No method selected"/>;
@@ -184,15 +197,14 @@ const Steps = () => {
 
     return (
         <>
-            <Box sx={{mx: 3}}>
+            <Box sx={theme.custom.steps.listContainer}>
                 <Stack
                     sx={theme.custom.steps.timelineContainer}
                 >
                     {groupedSteps.map((testStep, stepIndex) => {
                         const stepNumber = stepIndex + 1;
                         return (
-                            <Box key={`step-${stepIndex}`}
-                                   sx={{position: "relative", pb: 0, mb: 6}}>
+                            <Box key={`step-${stepIndex}`} sx={theme.custom.steps.stepContainer}>
                                 <Typography
                                     variant="h5"
                                     id={`step${stepNumber}`}
@@ -201,7 +213,7 @@ const Steps = () => {
                                     {stepNumber} {testStep.name}
                                 </Typography>
                                 {(testStep.actions ?? []).map((action, actionIndex) => (
-                                    <Box key={`step-${stepIndex}-action-${actionIndex}`} sx={{mt: 4}}>
+                                    <Box key={`step-${stepIndex}-action-${actionIndex}`} sx={theme.custom.steps.actionContainer}>
                                         <Typography
                                             variant="body1"
                                             sx={theme.custom.steps.actionLabel}
@@ -224,7 +236,7 @@ const Steps = () => {
                                             {(action.groups ?? []).map((group, groupIndex) => (
                                                 <Box
                                                     key={`step-${stepIndex}-action-${actionIndex}-group-${groupIndex}`}
-                                                    sx={{pl: 6}}
+                                                    sx={theme.custom.steps.actionGroupItem}
                                                 >
                                                     {group.errorContexts.map((errorContext, errorContextIndex) => (
                                                         <Accordion
@@ -279,7 +291,7 @@ const Steps = () => {
                                                     )}
 
                                                     {group.logMessages.length > 0 && (
-                                                        <Box sx={{width: "100%"}}>
+                                                        <Box sx={theme.custom.steps.logContainer}>
                                                             <LogConsole
                                                                 logs={toLogEntries(group.logMessages)}
                                                                 isInStepsList={true}
@@ -294,7 +306,7 @@ const Steps = () => {
                                                                     key={`click-${stepIndex}-${actionIndex}-${groupIndex}-${clickPathEventIndex}`}
                                                                     variant="body2"
                                                                     color="text.secondary"
-                                                                    sx={{overflowWrap: "anywhere"}}
+                                                                    sx={theme.custom.steps.clickPathText}
                                                                 >
                                                                     {clickPathEvent.type ?? "Event"}: {clickPathEvent.subject ?? "-"}
                                                                 </Typography>

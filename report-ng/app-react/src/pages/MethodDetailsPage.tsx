@@ -22,6 +22,7 @@
 import { useParams } from "react-router";
 import TabNavigation from "../widgets/TabNavigation.tsx";
 import Box from "@mui/material/Box";
+import {useTheme} from "@mui/material";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {routesConfig} from "../router/mainRouter.tsx";
 import {generateTabsFromRoutes} from "../utils/generateTabsFromRoutes.ts";
@@ -39,8 +40,9 @@ const MethodDetailsPage = () => {
     const params = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+    const theme = useTheme();
     const methodDetailsRoute = routesConfig[0].children?.find((route) => route.path === "method/:methodId?");
-    const tabs = generateTabsFromRoutes(methodDetailsRoute?.children);
+    const tabs = useMemo(() => generateTabsFromRoutes(methodDetailsRoute?.children), [methodDetailsRoute?.children]);
     const getTabBaseRoute = (route: string) => route.split("/:")[0];
 
     const {executionMngr, isLoading, error} = useReportData();
@@ -79,7 +81,9 @@ const MethodDetailsPage = () => {
         if (tabsWithCounts.length === 0) {
             return;
         }
-        const isCurrentRouteVisible = tabsWithCounts.some(tab => location.pathname.includes(`/${getTabBaseRoute(tab.route)}`));
+        // If a tab was hidden by count/visibility logic, keep the route valid by switching to the first visible tab.
+        const currentTabRoute = location.pathname.split("/")[3] ?? "";
+        const isCurrentRouteVisible = tabsWithCounts.some(tab => getTabBaseRoute(tab.route) === currentTabRoute);
         if (!isCurrentRouteVisible) {
             navigate(getTabBaseRoute(tabsWithCounts[0].route), {replace: true});
         }
@@ -118,12 +122,12 @@ const MethodDetailsPage = () => {
     if (!methodDetail) return <NoResultsCard title="No method selected" />;
 
     return (
-    <Box sx={{width: '100%', p: '24px 32px'}}>
+    <Box sx={theme.custom.methodDetailsPage.container}>
         <GeneralDetails methodDetail={methodDetail} previousDetail={previousDetail} nextDetail={nextDetail}/>
         <PriorityMessagesCard promptLogs={methodDetail.promptLogs} />
         <TabNavigation tabs={tabsWithCounts}/>
 
-        <Box sx={{p: '24px 0px'}}>
+        <Box sx={theme.custom.methodDetailsPage.outletContainer}>
             {/* Placeholder to render child component from router */}
             <Outlet context={methodDetail}/>
         </Box>

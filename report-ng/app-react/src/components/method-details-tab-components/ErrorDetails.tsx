@@ -33,6 +33,7 @@ import {
     Snackbar,
     Stack,
     Typography,
+    useTheme,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CloseIcon from "@mui/icons-material/Close";
@@ -50,6 +51,7 @@ type ErrorDetail = {
 
 const ErrorDetails = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
+    const theme = useTheme();
     const [stackTraceCopiedSnackbarOpen, setStackTraceCopiedSnackbarOpen] = useState(false);
 
     const errorDetails = useMemo<ErrorDetail[]>(() => {
@@ -102,14 +104,10 @@ const ErrorDetails = () => {
                         <ReportCard
                             key={`${errorDetail.failureAspect.identifier}-${index}`}
                             sxCard={{boxShadow: 4}}
-                            sxHeader={{
-                                backgroundColor: statusColor,
-                                color: "white",
-                                "& .MuiTypography-root": {color: "inherit"},
-                            }}
+                            sxHeader={theme.custom.errorDetails.cardHeader(statusColor)}
                             label={(
                                 <Box>
-                                    <Typography variant="h5" sx={{overflowWrap: "anywhere"}}>
+                                    <Typography variant="h5" sx={theme.custom.errorDetails.title}>
                                         {errorDetail.failureAspect.relevantCause?.className
                                             ? `${classNameConverter(errorDetail.failureAspect.relevantCause.className, ClassName.simpleName)}: `
                                             : ""}
@@ -121,7 +119,7 @@ const ErrorDetails = () => {
                             )}
                             details={(
                                 <>
-                                    <Typography variant="subtitle2" sx={{mb: 1}} color="textSecondary">
+                                    <Typography variant="subtitle2" sx={theme.custom.errorDetails.detailsTitle} color="textSecondary">
                                         Origin ({scriptSource?.fileName ?? "unknown"})
                                     </Typography>
                                     <CodeView source={scriptSource}/>
@@ -129,8 +127,7 @@ const ErrorDetails = () => {
                             )}
                             content={(
                                 <>
-                                    <Stack direction="row"
-                                           sx={{justifyContent: "space-between", alignItems: "center", mb: 1}}>
+                                    <Stack direction="row" sx={theme.custom.errorDetails.stackHeader}>
                                         <Typography variant="subtitle2" color="textSecondary">Stacktrace</Typography>
                                         <IconButton
                                             size="small"
@@ -156,14 +153,14 @@ const ErrorDetails = () => {
                                             return (
                                                 <Accordion key={`cause-${causeIndex}`} disableGutters>
                                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-                                                        <Typography variant="body2" sx={{overflowWrap: "anywhere"}}>
+                                                    <Typography variant="body2" sx={theme.custom.errorDetails.stackCauseTitle}>
                                                             {cause.className
                                                                 ? classNameConverter(cause.className, ClassName.simpleName)
                                                                 : "UnknownClass"}
                                                             {cause.message ? `: ${cause.message}` : ""}
                                                         </Typography>
                                                     </AccordionSummary>
-                                                    <AccordionDetails sx={{p: 0}}>
+                                                <AccordionDetails sx={theme.custom.errorDetails.accordionDetails}>
                                                         {stackTraceElements.length > 0 ? (
                                                             <CodeView source={stackTraceSource} showNumbers={false} markingName={methodDetail.methodContext.contextValues?.name}/>
                                                         ) : (

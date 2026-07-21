@@ -19,9 +19,9 @@
  * under the License.
  */
 
-import {useEffect, useMemo} from "react";
+import {useMemo} from "react";
 import {Link as RouterLink, useOutletContext, useSearchParams} from "react-router-dom";
-import {Box, Grid, Link, List, ListItem, Typography} from "@mui/material";
+import {Box, Grid, Link, List, Typography, useTheme} from "@mui/material";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import {MetricType} from "../../model/report-model/framework_pb.ts";
@@ -30,6 +30,8 @@ import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 import {LogConsole} from "../LogConsole.tsx";
 import type {ILogEntry} from "../../model/Logs.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
+import {useScrollToElementById} from "../../hooks/useScrollToElementById.ts";
+import DetailKeyValueListItem from "./DetailKeyValueListItem.tsx";
 
 interface ISessionInformation {
     sessionName: string;
@@ -52,6 +54,7 @@ interface ISessionInformation {
 const BrowserInfo = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const {executionMngr} = useReportData();
+    const theme = useTheme();
     const [searchParams] = useSearchParams();
     const highlightedSessionId = searchParams.get("id");
 
@@ -106,15 +109,7 @@ const BrowserInfo = () => {
         return result.sort((a, b) => a.sessionId.localeCompare(b.sessionId));
     }, [methodDetail, executionMngr]);
 
-    useEffect(() => {
-        if (!highlightedSessionId) {
-            return;
-        }
-        const timeoutId = window.setTimeout(() => {
-            document.getElementById(highlightedSessionId)?.scrollIntoView();
-        }, 0);
-        return () => window.clearTimeout(timeoutId);
-    }, [highlightedSessionId]);
+    useScrollToElementById(highlightedSessionId, sessionInformationArray.length);
 
     if (!methodDetail) {
         return <NoResultsCard title="No method selected"/>;
@@ -125,7 +120,7 @@ const BrowserInfo = () => {
     }
 
     return (
-        <Box sx={{display: "flex", flexDirection: "column", gap: 2}}>
+        <Box sx={theme.custom.sessionInfo.cardsContainer}>
             {sessionInformationArray.map(session => (
                 <Box key={session.sessionId} id={session.sessionId}>
                     <ReportCard
@@ -136,92 +131,76 @@ const BrowserInfo = () => {
                                 <List dense disablePadding>
                                     <Typography variant="subtitle2">General information</Typography>
 
-                                    <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                        <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>ID</Typography>
-                                        <Typography variant="caption">{session.sessionId}</Typography>
-                                    </ListItem>
-
-                                    <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                        <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Browser</Typography>
-                                        <Typography variant="caption">{session.browserName}:{session.browserVersion}</Typography>
-                                    </ListItem>
-
-                                    <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                        <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>User agent</Typography>
-                                        <Typography variant="caption">{session.userAgent}</Typography>
-                                    </ListItem>
+                                    <DetailKeyValueListItem label="ID" value={<Typography variant="caption">{session.sessionId}</Typography>} />
+                                    <DetailKeyValueListItem label="Browser" value={<Typography variant="caption">{session.browserName}:{session.browserVersion}</Typography>} />
+                                    <DetailKeyValueListItem label="User agent" value={<Typography variant="caption">{session.userAgent}</Typography>} />
 
                                     {session.serverUrl && (
-                                        <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                            <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Server</Typography>
-                                            <Link href={session.serverUrl} variant="caption">{session.serverUrl}</Link>
-                                        </ListItem>
+                                        <DetailKeyValueListItem
+                                            label="Server"
+                                            value={<Link href={session.serverUrl} variant="caption">{session.serverUrl}</Link>}
+                                        />
                                     )}
 
                                     {session.nodeUrl && (
-                                        <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                            <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Node</Typography>
-                                            <Link href={session.nodeUrl} variant="caption">{session.nodeUrl}</Link>
-                                        </ListItem>
+                                        <DetailKeyValueListItem
+                                            label="Node"
+                                            value={<Link href={session.nodeUrl} variant="caption">{session.nodeUrl}</Link>}
+                                        />
                                     )}
 
                                     {session.videoId && (
-                                        <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                            <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Video ID</Typography>
-                                            <Link
-                                                component={RouterLink}
-                                                to={{pathname: "../video", search: `?id=${encodeURIComponent(session.sessionId)}`}}
-                                                variant="caption"
-                                            >
-                                                {session.videoId}
-                                            </Link>
-                                        </ListItem>
+                                        <DetailKeyValueListItem
+                                            label="Video ID"
+                                            value={(
+                                                <Link
+                                                    component={RouterLink}
+                                                    to={{pathname: "../video", search: `?id=${encodeURIComponent(session.sessionId)}`}}
+                                                    variant="caption"
+                                                >
+                                                    {session.videoId}
+                                                </Link>
+                                            )}
+                                        />
                                     )}
 
-                                    <Typography variant="subtitle2" sx={{mt: 2}}>Session metrics</Typography>
+                                    <Typography variant="subtitle2" sx={theme.custom.sessionInfo.sectionTitle}>Session metrics</Typography>
 
                                     {session.sessionDuration > 0 && (
-                                        <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                            <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Session duration</Typography>
-                                            <Typography variant="caption">{session.sessionDuration}s</Typography>
-                                        </ListItem>
+                                        <DetailKeyValueListItem label="Session duration" value={<Typography variant="caption">{session.sessionDuration}s</Typography>} />
                                     )}
 
                                     {session.sessionStartDuration > 0 && (
-                                        <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                            <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Session start duration</Typography>
-                                            <Typography variant="caption">{session.sessionStartDuration}s</Typography>
-                                        </ListItem>
+                                        <DetailKeyValueListItem label="Session start duration" value={<Typography variant="caption">{session.sessionStartDuration}s</Typography>} />
                                     )}
 
                                     {(session.sessionStartTime ?? 0) > 0 && (
-                                        <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                            <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Session start time</Typography>
-                                            <Typography variant="caption">{dateFormatter(session.sessionStartTime, "long")}</Typography>
-                                        </ListItem>
+                                        <DetailKeyValueListItem
+                                            label="Session start time"
+                                            value={<Typography variant="caption">{dateFormatter(session.sessionStartTime, "long")}</Typography>}
+                                        />
                                     )}
 
                                     {session.baseUrl && (
                                         <>
-                                            <Typography variant="subtitle2" sx={{mt: 2}}>Base URL metrics</Typography>
-
-                                            <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                                <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Base URL</Typography>
-                                                <Link href={session.baseUrl} variant="caption">{session.baseUrl}</Link>
-                                            </ListItem>
+                                            <Typography variant="subtitle2" sx={theme.custom.sessionInfo.sectionTitle}>Base URL metrics</Typography>
+                                            <DetailKeyValueListItem
+                                                label="Base URL"
+                                                value={<Link href={session.baseUrl} variant="caption">{session.baseUrl}</Link>}
+                                            />
 
                                             {(session.baseurlStartDuration ?? 0) > 0 && (
-                                                <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                                    <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Base URL start duration</Typography>
-                                                    <Typography variant="caption">{session.baseurlStartDuration}s</Typography>
-                                                </ListItem>
+                                                <DetailKeyValueListItem
+                                                    label="Base URL start duration"
+                                                    value={<Typography variant="caption">{session.baseurlStartDuration}s</Typography>}
+                                                />
                                             )}
 
                                             {(session.baseurlStartTime ?? 0) > 0 && (
-                                                <ListItem disablePadding sx={{gap: 1, pl: 2}}>
-                                                    <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Base URL start time</Typography>
-                                                    <Typography variant="caption">{dateFormatter(session.baseurlStartTime, "long")}</Typography>
-                                                </ListItem>
+                                                <DetailKeyValueListItem
+                                                    label="Base URL start time"
+                                                    value={<Typography variant="caption">{dateFormatter(session.baseurlStartTime, "long")}</Typography>}
+                                                />
                                             )}
                                         </>
                                     )}

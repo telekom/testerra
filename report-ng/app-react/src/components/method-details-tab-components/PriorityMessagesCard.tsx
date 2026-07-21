@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import {List, ListItem, Typography} from "@mui/material";
+import {List, ListItem, Typography, useTheme} from "@mui/material";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import {LogMessage, LogMessageType, ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import {StatusService} from "../../model/status-service.tsx";
@@ -10,36 +10,36 @@ interface PriorityMessagesCardProps {
 }
 
 const PriorityMessagesCard = ({promptLogs}: PriorityMessagesCardProps) => {
+    const theme = useTheme();
+
     if (promptLogs.length === 0) {
         return null;
     }
 
     return (
-        <Box sx={{mt: 3}}>
+        <Box sx={theme.custom.priorityMessages.container}>
             <ReportCard
                 label="Priority messages"
-                sxContent={{p: 0, ":last-child": {p: 0}, color: "white"}}
+                sxContent={theme.custom.priorityMessages.content}
                 content={(
-                    <List sx={{p: 0}}>
+                    <List sx={theme.custom.priorityMessages.list}>
                         {promptLogs.map((logMessage, index) => {
                             const isError = logMessage.type === LogMessageType.LMT_ERROR;
                             const isWarn = logMessage.type === LogMessageType.LMT_WARN;
+                            const backgroundColor = isError
+                                ? StatusService.getColor(ResultStatusType.FAILED)
+                                : isWarn
+                                    ? StatusService.getColor(ResultStatusType.SKIPPED)
+                                    : "transparent";
                             return (
                                 <ListItem
                                     key={`priority-log-${index}`}
-                                    sx={{
-                                        display: "block", px: 1.5, py: 0.5, lineHeight: 1,
-                                        backgroundColor: isError ? StatusService.getColor(ResultStatusType.FAILED) :
-                                            isWarn ? StatusService.getColor(ResultStatusType.SKIPPED) : "transparent",
-                                    }}>
+                                    sx={theme.custom.priorityMessages.listItem(backgroundColor)}
+                                >
                                     <Typography variant="caption" component="span">
                                         {classNameConverter(logMessage.loggerName ?? "", ClassName.simpleName) ?? "Logger"}:
                                     </Typography>{" "}
-                                    <Typography
-                                        variant="caption"
-                                        component="span"
-                                        dangerouslySetInnerHTML={{__html: logMessage.message ?? ""}}
-                                    />
+                                    <Typography variant="caption" component="span">{logMessage.message ?? ""}</Typography>
                                 </ListItem>
                             );
                         })}

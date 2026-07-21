@@ -28,11 +28,23 @@ import {
     generalDetails,
     codeView,
     steps,
+    methodDetailsPage,
+    durationCard,
+    priorityMessages,
+    sessionInfo,
+    dependencies,
+    errorDetails,
     type ReportThemeLogConsoleStyles,
     type ReportThemeLogLineStyles,
     type ReportThemeCodeViewStyles,
     type ReportThemeGeneralDetailsStyles,
     type ReportThemeStepsStyles,
+    type ReportThemeMethodDetailsPageStyles,
+    type ReportThemeDurationCardStyles,
+    type ReportThemePriorityMessagesStyles,
+    type ReportThemeSessionInfoStyles,
+    type ReportThemeDependenciesStyles,
+    type ReportThemeErrorDetailsStyles,
     type Status
 } from "./reportThemeCustom";
 
@@ -56,7 +68,13 @@ export const reportTheme = createTheme({
         logConsole,
         generalDetails,
         codeView,
-        steps
+        steps,
+        methodDetailsPage,
+        durationCard,
+        priorityMessages,
+        sessionInfo,
+        dependencies,
+        errorDetails
     },
     cssVariables: {
         nativeColor: true,
@@ -148,6 +166,12 @@ declare module "@mui/material/styles" {
             generalDetails: ReportThemeGeneralDetailsStyles;
             codeView: ReportThemeCodeViewStyles;
             steps: ReportThemeStepsStyles;
+            methodDetailsPage: ReportThemeMethodDetailsPageStyles;
+            durationCard: ReportThemeDurationCardStyles;
+            priorityMessages: ReportThemePriorityMessagesStyles;
+            sessionInfo: ReportThemeSessionInfoStyles;
+            dependencies: ReportThemeDependenciesStyles;
+            errorDetails: ReportThemeErrorDetailsStyles;
         }
     }
 
@@ -160,6 +184,12 @@ declare module "@mui/material/styles" {
             generalDetails?: Partial<ReportThemeGeneralDetailsStyles>;
             codeView?: Partial<ReportThemeCodeViewStyles>;
             steps?: Partial<ReportThemeStepsStyles>;
+            methodDetailsPage?: Partial<ReportThemeMethodDetailsPageStyles>;
+            durationCard?: Partial<ReportThemeDurationCardStyles>;
+            priorityMessages?: Partial<ReportThemePriorityMessagesStyles>;
+            sessionInfo?: Partial<ReportThemeSessionInfoStyles>;
+            dependencies?: Partial<ReportThemeDependenciesStyles>;
+            errorDetails?: Partial<ReportThemeErrorDetailsStyles>;
         }
     }
 

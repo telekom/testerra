@@ -24,7 +24,7 @@ import ReportChip from "../../widgets/ReportChip.tsx";
 import {StatusService} from "../../model/status-service.tsx";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
 import Stack from "@mui/material/Stack";
-import {Grid, Typography} from "@mui/material";
+import {Grid, Typography, useTheme} from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
@@ -45,6 +45,7 @@ interface GeneralDetailsProps {
 }
 
 const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetailsProps) => {
+        const theme = useTheme();
         const [isScreenshotModalOpen, setIsScreenshotModalOpen] = useState(false);
         const [selectedScreenshotId, setSelectedScreenshotId] = useState<string | undefined>(undefined);
 
@@ -69,17 +70,12 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                     <ReportChip key={methodDetail?.methodContext.resultStatus}
                                                 label={StatusService.getLabel(methodDetail?.methodContext.resultStatus ?? "")}
                                                 size="medium"
-                                                sx={{
-                                                    background: StatusService.getColor(methodDetail?.methodContext.resultStatus ?? ""),
-                                                    color: "white",
-                                                    fontSize: "16px",
-                                                    fontWeight: "400"
-                                                }}/>
+                                                sx={theme.custom.generalDetails.statusChip(StatusService.getColor(methodDetail?.methodContext.resultStatus ?? ""))}/>
                                     <Typography color="black"
                                                 sx={(theme) => theme.custom.generalDetails.wrapText}>{methodDetail.identifier}</Typography>
                                     {methodDetail.methodContext.methodType == 2 &&
                                         <ReportChip label="Configuration" size="small" color={"lightGrey" as ChipColor}
-                                                    sx={{color: "white", fontWeight: "400"}}/>}
+                                                   sx={theme.custom.generalDetails.configurationChip}/>}
                                 </Stack>
                             }
                             details={
@@ -88,14 +84,12 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                  methodDetail.failsAnnotation) ? (
                                     <>
                                         {methodDetail.testAnnotation?.description && (
-                                            <Typography
-                                                variant="body2"
-                                                sx={{mt: 1}}
-                                                dangerouslySetInnerHTML={{__html: methodDetail.testAnnotation.description}}
-                                            />
+                                            <Typography variant="body2" sx={theme.custom.generalDetails.topSpacingText}>
+                                                {methodDetail.testAnnotation.description}
+                                            </Typography>
                                         )}
                                         {methodDetail.xrayAnnotation?.ticketUrls?.length > 0 && (
-                                            <Typography variant="body2" sx={{mt: 1}}>
+                                            <Typography variant="body2" sx={theme.custom.generalDetails.topSpacingText}>
                                                 Related Tickets:{" "}
                                                 {methodDetail.xrayAnnotation.ticketUrls.map((ticketUrl: string, index: number) => (
                                                     <span key={`xray-ticket-${index}`}>
@@ -106,12 +100,9 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                             </Typography>
                                         )}
                                         {methodDetail.failsAnnotation && (
-                                            <Stack direction="row" spacing={1} sx={{alignItems: "center", my: 1}}>
+                                            <Stack direction="row" spacing={1} sx={theme.custom.generalDetails.failsStack}>
                                                 <ReportChip label="@Fails" size="small"
-                                                           sx={{
-                                                               background: StatusService.getColor(ResultStatusType.FAILED_EXPECTED),
-                                                               color: "white"
-                                                           }}/>
+                                                           sx={theme.custom.generalDetails.failsChip}/>
                                                 {methodDetail.methodContext.resultStatus !== ResultStatusType.FAILED_EXPECTED && (
                                                     <>
                                                        {methodDetail.failsAnnotation.description && (
@@ -191,7 +182,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                     <Grid size={6}>
                                         <List sx={{flex: 1, minWidth: 0}}>
                                             {methodDetail.failedStep && (
-                                                <ListItem sx={{gap: "8px", alignItems: "center"}}
+                                                <ListItem sx={theme.custom.generalDetails.failedInListItem}
                                                           disablePadding>
                                                     <Typography variant="caption" color="textSecondary"
                                                                 sx={(theme) => theme.custom.generalDetails.nowrapLabel}>
@@ -249,7 +240,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                             }
                             footer={
                                 (previousDetail || nextDetail) && methodDetail.numDetails > 0 && (
-                                    <Grid container spacing={2} sx={{mt: 2}}>
+                                    <Grid container spacing={2} sx={theme.custom.generalDetails.footerContainer}>
                                         <Grid size={6}>
                                             {previousDetail && (
                                                 <Stack direction="column">
@@ -275,7 +266,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                         </Grid>
                                         <Grid size={6} justifyContent={"flex-end"}>
                                             {nextDetail && (
-                                                <Stack direction="column" sx={{alignItems: "flex-start", maxWidth: "100%"}}>
+                                                <Stack direction="column" sx={theme.custom.generalDetails.nextMethodStack}>
                                                     <Typography variant="caption" color="textSecondary"
                                                                 sx={(theme) => theme.custom.generalDetails.nowrapLabel}>
                                                         Next failed method
@@ -314,21 +305,11 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                                         setIsScreenshotModalOpen(true);
                                                     }
                                                 }}
-                                                style={{
-                                                    display: "block",
-                                                    width: "100%",
-                                                    height: "auto",
-                                                    cursor: "pointer"
-                                                }}
+                                                style={theme.custom.generalDetails.lastScreenshotImage}
                                             />
 
                                         }
-                                        sxContent={{
-                                            p: 0,
-                                            "&:last-child": {
-                                                p: 0,
-                                            },
-                                        }}/>
+                                        sxContent={theme.custom.generalDetails.lastScreenshotCardContent}/>
                         </Grid>
                     }
 
@@ -348,8 +329,6 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                     onClose={() => setIsScreenshotModalOpen(false)}
                 />
             </>
-        )
-            ;
-    }
-;
+        );
+};
 export default GeneralDetails;

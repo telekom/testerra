@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useRef, useState} from "react";
 import {useNavigate, useOutletContext} from "react-router-dom";
-import {Box} from "@mui/material";
+import {Box, useTheme} from "@mui/material";
 import {DataSet} from "vis-data/peer";
 import {Network, type Data, type Edge, type Node, type Options} from "vis-network/peer";
 import "vis-network/styles/vis-network.css";
@@ -12,6 +12,7 @@ import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 const Dependencies = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const {executionMngr} = useReportData();
+    const theme = useTheme();
     const navigate = useNavigate();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const networkRef = useRef<Network | null>(null);
@@ -230,10 +231,7 @@ const Dependencies = () => {
     return (
         <Box
             ref={containerRef}
-            sx={{
-                width: "100%",
-                height: `${graphHeight}px`,
-            }}
+            sx={theme.custom.dependencies.graphContainer(graphHeight)}
         >
         </Box>
     );

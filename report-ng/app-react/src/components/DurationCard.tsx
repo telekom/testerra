@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {Grid, Typography} from "@mui/material";
+import {Grid, Typography, useTheme} from "@mui/material";
 import ReportCard from "../widgets/ReportCard";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
@@ -39,6 +39,7 @@ interface DashboardDurationProps {
 const DashboardDurationCard = ({sx, start, end}: DashboardDurationProps) => {
 
     const {executionMngr} = useReportData();
+    const theme = useTheme();
     const [now] = React.useState(() => Date.now());
 
     const executionInfo = React.useMemo(() => {
@@ -82,16 +83,16 @@ const DashboardDurationCard = ({sx, start, end}: DashboardDurationProps) => {
 
 
     return (
-        <ReportCard label="Duration" sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}
+        <ReportCard label="Duration" sxContent={theme.custom.durationCard.content} sxCard={sx}
                     content={
                         <Stack direction="column" spacing={2}
-                               divider={<Divider orientation="horizontal" sx={{mt: "0 !important"}}/>}>
+                              divider={<Divider orientation="horizontal" sx={theme.custom.durationCard.divider}/>}>
                             <Stack direction="row" spacing={1}
-                                   sx={{alignItems: "center", justifyContent: "center", p: 2}}>
+                                  sx={theme.custom.durationCard.header}>
                                 <TimerIcon/>
                                 <Typography variant="h5">{formatDuration(executionInfo.duration)}</Typography>
                             </Stack>
-                            <Grid container sx={{px: 2, py: 1, mt: "0 !important"}}>
+                            <Grid container sx={theme.custom.durationCard.metaGrid}>
                                 <Grid size={3}>
                                     <Typography variant="caption" color="primary">Started</Typography>
                                 </Grid>

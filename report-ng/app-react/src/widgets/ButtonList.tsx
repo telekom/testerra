@@ -16,16 +16,25 @@ export type ButtonListItem = {
 type ButtonListProps = {
     list: ButtonListItem[],
     disablePadding?: boolean,
+    fixedItemHeight?: number | string,
     handleClick?: (item: ButtonListItem) => void
 }
 
-const ButtonList = ({list, disablePadding, handleClick}: ButtonListProps) => {
+const ButtonList = ({list, disablePadding, fixedItemHeight, handleClick}: ButtonListProps) => {
     return (
         <List sx={!disablePadding ? {p: 0} : undefined}>
             {list.map((item) => (
                 <ListItem disablePadding>
-                    <ListItemButton sx={disablePadding ? {pt: 0, pb: 0} : undefined} selected={item.selected} onClick={() => handleClick?.(item)}>
-                        <ListItemIcon>
+                    <ListItemButton
+                        sx={{
+                            alignItems: "flex-start",
+                            ...(disablePadding ? {pt: 0, pb: 0} : undefined),
+                            ...(fixedItemHeight !== undefined ? {height: fixedItemHeight} : undefined)
+                        }}
+                        selected={item.selected}
+                        onClick={() => handleClick?.(item)}
+                    >
+                        <ListItemIcon sx={{alignSelf: "flex-start", mt: 0.5}}>
                             {item.icon}
                         </ListItemIcon>
 

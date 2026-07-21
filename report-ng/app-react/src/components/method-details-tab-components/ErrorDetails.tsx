@@ -86,7 +86,9 @@ const ErrorDetails = () => {
         setStackTraceCopiedSnackbarOpen(true);
     };
 
-    if (!methodDetail) return;
+    if (!methodDetail) {
+        return;
+    }
 
     return (
         <>

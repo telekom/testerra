@@ -29,7 +29,8 @@ export function formatDuration(value: number | string): string {
         "days",
         "hours",
         "minutes",
-        "seconds"
+        "seconds",
+        "milliseconds"
     );
 
     const parts = [
@@ -37,7 +38,8 @@ export function formatDuration(value: number | string): string {
         d.hours ? `${Math.floor(d.hours)}h` : null,
         d.minutes ? `${Math.floor(d.minutes)}m` : null,
         d.seconds ? `${Math.floor(d.seconds)}s` : null,
+        d.milliseconds ? `${Math.floor(d.milliseconds)}ms` : null,
     ].filter(Boolean); // removes 0 values
 
-    return parts.length ? parts.join(" ") : "0s";
+    return parts.length ? parts.join(" ") : "0ms";
 }

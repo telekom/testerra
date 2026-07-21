@@ -19,8 +19,8 @@
  * under the License.
  */
 
-import {useMemo} from "react";
-import {useOutletContext} from "react-router-dom";
+import {useEffect, useMemo} from "react";
+import {Link as RouterLink, useOutletContext, useSearchParams} from "react-router-dom";
 import {Box, Grid, Link, List, ListItem, Typography} from "@mui/material";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
 import {useReportData} from "../../provider/DataProvider.tsx";
@@ -52,6 +52,8 @@ interface ISessionInformation {
 const BrowserInfo = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const {executionMngr} = useReportData();
+    const [searchParams] = useSearchParams();
+    const highlightedSessionId = searchParams.get("id");
 
     const sessionInformationArray = useMemo<ISessionInformation[]>(() => {
         if (!methodDetail || !executionMngr) return [];
@@ -104,6 +106,16 @@ const BrowserInfo = () => {
         return result.sort((a, b) => a.sessionId.localeCompare(b.sessionId));
     }, [methodDetail, executionMngr]);
 
+    useEffect(() => {
+        if (!highlightedSessionId) {
+            return;
+        }
+        const timeoutId = window.setTimeout(() => {
+            document.getElementById(highlightedSessionId)?.scrollIntoView();
+        }, 0);
+        return () => window.clearTimeout(timeoutId);
+    }, [highlightedSessionId]);
+
     if (!methodDetail) {
         return <NoResultsCard title="No method selected"/>;
     }
@@ -115,10 +127,10 @@ const BrowserInfo = () => {
     return (
         <Box sx={{display: "flex", flexDirection: "column", gap: 2}}>
             {sessionInformationArray.map(session => (
-                <ReportCard
-                    key={session.sessionId}
-                    label={`Session: ${session.sessionName}`}
-                    content={
+                <Box key={session.sessionId} id={session.sessionId}>
+                    <ReportCard
+                        label={`Session: ${session.sessionName}`}
+                        content={
                         <Grid container spacing={2}>
                             <Grid size={6}>
                                 <List dense disablePadding>
@@ -156,7 +168,13 @@ const BrowserInfo = () => {
                                     {session.videoId && (
                                         <ListItem disablePadding sx={{gap: 1, pl: 2}}>
                                             <Typography variant="caption" color="text.secondary" sx={{minWidth: 140}}>Video ID</Typography>
-                                            <Typography variant="caption">{session.videoId}</Typography>
+                                            <Link
+                                                component={RouterLink}
+                                                to={{pathname: "../video", search: `?id=${encodeURIComponent(session.sessionId)}`}}
+                                                variant="caption"
+                                            >
+                                                {session.videoId}
+                                            </Link>
                                         </ListItem>
                                     )}
 
@@ -230,7 +248,8 @@ const BrowserInfo = () => {
                             )}
                         </Grid>
                     }
-                />
+                    />
+                </Box>
             ))}
         </Box>
     );

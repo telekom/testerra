@@ -30,7 +30,7 @@ import ListItem from "@mui/material/ListItem";
 import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
 import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router-dom";
-import DashboardDurationCard from "../dashboard-components/DashboardDurationCard.tsx";
+import DurationCard from "../DurationCard.tsx";
 import type {ChipColor} from "../../hooks/useTestListFilters.tsx";
 import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import LazyImage from "../../widgets/LazyImage.tsx";
@@ -80,41 +80,61 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                     {methodDetail.methodContext.methodType == 2 &&
                                         <ReportChip label="Configuration" size="small" color={"lightGrey" as ChipColor}
                                                     sx={{color: "white", fontWeight: "400"}}/>}
-                                    {/*TODO methodDetail.testAnnotation.description (html)*/}
-                                    {/*TODO if methodDetail.xrayAnnotatio : Related Tickets for ticketURL of _methodDetails.xrayAnnotation.ticketUrls (Links)*/}
-                                </Stack>}
+                                </Stack>
+                            }
                             details={
-                                methodDetail.failsAnnotation && (
-                                    <Stack direction="row" spacing={1} sx={{alignItems: "center", my: 1}}>
-                                        <ReportChip label="@Fails" size="small"
-                                                    sx={{
-                                                        background: StatusService.getColor(ResultStatusType.FAILED_EXPECTED),
-                                                        color: "white"
-                                                    }}/>
-                                        <Typography variant="body2">{methodDetail.failsAnnotation.description}</Typography>
-
-                                        {methodDetail.failsAnnotation.ticketString && (<>
-                                            <Typography variant="body2">Ticket: </Typography>
-                                            <Link
-                                                component={RouterLink}
-                                                to={methodDetail.failsAnnotation.ticketString}
-                                            >
-                                                <Typography
-                                                    variant="body2">{methodDetail.failsAnnotation.ticketString}</Typography>
-                                            </Link>
-                                        </>)}
-
-                                        {methodDetail.failsAnnotation.validator && (<>
-                                            <Typography variant="body2">Your conditions for Expected fails were not
-                                                fulfilled: </Typography>
-                                            <Typography variant="body2">{methodDetail.failsAnnotation.validator}</Typography>
-                                        </>)}
-
-
-                                        {/*TODO Ticket String*/}
-                                        {/*TODO Failsannotation Validator*/}
-                                    </Stack>
-                                )}
+                                (methodDetail.testAnnotation?.description || 
+                                 methodDetail.xrayAnnotation?.ticketUrls?.length > 0 || 
+                                 methodDetail.failsAnnotation) ? (
+                                    <>
+                                        {methodDetail.testAnnotation?.description && (
+                                            <Typography
+                                                variant="body2"
+                                                sx={{mt: 1}}
+                                                dangerouslySetInnerHTML={{__html: methodDetail.testAnnotation.description}}
+                                            />
+                                        )}
+                                        {methodDetail.xrayAnnotation?.ticketUrls?.length > 0 && (
+                                            <Typography variant="body2" sx={{mt: 1}}>
+                                                Related Tickets:{" "}
+                                                {methodDetail.xrayAnnotation.ticketUrls.map((ticketUrl: string, index: number) => (
+                                                    <span key={`xray-ticket-${index}`}>
+                                                       <Link href={ticketUrl}>{ticketUrl}</Link>
+                                                       {index < methodDetail.xrayAnnotation.ticketUrls.length - 1 ? " " : ""}
+                                                    </span>
+                                                ))}
+                                            </Typography>
+                                        )}
+                                        {methodDetail.failsAnnotation && (
+                                            <Stack direction="row" spacing={1} sx={{alignItems: "center", my: 1}}>
+                                                <ReportChip label="@Fails" size="small"
+                                                           sx={{
+                                                               background: StatusService.getColor(ResultStatusType.FAILED_EXPECTED),
+                                                               color: "white"
+                                                           }}/>
+                                                {methodDetail.methodContext.resultStatus !== ResultStatusType.FAILED_EXPECTED && (
+                                                    <>
+                                                       {methodDetail.failsAnnotation.description && (
+                                                           <Typography variant="body2">{methodDetail.failsAnnotation.description}</Typography>
+                                                       )}
+                                                       {methodDetail.failsAnnotation.ticketString && (
+                                                           <Typography variant="body2">
+                                                               Ticket: {methodDetail.failsAnnotation.ticketString}
+                                                           </Typography>
+                                                       )}
+                                                    </>
+                                                )}
+                                                {methodDetail.methodContext.resultStatus === ResultStatusType.FAILED_EXPECTED && methodDetail.failsAnnotation.validator && (
+                                                    <>
+                                                       <Typography variant="body2">Your conditions for Expected fails were not fulfilled:</Typography>
+                                                       <Typography variant="body2">{methodDetail.failsAnnotation.validator}</Typography>
+                                                    </>
+                                                )}
+                                            </Stack>
+                                        )}
+                                    </>
+                               ) : undefined
+                            }
                             content={(
                                 <Grid container>
                                     <Grid size={6}>
@@ -313,7 +333,10 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                     }
 
                     <Grid size={3}>
-                        <DashboardDurationCard/>
+                        <DurationCard
+                            start={methodDetail.methodContext.contextValues?.startTime}
+                            end={methodDetail.methodContext.contextValues?.endTime}
+                        />
                     </Grid>
                 </Grid>
 

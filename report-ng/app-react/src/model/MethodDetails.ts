@@ -43,6 +43,8 @@ export class MethodDetails {
     promptLogs!: LogMessage[];
     private _identifier: string | null = null;
     static readonly FAILS_ANNOTATION_NAME = "eu.tsystems.mms.tic.testframework.annotations.Fails";
+    static readonly TEST_ANNOTATION_NAME = "org.testng.annotations.Test";
+    static readonly XRAY_ANNOTATION_NAME = "eu.tsystems.mms.tic.testerra.plugins.xray.annotation.XrayTest";
     private _decodedAnnotations = {};
     private _failureAspects: FailureAspectStatistics[] | null = null;
     private _numDetails = -1;
@@ -55,6 +57,14 @@ export class MethodDetails {
 
     get failsAnnotation() {
         return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);
+    }
+
+    get testAnnotation() {
+        return this.decodeAnnotation(MethodDetails.TEST_ANNOTATION_NAME);
+    }
+
+    get xrayAnnotation() {
+        return this.decodeAnnotation(MethodDetails.XRAY_ANNOTATION_NAME);
     }
 
     get identifier() {

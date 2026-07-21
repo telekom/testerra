@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {useOutletContext, useParams, Link as RouterLink} from "react-router-dom";
+import {useOutletContext, useSearchParams, Link as RouterLink} from "react-router-dom";
 import {Box, Grid, List, ListItem, Typography} from "@mui/material";
 import {Link} from "@mui/material";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
@@ -9,15 +9,16 @@ import ReportCard from "../../widgets/ReportCard.tsx";
 
 const Video = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
-    const {id} = useParams();
+    const [searchParams] = useSearchParams();
+    const highlightedSessionId = searchParams.get("id");
 
     useEffect(() => {
-        if (!id) return;
+        if (!highlightedSessionId) return;
         const timeoutId = window.setTimeout(() => {
-            document.getElementById(id)?.scrollIntoView();
+            document.getElementById(highlightedSessionId)?.scrollIntoView();
         }, 0);
         return () => window.clearTimeout(timeoutId);
-    }, [id]);
+    }, [highlightedSessionId]);
 
     if (!methodDetail) {
         return <NoResultsCard title="No method selected"/>;
@@ -43,7 +44,7 @@ const Video = () => {
                                         <Typography variant="caption" color="text.secondary" sx={{minWidth: 80}}>Session ID</Typography>
                                         <Link
                                             component={RouterLink}
-                                            to={`../browser-info#${session.contextValues?.id}`}
+                                            to={{pathname: "../browser-info", search: `?id=${encodeURIComponent(session.contextValues?.id ?? "")}`}}
                                             variant="caption"
                                         >
                                             {session.contextValues?.id}

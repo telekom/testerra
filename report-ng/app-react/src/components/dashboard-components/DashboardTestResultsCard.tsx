@@ -25,16 +25,17 @@ import ButtonList from "../../widgets/ButtonList";
 import {ResultStatusType} from "../../model/report-model/framework_pb";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
+import type {ExecutionStatistics} from "../../model/ExecutionStatistics";
 
 interface DashboardTestResultsProps {
-    execStatistics: any;
+    execStatistics: ExecutionStatistics;
     onListItemClick: (newItem: string) => void;
     selectedStatus: string | null;
     sx?: SxProps<Theme>
 }
 
 const getSecondaryStatusLabel = (
-    status: ResultStatusType, execStatistics: any
+    status: ResultStatusType, execStatistics: ExecutionStatistics
 ) => {
     switch (status) {
         case ResultStatusType.FAILED:
@@ -83,9 +84,12 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
     }
 
     return (
-        <ReportCard label={label} sxContent={{p: 0, ":last-child": {padding: 0}}} sxCard={sx}>
-            <ButtonList list={itemList} handleClick={handleClick}/>
-        </ReportCard>
+        <ReportCard
+            label={label}
+            content={<ButtonList list={itemList} handleClick={handleClick}/>}
+            sxContent={{p: 0, ":last-child": {padding: 0}}}
+            sxCard={sx}
+        />
     );
 };
 export default DashboardTestResultsCard;

@@ -32,27 +32,34 @@ type SelectedFiltersChipsProps = {
 }
 
 const SelectedFiltersChips = ({selectedFilters, handleDelete, handleClearAllClick}: SelectedFiltersChipsProps) => {
+    // Shared chip renderer for all filter types.
+    const createChip = (filterType: FilterType, value?: string | ResultStatus) => {
+        const filterDef = FILTERS[filterType];
+
+        // returns chip for each value
+        return (
+            <ReportChip
+                key={value === undefined ? filterType : `${filterType}-${String(value)}`}
+                label={filterDef.getLabel(value)}
+                color={filterDef.color}
+                handleDelete={() => handleDelete(filterType, value)}
+                tooltipText={filterDef.tooltipText}
+            />
+        );
+    };
 
     // loops through each filter type and combines them in one array, e.g. [3, 4, SimpleTest2]
     const chips = (Object.keys(FILTERS) as FilterType[]).flatMap((filterType) => {
         const values = selectedFilters[filterType];
         if (!values || values.length === 0) return [];
 
-        // loops through values for each type and fixes label for status (3 -> Passed)
-        return values.map((value) => {
-            const filterDef = FILTERS[filterType];
+        // methods is a combined filter, so one chip clears all associated method ids
+        if (filterType === "methods") {
+            return [createChip(filterType)];
+        }
 
-            // returns chip for each value
-            return (
-                <ReportChip
-                    key={String(value)}
-                    label={filterDef.getLabel(value)}
-                    color={FILTERS[filterType].color}
-                    handleDelete={() => handleDelete(filterType, value)}
-                    tooltipText={filterDef.tooltipText}
-                />
-            );
-        });
+        // loops through values for each type and fixes label for status (3 -> Passed)
+        return values.map((value) => createChip(filterType, value));
     });
 
     return (

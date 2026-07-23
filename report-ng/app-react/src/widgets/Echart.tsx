@@ -2,8 +2,15 @@ import React from 'react';
 import type {EChartsOption} from 'echarts-for-react';
 import ReactEChartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/core';
-import {BarChart, LineChart, PieChart} from 'echarts/charts';
-import {GridComponent, LegendComponent, TitleComponent, TooltipComponent} from 'echarts/components';
+import {BarChart, LineChart, PieChart, ScatterChart} from 'echarts/charts';
+import {
+    DataZoomComponent,
+    GridComponent,
+    LegendComponent,
+    TitleComponent,
+    ToolboxComponent,
+    TooltipComponent,
+} from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
 
 export interface EChartProps {
@@ -15,8 +22,8 @@ export interface EChartProps {
 }
 
 echarts.use([
-    BarChart, LineChart, PieChart,
-    GridComponent, TooltipComponent, LegendComponent, TitleComponent,
+    BarChart, LineChart, PieChart, ScatterChart,
+    GridComponent, TooltipComponent, LegendComponent, TitleComponent, DataZoomComponent, ToolboxComponent,
     CanvasRenderer,
 ]);
 

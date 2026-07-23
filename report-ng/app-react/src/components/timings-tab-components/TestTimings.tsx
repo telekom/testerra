@@ -1,4 +1,26 @@
-import {useCallback, useEffect, useMemo} from "react";
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import {useCallback, useMemo} from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import {Box, Grid, Switch, Typography} from "@mui/material";
@@ -12,10 +34,12 @@ import {MethodType} from "../../model/report-model/framework_pb";
 import {StatusService} from "../../model/status-service";
 import type {ResultStatus} from "../../model/status-service";
 import type {EChartsOption} from "echarts-for-react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useTheme} from "@mui/material/styles";
 import type {CallbackDataParams} from "echarts/types/dist/shared";
 import {createSearchParams} from "react-router-dom";
+import {useTimingSearchParams} from "./useTimingSearchParams";
+import {buildDurationBuckets, type DurationBucket} from "./durationBuckets";
 
 const TEST_NUMBER_LIMIT = 10;
 
@@ -27,12 +51,6 @@ interface ITestDurationMethod {
     status: ResultStatus;
 }
 
-interface IDurationBar {
-    label: string;
-    durationAmount: number;
-    methodList: ITestDurationMethod[];
-}
-
 interface MethodOption {
     id: string;
     name: string;
@@ -41,9 +59,16 @@ interface MethodOption {
 const TestTimings = () => {
     const {executionMngr} = useReportData();
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
     const theme = useTheme();
     const configurationChipColor = theme.palette.lightGrey.main;
+    const {
+        rangeNum,
+        showConfigMethods,
+        methodIdParam,
+        handleRangeNumChange,
+        handleShowConfigMethodsChange,
+        handleSelectedMethodIdChange,
+    } = useTimingSearchParams();
 
     const rangeOptions = [
         {value: 5, label: "5"},
@@ -51,49 +76,6 @@ const TestTimings = () => {
         {value: 15, label: "15"},
         {value: 20, label: "20"},
     ];
-
-    const rangeNumParam = searchParams.get("rangeNum");
-    const parsedRangeNum = Number(rangeNumParam);
-    const rangeNum = parsedRangeNum > 0 ? parsedRangeNum : 10;
-    const showConfigMethods = searchParams.get("config") === "true";
-    const methodIdParam = searchParams.get("methodId");
-
-    useEffect(() => {
-        if (rangeNumParam !== null) {
-            return;
-        }
-
-        // set rangeNum to 10 if no range is set
-        const params = new URLSearchParams(searchParams);
-        params.set("rangeNum", "10");
-        setSearchParams(params, {replace: true});
-    }, [rangeNumParam, searchParams, setSearchParams]);
-
-    const handleRangeNumChange = useCallback((value: number) => {
-        const params = new URLSearchParams(searchParams);
-        params.set("rangeNum", String(value));
-        setSearchParams(params);
-    }, [searchParams, setSearchParams]);
-
-    const handleShowConfigMethodsChange = useCallback((checked: boolean) => {
-        const params = new URLSearchParams(searchParams);
-        if (checked) {
-            params.set("config", "true");
-        } else {
-            params.delete("config");
-        }
-        setSearchParams(params);
-    }, [searchParams, setSearchParams]);
-
-    const handleSelectedMethodChange = useCallback((newValue: MethodOption | null) => {
-        const params = new URLSearchParams(searchParams);
-        if (newValue?.id) {
-            params.set("methodId", newValue.id);
-        } else {
-            params.delete("methodId");
-        }
-        setSearchParams(params);
-    }, [searchParams, setSearchParams]);
 
     const filteredMethodDetails = useMemo<MethodDetails[]>(() => {
         if (!executionMngr) return [];
@@ -122,53 +104,27 @@ const TestTimings = () => {
         [methodIdParam, lookupOptions]
     );
 
-    const {bars, labels, chartData} = useMemo(() => {
-        const methods: ITestDurationMethod[] = filteredMethodDetails.map(md => ({
+    const methods = useMemo<ITestDurationMethod[]>(
+        () => filteredMethodDetails.map(md => ({
             id: md.methodContext.contextValues?.id ?? "",
             name: md.identifier,
             duration: ((md.methodContext.contextValues?.endTime ?? 0) - (md.methodContext.contextValues?.startTime ?? 0)) / 1000,
             methodType: md.methodContext.methodType ?? MethodType.TEST_METHOD,
             status: md.methodContext.resultStatus as ResultStatus,
-        }));
-
-        if (methods.length === 0) {
-            return {bars: [] as IDurationBar[], labels: [] as string[], chartData: [] as number[]};
-        }
-
-        // calculate maximum range
-        const sorted = [...methods.map(m => m.duration)].sort((a, b) => a - b);
-        let maxDuration = sorted[sorted.length - 1];
-
-        // Round up max duration to a clean multiple of rangeNum so all buckets have equal size.
-        const remainder = maxDuration % rangeNum;
-        maxDuration = remainder === 0 ? maxDuration : maxDuration + (rangeNum - remainder);
-        const sectionRange = maxDuration / rangeNum;
-
-        // calculate ranges
-        const sectionLabels: string[] = [];
-        const sectionValues: number[] = [];
-        for (let i = 0; i < rangeNum; i++) {
-            const start = i * sectionRange;
-            const end = (i + 1) * sectionRange - 1;
-            sectionLabels.push(`${start}-${end}s`);
-            sectionValues.push(end);
-        }
-
-        const barsResult: IDurationBar[] = sectionValues.map((sectionValue, i) => {
-            const methodList = methods.filter(m =>
-                m.duration <= sectionValue &&
-                (sectionValues[i - 1] === undefined || m.duration > sectionValues[i - 1])
-            );
-            return {label: sectionLabels[i], durationAmount: methodList.length, methodList};
-        });
-
-        return {bars: barsResult, labels: sectionLabels, chartData: barsResult.map(b => b.durationAmount)};
-    }, [filteredMethodDetails, rangeNum]);
+        })),
+        [filteredMethodDetails]
+    );
+    // Convert methods to chart bins (bars + x-axis labels + y-values).
+    const {bars, labels, chartData} = useMemo(
+        () => buildDurationBuckets<ITestDurationMethod>(methods, rangeNum),
+        [methods, rangeNum]
+    );
 
     const seriesData = useMemo(() => {
         if (!selectedMethod || bars.length === 0) {
             return chartData.map(v => ({value: v, itemStyle: {color: theme.custom.testTimings.barColor}}));
         }
+        // Highlight only the bar containing the selected method.
         const highlightIndex = bars.findIndex(bar => bar.methodList.some(m => m.id === selectedMethod.id));
         return chartData.map((v, i) => ({
             value: v,
@@ -183,7 +139,7 @@ const TestTimings = () => {
             appendToBody: true,     // allows tooltip to overflow chart container (otherwise it would be clipped)
             formatter: (params: CallbackDataParams | CallbackDataParams[]) => {
                 if (!Array.isArray(params) || params.length === 0) return "";
-                const bar = bars[params[0].dataIndex];
+                const bar: DurationBucket<ITestDurationMethod> | undefined = bars[params[0].dataIndex];
                 if (!bar || bar.durationAmount === 0) return "";
 
                 let tooltip = `${bar.durationAmount} test case(s):<br/><br/>`;
@@ -260,7 +216,7 @@ const TestTimings = () => {
                         )}
                         isOptionEqualToValue={(opt, val) => opt.id === val.id}
                         value={selectedMethod}
-                        onChange={(_, newValue) => handleSelectedMethodChange(newValue)}
+                        onChange={(_, newValue) => handleSelectedMethodIdChange(newValue?.id ?? null)}
                         sx={theme.custom.testTimings.methodAutocomplete}
                         renderInput={(params) => <TextField {...params} label="Method"/>}
                     />

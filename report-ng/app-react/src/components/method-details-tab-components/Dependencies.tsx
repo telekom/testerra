@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {Box, useTheme} from "@mui/material";
 import {DataSet} from "vis-data/peer";
@@ -17,6 +17,22 @@ const Dependencies = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const networkRef = useRef<Network | null>(null);
     const [graphHeight, setGraphHeight] = useState(500);
+    const syncNetworkSize = useCallback(() => {
+        const container = containerRef.current;
+        const network = networkRef.current;
+        if (!container || !network) {
+            return;
+        }
+
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        if (width <= 0 || height <= 0) {
+            return;
+        }
+
+        network.setSize(`${width}px`, `${height}px`);
+        network.redraw();
+    }, []);
 
     const graphData = useMemo(() => {
         if (!methodDetail || !executionMngr) {
@@ -148,7 +164,7 @@ const Dependencies = () => {
             const y = containerRef.current.getBoundingClientRect().y;
             const nextHeight = Math.max(320, window.innerHeight - y - 24);
             setGraphHeight(nextHeight);
-            networkRef.current?.redraw();
+            requestAnimationFrame(() => requestAnimationFrame(syncNetworkSize));
         };
         resize();
         window.addEventListener("resize", resize);
@@ -157,7 +173,27 @@ const Dependencies = () => {
             window.removeEventListener("resize", resize);
             window.removeEventListener("load", resize);
         };
-    }, []);
+    }, [syncNetworkSize]);
+
+    useEffect(() => {
+        if (!containerRef.current) {
+            return;
+        }
+        // Keep vis-network canvas in sync with the actual container size changes
+        // (including layout shifts after reload, not just window resize events).
+        const observer = new ResizeObserver(() => {
+            syncNetworkSize();
+        });
+        observer.observe(containerRef.current);
+        return () => {
+            observer.disconnect();
+        };
+    }, [syncNetworkSize]);
+
+    useEffect(() => {
+        // Re-apply explicit canvas sizing after height recalculation.
+        syncNetworkSize();
+    }, [graphHeight, syncNetworkSize]);
 
     useEffect(() => {
         if (!containerRef.current || !graphData) {
@@ -171,7 +207,7 @@ const Dependencies = () => {
             edges: new DataSet(graphData.edges),
         };
         const options: Options = {
-            autoResize: false,
+            autoResize: true,
             nodes: {
                 shape: "box",
                 scaling: {
@@ -209,8 +245,8 @@ const Dependencies = () => {
             navigate(`/method/${String(clickedNodeId)}/dependencies`);
         });
 
+        syncNetworkSize();
         network.focus(graphData.currentId, {scale: 2});
-        network.redraw();
 
         return () => {
             network.destroy();
@@ -218,7 +254,7 @@ const Dependencies = () => {
                 networkRef.current = null;
             }
         };
-    }, [graphData, navigate]);
+    }, [graphData, navigate, syncNetworkSize]);
 
     if (!methodDetail) {
         return <NoResultsCard title="No method selected"/>;

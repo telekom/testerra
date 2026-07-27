@@ -139,7 +139,7 @@ const ErrorDetails = () => {
                                             <ContentCopyIcon fontSize="small"/>
                                         </IconButton>
                                     </Stack>
-                                    <Stack spacing={1}>
+                                    <Stack>
                                         {stackTrace.map((cause, causeIndex) => {
                                             const stackTraceElements = cause.stackTraceElements ?? [];
                                             const stackTraceSource = {

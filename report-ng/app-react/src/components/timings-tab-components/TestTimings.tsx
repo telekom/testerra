@@ -134,6 +134,13 @@ const TestTimings = () => {
     }, [chartData, bars, selectedMethod, theme.custom.testTimings.barColor, theme.custom.testTimings.barColorPale]);
 
     const option: EChartsOption = useMemo(() => ({
+        grid: {
+            left: 50,
+            right: 100,
+            top: 40,
+            bottom: 16,
+            containLabel: true,
+        },
         tooltip: {
             trigger: "axis",
             axisPointer: {type: "shadow"},

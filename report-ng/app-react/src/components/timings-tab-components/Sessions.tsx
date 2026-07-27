@@ -175,7 +175,13 @@ const Sessions = () => {
                     restore: {},
                 },
             },
-            grid: {bottom: 100},
+            grid: {
+                left: 50,
+                right: 100,
+                top: 40,
+                bottom: 60,
+                containLabel: true,
+            },
             tooltip: {
                 textStyle: {fontSize: 13},
                 formatter: (params: any) => {
@@ -185,7 +191,7 @@ const Sessions = () => {
                     if (seriesIdx < 0 || seriesIdx >= dots.length) return "";
                     const info = dots[seriesIdx].information;
 
-                    let tooltip = `<div style="background-color:${params.color};padding:4px 8px;margin:-8px -8px 8px -8px;border-radius:3px 3px 0 0">
+                    let tooltip = `<div style="background-color:${params.color};padding:4px 8px;margin:-8px -8px 8px -8px;border-radius:3px 3px 0 0;color:white">
                         ${info.browserName ?? ""}, Version: ${info.browserVersion ?? ""}
                     </div>`;
                     tooltip += `<b>Session name:</b> ${info.sessionName}<br/>`;
@@ -217,7 +223,7 @@ const Sessions = () => {
                 max: testEndTime,
                 axisLabel: {
                     formatter: (val: number) =>
-                        `${dateFormatter(val, "time")}\n${dateFormatter(val, "date")}`,
+                        `${dateFormatter(val, "time")}\n\n${dateFormatter(val, "date")}`,
                 },
             },
             yAxis: {

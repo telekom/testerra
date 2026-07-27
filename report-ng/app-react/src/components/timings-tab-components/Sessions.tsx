@@ -23,6 +23,7 @@ import {useMemo} from "react";
 import Echart from "../../widgets/Echart";
 import ReportCard from "../../widgets/ReportCard";
 import {useReportData} from "../../provider/DataProvider";
+import {dateFormatter} from "../../utils/dateFormatter";
 import {MethodDetails} from "../../model/MethodDetails";
 import {MetricType} from "../../model/report-model/framework_pb";
 
@@ -156,6 +157,7 @@ const Sessions = () => {
 
         return {
             legend: {
+                top: 0,
                 data: [
                     {name: 'Session load', itemStyle: {color: SESSION_COLOR}},
                     {name: 'Base URL load', itemStyle: {color: BASEURL_COLOR}},
@@ -190,11 +192,11 @@ const Sessions = () => {
                     tooltip += `<b>Session id:</b> ${info.sessionId}<br/>`;
                     tooltip += `<hr/>`;
                     tooltip += `<b>Session start duration:</b> ${info.sessionDuration}s<br/>`;
-                    tooltip += `<b>Session start time:</b> ${new Date(Number(info.sessionStartTime)).toLocaleTimeString()}<br/>`;
+                    tooltip += `<b>Session start time:</b> ${dateFormatter(Number(info.sessionStartTime), "time")}<br/>`;
 
                     if (info.baseurlStartTime) {
                         tooltip += `<b>Base URL start duration:</b> ${info.baseurlDuration}s<br/>`;
-                        tooltip += `<b>Base URL start time:</b> ${new Date(Number(info.baseurlStartTime)).toLocaleTimeString()}<br/>`;
+                        tooltip += `<b>Base URL start time:</b> ${dateFormatter(Number(info.baseurlStartTime), "time")}<br/>`;
                     }
 
                     if (info.methodNames.length > 1) {
@@ -214,10 +216,8 @@ const Sessions = () => {
                 min: testStartTime,
                 max: testEndTime,
                 axisLabel: {
-                    formatter: (val: number) => {
-                        const date = new Date(val);
-                        return `${date.toLocaleTimeString()}\n\n${date.toLocaleDateString()}`;
-                    },
+                    formatter: (val: number) =>
+                        `${dateFormatter(val, "time")}\n${dateFormatter(val, "date")}`,
                 },
             },
             yAxis: {
@@ -232,7 +232,7 @@ const Sessions = () => {
     return (
         <ReportCard
             label="Session durations"
-            content={<Echart option={option} height={640} notMerge/>}
+            content={<Echart option={option} height="60dvh" autoResize notMerge/>}
         />
     );
 };

@@ -16,7 +16,6 @@ export const testTimings: ReportThemeTestTimingsStyles = {
     barColorPale: "#c8d4f4",
     container: {
         width: "100%",
-        maxWidth: {sm: "100%", md: "1700px"},
     },
     rangeSelect: {
         width: "50%",

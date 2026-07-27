@@ -16,9 +16,10 @@ import {CanvasRenderer} from 'echarts/renderers';
 export interface EChartProps {
     option: EChartsOption;
     width?: number;
-    height?: number;
+    height?: number | string;
     onEvents?: Record<string, (params: any, chart: any) => void>;
     notMerge?: boolean;
+    autoResize?: boolean;
 }
 
 echarts.use([
@@ -27,22 +28,26 @@ echarts.use([
     CanvasRenderer,
 ]);
 
-const Echart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerge}) => {
+const Echart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerge, autoResize = false}) => {
     const style: React.CSSProperties = {
-        ...(width !== undefined ? {width} : {}),
+        width: width ?? '100%',
         ...(height !== undefined ? {height} : {}),
     };
     const opts = {
         ...(width !== undefined ? {width} : {}),
-        ...(height !== undefined ? {height} : {}),
+        ...(typeof height === 'number' ? {height} : {}),
     };
 
-    // TODO fix resize
-
     return (
-        <div style={style}>
-            <ReactEChartsCore echarts={echarts} option={option} opts={opts} autoResize={false} onEvents={onEvents} notMerge={notMerge}/>
-        </div>
+        <ReactEChartsCore
+            echarts={echarts}
+            option={option}
+            opts={opts}
+            autoResize={autoResize}
+            onEvents={onEvents}
+            notMerge={notMerge}
+            style={style}
+        />
     )
 };
 

@@ -60,6 +60,7 @@ const TestTimings = () => {
     const {executionMngr} = useReportData();
     const navigate = useNavigate();
     const theme = useTheme();
+    // const isMobileLayout = useMediaQuery(theme.breakpoints.down("md"));
     const configurationChipColor = theme.palette.lightGrey.main;
     const {
         rangeNum,
@@ -233,7 +234,7 @@ const TestTimings = () => {
                 <Grid size={12}>
                     <ReportCard
                         label="Test durations"
-                        content={<Echart option={option} height={500} onEvents={{"click": handleBarClick}} notMerge/>}
+                        content={<Echart option={option} height="55dvh" onEvents={{"click": handleBarClick}} autoResize notMerge/>}
                     />
                 </Grid>
             </Grid>

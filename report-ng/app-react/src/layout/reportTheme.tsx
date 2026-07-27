@@ -34,6 +34,7 @@ import {
     sessionInfo,
     dependencies,
     errorDetails,
+    testTimings,
     type ReportThemeLogConsoleStyles,
     type ReportThemeLogLineStyles,
     type ReportThemeCodeViewStyles,
@@ -45,6 +46,7 @@ import {
     type ReportThemeSessionInfoStyles,
     type ReportThemeDependenciesStyles,
     type ReportThemeErrorDetailsStyles,
+    type ReportThemeTestTimingsStyles,
     type Status
 } from "./reportThemeCustom";
 
@@ -74,7 +76,8 @@ export const reportTheme = createTheme({
         priorityMessages,
         sessionInfo,
         dependencies,
-        errorDetails
+        errorDetails,
+        testTimings
     },
     cssVariables: {
         nativeColor: true,
@@ -172,6 +175,7 @@ declare module "@mui/material/styles" {
             sessionInfo: ReportThemeSessionInfoStyles;
             dependencies: ReportThemeDependenciesStyles;
             errorDetails: ReportThemeErrorDetailsStyles;
+            testTimings: ReportThemeTestTimingsStyles;
         }
     }
 
@@ -190,6 +194,7 @@ declare module "@mui/material/styles" {
             sessionInfo?: Partial<ReportThemeSessionInfoStyles>;
             dependencies?: Partial<ReportThemeDependenciesStyles>;
             errorDetails?: Partial<ReportThemeErrorDetailsStyles>;
+            testTimings?: Partial<ReportThemeTestTimingsStyles>;
         }
     }
 

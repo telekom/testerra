@@ -18,7 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-type LogTimestampFormat = "short" | "long";
+type LogTimestampFormat = "short" | "long" | "date" | "time";
 
 const timestampCache = new Map<string, string>();
 
@@ -49,6 +49,19 @@ const longTimestampFormatter = new Intl.DateTimeFormat("en-GB", {
     hour12: false,
 });
 
+const dateOnlyFormatter = new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+});
+
+const timeOnlyFormatter = new Intl.DateTimeFormat("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+});
+
 export const dateFormatter = (
     timestamp?: number,
     format: LogTimestampFormat = "short"
@@ -65,10 +78,16 @@ export const dateFormatter = (
     }
 
     const date = new Date(timestamp);
-    const formattedTimestamp =
-        format === "short"
-            ? formatShortTimestamp(date)
-            : longTimestampFormatter.format(date);
+    let formattedTimestamp: string;
+    if (format === "short") {
+        formattedTimestamp = formatShortTimestamp(date);
+    } else if (format === "date") {
+        formattedTimestamp = dateOnlyFormatter.format(date);
+    } else if (format === "time") {
+        formattedTimestamp = timeOnlyFormatter.format(date);
+    } else {
+        formattedTimestamp = longTimestampFormatter.format(date);
+    }
 
     timestampCache.set(cacheKey, formattedTimestamp);
     return formattedTimestamp;

@@ -36,7 +36,7 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
             {
                 name: 'Tests',
                 type: 'pie',
-                radius: [50, 120],
+                radius: ['35%', '70%'],
                 selectedMode: 'single', // how many items can be selected at once
                 selectedOffset: 5,      // how far slice is away from rest of the pie
                 data: data,
@@ -58,7 +58,7 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
         <ReportCard
             label="Breakdown"
             sxCard={sx}
-            content={<Echart option={option} onEvents={onEvents} notMerge={true}/>}
+            content={<Echart option={option} onEvents={onEvents} notMerge={true} autoResize={true}/>}
         />
     );
 };

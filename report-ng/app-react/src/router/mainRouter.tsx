@@ -70,7 +70,7 @@ export const routesConfig: RouteObject[] = [
                 handle: {label: "About", show: true, icon: <InfoRoundedIcon />} as RouteHandle
             },
             {
-                path: "threads/:methodId?",
+                path: "threads",
                 element: <ThreadsPage/>,
                 handle: {label: "Threads", show: true, icon: <ClearAllIcon />} as RouteHandle
             },

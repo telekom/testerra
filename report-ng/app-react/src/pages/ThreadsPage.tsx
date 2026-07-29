@@ -12,9 +12,10 @@ import {
     Autocomplete
 } from "@mui/material";
 import {useSearchParams, useNavigate} from "react-router-dom";
-import {useMemo, useRef, useEffect} from "react";
-import type {EChartsOption} from 'echarts';
+import {useMemo, useRef, useEffect, type SyntheticEvent} from "react";
+import type {EChartsOption, TooltipComponentFormatterCallbackParams, ECElementEvent, EChartsType, CustomSeriesOption} from 'echarts';
 import * as echarts from 'echarts';
+import type {SelectChangeEvent} from "@mui/material/Select";
 import {useReportData} from '../provider/DataProvider';
 import {dateFormatter} from '../utils/dateFormatter';
 import {StatusService} from '../model/status-service';
@@ -161,14 +162,15 @@ const ThreadsPage = () => {
 
         const options: EChartsOption = {
             tooltip: {
-                formatter: function (params: any) {
-                    if (!params || !params.value) return '';
+                formatter: function (params: TooltipComponentFormatterCallbackParams) {
+                    if (!params || Array.isArray(params) || !params.value) return '';
+                    const value = params.value as TimelineEntry['value'];
                     return '<div style="background-color: ' +
-                        params.color + '; padding: 5px; color: white; margin: -10px;">' + params.name + ' (' + params.value[5] + ')</div>'
-                        + '<br>Start time: ' + new Date(params.value[1]).toLocaleString()
-                        + '<br>End time: ' + new Date(params.value[2]).toLocaleString()
-                        + '<br>Duration: ' + Math.floor(params.value[4] / 1000) + 's'
-                        + '<br>Class: ' + classNameConverter(params.value[8], ClassName.simpleName);
+                        params.color + '; padding: 5px; color: white; margin: -10px;">' + params.name + ' (' + value[5] + ')</div>'
+                        + '<br>Start time: ' + new Date(value[1]).toLocaleString()
+                        + '<br>End time: ' + new Date(value[2]).toLocaleString()
+                        + '<br>Duration: ' + Math.floor(value[4] / 1000) + 's'
+                        + '<br>Class: ' + classNameConverter(value[8], ClassName.simpleName);
                 }
             },
             dataZoom: [
@@ -282,7 +284,7 @@ const ThreadsPage = () => {
         if (!preparedTimeline.options) return null;
         if (!activeFilter) return preparedTimeline.options;
 
-        const originalSeries = (preparedTimeline.options.series as any[])[0];
+        const originalSeries = (preparedTimeline.options.series as CustomSeriesOption[])[0];
         const seriesData = (originalSeries.data as TimelineEntry[]).map(entry => ({
             ...entry,
             itemStyle: {
@@ -304,7 +306,7 @@ const ThreadsPage = () => {
     // Zooms the chart to the time range of the filtered entries.
     // Opacity changes are handled separately in chartOptions (immutable, reactive),
     // so this function only handles the zoom dispatching
-    const dispatchZoom = (instance: any) => {
+    const dispatchZoom = (instance: EChartsType | undefined) => {
         if (!chartOptions) return;
 
         if (!activeFilter) {    // reset zoom to full range if no filter is active
@@ -336,14 +338,15 @@ const ThreadsPage = () => {
         dispatchZoom(chartRef.current?.getEchartsInstance());
     }, [chartOptions, activeFilter]);
 
-    const handleChartClick = (params: any): void => {
-        if (params.value && params.value[6]) {
-            navigate(`/method/${params.value[6]}`);
+    const handleChartClick = (params: ECElementEvent): void => {
+        if (params.value) {
+            const value = params.value as TimelineEntry['value'];
+            if (value[6]) navigate(`/method/${value[6]}`);
         }
     };
 
-    const handleStatusChange = (e: any): void => {
-        const status = e.target.value as string | number;
+    const handleStatusChange = (e: SelectChangeEvent<number>): void => {
+        const status = e.target.value;
         const params = new URLSearchParams(searchParams);
         if (status && typeof status === 'number' && status > 0) {
             params.set('status', status.toString());
@@ -353,7 +356,7 @@ const ThreadsPage = () => {
         setSearchParams(params);
     };
 
-    const handleClassChange = (e: any): void => {
+    const handleClassChange = (e: SelectChangeEvent<string>): void => {
         const className: string = e.target.value;
         const params = new URLSearchParams(searchParams);
         if (className) {
@@ -364,7 +367,7 @@ const ThreadsPage = () => {
         setSearchParams(params);
     };
 
-    const handleMethodInputChange = (_e: any, value: MethodInfo | null): void => {
+    const handleMethodInputChange = (_e: SyntheticEvent, value: MethodInfo | null): void => {
         const params = new URLSearchParams(searchParams);
         if (value) {
             params.set('methodId', value.id);

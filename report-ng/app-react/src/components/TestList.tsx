@@ -103,11 +103,14 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         }
 
         // custom filter: test timings bar click
-        const timingMethodIds = filters.methods;
+        if(filters.methods && filters.methods.length > 0){
+            const timingMethodIds = filters.methods;
             filtered = filtered.filter(detail => {
                 const methodId = detail.methodContext.contextValues?.id;
                 return methodId ? timingMethodIds?.includes(methodId) : false;
             });
+        }
+
 
         // status filter
         if (filters.status && filters.status.length > 0) {

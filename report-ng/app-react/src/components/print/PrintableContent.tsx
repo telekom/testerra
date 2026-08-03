@@ -26,6 +26,7 @@ import {DateTime} from 'luxon';
 import ReportCard from '../../widgets/ReportCard';
 import FailureAspectsList from '../FailureAspectsList';
 import TestList from '../TestList';
+import {StatusService} from '../../model/status-service';
 
 interface PrintableContentProps {
     executionStatistics: ExecutionStatistics | null;
@@ -125,7 +126,7 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
                     <TestList
                         filters={{
                             status: visibleSections.testCaseList === 'failed'
-                                ? [2, 3, 4]
+                                ? StatusService.getFailedStatuses()
                                 : undefined,
                         }}
                         searchText=""

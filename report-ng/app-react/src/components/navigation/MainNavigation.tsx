@@ -10,13 +10,16 @@ import Drawer, {drawerClasses} from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import PrintIcon from "@mui/icons-material/Print";
 import * as React from "react";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import styled from "@emotion/styled";
 import {Divider, ListItemIcon, Typography} from "@mui/material";
 import logo from "../../assets/logo.png";
 import "./MainNavigation.css";
 import { blueGrey } from "@mui/material/colors";
+import PrintDialog from "../print/PrintDialog";
+import {useReportData} from "../../provider/DataProvider";
 
 const drawerWidth = 240;
 
@@ -38,7 +41,9 @@ const MainNavigation = () => {
 
     const menuRoutes = routesConfig[0].children || [];
     const location = useLocation();
+    const {executionMngr} = useReportData();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [printDialogOpen, setPrintDialogOpen] = useState(false);
 
     const toggleDrawer = (open: boolean) => () => {
         setMobileOpen(open);
@@ -139,6 +144,17 @@ const MainNavigation = () => {
                         })
                     }
                 </List>
+                <Divider/>
+                <List>
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={() => setPrintDialogOpen(true)}>
+                            <ListItemIcon>
+                                <PrintIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Print Report"/>
+                        </ListItemButton>
+                    </ListItem>
+                </List>
 
             </Box>
         </Box>
@@ -159,6 +175,10 @@ const MainNavigation = () => {
                     <Typography variant="h6" sx={{flexGrow: 1}}>
                         Test project
                     </Typography>
+
+                    <IconButton onClick={() => setPrintDialogOpen(true)} title="Print Report">
+                        <PrintIcon/>
+                    </IconButton>
 
                     <IconButton onClick={toggleDrawer(true)}>
                         <MenuIcon/>
@@ -193,6 +213,12 @@ const MainNavigation = () => {
             >
                 {drawerContent}
             </MenuDrawer>
+
+            <PrintDialog
+                open={printDialogOpen}
+                onClose={() => setPrintDialogOpen(false)}
+                executionStatistics={executionMngr?.getExecutionStatistics() || null}
+            />
         </>
     );
 };

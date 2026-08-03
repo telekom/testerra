@@ -178,9 +178,14 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         <TableContainer component={Paper}>
             <Table sx={{
                 tableLayout: "fixed",
-                width: "100%"
+                width: "100%",
+                '@media print': {
+                    '& thead': {
+                        display: 'table-row-group !important', // statt table-header-group
+                    },
+                },
             }}
-                   aria-label="simple table">
+                aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell style={{width: "10%"}}>Status ({statusCount})</TableCell>

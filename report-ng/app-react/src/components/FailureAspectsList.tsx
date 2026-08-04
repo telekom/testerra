@@ -38,7 +38,7 @@ import Link from "@mui/material/Link";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 
 import {FailureAspectStatistics} from "../model/FailureAspectStatistics";
-import NoResultsCard from "./NoResultsCard";
+import NoResultsCard from "../widgets/NoResultsCard.tsx";
 
 interface FailureAspectListProps {
     searchText: string;

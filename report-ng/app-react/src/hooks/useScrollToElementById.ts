@@ -19,27 +19,18 @@
  * under the License.
  */
 
-import { Duration } from "luxon";
+import {useEffect} from "react";
 
-export function formatDuration(value: number | string): string {
-    const ms =
-        typeof value === "string" ? Number.parseInt(value, 10) : value;
+export const useScrollToElementById = (elementId?: string | null, readyKey?: unknown) => {
+    useEffect(() => {
+        if (!elementId) {
+            return;
+        }
 
-    const d = Duration.fromMillis(ms).shiftTo(
-        "days",
-        "hours",
-        "minutes",
-        "seconds",
-        "milliseconds"
-    );
+        const timeoutId = window.setTimeout(() => {
+            document.getElementById(elementId)?.scrollIntoView();
+        }, 0);
 
-    const parts = [
-        d.days ? `${Math.floor(d.days)}d` : null,
-        d.hours ? `${Math.floor(d.hours)}h` : null,
-        d.minutes ? `${Math.floor(d.minutes)}m` : null,
-        d.seconds ? `${Math.floor(d.seconds)}s` : null,
-        d.milliseconds ? `${Math.floor(d.milliseconds)}ms` : null,
-    ].filter(Boolean); // removes 0 values
-
-    return parts.length ? parts.join(" ") : "0ms";
-}
+        return () => window.clearTimeout(timeoutId);
+    }, [elementId, readyKey]);
+};

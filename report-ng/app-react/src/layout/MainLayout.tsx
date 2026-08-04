@@ -42,6 +42,7 @@ const MainLayout = () => {
             <CssBaseline/>
             <Box sx={{
                 display: 'flex',
+                height: '100vh',
             }}
             >
                 <MainNavigation/>

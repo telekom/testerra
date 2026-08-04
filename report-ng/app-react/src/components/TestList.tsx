@@ -38,7 +38,7 @@ import type {ChipColor, FiltersState} from "../hooks/useTestListFilters";
 import {MethodDetails} from "../model/MethodDetails";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import HighlightText from "../utils/highlightText";
-import NoResultsCard from "./NoResultsCard";
+import NoResultsCard from "../widgets/NoResultsCard.tsx";
 import {formatDuration} from "../utils/durationFormatter"
 import {useTestListSort} from "../hooks/useTestListSort";
 import TableSort from "../widgets/TableSort";
@@ -135,9 +135,17 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         return filtered;
     }, [methodDetails, filters, showConfigurationMethods, executionMngr]);
 
-    const sortedMethodDetails = useMemo(() =>
-        [...filteredMethodDetails].sort(buildComparator(orderDirection, orderBy)),
-        [filteredMethodDetails, orderDirection, orderBy],
+    // Keep comparator memoized separately so React Compiler can preserve memoization.
+    // Logic-wise, sorting depends on filteredMethodDetails + orderDirection + orderBy.
+    // Hook-wise, the memo callback also references buildComparator, so we memoize a stable
+    // comparator function and depend on it to avoid stale closures and compiler warnings.
+    const comparator = useMemo(
+        () => buildComparator(orderDirection, orderBy),
+        [buildComparator, orderDirection, orderBy],
+    );
+    const sortedMethodDetails = useMemo(
+        () => [...filteredMethodDetails].sort(comparator),
+        [filteredMethodDetails, comparator],
     );
     const statusCount = useMemo(() =>
             new Set(filteredMethodDetails.map((m) => m.methodContext.resultStatus)).size,
@@ -222,7 +230,10 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                                 <Stack direction="column">
                                     <Stack direction="row" sx={{gap: 1, alignItems: "center"}}>
                                         <ReadMoreIcon/>
-                                        <Link href="#/Tests">
+                                        <Link
+                                            href={`#/method/${filteredMethodDetail?.methodContext.contextValues?.id}`}
+                                            underline="hover"
+                                        >
                                             <Typography>
                                                 <HighlightText text={filteredMethodDetail?.identifier}
                                                                searchWord={activeSearchTerms}

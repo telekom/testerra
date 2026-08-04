@@ -55,9 +55,11 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
     };
 
     return (
-        <ReportCard label="Breakdown" sxCard={sx}>
-            <Echart option={option} onEvents={onEvents} notMerge={true}/>
-        </ReportCard>
+        <ReportCard
+            label="Breakdown"
+            sxCard={sx}
+            content={<Echart option={option} onEvents={onEvents} notMerge={true}/>}
+        />
     );
 };
 export default DashboardPieChartCard;

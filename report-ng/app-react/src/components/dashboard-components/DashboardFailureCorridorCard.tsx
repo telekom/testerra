@@ -18,18 +18,22 @@ const DashboardFailureCorridorCard = ({sx}: DashboardFailureCorridorProps) => {
     ]
 
     return (
-        <ReportCard label="Failure Corridor" sxContent={{":last-child": {padding: 2}}}
-                    tooltipText="The severity distribution of failed test cases in relation to the defined test goal"
-                    sxCard={sx} >
-            <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
-                {chipList.map((chip) => (
-                    <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>
-                        <Chip label={chip.label} sx={{background: chip.chipColor, color: chip.textColor}}/>
-                        <Typography color="primary"> of {chip.total} </Typography>
-                    </Stack>
-                ))}
-            </Stack>
-        </ReportCard>
+        <ReportCard
+            label="Failure Corridor"
+            sxContent={{":last-child": {padding: 2}}}
+            tooltipText="The severity distribution of failed test cases in relation to the defined test goal"
+            sxCard={sx}
+            content={(
+                <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
+                    {chipList.map((chip) => (
+                        <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>
+                            <Chip label={chip.label} sx={{background: chip.chipColor, color: chip.textColor}}/>
+                            <Typography color="primary"> of {chip.total} </Typography>
+                        </Stack>
+                    ))}
+                </Stack>
+            )}
+        />
     );
 };
 export default DashboardFailureCorridorCard;

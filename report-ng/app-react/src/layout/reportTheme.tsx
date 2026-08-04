@@ -1,11 +1,50 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import {createTheme} from "@mui/material/styles";
 import React from "react";
 import {
     logConsole,
     logLine,
     statusColors,
+    generalDetails,
+    codeView,
+    steps,
+    methodDetailsPage,
+    durationCard,
+    priorityMessages,
+    sessionInfo,
+    dependencies,
+    errorDetails,
     type ReportThemeLogConsoleStyles,
     type ReportThemeLogLineStyles,
+    type ReportThemeCodeViewStyles,
+    type ReportThemeGeneralDetailsStyles,
+    type ReportThemeStepsStyles,
+    type ReportThemeMethodDetailsPageStyles,
+    type ReportThemeDurationCardStyles,
+    type ReportThemePriorityMessagesStyles,
+    type ReportThemeSessionInfoStyles,
+    type ReportThemeDependenciesStyles,
+    type ReportThemeErrorDetailsStyles,
     type Status
 } from "./reportThemeCustom";
 
@@ -27,6 +66,15 @@ export const reportTheme = createTheme({
         statusColors,
         logLine,
         logConsole,
+        generalDetails,
+        codeView,
+        steps,
+        methodDetailsPage,
+        durationCard,
+        priorityMessages,
+        sessionInfo,
+        dependencies,
+        errorDetails
     },
     cssVariables: {
         nativeColor: true,
@@ -115,6 +163,15 @@ declare module "@mui/material/styles" {
             statusColors: typeof statusColors;
             logLine: ReportThemeLogLineStyles;
             logConsole: ReportThemeLogConsoleStyles;
+            generalDetails: ReportThemeGeneralDetailsStyles;
+            codeView: ReportThemeCodeViewStyles;
+            steps: ReportThemeStepsStyles;
+            methodDetailsPage: ReportThemeMethodDetailsPageStyles;
+            durationCard: ReportThemeDurationCardStyles;
+            priorityMessages: ReportThemePriorityMessagesStyles;
+            sessionInfo: ReportThemeSessionInfoStyles;
+            dependencies: ReportThemeDependenciesStyles;
+            errorDetails: ReportThemeErrorDetailsStyles;
         }
     }
 
@@ -124,6 +181,15 @@ declare module "@mui/material/styles" {
             statusColors?: Partial<typeof statusColors>;
             logLine?: Partial<ReportThemeLogLineStyles>;
             logConsole?: Partial<ReportThemeLogConsoleStyles>;
+            generalDetails?: Partial<ReportThemeGeneralDetailsStyles>;
+            codeView?: Partial<ReportThemeCodeViewStyles>;
+            steps?: Partial<ReportThemeStepsStyles>;
+            methodDetailsPage?: Partial<ReportThemeMethodDetailsPageStyles>;
+            durationCard?: Partial<ReportThemeDurationCardStyles>;
+            priorityMessages?: Partial<ReportThemePriorityMessagesStyles>;
+            sessionInfo?: Partial<ReportThemeSessionInfoStyles>;
+            dependencies?: Partial<ReportThemeDependenciesStyles>;
+            errorDetails?: Partial<ReportThemeErrorDetailsStyles>;
         }
     }
 

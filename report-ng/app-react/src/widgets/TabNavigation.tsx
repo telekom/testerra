@@ -13,20 +13,29 @@ export default function TabNavigation({ tabs }: TabNavigationProps) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    let currentTab = tabs.findIndex((tab) => location.pathname.includes(tab.route));
+    const getTabBaseRoute = (route: string) => route.split("/:")[0];
+    const currentTab = tabs.findIndex((tab) =>
+        location.pathname.includes(`/${getTabBaseRoute(tab.route)}`)
+    );
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-        navigate(tabs[newValue].route);
+        navigate(getTabBaseRoute(tabs[newValue].route));
     };
 
     return (
         <Box
-            sx={{width: '100%', maxWidth: {sm: '100%', md: '1700px'}, p: '24px 32px'}}
+            sx={{width: '100%', maxWidth: {sm: '100%', md: '1700px'}, p: '24px 0px'}}
         >
             <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={currentTab} onChange={handleChange} variant="fullWidth">
                     {tabs.map((tab) => (
-                        <Tab key={tab.label} label={tab.label} icon={tab.icon} iconPosition="start" sx={{ flex: 1 }}/>
+                        <Tab
+                            key={tab.label}
+                            label={tab.count !== undefined ? `${tab.label} (${tab.count})` : tab.label}
+                            icon={tab.icon}
+                            iconPosition="start"
+                            sx={{ flex: 1 }}
+                        />
                     ))}
                 </Tabs>
             </Box>

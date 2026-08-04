@@ -34,6 +34,8 @@ interface LogLineProps {
     isActiveMatch?: boolean;
     isExpanded?: boolean;
     onToggleExpanded?: () => void;
+    isInStepsList?: boolean;
+    showMetadata?: boolean;
 }
 
 function levelClass(type?: number) {
@@ -42,7 +44,7 @@ function levelClass(type?: number) {
     return "";
 }
 
-export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false, isExpanded = false, onToggleExpanded,}) => {
+export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch = false, isExpanded = false, onToggleExpanded, isInStepsList = false, showMetadata = true}) => {
     const stackTraceLines = flattenStackTrace(log);
     const logger = StatusService.separateNamespace(log.loggerName ?? "");
     const lvlClass = levelClass(log.type);
@@ -59,13 +61,19 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
     return (
         <Box
             className={`line ${lvlClass}`}
-            sx={(theme) => theme.custom.logLine.root}
+            sx={(theme) => ({
+                ...theme.custom.logLine.root,
+                ...(isInStepsList && {
+                    ml: 0,
+                    pl: 0,
+                }),
+            })}
         >
             <Box
                 component="span"
                 sx={(theme) => theme.custom.logLine.expandToggleWrapper}
             >
-                {stackTraceLines.length > 0 && (
+                {stackTraceLines.length > 0 && isInStepsList && (
                     <Box
                         component="span"
                         sx={(theme) => theme.custom.logLine.expandToggle}
@@ -76,28 +84,32 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
                 )}
             </Box>
             <Box sx={(theme) => theme.custom.logLine.content}>
-                <HighlightText
-                    text={dateFormatter(log.timestamp, "short")}
-                    searchWord={searchTerms}
-                />
-                {log.methodContext && methodId && (
+                {showMetadata && (
                     <>
+                        <HighlightText
+                            text={dateFormatter(log.timestamp, "short")}
+                            searchWord={searchTerms}
+                        />
+                        {log.methodContext && methodId && (
+                            <>
+                                {" "}
+                                <Link
+                                    href={`#/method/${methodId}`}
+                                    underline="hover"
+                                    sx={(theme) => theme.custom.logLine.methodLink}
+                                >
+                                    [{log.threadName ?? "method"}]
+                                </Link>
+                            </>
+                        )}
                         {" "}
-                        <Link
-                            href={`#/method/${methodId}`}
-                            underline="hover"
-                            sx={(theme) => theme.custom.logLine.methodLink}
-                        >
-                            [{log.threadName ?? "method"}]
-                        </Link>
+                        [{logLevelNameConverter(log.type)}]:{" "}
+                        <span title={`${logger.package}.${logger.class}`}>
+                            <HighlightText text={logger.class} searchWord={searchTerms}/>
+                        </span>
+                        <span> - </span>
                     </>
                 )}
-                {" "}
-                [{logLevelNameConverter(log.type)}]:{" "}
-                <span title={`${logger.package}.${logger.class}`}>
-          <HighlightText text={logger.class} searchWord={searchTerms}/>
-        </span>
-                <span> - </span>
                 <Box component="span" sx={(theme) => theme.custom.logLine.message}>
                     <HighlightText text={log.message ?? ""} searchWord={searchTerms}/>
                 </Box>

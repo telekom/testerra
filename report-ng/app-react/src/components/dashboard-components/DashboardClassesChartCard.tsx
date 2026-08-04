@@ -41,9 +41,11 @@ const DashboardClassesChartCard: React.FC = () => {
     };
 
     return (
-        <ReportCard label="Test Classes" sxContent={{p: 0}}>
-            <Echart option={option} height={100}/>
-        </ReportCard>
+        <ReportCard
+            label="Test Classes"
+            sxContent={{p: 0}}
+            content={<Echart option={option} height={100}/>}
+        />
     );
 };
 export default DashboardClassesChartCard;

@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
+import List from "@mui/material/List";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
@@ -12,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import type {File as ReportFile, SessionContext} from "../model/report-model/framework_pb.ts";
 import {File} from "../model/report-model/framework_pb.ts";
 import Stack from "@mui/material/Stack";
+import DetailKeyValueListItem from "../components/method-details-tab-components/DetailKeyValueListItem.tsx";
 
 interface ModalProps {
     open: boolean;
@@ -155,55 +157,65 @@ const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], 
                             </IconButton>
                         )}
                         <Stack direction={"row"} gap={6}>
-                            <Stack direction={"column"} mx={1.5} py={1}>
-                                <Stack direction={"row"} gap={1} >
-                                    <Typography variant="caption" color="text.secondary">Title</Typography>
-                                    <Typography variant="caption">{currentScreenshot?.meta?.Title ?? "-"}</Typography>
-                                </Stack>
-
+                            <List disablePadding sx={{mx: 1.5, py: 1}}>
+                                <DetailKeyValueListItem
+                                    label="Title"
+                                    value={<Typography variant="caption">{currentScreenshot?.meta?.Title ?? "-"}</Typography>}
+                                    wideLabel={false}
+                                    compact={true}
+                                />
                                 {currentScreenshot?.meta?.URL && (
-                                    <Stack direction={"row"} gap={1}>
-                                        <Typography variant="caption" color="text.secondary"
-                                                    sx={{mt: 0.5, display: "block"}}>URL</Typography>
-                                        <Link href={currentScreenshot.meta.URL} target="_blank"
-                                              rel="noopener noreferrer" sx={{overflowWrap: "anywhere"}}>
-                                            <Typography variant={"caption"}>
-                                                {currentScreenshot.meta.URL}
-                                            </Typography>
-                                        </Link>
-                                    </Stack>
+                                    <DetailKeyValueListItem
+                                        label="URL"
+                                        value={
+                                            <Link href={currentScreenshot.meta.URL} target="_blank"
+                                                  rel="noopener noreferrer" sx={{overflowWrap: "anywhere"}}>
+                                                <Typography variant={"caption"}>{currentScreenshot.meta.URL}</Typography>
+                                            </Link>
+                                        }
+                                        wideLabel={false}
+                                        compact={true}
+                                    />
                                 )}
-
                                 {pageSourceFile?.relativePath && (
-                                    <Stack direction={"row"} gap={1}>
-                                        <Typography variant="caption" color="text.secondary"
-                                                    sx={{mt: 0.5, display: "block"}}>PageSource</Typography>
-                                        <Link href={normalizeRelativePath(pageSourceFile.relativePath)} target="_blank"
-                                              rel="noopener noreferrer" sx={{overflowWrap: "anywhere"}}>
-                                            <Typography variant={"caption"}>
-                                                {pageSourceFile.relativePath}
-                                            </Typography>
-                                        </Link>
-                                    </Stack>
+                                    <DetailKeyValueListItem
+                                        label="PageSource"
+                                        value={
+                                            <Link href={normalizeRelativePath(pageSourceFile.relativePath)} target="_blank"
+                                                  rel="noopener noreferrer" sx={{overflowWrap: "anywhere"}}>
+                                                <Typography variant={"caption"}>{pageSourceFile.relativePath}</Typography>
+                                            </Link>
+                                        }
+                                        wideLabel={false}
+                                        compact={true}
+                                    />
                                 )}
-                            </Stack>
+                            </List>
 
-                            <Stack direction={"column"} mx={1.5} py={1}>
-                                <Stack direction={"row"} gap={1}>
-                                    <Typography variant="caption" color="text.secondary">Taken</Typography>
-                                    <Typography variant="caption">
-                                        {currentScreenshot?.lastModified ? new Date(currentScreenshot.lastModified).toLocaleString() : "-"}
-                                    </Typography>
-                                </Stack>
-                                {sessionContext?.contextValues && (
-                                    <Stack direction={"row"} gap={1}>
-                                        <Typography variant="caption" color="text.secondary">Session</Typography>
+                            <List disablePadding sx={{mx: 1.5, py: 1}}>
+                                <DetailKeyValueListItem
+                                    label="Taken"
+                                    value={
                                         <Typography variant="caption">
-                                            {sessionContext.contextValues.name} (ID: {sessionContext.contextValues.id})
+                                            {currentScreenshot?.lastModified ? new Date(currentScreenshot.lastModified).toLocaleString() : "-"}
                                         </Typography>
-                                    </Stack>
+                                    }
+                                    wideLabel={false}
+                                    compact={true}
+                                />
+                                {sessionContext?.contextValues && (
+                                    <DetailKeyValueListItem
+                                        label="Session"
+                                        value={
+                                            <Typography variant="caption">
+                                                {sessionContext.contextValues.name} (ID: {sessionContext.contextValues.id})
+                                            </Typography>
+                                        }
+                                        wideLabel={false}
+                                        compact={true}
+                                    />
                                 )}
-                            </Stack>
+                            </List>
                         </Stack>
 
                         <IconButton aria-label="Open fullscreen in new tab" onClick={openFullscreen}>

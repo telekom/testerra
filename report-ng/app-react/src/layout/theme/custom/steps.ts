@@ -29,7 +29,7 @@ export const steps: ReportThemeStepsStyles = {
             position: "absolute",
             top: "0.5rem",
             bottom: 0,
-            left: "calc(20% + 21px)",
+            left: "calc(30% + 21px)",
             zIndex: 1,
             background: "#C5C5C5",
         },
@@ -56,12 +56,12 @@ export const steps: ReportThemeStepsStyles = {
     },
     stepNumber: {
         textAlign: "right",
-        width: "20%",
+        width: "30%",
         overflowWrap: "break-word",
     },
     actionLabel: {
         textAlign: "right",
-        width: "20%",
+        width: "30%",
         whiteSpace: "wrap",
         overflowWrap: "anywhere",
         position: "sticky",
@@ -69,8 +69,8 @@ export const steps: ReportThemeStepsStyles = {
     },
     actionGroupContainer: {
         position: "relative",
-        left: "20%",
-        width: "60%",
+        left: "30%",
+        width: "70%",
         mt: "-2em",
         "&:before": {
             content: '""',

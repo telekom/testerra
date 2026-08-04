@@ -26,8 +26,8 @@ import type {MethodDetails} from "../../model/MethodDetails.ts";
 import Stack from "@mui/material/Stack";
 import {Grid, Typography, useTheme} from "@mui/material";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
+import DetailKeyValueListItem from "./DetailKeyValueListItem.tsx";
 import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router-dom";
 import DurationCard from "../DurationCard.tsx";
@@ -130,109 +130,118 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                 <Grid container>
                                     <Grid size={6}>
                                         <List sx={{flex: 1, minWidth: 0}}>
-                                            <ListItem sx={(theme) => theme.custom.generalDetails.listItem} disablePadding>
-                                                <Typography variant="caption" color="textSecondary">
-                                                    Class
-                                                </Typography>
-                                                <Link
-                                                    component={RouterLink}
-                                                    to={{
-                                                        pathname: "/Tests",
-                                                        search: `class=${classNameConverter(methodDetail.classStatistics.classIdentifier, ClassName.simpleName)}`,
-                                                    }}
-                                                    sx={(theme) => theme.custom.generalDetails.wrapText}
-                                                >
+                                            <DetailKeyValueListItem
+                                                label="Class"
+                                                value={
+                                                    <Link
+                                                        component={RouterLink}
+                                                        to={{
+                                                            pathname: "/Tests",
+                                                            search: `class=${classNameConverter(methodDetail.classStatistics.classIdentifier, ClassName.simpleName)}`,
+                                                        }}
+                                                        sx={(theme) => theme.custom.generalDetails.wrapText}
+                                                    >
+                                                        <Typography variant="caption"
+                                                                    sx={(theme) => theme.custom.generalDetails.wrapText}>
+                                                            {classNameConverter(methodDetail.classStatistics.classIdentifier, ClassName.simpleName)}
+                                                        </Typography>
+                                                    </Link>
+                                                }
+                                                wideLabel={false}
+                                                compact={true}
+                                            />
+                                            <DetailKeyValueListItem
+                                                label="Package"
+                                                value={
+                                                    <Typography variant="caption"
+                                                                sx={(theme) => theme.custom.generalDetails.truncateText}>
+                                                        {classNameConverter(methodDetail.classStatistics.classIdentifier, ClassName.package)}
+                                                    </Typography>
+                                                }
+                                                wideLabel={false}
+                                                compact={true}
+                                            />
+                                            <DetailKeyValueListItem
+                                                label="Test Context"
+                                                value={
+                                                    <Typography variant="caption"
+                                                                sx={(theme) => theme.custom.generalDetails.truncateText}>
+                                                        {methodDetail?.testContext?.contextValues?.name}
+                                                    </Typography>
+                                                }
+                                                wideLabel={false}
+                                                compact={true}
+                                            />
+                                            <DetailKeyValueListItem
+                                                label="Suite"
+                                                value={
                                                     <Typography variant="caption"
                                                                 sx={(theme) => theme.custom.generalDetails.wrapText}>
-                                                        {classNameConverter(methodDetail.classStatistics.classIdentifier, ClassName.simpleName)}
+                                                        {methodDetail?.suiteContext?.contextValues?.name}
                                                     </Typography>
-                                                </Link>
-                                            </ListItem>
-                                            <ListItem sx={(theme) => theme.custom.generalDetails.listItem} disablePadding>
-                                                <Typography variant="caption" color="textSecondary">
-                                                    Package
-                                                </Typography>
-                                                <Typography variant="caption"
-                                                            sx={(theme) => theme.custom.generalDetails.truncateText}>
-                                                    {classNameConverter(methodDetail.classStatistics.classIdentifier, ClassName.package)}
-                                                </Typography>
-                                            </ListItem>
-                                            <ListItem sx={(theme) => theme.custom.generalDetails.listItem} disablePadding>
-                                                <Typography variant="caption" color="textSecondary"
-                                                            sx={(theme) => theme.custom.generalDetails.nowrapLabel}>
-                                                    Test Context
-                                                </Typography>
-                                                <Typography variant="caption"
-                                                            sx={(theme) => theme.custom.generalDetails.truncateText}>
-                                                    {methodDetail?.testContext?.contextValues?.name}
-                                                </Typography>
-                                            </ListItem>
-                                            <ListItem sx={(theme) => theme.custom.generalDetails.listItem} disablePadding>
-                                                <Typography variant="caption" color="textSecondary">
-                                                    Suite
-                                                </Typography>
-                                                <Typography variant="caption"
-                                                            sx={(theme) => theme.custom.generalDetails.wrapText}>
-                                                    {methodDetail?.suiteContext?.contextValues?.name}
-                                                </Typography>
-                                            </ListItem>
+                                                }
+                                                wideLabel={false}
+                                                compact={true}
+                                            />
                                         </List>
                                     </Grid>
 
                                     <Grid size={6}>
                                         <List sx={{flex: 1, minWidth: 0}}>
                                             {methodDetail.failedStep && (
-                                                <ListItem sx={theme.custom.generalDetails.failedInListItem}
-                                                          disablePadding>
-                                                    <Typography variant="caption" color="textSecondary"
-                                                                sx={(theme) => theme.custom.generalDetails.nowrapLabel}>
-                                                        Failed in
-                                                    </Typography>
+                                                <DetailKeyValueListItem
+                                                    label="Failed in"
+                                                    value={
+                                                        <Link
+                                                            component={RouterLink}
+                                                            to={{
+                                                                pathname: `steps/${(methodDetail?.methodContext?.failedStepIndex as number) + 1}`,
+                                                            }}
+                                                            underline="hover"
+                                                            sx={(theme) => theme.custom.generalDetails.blockLink}
+                                                        >
+                                                            <Typography
+                                                                variant="caption"
+                                                                sx={(theme) => ({...theme.custom.generalDetails.compactWrappedText, ...theme.custom.generalDetails.wrapText})}
+                                                            >
+                                                                {methodDetail.failedStep.name}
+                                                            </Typography>
+                                                        </Link>
+                                                    }
+                                                    wideLabel={false}
+                                                    compact={true}
+                                                />
+                                            )}
+                                            <DetailKeyValueListItem
+                                                label="Thread"
+                                                value={
                                                     <Link
                                                         component={RouterLink}
                                                         to={{
-                                                            pathname: `steps/${(methodDetail?.methodContext?.failedStepIndex as number) + 1}`,
+                                                            pathname: `/threads`,
+                                                            search: `methodId=${methodDetail.methodContext.contextValues?.id}`
                                                         }}
-                                                        underline="hover"
-                                                        sx={(theme) => theme.custom.generalDetails.blockLink}
                                                     >
-                                                        <Typography
-                                                            variant="caption"
-                                                            sx={(theme) => ({...theme.custom.generalDetails.compactWrappedText, ...theme.custom.generalDetails.wrapText})}
-                                                        >
-                                                            {methodDetail.failedStep.name}
+                                                        <Typography variant="caption"
+                                                                    sx={(theme) => ({...theme.custom.generalDetails.truncateText, ...theme.custom.generalDetails.compactWrappedText})}>
+                                                            {methodDetail.methodContext.threadName}
                                                         </Typography>
                                                     </Link>
-
-                                                </ListItem>
-                                            )}
-                                            <ListItem sx={(theme) => theme.custom.generalDetails.listItem} disablePadding>
-                                                <Typography variant="caption" color="textSecondary">
-                                                    Thread
-                                                </Typography>
-                                                <Link
-                                                    component={RouterLink}
-                                                    to={{
-                                                        pathname: `/threads`,
-                                                        search: `methodId=${methodDetail.methodContext.contextValues?.id}`
-                                                    }}
-                                                >
+                                                }
+                                                wideLabel={false}
+                                                compact={true}
+                                            />
+                                            <DetailKeyValueListItem
+                                                label="Run index"
+                                                value={
                                                     <Typography variant="caption"
-                                                                sx={(theme) => ({...theme.custom.generalDetails.truncateText, ...theme.custom.generalDetails.compactWrappedText})}>
-                                                        {methodDetail.methodContext.threadName}
+                                                                sx={(theme) => theme.custom.generalDetails.wrapText}>
+                                                        #{methodDetail.methodContext.methodRunIndex}
                                                     </Typography>
-                                                </Link>
-                                            </ListItem>
-                                            <ListItem sx={(theme) => theme.custom.generalDetails.listItem} disablePadding>
-                                                <Typography variant="caption" color="textSecondary"
-                                                            sx={(theme) => theme.custom.generalDetails.nowrapLabel}>
-                                                    Run index
-                                                </Typography>
-                                                <Typography variant="caption"
-                                                            sx={(theme) => theme.custom.generalDetails.wrapText}>
-                                                    #{methodDetail.methodContext.methodRunIndex}
-                                                </Typography>
-                                            </ListItem>
+                                                }
+                                                wideLabel={false}
+                                                compact={true}
+                                            />
                                         </List>
                                     </Grid>
                                 </Grid>

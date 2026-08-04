@@ -120,8 +120,13 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 if (message != null) {
                     log().error("Assertion failed: {}", message);
                 } else {
-                    String subject = String.format("%s [subject unavailable: %s]", getClass().getSimpleName(), finalThrowable.getMessage());
-                    log().error("Assertion failed: {}", subject, finalThrowable);
+                    String cause = finalThrowable != null ? finalThrowable.getMessage() : "n/a";
+                    message = String.format("%s [subject unavailable: %s]", getClass().getSimpleName(), cause);
+                    if (finalThrowable != null) {
+                        log().error("Assertion failed: {}", message, finalThrowable);
+                    } else {
+                        log().error("Assertion failed: {}", message);
+                    }
                 }
 
                 useAssertion.fail(wrapAssertionErrorRecursive(new AssertionError(message, finalThrowable)));

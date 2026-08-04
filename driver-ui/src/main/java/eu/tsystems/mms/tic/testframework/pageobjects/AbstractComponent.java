@@ -121,10 +121,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
             return this.name;
         }
 
-        if (StringUtils.isBlank(this.name)) {
-            this.name = getClass().getSimpleName();
-        }
-        String name = this.name;
+        String name = StringUtils.isBlank(this.name) ? getClass().getSimpleName() : this.name;
         return String.format("%s(%s)", name, rootElement.getName(detailed));
     }
 

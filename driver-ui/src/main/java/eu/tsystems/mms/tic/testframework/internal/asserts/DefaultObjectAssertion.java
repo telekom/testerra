@@ -36,7 +36,7 @@ public class DefaultObjectAssertion<T> extends DefaultBinaryAssertion<T> impleme
         return testSequence(
                 provider,
                 (actual) -> assertionImpl.equals(actual, expected),
-                (actual) -> assertionImpl.formatExpectEquals(null, expected, createFailMessage(failMessage))
+                (actual) -> assertionImpl.formatExpectEquals(null, expected, createAssertMessage(failMessage))
         );
     }
 
@@ -49,7 +49,7 @@ public class DefaultObjectAssertion<T> extends DefaultBinaryAssertion<T> impleme
             return testSequence(
                     provider,
                     (actual) -> assertionImpl.notEquals(actual, expected),
-                    (actual) -> assertionImpl.formatExpectNotEquals(null, expected, createFailMessage(failMessage))
+                    (actual) -> assertionImpl.formatExpectNotEquals(null, expected, createAssertMessage(failMessage))
             );
         }
     }

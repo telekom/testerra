@@ -139,7 +139,7 @@ const ErrorDetails = () => {
                                             <ContentCopyIcon fontSize="small"/>
                                         </IconButton>
                                     </Stack>
-                                    <Stack spacing={1}>
+                                    <Stack>
                                         {stackTrace.map((cause, causeIndex) => {
                                             const stackTraceElements = cause.stackTraceElements ?? [];
                                             const stackTraceSource = {
@@ -182,6 +182,9 @@ const ErrorDetails = () => {
             <Snackbar
                 open={stackTraceCopiedSnackbarOpen}
                 autoHideDuration={3000}
+                onClose={(_, reason) => {
+                    if (reason !== "clickaway") setStackTraceCopiedSnackbarOpen(false);     // snackbar needs onClose to close automatically
+                }}
                 message="Stacktrace copied to clipboard"
                 anchorOrigin={{vertical: "bottom", horizontal: "center"}}
                 action={(

@@ -32,6 +32,7 @@ interface DashboardTestResultsProps {
     onListItemClick: (newItem: string) => void;
     selectedStatus: string | null;
     sx?: SxProps<Theme>
+    withCard?: boolean;
 }
 
 const getSecondaryStatusLabel = (
@@ -60,7 +61,7 @@ const getSecondaryStatusLabel = (
     }
 };
 
-const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStatus, sx}: DashboardTestResultsProps) => {
+const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStatus, sx, withCard = true}: DashboardTestResultsProps) => {
 
     const itemList = StatusService.getRelevantStatuses()
         .map((status) => {
@@ -83,10 +84,16 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
         onListItemClick(clickedItem);
     }
 
+    const content = <ButtonList list={itemList} handleClick={handleClick}/>;
+
+    if (!withCard) {
+        return content;
+    }
+
     return (
         <ReportCard
             label={label}
-            content={<ButtonList list={itemList} handleClick={handleClick}/>}
+            content={content}
             sxContent={{p: 0, ":last-child": {padding: 0}}}
             sxCard={sx}
         />

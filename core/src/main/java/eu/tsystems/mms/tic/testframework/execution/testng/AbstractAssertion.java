@@ -344,7 +344,7 @@ public abstract class AbstractAssertion implements Assertion, Loggable {
 
     @Override
     public void assertEqualsNoOrder(Object[] actual, Object[] expected, Object subject) {
-        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
+        runAssert(() -> Assert.assertEqualsNoOrder(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
@@ -354,7 +354,7 @@ public abstract class AbstractAssertion implements Assertion, Loggable {
 
     @Override
     public void assertEqualsDeep(Set<?> actual, Set<?> expected, Object subject) {
-        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
+        runAssert(() -> Assert.assertEqualsDeep(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override
@@ -364,7 +364,7 @@ public abstract class AbstractAssertion implements Assertion, Loggable {
 
     @Override
     public void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, Object subject) {
-        runAssert(() -> Assert.assertEquals(actual, expected), formatExpectEquals(actual, expected, subject));
+        runAssert(() -> Assert.assertEqualsDeep(actual, expected), formatExpectEquals(actual, expected, subject));
     }
 
     @Override

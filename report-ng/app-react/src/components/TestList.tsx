@@ -102,6 +102,16 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
             }
         }
 
+        // custom filter: test timings bar click
+        if(filters.methods && filters.methods.length > 0){
+            const timingMethodIds = filters.methods;
+            filtered = filtered.filter(detail => {
+                const methodId = detail.methodContext.contextValues?.id;
+                return methodId ? timingMethodIds?.includes(methodId) : false;
+            });
+        }
+
+
         // status filter
         if (filters.status && filters.status.length > 0) {
             filtered = filtered.filter(detail => {

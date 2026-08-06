@@ -30,13 +30,14 @@ import {ResultStatusType} from "../model/report-model/framework_pb";
 
 export type ChipColor = "blue" | "green" | "purple" | "lightGrey" | "default";
 
-export type FilterType = "status" | "class" | "customText" | "failureAspect";
+export type FilterType = "status" | "class" | "customText" | "failureAspect" | "methods";
 
 export type FilterValueMap = {
     status: ResultStatus[];
     class: string[];
     customText: string[];
     failureAspect: string[];
+    methods: string[];
 };
 
 type FilterDef<K extends FilterType> = {
@@ -117,6 +118,18 @@ export const FILTERS: { [K in FilterType]: FilterDef<K> } = {
         },
         getLabel: () => "Custom Filter",
         tooltipText: "Custom Filter Failure Aspects"
+    },
+
+    methods: {
+        filterType: "methods",
+        parse: (methodsParam) => {
+            return methodsParam
+                ? methodsParam.split("~") as string[]
+                : []
+        },
+        convertToURLString: (methods) => (methods.length > 0 ? methods.join("~") : null),
+        getLabel: () => "Custom Filter",
+        tooltipText: "Selected Methods (from Timings chart)"
     }
 };
 
@@ -209,6 +222,13 @@ export function useTestListFilters() {
 
     // generic remove function (for arrays)
     const handleDelete = (filter: FilterType, filterToRemove?: string | ResultStatus) => {
+        // filterToRemove is undefined for combined chips (e.g. "methods"):
+        // they represent multiple values and therefore clear the whole filter at once.
+        if (filterToRemove === undefined) {
+            setFilter(filter as any, [] as any);
+            return;
+        }
+
         const currentFilters = (filters[filter] ?? []) as any[];
         const updatedFilters = currentFilters.filter(filter => filter !== filterToRemove);
         setFilter(filter as any, updatedFilters as any);

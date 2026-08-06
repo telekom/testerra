@@ -23,12 +23,16 @@ import Box from "@mui/material/Box";
 import {Grid, Switch, Typography} from "@mui/material";
 import StatusSelectInput from "../widgets/StatusSelectInput";
 import MultiSelectInput from "../widgets/MultiSelectInput";
-import {useTestListFilters} from "../hooks/useTestListFilters";
+import {useChipListFilters} from "../hooks/useChipListFilters";
+import type {FilterType} from "../hooks/useChipListFilters";
 import SelectedFiltersChips from "../components/SelectedFilterChips";
 import TestList from "../components/TestList";
 import SearchInput from "../widgets/SearchInput";
 import {useState} from "react";
 import Stack from "@mui/material/Stack";
+
+// list of filter types that are used for the test list (+ part of FilterType)
+const TEST_LIST_FILTER_TYPES = ["status", "class", "customText", "failureAspect", "methods"] as const satisfies readonly FilterType[];
 
 const TestsPage = () => {
     const {
@@ -40,7 +44,7 @@ const TestsPage = () => {
         handleConfigurationMethodsChecked,
         handleDelete,
         clearAll,
-    } = useTestListFilters();
+    } = useChipListFilters(TEST_LIST_FILTER_TYPES);
 
     const selectedStatuses = filters.status ?? [];
     const selectedClasses = filters.class ?? [];

@@ -31,7 +31,7 @@ import DetailKeyValueListItem from "./DetailKeyValueListItem.tsx";
 import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router-dom";
 import DurationCard from "../DurationCard.tsx";
-import type {ChipColor} from "../../hooks/useTestListFilters.tsx";
+import type {ChipColor} from "../../hooks/useChipListFilters.tsx";
 import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import LazyImage from "../../widgets/LazyImage.tsx";
 import {useState} from "react";
@@ -219,7 +219,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                                         component={RouterLink}
                                                         to={{
                                                             pathname: `/threads`,
-                                                            search: `methodId=${methodDetail.methodContext.contextValues?.id}`
+                                                            search: `method=${methodDetail.methodContext.contextValues?.id}`
                                                         }}
                                                     >
                                                         <Typography variant="caption"

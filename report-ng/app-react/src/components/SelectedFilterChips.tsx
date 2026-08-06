@@ -20,10 +20,10 @@
  */
 
 import type {ResultStatus} from "../model/status-service";
-import type {FilterType, FiltersState} from "../hooks/useTestListFilters"
+import type {FilterType, FiltersState} from "../hooks/useChipListFilters"
 import ReportChip from "../widgets/ReportChip";
 import {Button, Stack} from "@mui/material";
-import {FILTERS} from "../hooks/useTestListFilters";
+import {FILTERS} from "../hooks/useChipListFilters";
 
 type SelectedFiltersChipsProps = {
     selectedFilters: FiltersState,

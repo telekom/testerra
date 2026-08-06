@@ -34,7 +34,7 @@ import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {Stack, Typography} from "@mui/material";
 import Link from '@mui/material/Link';
-import type {ChipColor, FiltersState} from "../hooks/useTestListFilters";
+import type {ChipColor, FiltersState} from "../hooks/useChipListFilters";
 import {MethodDetails} from "../model/MethodDetails";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import HighlightText from "../utils/highlightText";

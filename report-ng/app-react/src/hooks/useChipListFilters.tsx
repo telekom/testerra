@@ -28,9 +28,9 @@ import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import {useMemo} from "react";
 import {ResultStatusType} from "../model/report-model/framework_pb";
 
-export type ChipColor = "blue" | "green" | "purple" | "lightGrey" | "default";
+export type ChipColor = "blue" | "green" | "purple" | "pink" | "lightGrey" | "default";
 
-export type FilterType = "status" | "class" | "customText" | "failureAspect" | "methods";
+export type FilterType = "status" | "class" | "customText" | "failureAspect" | "methods" | "method";
 
 export type FilterValueMap = {
     status: ResultStatus[];
@@ -38,6 +38,7 @@ export type FilterValueMap = {
     customText: string[];
     failureAspect: string[];
     methods: string[];
+    method: string[];
 };
 
 type FilterDef<K extends FilterType> = {
@@ -130,12 +131,26 @@ export const FILTERS: { [K in FilterType]: FilterDef<K> } = {
         convertToURLString: (methods) => (methods.length > 0 ? methods.join("~") : null),
         getLabel: () => "Custom Filter",
         tooltipText: "Custom Test Filter"
+    },
+
+    method: {
+        filterType: "method",
+        parse: (methodParam) => {
+            return methodParam
+                ? methodParam
+                    .split("~") as string[]
+                : []
+        },
+        convertToURLString: (methods) => (methods.length > 0 ? methods.join("~") : null),
+        color: "pink",
+        getLabel: (value) => String(value),
+        tooltipText: "Method"
     }
 };
 
 export type FiltersState = Partial<FilterValueMap>;     // Partial because not every filter has to be set always
 
-export function useTestListFilters() {
+export function useChipListFilters(filterTypes: readonly FilterType[]) {
     const {executionMngr} = useReportData();
 
     // only update classMenuItems if executionManager changes
@@ -171,7 +186,7 @@ export function useTestListFilters() {
     // read filters from URL when searchParam changes (useMemo)
     const filters: FiltersState = React.useMemo(() => {
         const updatedFilters: FiltersState = {};
-        (Object.keys(FILTERS) as FilterType[]).forEach((filterType) => {
+        filterTypes.forEach((filterType) => {
             const filterDefinition = FILTERS[filterType];
             const parsedFilter = filterDefinition.parse(searchParams.get(filterDefinition.filterType));
 
@@ -181,7 +196,7 @@ export function useTestListFilters() {
             }
         });
         return updatedFilters;
-    }, [searchParams]);
+    }, [filterTypes, searchParams]);
 
     // helper: update URL
     const setFilter = <T extends FilterType>(filter: T, updatedFilter: FilterValueMap[T]) => {
@@ -201,7 +216,7 @@ export function useTestListFilters() {
 
     const clearAll = () => {
         const params = new URLSearchParams(searchParams);
-        (Object.keys(FILTERS) as FilterType[]).forEach((type) => {
+        filterTypes.forEach((type) => {
             params.delete(FILTERS[type].filterType);
         });
         setSearchParams(params);

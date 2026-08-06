@@ -2,26 +2,35 @@ import Box from "@mui/material/Box";
 import {
     Card,
     CircularProgress,
-    FormControl,
     Grid,
-    InputLabel,
-    MenuItem,
-    Select,
     Stack,
     TextField,
+    Typography,
     Autocomplete
 } from "@mui/material";
-import {useSearchParams, useNavigate} from "react-router-dom";
-import {useMemo, useRef, useEffect, type SyntheticEvent} from "react";
-import type {EChartsOption, TooltipComponentFormatterCallbackParams, ECElementEvent, EChartsType, CustomSeriesOption} from 'echarts';
+import {useNavigate} from "react-router-dom";
+import {useMemo, useRef, useEffect, useCallback, type SyntheticEvent} from "react";
+import type {
+    EChartsOption,
+    TooltipComponentFormatterCallbackParams,
+    ECElementEvent,
+    EChartsType,
+    CustomSeriesOption
+} from 'echarts';
 import * as echarts from 'echarts';
-import type {SelectChangeEvent} from "@mui/material/Select";
 import {useReportData} from '../provider/DataProvider';
 import {dateFormatter} from '../utils/dateFormatter';
 import {StatusService} from '../model/status-service';
+import type {ResultStatus} from '../model/status-service';
 import {ClassName, classNameConverter} from "../utils/classNameConverter.ts";
 import type {MethodContext} from '../model/report-model/framework_pb';
 import Echart, {type EchartRef} from "../widgets/Echart.tsx";
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import {useChipListFilters} from "../hooks/useChipListFilters";
+import type {FilterType} from "../hooks/useChipListFilters";
+import StatusSelectInput from "../widgets/StatusSelectInput";
+import MultiSelectInput from "../widgets/MultiSelectInput";
+import SelectedFiltersChips from "../components/SelectedFilterChips";
 
 // Types
 interface MethodInfo {
@@ -38,40 +47,38 @@ interface TimelineEntry {
     };
 }
 
+// list of filter types that are used for the thread list (+ part of FilterType)
+const THREAD_FILTER_TYPES = ["status", "class", "method"] as const satisfies readonly FilterType[];
+
 const ThreadsPage = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    const methodIdParam = searchParams.get("methodId");
-    const statusParam = searchParams.get("status");
-    const classParam = searchParams.get("class");
-
-    const selectedStatus = statusParam ? parseInt(statusParam) : null;
-    const selectedClass = classParam ?? null;
+    // Status, class and method filters are shared with the test list and are read from / written to
+    // the URL by the same hook, so filtering work identically on both pages.
+    const {
+        statusMenuItems,
+        classMenuItems,
+        filters,
+        setFilter,
+        handleDelete,
+        clearAll,
+    } = useChipListFilters(THREAD_FILTER_TYPES);
 
     const {executionMngr, isLoading} = useReportData();
 
     const chartRef = useRef<EchartRef | null>(null);
 
-    const availableStatuses = useMemo(
-        () => executionMngr?.getExecutionStatistics().availableStatuses || [],
-        [executionMngr]
-    );
-
     const methodLookup = useMemo((): MethodInfo[] => {
         if (!executionMngr) return [];
-        const methodInfo: MethodInfo[] = [];
-        const methodContexts = Object.values(
-            executionMngr.getExecutionAggregate().methodContexts || {}
-        );
-        for (const methodContext of methodContexts) {
-            if (!methodContext.contextValues) continue;
-            methodInfo.push({
-                id: methodContext.contextValues.id ?? "",
-                name: methodContext.contextValues.name + " (" + methodContext.methodRunIndex + ")"
-            });
-        }
-        return methodInfo.sort((a, b) => a.name.localeCompare(b.name));
+        const methodContexts = executionMngr.getExecutionAggregate().methodContexts || {};
+        return Object.entries(methodContexts)
+            // methods without a name would only be displayed by their id, so they are skipped
+            .filter(([, methodContext]) => methodContext.contextValues?.name)
+            .map(([methodId]) => ({
+                id: methodId,
+                name: executionMngr.getMethodName(methodId),
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
     }, [executionMngr]);
 
     // Values for presentation
@@ -267,31 +274,41 @@ const ThreadsPage = () => {
     }, [executionMngr]);
 
 
-    // Single source of truth for the active filter, derived from URL params.
-    // Only one filter can be active at a time (status > class > method priority).
-    const activeFilter = useMemo(() =>
-        statusParam ? {value: parseInt(statusParam) as string | number, index: 7}
-        : classParam ? {value: classParam as string | number, index: 8}
-        : methodIdParam ? {value: methodIdParam as string | number, index: 6}
-        : null,
-        [statusParam, classParam, methodIdParam]
-    );
+    // Single source of truth for the active filters, derived from URL params.
+    // All three filters are multi-value (like in the test list) and are combined with AND.
+    const activeFilters = useMemo(() => {
+        const statuses = filters.status ?? [];
+        const classes = filters.class ?? [];
+        const methodIds = filters.method ?? [];
+        return {
+            statuses,
+            classes,
+            methodIds,
+            isActive: statuses.length > 0 || classes.length > 0 || methodIds.length > 0
+        };
+    }, [filters.status, filters.class, filters.method]);
 
-    // Derives the final chart config from the cached threads timeline and the active filter.
+    // A timeline entry is highlighted when it matches every active filter.
+    // Non-matching entries are never removed, they only get a reduced opacity.
+    const matchesActiveFilters = useCallback((value: TimelineEntry['value']) => {
+        if (activeFilters.methodIds.length > 0 && !activeFilters.methodIds.includes(value[6])) return false;
+        if (activeFilters.statuses.length > 0 && !activeFilters.statuses.includes(value[7] as ResultStatus)) return false;
+        return !(activeFilters.classes.length > 0 && !activeFilters.classes.includes(classNameConverter(value[8], ClassName.simpleName)));
+    }, [activeFilters]);
+
+    // Derives the final chart config from the cached threads timeline and the active filters.
     // When a filter is active, each entry gets full or reduced opacity — without mutating
     // the original preparedTimeline.options (immutable spread instead of forEach-mutation).
     const chartOptions = useMemo((): EChartsOption | null => {
         if (!preparedTimeline.options) return null;
-        if (!activeFilter) return preparedTimeline.options;
+        if (!activeFilters.isActive) return preparedTimeline.options;
 
         const originalSeries = (preparedTimeline.options.series as CustomSeriesOption[])[0];
         const seriesData = (originalSeries.data as TimelineEntry[]).map(entry => ({
             ...entry,
             itemStyle: {
                 ...entry.itemStyle,
-                opacity: entry.value[activeFilter.index] === activeFilter.value
-                    ? 1
-                    : OPACITY_OF_INACTIVE_ELEMENTS
+                opacity: matchesActiveFilters(entry.value) ? 1 : OPACITY_OF_INACTIVE_ELEMENTS
             }
         }));
 
@@ -301,15 +318,24 @@ const ThreadsPage = () => {
             ...preparedTimeline.options,
             series: [{...originalSeries, data: seriesData}]
         };
-    }, [preparedTimeline.options, activeFilter]);
+    }, [preparedTimeline.options, activeFilters, matchesActiveFilters]);
+
+    // The filters never remove entries from the chart, so an over-restrictive filter combination
+    // would silently highlight nothing. This flag drives an explicit hint next to the filter chips.
+    const hasNoHighlightedEntries = useMemo(() => {
+        if (!activeFilters.isActive) return false;
+        const seriesData = (preparedTimeline.options?.series as CustomSeriesOption[])?.[0]?.data as TimelineEntry[] | undefined;
+        if (!seriesData) return false;
+        return !seriesData.some(entry => matchesActiveFilters(entry.value));
+    }, [preparedTimeline.options, activeFilters, matchesActiveFilters]);
 
     // Zooms the chart to the time range of the filtered entries.
     // Opacity changes are handled separately in chartOptions (immutable, reactive),
     // so this function only handles the zoom dispatching
-    const dispatchZoom = (instance: EChartsType | undefined) => {
+    const dispatchZoom = useCallback((instance: EChartsType | undefined) => {
         if (!chartOptions) return;
 
-        if (!activeFilter) {    // reset zoom to full range if no filter is active
+        if (!activeFilters.isActive) {    // reset zoom to full range if no filter is active
             instance?.dispatchAction({type: 'dataZoom', id: 'threadZoom', start: 0, end: 100});
             return;
         }
@@ -317,8 +343,8 @@ const ThreadsPage = () => {
         const seriesData = (chartOptions.series as echarts.EChartsOption[])?.[0]?.data as TimelineEntry[];
         if (!seriesData) return;
 
-        // find matching entries to calculare their start and end timespan for the zoom
-        const matching = seriesData.filter(e => e.value[activeFilter.index] === activeFilter.value);
+        // find matching entries to calculate their start and end timespan for the zoom
+        const matching = seriesData.filter(entry => matchesActiveFilters(entry.value));
         if (matching.length === 0) return;
 
         const zoomStart = Math.min(...matching.map(e => e.value[1]));
@@ -331,12 +357,12 @@ const ThreadsPage = () => {
             startValue: zoomStart - spacing,
             endValue: zoomEnd + spacing
         });
-    };
+    }, [chartOptions, activeFilters, matchesActiveFilters]);
 
     // Re-zooms whenever the chart config changes (filter or data update).
     useEffect(() => {
         dispatchZoom(chartRef.current?.getEchartsInstance());
-    }, [chartOptions, activeFilter]);
+    }, [dispatchZoom]);
 
     const handleChartClick = (params: ECElementEvent): void => {
         if (params.value) {
@@ -345,41 +371,17 @@ const ThreadsPage = () => {
         }
     };
 
-    const handleStatusChange = (e: SelectChangeEvent<number>): void => {
-        const status = e.target.value;
-        const params = new URLSearchParams(searchParams);
-        if (status && typeof status === 'number' && status > 0) {
-            params.set('status', status.toString());
-        } else {
-            params.delete('status');
-        }
-        setSearchParams(params);
+    const handleMethodInputChange = (_e: SyntheticEvent, value: MethodInfo[]): void => {
+        setFilter("method", value.map(method => method.id));
     };
 
-    const handleClassChange = (e: SelectChangeEvent<string>): void => {
-        const className: string = e.target.value;
-        const params = new URLSearchParams(searchParams);
-        if (className) {
-            params.set('class', className);
-        } else {
-            params.delete('class');
-        }
-        setSearchParams(params);
-    };
-
-    const handleMethodInputChange = (_e: SyntheticEvent, value: MethodInfo | null): void => {
-        const params = new URLSearchParams(searchParams);
-        if (value) {
-            params.set('methodId', value.id);
-        } else {
-            params.delete('methodId');
-        }
-        setSearchParams(params);
-    };
-
-    const isStatusDisabled = !!(classParam || methodIdParam);
-    const isClassDisabled = !!(statusParam || methodIdParam);
-    const isMethodDisabled = !!(statusParam || classParam);
+    const selectedMethods = useMemo(
+        () => {
+            const selectedIds = new Set(filters.method ?? []);
+            return methodLookup.filter(method => selectedIds.has(method.id));
+        },
+        [methodLookup, filters.method]
+    );
 
     if (isLoading) {
         return <CircularProgress/>;
@@ -390,67 +392,57 @@ const ThreadsPage = () => {
             <Stack spacing={2}>
                 <Grid container spacing={2}>
                     <Grid size={2}>
-                        <FormControl fullWidth sx={isStatusDisabled ? {cursor: 'not-allowed', '& *': {pointerEvents: 'none'}} : undefined}>
-                            <InputLabel sx={isStatusDisabled ? {color: 'text.disabled'} : undefined}>Status</InputLabel>
-                            <Select<number>
-                                value={selectedStatus || ''}
-                                onChange={handleStatusChange}
-                                label="Status"
-                                disabled={isStatusDisabled}
-                            >
-                                <MenuItem value="">
-                                    (All)
-                                </MenuItem>
-                                {availableStatuses.map((status: number) => (
-                                    <MenuItem key={status} value={status}>
-                                        {StatusService.getLabel(status as unknown as string)}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <StatusSelectInput label="Status"
+                                           selectedStatuses={filters.status ?? []}
+                                           onChange={(newStatuses) => setFilter("status", newStatuses)}
+                                           menuItems={statusMenuItems}/>
                     </Grid>
 
                     <Grid size={3}>
-                        <FormControl fullWidth sx={isClassDisabled ? {cursor: 'not-allowed', '& *': {pointerEvents: 'none'}} : undefined}>
-                            <InputLabel sx={isClassDisabled ? {color: 'text.disabled'} : undefined}>Class</InputLabel>
-                            <Select<string>
-                                value={selectedClass || ''}
-                                onChange={handleClassChange}
-                                label="Class"
-                                disabled={isClassDisabled}
-                                MenuProps={{PaperProps: {sx: {maxHeight: '50vh'}}}}
-                            >
-                                <MenuItem value="">
-                                    (All)
-                                </MenuItem>
-                                {[...(executionMngr?.getExecutionStatistics()?.classStatistics ?? [])]
-                                    .sort((a, b) => a.classIdentifier.localeCompare(b.classIdentifier))
-                                    .map(classStat => (
-                                    <MenuItem key={classStat.classIdentifier} value={classStat.classIdentifier}>
-                                        {classStat.classIdentifier.split('.').pop()}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <MultiSelectInput label="Class"
+                                          values={filters.class ?? []}
+                                          onChange={(newClasses) => setFilter("class", newClasses)}
+                                          menuItems={classMenuItems}
+                                          renderValue={(selected: string[]) => {
+                                              if (!selected?.length) return "";
+                                              if (selected.length === 1) return "1 class selected";
+                                              return `${selected.length} classes selected`;
+                                          }}/>
                     </Grid>
 
                     <Grid size="grow">
                         <Autocomplete
+                            multiple
+                            disableCloseOnSelect
+                            disableClearable
                             options={methodLookup}
                             getOptionLabel={(option: MethodInfo) => option.name}
-                            value={methodLookup.find(m => m.id === methodIdParam) ?? null}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            value={selectedMethods}
                             onChange={handleMethodInputChange}
-                            disabled={isMethodDisabled}
-                            sx={isMethodDisabled ? {cursor: 'not-allowed', '& *': {pointerEvents: 'none'}} : undefined}
+                            // selected methods are only represented by the filter chips below,
+                            // so the input itself always stays empty
+                            renderValue={() => null}
                             renderInput={(params) => (
                                 <TextField {...params} label="Method" placeholder="Search methods..."/>
                             )}
                         />
                     </Grid>
+
+                    <Grid size={12} minHeight={36}>
+                        <SelectedFiltersChips selectedFilters={filters}
+                                              handleDelete={handleDelete}
+                                              handleClearAllClick={clearAll}/>
+                    </Grid>
                 </Grid>
 
                 <Card sx={{width: '100%'}}>
-                    <Box sx={{height: `${preparedTimeline.cardHeight}px`, width: '100%', position: 'relative', overflow: 'hidden'}}>
+                    <Box sx={{
+                        height: `${preparedTimeline.cardHeight}px`,
+                        width: '100%',
+                        position: 'relative',
+                        overflow: 'hidden'
+                    }}>
                         {chartOptions ? (
                             <Echart ref={chartRef} option={chartOptions} onEvents={{click: handleChartClick}}
                                     notMerge={true}
@@ -460,6 +452,30 @@ const ThreadsPage = () => {
                             <Box sx={{p: 2, textAlign: 'center', color: 'text.secondary'}}>
                                 Loading chart data...
                             </Box>
+                        )}
+                        {hasNoHighlightedEntries && (
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                sx={{
+                                    position: "absolute",
+                                    top: 12,
+                                    right: 12,
+                                    zIndex: 1400,
+                                    px: "14px",
+                                    py: "8px",
+                                    borderRadius: "4px",
+                                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                                    color: "#fff",
+                                    alignItems: "center",
+                                    pointerEvents: "none",
+                                }}
+                            >
+                                <InfoOutlineIcon sx={{fontSize: 14}}/>
+                                <Typography sx={{fontSize: "13px"}}>
+                                    No entries matching this criteria
+                                </Typography>
+                            </Stack>
                         )}
                     </Box>
                 </Card>

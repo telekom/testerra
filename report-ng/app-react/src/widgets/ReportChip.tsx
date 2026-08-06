@@ -21,7 +21,7 @@
 
 import Chip from "@mui/material/Chip";
 import type {SxProps, Theme} from '@mui/material/styles';
-import type {ChipColor} from "../hooks/useTestListFilters";
+import type {ChipColor} from "../hooks/useChipListFilters";
 import Tooltip from '@mui/material/Tooltip';
 
 type ReportChipProps = {

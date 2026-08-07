@@ -140,7 +140,8 @@ const TestTimings = () => {
             right: 100,
             top: 40,
             bottom: 16,
-            containLabel: true,
+            outerBoundsMode: 'same',
+            outerBoundsContain: 'axisLabel',
         },
         tooltip: {
             trigger: "axis",

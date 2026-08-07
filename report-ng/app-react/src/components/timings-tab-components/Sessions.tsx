@@ -181,7 +181,8 @@ const Sessions = () => {
                 right: 100,
                 top: 40,
                 bottom: 60,
-                containLabel: true,
+                outerBoundsMode: 'same',
+                outerBoundsContain: 'axisLabel',
             },
             tooltip: {
                 textStyle: {fontSize: 13},

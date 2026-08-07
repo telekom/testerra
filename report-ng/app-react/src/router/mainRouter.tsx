@@ -20,6 +20,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import CodeIcon from '@mui/icons-material/Code';
+import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import type {JSX} from "react";
 import TestTimings from "../components/timings-tab-components/TestTimings";
 import Sessions from "../components/timings-tab-components/Sessions";
@@ -52,7 +53,7 @@ export const routesConfig: RouteObject[] = [
             {
                 path: "Tests",
                 element: <TestsPage/>,
-                handle: {label: "Tests", show: true, icon: <AnalyticsRoundedIcon />} as RouteHandle
+                handle: {label: "Tests", show: true, icon: <FormatListBulletedRoundedIcon />} as RouteHandle
             },
             {
                 path: "failureAspects",

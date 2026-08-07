@@ -11,7 +11,6 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import * as React from "react";
-import {useEffect} from "react";
 import styled from "@emotion/styled";
 import {Divider, ListItemIcon, Typography} from "@mui/material";
 import logo from "../../assets/logo.png";
@@ -56,12 +55,6 @@ const MainNavigation = () => {
             // backgroundColor: "#2b2b35"
         }
     }
-
-
-    useEffect(() => {
-        console.log('Pfad hat sich geändert zu:', location.pathname);
-        console.table(location); // Zeigt die Daten schick als Tabelle an
-    }, [location]);
 
     const isRouteActive = (routePath: string): boolean => {
         // check regex: path can either match exactly or start with a trailing "/" and further characters

@@ -67,9 +67,9 @@ interface TestListRowProps {
 // CELL_WIDTHS defines the shared column flex sizes used by both the sticky header
 // and the virtual row cells. Keeping them in one place ensures alignment.
 const CELL_WIDTHS = {
-    status: "8%",
+    status: "10%",
     runIndex: "10%",
-    class: "25%",
+    class: "20%",
     startTime: "10%",
     method: 1, // flex: 1 takes the remaining space
 } as const;
@@ -348,19 +348,19 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                     fontWeight: 500
                 }}
             >
-                <Box sx={{...cellSx(CELL_WIDTHS.status)}}>
+                <Box sx={{...cellSx(CELL_WIDTHS.status), alignContent: "center"}}>
                     Status ({statusCount})
                 </Box>
-                <Box sx={{...cellSx(CELL_WIDTHS.runIndex)}}>
+                <Box sx={{...cellSx(CELL_WIDTHS.runIndex), alignContent: "center"}}>
                     <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="runIndex" label="Run Index"/>
                 </Box>
-                <Box sx={cellSx(CELL_WIDTHS.class)}>
+                <Box sx={{...cellSx(CELL_WIDTHS.class), alignContent: "center"}}>
                     <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="class" label={`Class (${classCount})`}/>
                 </Box>
-                <Box sx={cellSx(CELL_WIDTHS.startTime)}>
+                <Box sx={{...cellSx(CELL_WIDTHS.startTime), alignContent: "center"}}>
                     <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="startTime" label="Start Time"/>
                 </Box>
-                <Box sx={cellSx(CELL_WIDTHS.method)}>
+                <Box sx={{...cellSx(CELL_WIDTHS.method), alignContent: "center"}}>
                     <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="method" label={`Method (${filteredMethodDetails.length})`}/>
                 </Box>
             </Box>
@@ -371,7 +371,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                 rowCount={rows.length}
                 rowHeight={rowHeight}
                 rowProps={rowProps}
-                style={{height: "calc(100dvh - 265px)", width: "100%"}}
+                style={{maxHeight: "calc(100dvh - 265px)", width: "100%"}}
             />
         </Paper>
     );

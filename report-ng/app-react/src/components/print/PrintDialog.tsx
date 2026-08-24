@@ -111,10 +111,9 @@ const checkboxOptions: CheckboxOption[] = [
 const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatistics}) => {
     const contentRef = useRef<HTMLDivElement>(null);    // points to actual printable content
     const viewportRef = useRef<HTMLDivElement>(null);   // points to preview container
-    const [currentPage, setCurrentPage] = useState(1);                            // current page to show "Page x/y" correctly
     const [viewportHeight, setViewportHeight] = useState(0);                      // current viewport height for preview calculation
     const [viewportWidth, setViewportWidth] = useState(0);                        // current viewport width for preview calculation
-    const [contentHeight, setContentHeight] = useState(0);                        // current content height for totalPages calculation
+    const [contentHeight, setContentHeight] = useState(0);                        // current content height for the preview scroll area
 
     // Fit preview to both available height and width so the A4 frame is never clipped
     // Use a minimum scale to ensure visibility during initial load
@@ -125,7 +124,6 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
             1   // do not scale the preview up
         )
         : 0.5;  // if calculation is not ready yet, show scale at 50%
-    const totalPages = Math.max(1, Math.ceil((contentHeight * CONTENT_SCALE) / PAGE_HEIGHT));
 
     const [enabledSections, setEnabledSections] = useState<Record<string, boolean>>({
         [FAILURE_ASPECTS_CARD_ID]: true,
@@ -143,23 +141,6 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
 
     const handleFilterChange = (cardId: string, filterId: string) => {
         setSelectedFilters(prev => ({...prev, [cardId]: filterId}));
-    };
-
-    const handlePreviewScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const element = e.currentTarget;
-        const pageHeight = PAGE_HEIGHT * scale;
-        if (pageHeight <= 0) return;
-
-        // Use a pixel offset so the top of the viewport is not used as page indicator
-        const page = Math.floor((element.scrollTop + element.clientHeight / 2) / pageHeight) + 1;
-
-        if (Math.floor(element.scrollTop) >= element.scrollHeight - element.clientHeight) {
-            setCurrentPage(totalPages);                               // set to total pages if you scrolled all the way down
-        } else if (element.scrollTop === 0) {
-            setCurrentPage(1);                                  // set to first page if you scrolled all the way up
-        } else {
-            setCurrentPage(Math.min(Math.max(page, 1), totalPages));  // set to the calculated page within bounds
-        }
     };
 
     // definition of sections
@@ -215,7 +196,7 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
         };
     }, [open]);
 
-    // Track the unscaled height of the printable content -> defines the page count
+    // Track the unscaled height of the printable content -> defines the preview scroll height
     useEffect(() => {
         if (!open) return;
         const measure = () => {
@@ -312,14 +293,20 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
                         position: 'relative',
                         flex: 1,
                         overflow: 'hidden',
-                        aspectRatio: '210 / 297',
+                        display: 'flex',
+                        justifyContent: 'center',
                     }}
                 >
                     <Paper
-                        onScroll={handlePreviewScroll}
                         sx={{
+                            // The page is scaled to fit the height, so the scroll container has to
+                            // be sized from the same scale - otherwise it stays wider than the page.
+                            // The extra width covers the border and the reserved scrollbar gutter.
+                            flex: '0 0 auto',
+                            width: `${PAGE_WIDTH * scale + PREVIEW_SCROLLBAR_GUTTER_PX + 2}px`,
                             height: '100%',
                             overflowX: 'hidden',
+                            scrollbarGutter: 'stable',
                             border: "1px solid rgba(0, 0, 0, .12)",
                         }}
                     >
@@ -346,22 +333,6 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
                             </Box>
                         </Box>
                     </Paper>
-                    {/* Page indicator, positioned relative to the scaled page */}
-                    <Box sx={{
-                        position: 'absolute',
-                        bottom: 12,
-                        left: '2%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        color: '#fff',
-                        padding: '8px 14px',
-                        borderRadius: '4px',
-                        fontSize: '13px',
-                        fontWeight: 'bold',
-                        zIndex: 1400,
-                        pointerEvents: 'none',
-                    }}>
-                        Page {currentPage}/{totalPages}
-                    </Box>
                 </Box>
 
                 <Divider orientation="vertical" flexItem/>

@@ -30,6 +30,7 @@ import {StatusService} from '../../model/status-service';
 import DashboardTestResultsCard from '../dashboard-components/DashboardTestResultsCard';
 import DashboardPieChartCard from '../dashboard-components/DashboardPieChartCard';
 import ClassStatisticsTable from '../ClassStatisticsTable.tsx';
+import {formatDuration} from '../../utils/durationFormatter';
 
 interface PrintableContentProps {
     executionStatistics: ExecutionStatistics | null;
@@ -56,16 +57,15 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
 
         const startTime = DateTime.fromMillis(contextValues.startTime ?? 0);
         const endTime = DateTime.fromMillis(contextValues.endTime ?? 0);
-        const duration = endTime.diff(startTime, 'milliseconds').toObject();
+        const duration = formatDuration(endTime.diff(startTime).toMillis());
 
         const sessionContexts = execAggregate.sessionContexts || {};
         const browsers = Array.from(
-            new Map(
-                Object.entries(sessionContexts).map(([_, context]) => [
-                    `${context?.browserName} ${context?.browserVersion}`,
-                    true
-                ])
-            ).keys()
+            new Set(
+                Object.values(sessionContexts).map(
+                    context => `${context?.browserName} ${context?.browserVersion}`
+                )
+            )
         ).join(', ');
 
     return (
@@ -109,7 +109,7 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
                         </Typography>
                         <Box sx={{display: 'flex', flexDirection: 'column'}}>
                             <Typography variant="body2">•
-                                Duration: {duration.hours}h {duration.minutes}m {Math.round(duration.seconds || 0)}s</Typography>
+                                Duration: {duration}</Typography>
                             <Typography variant="body2">•
                                 Started: {startTime.toFormat('dd.MM.yyyy HH:mm:ss')}</Typography>
                             <Typography variant="body2">•

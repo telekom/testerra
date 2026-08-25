@@ -20,6 +20,7 @@ import {useReportData} from '../provider/DataProvider';
 import {dateFormatter} from '../utils/dateFormatter';
 import {StatusService} from '../model/status-service';
 import {ClassName, classNameConverter} from "../utils/classNameConverter.ts";
+import {escapeHtml} from "../utils/escapeHtml.ts";
 import type {MethodContext} from '../model/report-model/framework_pb';
 import Echart, {type EchartRef} from "../widgets/Echart.tsx";
 
@@ -166,11 +167,11 @@ const ThreadsPage = () => {
                     if (!params || Array.isArray(params) || !params.value) return '';
                     const value = params.value as TimelineEntry['value'];
                     return '<div style="background-color: ' +
-                        params.color + '; padding: 5px; color: white; margin: -10px;">' + params.name + ' (' + value[5] + ')</div>'
+                        params.color + '; padding: 5px; color: white; margin: -10px;">' + escapeHtml(params.name ?? '') + ' (' + value[5] + ')</div>'
                         + '<br>Start time: ' + new Date(value[1]).toLocaleString()
                         + '<br>End time: ' + new Date(value[2]).toLocaleString()
                         + '<br>Duration: ' + Math.floor(value[4] / 1000) + 's'
-                        + '<br>Class: ' + classNameConverter(value[8], ClassName.simpleName);
+                        + '<br>Class: ' + escapeHtml(classNameConverter(value[8], ClassName.simpleName));
                 }
             },
             dataZoom: [

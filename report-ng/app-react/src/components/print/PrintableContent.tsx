@@ -29,10 +29,12 @@ import TestList from '../TestList';
 import {StatusService} from '../../model/status-service';
 import DashboardTestResultsCard from '../dashboard-components/DashboardTestResultsCard';
 import DashboardPieChartCard from '../dashboard-components/DashboardPieChartCard';
+import ClassStatisticsTable from '../ClassStatisticsTable.tsx';
 
 interface PrintableContentProps {
     executionStatistics: ExecutionStatistics | null;
     visibleSections: {
+        testClasses: boolean;
         failureAspects: 'none' | 'all' | 'major' | 'minor';
         testCaseList: 'none' | 'all' | 'failed';
     };
@@ -140,6 +142,18 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
                 }
             />
 
+            {visibleSections.testClasses && (
+                <ClassStatisticsTable classStatistics={executionStatistics.classStatistics}/>
+            )}
+
+            {visibleSections.failureAspects !== 'none' && (
+                <FailureAspectsList
+                    searchText=""
+                    expectedFailedChecked={true}
+                    type={visibleSections.failureAspects}
+                />
+            )}
+
             {visibleSections.testCaseList !== 'none' && (
                 <TestList
                     filters={{
@@ -149,14 +163,6 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
                     }}
                     searchText=""
                     showConfigurationMethods={false}
-                />
-            )}
-
-            {visibleSections.failureAspects !== 'none' && (
-                <FailureAspectsList
-                    searchText=""
-                    expectedFailedChecked={true}
-                    type={visibleSections.failureAspects}
                 />
             )}
 

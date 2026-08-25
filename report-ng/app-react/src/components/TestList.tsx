@@ -181,7 +181,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                 width: "100%",
                 '@media print': {
                     '& thead': {
-                        display: 'table-row-group !important', // statt table-header-group
+                        display: 'table-row-group !important',
                     },
                 },
             }}

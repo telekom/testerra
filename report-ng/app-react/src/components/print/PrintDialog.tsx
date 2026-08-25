@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
     Dialog,
     DialogContent,
@@ -79,9 +79,15 @@ const CONTENT_SCALE = 0.66;
 // ids für filters
 const FAILURE_ASPECTS_CARD_ID = 'failure-aspects-card';
 const TEST_LIST_CARD_ID = 'test-list-card';
+const TEST_CLASSES_CARD_ID = 'test-classes-card';
 
 // options for checkboxes
 const checkboxOptions: CheckboxOption[] = [
+    {
+        label: 'Test Classes Table',
+        id: TEST_CLASSES_CARD_ID,
+        filter: [],
+    },
     {
         label: 'Failure Aspects Table',
         id: 'failure-aspects-card',
@@ -128,6 +134,7 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
     const [enabledSections, setEnabledSections] = useState<Record<string, boolean>>({
         [FAILURE_ASPECTS_CARD_ID]: true,
         [TEST_LIST_CARD_ID]: true,
+        [TEST_CLASSES_CARD_ID]: true,
     });
 
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({
@@ -147,6 +154,7 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
     const visibleSections: {
         failureAspects: 'none' | 'all' | 'major' | 'minor';
         testCaseList: 'none' | 'all' | 'failed';
+        testClasses: boolean;
     } = {
         failureAspects: !enabledSections[FAILURE_ASPECTS_CARD_ID]
             ? 'none'
@@ -160,6 +168,7 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
             : selectedFilters[TEST_LIST_CARD_ID] === 'classes-table-failed'
                 ? 'failed'
                 : 'all',
+        testClasses: !!enabledSections[TEST_CLASSES_CARD_ID],
     };
 
     // Track the available preview area (height + width) -> page is scaled to fit A4
@@ -208,14 +217,14 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
                 }
             }
         };
-        
+
         // Measure with a small delay to ensure all content is rendered
         const timeoutId = setTimeout(measure, 100);
 
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [open, visibleSections.failureAspects, visibleSections.testCaseList, executionStatistics]);
+    }, [open, visibleSections.failureAspects, visibleSections.testCaseList, visibleSections.testClasses, executionStatistics]);
 
     const handlePrint = useReactToPrint({
         contentRef,
@@ -352,58 +361,67 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
                     <FormGroup sx={{overflowY: 'auto', mx: 2, overflow: 'visible'}}>
                         {checkboxOptions.map(option => (
                             <Box key={option.id}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={enabledSections[option.id]}
-                                            onChange={() => handleCheckboxChange(option.id)}
-                                            color="secondary"
-                                        />
-                                    }
-                                    label={<Typography color="primary">{option.label}</Typography>}
-                                    sx={{whiteSpace: 'normal'}}
-                                />
-
-                                <Box sx={{marginLeft: 3}}>
-                                    <RadioGroup
-                                        value={selectedFilters[option.id] || ''}
-                                        onChange={(e) => handleFilterChange(option.id, e.target.value)}
-                                        row
-                                        sx={{gap: 2}}
-                                    >
-                                        {option.filter.map(filter => (
-                                            <FormControlLabel
-                                                key={filter.id}
-                                                value={filter.id}
-                                                disabled={!enabledSections[option.id]}
-                                                control={
-                                                    <Tooltip
-                                                        title={filter.tooltip || ''}
-                                                        placement="top"
-                                                        slotProps={{
-                                                            popper: {
-                                                                modifiers: [
-                                                                    {
-                                                                        name: 'offset',
-                                                                        options: {
-                                                                            offset: [0, -8],
-                                                                        },
-                                                                    },
-                                                                ],
-                                                            },
-                                                        }}
-                                                    >
-                                                        <Radio color="secondary" size="medium"/>
-                                                    </Tooltip>
-                                                }
-                                                label={
-                                                    <Typography variant="body2" color="primary">
-                                                        {filter.name}
-                                                    </Typography>
-                                                }
+                                <Box sx={{
+                                    mb: 2
+                                }}>
+                                    <Typography variant="subtitle1" color="primary" sx={{fontWeight: "medium"}}>{option.label}</Typography>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={enabledSections[option.id]}
+                                                onChange={() => handleCheckboxChange(option.id)}
+                                                color="secondary"
                                             />
-                                        ))}
-                                    </RadioGroup>
+                                        }
+                                        label={<Typography color="primary">{option.label}</Typography>}
+                                        sx={{whiteSpace: 'normal'}}
+                                    />
+
+
+                                    {option.filter.length > 0 && (
+                                        <Box sx={{marginLeft: 3}}>
+                                            <RadioGroup
+                                                value={selectedFilters[option.id] || ''}
+                                                onChange={(e) => handleFilterChange(option.id, e.target.value)}
+                                                row
+                                                sx={{gap: 2}}
+                                            >
+                                                {option.filter.map(filter => (
+                                                    <FormControlLabel
+                                                        key={filter.id}
+                                                        value={filter.id}
+                                                        disabled={!enabledSections[option.id]}
+                                                        control={
+                                                            <Tooltip
+                                                                title={filter.tooltip || ''}
+                                                                placement="top"
+                                                                slotProps={{
+                                                                    popper: {
+                                                                        modifiers: [
+                                                                            {
+                                                                                name: 'offset',
+                                                                                options: {
+                                                                                    offset: [0, -8],
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                    },
+                                                                }}
+                                                            >
+                                                                <Radio color="secondary" size="medium"/>
+                                                            </Tooltip>
+                                                        }
+                                                        label={
+                                                            <Typography variant="body2" color="primary">
+                                                                {filter.name}
+                                                            </Typography>
+                                                        }
+                                                    />
+                                                ))}
+                                            </RadioGroup>
+                                        </Box>
+
+                                    )}
                                 </Box>
                             </Box>
                         ))}

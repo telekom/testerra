@@ -24,6 +24,7 @@ import Echart from "../../widgets/Echart";
 import ReportCard from "../../widgets/ReportCard";
 import {useReportData} from "../../provider/DataProvider";
 import {dateFormatter} from "../../utils/dateFormatter";
+import {escapeHtml} from "../../utils/escapeHtml";
 import {MethodDetails} from "../../model/MethodDetails";
 import {MetricType} from "../../model/report-model/framework_pb";
 
@@ -180,7 +181,8 @@ const Sessions = () => {
                 right: 100,
                 top: 40,
                 bottom: 60,
-                containLabel: true,
+                outerBoundsMode: 'same',
+                outerBoundsContain: 'axisLabel',
             },
             tooltip: {
                 textStyle: {fontSize: 13},
@@ -192,10 +194,10 @@ const Sessions = () => {
                     const info = dots[seriesIdx].information;
 
                     let tooltip = `<div style="background-color:${params.color};padding:4px 8px;margin:-8px -8px 8px -8px;border-radius:3px 3px 0 0;color:white">
-                        ${info.browserName ?? ""}, Version: ${info.browserVersion ?? ""}
+                        ${escapeHtml(info.browserName ?? "")}, Version: ${escapeHtml(info.browserVersion ?? "")}
                     </div>`;
-                    tooltip += `<b>Session name:</b> ${info.sessionName}<br/>`;
-                    tooltip += `<b>Session id:</b> ${info.sessionId}<br/>`;
+                    tooltip += `<b>Session name:</b> ${escapeHtml(info.sessionName)}<br/>`;
+                    tooltip += `<b>Session id:</b> ${escapeHtml(info.sessionId)}<br/>`;
                     tooltip += `<hr/>`;
                     tooltip += `<b>Session start duration:</b> ${info.sessionDuration}s<br/>`;
                     tooltip += `<b>Session start time:</b> ${dateFormatter(Number(info.sessionStartTime), "time")}<br/>`;
@@ -208,11 +210,11 @@ const Sessions = () => {
                     if (info.methodNames.length > 1) {
                         tooltip += `<hr/><b>Test case(s):</b><ul style="margin-top:4px;margin-bottom:4px;padding-left:20px;">`;
                         info.methodNames.forEach(name => {
-                            tooltip += `<li style="margin-bottom:2px">${name}</li>`;
+                            tooltip += `<li style="margin-bottom:2px">${escapeHtml(name)}</li>`;
                         });
                         tooltip += '</ul>';
                     } else {
-                        tooltip += `<hr/><b>Test case(s):</b> ${info.methodNames.join(', ')}`;
+                        tooltip += `<hr/><b>Test case(s):</b> ${info.methodNames.map(name => escapeHtml(name)).join(', ')}`;
                     }
                     return tooltip;
                 },

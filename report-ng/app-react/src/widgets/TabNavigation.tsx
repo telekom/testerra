@@ -14,9 +14,10 @@ export default function TabNavigation({ tabs }: TabNavigationProps) {
     const location = useLocation();
 
     const getTabBaseRoute = (route: string) => route.split("/:")[0];
-    const currentTab = tabs.findIndex((tab) =>
+    const currentTabIndex = tabs.findIndex((tab) =>
         location.pathname.includes(`/${getTabBaseRoute(tab.route)}`)
     );
+    const currentTab = currentTabIndex === -1 ? false : currentTabIndex;
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
         navigate(getTabBaseRoute(tabs[newValue].route));

@@ -14,7 +14,8 @@ const DashboardHistoryChartCard = ({sx}: DashboardHistoryChartProps) => {
             left: '3%',
             right: '3%',
             bottom: '3%',
-            containLabel: true
+            outerBoundsMode: 'same',
+            outerBoundsContain: 'axisLabel'
         },
         xAxis: [
             {

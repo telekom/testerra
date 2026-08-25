@@ -40,14 +40,14 @@ const DashboardPage = () => {
 
     const theme = useTheme()
     const {executionMngr, isLoading, error} = useReportData();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const selectedStatus = searchParams.get("status");
+
     if (isLoading) return <LinearProgress aria-label="Loading…" />;
     if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
     if (!executionMngr) return null;
 
     const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();
-
-    const [searchParams, setSearchParams] = useSearchParams();
-    const selectedStatus = searchParams.get("status");
 
     const handleStatusChange = (statusName: string) => {
         const params = new URLSearchParams(searchParams);

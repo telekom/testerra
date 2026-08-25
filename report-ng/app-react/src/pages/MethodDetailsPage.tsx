@@ -116,7 +116,7 @@ const MethodDetailsPage = () => {
     }, [executionMngr, methodDetail]);
 
     if (isLoading) return <LinearProgress aria-label="Loading…" />;
-    if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
+    if (error) return <Alert severity="error">An error occurred: {error?.message}</Alert>
     if (!executionMngr) return null;
 
     if (!methodDetail) return <NoResultsCard title="No method selected" />;

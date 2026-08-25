@@ -40,6 +40,7 @@ import type {CallbackDataParams} from "echarts/types/dist/shared";
 import {createSearchParams} from "react-router-dom";
 import {useTimingSearchParams} from "./useTimingSearchParams";
 import {buildDurationBuckets, type DurationBucket} from "./durationBuckets";
+import {escapeHtml} from "../../utils/escapeHtml";
 
 const TEST_NUMBER_LIMIT = 10;
 
@@ -139,7 +140,8 @@ const TestTimings = () => {
             right: 100,
             top: 40,
             bottom: 16,
-            containLabel: true,
+            outerBoundsMode: 'same',
+            outerBoundsContain: 'axisLabel',
         },
         tooltip: {
             trigger: "axis",
@@ -154,8 +156,8 @@ const TestTimings = () => {
                 bar.methodList.slice(0, TEST_NUMBER_LIMIT).forEach(method => {
                     const statusInfo = StatusService.get(method.status);
                     tooltip += `<div style="margin-bottom:4px">
-                        <span style="background:${statusInfo.color};color:#fff;padding:1px 6px;border-radius:20px;margin-right:4px">${statusInfo.label}</span>
-                        ${method.name}
+                        <span style="background:${statusInfo.color};color:#fff;padding:1px 6px;border-radius:20px;margin-right:4px">${escapeHtml(statusInfo.label)}</span>
+                        ${escapeHtml(method.name)}
                         ${method.methodType === MethodType.CONFIGURATION_METHOD
                         ? `<span style="background:${configurationChipColor};color:#fff;padding:1px 6px;border-radius:20px;margin-left:4px;font-size:0.85em">Configuration</span>`
                         : ""}

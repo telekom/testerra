@@ -10,6 +10,7 @@ import {
     TitleComponent,
     ToolboxComponent,
     TooltipComponent,
+    GraphicComponent,
 } from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
 
@@ -24,8 +25,8 @@ export interface EChartProps {
 }
 
 echarts.use([
-    BarChart, CustomChart, LineChart, PieChart, ScatterChart,
-    GridComponent, TooltipComponent, LegendComponent, TitleComponent, DataZoomComponent, ToolboxComponent,
+    BarChart,CustomChart, LineChart, PieChart, ScatterChart,
+    GridComponent, TooltipComponent, LegendComponent, TitleComponent, DataZoomComponent, ToolboxComponent, GraphicComponent,
     CanvasRenderer,
 ]);
 

@@ -80,6 +80,15 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
                 flexDirection: 'column',
                 gap: 2,
                 pointerEvents: 'none',
+                // do not style links in the print version
+                '& a, & a:visited': {
+                    color: 'inherit',
+                    textDecoration: 'none',
+                },
+                // remove status chip links in failure aspects list
+                '& .MuiChip-root, & .MuiChip-label': {
+                    textDecoration: 'none',
+                },
             }}
         >
             {/* Header Card */}

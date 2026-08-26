@@ -23,8 +23,8 @@ type ButtonListProps = {
 const ButtonList = ({list, disablePadding, fixedItemHeight, handleClick}: ButtonListProps) => {
     return (
         <List sx={!disablePadding ? {p: 0} : undefined}>
-            {list.map((item) => (
-                <ListItem disablePadding>
+            {list.map((item, index) => (
+                <ListItem key={index} disablePadding>
                     <ListItemButton
                         sx={{
                             alignItems: "flex-start",

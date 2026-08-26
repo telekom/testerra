@@ -12,7 +12,7 @@ interface DashboardPieChartProps {
 
 const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx}: DashboardPieChartProps) => {
 
-    let data = []
+    const data = []
     for (const status of StatusService.getRelevantStatuses()) {
         const statusGroup = StatusService.getGroup(status);
         const statusInformation = StatusService.get(status);

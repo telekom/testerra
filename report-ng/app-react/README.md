@@ -18,6 +18,11 @@ npm run build
 bunx --bun vite build
 ````
 
+## Add local testdata
+
+* Create a new folder `public` in the root of the project
+* Execute a test
+* From the created report copy the `model`, `screenshot` and `video` folders into the `public` folder
 
 ## Basic information from project generation 
 

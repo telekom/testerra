@@ -49,15 +49,17 @@ export function buildDurationBuckets<T extends { duration: number }>(
     // calculate ranges
     for (let i = 0; i < rangeNum; i++) {
         const start = i * sectionRange;
-        const end = (i + 1) * sectionRange - 1;
-        sectionLabels.push(`${start}-${end}s`);
+        const end = (i + 1) * sectionRange;
+        sectionLabels.push(`${Number(start.toFixed(2))}-${Number(end.toFixed(2))}s`);
         sectionValues.push(end);
     }
 
     const bars = sectionValues.map((sectionValue, i) => {
+        const previousSectionValue = i > 0 ? sectionValues[i - 1] : 0;
+        const isLastSection = i === sectionValues.length - 1;
         const methodList = methods.filter(m =>
-            m.duration <= sectionValue &&
-            (sectionValues[i - 1] === undefined || m.duration > sectionValues[i - 1])
+            m.duration >= previousSectionValue &&
+            (isLastSection ? m.duration <= sectionValue : m.duration < sectionValue)
         );
         return {label: sectionLabels[i], durationAmount: methodList.length, methodList};
     });

@@ -141,7 +141,7 @@ export const FILTERS: { [K in FilterType]: FilterDef<K> } = {
         },
         convertToURLString: (methods) => (methods.length > 0 ? methods.join("~") : null),
         getLabel: () => "Custom Filter",
-        tooltipText: "Custom Test Filter"
+        tooltipText: "Selected Methods (from Timings chart)"
     },
 
     method: {

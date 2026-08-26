@@ -256,8 +256,8 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                                                     sx={{color: "white"}}
                                         />}
                                     </Stack>
-                                    {filteredMethodDetail?.failureAspects.map((failureAspect) => (
-                                        <Typography variant="body2" sx={{mt: 1}}>
+                                    {filteredMethodDetail?.failureAspects.map((failureAspect, index) => (
+                                        <Typography key={index} variant="body2" sx={{mt: 1}}>
                                             {failureAspect.relevantCause?.className &&
                                             <HighlightText
                                                 text={StatusService.separateNamespace(failureAspect.relevantCause?.className).class}

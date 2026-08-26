@@ -37,6 +37,7 @@ import {
     IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import PrintIcon from '@mui/icons-material/Print';
 import {useReactToPrint} from 'react-to-print';
 import PrintableContent from './PrintableContent';
 import {ExecutionStatistics} from '../../model/ExecutionStatistics';
@@ -430,6 +431,7 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
                             onClick={() => {
                                 handlePrint();
                             }}
+                            startIcon={<PrintIcon/>}
                             variant="outlined">
                             Print
                         </Button>

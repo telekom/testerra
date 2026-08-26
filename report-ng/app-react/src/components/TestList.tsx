@@ -20,13 +20,8 @@
  */
 
 import {useMemo} from "react";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import {useReportData} from "../provider/DataProvider";
 import ReportChip from "../widgets/ReportChip";
 import {StatusService} from "../model/status-service";
@@ -44,6 +39,134 @@ import {useTestListSort} from "../hooks/useTestListSort";
 import TableSort from "../widgets/TableSort";
 import LinearProgress from '@mui/material/LinearProgress';
 import Alert from '@mui/material/Alert';
+import {List, type RowComponentProps, useDynamicRowHeight} from "react-window";
+
+// Precomputed row data: expensive derivations are calculated once in useMemo,
+// not on every render. This avoids calling StatusService.get/separateNamespace,
+// new Date().toLocaleTimeString(), and formatDuration() per row per render cycle.
+interface MethodRow {
+    detail: MethodDetails;
+    id: string;
+    displayClassName: string;
+    testStatusLabel: string;
+    testStatusColor: string;
+    failsAnnotationColor: string;
+    startTimeString: string;
+    durationString: string;
+    processedFailureAspects: Array<{
+        displayClassName?: string;
+        message: string;
+    }>;
+}
+
+interface TestListRowProps {
+    rows: MethodRow[];
+    activeSearchTerms: string[];
+}
+
+// CELL_WIDTHS defines the shared column flex sizes used by both the sticky header
+// and the virtual row cells. Keeping them in one place ensures alignment.
+const CELL_WIDTHS = {
+    status: "10%",
+    runIndex: "10%",
+    class: "20%",
+    startTime: "10%",
+    method: 1, // flex: 1 takes the remaining space
+} as const;
+
+// Shared sx for a cell box: flex-shrink:0 keeps the box from collapsing
+const cellSx = (width: string | number) =>
+    typeof width === "number"
+        ? {flex: width, p: 2, minWidth: 0, overflow: "hidden"}
+        : {flex: `0 0 ${width}`, p: 2, minWidth: 0, overflow: "hidden"};
+
+// Row component is defined outside TestList so its reference stays stable across
+// renders, which prevents react-window from needlessly remounting every row.
+function TestListRow({
+    index,
+    style,
+    rows,
+    activeSearchTerms,
+}: RowComponentProps<TestListRowProps>) {
+    const row = rows[index];
+    const {detail, id, displayClassName, testStatusLabel, testStatusColor, failsAnnotationColor, startTimeString, durationString, processedFailureAspects} = row;
+
+    return (
+        <Box
+            style={style}
+            sx={{
+                display: "flex",
+                alignItems: "stretch",
+                borderBottom: "1px solid",
+                borderColor: "divider",
+                boxSizing: "border-box",
+                "&:hover": {bgcolor: "action.hover"},
+            }}
+        >
+            {/* Status */}
+            <Box sx={{...cellSx(CELL_WIDTHS.status), display: "flex", alignItems: "center"}}>
+                <ReportChip
+                    label={testStatusLabel}
+                    size="small"
+                    sx={{background: testStatusColor, color: "white"}}
+                />
+            </Box>
+
+            {/* Run Index */}
+            <Box sx={{...cellSx(CELL_WIDTHS.runIndex), display: "flex", alignItems: "center", justifyContent: "center"}}>
+                <Typography>{detail.methodContext.methodRunIndex}</Typography>
+            </Box>
+
+            {/* Class */}
+            <Box sx={{...cellSx(CELL_WIDTHS.class), display: "flex", alignItems: "center", overflowWrap: "anywhere"}}>
+                <Link href={`#/Tests?class=${encodeURIComponent(displayClassName)}`}>
+                    <Typography>
+                        <HighlightText text={displayClassName} searchWord={activeSearchTerms}/>
+                    </Typography>
+                </Link>
+            </Box>
+
+            {/* Start Time + Duration */}
+            <Box sx={{...cellSx(CELL_WIDTHS.startTime), display: "flex", flexDirection: "column", justifyContent: "center"}}>
+                <Typography>{startTimeString}</Typography>
+                <Typography color="lightGrey" variant="body2">({durationString})</Typography>
+            </Box>
+
+            {/* Method */}
+            <Box sx={{...cellSx(CELL_WIDTHS.method), overflowWrap: "anywhere"}}>
+                <Stack direction="column">
+                    <Stack direction="row" sx={{gap: 1, alignItems: "center"}}>
+                        <ReadMoreIcon/>
+                        <Link href={`#/method/${id}`} underline="hover">
+                            <Typography>
+                                <HighlightText text={detail.identifier} searchWord={activeSearchTerms}/>
+                            </Typography>
+                        </Link>
+                        {detail.methodContext.methodType == 2 && (
+                            <ReportChip label="Configuration" size="small" color={"lightGrey" as ChipColor} sx={{color: "white"}}/>
+                        )}
+                    </Stack>
+                    {processedFailureAspects.map((fa, i) => (
+                        <Typography key={i} variant="body2" sx={{mt: 1}}>
+                            {fa.displayClassName && (
+                                <HighlightText text={fa.displayClassName} searchWord={activeSearchTerms}/>
+                            )}:
+                            <HighlightText text={fa.message} searchWord={activeSearchTerms}/>
+                        </Typography>
+                    ))}
+                    {detail.failsAnnotation?.description && (
+                        <Stack direction="row" sx={{gap: 1, alignItems: "center", mt: 1}}>
+                            <CancelIcon sx={{color: failsAnnotationColor}}/>
+                            <Typography variant="caption">
+                                <HighlightText text={detail.failsAnnotation.description} searchWord={activeSearchTerms}/>
+                            </Typography>
+                        </Stack>
+                    )}
+                </Stack>
+            </Box>
+        </Box>
+    );
+}
 
 interface TestListProps {
     filters: FiltersState;
@@ -63,7 +186,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
 
     // strings used for highlighting: live text while typing
     const activeSearchTerms = useMemo(
-        () =>(searchText.trim() ? [searchText.trim()] : []),
+        () => (searchText.trim() ? [searchText.trim()] : []),
         [searchText]
     );
 
@@ -75,7 +198,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                     methodContext.contextValues?.id
                         ? executionMngr.getMethodDetails(methodContext.contextValues.id)
                         : undefined
-                )).filter((detail): detail is MethodDetails => detail !== undefined);  // removes undefined values
+                )).filter((detail): detail is MethodDetails => detail !== undefined);
     }, [executionMngr]);
 
     // useMemo to only render new if methodDetails, filter or showConfigurationMethods change
@@ -103,14 +226,13 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         }
 
         // custom filter: test timings bar click
-        if(filters.methods && filters.methods.length > 0){
+        if (filters.methods && filters.methods.length > 0) {
             const timingMethodIds = filters.methods;
             filtered = filtered.filter(detail => {
                 const methodId = detail.methodContext.contextValues?.id;
                 return methodId ? timingMethodIds?.includes(methodId) : false;
             });
         }
-
 
         // status filter
         if (filters.status && filters.status.length > 0) {
@@ -146,9 +268,6 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
     }, [methodDetails, filters, showConfigurationMethods, executionMngr]);
 
     // Keep comparator memoized separately so React Compiler can preserve memoization.
-    // Logic-wise, sorting depends on filteredMethodDetails + orderDirection + orderBy.
-    // Hook-wise, the memo callback also references buildComparator, so we memoize a stable
-    // comparator function and depend on it to avoid stale closures and compiler warnings.
     const comparator = useMemo(
         () => buildComparator(orderDirection, orderBy),
         [buildComparator, orderDirection, orderBy],
@@ -157,139 +276,104 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         () => [...filteredMethodDetails].sort(comparator),
         [filteredMethodDetails, comparator],
     );
+
+    // Precompute all per-row derived values once after sorting. This avoids
+    // calling StatusService.get/separateNamespace, new Date(), toLocaleTimeString()
+    // and formatDuration() inside the render loop for every visible row.
+    const rows: MethodRow[] = useMemo(() =>
+        sortedMethodDetails.map(detail => {
+            const startTime = detail.methodContext.contextValues?.startTime ?? 0;
+            const endTime = detail.methodContext.contextValues?.endTime ?? 0;
+            const testStatus = StatusService.get(detail.methodContext.resultStatus!);
+            return {
+                detail,
+                id: detail.methodContext.contextValues?.id ?? "",
+                displayClassName: StatusService.separateNamespace(detail.classStatistics.classIdentifier ?? "").class,
+                testStatusLabel: testStatus.label,
+                testStatusColor: testStatus.color,
+                failsAnnotationColor: testStatus.color,
+                startTimeString: new Date(startTime).toLocaleTimeString(),
+                durationString: formatDuration(endTime - startTime),
+                processedFailureAspects: detail.failureAspects.map(fa => ({
+                    displayClassName: fa.relevantCause?.className
+                        ? StatusService.separateNamespace(fa.relevantCause.className).class
+                        : undefined,
+                    message: fa.message,
+                })),
+            };
+        }),
+        [sortedMethodDetails]
+    );
+
     const statusCount = useMemo(() =>
             new Set(filteredMethodDetails.map((m) => m.methodContext.resultStatus)).size,
         [filteredMethodDetails],
     );
     const classCount = useMemo(() =>
-            new Set(filteredMethodDetails.map((m) => m.classStatistics.classIdentifier),).size,
+            new Set(filteredMethodDetails.map((m) => m.classStatistics.classIdentifier)).size,
         [filteredMethodDetails],
     );
 
-    if (isLoading) return <LinearProgress aria-label="Loading…" />;
+    // Dynamic row height: rows have variable height depending on the number of
+    // failure aspects and annotations they contain.
+    const rowHeight = useDynamicRowHeight({defaultRowHeight: 72});
+
+    // Stable rowProps object passed to the List. Re-created only when rows or
+    // search terms change, not on every parent render.
+    const rowProps = useMemo(
+        () => ({rows, activeSearchTerms}),
+        [rows, activeSearchTerms]
+    );
+
+    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
     if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
     if (!executionMngr) return null;
 
-    if(filteredMethodDetails.length < 1){
+    if (filteredMethodDetails.length < 1) {
         return <NoResultsCard title="No methods matching this criteria" subtitle="Please note, that your filter criteria may only match configuration methods."/>
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{
-                tableLayout: "fixed",
-                width: "100%"
-            }}
-                   aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell style={{width: "10%"}}>Status ({statusCount})</TableCell>
-                        <TableCell align={"center"} style={{width: "10%"}} sortDirection={orderBy === "runIndex" ? orderDirection : false}>
-                            <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="runIndex" label="Run Index"/>
-                        </TableCell>
-                        <TableCell style={{width: "20%"}} sortDirection={orderBy === "class" ? orderDirection : false}>
-                            <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="class" label={`Class (${classCount})`}/>
-                        </TableCell>
-                        <TableCell style={{width: "10%"}} sortDirection={orderBy === "startTime" ? orderDirection : false}>
-                            <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="startTime" label="Start Time"/>
-                        </TableCell>
-                        <TableCell sortDirection={orderBy === "method" ? orderDirection : false}>
-                            <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="method" label={`Method (${filteredMethodDetails.length})`}/>
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {sortedMethodDetails && sortedMethodDetails.length > 0 && sortedMethodDetails.map(filteredMethodDetail => {
-                        const className = StatusService.separateNamespace(filteredMethodDetail?.classStatistics.classIdentifier ?? "").class;
-                        const testStatus = StatusService.get(filteredMethodDetail?.methodContext.resultStatus!)
-                        return (
-                        <TableRow key={filteredMethodDetail?.methodContext.methodRunIndex}
-                                  sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                            <TableCell component="th" scope="row">
-                                <ReportChip key={filteredMethodDetail?.methodContext.resultStatus}
-                                            label={testStatus.label}
-                                            size="small"
-                                            sx={{
-                                                background: testStatus.color,
-                                                color: "white"
-                                            }}/>
-                            </TableCell>
-                            <TableCell align={"center"}>
-                                <Typography> {filteredMethodDetail?.methodContext.methodRunIndex} </Typography>
-                            </TableCell>
-                            <TableCell sx={{overflowWrap: "anywhere"}}>
-                                <Link href={`#/Tests?class=${encodeURIComponent(className)}`}>
-                                    <Typography>
-                                        <HighlightText
-                                            text={className}
-                                            searchWord={activeSearchTerms}
-                                        />
-                                    </Typography>
-                                </Link>
-                            </TableCell>
-                            <TableCell>
-                                <Stack direction="column">
-                                    <Typography> {new Date(filteredMethodDetail?.methodContext.contextValues?.startTime ?? 0).toLocaleTimeString()} </Typography>
-                                    <Typography color="lightGrey" variant="body2">(
-                                        {formatDuration((filteredMethodDetail?.methodContext.contextValues?.endTime ?? 0) - (filteredMethodDetail?.methodContext.contextValues?.startTime ?? 0))}
-                                        )
-                                    </Typography>
-                                </Stack>
-                            </TableCell>
-                            <TableCell sx={{overflowWrap: "anywhere"}}>
-                                <Stack direction="column">
-                                    <Stack direction="row" sx={{gap: 1, alignItems: "center"}}>
-                                        <ReadMoreIcon/>
-                                        <Link
-                                            href={`#/method/${filteredMethodDetail?.methodContext.contextValues?.id}`}
-                                            underline="hover"
-                                        >
-                                            <Typography>
-                                                <HighlightText text={filteredMethodDetail?.identifier}
-                                                               searchWord={activeSearchTerms}
-                                                />
-                                            </Typography>
-                                        </Link>
-                                        {filteredMethodDetail.methodContext.methodType == 2 && <ReportChip label="Configuration"
-                                                    size="small"
-                                                    color="lightGrey"
-                                                    sx={{color: "white"}}
-                                        />}
-                                    </Stack>
-                                    {filteredMethodDetail?.failureAspects.map((failureAspect, index) => (
-                                        <Typography key={index} variant="body2" sx={{mt: 1}}>
-                                            {failureAspect.relevantCause?.className &&
-                                            <HighlightText
-                                                text={StatusService.separateNamespace(failureAspect.relevantCause?.className).class}
-                                                searchWord={activeSearchTerms}
-                                            />}:
-                                            <HighlightText
-                                                text={failureAspect.message}
-                                                searchWord={activeSearchTerms}
-                                            />
-                                        </Typography>
-                                    ))}
-                                    {filteredMethodDetail?.failsAnnotation?.description &&
-                                        <Stack direction="row" sx={{gap: 1, alignItems: "center", mt: 1}}>
-                                            <CancelIcon
-                                                sx={{color: StatusService.getColor(filteredMethodDetail?.methodContext.resultStatus!)}}/>
-                                            <Typography
-                                                variant="caption">
-                                                <HighlightText
-                                                    text={filteredMethodDetail.failsAnnotation.description}
-                                                    searchWord={activeSearchTerms}
-                                                />
-                                            </Typography>
-                                        </Stack>
-                                    }
-                                </Stack>
+        <Paper sx={{overflow: "hidden"}}>
+            {/* Sticky header row — uses the same CELL_WIDTHS flex values as TestListRow */}
+            <Box
+                sx={{
+                    display: "flex",
+                    position: "sticky",
+                    top: 0,
+                    bgcolor: "background.paper",
+                    borderBottom: "2px solid",
+                    borderColor: "divider",
+                    zIndex: 1,
+                    fontWeight: 500
+                }}
+            >
+                <Box sx={{...cellSx(CELL_WIDTHS.status), alignContent: "center"}}>
+                    Status ({statusCount})
+                </Box>
+                <Box sx={{...cellSx(CELL_WIDTHS.runIndex), alignContent: "center"}}>
+                    <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="runIndex" label="Run Index"/>
+                </Box>
+                <Box sx={{...cellSx(CELL_WIDTHS.class), alignContent: "center"}}>
+                    <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="class" label={`Class (${classCount})`}/>
+                </Box>
+                <Box sx={{...cellSx(CELL_WIDTHS.startTime), alignContent: "center"}}>
+                    <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="startTime" label="Start Time"/>
+                </Box>
+                <Box sx={{...cellSx(CELL_WIDTHS.method), alignContent: "center"}}>
+                    <TableSort orderBy={orderBy} orderDirection={orderDirection} onRequestSort={handleRequestSort} headerProperty="method" label={`Method (${filteredMethodDetails.length})`}/>
+                </Box>
+            </Box>
 
-                            </TableCell>
-                        </TableRow>
-                    )})}
-                </TableBody>
-            </Table>
-        </TableContainer>
+            {/* Virtualized body — only visible rows are rendered in the DOM */}
+            <List
+                rowComponent={TestListRow}
+                rowCount={rows.length}
+                rowHeight={rowHeight}
+                rowProps={rowProps}
+                style={{maxHeight: "calc(100dvh - 265px)", width: "100%"}}
+            />
+        </Paper>
     );
 };
 export default TestList;

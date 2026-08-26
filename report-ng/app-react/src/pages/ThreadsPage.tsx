@@ -415,7 +415,20 @@ const ThreadsPage = () => {
                             multiple
                             disableCloseOnSelect
                             disableClearable
+                            filterSelectedOptions
                             options={methodLookup}
+                            noOptionsText={
+                                methodLookup.length > 0 && selectedMethods.length === methodLookup.length
+                                    ? <em>All methods are selected</em>
+                                    : "No methods found"
+                            }
+                            slotProps={{
+                                paper: {
+                                    sx: {
+                                        "& .MuiAutocomplete-noOptions": {color: "text.disabled"},
+                                    },
+                                },
+                            }}
                             getOptionLabel={(option: MethodInfo) => option.name}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
                             value={selectedMethods}

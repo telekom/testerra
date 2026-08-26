@@ -30,7 +30,7 @@ import {useChipListFilters} from "../hooks/useChipListFilters";
 import type {FilterType} from "../hooks/useChipListFilters";
 import StatusSelectInput from "../widgets/StatusSelectInput";
 import MultiSelectInput from "../widgets/MultiSelectInput";
-import SelectedFiltersChips from "../components/SelectedFilterChips";
+import SelectedFilterChips from "../components/SelectedFilterChips";
 
 // Types
 interface MethodInfo {
@@ -59,8 +59,8 @@ const ThreadsPage = () => {
         statusMenuItems,
         classMenuItems,
         filters,
+        chips,
         setFilter,
-        handleDelete,
         clearAll,
     } = useChipListFilters(THREAD_FILTER_TYPES);
 
@@ -430,9 +430,8 @@ const ThreadsPage = () => {
                     </Grid>
 
                     <Grid size={12} minHeight={36}>
-                        <SelectedFiltersChips selectedFilters={filters}
-                                              handleDelete={handleDelete}
-                                              handleClearAllClick={clearAll}/>
+                        <SelectedFilterChips chips={chips}
+                                             handleClearAllClick={clearAll}/>
                     </Grid>
                 </Grid>
 

@@ -34,7 +34,7 @@ import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {Stack, Typography} from "@mui/material";
 import Link from '@mui/material/Link';
-import type {ChipColor, FiltersState} from "../hooks/useChipListFilters";
+import type {FiltersState} from "../hooks/useChipListFilters";
 import {MethodDetails} from "../model/MethodDetails";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import HighlightText from "../utils/highlightText";
@@ -252,7 +252,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                                         </Link>
                                         {filteredMethodDetail.methodContext.methodType == 2 && <ReportChip label="Configuration"
                                                     size="small"
-                                                    color={"lightGrey" as ChipColor}
+                                                    color="lightGrey"
                                                     sx={{color: "white"}}
                                         />}
                                     </Stack>

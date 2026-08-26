@@ -25,7 +25,7 @@ import StatusSelectInput from "../widgets/StatusSelectInput";
 import MultiSelectInput from "../widgets/MultiSelectInput";
 import {useChipListFilters} from "../hooks/useChipListFilters";
 import type {FilterType} from "../hooks/useChipListFilters";
-import SelectedFiltersChips from "../components/SelectedFilterChips";
+import SelectedFilterChips from "../components/SelectedFilterChips";
 import TestList from "../components/TestList";
 import SearchInput from "../widgets/SearchInput";
 import {useState} from "react";
@@ -39,10 +39,10 @@ const TestsPage = () => {
         statusMenuItems,
         classMenuItems,
         filters,
+        chips,
         setFilter,
         configurationMethodsChecked,
         handleConfigurationMethodsChecked,
-        handleDelete,
         clearAll,
     } = useChipListFilters(TEST_LIST_FILTER_TYPES);
 
@@ -95,9 +95,8 @@ const TestsPage = () => {
                     </Stack>
                 </Grid>
                 <Grid size={12} minHeight={36}>
-                    <SelectedFiltersChips selectedFilters={filters}
-                                          handleDelete={handleDelete}
-                                          handleClearAllClick={clearAll}/>
+                    <SelectedFilterChips chips={chips}
+                                         handleClearAllClick={clearAll}/>
 
                 </Grid>
                 <Grid size={12} >

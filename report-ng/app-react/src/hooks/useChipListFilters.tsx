@@ -27,6 +27,7 @@ import {useReportData} from "../provider/DataProvider";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import {useMemo} from "react";
 import {ResultStatusType} from "../model/report-model/framework_pb";
+import type {ExecutionStatisticsManager} from "../provider/ExecutionStatisticsManager";
 
 export type ChipColor = "blue" | "green" | "purple" | "pink" | "lightGrey" | "default";
 
@@ -41,14 +42,24 @@ export type FilterValueMap = {
     method: string[];
 };
 
+// Everything a chip needs to be rendered - the view does not have to know about filters at all
+export type FilterChip = {
+    id: string;
+    label: string;
+    color?: ChipColor;
+    tooltipText: string;
+    onDelete: () => void;
+};
+
 type FilterDef<K extends FilterType> = {
     filterType: string;
     // URL -> value
-    parse: (raw: string | null) => FilterValueMap[K] | undefined;
+    parse: (raw: string | null) => FilterValueMap[K];
     // value -> URL string (or null -> remove)
     convertToURLString: (value: FilterValueMap[K]) => string | null;
     color?: ChipColor;
-    getLabel: (value?: ResultStatus|string) => string;
+    // executionMngr is only needed by filters whose URL value is an id instead of a label
+    getLabel: (value?: string | ResultStatus, executionMngr?: ExecutionStatisticsManager | null) => string;
     tooltipText: string;
 };
 
@@ -143,7 +154,7 @@ export const FILTERS: { [K in FilterType]: FilterDef<K> } = {
         },
         convertToURLString: (methods) => (methods.length > 0 ? methods.join("~") : null),
         color: "pink",
-        getLabel: (value) => String(value),
+        getLabel: (value, executionMngr) => executionMngr?.getMethodName(String(value)) ?? String(value),
         tooltipText: "Method"
     }
 };
@@ -184,19 +195,12 @@ export function useChipListFilters(filterTypes: readonly FilterType[]) {
     );
 
     // read filters from URL when searchParam changes (useMemo)
-    const filters: FiltersState = React.useMemo(() => {
-        const updatedFilters: FiltersState = {};
-        filterTypes.forEach((filterType) => {
+    const filters: FiltersState = React.useMemo(() => Object.fromEntries(
+        filterTypes.map((filterType) => {
             const filterDefinition = FILTERS[filterType];
-            const parsedFilter = filterDefinition.parse(searchParams.get(filterDefinition.filterType));
-
-            // if filter for this type is set, add values to newFilters
-            if (parsedFilter !== undefined) {
-                (updatedFilters as any)[filterType] = parsedFilter;     // "as any" necessary because TS does not know, that "status" gets "ResultStatus[]" and "class" gets "string[]"
-            }
-        });
-        return updatedFilters;
-    }, [filterTypes, searchParams]);
+            return [filterType, filterDefinition.parse(searchParams.get(filterDefinition.filterType))];
+        }),
+    ) as FiltersState, [filterTypes, searchParams]);
 
     // helper: update URL
     const setFilter = <T extends FilterType>(filter: T, updatedFilter: FilterValueMap[T]) => {
@@ -236,27 +240,44 @@ export function useChipListFilters(filterTypes: readonly FilterType[]) {
     };
 
     // generic remove function (for arrays)
-    const handleDelete = (filter: FilterType, filterToRemove?: string | ResultStatus) => {
+    const handleDelete = (filterType: FilterType, filterToRemove?: string | ResultStatus) => {
         // filterToRemove is undefined for combined chips (e.g. "methods"):
         // they represent multiple values and therefore clear the whole filter at once.
-        if (filterToRemove === undefined) {
-            setFilter(filter as any, [] as any);
-            return;
-        }
-
-        const currentFilters = (filters[filter] ?? []) as any[];
-        const updatedFilters = currentFilters.filter(filter => filter !== filterToRemove);
-        setFilter(filter as any, updatedFilters as any);
+        const currentFilters = filters[filterType] ?? [];
+        const updatedFilters = filterToRemove === undefined
+            ? []
+            : currentFilters.filter(value => value !== filterToRemove);
+        setFilter(filterType, updatedFilters as FilterValueMap[FilterType]);
     };
+
+    // Turns the currently selected filters into renderable chip descriptions.
+    // Keeps label and styling resolution out of the presentational chip components.
+    const createChip = (filterType: FilterType, value?: string | ResultStatus): FilterChip => {
+        const definition = FILTERS[filterType];
+        return {
+            id: value === undefined ? filterType : `${filterType}-${String(value)}`,
+            label: definition.getLabel(value, executionMngr),
+            color: definition.color,
+            tooltipText: definition.tooltipText,
+            onDelete: () => handleDelete(filterType, value),
+        };
+    };
+
+    const chips = filterTypes.flatMap(filterType => {
+        const values = filters[filterType];
+        if (!values || values.length === 0) return [];
+        if (filterType === "methods") return [createChip(filterType)];
+        return values.map(value => createChip(filterType, value));
+    });
 
     return {
         statusMenuItems,
         classMenuItems,
         filters,
+        chips,
         configurationMethodsChecked,
         setFilter,
         handleConfigurationMethodsChecked,
-        handleDelete,
         clearAll,
     };
 }

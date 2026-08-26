@@ -31,7 +31,6 @@ import DetailKeyValueListItem from "./DetailKeyValueListItem.tsx";
 import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router-dom";
 import DurationCard from "../DurationCard.tsx";
-import type {ChipColor} from "../../hooks/useChipListFilters.tsx";
 import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import LazyImage from "../../widgets/LazyImage.tsx";
 import {useState} from "react";
@@ -74,7 +73,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                     <Typography color="black"
                                                 sx={(theme) => theme.custom.generalDetails.wrapText}>{methodDetail.identifier}</Typography>
                                     {methodDetail.methodContext.methodType == 2 &&
-                                        <ReportChip label="Configuration" size="small" color={"lightGrey" as ChipColor}
+                                        <ReportChip label="Configuration" size="small" color="lightGrey"
                                                    sx={theme.custom.generalDetails.configurationChip}/>}
                                 </Stack>
                             }

@@ -37,7 +37,7 @@ type ReportChipProps = {
 const ReportChip = ({label, sx, handleDelete, color, size, tooltipText, handleClick}: ReportChipProps) => {
     return (
         <Tooltip title={tooltipText}>
-            <Chip label={label} sx={sx} onDelete={handleDelete} color={color} size={size} onClick={() => handleClick ? handleClick(): undefined}/>
+            <Chip label={label} sx={sx} onDelete={handleDelete} color={color} size={size} onClick={handleClick}/>
         </Tooltip>
     );
 }

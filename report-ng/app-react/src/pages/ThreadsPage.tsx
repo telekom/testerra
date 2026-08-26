@@ -31,6 +31,8 @@ import type {FilterType} from "../hooks/useChipListFilters";
 import StatusSelectInput from "../widgets/StatusSelectInput";
 import MultiSelectInput from "../widgets/MultiSelectInput";
 import SelectedFilterChips from "../components/SelectedFilterChips";
+import {escapeHtml} from "../utils/escapeHtml";
+import { reportTheme } from "../layout/reportTheme";
 
 // Types
 interface MethodInfo {
@@ -116,6 +118,16 @@ const ThreadsPage = () => {
 
         const chartStartTime = Math.min(...startTimes) - GAP_FROM_BORDER_TO_START;
 
+        const classIdentifierByContextId = new Map<string, string>();
+        for (const classStatistic of executionMngr.getExecutionStatistics().classStatistics) {
+            for (const methodContext of classStatistic.methodContexts) {
+                const classContextId = methodContext.classContextId;
+                if (classContextId !== undefined && !classIdentifierByContextId.has(classContextId)) {
+                    classIdentifierByContextId.set(classContextId, classStatistic.classIdentifier);
+                }
+            }
+        }
+
         // Build data for custom series
         for (const [threadName, methodContextsList] of threadCategories.entries()) {
             for (const methodContext of methodContextsList) {
@@ -125,12 +137,9 @@ const ThreadsPage = () => {
                 const methodDetails = executionMngr.getMethodDetails(methodContext.contextValues.id);
                 const itemColor = StatusService.getColor(methodContext.resultStatus!);
                 const duration = methodContext.contextValues?.endTime - methodContext.contextValues?.startTime;
-                const classId = executionMngr.getExecutionStatistics().classStatistics.find(classStat => {
-                    const classContextIds = classStat.methodContexts
-                        .map(context => context.classContextId)
-                        .filter((value, index, self) => self.indexOf(value) === index);
-                    return classContextIds.includes(methodContext.classContextId)
-                })?.classIdentifier
+                const classId = methodContext.classContextId === undefined
+                    ? undefined
+                    : classIdentifierByContextId.get(methodContext.classContextId);
 
                 data.push({
                     name: methodDetails?.identifier || methodContext.contextValues?.name || 'Unknown',
@@ -172,12 +181,17 @@ const ThreadsPage = () => {
                 formatter: function (params: TooltipComponentFormatterCallbackParams) {
                     if (!params || Array.isArray(params) || !params.value) return '';
                     const value = params.value as TimelineEntry['value'];
+                    const methodName = escapeHtml(String(params.name));
+                    const className = escapeHtml(classNameConverter(value[8], ClassName.simpleName));
+                    const statusInfo = StatusService.get(value[7] as ResultStatus);
+                    const statusBadge = '<span style="background:' + statusInfo.color + ';color:#fff;padding:1px 6px;border-radius:20px;margin-right:4px;">' + escapeHtml(statusInfo.label) + '</span>';
                     return '<div style="background-color: ' +
-                        params.color + '; padding: 5px; color: white; margin: -10px;">' + params.name + ' (' + value[5] + ')</div>'
-                        + '<br>Start time: ' + new Date(value[1]).toLocaleString()
-                        + '<br>End time: ' + new Date(value[2]).toLocaleString()
-                        + '<br>Duration: ' + Math.floor(value[4] / 1000) + 's'
-                        + '<br>Class: ' + classNameConverter(value[8], ClassName.simpleName);
+                        reportTheme.palette.lightGrey.light + '; padding: 5px; margin: -10px; color: ' + reportTheme.palette.lightGrey.main + ';">' + statusBadge + '<span style="font-weight: 500;">' + methodName + '</span></div>'
+                        + '<br><b>Start time:</b> ' + new Date(value[1]).toLocaleString()
+                        + '<br><b>End time:</b> ' + new Date(value[2]).toLocaleString()
+                        + '<br><b>Duration:</b> ' + Math.floor(value[4] / 1000) + 's'
+                        + '<br><b>Class:</b> ' + className
+                        + '<br><b>Run Index:</b> ' + value[5];
                 }
             },
             dataZoom: [

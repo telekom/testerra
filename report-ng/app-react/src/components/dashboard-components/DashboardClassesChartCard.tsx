@@ -21,7 +21,7 @@ const DashboardClassesChartCard: React.FC = () => {
         tooltip: {
             trigger: 'item',
             axisPointer: {type: 'shadow'},
-            formatter: '{a}: {c}',
+            formatter: '<b>{a}:</b> {c}',
         },
         xAxis: {
             type: 'value',

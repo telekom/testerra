@@ -30,7 +30,7 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
 
     const option = {
         tooltip: {
-            formatter: '{b}: {c}'
+            formatter: '<b>{b}:</b> {c}'
         },
         series: [
             {

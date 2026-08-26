@@ -121,7 +121,7 @@ export const reportTheme = createTheme({
         },
         lightGrey: {
             main: '#0000008A',
-            light: '#0000008A',
+            light: '#00000017',
             dark: '#0000008A',
             contrastText: '#0000008A',
         }

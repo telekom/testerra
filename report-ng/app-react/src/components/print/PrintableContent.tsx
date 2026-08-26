@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {forwardRef} from 'react';
+import {forwardRef, useMemo} from 'react';
 import {Box, Typography} from '@mui/material';
 import {ExecutionStatistics} from '../../model/ExecutionStatistics';
 import {DateTime} from 'luxon';
@@ -43,6 +43,14 @@ interface PrintableContentProps {
 
 const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
     ({executionStatistics, visibleSections}, ref) => {
+
+        // save testListFilters to not calculate it again each render
+        const testListFilters = useMemo(() => ({
+            status: visibleSections.testCaseList === 'failed'
+                ? StatusService.getFailedStatuses()
+                : undefined,
+        }), [visibleSections.testCaseList]);
+
         if (!executionStatistics) {
             return null;
         }
@@ -165,11 +173,7 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
 
             {visibleSections.testCaseList !== 'none' && (
                 <TestList
-                    filters={{
-                        status: visibleSections.testCaseList === 'failed'
-                            ? StatusService.getFailedStatuses()
-                            : undefined,
-                    }}
+                    filters={testListFilters}
                     searchText=""
                     showConfigurationMethods={false}
                 />

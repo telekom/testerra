@@ -141,7 +141,10 @@ const MainNavigation = () => {
                 <Divider/>
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => setPrintDialogOpen(true)}>
+                        <ListItemButton onClick={() => {
+                            setMobileOpen(false);
+                            setPrintDialogOpen(true);
+                        }}>
                             <ListItemIcon>
                                 <PrintIcon/>
                             </ListItemIcon>

@@ -206,7 +206,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                 <TableBody>
                     {sortedMethodDetails && sortedMethodDetails.length > 0 && sortedMethodDetails.map(filteredMethodDetail => {
                         const className = StatusService.separateNamespace(filteredMethodDetail?.classStatistics.classIdentifier ?? "").class;
-                        const testStatus = StatusService.get(filteredMethodDetail?.methodContext.resultStatus!)
+                        const testStatus = StatusService.get(filteredMethodDetail.methodContext.resultStatus!)
                         return (
                         <TableRow key={filteredMethodDetail?.methodContext.methodRunIndex}
                                   sx={{'&:last-child td, &:last-child th': {border: 0}}}>
@@ -277,7 +277,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                                     {filteredMethodDetail?.failsAnnotation?.description &&
                                         <Stack direction="row" sx={{gap: 1, alignItems: "center", mt: 1}}>
                                             <CancelIcon
-                                                sx={{color: StatusService.getColor(filteredMethodDetail?.methodContext.resultStatus!)}}/>
+                                                sx={{color: StatusService.getColor(filteredMethodDetail.methodContext.resultStatus!)}}/>
                                             <Typography
                                                 variant="caption">
                                                 <HighlightText

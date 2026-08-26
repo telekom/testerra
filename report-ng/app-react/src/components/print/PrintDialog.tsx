@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useMemo} from 'react';
 import {
     Dialog,
     DialogContent,
@@ -151,11 +151,11 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
     };
 
     // definition of sections
-    const visibleSections: {
+    const visibleSections = useMemo<{
         failureAspects: 'none' | 'all' | 'major' | 'minor';
         testCaseList: 'none' | 'all' | 'failed';
         testClasses: boolean;
-    } = {
+    }>(() => ({
         failureAspects: !enabledSections[FAILURE_ASPECTS_CARD_ID]
             ? 'none'
             : selectedFilters[FAILURE_ASPECTS_CARD_ID] === 'failure-aspects-table-major'
@@ -168,8 +168,8 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
             : selectedFilters[TEST_LIST_CARD_ID] === 'classes-table-failed'
                 ? 'failed'
                 : 'all',
-        testClasses: !!enabledSections[TEST_CLASSES_CARD_ID],
-    };
+        testClasses: enabledSections[TEST_CLASSES_CARD_ID],
+    }), [enabledSections, selectedFilters]);
 
     // Track the available preview area (height + width) -> page is scaled to fit A4
     useEffect(() => {
@@ -208,21 +208,17 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
     // Track the unscaled height of the printable content -> defines the preview scroll height
     useEffect(() => {
         if (!open) return;
-        const measure = () => {
-            if (contentRef.current) {
-                // Measure the unscaled printable element, not the scaled preview container.
-                const height = contentRef.current.scrollHeight;
-                if (height > 0) {
-                    setContentHeight(height);
-                }
-            }
-        };
 
-        // Measure with a small delay to ensure all content is rendered
-        const timeoutId = setTimeout(measure, 100);
+        // requestAnimationFrame waits for next frame to make sure layout is fully loaded
+        const frameId = requestAnimationFrame(() => {   // request animation frame waits for next frame to make sure layout is fully loaded
+            const height = contentRef.current?.scrollHeight ?? 0;
+            if (height > 0) {
+                setContentHeight(height);
+            }
+        });
 
         return () => {
-            clearTimeout(timeoutId);
+            cancelAnimationFrame(frameId);  // cleanup for requestAnimationFrame
         };
     }, [open, visibleSections.failureAspects, visibleSections.testCaseList, visibleSections.testClasses, executionStatistics]);
 
@@ -266,11 +262,13 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
             onClose={onClose}
             maxWidth="lg"
             fullWidth
-            PaperProps={{
-                sx: {
-                    height: '90vh',
-                    display: 'flex',
-                    flexDirection: 'column',
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '90vh',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    },
                 },
             }}
         >

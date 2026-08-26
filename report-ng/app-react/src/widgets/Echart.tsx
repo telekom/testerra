@@ -1,5 +1,5 @@
 import React, {forwardRef} from 'react';
-import type {EChartsOption} from 'echarts-for-react';
+import type {EChartsOption, EChartsReactProps} from 'echarts-for-react';
 import ReactEChartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/core';
 import {BarChart, CustomChart, LineChart, PieChart, ScatterChart} from 'echarts/charts';
@@ -18,10 +18,10 @@ export interface EChartProps {
     option: EChartsOption;
     width?: number;
     height?: number | string;
-    onEvents?: Record<string, (params: any, chart: any) => void>;
+    onEvents?: EChartsReactProps['onEvents'];
     notMerge?: boolean;
     autoResize?: boolean;
-    onChartReady?: (chart: any) => void;
+    onChartReady?: EChartsReactProps['onChartReady'];
 }
 
 echarts.use([

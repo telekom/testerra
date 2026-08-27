@@ -3,19 +3,32 @@ import ReportCard from "../../widgets/ReportCard";
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import type {SxProps, Theme} from "@mui/material/styles";
+import {FailureCorridorValue, type ExecutionContext} from "../../model/report-model/framework_pb";
 
 interface DashboardFailureCorridorProps {
-    sx?: SxProps<Theme>
+    executionContext?: ExecutionContext;
+    sx?: SxProps<Theme>;
 }
 
-const DashboardFailureCorridorCard = ({sx}: DashboardFailureCorridorProps) => {
+const DashboardFailureCorridorCard = ({executionContext, sx}: DashboardFailureCorridorProps) => {
     const theme = useTheme();
 
     const chipList = [
-        {label: "1 High", chipColor: theme.custom.statusColors.failed, textColor: "white", total: 0},
-        {label: "0 Mid", chipColor: theme.custom.statusColors.passed, textColor: "white", total: 0},
-        {label: "0 Low", chipColor: theme.custom.statusColors.passed, textColor: "white", total: 0}
-    ]
+        {label: "High", value: FailureCorridorValue.FCV_HIGH},
+        {label: "Mid", value: FailureCorridorValue.FCV_MID},
+        {label: "Low", value: FailureCorridorValue.FCV_LOW}
+    ].map(({label, value}) => {
+        const count = executionContext?.failureCorridorCounts?.[value] ?? 0;
+        const limit = executionContext?.failureCorridorLimits?.[value] ?? 0;
+
+        return {
+            label: `${count} ${label}`,
+            chipColor: count <= limit
+                ? theme.custom.statusColors.passed
+                : theme.custom.statusColors.failed,
+            limit
+        };
+    });
 
     return (
         <ReportCard
@@ -27,8 +40,8 @@ const DashboardFailureCorridorCard = ({sx}: DashboardFailureCorridorProps) => {
                 <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
                     {chipList.map((chip) => (
                         <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>
-                            <Chip label={chip.label} sx={{background: chip.chipColor, color: chip.textColor}}/>
-                            <Typography color="primary"> of {chip.total} </Typography>
+                            <Chip label={chip.label} sx={{background: chip.chipColor, color: "white"}}/>
+                            <Typography color="primary"> of {chip.limit} </Typography>
                         </Stack>
                     ))}
                 </Stack>

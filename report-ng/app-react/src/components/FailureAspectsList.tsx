@@ -20,17 +20,11 @@
  */
 
 import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
 import {useReportData} from "../provider/DataProvider";
-import {useMemo} from "react";
+import {useCallback, useMemo} from "react";
 import ReportChip from "../widgets/ReportChip";
 import {StatusService} from "../model/status-service";
-import {Stack, Typography} from "@mui/material";
+import {Box, Stack, Typography} from "@mui/material";
 import HighlightText from "../utils/highlightText";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import {ResultStatusType} from "../model/report-model/framework_pb";
@@ -39,6 +33,99 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 
 import {FailureAspectStatistics} from "../model/FailureAspectStatistics";
 import NoResultsCard from "../widgets/NoResultsCard.tsx";
+import {List, type RowComponentProps, useDynamicRowHeight} from "react-window";
+
+interface FailureAspectRow {
+    failureAspect: FailureAspectStatistics;
+    displayText?: string;
+    statuses: Array<{
+        key: string;
+        label: string;
+        color: string;
+    }>;
+}
+
+interface FailureAspectRowProps {
+    rows: FailureAspectRow[];
+    activeSearchTerms: string[];
+    onStatusClick: (failureAspect: FailureAspectStatistics, status: string) => void;
+}
+
+const CELL_WIDTHS = {
+    rank: "5%",
+    failureAspect: "70%",
+    type: "10%",
+    status: "15%",
+} as const;
+
+const cellSx = (width: string) => ({
+    flex: `0 0 ${width}`,
+    p: 2,
+    minWidth: 0,
+    overflow: "hidden",
+});
+
+function FailureAspectRow({
+    index,
+    style,
+    rows,
+    activeSearchTerms,
+    onStatusClick,
+}: RowComponentProps<FailureAspectRowProps>) {
+    const {failureAspect, displayText, statuses} = rows[index];
+
+    return (
+        <Box
+            style={style}
+            sx={{
+                display: "flex",
+                alignItems: "stretch",
+                borderBottom: "1px solid",
+                borderColor: "divider",
+                boxSizing: "border-box",
+                "&:hover": {bgcolor: "action.hover"},
+            }}
+        >
+            <Box sx={{...cellSx(CELL_WIDTHS.rank), display: "flex", alignItems: "center", justifyContent: "center"}}>
+                <Typography>{failureAspect.index + 1}</Typography>
+            </Box>
+            <Box sx={{...cellSx(CELL_WIDTHS.failureAspect), display: "flex", alignItems: "center", overflowWrap: "anywhere"}}>
+                <Link
+                    component={RouterLink}
+                    to={{
+                        pathname: "/Tests",
+                        search: `failureAspect=${failureAspect.index}`,
+                    }}
+                >
+                    <Typography>
+                        {displayText && <HighlightText text={displayText} searchWord={activeSearchTerms}/>}
+                    </Typography>
+                </Link>
+            </Box>
+            <Box sx={{...cellSx(CELL_WIDTHS.type), display: "flex", alignItems: "center", justifyContent: "center"}}>
+                <Typography>{failureAspect.isMinor ? "Minor" : "Major"}</Typography>
+            </Box>
+            <Box sx={cellSx(CELL_WIDTHS.status)}>
+                <Stack direction="column" spacing={1} alignItems="flex-start">
+                    {statuses.map(status => (
+                        <ReportChip
+                            label={status.label}
+                            size="small"
+                            handleClick={() => onStatusClick(failureAspect, status.key)}
+                            sx={{
+                                background: status.color,
+                                color: "white",
+                                textDecoration: "underline",
+                                "&:hover": {background: status.color},
+                            }}
+                            key={status.key}
+                        />
+                    ))}
+                </Stack>
+            </Box>
+        </Box>
+    );
+}
 
 interface FailureAspectListProps {
     searchText: string;
@@ -82,7 +169,7 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
         [searchText]
     );
 
-    const clickStatusChip = (failureAspect: FailureAspectStatistics, status: string) => {
+    const clickStatusChip = useCallback((failureAspect: FailureAspectStatistics, status: string) => {
         const params = new URLSearchParams(location.search);
         params.set("failureAspect", String(failureAspect.index));
         params.set("status", status);
@@ -91,84 +178,64 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
             pathname: "/Tests",
             search: params.toString(),
         });
-    }
+    }, [navigate]);
+
+    const rows: FailureAspectRow[] = useMemo(
+        () => filteredFailureAspects.map(failureAspect => ({
+            failureAspect,
+            displayText: failureAspect.relevantCause?.className
+                ? classNameConverter(failureAspect.relevantCause.className, ClassName.simpleName) + ": " + failureAspect.message
+                : undefined,
+            statuses: failureAspect.availableStatuses.map(status => {
+                const statusInformation = StatusService.get(String(status));
+                return {
+                    key: statusInformation.key,
+                    label: `${failureAspect.getStatusCount(status)} ${statusInformation.label}`,
+                    color: statusInformation.color,
+                };
+            }),
+        })),
+        [filteredFailureAspects],
+    );
+
+    const rowHeight = useDynamicRowHeight({defaultRowHeight: 72});
+    const rowProps = useMemo(
+        () => ({rows, activeSearchTerms, onStatusClick: clickStatusChip}),
+        [rows, activeSearchTerms, clickStatusChip],
+    );
 
     if (filteredFailureAspects.length < 1) {
         return <NoResultsCard title="No failure aspects matching this criteria"/>
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{
-                tableLayout: "fixed",
-                width: "100%",
-                '@media print': {
-                    '& thead': {
-                        display: 'table-row-group !important', // instead of table-header-group
-                    },
-                },
-            }}
-                   aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell style={{width: "5%"}} align="center">Rank</TableCell>
-                        <TableCell style={{width: "70%"}}>Failure Aspect ({filteredFailureAspects.length})</TableCell>
-                        <TableCell style={{width: "10%"}} align="center">Type</TableCell>
-                        <TableCell style={{width: "15%"}}>Status</TableCell>
-
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {filteredFailureAspects.map(failureAspect => (
-                        <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}} key={failureAspect.identifier}>
-                            <TableCell component="th" scope="row" align="center">
-                                {failureAspect.index + 1}
-                            </TableCell>
-                            <TableCell component="th" scope="row" sx={{lineBreak: "anywhere"}}>
-                                <Link
-                                    component={RouterLink}
-                                    to={{
-                                        pathname: "/Tests",
-                                        search: `failureAspect=${failureAspect.index}`,
-                                    }}
-                                >
-                                    <Typography>
-                                        {failureAspect.relevantCause?.className && <HighlightText
-                                            text={classNameConverter(failureAspect.relevantCause.className, ClassName.simpleName) + ": " + failureAspect.message}
-                                            searchWord={activeSearchTerms}
-                                        />}
-                                    </Typography>
-                                </Link>
-                            </TableCell>
-                            <TableCell component="th" scope="row" align="center">
-                                {failureAspect.isMinor ? "Minor" : "Major"}
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                <Stack direction="column" spacing={1} alignItems="flex-start">
-                                    {failureAspect.availableStatuses.map(status => {
-                                        const statusInformation = StatusService.get(String(status));
-                                        const label = String(failureAspect.getStatusCount(status)) + " " + statusInformation.label
-                                        return (
-                                            <ReportChip label={label}
-                                                        size="small"
-                                                        handleClick={() => clickStatusChip(failureAspect, statusInformation?.key)}
-                                                        sx={{
-                                                            background: statusInformation.color,
-                                                            color: "white",
-                                                            textDecoration: "underline",
-                                                            '&:hover': {background: statusInformation.color}
-                                                        }}
-                                                        key={label}
-                                            />
-                                        )
-                                    })}
-                                </Stack>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Paper sx={{overflow: "hidden"}}>
+            <Box
+                role="row"
+                sx={{
+                    display: "flex",
+                    bgcolor: "background.paper",
+                    borderBottom: "2px solid",
+                    borderColor: "divider",
+                    fontWeight: 500,
+                }}
+            >
+                <Box role="columnheader" sx={{...cellSx(CELL_WIDTHS.rank), textAlign: "center"}}>Rank</Box>
+                <Box role="columnheader" sx={cellSx(CELL_WIDTHS.failureAspect)}>
+                    Failure Aspect ({filteredFailureAspects.length})
+                </Box>
+                <Box role="columnheader" sx={{...cellSx(CELL_WIDTHS.type), textAlign: "center"}}>Type</Box>
+                <Box role="columnheader" sx={cellSx(CELL_WIDTHS.status)}>Status</Box>
+            </Box>
+            <List
+                aria-label="Failure aspects"
+                rowComponent={FailureAspectRow}
+                rowCount={rows.length}
+                rowHeight={rowHeight}
+                rowProps={rowProps}
+                style={{maxHeight: "calc(100dvh - 202px)", width: "100%"}}
+            />
+        </Paper>
     );
 };
 export default FailureAspectsList;

@@ -29,6 +29,7 @@ import {ClassName, classNameConverter} from "../../utils/classNameConverter";
 import {FailureAspectStatistics} from "../../model/FailureAspectStatistics";
 import {useNavigate} from "react-router-dom";
 import {ExecutionStatistics} from "../../model/ExecutionStatistics";
+import Box from "@mui/material/Box";
 
 interface DashboardFailureAspectsProps {
     sx?: SxProps<Theme>,
@@ -52,16 +53,16 @@ const DashboardFailureAspectsCard = ({sx, execStatistics}: DashboardFailureAspec
     })
 
     const failureAspectsLabel = (
-        <>
+        <Box>
             Top 3 Failure Aspects (
             <Link href="#/failureAspects?type=major">{majorFailures} Major</Link>
             {" | "}
             <Link href="#/failureAspects?type=minor">{minorFailures} Minor</Link>
             )
-        </>
+        </Box>
     );
 
-    let itemList: { primaryText: string, icon: React.ReactNode }[] = []
+    const itemList: { primaryText: string, icon: React.ReactNode }[] = []
     topFailureAspects.forEach(failureAspect => {
         const item = {
             primaryText: classNameConverter(failureAspect.relevantCause!.className!, ClassName.simpleName) + ": " + failureAspect.message,

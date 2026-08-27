@@ -1,7 +1,6 @@
 
 import {createHashRouter, type RouteObject, Navigate} from 'react-router-dom';
 import MainLayout from "../layout/MainLayout.tsx";
-import AboutPage from "../pages/AboutPage.tsx";
 import TimingsPage from "../pages/TimingsPage.tsx";
 import DashboardPage from "../pages/DashboardPage.tsx";
 import MethodDetailsPage from "../pages/MethodDetailsPage.tsx";
@@ -10,7 +9,6 @@ import TestsPage from "../pages/TestsPage";
 
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ListIcon from '@mui/icons-material/List';
 import SmsFailedIcon from '@mui/icons-material/SmsFailed';
@@ -66,12 +64,7 @@ export const routesConfig: RouteObject[] = [
                 handle: {label: "Logs", show: true, icon: <CodeIcon />} as RouteHandle
             },
             {
-                path: "about",
-                element: <AboutPage/>,
-                handle: {label: "About", show: true, icon: <InfoRoundedIcon />} as RouteHandle
-            },
-            {
-                path: "threads/:methodId?",
+                path: "threads",
                 element: <ThreadsPage/>,
                 handle: {label: "Threads", show: true, icon: <ClearAllIcon />} as RouteHandle
             },

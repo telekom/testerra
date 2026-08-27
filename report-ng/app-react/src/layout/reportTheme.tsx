@@ -52,12 +52,13 @@ import {
 
 export type {Status};
 
-// Update the Chip's color options to include blue, purple and green option
+// Update the Chip's color options to include blue, purple, pink and green option
 declare module '@mui/material/Chip' {
     export interface ChipPropsColorOverrides {
         blue: true;
         green: true;
         purple: true;
+        pink: true;
         lightGrey: true;
     }
 }
@@ -112,9 +113,15 @@ export const reportTheme = createTheme({
             dark: '#884AB920',
             contrastText: '#884AB9',
         },
+        pink: {
+            main: '#B94AA520',
+            light: '#B94AA520',
+            dark: '#B94AA520',
+            contrastText: '#B94AA5',
+        },
         lightGrey: {
             main: '#0000008A',
-            light: '#0000008A',
+            light: '#00000017',
             dark: '#0000008A',
             contrastText: '#0000008A',
         }
@@ -203,12 +210,14 @@ declare module "@mui/material/styles" {
         blue: Palette['primary'];
         green: Palette['primary'];
         purple: Palette['primary'];
+        pink: Palette['primary'];
         lightGrey: Palette['primary']
     }
     interface PaletteOptions {
         blue?: PaletteOptions['primary'];
         green?: PaletteOptions['primary'];
         purple?: PaletteOptions['primary'];
+        pink?: PaletteOptions['primary'];
         lightGrey?: PaletteOptions['primary'];
     }
 

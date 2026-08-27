@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import type {EChartsOption} from 'echarts-for-react';
 import ReactEChartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/core';
-import {BarChart, LineChart, PieChart, ScatterChart} from 'echarts/charts';
+import {BarChart, CustomChart, LineChart, PieChart, ScatterChart} from 'echarts/charts';
 import {
     DataZoomComponent,
     GridComponent,
@@ -21,35 +21,44 @@ export interface EChartProps {
     onEvents?: Record<string, (params: any, chart: any) => void>;
     notMerge?: boolean;
     autoResize?: boolean;
+    onChartReady?: (chart: any) => void;
 }
 
 echarts.use([
-    BarChart, LineChart, PieChart, ScatterChart,
+    BarChart,CustomChart, LineChart, PieChart, ScatterChart,
     GridComponent, TooltipComponent, LegendComponent, TitleComponent, DataZoomComponent, ToolboxComponent, GraphicComponent,
     CanvasRenderer,
 ]);
 
-const Echart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerge, autoResize = false}) => {
-    const style: React.CSSProperties = {
-        width: width ?? '100%',
-        ...(height !== undefined ? {height} : {}),
-    };
-    const opts = {
-        ...(width !== undefined ? {width} : {}),
-        ...(typeof height === 'number' ? {height} : {}),
-    };
+export type EchartRef = ReactEChartsCore;
 
-    return (
-        <ReactEChartsCore
-            echarts={echarts}
-            option={option}
-            opts={opts}
-            autoResize={autoResize}
-            onEvents={onEvents}
-            notMerge={notMerge}
-            style={style}
-        />
-    )
-};
+const Echart = forwardRef<ReactEChartsCore, EChartProps>(
+    ({option, width, height, onEvents, notMerge, autoResize = false, onChartReady}, ref) => {
+        const style: React.CSSProperties = {
+            width: width ?? '100%',
+            ...(height !== undefined ? {height} : {}),
+        };
+        const opts = {
+            ...(width !== undefined ? {width} : {}),
+            ...(typeof height === 'number' ? {height} : {}),
+        };
+
+        return (
+            <ReactEChartsCore
+                ref={ref}
+                echarts={echarts}
+                option={option}
+                opts={opts}
+                autoResize={autoResize}
+                onEvents={onEvents}
+                notMerge={notMerge}
+                onChartReady={onChartReady}
+                style={style}
+            />
+        );
+    }
+);
+
+Echart.displayName = "Echart";
 
 export default Echart;

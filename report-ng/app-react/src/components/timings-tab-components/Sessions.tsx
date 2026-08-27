@@ -193,7 +193,7 @@ const Sessions = () => {
                     if (seriesIdx < 0 || seriesIdx >= dots.length) return "";
                     const info = dots[seriesIdx].information;
 
-                    let tooltip = `<div style="background-color:${params.color};padding:4px 8px;margin:-8px -8px 8px -8px;border-radius:3px 3px 0 0;color:white">
+                    let tooltip = `<div style="background-color: ${params.color}; padding: 5px; color: white; margin: -10px -10px 4px -10px;">
                         ${escapeHtml(info.browserName ?? "")}, Version: ${escapeHtml(info.browserVersion ?? "")}
                     </div>`;
                     tooltip += `<b>Session name:</b> ${escapeHtml(info.sessionName)}<br/>`;

@@ -9,9 +9,12 @@ interface DashboardPieChartProps {
     onChartPieceClick: (newPiece: string) => void;
     selectedStatus: string | null;
     sx?: SxProps<Theme>
+    withCard?: boolean;
+    // Fixed chart height, e.g. for the print preview where automatic resizing is not reliable
+    chartHeight?: number;
 }
 
-const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx}: DashboardPieChartProps) => {
+const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx, withCard = true, chartHeight}: DashboardPieChartProps) => {
 
     const data = []
     for (const status of StatusService.getRelevantStatuses()) {
@@ -55,11 +58,18 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
         }
     };
 
+    const content = <Echart option={option} onEvents={onEvents} notMerge={true} autoResize={!chartHeight}
+                              height={chartHeight}/>;
+
+    if (!withCard) {
+        return content;
+    }
+
     return (
         <ReportCard
             label="Breakdown"
             sxCard={sx}
-            content={<Echart option={option} onEvents={onEvents} notMerge={true} autoResize={true}/>}
+            content={content}
         />
     );
 };

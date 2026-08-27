@@ -183,6 +183,14 @@ export const StatusService = {
         ];
     },
 
+    getFailedStatuses(): ResultStatus[] {
+        return [
+            ResultStatusType.FAILED,
+            ResultStatusType.FAILED_EXPECTED,
+            ResultStatusType.SKIPPED,
+        ];
+    },
+
     getStatusByKey(key: string): ResultStatus | null {
         const entry = Object.entries(STATUS_CONFIG).find(
             ([, statusInformation]) => statusInformation.key === key

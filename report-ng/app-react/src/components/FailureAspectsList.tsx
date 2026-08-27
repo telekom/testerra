@@ -150,10 +150,13 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                 }
             })
             .filter(failureAspectStatistics => {
-                return (!type || (
-                    (type == "major" && !failureAspectStatistics.isMinor)
-                    || (type == "minor" && failureAspectStatistics.isMinor)
-                ));
+                if (!type || type === 'all') {
+                    return true;
+                }
+                return (
+                    (type === 'major' && !failureAspectStatistics.isMinor)
+                    || (type === 'minor' && failureAspectStatistics.isMinor)
+                );
             })
             .filter(failureAspectStatistics => {
                 return (!searchText || failureAspectStatistics.identifier.toLowerCase().includes(searchText.trim().toLowerCase()));

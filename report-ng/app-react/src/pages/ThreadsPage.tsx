@@ -23,7 +23,6 @@ import {dateFormatter} from '../utils/dateFormatter';
 import {StatusService} from '../model/status-service';
 import type {ResultStatus} from '../model/status-service';
 import {ClassName, classNameConverter} from "../utils/classNameConverter.ts";
-import {escapeHtml} from "../utils/escapeHtml.ts";
 import type {MethodContext} from '../model/report-model/framework_pb';
 import Echart, {type EchartRef} from "../widgets/Echart.tsx";
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';

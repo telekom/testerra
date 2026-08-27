@@ -2,6 +2,7 @@ import Echart from "../../widgets/Echart";
 import ReportCard from "../../widgets/ReportCard";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
+import type {CallbackDataParams} from "echarts/types/dist/shared";
 
 interface DashboardPieChartProps {
     execStatistics: any;
@@ -41,7 +42,7 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
                 selectedOffset: 5,      // how far slice is away from rest of the pie
                 data: data,
                 label: {
-                    formatter: '{d}%',
+                    formatter: (params: CallbackDataParams) => params.percent === 0 ? '' : `${params.percent}%`,
                     position: 'inside'
                 }
             }

@@ -39,6 +39,11 @@ const MultiSelectInput = ({label, values, onChange, menuItems, sx, renderValue}:
                         transformOrigin: { vertical: 'top', horizontal: 'left' },
                     }}
                 >
+                    {availableMenuItems.length === 0 && (
+                        <MenuItem disabled>
+                            <em>All items selected</em>
+                        </MenuItem>
+                    )}
                     {availableMenuItems.map(menuItem => (
                         <MenuItem key={menuItem} value={menuItem}>
                             {menuItem}

@@ -94,14 +94,6 @@ export class ExecutionStatisticsManager {
         }
     }
 
-    getMethodName(methodId: string) {
-        const methodContext = this.executionAggregate.methodContexts?.[methodId];
-        const methodName = methodContext?.contextValues?.name;
-        if (!methodName) return methodId;
-        const runIndex = methodContext.methodRunIndex;
-        return runIndex !== undefined ? `${methodName} (${runIndex})` : methodName;
-    }
-
     // TODO: Add all the other methods here...
 
 

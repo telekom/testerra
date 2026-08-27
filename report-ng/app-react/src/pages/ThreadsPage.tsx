@@ -32,7 +32,7 @@ import StatusSelectInput from "../widgets/StatusSelectInput";
 import MultiSelectInput from "../widgets/MultiSelectInput";
 import SelectedFilterChips from "../components/SelectedFilterChips";
 import {escapeHtml} from "../utils/escapeHtml";
-import { reportTheme } from "../layout/reportTheme";
+import {reportTheme} from "../layout/reportTheme";
 
 // Types
 interface MethodInfo {
@@ -78,7 +78,8 @@ const ThreadsPage = () => {
             .filter(([, methodContext]) => methodContext.contextValues?.name)
             .map(([methodId]) => ({
                 id: methodId,
-                name: executionMngr.getMethodName(methodId),
+                name: (executionMngr?.getMethodDetails(String(methodId))?.identifier ?? methodId)
+                    + " (" + executionMngr?.getMethodDetails(String(methodId))?.methodContext.methodRunIndex + ")",
             }))
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [executionMngr]);

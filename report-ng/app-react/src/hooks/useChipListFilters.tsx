@@ -154,7 +154,10 @@ export const FILTERS: { [K in FilterType]: FilterDef<K> } = {
         },
         convertToURLString: (methods) => (methods.length > 0 ? methods.join("~") : null),
         color: "pink",
-        getLabel: (value, executionMngr) => executionMngr?.getMethodName(String(value)) ?? String(value),
+        getLabel: (value, executionMngr) => {
+            const methodDetails = executionMngr?.getMethodDetails(String(value));
+            return methodDetails?.identifier ?? String(value);
+        },
         tooltipText: "Method"
     }
 };

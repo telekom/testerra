@@ -79,7 +79,7 @@ const DashboardPage = () => {
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
                         <DashboardTestResultsCard sx={theme.mixins.cardHeight(2)} execStatistics={execStatistics} onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
-                        <DashboardFailureCorridorCard sx={theme.mixins.cardHeight(1)}/>
+                        <DashboardFailureCorridorCard executionContext={executionMngr.getExecutionAggregate().executionContext} sx={theme.mixins.cardHeight(1)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{sm: 12, lg: 6}}>
@@ -89,7 +89,7 @@ const DashboardPage = () => {
                     </Stack>
                 </Grid>
                 <Grid size={12}>
-                    <DashboardClassesChartCard/>
+                    <DashboardClassesChartCard execStatistics={execStatistics} selectedStatus={selectedStatus}/>
                 </Grid>
             </Grid>
         </Box>

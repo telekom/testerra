@@ -32,6 +32,7 @@ import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router-dom";
 import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import type {SxProps, Theme} from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
 interface CommonDetailsCardProps {
     methodDetails: MethodDetails;
@@ -46,6 +47,7 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
     return (
         <ReportCard
             sxCard={sx}
+            sxContent={{p: 0}}
             label={
                 <Stack direction="row" spacing={2} alignItems="center">
                     <ReportChip key={methodDetails.methodContext.resultStatus}
@@ -110,120 +112,124 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
             content={(
                 <Grid container>
                     <Grid size={6}>
-                        <List sx={{flex: 1, minWidth: 0}}>
-                            <DetailKeyValueListItem
-                                label="Class"
-                                value={
-                                    <Link
-                                        component={RouterLink}
-                                        to={{
-                                            pathname: "/Tests",
-                                            search: `class=${classNameConverter(methodDetails.classStatistics.classIdentifier, ClassName.simpleName)}`,
-                                        }}
-                                        sx={(theme) => theme.custom.generalDetails.wrapText}
-                                    >
-                                        <Typography variant="caption"
-                                                    sx={(theme) => theme.custom.generalDetails.wrapText}>
-                                            {classNameConverter(methodDetails.classStatistics.classIdentifier, ClassName.simpleName)}
-                                        </Typography>
-                                    </Link>
-                                }
-                                wideLabel={false}
-                                compact={true}
-                            />
-                            <DetailKeyValueListItem
-                                label="Package"
-                                value={
-                                    <Typography variant="caption"
-                                                sx={(theme) => theme.custom.generalDetails.truncateText}>
-                                        {classNameConverter(methodDetails.classStatistics.classIdentifier, ClassName.package)}
-                                    </Typography>
-                                }
-                                wideLabel={false}
-                                compact={true}
-                            />
-                            <DetailKeyValueListItem
-                                label="Test Context"
-                                value={
-                                    <Typography variant="caption"
-                                                sx={(theme) => theme.custom.generalDetails.truncateText}>
-                                        {methodDetails?.testContext?.contextValues?.name}
-                                    </Typography>
-                                }
-                                wideLabel={false}
-                                compact={true}
-                            />
-                            <DetailKeyValueListItem
-                                label="Suite"
-                                value={
-                                    <Typography variant="caption"
-                                                sx={(theme) => theme.custom.generalDetails.wrapText}>
-                                        {methodDetails?.suiteContext?.contextValues?.name}
-                                    </Typography>
-                                }
-                                wideLabel={false}
-                                compact={true}
-                            />
-                        </List>
-                    </Grid>
-
-                    <Grid size={6}>
-                        <List sx={{flex: 1, minWidth: 0}}>
-                            {methodDetails.failedStep && (
+                        <Box sx={{ pl: 2}}>
+                            <List sx={{flex: 1, minWidth: 0}}>
                                 <DetailKeyValueListItem
-                                    label="Failed in"
+                                    label="Class"
                                     value={
                                         <Link
                                             component={RouterLink}
                                             to={{
-                                                pathname: `steps/${(methodDetails?.methodContext?.failedStepIndex as number) + 1}`,
+                                                pathname: "/Tests",
+                                                search: `class=${classNameConverter(methodDetails.classStatistics.classIdentifier, ClassName.simpleName)}`,
                                             }}
-                                            underline="hover"
-                                            sx={(theme) => theme.custom.generalDetails.blockLink}
+                                            sx={(theme) => theme.custom.generalDetails.wrapText}
                                         >
-                                            <Typography
-                                                variant="caption"
-                                                sx={(theme) => ({...theme.custom.generalDetails.compactWrappedText, ...theme.custom.generalDetails.wrapText})}
-                                            >
-                                                {methodDetails.failedStep.name}
+                                            <Typography variant="caption"
+                                                        sx={(theme) => theme.custom.generalDetails.wrapText}>
+                                                {classNameConverter(methodDetails.classStatistics.classIdentifier, ClassName.simpleName)}
                                             </Typography>
                                         </Link>
                                     }
                                     wideLabel={false}
                                     compact={true}
                                 />
-                            )}
-                            <DetailKeyValueListItem
-                                label="Thread"
-                                value={
-                                    <Link
-                                        component={RouterLink}
-                                        to={{
-                                            pathname: `/threads`,
-                                            search: `method=${methodDetails.methodContext.contextValues?.id}`
-                                        }}
-                                    >
+                                <DetailKeyValueListItem
+                                    label="Package"
+                                    value={
                                         <Typography variant="caption"
-                                                    sx={(theme) => ({...theme.custom.generalDetails.truncateText, ...theme.custom.generalDetails.compactWrappedText})}>
-                                            {methodDetails.methodContext.threadName}
+                                                    sx={(theme) => theme.custom.generalDetails.truncateText}>
+                                            {classNameConverter(methodDetails.classStatistics.classIdentifier, ClassName.package)}
                                         </Typography>
-                                    </Link>
-                                }
-                                wideLabel={false}
-                                compact={true}
-                            />
-                            <DetailKeyValueListItem
-                                label="Run index"
-                                value={
-                                    <Typography variant="caption"
-                                                sx={(theme) => theme.custom.generalDetails.wrapText}>
-                                        #{methodDetails.methodContext.methodRunIndex}
-                                    </Typography>
-                                }
-                                wideLabel={false}
-                                compact={true}
-                            />
-                        </List>
+                                    }
+                                    wideLabel={false}
+                                    compact={true}
+                                />
+                                <DetailKeyValueListItem
+                                    label="Test Context"
+                                    value={
+                                        <Typography variant="caption"
+                                                    sx={(theme) => theme.custom.generalDetails.truncateText}>
+                                            {methodDetails?.testContext?.contextValues?.name}
+                                        </Typography>
+                                    }
+                                    wideLabel={false}
+                                    compact={true}
+                                />
+                                <DetailKeyValueListItem
+                                    label="Suite"
+                                    value={
+                                        <Typography variant="caption"
+                                                    sx={(theme) => theme.custom.generalDetails.wrapText}>
+                                            {methodDetails?.suiteContext?.contextValues?.name}
+                                        </Typography>
+                                    }
+                                    wideLabel={false}
+                                    compact={true}
+                                />
+                            </List>
+                        </Box>
+                    </Grid>
+
+                    <Grid size={6}>
+                        <Box sx={{ pl: 2}}>
+                            <List sx={{flex: 1, minWidth: 0}}>
+                                {methodDetails.failedStep && (
+                                    <DetailKeyValueListItem
+                                        label="Failed in"
+                                        value={
+                                            <Link
+                                                component={RouterLink}
+                                                to={{
+                                                    pathname: `steps/${(methodDetails?.methodContext?.failedStepIndex as number) + 1}`,
+                                                }}
+                                                underline="hover"
+                                                sx={(theme) => theme.custom.generalDetails.blockLink}
+                                            >
+                                                <Typography
+                                                    variant="caption"
+                                                    sx={(theme) => ({...theme.custom.generalDetails.compactWrappedText, ...theme.custom.generalDetails.wrapText})}
+                                                >
+                                                    {methodDetails.failedStep.name}
+                                                </Typography>
+                                            </Link>
+                                        }
+                                        wideLabel={false}
+                                        compact={true}
+                                    />
+                                )}
+                                <DetailKeyValueListItem
+                                    label="Thread"
+                                    value={
+                                        <Link
+                                            component={RouterLink}
+                                            to={{
+                                                pathname: `/threads`,
+                                                search: `method=${methodDetails.methodContext.contextValues?.id}`
+                                            }}
+                                        >
+                                            <Typography variant="caption"
+                                                        sx={(theme) => ({...theme.custom.generalDetails.truncateText, ...theme.custom.generalDetails.compactWrappedText})}>
+                                                {methodDetails.methodContext.threadName}
+                                            </Typography>
+                                        </Link>
+                                    }
+                                    wideLabel={false}
+                                    compact={true}
+                                />
+                                <DetailKeyValueListItem
+                                    label="Run index"
+                                    value={
+                                        <Typography variant="caption"
+                                                    sx={(theme) => theme.custom.generalDetails.wrapText}>
+                                            #{methodDetails.methodContext.methodRunIndex}
+                                        </Typography>
+                                    }
+                                    wideLabel={false}
+                                    compact={true}
+                                />
+                            </List>
+                        </Box>
                     </Grid>
                 </Grid>
             )

@@ -16,10 +16,11 @@ export interface ReportCardProps {
 }
 
 const ReportCard = ({label, content, details, footer, sxCard, sxHeader, sxContent = {pt: 1, pb: 1}, tooltipText}: ReportCardProps) => {
-    const sections = [details, content, footer]
-        .filter((section): section is Exclude<React.ReactNode, boolean | null | undefined> =>
-            section !== undefined && section !== null && typeof section !== "boolean"
-        );
+    const sections = [
+        details !== undefined && details !== null && typeof details !== "boolean" ? {key: "details", content: details} : null,
+        {key: "content", content},
+        footer !== undefined && footer !== null && typeof footer !== "boolean" ? {key: "footer", content: footer} : null,
+    ].filter((section): section is {key: "details" | "content" | "footer"; content: React.ReactNode} => section !== null);
     const labelContent = (typeof label === "string" || typeof label === "number")
         ? <Typography variant="subtitle2" color="primary">{label}</Typography>
         : label;
@@ -38,13 +39,17 @@ const ReportCard = ({label, content, details, footer, sxCard, sxHeader, sxConten
                     <React.Fragment key={index}>
                         {index > 0 && <Divider/>}
                         <CardContent
-                            // sx={sxContent}
                             sx={{
                                 ...sxContent,
-                                flex: 1, minHeight: 0, display: "flex", flexDirection: "column"
+                                ...(section.key === "content"
+                                    ? {flex: 1, minHeight: 0, display: "flex", flexDirection: "column"}
+                                    : {flex: "0 0 auto"}),
+                                ...(section.key === "footer"
+                                    ? {pb: 1, "&:last-child": {pb: 1}}
+                                    : {}),
                             }}
                         >
-                            {section}
+                            {section.content}
                         </CardContent>
                     </React.Fragment>
                 ))}

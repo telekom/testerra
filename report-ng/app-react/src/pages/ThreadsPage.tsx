@@ -42,7 +42,7 @@ interface MethodInfo {
 
 interface TimelineEntry {
     name: string;
-    value: [string, number, number, string, number, number, string, number, string]; // [threadName, startTime, endTime, methodName, duration, runIndex, methodId, status, classId]
+    value: [string, number, number, string, number, number, string, number, string, number]; // [threadName, startTime, endTime, methodName, duration, runIndex, methodId, status, classId, opacity]
     itemStyle: {
         color: string;
         opacity: number;
@@ -153,7 +153,8 @@ const ThreadsPage = () => {
                         methodContext.methodRunIndex,
                         methodContext.contextValues.id,
                         methodContext.resultStatus,
-                        classId ?? ""
+                        classId ?? "",
+                        1
                     ],
                     itemStyle: {
                         color: itemColor,
@@ -243,6 +244,8 @@ const ThreadsPage = () => {
                         const categoryIndex = api.value(0);
                         const start = api.coord([api.value(1), categoryIndex]);
                         const end = api.coord([api.value(2), categoryIndex]);
+                        const visualColor = api.visual('color');
+                        const rawOpacity = api.value(9);
 
                         const size = api.size?.([0, 1]);
                         const height = Array.isArray(size) ? size[1] * 0.7 : 0;
@@ -272,7 +275,12 @@ const ThreadsPage = () => {
                             type: 'rect',
                             transition: ['shape'],
                             shape: rectShape,
-                            style: api.style()
+                            style: {
+                                fill: (typeof visualColor === 'string' || (typeof visualColor === 'object' && visualColor !== null))
+                                    ? visualColor
+                                    : undefined,
+                                opacity: typeof rawOpacity === 'number' ? rawOpacity : 1
+                            }
                         } : null;
                     },
                     encode: {
@@ -321,10 +329,10 @@ const ThreadsPage = () => {
         const originalSeries = (preparedTimeline.options.series as CustomSeriesOption[])[0];
         const seriesData = (originalSeries.data as TimelineEntry[]).map(entry => ({
             ...entry,
-            itemStyle: {
-                ...entry.itemStyle,
-                opacity: matchesActiveFilters(entry.value) ? 1 : OPACITY_OF_INACTIVE_ELEMENTS
-            }
+            value: [
+                ...entry.value.slice(0, 9),
+                matchesActiveFilters(entry.value) ? 1 : OPACITY_OF_INACTIVE_ELEMENTS
+            ] as TimelineEntry["value"]
         }));
 
         // Spread preserves all ECharts config (axes, tooltip, renderItem fn, …),

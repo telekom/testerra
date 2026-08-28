@@ -3,7 +3,6 @@ import ReportCard from "../../widgets/ReportCard";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
 import type {CallbackDataParams} from "echarts/types/dist/shared";
-import Box from "@mui/material/Box";
 
 interface DashboardPieChartProps {
     execStatistics: any;
@@ -15,7 +14,7 @@ interface DashboardPieChartProps {
     chartHeight?: number;
 }
 
-const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx, withCard = true, chartHeight}: DashboardPieChartProps) => {
+const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx, withCard = true}: DashboardPieChartProps) => {
 
     const data = []
     for (const status of StatusService.getRelevantStatuses()) {
@@ -61,14 +60,12 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
     };
 
     const content =
-        <Box sx={{ flex: 1, minHeight: 0 }}>
-            <Echart
-                option={option}
-                onEvents={onEvents}
-                notMerge={true}
-                autoResize={!chartHeight}
-                height={chartHeight ?? '100%'}
-            /></Box>;
+        <Echart
+            option={option}
+            onEvents={onEvents}
+            notMerge={true}
+            autoResize={true}
+        />;
 
     if (!withCard) {
         return content;

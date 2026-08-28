@@ -3,16 +3,9 @@ import type {EChartsOption, EChartsReactProps} from 'echarts-for-react';
 import ReactEChartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/core';
 import {BarChart, CustomChart, LineChart, PieChart, ScatterChart} from 'echarts/charts';
-import {
-    DataZoomComponent,
-    GridComponent,
-    LegendComponent,
-    TitleComponent,
-    ToolboxComponent,
-    TooltipComponent,
-    GraphicComponent,
-} from 'echarts/components';
+import {DataZoomComponent, GraphicComponent, GridComponent, LegendComponent, TitleComponent, ToolboxComponent, TooltipComponent,} from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
+import Box from "@mui/material/Box";
 
 export interface EChartProps {
     option: EChartsOption;
@@ -25,7 +18,7 @@ export interface EChartProps {
 }
 
 echarts.use([
-    BarChart,CustomChart, LineChart, PieChart, ScatterChart,
+    BarChart, CustomChart, LineChart, PieChart, ScatterChart,
     GridComponent, TooltipComponent, LegendComponent, TitleComponent, DataZoomComponent, ToolboxComponent, GraphicComponent,
     CanvasRenderer,
 ]);
@@ -36,7 +29,7 @@ const Echart = forwardRef<ReactEChartsCore, EChartProps>(
     ({option, width, height, onEvents, notMerge, autoResize = false, onChartReady}, ref) => {
         const style: React.CSSProperties = {
             width: width ?? '100%',
-            ...(height !== undefined ? {height} : {}),
+            height: height ?? '100%',
         };
         const opts = {
             ...(width !== undefined ? {width} : {}),
@@ -44,17 +37,19 @@ const Echart = forwardRef<ReactEChartsCore, EChartProps>(
         };
 
         return (
-            <ReactEChartsCore
-                ref={ref}
-                echarts={echarts}
-                option={option}
-                opts={opts}
-                autoResize={autoResize}
-                onEvents={onEvents}
-                notMerge={notMerge}
-                onChartReady={onChartReady}
-                style={style}
-            />
+            <Box sx={{flex: 1, minHeight: 0}}>
+                <ReactEChartsCore
+                    ref={ref}
+                    echarts={echarts}
+                    option={option}
+                    opts={opts}
+                    autoResize={autoResize}
+                    onEvents={onEvents}
+                    notMerge={notMerge}
+                    onChartReady={onChartReady}
+                    style={style}
+                />
+            </Box>
         );
     }
 );

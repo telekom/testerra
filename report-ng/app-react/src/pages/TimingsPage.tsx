@@ -10,8 +10,8 @@ const TimingsPage = () => {
     const tabs = generateTabsFromRoutes(timingsRoute?.children);
 
     return (
-        <Box sx={{width: '100%', p: '24px 32px'}}>
-            <TabNavigation tabs={tabs}/>
+        <Box sx={{width: '100%'}}>
+            <TabNavigation tabs={tabs} withTopPadding={false}/>
 
             <Box sx={{py: '32px'}}>
                 {/* Placeholder to render child component from router */}

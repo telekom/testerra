@@ -7,9 +7,10 @@ import type { TabConfig } from "../utils/generateTabsFromRoutes";
 
 interface TabNavigationProps {
     tabs: TabConfig[];
+    withTopPadding?: boolean;
 }
 
-export default function TabNavigation({ tabs }: TabNavigationProps) {
+export default function TabNavigation({ tabs, withTopPadding = true }: TabNavigationProps) {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -25,7 +26,7 @@ export default function TabNavigation({ tabs }: TabNavigationProps) {
 
     return (
         <Box
-            sx={{width: '100%', p: '24px 0px'}}
+            sx={{width: '100%', pb: '24px', pt: withTopPadding ? '24px' : 0}}
         >
             <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={currentTab} onChange={handleChange} variant="fullWidth">

@@ -125,7 +125,7 @@ const MethodDetailsPage = () => {
     <Box sx={theme.custom.methodDetailsPage.container}>
         <GeneralDetails methodDetail={methodDetail} previousDetail={previousDetail} nextDetail={nextDetail}/>
         <PriorityMessagesCard promptLogs={methodDetail.promptLogs} />
-        <TabNavigation tabs={tabsWithCounts}/>
+        <TabNavigation tabs={tabsWithCounts} withTopPadding={true}/>
 
         <Box sx={theme.custom.methodDetailsPage.outletContainer}>
             {/* Placeholder to render child component from router */}

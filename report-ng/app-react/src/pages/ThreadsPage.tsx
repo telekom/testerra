@@ -411,7 +411,7 @@ const ThreadsPage = () => {
     }
 
     return (
-        <Box sx={{width: '100%', p: '24px 32px'}}>
+        <Box sx={{width: '100%'}}>
             <Stack spacing={2}>
                 <Grid container spacing={2}>
                     <Grid size={2}>

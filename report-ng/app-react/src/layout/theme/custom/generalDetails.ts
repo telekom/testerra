@@ -74,7 +74,9 @@ export const generalDetails: ReportThemeGeneralDetailsStyles = {
         my: 1,
     },
     footerContainer: {
-        mt: 2,
+        px: 2,
+        py: 1,
+        mt: "0 !important",
     },
     nextMethodStack: {
         alignItems: "flex-start",

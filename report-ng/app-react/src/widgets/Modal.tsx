@@ -13,7 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import type {File as ReportFile, SessionContext} from "../model/report-model/framework_pb.ts";
 import {File} from "../model/report-model/framework_pb.ts";
 import Stack from "@mui/material/Stack";
-import DetailKeyValueListItem from "../components/method-details-tab-components/DetailKeyValueListItem.tsx";
+import DetailKeyValueListItem from "../components/method-details/DetailKeyValueListItem.tsx";
 
 interface ModalProps {
     open: boolean;

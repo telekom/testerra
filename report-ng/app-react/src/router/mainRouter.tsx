@@ -24,11 +24,11 @@ import TestTimings from "../components/timings-tab-components/TestTimings";
 import Sessions from "../components/timings-tab-components/Sessions";
 import FailureAspectsPage from "../pages/FailureAspectsPage";
 import LogsPage from "../pages/LogsPage";
-import ErrorDetails from "../components/method-details-tab-components/ErrorDetails.tsx";
-import Steps from "../components/method-details-tab-components/Steps.tsx";
-import BrowserInfo from "../components/method-details-tab-components/BrowserInfo.tsx";
-import Dependencies from "../components/method-details-tab-components/Dependencies.tsx";
-import Video from "../components/method-details-tab-components/Video.tsx";
+import ErrorDetails from "../components/method-details/ErrorDetails.tsx";
+import Steps from "../components/method-details/Steps.tsx";
+import BrowserInfo from "../components/method-details/BrowserInfo.tsx";
+import Dependencies from "../components/method-details/Dependencies.tsx";
+import Video from "../components/method-details/Video.tsx";
 import ThreadsPage from "../pages/ThreadsPage.tsx";
 
 // Custom attributes for menu elements

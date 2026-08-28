@@ -41,7 +41,7 @@ const ReportCard = ({label, content, details, footer, sxCard, sxHeader, sxConten
                             // sx={sxContent}
                             sx={{
                                 ...sxContent,
-                                flex: 1, minHeight: 0, display: "flex"
+                                flex: 1, minHeight: 0, display: "flex", flexDirection: "column"
                             }}
                         >
                             {section}

@@ -9,7 +9,7 @@ export type ReportThemeMethodDetailsPageStyles = {
 export const methodDetailsPage: ReportThemeMethodDetailsPageStyles = {
     container: {
         width: "100%",
-        p: "24px 32px",
+        // p: "24px 32px",
     },
     outletContainer: {
         p: "24px 0px",

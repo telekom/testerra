@@ -2,6 +2,7 @@ import {Card, CardContent, Divider, Stack, Typography} from "@mui/material";
 import type {SxProps, Theme} from '@mui/material/styles';
 import InfoTooltip from "./InfoTooltip"
 import React from "react";
+import Box from "@mui/material/Box";
 
 export interface ReportCardProps {
     label: React.ReactNode;
@@ -24,24 +25,30 @@ const ReportCard = ({label, content, details, footer, sxCard, sxHeader, sxConten
         : label;
 
     return (
-        <Card sx={{p: 0, ...sxCard}}>
-            <CardContent
-                sx={{pt: 1, pb: 1, ...sxHeader}}
-            >
+        <Card sx={{p: 0, display: "flex", flexDirection: "column", height: "100%", ...sxCard}}>
+            <CardContent sx={{pt: 1, pb: 1, ...sxHeader}}>
                 <Stack direction="row" sx={{justifyContent: "space-between", alignItems: "center"}}>
                     {labelContent}
                     {tooltipText && <InfoTooltip text={tooltipText}/>}
                 </Stack>
             </CardContent>
             <Divider/>
-            {sections.map((section, index) => (
-                <React.Fragment key={index}>
-                    {index > 0 && <Divider/>}
-                    <CardContent sx={sxContent}>
-                        {section}
-                    </CardContent>
-                </React.Fragment>
-            ))}
+            <Box sx={{display: "flex", flexDirection: "column", flex: 1, minHeight: 0}}>
+                {sections.map((section, index) => (
+                    <React.Fragment key={index}>
+                        {index > 0 && <Divider/>}
+                        <CardContent
+                            // sx={sxContent}
+                            sx={{
+                                ...sxContent,
+                                flex: 1, minHeight: 0, display: "flex"
+                            }}
+                        >
+                            {section}
+                        </CardContent>
+                    </React.Fragment>
+                ))}
+            </Box>
         </Card>
     )
 };

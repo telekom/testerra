@@ -3,6 +3,7 @@ import ReportCard from "../../widgets/ReportCard";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
 import type {CallbackDataParams} from "echarts/types/dist/shared";
+import Box from "@mui/material/Box";
 
 interface DashboardPieChartProps {
     execStatistics: any;
@@ -40,7 +41,8 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
             {
                 name: 'Tests',
                 type: 'pie',
-                radius: ['35%', '70%'],
+                radius: ['42%', '89%'],
+                center: ['50%', '50%'],
                 selectedMode: 'single', // how many items can be selected at once
                 selectedOffset: 5,      // how far slice is away from rest of the pie
                 data: data,
@@ -58,8 +60,15 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
         }
     };
 
-    const content = <Echart option={option} onEvents={onEvents} notMerge={true} autoResize={!chartHeight}
-                              height={chartHeight}/>;
+    const content =
+        <Box sx={{ flex: 1, minHeight: 0 }}>
+            <Echart
+                option={option}
+                onEvents={onEvents}
+                notMerge={true}
+                autoResize={!chartHeight}
+                height={chartHeight ?? '100%'}
+            /></Box>;
 
     if (!withCard) {
         return content;
@@ -69,6 +78,7 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
         <ReportCard
             label="Breakdown"
             sxCard={sx}
+            sxContent={{p: 0, ":last-child": {padding: 0}}}
             content={content}
         />
     );

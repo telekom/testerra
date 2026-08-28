@@ -64,6 +64,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                 <Grid container={true} spacing={3}>
                     <Grid size={lastScreenshotId ? 7 : 9}>
                         <ReportCard
+                            sxCard={theme.mixins.cardHeight(3)}
                             label={
                                 <Stack direction="row" spacing={2} alignItems="center">
                                     <ReportChip key={methodDetail?.methodContext.resultStatus}
@@ -78,8 +79,8 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                                 </Stack>
                             }
                             details={
-                                (methodDetail.testAnnotation?.description || 
-                                 methodDetail.xrayAnnotation?.ticketUrls?.length > 0 || 
+                                (methodDetail.testAnnotation?.description ||
+                                 methodDetail.xrayAnnotation?.ticketUrls?.length > 0 ||
                                  methodDetail.failsAnnotation) ? (
                                     <>
                                         {methodDetail.testAnnotation?.description && (

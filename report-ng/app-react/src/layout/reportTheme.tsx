@@ -128,7 +128,7 @@ export const reportTheme = createTheme({
     },
     mixins: {
         cardHeight: (units: number) => ({
-            height: units * 192,
+            height: units * 48,
         }),
     },
     components: {

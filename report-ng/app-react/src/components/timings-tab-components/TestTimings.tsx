@@ -152,7 +152,7 @@ const TestTimings = () => {
                 const bar: DurationBucket<ITestDurationMethod> | undefined = bars[params[0].dataIndex];
                 if (!bar || bar.durationAmount === 0) return "";
 
-                let tooltip = `<div style="background-color: ${theme.custom.testTimings.barColor}; padding: 5px; color: white; margin: -10px -10px 10px -10px;">${bar.durationAmount} test case(s):</div>`;
+                let tooltip = `<div style="background-color: ${theme.custom.testTimings.barColor}; padding: 5px; color: white; margin: -10px -10px 10px -10px;">${bar.durationAmount} test case(s)</div>`;
                 bar.methodList.slice(0, TEST_NUMBER_LIMIT).forEach(method => {
                     const statusInfo = StatusService.get(method.status);
                     tooltip += `<div style="margin-bottom:4px">

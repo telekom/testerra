@@ -194,7 +194,7 @@ const Sessions = () => {
                     const info = dots[seriesIdx].information;
 
                     let tooltip = `<div style="background-color: ${params.color}; padding: 5px; color: white; margin: -10px -10px 4px -10px;">
-                        ${escapeHtml(info.browserName ?? "")}, Version: ${escapeHtml(info.browserVersion ?? "")}
+                        ${escapeHtml(info.browserName ?? "")} v${escapeHtml(info.browserVersion ?? "(na)")}
                     </div>`;
                     tooltip += `<b>Session name:</b> ${escapeHtml(info.sessionName)}<br/>`;
                     tooltip += `<b>Session id:</b> ${escapeHtml(info.sessionId)}<br/>`;

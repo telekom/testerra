@@ -70,6 +70,8 @@ export const generalDetails: ReportThemeGeneralDetailsStyles = {
         mt: 1,
     },
     failsStack: {
+        px: 2,
+        py: 1,
         alignItems: "center",
         my: 1,
     },

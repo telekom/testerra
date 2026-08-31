@@ -67,10 +67,10 @@ interface TestListRowProps {
 // CELL_WIDTHS defines the shared column flex sizes used by both the sticky header
 // and the virtual row cells. Keeping them in one place ensures alignment.
 const CELL_WIDTHS = {
-    status: "10%",
-    runIndex: "10%",
-    class: "20%",
-    startTime: "10%",
+    status: "9%",
+    runIndex: "9%",
+    class: "23%",
+    startTime: "9%",
     method: 1, // flex: 1 takes the remaining space
 } as const;
 

@@ -86,7 +86,7 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                             <Stack direction="row" spacing={1} sx={theme.custom.generalDetails.failsStack}>
                                 <ReportChip label="@Fails" size="small"
                                            sx={theme.custom.generalDetails.failsChip}/>
-                                {methodDetails.methodContext.resultStatus !== ResultStatusType.FAILED_EXPECTED && (
+                                {methodDetails.methodContext.resultStatus == ResultStatusType.FAILED_EXPECTED && (
                                     <>
                                        {methodDetails.failsAnnotation.description && (
                                            <Typography variant="body2">{methodDetails.failsAnnotation.description}</Typography>
@@ -98,11 +98,11 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                                         )}
                                     </>
                                 )}
-                                {methodDetails.methodContext.resultStatus === ResultStatusType.FAILED_EXPECTED && methodDetails.failsAnnotation.validator && (
-                                    <>
-                                       <Typography variant="body2">Your conditions for Expected fails were not fulfilled:</Typography>
-                                       <Typography variant="body2">{methodDetails.failsAnnotation.validator}</Typography>
-                                    </>
+                                {methodDetails.methodContext.resultStatus !== ResultStatusType.FAILED_EXPECTED && methodDetails.failsAnnotation.validator && (
+                                    <Stack spacing={0}>
+                                        <Typography variant="body2">Your conditions for Expected fails were not fulfilled:</Typography>
+                                        <Typography variant="body2">{methodDetails.failsAnnotation.validator}</Typography>
+                                    </Stack>
                                 )}
                             </Stack>
                         )}

@@ -151,7 +151,7 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
                                     onChartPieceClick={() => {}}
                                     selectedStatus={null}
                                     withCard={false}
-                                    chartHeight={260}
+                                    chartHeight={240}
                                 />
                             </Box>
                         </Box>

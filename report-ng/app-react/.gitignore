@@ -23,6 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-public/model
+public/model_tt
 public/screenshots
 public/videos

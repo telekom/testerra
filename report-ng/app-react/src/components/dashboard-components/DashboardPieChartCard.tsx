@@ -14,7 +14,7 @@ interface DashboardPieChartProps {
     chartHeight?: number;
 }
 
-const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx, withCard = true}: DashboardPieChartProps) => {
+const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx, chartHeight, withCard = true}: DashboardPieChartProps) => {
 
     const data = []
     for (const status of StatusService.getRelevantStatuses()) {
@@ -65,6 +65,7 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
             onEvents={onEvents}
             notMerge={true}
             autoResize={true}
+            height={chartHeight}
         />;
 
     if (!withCard) {

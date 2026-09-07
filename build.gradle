@@ -18,7 +18,7 @@ ext {
     core = project(':core')
     report = project(':report-ng')
 
-    seleniumVersion = '4.38.0'
+    seleniumVersion = '4.43.0'
     // Must be the same like in Selenium 4
     // https://github.com/SeleniumHQ/selenium/blob/trunk/java/maven_install.json
     guavaVersion = "33.5.0-jre"

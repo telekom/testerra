@@ -36,13 +36,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.events.ConsoleEvent;
-import org.openqa.selenium.devtools.v142.fetch.Fetch;
-import org.openqa.selenium.devtools.v142.log.Log;
-import org.openqa.selenium.devtools.v142.log.model.LogEntry;
-import org.openqa.selenium.devtools.v142.network.Network;
-import org.openqa.selenium.devtools.v142.network.model.Request;
-import org.openqa.selenium.devtools.v142.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v142.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v152.fetch.Fetch;
+import org.openqa.selenium.devtools.v152.log.Log;
+import org.openqa.selenium.devtools.v152.log.model.LogEntry;
+import org.openqa.selenium.devtools.v152.network.Network;
+import org.openqa.selenium.devtools.v152.network.model.Request;
+import org.openqa.selenium.devtools.v152.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v152.network.model.ResponseReceived;
 import org.openqa.selenium.logging.HasLogEvents;
 import org.testng.annotations.Test;
 
@@ -82,6 +82,11 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     private Optional<Number> latitude = Optional.of(52.52084);
     private Optional<Number> longitude = Optional.of(13.40943);
 
+    /**
+     * Comment form Selenium site
+     * Geo Location — almost all sites use the IP address to determine physical location, so setting an emulated geolocation rarely has the desired effect.
+     * https://www.selenium.dev/documentation/webdriver/bidi/cdp/
+     */
     @Test
     public void testT03_GeoLocation_generic() {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
@@ -91,7 +96,8 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
 
         CHROME_DEV_TOOLS.setGeoLocation(webDriver, latitude.get().doubleValue(), longitude.get().doubleValue(), 1);
 
-        webDriver.get("https://my-location.org/");
+//        webDriver.get("https://my-location.org/");
+        webDriver.get("https://www.geolocation.com/de/");
         uiElementFinder.find(By.xpath("//button[@aria-label = 'Consent']")).click();
         uiElementFinder.find(By.id("latitude")).assertThat().text().isContaining(latitude.get().toString());
         uiElementFinder.find(By.id("longitude")).assertThat().text().isContaining(longitude.get().toString());
@@ -289,7 +295,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
         UiElementFinder uiElementFinder = UI_ELEMENT_FINDER_FACTORY.create(webDriver);
         uiElementFinder.find(By.xpath("//div[@id = 'cookiescript_accept']")).click();
         UiElement weatherLocation = uiElementFinder.find(By.xpath("//span[@data-api = 'location']"));
-        weatherLocation.assertThat().text().isContaining("Munich");
+        weatherLocation.assertThat().text().isContaining("Fasangarten");
     }
 
 }

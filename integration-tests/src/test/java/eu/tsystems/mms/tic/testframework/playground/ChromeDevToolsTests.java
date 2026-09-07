@@ -83,7 +83,7 @@ public class ChromeDevToolsTests extends AbstractWebDriverTest implements Chrome
     private Optional<Number> longitude = Optional.of(13.40943);
 
     /**
-     * Comment form Selenium site
+     * Comment from Selenium site
      * Geo Location — almost all sites use the IP address to determine physical location, so setting an emulated geolocation rarely has the desired effect.
      * https://www.selenium.dev/documentation/webdriver/bidi/cdp/
      */

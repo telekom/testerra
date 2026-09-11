@@ -32,7 +32,6 @@ import MainNavigation from "../components/navigation/MainNavigation.tsx";
 import {reportTheme} from "./reportTheme.tsx";
 import {ThemeProvider} from "@mui/material/styles";
 import {Stack} from "@mui/material";
-import Toolbar from "@mui/material/Toolbar";
 
 const MainLayout = () => {
 
@@ -54,16 +53,13 @@ const MainLayout = () => {
                         overflow: 'auto',
                     }}
                 >
-                    {/*Useful to have spacing so that there is not overlap if the nav bar is horizontally on top of the page*/}
-                    <Toolbar sx={{display: {xs: 'block', md: 'none'}}}/>
-
                     <Stack
                         spacing={2}
                         sx={{
                             alignItems: 'center',
                             mx: 3,
                             pb: 5,
-                            mt: {xs: 3, md: 3},
+                            mt: 3,
                         }}
                     >
                         <Outlet/>

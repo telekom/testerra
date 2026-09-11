@@ -17,9 +17,10 @@ import styled from "@emotion/styled";
 import {Divider, ListItemIcon, Typography} from "@mui/material";
 import logo from "../../assets/logo.png";
 import "./MainNavigation.css";
-import { blueGrey } from "@mui/material/colors";
+import {blueGrey} from "@mui/material/colors";
 import PrintDialog from "../print/PrintDialog";
 import {useReportData} from "../../provider/DataProvider";
+import {ExecutionStatistics} from "../../model/ExecutionStatistics.ts";
 
 const drawerWidth = 240;
 
@@ -27,10 +28,12 @@ const MenuDrawer = styled(Drawer)({
     width: drawerWidth,
     flexShrink: 0,
     boxSizing: 'border-box',
-    mt: 10,
+    marginTop: '64px',
     [`& .${drawerClasses.paper}`]: {
         width: drawerWidth,
         boxSizing: 'border-box',
+        top: 64,
+        height: 'calc(100% - 64px)',
     },
 });
 
@@ -44,6 +47,10 @@ const MainNavigation = () => {
     const {executionMngr} = useReportData();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [printDialogOpen, setPrintDialogOpen] = useState(false);
+
+    if (!executionMngr) return null;
+
+    const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();
 
     const toggleDrawer = (open: boolean) => () => {
         setMobileOpen(open);
@@ -71,17 +78,18 @@ const MainNavigation = () => {
 
     const drawerContent = (
         <Box sx={{height: '100%', overflow: 'hidden'}}>
-            <Box>
-                <Toolbar
-                    sx={{
-                        backgroundColor: 'primary.main',
-                        color: 'primary.contrastText',
-                    }}
-                >
-                    <img src={logo} className="logo" alt="Testerra report"/>
-                    <Typography variant="h6" sx={{pl: 1}}>Test project</Typography>
-                </Toolbar>
-            </Box>
+            {/*<Box>*/}
+            {/*    <Toolbar*/}
+            {/*        sx={{*/}
+            {/*            backgroundColor: 'primary.main',*/}
+            {/*            color: 'primary.contrastText',*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        <img src={logo} className="logo" alt="Testerra report"/>*/}
+            {/*        /!*<Typography variant="h6" sx={{pl: 1}}>{execStatistics.getExecutionAggregate.executionContext?.runConfig?.reportName}</Typography>*!/*/}
+            {/*        <Typography variant="h6" sx={{pl: 1}}>Test report</Typography>*/}
+            {/*    </Toolbar>*/}
+            {/*</Box>*/}
 
             <Box
                 sx={{
@@ -89,12 +97,12 @@ const MainNavigation = () => {
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    backgroundColor: 'grey.100'
+                    backgroundColor: 'grey.100',
                 }}
             >
                 <List>
                     <ListItem>
-                        <ListItemText>Regression</ListItemText>
+                        <ListItemText>{execStatistics.getExecutionAggregate.executionContext?.contextValues?.name}</ListItemText>
                     </ListItem>
                 </List>
                 <Divider/>
@@ -160,62 +168,72 @@ const MainNavigation = () => {
     return (
         <>
             {/* Horizontal top bar with burger button that appears if the screen width is too small */}
-            <AppBar
-                position="fixed"
-                sx={{
-                    display: {xs: 'block', md: 'none'},
-                    bgcolor: 'background.paper',
-                    color: 'text.primary',
-                }}
-            >
-                <Toolbar>
-                    <Typography variant="h6" sx={{flexGrow: 1}}>
-                        Test project
-                    </Typography>
+                <AppBar
+                    position="fixed"
+                    sx={{
+                        display: 'block',
+                        width: '100%',
+                        left: 0,
+                        right: 0,
+                        boxSizing: 'border-box',
+                        backgroundColor: 'primary.main',
+                        color: 'primary.contrastText',
+                        zIndex: 1200,
+                    }}
+                >
+                    <Toolbar>
+                        <img src={logo} className="logo" alt="Testerra report"/>
+                        <Typography variant="h6" sx={{flexGrow: 1}}>
+                            {execStatistics.getExecutionAggregate.executionContext?.runConfig?.reportName}
+                        </Typography>
+                        <Box sx={{display: {xs: 'block', md: 'none'}}}>
+                            <IconButton onClick={() => setPrintDialogOpen(true)} title="Print Report">
+                                <PrintIcon/>
+                            </IconButton>
 
-                    <IconButton onClick={() => setPrintDialogOpen(true)} title="Print Report">
-                        <PrintIcon/>
-                    </IconButton>
+                            <IconButton onClick={toggleDrawer(true)}>
+                                <MenuIcon/>
+                            </IconButton>
+                        </Box>
 
-                    <IconButton onClick={toggleDrawer(true)}>
-                        <MenuIcon/>
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
+                    </Toolbar>
+                </AppBar>
 
-            {/* Drawer that opens after user hits burger icon if screen width is too small*/}
-            <Drawer
-                variant="temporary"
-                open={mobileOpen}
-                onClose={toggleDrawer(false)}
-                sx={{
-                    display: {xs: 'block', md: 'none'},
-                    [`& .${drawerClasses.paper}`]: {
-                        width: drawerWidth,
-                    },
-                }}
-            >
-                {drawerContent}
-            </Drawer>
+                {/* Drawer that opens after user hits burger icon if screen width is too small*/}
+                <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={toggleDrawer(false)}
+                    sx={{
+                        display: {xs: 'block', md: 'none'},
+                        [`& .${drawerClasses.paper}`]: {
+                            width: drawerWidth,
+                            top: 64,
+                            height: 'calc(100% - 64px)',
+                        },
+                    }}
+                >
+                    {drawerContent}
+                </Drawer>
 
-            {/* Default menu drawer */}
-            <MenuDrawer
-                variant="permanent"
-                sx={{
-                    display: {xs: 'none', md: 'block'},
-                    [`& .${drawerClasses.paper}`]: {
-                        backgroundColor: 'background.paper',
-                    },
-                }}
-            >
-                {drawerContent}
-            </MenuDrawer>
+                {/* Default menu drawer */}
+                <MenuDrawer
+                    variant="permanent"
+                    sx={{
+                        display: {xs: 'none', md: 'block'},
+                        [`& .${drawerClasses.paper}`]: {
+                            backgroundColor: 'background.paper',
+                        },
+                    }}
+                >
+                    {drawerContent}
+                </MenuDrawer>
 
-            <PrintDialog
-                open={printDialogOpen}
-                onClose={() => setPrintDialogOpen(false)}
-                executionStatistics={executionMngr?.getExecutionStatistics() || null}
-            />
+                <PrintDialog
+                    open={printDialogOpen}
+                    onClose={() => setPrintDialogOpen(false)}
+                    executionStatistics={executionMngr?.getExecutionStatistics() || null}
+                />
         </>
     );
 };

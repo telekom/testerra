@@ -30,6 +30,8 @@ import {FailureAspectStatistics} from "../../model/FailureAspectStatistics";
 import {useNavigate} from "react-router-dom";
 import {ExecutionStatistics} from "../../model/ExecutionStatistics";
 import Box from "@mui/material/Box";
+import {Typography} from "@mui/material";
+import React from "react";
 
 interface DashboardFailureAspectsProps {
     sx?: SxProps<Theme>,
@@ -54,11 +56,12 @@ const DashboardFailureAspectsCard = ({sx, execStatistics}: DashboardFailureAspec
 
     const failureAspectsLabel = (
         <Box>
-            Top 3 Failure Aspects (
-            <Link href="#/failureAspects?type=major">{majorFailures} Major</Link>
-            {" | "}
-            <Link href="#/failureAspects?type=minor">{minorFailures} Minor</Link>
-            )
+            <Typography variant="subtitle2" color="primary">Top 3 Failure Aspects (
+                <Link href="#/failureAspects?type=major">{majorFailures} Major</Link>
+                {" | "}
+                <Link href="#/failureAspects?type=minor">{minorFailures} Minor</Link>
+                )
+            </Typography>
         </Box>
     );
 

@@ -15,25 +15,48 @@ export interface ReportCardProps {
     tooltipText?: string;
 }
 
-const ReportCard = ({label, content, details, footer, sxCard, sxHeader, sxContent = {pt: 1, pb: 1}, tooltipText}: ReportCardProps) => {
+const ReportCard = ({
+                        label,
+                        content,
+                        details,
+                        footer,
+                        sxCard,
+                        sxHeader,
+                        sxContent = {pt: 1, pb: 1},
+                        tooltipText
+                    }: ReportCardProps) => {
     const sections = [
-        details !== undefined && details !== null && typeof details !== "boolean" ? {key: "details", content: details} : null,
+        details !== undefined && details !== null && typeof details !== "boolean" ? {
+            key: "details",
+            content: details
+        } : null,
         {key: "content", content},
-        footer !== undefined && footer !== null && typeof footer !== "boolean" ? {key: "footer", content: footer} : null,
-    ].filter((section): section is {key: "details" | "content" | "footer"; content: React.ReactNode} => section !== null);
+        footer !== undefined && footer !== null && typeof footer !== "boolean" ? {
+            key: "footer",
+            content: footer
+        } : null,
+    ].filter((section): section is {
+        key: "details" | "content" | "footer";
+        content: React.ReactNode
+    } => section !== null);
     const labelContent = (typeof label === "string" || typeof label === "number")
         ? <Typography variant="subtitle2" color="primary">{label}</Typography>
         : label;
 
     return (
         <Card sx={{p: 0, display: "flex", flexDirection: "column", height: "100%", ...sxCard}}>
-            <CardContent sx={{pt: 1, pb: 1, ...sxHeader}}>
-                <Stack direction="row" sx={{justifyContent: "space-between", alignItems: "center"}}>
-                    {labelContent}
-                    {tooltipText && <InfoTooltip text={tooltipText}/>}
-                </Stack>
-            </CardContent>
-            <Divider/>
+            {label && (
+                <>
+                    <CardContent sx={{pt: 1, pb: 1, ...sxHeader}}>
+                        <Stack direction="row" sx={{justifyContent: "space-between", alignItems: "center"}}>
+                            {labelContent}
+                            {tooltipText && <InfoTooltip text={tooltipText}/>}
+                        </Stack>
+                    </CardContent>
+                    <Divider/>
+                </>
+            )}
+
             <Box sx={{display: "flex", flexDirection: "column", flex: 1, minHeight: 0}}>
                 {sections.map((section, index) => (
                     <React.Fragment key={index}>

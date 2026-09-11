@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import {
-    Card,
     CircularProgress,
     Grid,
     Stack,
@@ -33,6 +32,7 @@ import MultiSelectInput from "../widgets/MultiSelectInput";
 import SelectedFilterChips from "../components/SelectedFilterChips";
 import {escapeHtml} from "../utils/escapeHtml";
 import {reportTheme} from "../layout/reportTheme";
+import ReportCard from "../widgets/ReportCard.tsx";
 
 // Types
 interface MethodInfo {
@@ -469,51 +469,51 @@ const ThreadsPage = () => {
                         <SelectedFilterChips chips={chips}
                                              handleClearAllClick={clearAll}/>
                     </Grid>
-                </Grid>
 
-                <Card sx={{width: '100%'}}>
-                    <Box sx={{
-                        height: `${preparedTimeline.cardHeight}px`,
-                        width: '100%',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }}>
-                        {chartOptions ? (
-                            <Echart ref={chartRef} option={chartOptions} onEvents={{click: handleChartClick}}
-                                    notMerge={true}
-                                    autoResize={true} height={preparedTimeline.cardHeight}
-                                    onChartReady={dispatchZoom}/>
-                        ) : (
-                            <Box sx={{p: 2, textAlign: 'center', color: 'text.secondary'}}>
-                                Loading chart data...
-                            </Box>
-                        )}
-                        {hasNoHighlightedEntries && (
-                            <Stack
-                                direction="row"
-                                spacing={0.5}
-                                sx={{
-                                    position: "absolute",
-                                    top: 12,
-                                    right: 12,
-                                    zIndex: 1400,
-                                    px: "14px",
-                                    py: "8px",
-                                    borderRadius: "4px",
-                                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                                    color: "#fff",
-                                    alignItems: "center",
-                                    pointerEvents: "none",
-                                }}
-                            >
-                                <InfoOutlineIcon sx={{fontSize: 14}}/>
-                                <Typography sx={{fontSize: "13px"}}>
-                                    No entries matching this criteria
-                                </Typography>
-                            </Stack>
-                        )}
-                    </Box>
-                </Card>
+                    <Grid size={12}>
+                        <ReportCard
+                            label=""
+                            content={
+                                <>
+                                    {chartOptions ? (
+                                        <Echart ref={chartRef} option={chartOptions}
+                                                onEvents={{click: handleChartClick}}
+                                                notMerge={true}
+                                                autoResize={true} height={preparedTimeline.cardHeight}
+                                                onChartReady={dispatchZoom}/>
+                                    ) : (
+                                        <Box sx={{p: 2, textAlign: 'center', color: 'text.secondary'}}>
+                                            Loading chart data...
+                                        </Box>
+                                    )}
+                                    {hasNoHighlightedEntries && (
+                                        <Stack
+                                            direction="row"
+                                            spacing={0.5}
+                                            sx={{
+                                                position: "absolute",
+                                                top: 12,
+                                                right: 12,
+                                                zIndex: 1400,
+                                                px: "14px",
+                                                py: "8px",
+                                                borderRadius: "4px",
+                                                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                                                color: "#fff",
+                                                alignItems: "center",
+                                                pointerEvents: "none",
+                                            }}
+                                        >
+                                            <InfoOutlineIcon sx={{fontSize: 14}}/>
+                                            <Typography sx={{fontSize: "13px"}}>
+                                                No entries matching this criteria
+                                            </Typography>
+                                        </Stack>
+                                    )}
+                                </>
+                            }/>
+                    </Grid>
+                </Grid>
             </Stack>
         </Box>
     );

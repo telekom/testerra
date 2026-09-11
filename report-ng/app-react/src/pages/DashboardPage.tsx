@@ -19,7 +19,6 @@
  * under the License.
  */
 
-import {Grid} from "@mui/material";
 import Box from "@mui/material/Box";
 import DashboardPieChartCard from "../components/dashboard-components/DashboardPieChartCard";
 import DashboardTestResultsCard from "../components/dashboard-components/DashboardTestResultsCard";
@@ -31,10 +30,11 @@ import DashboardClassesChartCard from "../components/dashboard-components/Dashbo
 import DashboardHistoryChartCard from "../components/dashboard-components/DashboardHistoryChartCard";
 import {useReportData} from "../provider/DataProvider";
 import {useSearchParams} from "react-router-dom";
-import { useTheme } from '@mui/material/styles';
+import {useTheme} from '@mui/material/styles';
 import {ExecutionStatistics} from "../model/ExecutionStatistics";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
+import {Grid} from "@mui/material";
 
 const DashboardPage = () => {
 
@@ -43,7 +43,7 @@ const DashboardPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedStatus = searchParams.get("status");
 
-    if (isLoading) return <LinearProgress aria-label="Loading…" />;
+    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
     if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
     if (!executionMngr) return null;
 
@@ -70,16 +70,31 @@ const DashboardPage = () => {
                 spacing={2}
                 columns={12}
             >
+                {/*<Grid size={12}>*/}
+                {/*    <ReportCard label={""}*/}
+                {/*                sxContent={theme.custom.durationCard.content}*/}
+                {/*                content={*/}
+                {/*                    <Stack direction="row" sx={{p: 1}} spacing={2}>*/}
+                {/*                        <Typography variant="h6">{execStatistics.getExecutionAggregate.executionContext?.runConfig?.reportName}</Typography>*/}
+                {/*                        <Typography variant="subtitle1">foo</Typography>*/}
+                {/*                    </Stack>*/}
+                {/*                }*/}
+                {/*    />*/}
+                {/*</Grid>*/}
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
-                    <Stack direction="column" spacing={2} >
-                        <DashboardPieChartCard sx={theme.mixins.cardHeight(6)} execStatistics={execStatistics} onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
+                    <Stack direction="column" spacing={2}>
+                        <DashboardPieChartCard sx={theme.mixins.cardHeight(6)} execStatistics={execStatistics}
+                                               onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
                         <DurationCard sx={theme.mixins.cardHeight(4)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardTestResultsCard sx={theme.mixins.cardHeight(6)} execStatistics={execStatistics} onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
-                        <DashboardFailureCorridorCard executionContext={executionMngr.getExecutionAggregate().executionContext} sx={theme.mixins.cardHeight(4)}/>
+                        <DashboardTestResultsCard sx={theme.mixins.cardHeight(6)} execStatistics={execStatistics}
+                                                  onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
+                        <DashboardFailureCorridorCard
+                            executionContext={executionMngr.getExecutionAggregate().executionContext}
+                            sx={theme.mixins.cardHeight(4)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{sm: 12, lg: 6}}>

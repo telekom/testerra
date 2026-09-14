@@ -16,7 +16,6 @@ import {useState} from "react";
 import styled from "@emotion/styled";
 import {Divider, ListItemIcon, Typography} from "@mui/material";
 import logo from "../../assets/logo.png";
-import "./MainNavigation.css";
 import {blueGrey} from "@mui/material/colors";
 import PrintDialog from "../print/PrintDialog";
 import {useReportData} from "../../provider/DataProvider";
@@ -85,7 +84,7 @@ const MainNavigation = () => {
             {/*            color: 'primary.contrastText',*/}
             {/*        }}*/}
             {/*    >*/}
-            {/*        <img src={logo} className="logo" alt="Testerra report"/>*/}
+            {/*        <Box component="img" src={logo} alt="Testerra report" sx={{width: 60, height: 60}} />*/}
             {/*        /!*<Typography variant="h6" sx={{pl: 1}}>{execStatistics.getExecutionAggregate.executionContext?.runConfig?.reportName}</Typography>*!/*/}
             {/*        <Typography variant="h6" sx={{pl: 1}}>Test report</Typography>*/}
             {/*    </Toolbar>*/}
@@ -179,7 +178,7 @@ const MainNavigation = () => {
                 }}
             >
                 <Toolbar>
-                    <img src={logo} className="logo" alt="Testerra report"/>
+                    <Box component="img" src={logo} alt="Testerra report" sx={{width: 60, height: 60}} />
                     <Typography
                         variant="h6"
                         sx={{flexGrow: 1, pl: 1}}

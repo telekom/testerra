@@ -84,7 +84,7 @@ export const LogConsole: React.FC<LogConsoleProps> = ({logs, searchText, height 
     // Hooks must stay before the early return so renders remain stable.
     const listHeight = useMemo(() => {
         if (typeof height === "number") return height;
-        return isInStepsList ? "auto" : window.innerHeight - 200;
+        return isInStepsList ? "auto" : window.innerHeight - 240;
     }, [height, isInStepsList]);
 
     // dynamic row height

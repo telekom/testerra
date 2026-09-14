@@ -243,7 +243,7 @@ const TestTimings = () => {
                 <Grid size={12}>
                     <ReportCard
                         label="Test durations"
-                        content={<Echart option={option} height="55dvh" onEvents={{"click": handleBarClick}} autoResize notMerge/>}
+                        content={<Echart option={option} height="52dvh" onEvents={{"click": handleBarClick}} autoResize notMerge/>}
                     />
                 </Grid>
             </Grid>

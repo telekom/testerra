@@ -233,7 +233,7 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
                 rowCount={rows.length}
                 rowHeight={rowHeight}
                 rowProps={rowProps}
-                style={{maxHeight: "calc(100dvh - 202px)", width: "100%"}}
+                style={{maxHeight: "calc(100dvh - 266px)", width: "100%"}}
             />
         </Paper>
     );

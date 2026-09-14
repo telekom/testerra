@@ -167,73 +167,68 @@ const MainNavigation = () => {
 
     return (
         <>
-            {/* Horizontal top bar with burger button that appears if the screen width is too small */}
-                <AppBar
-                    position="fixed"
-                    sx={{
-                        display: 'block',
-                        width: '100%',
-                        left: 0,
-                        right: 0,
-                        boxSizing: 'border-box',
-                        backgroundColor: 'primary.main',
-                        color: 'primary.contrastText',
-                        zIndex: 1200,
-                    }}
-                >
-                    <Toolbar>
-                        <img src={logo} className="logo" alt="Testerra report"/>
-                        <Typography variant="h6" sx={{flexGrow: 1}}>
-                            {execStatistics.getExecutionAggregate.executionContext?.runConfig?.reportName}
-                        </Typography>
-                        <Box sx={{display: {xs: 'block', md: 'none'}}}>
-                            <IconButton onClick={() => setPrintDialogOpen(true)} title="Print Report">
-                                <PrintIcon/>
-                            </IconButton>
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: {xs: "100%", md: `${drawerWidth}px`},
+                    left: 0,
+                    right: "auto",
+                    boxSizing: 'border-box',
+                    backgroundColor: 'primary.main',
+                    color: 'primary.contrastText',
+                }}
+            >
+                <Toolbar>
+                    <img src={logo} className="logo" alt="Testerra report"/>
+                    <Typography
+                        variant="h6"
+                        sx={{flexGrow: 1, pl: 1}}
+                    >
+                        Report
+                    </Typography>
+                    <Box sx={{display: {xs: 'block', md: 'none'}}}>
+                        <IconButton onClick={toggleDrawer(true)} color="inherit">
+                            <MenuIcon/>
+                        </IconButton>
+                    </Box>
+                </Toolbar>
+            </AppBar>
 
-                            <IconButton onClick={toggleDrawer(true)}>
-                                <MenuIcon/>
-                            </IconButton>
-                        </Box>
+            {/* Drawer that opens after user hits burger icon if screen width is too small*/}
+            <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                onClose={toggleDrawer(false)}
+                sx={{
+                    display: {xs: 'block', md: 'none'},
+                    [`& .${drawerClasses.paper}`]: {
+                        width: drawerWidth,
+                        top: 64,
+                        height: 'calc(100% - 64px)',
+                    },
+                }}
+            >
+                {drawerContent}
+            </Drawer>
 
-                    </Toolbar>
-                </AppBar>
+            {/* Default menu drawer */}
+            <MenuDrawer
+                variant="permanent"
+                sx={{
+                    display: {xs: 'none', md: 'block'},
+                    [`& .${drawerClasses.paper}`]: {
+                        backgroundColor: 'background.paper',
+                    },
+                }}
+            >
+                {drawerContent}
+            </MenuDrawer>
 
-                {/* Drawer that opens after user hits burger icon if screen width is too small*/}
-                <Drawer
-                    variant="temporary"
-                    open={mobileOpen}
-                    onClose={toggleDrawer(false)}
-                    sx={{
-                        display: {xs: 'block', md: 'none'},
-                        [`& .${drawerClasses.paper}`]: {
-                            width: drawerWidth,
-                            top: 64,
-                            height: 'calc(100% - 64px)',
-                        },
-                    }}
-                >
-                    {drawerContent}
-                </Drawer>
-
-                {/* Default menu drawer */}
-                <MenuDrawer
-                    variant="permanent"
-                    sx={{
-                        display: {xs: 'none', md: 'block'},
-                        [`& .${drawerClasses.paper}`]: {
-                            backgroundColor: 'background.paper',
-                        },
-                    }}
-                >
-                    {drawerContent}
-                </MenuDrawer>
-
-                <PrintDialog
-                    open={printDialogOpen}
-                    onClose={() => setPrintDialogOpen(false)}
-                    executionStatistics={executionMngr?.getExecutionStatistics() || null}
-                />
+            <PrintDialog
+                open={printDialogOpen}
+                onClose={() => setPrintDialogOpen(false)}
+                executionStatistics={executionMngr?.getExecutionStatistics() || null}
+            />
         </>
     );
 };

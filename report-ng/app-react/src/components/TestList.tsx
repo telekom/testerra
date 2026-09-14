@@ -371,7 +371,7 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
                 rowCount={rows.length}
                 rowHeight={rowHeight}
                 rowProps={rowProps}
-                style={{maxHeight: "calc(100dvh - 265px)", width: "100%"}}
+                style={{maxHeight: "calc(100dvh - 329px)", width: "100%"}}
             />
         </Paper>
     );

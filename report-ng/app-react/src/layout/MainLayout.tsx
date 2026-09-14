@@ -23,6 +23,9 @@ import {Outlet} from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -32,8 +35,11 @@ import MainNavigation from "../components/navigation/MainNavigation.tsx";
 import {reportTheme} from "./reportTheme.tsx";
 import {ThemeProvider} from "@mui/material/styles";
 import {Stack} from "@mui/material";
+import {useReportData} from "../provider/DataProvider.tsx";
 
 const MainLayout = () => {
+    const {executionMngr} = useReportData();
+    const reportName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.reportName ?? "";
 
     return (
 
@@ -51,8 +57,32 @@ const MainLayout = () => {
                     sx={{
                         flexGrow: 1,
                         overflow: 'auto',
+                        position: "relative",
                     }}
                 >
+                    <AppBar
+                        position="sticky"
+                        sx={{
+                            // left: {xs: 0, md: "240px"},
+                            width: "100%",
+                            backgroundColor: "primary.main",
+                            color: "primary.contrastText",
+                            right: 0
+                        }}
+                    >
+                        <Toolbar>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    overflowX: "auto",
+                                    overflowY: "hidden",
+                                    whiteSpace: "nowrap",
+                                }}
+                            >
+                                {reportName}
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
                     <Stack
                         spacing={2}
                         sx={{

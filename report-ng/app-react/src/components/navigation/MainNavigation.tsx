@@ -19,7 +19,6 @@ import logo from "../../assets/logo.png";
 import {blueGrey} from "@mui/material/colors";
 import PrintDialog from "../print/PrintDialog";
 import {useReportData} from "../../provider/DataProvider";
-import {ExecutionStatistics} from "../../model/ExecutionStatistics.ts";
 
 const drawerWidth = 240;
 
@@ -46,10 +45,8 @@ const MainNavigation = () => {
     const {executionMngr} = useReportData();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [printDialogOpen, setPrintDialogOpen] = useState(false);
-
-    if (!executionMngr) return null;
-
-    const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();
+    const reportName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.reportName ?? "";
+    const executionName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.contextValues?.name ?? "";
 
     const toggleDrawer = (open: boolean) => () => {
         setMobileOpen(open);
@@ -77,19 +74,6 @@ const MainNavigation = () => {
 
     const drawerContent = (
         <Box sx={{height: '100%', overflow: 'hidden'}}>
-            {/*<Box>*/}
-            {/*    <Toolbar*/}
-            {/*        sx={{*/}
-            {/*            backgroundColor: 'primary.main',*/}
-            {/*            color: 'primary.contrastText',*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        <Box component="img" src={logo} alt="Testerra report" sx={{width: 60, height: 60}} />*/}
-            {/*        /!*<Typography variant="h6" sx={{pl: 1}}>{execStatistics.getExecutionAggregate.executionContext?.runConfig?.reportName}</Typography>*!/*/}
-            {/*        <Typography variant="h6" sx={{pl: 1}}>Test report</Typography>*/}
-            {/*    </Toolbar>*/}
-            {/*</Box>*/}
-
             <Box
                 sx={{
                     overflow: 'auto',
@@ -99,12 +83,12 @@ const MainNavigation = () => {
                     backgroundColor: 'grey.100',
                 }}
             >
-                <List>
-                    <ListItem>
-                        <ListItemText>{execStatistics.getExecutionAggregate.executionContext?.contextValues?.name}</ListItemText>
-                    </ListItem>
-                </List>
-                <Divider/>
+                {/*<List>*/}
+                {/*    <ListItem>*/}
+                {/*        <ListItemText>{executionName}</ListItemText>*/}
+                {/*    </ListItem>*/}
+                {/*</List>*/}
+                {/*<Divider/>*/}
                 <List>
                     {menuRoutes
                         .filter((route) => (route.handle as RouteHandle)?.show)
@@ -178,14 +162,20 @@ const MainNavigation = () => {
                 }}
             >
                 <Toolbar>
-                    <Box component="img" src={logo} alt="Testerra report" sx={{width: 60, height: 60}} />
+                    <Box component="img" src={logo} alt="Testerra report" sx={{width: 60, height: 60}}/>
                     <Typography
                         variant="h6"
-                        sx={{flexGrow: 1, pl: 1}}
+                        sx={{flexGrow: 1, pl: 1, display: {xs: "none", md: "block"}}}
                     >
                         Report
                     </Typography>
-                    <Box sx={{display: {xs: 'block', md: 'none'}}}>
+                    <Box sx={{display: {xs: "block", md: "none"}}}>
+                        <Typography>
+                            {reportName}
+                        </Typography>
+                        <Typography variant="body2">Execution: {executionName}</Typography>
+                    </Box>
+                    <Box sx={{display: {xs: 'block', md: 'none'}, ml: "auto"}}>
                         <IconButton onClick={toggleDrawer(true)} color="inherit">
                             <MenuIcon/>
                         </IconButton>

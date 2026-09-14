@@ -40,6 +40,7 @@ import {useReportData} from "../provider/DataProvider.tsx";
 const MainLayout = () => {
     const {executionMngr} = useReportData();
     const reportName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.reportName ?? "";
+    const executionName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.contextValues?.name ?? "";
 
     return (
 
@@ -64,6 +65,7 @@ const MainLayout = () => {
                         position="sticky"
                         sx={{
                             // left: {xs: 0, md: "240px"},
+                            display: {xs: 'none', md: 'block'},
                             width: "100%",
                             backgroundColor: "primary.main",
                             color: "primary.contrastText",
@@ -71,18 +73,25 @@ const MainLayout = () => {
                         }}
                     >
                         <Toolbar>
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    overflowX: "auto",
-                                    overflowY: "hidden",
-                                    whiteSpace: "nowrap",
-                                }}
-                            >
-                                {reportName}
-                            </Typography>
+                            <Box sx={{display: 'flex', alignItems: 'baseline', gap: 2}}>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        overflowX: "auto",
+                                        overflowY: "hidden",
+                                        whiteSpace: "nowrap",
+                                    }}
+                                >
+                                    {reportName}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Execution: {executionName}
+                                </Typography>
+                            </Box>
+
                         </Toolbar>
                     </AppBar>
+                    <Toolbar sx={{display: {xs: 'block', md: 'none'}}}/>
                     <Stack
                         spacing={2}
                         sx={{

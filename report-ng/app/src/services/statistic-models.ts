@@ -121,6 +121,7 @@ class Statistics {
     }
 }
 
+// migrated OK
 export class ExecutionStatistics extends Statistics {
     private _classStatistics: ClassStatistics[] = [];
     private _uniqueFailureAspects: FailureAspectStatistics[] = [];
@@ -357,6 +358,7 @@ export class ClassHistoryStatistics extends Statistics {
     }
 }
 
+// migrated OK
 export class HistoricalMethod {
     private readonly _methodContext: IMethodContext;
     private readonly _methodIdentifier: string;
@@ -785,7 +787,7 @@ export class ClassStatistics extends Statistics {
     }
 }
 
-
+// migrated OK
 export class FailureAspectStatistics extends Statistics {
     private _irrelevantClassNameNeedles = ["TimeoutException"];
     private _methodContexts: IMethodContext[] = [];

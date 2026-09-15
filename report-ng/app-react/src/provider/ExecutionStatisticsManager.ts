@@ -1,4 +1,8 @@
-import type {ExecutionAggregate, /*HistoryAggregate,*/ LogMessageAggregate} from "../model/report-model/report_pb.ts";
+import type {
+    ExecutionAggregate,
+    HistoryAggregate,
+    LogMessageAggregate
+} from "../model/report-model/report_pb.ts";
 import type {ClassContext, LogMessage, MethodContext} from "../model/report-model/framework_pb.ts";
 import {ExecutionStatistics} from "../model/ExecutionStatistics.ts";
 import {ClassStatistics} from "../model/ClassStatistics.ts";
@@ -8,16 +12,15 @@ import {MethodDetails} from "../model/MethodDetails";
 export class ExecutionStatisticsManager {
     private readonly executionAggregate: ExecutionAggregate;
     private readonly logMessageAggregate: LogMessageAggregate;
-    // private readonly historyAggregate: HistoryAggregate;
+    private readonly historyAggregate: HistoryAggregate;
 
-    private executionStatistics: ExecutionStatistics;
-    private logMessages : { [key: string]: LogMessage } = {};
+    private readonly executionStatistics: ExecutionStatistics;
+    private logMessages: { [key: string]: LogMessage } = {};
 
-
-    constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate/*, historyAggregate: HistoryAggregate*/) {
+    constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate, historyAggregate: HistoryAggregate) {
         this.executionAggregate = executionAggregate;
         this.logMessageAggregate = logMessageAggregate;
-        // this.historyAggregate = historyAggregate;
+        this.historyAggregate = historyAggregate;
         this.executionStatistics = new ExecutionStatistics(this.executionAggregate);
     }
 
@@ -57,24 +60,18 @@ export class ExecutionStatisticsManager {
         return this.executionStatistics;
     }
 
-    getLogs() {
+    public getLogs() {
         return this.logMessages;
     }
 
-    getMethodPromptLogs(methodContext: MethodContext) {
-        const logMessageIds = methodContext.testSteps
-            ?.flatMap(value => value.actions)
-            .flatMap(value => value?.entries)
-            .filter(value => value?.logMessageId)
-            .map(value => value?.logMessageId)
-        const logMessages = this.getLogs()
-        return Object.values(logMessages).filter(logMessage => logMessage.prompt && logMessageIds?.includes(logMessage.id))
+    public getHistoryStatistics() {
+        return this.historyAggregate;
     }
 
     // note: "!" operator is used to tell typescript that this property is not undefined
     // (this problem is caused by optional proto properties being non-optional in typescript)
     // talk with mgn: classContext, testContext, suiteContext, sessionContext and all Ids are never undefined if the "parent" is not undefined
-    getMethodDetails(methodId: string) {
+    public getMethodDetails(methodId: string) {
         const executionStatistics = this.getExecutionStatistics()
         const executionAggregate = this.getExecutionAggregate();
         const methodContext = executionAggregate.methodContexts?.[methodId];
@@ -92,6 +89,16 @@ export class ExecutionStatisticsManager {
             methodDetails.promptLogs = this.getMethodPromptLogs(methodContext);
             return methodDetails;
         }
+    }
+
+    private getMethodPromptLogs(methodContext: MethodContext) {
+        const logMessageIds = methodContext.testSteps
+            ?.flatMap(value => value.actions)
+            .flatMap(value => value?.entries)
+            .filter(value => value?.logMessageId)
+            .map(value => value?.logMessageId)
+        const logMessages = this.getLogs()
+        return Object.values(logMessages).filter(logMessage => logMessage.prompt && logMessageIds?.includes(logMessage.id))
     }
 
     // TODO: Add all the other methods here...

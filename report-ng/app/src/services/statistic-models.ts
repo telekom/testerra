@@ -199,6 +199,7 @@ export class ExecutionStatistics extends Statistics {
     }
 }
 
+// migrated OK
 export class HistoryStatistics {
     private _historyAggregateStatistics: HistoryAggregateStatistics[] = [];
     private _classHistory: ClassHistory[] = [];

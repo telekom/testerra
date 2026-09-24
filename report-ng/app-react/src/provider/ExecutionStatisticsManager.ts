@@ -1,6 +1,5 @@
 import type {
     ExecutionAggregate,
-    HistoryAggregate,
     LogMessageAggregate
 } from "../model/report-model/report_pb.ts";
 import type {ClassContext, LogMessage, MethodContext} from "../model/report-model/framework_pb.ts";
@@ -12,15 +11,13 @@ import {MethodDetails} from "../model/MethodDetails";
 export class ExecutionStatisticsManager {
     private readonly executionAggregate: ExecutionAggregate;
     private readonly logMessageAggregate: LogMessageAggregate;
-    private readonly historyAggregate: HistoryAggregate;
 
     private readonly executionStatistics: ExecutionStatistics;
     private logMessages: { [key: string]: LogMessage } = {};
 
-    constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate, historyAggregate: HistoryAggregate) {
+    constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate) {
         this.executionAggregate = executionAggregate;
         this.logMessageAggregate = logMessageAggregate;
-        this.historyAggregate = historyAggregate;
         this.executionStatistics = new ExecutionStatistics(this.executionAggregate);
     }
 
@@ -62,10 +59,6 @@ export class ExecutionStatisticsManager {
 
     public getLogs() {
         return this.logMessages;
-    }
-
-    public getHistoryStatistics() {
-        return this.historyAggregate;
     }
 
     // note: "!" operator is used to tell typescript that this property is not undefined

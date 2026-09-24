@@ -1,11 +1,12 @@
 import React, {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
 
 import {
-    ExecutionAggregate,
+    ExecutionAggregate, History,
     HistoryAggregate,
     LogMessageAggregate
 } from "../model/report-model/report_pb.ts";
 import {ExecutionStatisticsManager} from "./ExecutionStatisticsManager.ts";
+import {HistoryStatisticsManager} from "../model/HistoryStatisticsManager.ts";
 
 const ProtobufContext = createContext<ProtobufContextType | undefined>(undefined);
 
@@ -25,7 +26,7 @@ export interface AllProtoData {
 
 export interface ProtobufContextType {
     executionMngr: ExecutionStatisticsManager | null;
-    // historyMngr: HistoryStatisticsManager;
+    historyMngr: HistoryStatisticsManager | null;
     isLoading: boolean;
     error: Error | null;
 }
@@ -33,11 +34,11 @@ export interface ProtobufContextType {
 export const DataProvider: React.FC<Props> = ({children}) => {
     const [managers, setManagers] = useState<{
         executionStatistics: ExecutionStatisticsManager | null;
-        // historyStatistics: HistoryStatisticsManager | null;
+        historyStatistics: HistoryStatisticsManager | null;
     }>(
         {
             executionStatistics: null,
-            // historyStatistics: null
+            historyStatistics: null
         }
     );
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -51,15 +52,16 @@ export const DataProvider: React.FC<Props> = ({children}) => {
                 const [execution, logging, history] = await Promise.all([
                     fetchAndDecode<ExecutionAggregate>("execution", ExecutionAggregate),
                     fetchAndDecode<LogMessageAggregate>("logMessages", LogMessageAggregate),
-                    fetchAndDecode<HistoryAggregate>("history", HistoryAggregate)
+                    fetchAndDecode<History>("history", History)
                 ]);
 
-                const executionStatisticsManager = new ExecutionStatisticsManager(execution, logging, history);
+                const executionStatisticsManager = new ExecutionStatisticsManager(execution, logging);
                 await executionStatisticsManager.init();
+                const historyStatisticsManager = new HistoryStatisticsManager(history);
 
                 setManagers({
                     executionStatistics: executionStatisticsManager,
-                    // historyStatistics: new HistoryStatisticsManager(history)
+                    historyStatistics: historyStatisticsManager
                 })
 
             } catch (err) {
@@ -96,6 +98,7 @@ export const DataProvider: React.FC<Props> = ({children}) => {
     return (
         <ProtobufContext.Provider value={{
             executionMngr: managers.executionStatistics,
+            historyMngr: managers.historyStatistics,
             isLoading,
             error
         }}>

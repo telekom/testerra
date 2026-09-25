@@ -4,7 +4,7 @@ import {ClassHistory} from "./ClassHistory.ts";
 import { History } from "./report-model/report_pb.ts";
 import {MethodHistoryStatistics} from "./MethodHistoryStatistics.ts";
 
-export class HistoryStatisticsManager {
+export class HistoryStatistics {
     private _historyAggregateStatistics: HistoryAggregateStatistics[] = [];
     private _classHistory: ClassHistory[] = [];
     private _availableRuns: number[] = [];

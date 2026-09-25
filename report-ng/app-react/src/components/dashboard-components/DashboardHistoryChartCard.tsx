@@ -1,14 +1,27 @@
 import Echart from "../../widgets/Echart";
 import ReportCard from "../../widgets/ReportCard";
 import type {SxProps, Theme} from "@mui/material/styles";
+import {StatusService} from "../../model/status-service.tsx";
+import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 
 interface DashboardHistoryChartProps {
+    histStatistics: HistoryStatistics
+    selectedStatus: string | null;
     sx?: SxProps<Theme>
 }
 
-const DashboardHistoryChartCard = ({sx}: DashboardHistoryChartProps) => {
+const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: DashboardHistoryChartProps) => {
 
-    const option = {
+    const statuses = StatusService.getRelevantStatuses()
+        .filter(status => !selectedStatus || StatusService.getLabel(status) === selectedStatus);
+    const totalRuns = histStatistics.getTotalRunCount();
+
+
+    const option = totalRuns > 1 ? undefined : placeHolderOptions;
+
+
+
+    const placeHolderOptions = {
         grid: {
             top: '3%',
             left: '3%',

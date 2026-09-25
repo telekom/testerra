@@ -1,24 +1,29 @@
 import type {
-    ExecutionAggregate,
+    ExecutionAggregate, History,
     LogMessageAggregate
 } from "../model/report-model/report_pb.ts";
 import type {ClassContext, LogMessage, MethodContext} from "../model/report-model/framework_pb.ts";
 import {ExecutionStatistics} from "../model/ExecutionStatistics.ts";
 import {ClassStatistics} from "../model/ClassStatistics.ts";
 import {MethodDetails} from "../model/MethodDetails";
+import {HistoryStatistics} from "../model/HistoryStatistics.ts";
 
 
 export class ExecutionStatisticsManager {
     private readonly executionAggregate: ExecutionAggregate;
     private readonly logMessageAggregate: LogMessageAggregate;
+    private readonly history: History;
 
     private readonly executionStatistics: ExecutionStatistics;
+    private readonly historyStatistics: HistoryStatistics;
     private logMessages: { [key: string]: LogMessage } = {};
 
-    constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate) {
+    constructor(executionAggregate: ExecutionAggregate, logMessageAggregate: LogMessageAggregate, history: History) {
         this.executionAggregate = executionAggregate;
         this.logMessageAggregate = logMessageAggregate;
+        this.history = history;
         this.executionStatistics = new ExecutionStatistics(this.executionAggregate);
+        this.historyStatistics = new HistoryStatistics(this.history);
     }
 
     public async init() {
@@ -49,7 +54,7 @@ export class ExecutionStatisticsManager {
         }
     }
 
-    public getExecutionAggregate() {
+    public getExecutionAggregate() : ExecutionAggregate {
         return this.executionAggregate;
     }
 
@@ -59,6 +64,10 @@ export class ExecutionStatisticsManager {
 
     public getLogs() {
         return this.logMessages;
+    }
+
+    public getHistoryStatistics(): HistoryStatistics {
+        return this.historyStatistics;
     }
 
     // note: "!" operator is used to tell typescript that this property is not undefined

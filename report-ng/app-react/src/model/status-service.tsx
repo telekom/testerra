@@ -198,6 +198,13 @@ export const StatusService = {
         return entry ? Number(entry[0]) as ResultStatus : null;
     },
 
+    getStatusByLabel(label: string): ResultStatus | null {
+        const entry = Object.entries(STATUS_CONFIG).find(
+            ([, statusInformation]) => statusInformation.label === label
+        );
+        return entry ? Number(entry[0]) as ResultStatus : null;
+    },
+
     separateNamespace(namespace:string): {package?: string, class: string} {
         const match = namespace.match(packageRegexp);
         if (match) {

@@ -152,7 +152,7 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
                     .filter(row => row.value > 0)
                     .map(row => {
                         const status = StatusService.getStatusByLabel(row.seriesName);
-                        const statusColor = status === null ? reportTheme.palette.lightGrey.light : StatusService.getColor(status);
+                        const statusColor = StatusService.getColor(status);
                         return `<li style="display:flex;margin:2px 0;">                            
                             <span style="display:flex;align-items:center;">
                                 <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${statusColor};margin-right:6px;"></span>    
@@ -210,8 +210,8 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
             z: 10,
             style: {
                 text: 'No history available',
-                font: '28px Roboto',
-                fill: '#55555'
+                font: '20px Roboto',
+                fill: reportTheme.palette.lightGrey.dark
             }
         }
     }), [hasHistory, historyEntries, historySeries, placeHolderSeries]);

@@ -56,13 +56,11 @@ export class HistoryStatistics {
                 }
 
                 clsStat.methods.forEach((method) => {
+                    const relatedMethodsKey = this._buildRelatedMethodsKey(method.relatedMethods);
                     let methodHistory = classHistory.methods.find(
                         methodHistoryStatistics => {
-                            // Retried methods have the same identifier, so we have duplicates in related methods array.
-                            const uniqueHistoryRelatedMethods = this._filterUniqueItems(methodHistoryStatistics.relatedMethods);
-                            const uniqueRelatedMethods = this._filterUniqueItems(method.relatedMethods);
                             return methodHistoryStatistics.identifier === method.identifier
-                                && this._compareRelatedMethods(uniqueHistoryRelatedMethods, uniqueRelatedMethods);
+                                && this._buildRelatedMethodsKey(methodHistoryStatistics.relatedMethods) === relatedMethodsKey;
                         }
                     );
                     if (!methodHistory) {
@@ -77,19 +75,9 @@ export class HistoryStatistics {
         this._classHistory = Array.from(classHistoryMap.values());
     }
 
-    private _filterUniqueItems(arr: string[]): string[] {
-        const uniqueItems = new Set(arr);
-        return Array.from(uniqueItems);
-    }
-
-    private _compareRelatedMethods(arr1: string[], arr2: string[]): boolean {
-        if (arr1.length !== arr2.length) {
-            return false;
-        }
-        const sortedArr1 = [...arr1].sort();
-        const sortedArr2 = [...arr2].sort();
-
-        return sortedArr1.every((value, index) => value === sortedArr2[index]);
+    private _buildRelatedMethodsKey(relatedMethods: string[]): string {
+        // Retried methods can contain duplicated related methods; dedupe and sort for stable matching.
+        return Array.from(new Set(relatedMethods)).sort().join("|");
     }
 
     getRunWithHistoryIndex(historyIndex: number): HistoryAggregateStatistics | undefined {

@@ -26,3 +26,5 @@ dist-ssr
 public/model_tt
 public/screenshots
 public/videos
+/public/model/
+/public/model*/

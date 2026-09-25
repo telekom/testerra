@@ -70,41 +70,38 @@ const DashboardPage = () => {
                 spacing={2}
                 columns={12}
             >
-                {/*<Grid size={12}>*/}
-                {/*    <ReportCard label={""}*/}
-                {/*                sxContent={theme.custom.durationCard.content}*/}
-                {/*                content={*/}
-                {/*                    <Stack direction="row" sx={{p: 1}} spacing={2}>*/}
-                {/*                        <Typography variant="h6">{execStatistics.getExecutionAggregate.executionContext?.runConfig?.reportName}</Typography>*/}
-                {/*                        <Typography variant="subtitle1">foo</Typography>*/}
-                {/*                    </Stack>*/}
-                {/*                }*/}
-                {/*    />*/}
-                {/*</Grid>*/}
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardPieChartCard sx={theme.mixins.cardHeight(6)} execStatistics={execStatistics}
-                                               onChartPieceClick={handleStatusChange} selectedStatus={selectedStatus}/>
+                        <DashboardPieChartCard sx={theme.mixins.cardHeight(6)}
+                                               execStatistics={execStatistics}
+                                               onChartPieceClick={handleStatusChange}
+                                               selectedStatus={selectedStatus}/>
                         <DurationCard sx={theme.mixins.cardHeight(4)}/>
                     </Stack>
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardTestResultsCard sx={theme.mixins.cardHeight(6)} execStatistics={execStatistics}
-                                                  onListItemClick={handleStatusChange} selectedStatus={selectedStatus}/>
-                        <DashboardFailureCorridorCard
-                            executionContext={executionMngr.getExecutionAggregate().executionContext}
-                            sx={theme.mixins.cardHeight(4)}/>
+                        <DashboardTestResultsCard sx={theme.mixins.cardHeight(6)}
+                                                  execStatistics={execStatistics}
+                                                  onListItemClick={handleStatusChange}
+                                                  selectedStatus={selectedStatus}/>
+                        <DashboardFailureCorridorCard sx={theme.mixins.cardHeight(4)}
+                                                      executionContext={executionMngr.getExecutionAggregate().executionContext}
+                        />
                     </Stack>
                 </Grid>
                 <Grid size={{sm: 12, lg: 6}}>
                     <Stack direction="column" spacing={2}>
-                        <DashboardHistoryChartCard sx={theme.mixins.cardHeight(6)}/>
-                        <DashboardFailureAspectsCard sx={theme.mixins.cardHeight(4)} execStatistics={execStatistics}/>
+                        <DashboardHistoryChartCard sx={theme.mixins.cardHeight(6)}
+                                                   histStatistics={executionMngr.getHistoryStatistics()}
+                                                   selectedStatus={selectedStatus}/>
+                        <DashboardFailureAspectsCard sx={theme.mixins.cardHeight(4)}
+                                                     execStatistics={execStatistics}/>
                     </Stack>
                 </Grid>
                 <Grid size={12}>
-                    <DashboardClassesChartCard execStatistics={execStatistics} selectedStatus={selectedStatus}/>
+                    <DashboardClassesChartCard execStatistics={execStatistics}
+                                               selectedStatus={selectedStatus}/>
                 </Grid>
             </Grid>
         </Box>

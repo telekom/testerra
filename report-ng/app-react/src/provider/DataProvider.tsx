@@ -1,7 +1,12 @@
 import React, {createContext, type ReactNode, useContext, useEffect, useState} from 'react';
 
-import {ExecutionAggregate, /*HistoryAggregate,*/ LogMessageAggregate} from "../model/report-model/report_pb.ts";
+import {
+    ExecutionAggregate,
+    History,
+    LogMessageAggregate
+} from "../model/report-model/report_pb.ts";
 import {ExecutionStatisticsManager} from "./ExecutionStatisticsManager.ts";
+
 
 const ProtobufContext = createContext<ProtobufContextType | undefined>(undefined);
 
@@ -16,12 +21,11 @@ interface Props {
 export interface AllProtoData {
     execution: ExecutionAggregate;
     logging: LogMessageAggregate;
-    // history: HistoryAggregate;
+    history: History;
 }
 
 export interface ProtobufContextType {
     executionMngr: ExecutionStatisticsManager | null;
-    // historyMngr: HistoryStatisticsManager;
     isLoading: boolean;
     error: Error | null;
 }
@@ -29,11 +33,9 @@ export interface ProtobufContextType {
 export const DataProvider: React.FC<Props> = ({children}) => {
     const [managers, setManagers] = useState<{
         executionStatistics: ExecutionStatisticsManager | null;
-        // historyStatistics: HistoryStatisticsManager | null;
     }>(
         {
             executionStatistics: null,
-            // historyStatistics: null
         }
     );
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -44,18 +46,17 @@ export const DataProvider: React.FC<Props> = ({children}) => {
         async function initDataManagers() {
             try {
 
-                const [execution, logging/*, history*/] = await Promise.all([
+                const [execution, logging, history] = await Promise.all([
                     fetchAndDecode<ExecutionAggregate>("execution", ExecutionAggregate),
                     fetchAndDecode<LogMessageAggregate>("logMessages", LogMessageAggregate),
-                    // fetchAndDecode<HistoryAggregate>("history", HistoryAggregate)
+                    fetchAndDecode<History>("history", History)
                 ]);
 
-                let executionStatisticsManager = new ExecutionStatisticsManager(execution, logging/*, history*/);
+                const executionStatisticsManager = new ExecutionStatisticsManager(execution, logging, history);
                 await executionStatisticsManager.init();
 
                 setManagers({
                     executionStatistics: executionStatisticsManager,
-                    // historyStatistics: new HistoryStatisticsManager(history)
                 })
 
             } catch (err) {

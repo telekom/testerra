@@ -149,7 +149,7 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
         <ReportCard
             label="Test Classes"
             sxContent={{p: 0}}
-            content={<Echart option={option} height={height} onEvents={{click: handleBarClick}} autoResize={true}/>}
+            content={<Echart option={option} height={height} onEvents={{click: handleBarClick}} notMerge={true} autoResize={true}/>}
         />
     );
 };

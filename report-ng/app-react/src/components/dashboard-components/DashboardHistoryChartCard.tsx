@@ -27,8 +27,10 @@ interface HistoryChartData {
 const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: DashboardHistoryChartProps) => {
     const totalRuns = histStatistics.getTotalRunCount();
     const hasHistory = totalRuns > 1;
-    const statuses = StatusService.getRelevantStatuses()
-        .filter(status => !selectedStatus || StatusService.getLabel(status) === selectedStatus);
+    const relevantStatuses = StatusService.getRelevantStatuses();
+    const statuses = relevantStatuses.filter(status =>
+        !selectedStatus || StatusService.getLabel(status) === selectedStatus
+    );
     const historyEntries = histStatistics.getHistoryAggregateStatistics();
     const runMetaData = useMemo(() => historyEntries.map(entry => {
         const contextValues = entry.historyAggregate.executionContext?.contextValues;
@@ -36,7 +38,6 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
         const endTime = contextValues?.endTime;
 
         return {
-            historyIndex: entry.historyIndex,
             started: dateFormatter(startTime, "long"),
             ended: dateFormatter(endTime, "long"),
             duration: startTime !== undefined && endTime !== undefined ? formatDuration(endTime - startTime) : "0ms"
@@ -91,9 +92,9 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
     const option: EChartsOption = useMemo(() => ({
         grid: {
             top: '5%',
-            left: '1%',
+            left: '3%',
             right: '3%',
-            bottom: '0%',
+            bottom: '2%',
             outerBoundsMode: "same",
             outerBoundsContain: "axisLabel"
         },
@@ -104,7 +105,7 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
             },
             confine: true,
             borderWidth: 1,
-            borderColor: reportTheme.palette.lightGrey.main,
+            borderColor: reportTheme.palette.lightGrey.light,
             formatter: function (params: TooltipComponentFormatterCallbackParams) {
                 if (!Array.isArray(params) || params.length === 0) {
                     return "";
@@ -122,15 +123,15 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
                 const values = rows
                     .map(row => row.value)
                     .filter(value => Number.isFinite(value));
-                const testCases = values.reduce((sum, value) => sum + value, 0);
                 const firstPointData = rows[0].point;
+                const testCases = values.reduce((sum, value) => sum + value, 0);
                 const runNumber = firstPointData?.runIndex ?? 0;
 
                 const statusListItems = rows
                     .filter(row => row.value > 0)
                     .map(row => {
                         const status = StatusService.getStatusByLabel(row.seriesName);
-                        const statusColor = status === null ? reportTheme.palette.lightGrey.main : StatusService.getColor(status);
+                        const statusColor = status === null ? reportTheme.palette.lightGrey.light : StatusService.getColor(status);
                         return `<li style="display:flex;margin:2px 0;">                            
                             <span style="display:flex;align-items:center;">
                                 <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${statusColor};margin-right:6px;"></span>    
@@ -199,7 +200,7 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
             label="History"
             sxContent={{p: 0}}
             sxCard={sx}
-            content={<Echart option={option} autoResize={true}/>}
+            content={<Echart option={option} notMerge={true} autoResize={true}/>}
         />
     );
 };

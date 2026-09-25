@@ -191,18 +191,18 @@ export const StatusService = {
         ];
     },
 
-    getStatusByKey(key: string): ResultStatus | null {
+    getStatusByKey(key: string): ResultStatus {
         const entry = Object.entries(STATUS_CONFIG).find(
             ([, statusInformation]) => statusInformation.key === key
         );
-        return entry ? Number(entry[0]) as ResultStatus : null;
+        return entry ? Number(entry[0]) as ResultStatus : ResultStatusType.RST_NOT_SET;
     },
 
-    getStatusByLabel(label: string): ResultStatus | null {
+    getStatusByLabel(label: string): ResultStatus {
         const entry = Object.entries(STATUS_CONFIG).find(
             ([, statusInformation]) => statusInformation.label === label
         );
-        return entry ? Number(entry[0]) as ResultStatus : null;
+        return entry ? Number(entry[0]) as ResultStatus : ResultStatusType.RST_NOT_SET;
     },
 
     separateNamespace(namespace:string): {package?: string, class: string} {

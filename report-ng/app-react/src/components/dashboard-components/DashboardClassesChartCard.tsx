@@ -8,6 +8,8 @@ import {ResultStatusType} from "../../model/report-model/framework_pb";
 import {escapeHtml} from "../../utils/escapeHtml";
 import type {CallbackDataParams} from "echarts/types/dist/shared";
 import {createSearchParams, useNavigate} from "react-router-dom";
+import {buildChartTooltip, buildTooltipStatusBadge} from "../../utils/chartTooltip";
+import {reportTheme} from "../../layout/reportTheme.tsx";
 
 interface DashboardClassesChartProps {
     execStatistics: ExecutionStatistics;
@@ -60,6 +62,11 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
         })
         .map(classData => classData.classStatistics);
 
+    interface BarDataItem {
+        value: number;
+        status: ResultStatus;
+    }
+
     const createSeries = (status: ResultStatus) => ({
         name: StatusService.getLabel(status),
         type: 'bar',
@@ -68,9 +75,12 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
         label: {show: true},
         emphasis: {disabled: true},
         itemStyle: {color: StatusService.getColor(status)},
-        data: classes.map(classStatistics => {
+        data: classes.map((classStatistics): BarDataItem | null => {
             const count = classStatistics.getSummarizedStatusCount(StatusService.getGroup(status));
-            return count > 0 ? count : null;    // avoids empty bars and unnecessary labels
+            // return count > 0 ? count : null;    // avoids empty bars and unnecessary labels
+            return count > 0
+                ? {value: count, status}
+                : null;   // avoids empty bars and unnecessary labels
         }),
     });
 
@@ -79,14 +89,22 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
     const option = {
         tooltip: {
             trigger: 'item',
-            axisPointer: {type: 'shadow'},
+            // axisPointer: {type: 'shadow'},
             appendToBody: true,
             formatter: (params: CallbackDataParams) => {
-                const color = typeof params.color === "string" ? params.color : "transparent";
-                return `<div style="background-color: ${color}; padding: 5px; color: white; margin: -10px -10px 10px -10px;">
-                    ${escapeHtml(params.name)}
-                </div>
-                ${escapeHtml(params.seriesName ?? "")}: ${params.value}`;
+                const item = params.data as BarDataItem;
+                // const color = typeof params.color === "string" ? params.color : "transparent";
+                return buildChartTooltip({
+                    header: {
+                        content: escapeHtml(params.name),
+                        style: {
+                            backgroundColor: reportTheme.palette.lightGrey.light,
+                        },
+                    },
+                    body: {
+                        content: `${buildTooltipStatusBadge(item.status)} ${params.value}`,
+                    },
+                });
             },
         },
         xAxis: {

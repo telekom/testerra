@@ -33,6 +33,7 @@ import SelectedFilterChips from "../components/SelectedFilterChips";
 import {escapeHtml} from "../utils/escapeHtml";
 import {reportTheme} from "../layout/reportTheme";
 import ReportCard from "../widgets/ReportCard.tsx";
+import {buildChartTooltip} from "../utils/chartTooltip";
 
 // Types
 interface MethodInfo {
@@ -187,13 +188,25 @@ const ThreadsPage = () => {
                     const className = escapeHtml(classNameConverter(value[8], ClassName.simpleName));
                     const statusInfo = StatusService.get(value[7] as ResultStatus);
                     const statusBadge = '<span style="background:' + statusInfo.color + ';color:#fff;padding:1px 6px;border-radius:20px;margin-right:4px;">' + escapeHtml(statusInfo.label) + '</span>';
-                    return '<div style="background-color: ' +
-                        reportTheme.palette.lightGrey.light + '; padding: 5px; margin: -10px; color: ' + reportTheme.palette.lightGrey.main + ';">' + statusBadge + '<span style="font-weight: 500;">' + methodName + '</span></div>'
-                        + '<br><b>Start time:</b> ' + new Date(value[1]).toLocaleString()
-                        + '<br><b>End time:</b> ' + new Date(value[2]).toLocaleString()
-                        + '<br><b>Duration:</b> ' + Math.floor(value[4] / 1000) + 's'
-                        + '<br><b>Class:</b> ' + className
-                        + '<br><b>Run Index:</b> ' + value[5];
+                    return buildChartTooltip({
+                        header: {
+                            content: `${statusBadge}<span style="font-weight: 500;">${methodName}</span>`,
+                            style: {
+                                backgroundColor: reportTheme.palette.lightGrey.light,
+                                color: reportTheme.palette.lightGrey.main,
+                                margin: "-10px",
+                            },
+                        },
+                        body: {
+                            content: [
+                                '<br><b>Start time:</b> ' + new Date(value[1]).toLocaleString(),
+                                '<br><b>End time:</b> ' + new Date(value[2]).toLocaleString(),
+                                '<br><b>Duration:</b> ' + Math.floor(value[4] / 1000) + 's',
+                                '<br><b>Class:</b> ' + className,
+                                '<br><b>Run Index:</b> ' + value[5],
+                            ],
+                        },
+                    });
                 }
             },
             dataZoom: [

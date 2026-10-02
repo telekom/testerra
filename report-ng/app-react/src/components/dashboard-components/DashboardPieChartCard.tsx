@@ -3,6 +3,7 @@ import ReportCard from "../../widgets/ReportCard";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
 import type {CallbackDataParams} from "echarts/types/dist/shared";
+import {buildChartTooltip, buildTooltipStatusBadge} from "../../utils/chartTooltip";
 
 interface DashboardPieChartProps {
     execStatistics: any;
@@ -34,7 +35,14 @@ const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatu
 
     const option = {
         tooltip: {
-            formatter: '<b>{b}:</b> {c}'
+            formatter: (params: CallbackDataParams) => {
+                const status = StatusService.getStatusByLabel(params.name);
+                return buildChartTooltip({
+                    body: {
+                        content: `${buildTooltipStatusBadge(status)} ${params.value}`,
+                    },
+                })
+            },
         },
         series: [
             {

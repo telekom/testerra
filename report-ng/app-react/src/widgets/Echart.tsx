@@ -6,6 +6,7 @@ import {BarChart, CustomChart, LineChart, PieChart, ScatterChart} from 'echarts/
 import {DataZoomComponent, GraphicComponent, GridComponent, LegendComponent, TitleComponent, ToolboxComponent, TooltipComponent,} from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
 import Box from "@mui/material/Box";
+import {ECHARTS_THEME_NAME, echartsTheme} from "../layout/echartsTheme";
 
 export interface EChartProps {
     option: EChartsOption;
@@ -22,6 +23,8 @@ echarts.use([
     GridComponent, TooltipComponent, LegendComponent, TitleComponent, DataZoomComponent, ToolboxComponent, GraphicComponent,
     CanvasRenderer,
 ]);
+
+echarts.registerTheme(ECHARTS_THEME_NAME, echartsTheme);
 
 export type EchartRef = ReactEChartsCore;
 
@@ -42,6 +45,7 @@ const Echart = forwardRef<ReactEChartsCore, EChartProps>(
                     ref={ref}
                     echarts={echarts}
                     option={option}
+                    theme={ECHARTS_THEME_NAME}
                     opts={opts}
                     autoResize={autoResize}
                     onEvents={onEvents}

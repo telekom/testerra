@@ -27,6 +27,7 @@ import {dateFormatter} from "../../utils/dateFormatter";
 import {escapeHtml} from "../../utils/escapeHtml";
 import {MethodDetails} from "../../model/MethodDetails";
 import {MetricType} from "../../model/report-model/framework_pb";
+import {buildChartTooltip} from "../../utils/chartTooltip";
 
 const SESSION_COLOR = '#6897EA';
 const BASEURL_COLOR = '#75C6CB';
@@ -193,30 +194,42 @@ const Sessions = () => {
                     if (seriesIdx < 0 || seriesIdx >= dots.length) return "";
                     const info = dots[seriesIdx].information;
 
-                    let tooltip = `<div style="background-color: ${params.color}; padding: 5px; color: white; margin: -10px -10px 4px -10px;">
-                        ${escapeHtml(info.browserName ?? "")} v${escapeHtml(info.browserVersion ?? "(na)")}
-                    </div>`;
-                    tooltip += `<b>Session name:</b> ${escapeHtml(info.sessionName)}<br/>`;
-                    tooltip += `<b>Session id:</b> ${escapeHtml(info.sessionId)}<br/>`;
-                    tooltip += `<hr/>`;
-                    tooltip += `<b>Session start duration:</b> ${info.sessionDuration}s<br/>`;
-                    tooltip += `<b>Session start time:</b> ${dateFormatter(Number(info.sessionStartTime), "time")}<br/>`;
+                    const bodyRows = [
+                        `<b>Session name:</b> ${escapeHtml(info.sessionName)}<br/>`,
+                        `<b>Session id:</b> ${escapeHtml(info.sessionId)}<br/>`,
+                        `<hr/>`,
+                        `<b>Session start duration:</b> ${info.sessionDuration}s<br/>`,
+                        `<b>Session start time:</b> ${dateFormatter(Number(info.sessionStartTime), "time")}<br/>`,
+                    ];
 
                     if (info.baseurlStartTime) {
-                        tooltip += `<b>Base URL start duration:</b> ${info.baseurlDuration}s<br/>`;
-                        tooltip += `<b>Base URL start time:</b> ${dateFormatter(Number(info.baseurlStartTime), "time")}<br/>`;
+                        bodyRows.push(`<b>Base URL start duration:</b> ${info.baseurlDuration}s<br/>`);
+                        bodyRows.push(`<b>Base URL start time:</b> ${dateFormatter(Number(info.baseurlStartTime), "time")}<br/>`);
                     }
 
                     if (info.methodNames.length > 1) {
-                        tooltip += `<hr/><b>Test case(s):</b><ul style="margin-top:4px;margin-bottom:4px;padding-left:20px;">`;
+                        let testCaseList = `<hr/><b>Test case(s):</b><ul style="margin-top:4px;margin-bottom:4px;padding-left:20px;">`;
                         info.methodNames.forEach(name => {
-                            tooltip += `<li style="margin-bottom:2px">${escapeHtml(name)}</li>`;
+                            testCaseList += `<li style="margin-bottom:2px">${escapeHtml(name)}</li>`;
                         });
-                        tooltip += '</ul>';
+                        testCaseList += '</ul>';
+                        bodyRows.push(testCaseList);
                     } else {
-                        tooltip += `<hr/><b>Test case(s):</b> ${info.methodNames.map(name => escapeHtml(name)).join(', ')}`;
+                        bodyRows.push(`<hr/><b>Test case(s):</b> ${info.methodNames.map(name => escapeHtml(name)).join(', ')}`);
                     }
-                    return tooltip;
+                    return buildChartTooltip({
+                        header: {
+                            content: `${escapeHtml(info.browserName ?? "")} v${escapeHtml(info.browserVersion ?? "(na)")}`,
+                            style: {
+                                backgroundColor: params.color,
+                                color: "white",
+                                margin: "-10px -10px 4px -10px",
+                            },
+                        },
+                        body: {
+                            content: bodyRows,
+                        },
+                    });
                 },
             },
             xAxis: {
@@ -246,4 +259,3 @@ const Sessions = () => {
 };
 
 export default Sessions;
-

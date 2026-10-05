@@ -36,7 +36,7 @@ import { reportTheme } from "../layout/reportTheme";
 // Union of numeric status values -> ResultStatus = 0 | 1 | 2 | ...
 export type ResultStatus = typeof ResultStatusType[keyof typeof ResultStatusType];
 
-interface StatusInformation {
+export interface StatusInformation {
     label: string;
     color: string;
     icon?: React.ElementType;

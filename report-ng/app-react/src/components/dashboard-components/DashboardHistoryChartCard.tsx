@@ -30,6 +30,7 @@ import type {TooltipComponentFormatterCallbackParams} from "echarts";
 import {reportTheme} from "../../layout/reportTheme.tsx";
 import {dateFormatter} from "../../utils/dateFormatter.ts";
 import {formatDuration} from "../../utils/durationFormatter.ts";
+import {buildChartTooltip, buildTooltipStatusBadge} from "../../utils/chartTooltip";
 
 interface DashboardHistoryChartProps {
     histStatistics: HistoryStatistics
@@ -152,11 +153,11 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
                     .filter(row => row.value > 0)
                     .map(row => {
                         const status = StatusService.getStatusByLabel(row.seriesName);
-                        const statusColor = StatusService.getColor(status);
-                        return `<li style="display:flex;margin:2px 0;">                            
-                            <span style="display:flex;align-items:center;">
-                                <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${statusColor};margin-right:6px;"></span>    
-                                <strong>${row.seriesName}:</strong>
+                        return `<li style="display:grid;grid-template-columns:14ch 5ch;column-gap:8px;align-items:center;margin:2px 0;">                            
+                            <span>
+                                ${buildTooltipStatusBadge(status)}
+                            </span>
+                            <span style="text-align:right;font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;">
                                 &nbsp;${row.value}
                             </span>
                             
@@ -164,15 +165,28 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
                     })
                     .join("");
 
-                let tooltip = `<div style="background-color: ${reportTheme.palette.lightGrey.light}; padding: 5px; margin: -10px -10px 10px -10px;"><strong>Run ${runNumber}</strong></div>`;
-                tooltip += `<div style="margin-bottom:6px;"><strong>Testcases:</strong> ${testCases}</div>`;
-                tooltip += `<ul style="list-style:none;padding:0;margin:0;">${statusListItems}</ul>`;
-                tooltip += `<div style="margin-top:8px;padding-top:6px;border-top:1px solid ${reportTheme.palette.lightGrey.main};">
-                    <div><strong>Started:</strong> ${firstPointData?.started ?? "0"}</div>
-                    <div><strong>Ended:</strong> ${firstPointData?.ended ?? "0"}</div>
-                    <div><strong>Duration:</strong> ${firstPointData?.duration ?? "0ms"}</div>
-                </div>`;
-                return tooltip;
+                const timeListItemStyle ="display:grid;grid-template-columns:8ch auto;column-gap:8px;align-items:center;margin:2px 0;";
+                const timeListItems =
+                    `<li style="${timeListItemStyle}"><span>Started</span><span>${firstPointData?.started ?? "0"}</span></li>
+                    <li style="${timeListItemStyle}"><span>Ended</span><span>${firstPointData?.ended ?? "0"}</span></li>
+                    <li style="${timeListItemStyle}"><span>Duration</span><span>${firstPointData?.duration ?? "0"}</span></li>`;
+
+                return buildChartTooltip({
+                    header: {
+                        content: `Run ${runNumber} - Tests: ${testCases}`,
+                        style: {
+                            backgroundColor: reportTheme.palette.lightGrey.light,
+                        },
+                    },
+                    body: {
+                        content: [
+                            `<ul style="list-style:none;padding:0;margin:0;">${statusListItems}</ul>`,
+                            `<div style="margin-top:8px;padding-top:6px;border-top:1px solid ${reportTheme.palette.lightGrey.main};">
+                                <ul style="list-style:none;padding:0;margin:0;">${timeListItems}</ul>                  
+                            </div>`,
+                        ],
+                    },
+                });
             }
         } : undefined,
         xAxis: [{

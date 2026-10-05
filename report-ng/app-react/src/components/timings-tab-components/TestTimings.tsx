@@ -41,6 +41,7 @@ import {createSearchParams} from "react-router-dom";
 import {useTimingSearchParams} from "./useTimingSearchParams";
 import {buildDurationBuckets, type DurationBucket} from "./durationBuckets";
 import {escapeHtml} from "../../utils/escapeHtml";
+import {buildChartTooltip} from "../../utils/chartTooltip";
 
 const TEST_NUMBER_LIMIT = 10;
 
@@ -152,21 +153,32 @@ const TestTimings = () => {
                 const bar: DurationBucket<ITestDurationMethod> | undefined = bars[params[0].dataIndex];
                 if (!bar || bar.durationAmount === 0) return "";
 
-                let tooltip = `<div style="background-color: ${theme.custom.testTimings.barColor}; padding: 5px; color: white; margin: -10px -10px 10px -10px;">${bar.durationAmount} test case(s)</div>`;
+                const bodyRows: string[] = [];
                 bar.methodList.slice(0, TEST_NUMBER_LIMIT).forEach(method => {
                     const statusInfo = StatusService.get(method.status);
-                    tooltip += `<div style="margin-bottom:4px">
+                    bodyRows.push(`<div style="margin-bottom:4px">
                         <span style="background:${statusInfo.color};color:#fff;padding:1px 6px;border-radius:20px;margin-right:4px">${escapeHtml(statusInfo.label)}</span>
                         ${escapeHtml(method.name)}
                         ${method.methodType === MethodType.CONFIGURATION_METHOD
                         ? `<span style="background:${configurationChipColor};color:#fff;padding:1px 6px;border-radius:20px;margin-left:4px;font-size:0.85em">Configuration</span>`
                         : ""}
-                    </div>`;
+                    </div>`);
                 });
                 if (bar.durationAmount > TEST_NUMBER_LIMIT) {
-                    tooltip += `and ${bar.durationAmount - TEST_NUMBER_LIMIT} more`;
+                    bodyRows.push(`and ${bar.durationAmount - TEST_NUMBER_LIMIT} more`);
                 }
-                return tooltip;
+                return buildChartTooltip({
+                    header: {
+                        content: `${bar.durationAmount} test case(s)`,
+                        style: {
+                            backgroundColor: theme.custom.testTimings.barColor,
+                            color: "white",
+                        },
+                    },
+                    body: {
+                        content: bodyRows,
+                    },
+                });
             },
         },
         xAxis: {

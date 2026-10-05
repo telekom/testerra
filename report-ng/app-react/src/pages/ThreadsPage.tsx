@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import Box from "@mui/material/Box";
 import {
     CircularProgress,
@@ -33,6 +54,7 @@ import SelectedFilterChips from "../components/SelectedFilterChips";
 import {escapeHtml} from "../utils/escapeHtml";
 import {reportTheme} from "../layout/reportTheme";
 import ReportCard from "../widgets/ReportCard.tsx";
+import {buildChartTooltip} from "../utils/chartTooltip";
 
 // Types
 interface MethodInfo {
@@ -187,13 +209,25 @@ const ThreadsPage = () => {
                     const className = escapeHtml(classNameConverter(value[8], ClassName.simpleName));
                     const statusInfo = StatusService.get(value[7] as ResultStatus);
                     const statusBadge = '<span style="background:' + statusInfo.color + ';color:#fff;padding:1px 6px;border-radius:20px;margin-right:4px;">' + escapeHtml(statusInfo.label) + '</span>';
-                    return '<div style="background-color: ' +
-                        reportTheme.palette.lightGrey.light + '; padding: 5px; margin: -10px; color: ' + reportTheme.palette.lightGrey.main + ';">' + statusBadge + '<span style="font-weight: 500;">' + methodName + '</span></div>'
-                        + '<br><b>Start time:</b> ' + new Date(value[1]).toLocaleString()
-                        + '<br><b>End time:</b> ' + new Date(value[2]).toLocaleString()
-                        + '<br><b>Duration:</b> ' + Math.floor(value[4] / 1000) + 's'
-                        + '<br><b>Class:</b> ' + className
-                        + '<br><b>Run Index:</b> ' + value[5];
+                    return buildChartTooltip({
+                        header: {
+                            content: `${statusBadge}<span style="font-weight: 500;">${methodName}</span>`,
+                            style: {
+                                backgroundColor: reportTheme.palette.lightGrey.light,
+                                color: reportTheme.palette.lightGrey.main,
+                                margin: "-10px",
+                            },
+                        },
+                        body: {
+                            content: [
+                                '<br><b>Start time:</b> ' + new Date(value[1]).toLocaleString(),
+                                '<br><b>End time:</b> ' + new Date(value[2]).toLocaleString(),
+                                '<br><b>Duration:</b> ' + Math.floor(value[4] / 1000) + 's',
+                                '<br><b>Class:</b> ' + className,
+                                '<br><b>Run Index:</b> ' + value[5],
+                            ],
+                        },
+                    });
                 }
             },
             dataZoom: [

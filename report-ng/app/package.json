@@ -45,7 +45,7 @@
         "aurelia-ui-virtualization": "^1.0.0-rc2",
         "echarts": "^5.5.1",
         "highlight.js": "^11.8.0",
-        "moment": "^2.29.4",
+        "moment": "^2.31.0",
         "moment-duration-format": "^2.3.2",
         "t-systems-aurelia-components": "^1.1.8",
         "vis-network": "^10.1.0"

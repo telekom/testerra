@@ -25,7 +25,7 @@ import type {ILogEntry} from "../model/Logs";
 import HighlightText from "../utils/highlightText";
 import {StatusService} from "../model/status-service";
 import {logLevelNameConverter} from "../utils/logLevelNameConverter";
-import {dateFormatter} from "../utils/dateFormatter";
+import {formatDate} from "../utils/dateFormatter";
 import {checkMatches, flattenStackTrace} from "../utils/logSearch";
 
 interface LogLineProps {
@@ -87,7 +87,7 @@ export const LogLine: React.FC<LogLineProps> = ({log, searchText, isActiveMatch 
                 {showMetadata && (
                     <>
                         <HighlightText
-                            text={dateFormatter(log.timestamp, "short")}
+                            text={formatDate(log.timestamp, "short")}
                             searchWord={searchTerms}
                         />
                         {log.methodContext && methodId && (

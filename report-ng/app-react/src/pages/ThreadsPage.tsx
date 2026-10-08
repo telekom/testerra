@@ -39,7 +39,7 @@ import type {
 } from 'echarts';
 import * as echarts from 'echarts';
 import {useReportData} from '../provider/DataProvider';
-import {dateFormatter} from '../utils/dateFormatter';
+import {formatDate} from '../utils/dateFormatter';
 import {StatusService} from '../model/status-service';
 import type {ResultStatus} from '../model/status-service';
 import {ClassName, classNameConverter} from "../utils/classNameConverter.ts";
@@ -210,8 +210,8 @@ const ThreadsPage = () => {
                     const contentListItemStyle ="display:grid;grid-template-columns:9ch auto;column-gap:8px;align-items:center;margin:2px 0;";
                     const contentListItems =
                         `<li style="${contentListItemStyle}"><span>Class</span><span>${className}</span></li>
-                        <li style="${contentListItemStyle}"><span>Start time</span><span>${dateFormatter(value[1], "long")}</span></li>
-                        <li style="${contentListItemStyle}"><span>End time</span><span>${dateFormatter(value[2], "long")}</span></li>
+                        <li style="${contentListItemStyle}"><span>Start time</span><span>${formatDate(value[1], "long")}</span></li>
+                        <li style="${contentListItemStyle}"><span>End time</span><span>${formatDate(value[2], "long")}</span></li>
                         <li style="${contentListItemStyle}"><span>Duration</span><span>${formatDuration(value[4])}</span></li>
                         <li style="${contentListItemStyle}"><span>Run index</span><span>${value[5]}</span></li>
                     `;
@@ -259,7 +259,7 @@ const ThreadsPage = () => {
                 axisLabel: {
                     interval: 2,
                     formatter: (val: number) =>
-                        `${dateFormatter(val, "time")}\n\n${dateFormatter(val, "date")}`
+                        `${formatDate(val, "time")}\n\n${formatDate(val, "date")}`
                 }
             },
             yAxis: {

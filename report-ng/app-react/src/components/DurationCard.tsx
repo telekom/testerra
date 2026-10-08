@@ -27,7 +27,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import type {SxProps, Theme} from "@mui/material/styles";
 import {useReportData} from "../provider/DataProvider";
 import React from "react";
-import {dateFormatter} from "../utils/dateFormatter";
+import {formatDate} from "../utils/dateFormatter";
 import {formatDuration} from "../utils/durationFormatter";
 
 interface DashboardDurationProps {
@@ -100,14 +100,14 @@ const DashboardDurationCard = ({sx, start, end}: DashboardDurationProps) => {
                                 </Grid>
                                 <Grid size={9}>
                                     <Typography
-                                        variant="caption">{dateFormatter(executionInfo.started, "long")}</Typography>
+                                        variant="caption">{formatDate(executionInfo.started, "long")}</Typography>
                                 </Grid>
                                 <Grid size={3}>
                                     <Typography variant="caption" color="primary">Ended</Typography>
                                 </Grid>
                                 <Grid size={9}>
                                     <Typography
-                                        variant="caption">{dateFormatter(executionInfo.ended, "long")}</Typography>
+                                        variant="caption">{formatDate(executionInfo.ended, "long")}</Typography>
                                 </Grid>
 
                             </Grid>

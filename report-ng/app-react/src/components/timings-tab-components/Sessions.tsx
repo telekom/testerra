@@ -23,7 +23,7 @@ import {useMemo} from "react";
 import Echart from "../../widgets/Echart";
 import ReportCard from "../../widgets/ReportCard";
 import {useReportData} from "../../provider/DataProvider";
-import {dateFormatter} from "../../utils/dateFormatter";
+import {formatDate} from "../../utils/dateFormatter";
 import {escapeHtml} from "../../utils/escapeHtml";
 import {MethodDetails} from "../../model/MethodDetails";
 import {MetricType} from "../../model/report-model/framework_pb";
@@ -199,12 +199,12 @@ const Sessions = () => {
                         `<b>Session id:</b> ${escapeHtml(info.sessionId)}<br/>`,
                         `<hr/>`,
                         `<b>Session start duration:</b> ${info.sessionDuration}s<br/>`,
-                        `<b>Session start time:</b> ${dateFormatter(Number(info.sessionStartTime), "time")}<br/>`,
+                        `<b>Session start time:</b> ${formatDate(Number(info.sessionStartTime), "time")}<br/>`,
                     ];
 
                     if (info.baseurlStartTime) {
                         bodyRows.push(`<b>Base URL start duration:</b> ${info.baseurlDuration}s<br/>`);
-                        bodyRows.push(`<b>Base URL start time:</b> ${dateFormatter(Number(info.baseurlStartTime), "time")}<br/>`);
+                        bodyRows.push(`<b>Base URL start time:</b> ${formatDate(Number(info.baseurlStartTime), "time")}<br/>`);
                     }
 
                     if (info.methodNames.length > 1) {
@@ -238,7 +238,7 @@ const Sessions = () => {
                 max: testEndTime,
                 axisLabel: {
                     formatter: (val: number) =>
-                        `${dateFormatter(val, "time")}\n\n${dateFormatter(val, "date")}`,
+                        `${formatDate(val, "time")}\n\n${formatDate(val, "date")}`,
                 },
             },
             yAxis: {

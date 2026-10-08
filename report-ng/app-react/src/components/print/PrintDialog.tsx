@@ -41,7 +41,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import {useReactToPrint} from 'react-to-print';
 import PrintableContent from './PrintableContent';
 import {ExecutionStatistics} from '../../model/ExecutionStatistics';
-import {dateFormatter} from '../../utils/dateFormatter';
+import {formatDate} from '../../utils/dateFormatter';
 
 interface PrintDialogProps {
     open: boolean;
@@ -251,7 +251,7 @@ const PrintDialog: React.FC<PrintDialogProps> = ({open, onClose, executionStatis
         const execAggregate = executionStatistics.getExecutionAggregate;
         const execContext = execAggregate.executionContext;
         if (!execContext) return 'Test_Report';
-        const date = dateFormatter(execContext.contextValues?.startTime, 'print');
+        const date = formatDate(execContext.contextValues?.startTime, 'print');
         return `Test_Report_${execContext.runConfig?.reportName}_${execContext.runConfig?.runcfg}_${date}`;
     }
 

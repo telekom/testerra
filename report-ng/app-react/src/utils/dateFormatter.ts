@@ -73,7 +73,7 @@ const formatPrintTimestamp = (date: Date): string => {
     return `${day}_${month}_${year}_${hours}-${minutes}-${seconds}`;
 };
 
-export const dateFormatter = (
+export const formatDate = (
     timestamp?: number,
     format: LogTimestampFormat = "short"
 ): string => {

@@ -33,7 +33,7 @@ import {
 } from "../../model/report-model/framework_pb.ts";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
 import {useReportData} from "../../provider/DataProvider.tsx";
-import {dateFormatter} from "../../utils/dateFormatter.ts";
+import {formatDate} from "../../utils/dateFormatter.ts";
 import LazyImage from "../../widgets/LazyImage.tsx";
 import Modal from "../../widgets/Modal.tsx";
 import CodeView from "../CodeView.tsx";
@@ -224,9 +224,9 @@ const Steps = () => {
                                                 component="span"
                                                 variant="body2"
                                                 color="text.secondary"
-                                                title={dateFormatter(action.timestamp, "long")}
+                                                title={formatDate(action.timestamp, "long")}
                                             >
-                                                {dateFormatter(action.timestamp, "long")}
+                                                {formatDate(action.timestamp, "long")}
                                             </Typography>
                                         </Typography>
                                         <Stack

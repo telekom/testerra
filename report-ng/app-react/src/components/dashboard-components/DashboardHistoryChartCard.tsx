@@ -28,7 +28,7 @@ import type {EChartsOption} from "echarts-for-react";
 import {useMemo} from "react";
 import type {TooltipComponentFormatterCallbackParams} from "echarts";
 import {reportTheme} from "../../layout/reportTheme.tsx";
-import {dateFormatter} from "../../utils/dateFormatter.ts";
+import {formatDate} from "../../utils/dateFormatter.ts";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 import {buildChartTooltip, buildTooltipStatusBadge} from "../../utils/chartTooltip";
 
@@ -60,8 +60,8 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
         const endTime = contextValues?.endTime;
 
         return {
-            started: dateFormatter(startTime, "long"),
-            ended: dateFormatter(endTime, "long"),
+            started: formatDate(startTime, "long"),
+            ended: formatDate(endTime, "long"),
             duration: startTime !== undefined && endTime !== undefined ? formatDuration(endTime - startTime) : "0ms"
         };
     }), [historyEntries]);

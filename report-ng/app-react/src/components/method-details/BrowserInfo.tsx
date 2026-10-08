@@ -25,7 +25,7 @@ import {Box, Grid, Link, List, Typography, useTheme} from "@mui/material";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import {MetricType} from "../../model/report-model/framework_pb.ts";
-import {dateFormatter} from "../../utils/dateFormatter.ts";
+import {formatDate} from "../../utils/dateFormatter.ts";
 import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 import {LogConsole} from "../LogConsole.tsx";
 import type {ILogEntry} from "../../model/Logs.ts";
@@ -177,7 +177,7 @@ const BrowserInfo = () => {
                                     {(session.sessionStartTime ?? 0) > 0 && (
                                         <DetailKeyValueListItem
                                             label="Session start time"
-                                            value={<Typography variant="caption">{dateFormatter(session.sessionStartTime, "long")}</Typography>}
+                                            value={<Typography variant="caption">{formatDate(session.sessionStartTime, "long")}</Typography>}
                                         />
                                     )}
 
@@ -199,7 +199,7 @@ const BrowserInfo = () => {
                                             {(session.baseurlStartTime ?? 0) > 0 && (
                                                 <DetailKeyValueListItem
                                                     label="Base URL start time"
-                                                    value={<Typography variant="caption">{dateFormatter(session.baseurlStartTime, "long")}</Typography>}
+                                                    value={<Typography variant="caption">{formatDate(session.baseurlStartTime, "long")}</Typography>}
                                                 />
                                             )}
                                         </>

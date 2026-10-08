@@ -80,6 +80,19 @@ const STATUS_BADGE_STYLE: TooltipStyle = {
     lineHeight: "19.5px",
 };
 
+const METHOD_BADGE_STYLE: TooltipStyle = {
+    display: "inline-block",
+    color: "#fff",
+    padding: "1px 6px",
+    borderRadius: "16px",
+    whiteSpace: "nowrap",
+    // height: "20px",
+    fontSize: "0.85em",
+    justifyContent: "center",
+    // lineHeight: "19.5px",
+    background: "#0000008A"
+};
+
 export const buildTooltipStatusBadge = (status: ResultStatus): string => {
     const statusInformation = StatusService.get(status);
     const style = styleToInlineCss({
@@ -87,4 +100,14 @@ export const buildTooltipStatusBadge = (status: ResultStatus): string => {
         background: statusInformation.color,
     });
     return `<span style="${style}">${escapeHtml(statusInformation.label)}</span>`;
+};
+
+export const buildTooltipMethodBadge = (label: string): string => {
+
+    // color:#fff;padding:1px 6px;border-radius:20px;margin-left:4px;font-size:0.85em
+
+    const style = styleToInlineCss({
+        ...METHOD_BADGE_STYLE,
+    });
+    return `<span style="${style}">${escapeHtml(label)}</span>`;
 };

@@ -31,7 +31,6 @@ import ReportCard from "../../widgets/ReportCard";
 import {useReportData} from "../../provider/DataProvider";
 import {MethodDetails} from "../../model/MethodDetails";
 import {MethodType} from "../../model/report-model/framework_pb";
-import {StatusService} from "../../model/status-service";
 import type {ResultStatus} from "../../model/status-service";
 import type {EChartsOption} from "echarts-for-react";
 import {useNavigate} from "react-router-dom";
@@ -41,7 +40,8 @@ import {createSearchParams} from "react-router-dom";
 import {useTimingSearchParams} from "./useTimingSearchParams";
 import {buildDurationBuckets, type DurationBucket} from "./durationBuckets";
 import {escapeHtml} from "../../utils/escapeHtml";
-import {buildChartTooltip} from "../../utils/chartTooltip";
+import {buildChartTooltip, buildTooltipMethodBadge, buildTooltipStatusBadge} from "../../utils/chartTooltip";
+import {reportTheme} from "../../layout/reportTheme.tsx";
 
 const TEST_NUMBER_LIMIT = 10;
 
@@ -154,29 +154,35 @@ const TestTimings = () => {
                 if (!bar || bar.durationAmount === 0) return "";
 
                 const bodyRows: string[] = [];
+                const contentListItemStyle = "display:grid;grid-template-columns:7ch minmax(0, 1fr);column-gap:8px;align-items:center;margin:2px 0;";
                 bar.methodList.slice(0, TEST_NUMBER_LIMIT).forEach(method => {
-                    const statusInfo = StatusService.get(method.status);
-                    bodyRows.push(`<div style="margin-bottom:4px">
-                        <span style="background:${statusInfo.color};color:#fff;padding:1px 6px;border-radius:20px;margin-right:4px">${escapeHtml(statusInfo.label)}</span>
-                        ${escapeHtml(method.name)}
-                        ${method.methodType === MethodType.CONFIGURATION_METHOD
-                        ? `<span style="background:${configurationChipColor};color:#fff;padding:1px 6px;border-radius:20px;margin-left:4px;font-size:0.85em">Configuration</span>`
-                        : ""}
-                    </div>`);
+                    bodyRows.push(`<li style="${contentListItemStyle}">
+                        <span>${buildTooltipStatusBadge(method.status)}</span>
+                        <span>
+                                ${escapeHtml(method.name)}
+                                ${method.methodType === MethodType.CONFIGURATION_METHOD
+                                    ? `${buildTooltipMethodBadge("Configuration")}`
+                                    : ``}
+                        </span>
+                    </li>`);
+
                 });
+                let textMoreTests = "";
                 if (bar.durationAmount > TEST_NUMBER_LIMIT) {
-                    bodyRows.push(`and ${bar.durationAmount - TEST_NUMBER_LIMIT} more`);
+                    textMoreTests = `and ${bar.durationAmount - TEST_NUMBER_LIMIT} more`;
                 }
                 return buildChartTooltip({
                     header: {
                         content: `${bar.durationAmount} test case(s)`,
                         style: {
-                            backgroundColor: theme.custom.testTimings.barColor,
-                            color: "white",
+                            backgroundColor: reportTheme.palette.lightGrey.light,
                         },
                     },
                     body: {
-                        content: bodyRows,
+                        content: [
+                            `<ul style="list-style:none;padding:0;margin:0;">${bodyRows.join("")}</ul>`,
+                            textMoreTests
+                        ],
                     },
                 });
             },

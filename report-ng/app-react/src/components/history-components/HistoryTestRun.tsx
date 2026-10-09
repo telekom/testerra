@@ -9,6 +9,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
 import HistoryTestRunChart from "./HistoryTestRunsChart.tsx";
 import HistoryTestRunStatistics from "./HistoryTestRunStatistics.tsx";
+import HistoryTestRunTopFailing from "./HistoryTestRunTopFailing.tsx";
 
 const HistoryTestRun = () => {
 
@@ -73,11 +74,9 @@ const HistoryTestRun = () => {
                     />
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 6}}>
-                    <ReportCard
-                        label="Top 3 failing tests"
-                        sxContent={{p: 0}}
-                        sxCard={theme.mixins.cardHeight(4)}
-                        content={<Typography variant="body1">Failing test list</Typography>}
+                    <HistoryTestRunTopFailing
+                        histStatistics={executionMngr.getHistoryStatistics()}
+                        sx={theme.mixins.cardHeight(5)}
                     />
                 </Grid>
 

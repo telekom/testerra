@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 
-const HistoryRunComparison = () => {
+const HistoryRunComparisonPage = () => {
     return <Typography variant="body1">Run comparison placeholder</Typography>;
 };
 
-export default HistoryRunComparison;
+export default HistoryRunComparisonPage;

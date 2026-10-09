@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 
-const HistoryRunDuration = () => {
+const HistoryRunDurationPage = () => {
     return <Typography variant="body1">Run duration placeholder</Typography>;
 };
 
-export default HistoryRunDuration;
+export default HistoryRunDurationPage;

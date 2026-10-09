@@ -37,9 +37,9 @@ import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import ViewComfyIcon from "@mui/icons-material/ViewComfy";
 import HistoryTestRunPage from "../components/history-components/HistoryTestRunPage.tsx";
-import HistoryRunComparison from "../components/history-components/HistoryRunComparison.tsx";
-import HistoryRunDuration from "../components/history-components/HistoryRunDuration.tsx";
-import HistoryTestClasses from "../components/history-components/HistoryTestClasses.tsx";
+import HistoryRunComparisonPage from "../components/history-components/HistoryRunComparisonPage.tsx";
+import HistoryRunDurationPage from "../components/history-components/HistoryRunDurationPage.tsx";
+import HistoryTestClassesPage from "../components/history-components/HistoryTestClassesPage.tsx";
 
 // Custom attributes for menu elements
 export interface RouteHandle {
@@ -116,17 +116,17 @@ export const routesConfig: RouteObject[] = [
                     },
                     {
                         path: "run-comparison",
-                        element: <HistoryRunComparison />,
+                        element: <HistoryRunComparisonPage />,
                         handle: {label: "Run comparison", show: true, icon: <CompareArrowsIcon />} as RouteHandle
                     },
                     {
                         path: "duration-history",
-                        element: <HistoryRunDuration />,
+                        element: <HistoryRunDurationPage />,
                         handle: {label: "Run duration", show: true, icon: <TimelineIcon />} as RouteHandle
                     },
                     {
                         path: "classes-history",
-                        element: <HistoryTestClasses />,
+                        element: <HistoryTestClassesPage />,
                         handle: {label: "Test classes", show: true, icon: <ViewComfyIcon />} as RouteHandle
                     },
                 ]

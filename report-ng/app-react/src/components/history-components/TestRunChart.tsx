@@ -30,19 +30,19 @@ import {formatDate} from "../../utils/dateFormatter.ts";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 import {buildChartTooltip, buildTooltipStatusBadge} from "../../utils/chartTooltip";
 
-export interface HistoryTestRunChartProps {
+export interface TestRunChartProps {
     histStatistics: HistoryStatistics;
     selectedStatus: string | null;
     additionalChartOptions?: EChartsOption;
-    onViewportChange?: (viewport: HistoryRunViewport) => void;
+    onViewportChange?: (viewport: TestRunViewport) => void;
 }
 
-export interface HistoryRunViewport {
+export interface TestRunViewport {
     start: number;
     end: number;
 }
 
-interface HistoryTestRunChartData {
+interface TestRunChartData {
     value: number;
     runIndex: number;
     started: string;
@@ -50,7 +50,7 @@ interface HistoryTestRunChartData {
     duration: string;
 }
 
-const HistoryTestRunChart = ({histStatistics, selectedStatus, additionalChartOptions, onViewportChange}: HistoryTestRunChartProps) => {
+const TestRunChart = ({histStatistics, selectedStatus, additionalChartOptions, onViewportChange}: TestRunChartProps) => {
     const totalRuns = histStatistics.getTotalRunCount();
     const hasHistory = totalRuns > 1;
     const statuses = useMemo(
@@ -107,7 +107,7 @@ const HistoryTestRunChart = ({histStatistics, selectedStatus, additionalChartOpt
             emphasis: {
                 disabled: true
             },
-            data: historyEntries.map((entry, index): HistoryTestRunChartData => ({
+            data: historyEntries.map((entry, index): TestRunChartData => ({
                 runIndex: entry.historyIndex,
                 value: entry.getSummarizedStatusCount(StatusService.getGroup(status)),
                 started: runMetaData[index].started,
@@ -140,7 +140,7 @@ const HistoryTestRunChart = ({histStatistics, selectedStatus, additionalChartOpt
                     return "";
                 }
                 const rows = params.map(item => {
-                    const point = item.data as HistoryTestRunChartData | undefined;
+                    const point = item.data as TestRunChartData | undefined;
                     const value = Number(point?.value ?? item.value ?? 0);
                     return {
                         seriesName: String(item.seriesName ?? ""),
@@ -268,4 +268,4 @@ const HistoryTestRunChart = ({histStatistics, selectedStatus, additionalChartOpt
     );
 };
 
-export default HistoryTestRunChart;
+export default TestRunChart;

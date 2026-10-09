@@ -7,11 +7,11 @@ import {useTheme} from "@mui/material/styles";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
-import HistoryTestRunStatistics from "./HistoryTestRunStatistics.tsx";
-import HistoryTestRunTopFailing from "./HistoryTestRunTopFailing.tsx";
+import TestRunStatistics from "./TestRunStatistics.tsx";
+import TestRunTopFailing from "./TestRunTopFailing.tsx";
 import {useCallback, useMemo, useState} from "react";
-import HistoryTestRunChartCard from "./HistoryTestRunsChartCard.tsx";
-import type {HistoryRunViewport} from "./HistoryTestRunChart.tsx";
+import TestRunChartCard from "./TestRunsChartCard.tsx";
+import type {TestRunViewport} from "./TestRunChart.tsx";
 
 const HistoryTestRunPage = () => {
 
@@ -21,7 +21,7 @@ const HistoryTestRunPage = () => {
     const [searchParams] = useSearchParams();
     const selectedStatus = searchParams.get("status");
     const historyStatistics = executionMngr?.getHistoryStatistics();
-    const defaultViewport = useMemo<HistoryRunViewport | undefined>(() => {
+    const defaultViewport = useMemo<TestRunViewport | undefined>(() => {
         const runs = historyStatistics?.availableRuns ?? [];
         if (runs.length === 0) {
             return undefined;
@@ -31,8 +31,8 @@ const HistoryTestRunPage = () => {
             end: Math.max(...runs),
         };
     }, [historyStatistics]);
-    const [historyViewport, setHistoryViewport] = useState<HistoryRunViewport | undefined>(defaultViewport);
-    const handleViewportChange = useCallback((nextViewport: HistoryRunViewport) => {
+    const [historyViewport, setHistoryViewport] = useState<TestRunViewport | undefined>(defaultViewport);
+    const handleViewportChange = useCallback((nextViewport: TestRunViewport) => {
         setHistoryViewport(currentViewport => {
             if (
                 currentViewport?.start === nextViewport.start
@@ -68,7 +68,7 @@ const HistoryTestRunPage = () => {
                 {/*</Grid>*/}
                 {/*<Grid size={10}></Grid>*/}
                 <Grid size={{xs: 12, sm: 12, lg: 9}}>
-                    <HistoryTestRunChartCard
+                    <TestRunChartCard
                         histStatistics={historyStatistics}
                         selectedStatus={selectedStatus}
                         sx={theme.mixins.cardHeight(10.35)}
@@ -77,7 +77,7 @@ const HistoryTestRunPage = () => {
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <HistoryTestRunStatistics
+                        <TestRunStatistics
                             histStatistics={historyStatistics}
                             sx={theme.mixins.cardHeight(5)}
                         />
@@ -98,7 +98,7 @@ const HistoryTestRunPage = () => {
                     />
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 6}}>
-                    <HistoryTestRunTopFailing
+                    <TestRunTopFailing
                         histStatistics={historyStatistics}
                         sx={theme.mixins.cardHeight(5)}
                         viewport={historyViewport}

@@ -32,12 +32,12 @@ import ReportCard from "../../widgets/ReportCard.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 
-interface HistoryTestRunStatisticsProps {
+interface TestRunStatisticsProps {
     histStatistics: HistoryStatistics;
     sx?: SxProps<Theme>;
 }
 
-const HistoryTestRunStatistics = ({histStatistics, sx}: HistoryTestRunStatisticsProps) => {
+const TestRunStatistics = ({histStatistics, sx}: TestRunStatisticsProps) => {
     const totalRunCount = useMemo(
         () => histStatistics.history.entries?.length ?? histStatistics.getTotalRunCount(),
         [histStatistics]
@@ -134,4 +134,4 @@ const HistoryTestRunStatistics = ({histStatistics, sx}: HistoryTestRunStatistics
     );
 };
 
-export default HistoryTestRunStatistics;
+export default TestRunStatistics;

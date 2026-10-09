@@ -22,7 +22,7 @@
 import ReportCard from "../../widgets/ReportCard";
 import type {SxProps, Theme} from "@mui/material/styles";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
-import HistoryTestRunChart from "../history-components/HistoryTestRunChart.tsx";
+import TestRunChart from "../history-components/TestRunChart.tsx";
 
 interface DashboardHistoryChartProps {
     histStatistics: HistoryStatistics
@@ -36,7 +36,7 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
             label="History"
             sxContent={{p: 0}}
             sxCard={sx}
-            content={<HistoryTestRunChart histStatistics={histStatistics} selectedStatus={selectedStatus}/>}
+            content={<TestRunChart histStatistics={histStatistics} selectedStatus={selectedStatus}/>}
         />
     );
 };

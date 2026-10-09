@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 
-const HistoryTestClasses = () => {
+const HistoryTestClassesPage = () => {
     return <Typography variant="body1">Test classes placeholder</Typography>;
 };
 
-export default HistoryTestClasses;
+export default HistoryTestClassesPage;

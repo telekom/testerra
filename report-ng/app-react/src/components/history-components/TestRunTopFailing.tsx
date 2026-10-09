@@ -27,12 +27,12 @@ import CelebrationIcon from "@mui/icons-material/Celebration";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {useNavigate} from "react-router-dom";
-import type {HistoryRunViewport} from "./HistoryTestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunChart.tsx";
 
-interface HistoryTestRunTopFailingProps {
+interface TestRunTopFailingProps {
     histStatistics: HistoryStatistics;
     sx?: SxProps<Theme>;
-    viewport?: HistoryRunViewport;
+    viewport?: TestRunViewport;
 }
 
 interface FailingMethodItem {
@@ -41,7 +41,7 @@ interface FailingMethodItem {
     methodId: string | null;
 }
 
-const HistoryTestRunTopFailing = ({histStatistics, sx, viewport}: HistoryTestRunTopFailingProps) => {
+const TestRunTopFailing = ({histStatistics, sx, viewport}: TestRunTopFailingProps) => {
     const navigate = useNavigate();
 
     const topFailingTests = useMemo((): FailingMethodItem[] => {
@@ -105,4 +105,4 @@ const HistoryTestRunTopFailing = ({histStatistics, sx, viewport}: HistoryTestRun
     );
 };
 
-export default HistoryTestRunTopFailing;
+export default TestRunTopFailing;

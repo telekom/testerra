@@ -22,7 +22,7 @@
 import ReportCard from "../../widgets/ReportCard";
 import type {SxProps, Theme} from "@mui/material/styles";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
-import HistoryTestRunChart, {type HistoryRunViewport} from "./HistoryTestRunChart.tsx";
+import TestRunChart, {type TestRunViewport} from "./TestRunChart.tsx";
 import {useMemo} from "react";
 import type {EChartsOption} from "echarts-for-react";
 
@@ -30,10 +30,10 @@ interface HistoryChartProps {
     histStatistics: HistoryStatistics
     selectedStatus: string | null;
     sx?: SxProps<Theme>;
-    onViewportChange?: (viewport: HistoryRunViewport) => void;
+    onViewportChange?: (viewport: TestRunViewport) => void;
 }
 
-const HistoryTestRunChartCard = ({histStatistics, selectedStatus, sx, onViewportChange}: HistoryChartProps) => {
+const TestRunChartCard = ({histStatistics, selectedStatus, sx, onViewportChange}: HistoryChartProps) => {
     const additionalChartOptions: EChartsOption = useMemo(() => {
         const resetZoomIconSvgPath = "M 4,1 V 5 H 0 M 3.9865238,4.9219293 C 1.602752,3.5367838 0,0.95556327 0,-2 c 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 0,4.418278 -3.581722,8 -8,8";
 
@@ -78,7 +78,7 @@ const HistoryTestRunChartCard = ({histStatistics, selectedStatus, sx, onViewport
             sxContent={{p: 0}}
             sxCard={sx}
             content={
-                <HistoryTestRunChart
+                <TestRunChart
                     histStatistics={histStatistics}
                     selectedStatus={selectedStatus}
                     additionalChartOptions={additionalChartOptions}
@@ -88,4 +88,4 @@ const HistoryTestRunChartCard = ({histStatistics, selectedStatus, sx, onViewport
         />
     );
 };
-export default HistoryTestRunChartCard;
+export default TestRunChartCard;

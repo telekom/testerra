@@ -28,6 +28,8 @@ import {escapeHtml} from "../../utils/escapeHtml";
 import {MethodDetails} from "../../model/MethodDetails";
 import {MetricType} from "../../model/report-model/framework_pb";
 import {buildChartTooltip} from "../../utils/chartTooltip";
+import {reportTheme} from "../../layout/reportTheme.tsx";
+import {formatDuration} from "../../utils/durationFormatter.ts";
 
 const SESSION_COLOR = '#6897EA';
 const BASEURL_COLOR = '#75C6CB';
@@ -193,41 +195,38 @@ const Sessions = () => {
                     const seriesIdx = params.seriesIndex - 2;
                     if (seriesIdx < 0 || seriesIdx >= dots.length) return "";
                     const info = dots[seriesIdx].information;
+                    const contentListItemStyle ="display:grid;grid-template-columns:20ch auto;column-gap:8px;align-items:center;margin:2px 0;";
+                    const sessionInfo =
+                        `<li style="${contentListItemStyle}"><span>Session name</span><span>${escapeHtml(info.sessionName)}</span></li>
+                        <li style="${contentListItemStyle}"><span>Session start duration</span><span>${formatDuration(Number(info.sessionDuration) * 1000)}</span></li>
+                        <li style="${contentListItemStyle}"><span>Session start time</span><span>${formatDate(Number(info.sessionStartTime), "time")}</span></li>`;
 
-                    const bodyRows = [
-                        `<b>Session name:</b> ${escapeHtml(info.sessionName)}<br/>`,
-                        `<b>Session id:</b> ${escapeHtml(info.sessionId)}<br/>`,
-                        `<hr/>`,
-                        `<b>Session start duration:</b> ${info.sessionDuration}s<br/>`,
-                        `<b>Session start time:</b> ${formatDate(Number(info.sessionStartTime), "time")}<br/>`,
-                    ];
+                    const baseUrlInfo = info.baseurlStartTime
+                        ? `<li style="${contentListItemStyle}"><span>Base URL start duration</span><span>${formatDuration(Number(info.baseurlDuration) * 1000)}</span></li>
+                           <li style="${contentListItemStyle}"><span>Base URL start time</span><span>${formatDate(Number(info.baseurlStartTime), "time")}</span></li>`
+                        : "";
 
-                    if (info.baseurlStartTime) {
-                        bodyRows.push(`<b>Base URL start duration:</b> ${info.baseurlDuration}s<br/>`);
-                        bodyRows.push(`<b>Base URL start time:</b> ${formatDate(Number(info.baseurlStartTime), "time")}<br/>`);
-                    }
+                    const testcaseList: string[]= [];
+                    const testcaseListItemStyle ="margin:0 0 2px;";
+                    info.methodNames.forEach(name => {
+                        testcaseList.push(`<li style="${testcaseListItemStyle}">${escapeHtml(name)}</li>`);
+                    });
 
-                    if (info.methodNames.length > 1) {
-                        let testCaseList = `<hr/><b>Test case(s):</b><ul style="margin-top:4px;margin-bottom:4px;padding-left:20px;">`;
-                        info.methodNames.forEach(name => {
-                            testCaseList += `<li style="margin-bottom:2px">${escapeHtml(name)}</li>`;
-                        });
-                        testCaseList += '</ul>';
-                        bodyRows.push(testCaseList);
-                    } else {
-                        bodyRows.push(`<hr/><b>Test case(s):</b> ${info.methodNames.map(name => escapeHtml(name)).join(', ')}`);
-                    }
                     return buildChartTooltip({
                         header: {
                             content: `${escapeHtml(info.browserName ?? "")} v${escapeHtml(info.browserVersion ?? "(na)")}`,
                             style: {
-                                backgroundColor: params.color,
-                                color: "white",
-                                margin: "-10px -10px 4px -10px",
+                                backgroundColor: reportTheme.palette.lightGrey.light
                             },
                         },
                         body: {
-                            content: bodyRows,
+                            content: [
+                                `<ul style="list-style:none;padding:0;margin:0;">${sessionInfo}${baseUrlInfo}</ul>`,
+                                `<div style="display:flex; align-items:baseline; gap:20px; margin-top:8px;padding-top:6px;border-top:1px solid ${reportTheme.palette.lightGrey.main};">
+                                    <span style="">Testcase(s)</span>
+                                    <ul style="list-style:none;padding:0;margin:0;">${testcaseList.join("")}</ul>                  
+                                </div>`,
+                            ],
                         },
                     });
                 },

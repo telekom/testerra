@@ -32,6 +32,7 @@ import type {ILogEntry} from "../../model/Logs.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import {useScrollToElementById} from "../../hooks/useScrollToElementById.ts";
 import DetailKeyValueListItem from "./DetailKeyValueListItem.tsx";
+import {formatDuration} from "../../utils/durationFormatter.ts";
 
 interface ISessionInformation {
     sessionName: string;
@@ -94,10 +95,10 @@ const BrowserInfo = () => {
                 serverUrl: sessionContext.serverUrl,
                 nodeUrl: sessionContext.nodeUrl,
                 baseUrl: sessionContext.baseUrl,
-                sessionDuration: ((sessionContext.contextValues?.endTime ?? 0) - (sessionContext.contextValues?.startTime ?? 0)) / 1000,
-                sessionStartDuration: ((sessionData?.endTimestamp ?? 0) - (sessionData?.startTimestamp ?? 0)) / 1000,
+                sessionDuration: ((sessionContext.contextValues?.endTime ?? 0) - (sessionContext.contextValues?.startTime ?? 0)),
+                sessionStartDuration: ((sessionData?.endTimestamp ?? 0) - (sessionData?.startTimestamp ?? 0)),
                 baseurlStartDuration: baseurlData
-                    ? ((baseurlData.endTimestamp ?? 0) - (baseurlData.startTimestamp ?? 0)) / 1000
+                    ? ((baseurlData.endTimestamp ?? 0) - (baseurlData.startTimestamp ?? 0))
                     : undefined,
                 sessionStartTime: sessionData?.startTimestamp,
                 baseurlStartTime: baseurlData?.startTimestamp,
@@ -167,11 +168,11 @@ const BrowserInfo = () => {
                                     <Typography variant="subtitle2" sx={theme.custom.sessionInfo.sectionTitle}>Session metrics</Typography>
 
                                     {session.sessionDuration > 0 && (
-                                        <DetailKeyValueListItem label="Session duration" value={<Typography variant="caption">{session.sessionDuration}s</Typography>} />
+                                        <DetailKeyValueListItem label="Session duration" value={<Typography variant="caption">{formatDuration(session.sessionDuration)}</Typography>} />
                                     )}
 
                                     {session.sessionStartDuration > 0 && (
-                                        <DetailKeyValueListItem label="Session start duration" value={<Typography variant="caption">{session.sessionStartDuration}s</Typography>} />
+                                        <DetailKeyValueListItem label="Session start duration" value={<Typography variant="caption">{formatDuration(session.sessionStartDuration)}</Typography>} />
                                     )}
 
                                     {(session.sessionStartTime ?? 0) > 0 && (
@@ -192,7 +193,7 @@ const BrowserInfo = () => {
                                             {(session.baseurlStartDuration ?? 0) > 0 && (
                                                 <DetailKeyValueListItem
                                                     label="Base URL start duration"
-                                                    value={<Typography variant="caption">{session.baseurlStartDuration}s</Typography>}
+                                                    value={<Typography variant="caption">{formatDuration(Number(session.baseurlStartDuration))}</Typography>}
                                                 />
                                             )}
 

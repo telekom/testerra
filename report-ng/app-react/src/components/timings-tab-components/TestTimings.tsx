@@ -154,7 +154,7 @@ const TestTimings = () => {
                 if (!bar || bar.durationAmount === 0) return "";
 
                 const bodyRows: string[] = [];
-                const contentListItemStyle = "display:grid;grid-template-columns:7ch minmax(0, 1fr);column-gap:8px;align-items:center;margin:2px 0;";
+                const contentListItemStyle = "display:grid;grid-template-columns:14ch minmax(0, 1fr);column-gap:8px;align-items:center;margin:2px 0;";
                 bar.methodList.slice(0, TEST_NUMBER_LIMIT).forEach(method => {
                     bodyRows.push(`<li style="${contentListItemStyle}">
                         <span>${buildTooltipStatusBadge(method.status)}</span>

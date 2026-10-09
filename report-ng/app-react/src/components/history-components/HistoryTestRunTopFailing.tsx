@@ -27,10 +27,12 @@ import CelebrationIcon from "@mui/icons-material/Celebration";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {useNavigate} from "react-router-dom";
+import type {HistoryRunViewport} from "./HistoryTestRunChart.tsx";
 
 interface HistoryTestRunTopFailingProps {
     histStatistics: HistoryStatistics;
     sx?: SxProps<Theme>;
+    viewport?: HistoryRunViewport;
 }
 
 interface FailingMethodItem {
@@ -39,7 +41,7 @@ interface FailingMethodItem {
     methodId: string | null;
 }
 
-const HistoryTestRunTopFailing = ({histStatistics, sx}: HistoryTestRunTopFailingProps) => {
+const HistoryTestRunTopFailing = ({histStatistics, sx, viewport}: HistoryTestRunTopFailingProps) => {
     const navigate = useNavigate();
 
     const topFailingTests = useMemo((): FailingMethodItem[] => {
@@ -48,8 +50,8 @@ const HistoryTestRunTopFailing = ({histStatistics, sx}: HistoryTestRunTopFailing
             return [];
         }
 
-        const startIndex = Math.min(...availableRuns);
-        const endIndex = Math.max(...availableRuns);
+        const startIndex = viewport?.start ?? Math.min(...availableRuns);
+        const endIndex = viewport?.end ?? Math.max(...availableRuns);
         const methods = histStatistics.getClassHistory().flatMap(classItem => classItem.methods);
 
         return methods
@@ -62,7 +64,7 @@ const HistoryTestRunTopFailing = ({histStatistics, sx}: HistoryTestRunTopFailing
             }))
             .sort((a, b) => b.failingStreak - a.failingStreak)
             .slice(0, 3);
-    }, [histStatistics]);
+    }, [histStatistics, viewport]);
 
     return (
         <ReportCard

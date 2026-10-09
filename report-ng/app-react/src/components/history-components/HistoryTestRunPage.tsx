@@ -7,26 +7,49 @@ import {useTheme} from "@mui/material/styles";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
-import HistoryTestRunChart from "./HistoryTestRunsChart.tsx";
 import HistoryTestRunStatistics from "./HistoryTestRunStatistics.tsx";
 import HistoryTestRunTopFailing from "./HistoryTestRunTopFailing.tsx";
+import {useCallback, useMemo, useState} from "react";
+import HistoryTestRunChartCard from "./HistoryTestRunsChartCard.tsx";
+import type {HistoryRunViewport} from "./HistoryTestRunChart.tsx";
 
-const HistoryTestRun = () => {
+const HistoryTestRunPage = () => {
 
     const theme = useTheme()
     const {executionMngr, isLoading, error} = useReportData();
 
     const [searchParams] = useSearchParams();
     const selectedStatus = searchParams.get("status");
+    const historyStatistics = executionMngr?.getHistoryStatistics();
+    const defaultViewport = useMemo<HistoryRunViewport | undefined>(() => {
+        const runs = historyStatistics?.availableRuns ?? [];
+        if (runs.length === 0) {
+            return undefined;
+        }
+        return {
+            start: Math.min(...runs),
+            end: Math.max(...runs),
+        };
+    }, [historyStatistics]);
+    const [historyViewport, setHistoryViewport] = useState<HistoryRunViewport | undefined>(defaultViewport);
+    const handleViewportChange = useCallback((nextViewport: HistoryRunViewport) => {
+        setHistoryViewport(currentViewport => {
+            if (
+                currentViewport?.start === nextViewport.start
+                && currentViewport?.end === nextViewport.end
+            ) {
+                return currentViewport;
+            }
+            return nextViewport;
+        });
+    }, []);
 
     // const statusMenuItems: number[] = []
     // const selectedStatuses: ResultStatus[] = []
 
     if (isLoading) return <LinearProgress aria-label="Loading…"/>;
     if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
-    if (!executionMngr) return null;
-
-    // const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();
+    if (!executionMngr || !historyStatistics) return null;
 
     return (
         <Box
@@ -45,16 +68,17 @@ const HistoryTestRun = () => {
                 {/*</Grid>*/}
                 {/*<Grid size={10}></Grid>*/}
                 <Grid size={{xs: 12, sm: 12, lg: 9}}>
-                    <HistoryTestRunChart
-                        histStatistics={executionMngr.getHistoryStatistics()}
+                    <HistoryTestRunChartCard
+                        histStatistics={historyStatistics}
                         selectedStatus={selectedStatus}
                         sx={theme.mixins.cardHeight(10.35)}
+                        onViewportChange={handleViewportChange}
                     />
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 3}}>
                     <Stack direction="column" spacing={2}>
                         <HistoryTestRunStatistics
-                            histStatistics={executionMngr.getHistoryStatistics()}
+                            histStatistics={historyStatistics}
                             sx={theme.mixins.cardHeight(5)}
                         />
                         <ReportCard
@@ -75,8 +99,9 @@ const HistoryTestRun = () => {
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 6}}>
                     <HistoryTestRunTopFailing
-                        histStatistics={executionMngr.getHistoryStatistics()}
+                        histStatistics={historyStatistics}
                         sx={theme.mixins.cardHeight(5)}
+                        viewport={historyViewport}
                     />
                 </Grid>
 
@@ -86,4 +111,4 @@ const HistoryTestRun = () => {
     );
 };
 
-export default HistoryTestRun;
+export default HistoryTestRunPage;

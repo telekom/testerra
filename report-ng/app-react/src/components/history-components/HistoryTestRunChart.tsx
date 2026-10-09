@@ -19,9 +19,9 @@
  * under the License.
  */
 
-import {useMemo} from "react";
+import {useCallback, useMemo} from "react";
 import type {EChartsOption} from "echarts-for-react";
-import type {TooltipComponentFormatterCallbackParams} from "echarts";
+import type {EChartsType, TooltipComponentFormatterCallbackParams} from "echarts";
 import Echart from "../../widgets/Echart";
 import {StatusService} from "../../model/status-service.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
@@ -34,6 +34,12 @@ export interface HistoryTestRunChartProps {
     histStatistics: HistoryStatistics;
     selectedStatus: string | null;
     additionalChartOptions?: EChartsOption;
+    onViewportChange?: (viewport: HistoryRunViewport) => void;
+}
+
+export interface HistoryRunViewport {
+    start: number;
+    end: number;
 }
 
 interface HistoryTestRunChartData {
@@ -44,14 +50,14 @@ interface HistoryTestRunChartData {
     duration: string;
 }
 
-const HistoryTestRuns = ({histStatistics, selectedStatus, additionalChartOptions}: HistoryTestRunChartProps) => {
+const HistoryTestRunChart = ({histStatistics, selectedStatus, additionalChartOptions, onViewportChange}: HistoryTestRunChartProps) => {
     const totalRuns = histStatistics.getTotalRunCount();
     const hasHistory = totalRuns > 1;
-    const relevantStatuses = StatusService.getRelevantStatuses();
-    const statuses = relevantStatuses.filter(status =>
-        !selectedStatus || StatusService.getLabel(status) === selectedStatus
+    const statuses = useMemo(
+        () => StatusService.getRelevantStatuses().filter(status => !selectedStatus || StatusService.getLabel(status) === selectedStatus),
+        [selectedStatus]
     );
-    const historyEntries = histStatistics.getHistoryAggregateStatistics();
+    const historyEntries = useMemo(() => histStatistics.getHistoryAggregateStatistics(), [histStatistics]);
     const runMetaData = useMemo(() => historyEntries.map(entry => {
         const contextValues = entry.historyAggregate.executionContext?.contextValues;
         const startTime = contextValues?.startTime;
@@ -64,7 +70,7 @@ const HistoryTestRuns = ({histStatistics, selectedStatus, additionalChartOptions
         };
     }), [historyEntries]);
 
-    const placeHolderSeries: NonNullable<EChartsOption["series"]> = [{
+    const placeHolderSeries: NonNullable<EChartsOption["series"]> = useMemo(() => [{
         data: [1000, 1100, 1100, 1200, 1290, 1330, 1320],
         type: "line",
         areaStyle: {
@@ -82,32 +88,35 @@ const HistoryTestRuns = ({histStatistics, selectedStatus, additionalChartOptions
         tooltip: {
             show: false
         }
-    }];
+    }], []);
 
-    const historySeries: NonNullable<EChartsOption["series"]> = statuses.map(status => ({
-        name: StatusService.getLabel(status),
-        type: "line",
-        stack: "Total",
-        silent: true,
-        lineStyle: {
-            width: 0
-        },
-        symbol: "none",
-        areaStyle: {
-            color: StatusService.getColor(status),
-            opacity: 1
-        },
-        emphasis: {
-            disabled: true
-        },
-        data: historyEntries.map((entry, index): HistoryTestRunChartData => ({
-            runIndex: entry.historyIndex,
-            value: entry.getSummarizedStatusCount(StatusService.getGroup(status)),
-            started: runMetaData[index].started,
-            ended: runMetaData[index].ended,
-            duration: runMetaData[index].duration
-        }))
-    }));
+    const historySeries: NonNullable<EChartsOption["series"]> = useMemo(
+        () => statuses.map(status => ({
+            name: StatusService.getLabel(status),
+            type: "line",
+            stack: "Total",
+            silent: true,
+            lineStyle: {
+                width: 0
+            },
+            symbol: "none",
+            areaStyle: {
+                color: StatusService.getColor(status),
+                opacity: 1
+            },
+            emphasis: {
+                disabled: true
+            },
+            data: historyEntries.map((entry, index): HistoryTestRunChartData => ({
+                runIndex: entry.historyIndex,
+                value: entry.getSummarizedStatusCount(StatusService.getGroup(status)),
+                started: runMetaData[index].started,
+                ended: runMetaData[index].ended,
+                duration: runMetaData[index].duration
+            }))
+        })),
+        [historyEntries, runMetaData, statuses]
+    );
 
     const baseOption: EChartsOption = useMemo(() => ({
         grid: {
@@ -233,7 +242,58 @@ const HistoryTestRuns = ({histStatistics, selectedStatus, additionalChartOptions
         [additionalChartOptions, baseOption]
     );
 
-    return <Echart option={option} notMerge={true} autoResize={true}/>;
+    const emitViewport = useCallback((chart: EChartsType, dataZoomEvent?: { start?: number; end?: number; startValue?: number; endValue?: number }) => {
+        if (!onViewportChange || !hasHistory) {
+            return;
+        }
+
+        const xAxisData = historyEntries.map(entry => entry.historyIndex);
+        if (xAxisData.length === 0) {
+            return;
+        }
+
+        const chartOption = chart.getOption();
+        const dataZoomEntry = dataZoomEvent ?? (Array.isArray(chartOption.dataZoom) ? chartOption.dataZoom[0] : undefined);
+
+        const getRunAtIndex = (index: number) => {
+            const clampedIndex = Math.max(0, Math.min(xAxisData.length - 1, index));
+            return xAxisData[clampedIndex];
+        };
+
+        const startValue = (dataZoomEntry?.startValue as number | undefined);
+        const endValue = (dataZoomEntry?.endValue as number | undefined);
+
+        if (typeof startValue === "number" && typeof endValue === "number") {
+            onViewportChange({start: startValue, end: endValue});
+            return;
+        }
+
+        const startPercent = Number(dataZoomEntry?.start ?? 0);
+        const endPercent = Number(dataZoomEntry?.end ?? 100);
+        const maxIndex = xAxisData.length - 1;
+
+        onViewportChange({
+            start: getRunAtIndex(Math.floor((startPercent / 100) * maxIndex)),
+            end: getRunAtIndex(Math.ceil((endPercent / 100) * maxIndex)),
+        });
+    }, [hasHistory, historyEntries, onViewportChange]);
+
+    return (
+        <Echart
+            option={option}
+            notMerge={true}
+            autoResize={true}
+            onChartReady={emitViewport}
+            onEvents={{
+                datazoom: (params: { batch?: Array<{ start?: number; end?: number; startValue?: number; endValue?: number }>; type?: string; start?: number; end?: number; startValue?: number; endValue?: number }, chart: EChartsType) => {
+                    if (params.type === "datazoom" || params.batch) {
+                        const eventPayload = params.batch?.[0] ?? params;
+                        emitViewport(chart, eventPayload);
+                    }
+                }
+            }}
+        />
+    );
 };
 
-export default HistoryTestRuns;
+export default HistoryTestRunChart;

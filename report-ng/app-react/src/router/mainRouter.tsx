@@ -36,7 +36,7 @@ import AreaChartIcon from "@mui/icons-material/AreaChart";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import ViewComfyIcon from "@mui/icons-material/ViewComfy";
-import HistoryTestRun from "../components/history-components/HistoryTestRun.tsx";
+import HistoryTestRunPage from "../components/history-components/HistoryTestRunPage.tsx";
 import HistoryRunComparison from "../components/history-components/HistoryRunComparison.tsx";
 import HistoryRunDuration from "../components/history-components/HistoryRunDuration.tsx";
 import HistoryTestClasses from "../components/history-components/HistoryTestClasses.tsx";
@@ -111,7 +111,7 @@ export const routesConfig: RouteObject[] = [
                     },
                     {
                         path: "run-history",
-                        element: <HistoryTestRun />,
+                        element: <HistoryTestRunPage />,
                         handle: {label: "Test run", show: true, icon: <AreaChartIcon />} as RouteHandle
                     },
                     {

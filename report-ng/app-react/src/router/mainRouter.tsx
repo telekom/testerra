@@ -30,6 +30,16 @@ import BrowserInfo from "../components/method-details/BrowserInfo.tsx";
 import Dependencies from "../components/method-details/Dependencies.tsx";
 import Video from "../components/method-details/Video.tsx";
 import ThreadsPage from "../pages/ThreadsPage.tsx";
+import HistoryPage from "../pages/HistoryPage.tsx";
+import {HistoryRounded} from "@mui/icons-material";
+import AreaChartIcon from "@mui/icons-material/AreaChart";
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import ViewComfyIcon from "@mui/icons-material/ViewComfy";
+import HistoryTestRun from "../components/history-components/HistoryTestRun.tsx";
+import HistoryRunComparison from "../components/history-components/HistoryRunComparison.tsx";
+import HistoryRunDuration from "../components/history-components/HistoryRunDuration.tsx";
+import HistoryTestClassesTabPlaceholder from "../components/history-components/HistoryTestClassesTabPlaceholder.tsx";
 
 // Custom attributes for menu elements
 export interface RouteHandle {
@@ -87,6 +97,37 @@ export const routesConfig: RouteObject[] = [
                         path: "sessions",
                         element: <Sessions/>,
                         handle: {label: "Sessions", show: true, icon: <OpenInNewIcon />} as RouteHandle
+                    },
+                ]
+            },
+            {
+                path: "history",
+                element: <HistoryPage/>,
+                handle: {label: "History", show: true, icon: <HistoryRounded />} as RouteHandle,
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="run-history" replace />
+                    },
+                    {
+                        path: "run-history",
+                        element: <HistoryTestRun />,
+                        handle: {label: "Test run", show: true, icon: <AreaChartIcon />} as RouteHandle
+                    },
+                    {
+                        path: "run-comparison",
+                        element: <HistoryRunComparison />,
+                        handle: {label: "Run comparison", show: true, icon: <CompareArrowsIcon />} as RouteHandle
+                    },
+                    {
+                        path: "duration-history",
+                        element: <HistoryRunDuration />,
+                        handle: {label: "Run duration", show: true, icon: <TimelineIcon />} as RouteHandle
+                    },
+                    {
+                        path: "classes-history",
+                        element: <HistoryTestClassesTabPlaceholder />,
+                        handle: {label: "Test classes", show: true, icon: <ViewComfyIcon />} as RouteHandle
                     },
                 ]
             },

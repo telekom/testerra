@@ -103,9 +103,6 @@ export const buildTooltipStatusBadge = (status: ResultStatus): string => {
 };
 
 export const buildTooltipMethodBadge = (label: string): string => {
-
-    // color:#fff;padding:1px 6px;border-radius:20px;margin-left:4px;font-size:0.85em
-
     const style = styleToInlineCss({
         ...METHOD_BADGE_STYLE,
     });

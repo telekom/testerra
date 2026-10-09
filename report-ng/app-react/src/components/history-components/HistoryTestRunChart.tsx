@@ -242,39 +242,15 @@ const HistoryTestRunChart = ({histStatistics, selectedStatus, additionalChartOpt
         [additionalChartOptions, baseOption]
     );
 
-    const emitViewport = useCallback((chart: EChartsType, dataZoomEvent?: { start?: number; end?: number; startValue?: number; endValue?: number }) => {
+    // ECharts stores the resolved zoom window (category indices) in startValue/endValue of the dataZoom option
+    const emitViewport = useCallback((chart: EChartsType) => {
         if (!onViewportChange || !hasHistory) {
             return;
         }
-
-        const xAxisData = historyEntries.map(entry => entry.historyIndex);
-        if (xAxisData.length === 0) {
-            return;
-        }
-
-        const chartOption = chart.getOption();
-        const dataZoomEntry = dataZoomEvent ?? (Array.isArray(chartOption.dataZoom) ? chartOption.dataZoom[0] : undefined);
-
-        const getRunAtIndex = (index: number) => {
-            const clampedIndex = Math.max(0, Math.min(xAxisData.length - 1, index));
-            return xAxisData[clampedIndex];
-        };
-
-        const startValue = (dataZoomEntry?.startValue as number | undefined);
-        const endValue = (dataZoomEntry?.endValue as number | undefined);
-
-        if (typeof startValue === "number" && typeof endValue === "number") {
-            onViewportChange({start: startValue, end: endValue});
-            return;
-        }
-
-        const startPercent = Number(dataZoomEntry?.start ?? 0);
-        const endPercent = Number(dataZoomEntry?.end ?? 100);
-        const maxIndex = xAxisData.length - 1;
-
+        const dataZoom = (chart.getOption().dataZoom as { startValue?: number; endValue?: number }[] | undefined)?.[0];
         onViewportChange({
-            start: getRunAtIndex(Math.floor((startPercent / 100) * maxIndex)),
-            end: getRunAtIndex(Math.ceil((endPercent / 100) * maxIndex)),
+            start: historyEntries[dataZoom?.startValue ?? 0].historyIndex,
+            end: historyEntries[dataZoom?.endValue ?? historyEntries.length - 1].historyIndex,
         });
     }, [hasHistory, historyEntries, onViewportChange]);
 
@@ -285,12 +261,8 @@ const HistoryTestRunChart = ({histStatistics, selectedStatus, additionalChartOpt
             autoResize={true}
             onChartReady={emitViewport}
             onEvents={{
-                datazoom: (params: { batch?: Array<{ start?: number; end?: number; startValue?: number; endValue?: number }>; type?: string; start?: number; end?: number; startValue?: number; endValue?: number }, chart: EChartsType) => {
-                    if (params.type === "datazoom" || params.batch) {
-                        const eventPayload = params.batch?.[0] ?? params;
-                        emitViewport(chart, eventPayload);
-                    }
-                }
+                datazoom: (_: unknown, chart: EChartsType) => emitViewport(chart),
+                restore: (_: unknown, chart: EChartsType) => emitViewport(chart)
             }}
         />
     );

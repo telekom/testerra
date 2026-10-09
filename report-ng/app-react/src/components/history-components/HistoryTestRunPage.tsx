@@ -7,8 +7,9 @@ import {useTheme} from "@mui/material/styles";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
-import TestRunStatistics from "./TestRunStatistics.tsx";
-import TestRunTopFailing from "./TestRunTopFailing.tsx";
+import TestRunStatisticsCard from "./TestRunStatisticsCard.tsx";
+import TestRunTopFailingCard from "./TestRunTopFailingCard.tsx";
+import TestRunTopFlakyCard from "./TestRunTopFlakyCard.tsx";
 import {useCallback, useMemo, useState} from "react";
 import TestRunChartCard from "./TestRunsChartCard.tsx";
 import type {TestRunViewport} from "./TestRunChart.tsx";
@@ -77,7 +78,7 @@ const HistoryTestRunPage = () => {
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <TestRunStatistics
+                        <TestRunStatisticsCard
                             histStatistics={historyStatistics}
                             sx={theme.mixins.cardHeight(5)}
                         />
@@ -90,15 +91,14 @@ const HistoryTestRunPage = () => {
                     </Stack>
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 6}}>
-                    <ReportCard
-                        label="Top 3 flaky tests"
-                        sxContent={{p: 0}}
-                        sxCard={theme.mixins.cardHeight(4)}
-                        content={<Typography variant="body1">Flaky test list</Typography>}
+                    <TestRunTopFlakyCard
+                        histStatistics={historyStatistics}
+                        sx={theme.mixins.cardHeight(5)}
+                        viewport={historyViewport}
                     />
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 6}}>
-                    <TestRunTopFailing
+                    <TestRunTopFailingCard
                         histStatistics={historyStatistics}
                         sx={theme.mixins.cardHeight(5)}
                         viewport={historyViewport}

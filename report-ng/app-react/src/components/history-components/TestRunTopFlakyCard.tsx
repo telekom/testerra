@@ -22,29 +22,30 @@
 import {useMemo} from "react";
 import type {SxProps, Theme} from "@mui/material/styles";
 import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography} from "@mui/material";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import FlakyIcon from "@mui/icons-material/Flaky";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {useNavigate} from "react-router-dom";
 import type {TestRunViewport} from "./TestRunChart.tsx";
 
-interface TestRunTopFailingProps {
+interface TestRunTopFlakyProps {
     histStatistics: HistoryStatistics;
     sx?: SxProps<Theme>;
     viewport?: TestRunViewport;
 }
 
-interface FailingMethodItem {
+interface FlakyMethodItem {
     name: string;
-    failingStreak: number;
+    flakiness: string;
+    passingStreak: number;
     methodId: string | null;
 }
 
-const TestRunTopFailing = ({histStatistics, sx, viewport}: TestRunTopFailingProps) => {
+const TestRunTopFlakyCard = ({histStatistics, sx, viewport}: TestRunTopFlakyProps) => {
     const navigate = useNavigate();
 
-    const topFailingTests = useMemo((): FailingMethodItem[] => {
+    const topFlakyTests = useMemo((): FlakyMethodItem[] => {
         const availableRuns = histStatistics.availableRuns;
         if (availableRuns.length < 2) {
             return [];
@@ -55,27 +56,32 @@ const TestRunTopFailing = ({histStatistics, sx, viewport}: TestRunTopFailingProp
         const methods = histStatistics.getClassHistory().flatMap(classItem => classItem.methods);
 
         return methods
-            .filter(method => method.getFailingStreakInRange(startIndex, endIndex) > 0)
             .filter(method => method.isTestMethod())
             .map(method => ({
                 name: method.identifier,
-                failingStreak: method.getFailingStreakInRange(startIndex, endIndex),
+                flakiness: method.getFlakinessInRange(startIndex, endIndex),
+                passingStreak: method.getPassingStreakInRange(startIndex, endIndex),
                 methodId: method.getIdOfRun(endIndex) ?? null,
             }))
-            .sort((a, b) => b.failingStreak - a.failingStreak)
-            .slice(0, 3);
+            .filter(method => method.flakiness > 0.1)
+            .sort((a, b) => b.flakiness - a.flakiness)
+            .slice(0, 3)
+            .map(method => ({
+                ...method,
+                flakiness: method.flakiness.toFixed(1)
+            }));
     }, [histStatistics, viewport]);
 
     return (
         <ReportCard
-            label="Top 3 failing tests"
-            tooltipText="Test cases that aren't passed since multiple runs"
+            label="Top 3 flaky tests"
+            tooltipText="Test cases with a high frequency of status changes in the currently visible viewport of the overview chart"
             sxContent={{p: 0}}
             sxCard={sx}
-            content={topFailingTests.length > 0 ? (
+            content={topFlakyTests.length > 0 ? (
                 <List dense sx={{py: 0}}>
-                    {topFailingTests.map((method) => (
-                        <ListItem key={`${method.name}-${method.failingStreak}`} disablePadding>
+                    {topFlakyTests.map((method) => (
+                        <ListItem key={`${method.name}-${method.flakiness}`} disablePadding>
                             <ListItemButton
                                 disabled={!method.methodId}
                                 onClick={() => {
@@ -85,11 +91,11 @@ const TestRunTopFailing = ({histStatistics, sx, viewport}: TestRunTopFailingProp
                                 }}
                             >
                                 <ListItemIcon>
-                                    <HighlightOffIcon color="error"/>
+                                    <FlakyIcon color="error"/>
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={<Typography>{method.name}</Typography>}
-                                    secondary={`Failing since ${method.failingStreak} ${method.failingStreak === 1 ? "run" : "runs"}`}
+                                    secondary={`Flakiness: ${method.flakiness}% (${method.passingStreak === 0 ? "Currently failing" : `Passed since ${method.passingStreak} ${method.passingStreak === 1 ? "run" : "runs"}`})`}
                                 />
                             </ListItemButton>
                         </ListItem>
@@ -98,11 +104,11 @@ const TestRunTopFailing = ({histStatistics, sx, viewport}: TestRunTopFailingProp
             ) : (
                 <Stack direction="row" spacing={1} sx={{height: "100%", alignItems: "center", justifyContent: "center"}}>
                     <CelebrationIcon/>
-                    <Typography>No failing tests</Typography>
+                    <Typography>No flaky tests</Typography>
                 </Stack>
             )}
         />
     );
 };
 
-export default TestRunTopFailing;
+export default TestRunTopFlakyCard;

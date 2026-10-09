@@ -37,7 +37,7 @@ interface TestRunStatisticsProps {
     sx?: SxProps<Theme>;
 }
 
-const TestRunStatistics = ({histStatistics, sx}: TestRunStatisticsProps) => {
+const TestRunStatisticsCard = ({histStatistics, sx}: TestRunStatisticsProps) => {
     const totalRunCount = useMemo(
         () => histStatistics.history.entries?.length ?? histStatistics.getTotalRunCount(),
         [histStatistics]
@@ -134,4 +134,4 @@ const TestRunStatistics = ({histStatistics, sx}: TestRunStatisticsProps) => {
     );
 };
 
-export default TestRunStatistics;
+export default TestRunStatisticsCard;

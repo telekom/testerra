@@ -22,8 +22,8 @@ build
 /integration-tests/report-pretest/
 /integration-tests/chromedriver.exe
 /report-ng/app/static/assets/model/
-/report-ng-tests/src/test/resources/reports/report-generated-status/
-/report-ng-tests/src/test/resources/reports/report-extended-status/
+/report-ng-tests/src/test/resources/reports/
+/src/test/resources/reports/
 /report-ng-tests/src/test/resources/reports/report-history/
 /report-ng-tests/src/test/resources/screenreferences/distance/
 /report-ng-tests/src/test/resources/screenreferences/actual/

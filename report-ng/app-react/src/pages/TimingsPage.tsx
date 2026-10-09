@@ -13,7 +13,7 @@ const TimingsPage = () => {
         <Box sx={{width: '100%'}}>
             <TabNavigation tabs={tabs} withTopPadding={false}/>
 
-            <Box sx={{py: '32px'}}>
+            <Box sx={{py: '10px'}}>
                 {/* Placeholder to render child component from router */}
                 <Outlet/>
             </Box>

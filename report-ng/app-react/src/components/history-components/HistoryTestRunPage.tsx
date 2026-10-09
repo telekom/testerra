@@ -1,7 +1,5 @@
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {Grid, Stack} from "@mui/material";
-import ReportCard from "../../widgets/ReportCard.tsx";
 import {useSearchParams} from "react-router-dom";
 import {useTheme} from "@mui/material/styles";
 import {useReportData} from "../../provider/DataProvider.tsx";
@@ -10,6 +8,7 @@ import Alert from "@mui/material/Alert";
 import TestRunStatisticsCard from "./TestRunStatisticsCard.tsx";
 import TestRunTopFailingCard from "./TestRunTopFailingCard.tsx";
 import TestRunTopFlakyCard from "./TestRunTopFlakyCard.tsx";
+import TestRunStatusShareCard from "./TestRunStatusShareCard.tsx";
 import {useCallback, useMemo, useState} from "react";
 import TestRunChartCard from "./TestRunsChartCard.tsx";
 import type {TestRunViewport} from "./TestRunChart.tsx";
@@ -54,7 +53,7 @@ const HistoryTestRunPage = () => {
 
     return (
         <Box
-            sx={{width: '100%', maxWidth: {sm: '100%', md: '1700px'}}}
+            sx={{width: '100%'}}
         >
             <Grid
                 container
@@ -82,11 +81,10 @@ const HistoryTestRunPage = () => {
                             histStatistics={historyStatistics}
                             sx={theme.mixins.cardHeight(5)}
                         />
-                        <ReportCard
-                            label="Status share"
-                            sxContent={{p: 0}}
-                            sxCard={theme.mixins.cardHeight(5)}
-                            content={<Typography variant="body1">Status share chart</Typography>}
+                        <TestRunStatusShareCard
+                            histStatistics={historyStatistics}
+                            sx={theme.mixins.cardHeight(5)}
+                            viewport={historyViewport}
                         />
                     </Stack>
                 </Grid>

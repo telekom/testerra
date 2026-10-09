@@ -39,7 +39,7 @@ import ViewComfyIcon from "@mui/icons-material/ViewComfy";
 import HistoryTestRun from "../components/history-components/HistoryTestRun.tsx";
 import HistoryRunComparison from "../components/history-components/HistoryRunComparison.tsx";
 import HistoryRunDuration from "../components/history-components/HistoryRunDuration.tsx";
-import HistoryTestClassesTabPlaceholder from "../components/history-components/HistoryTestClassesTabPlaceholder.tsx";
+import HistoryTestClasses from "../components/history-components/HistoryTestClasses.tsx";
 
 // Custom attributes for menu elements
 export interface RouteHandle {
@@ -126,7 +126,7 @@ export const routesConfig: RouteObject[] = [
                     },
                     {
                         path: "classes-history",
-                        element: <HistoryTestClassesTabPlaceholder />,
+                        element: <HistoryTestClasses />,
                         handle: {label: "Test classes", show: true, icon: <ViewComfyIcon />} as RouteHandle
                     },
                 ]

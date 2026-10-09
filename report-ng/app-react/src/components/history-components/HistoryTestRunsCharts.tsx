@@ -24,20 +24,20 @@ import type {SxProps, Theme} from "@mui/material/styles";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import HistoryTestRuns from "../history-components/HistoryTestRuns.tsx";
 
-interface DashboardHistoryChartProps {
+interface HistoryChartProps {
     histStatistics: HistoryStatistics
     selectedStatus: string | null;
     sx?: SxProps<Theme>
 }
 
-const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: DashboardHistoryChartProps) => {
+const HistoryTestRunCharts = ({histStatistics, selectedStatus, sx}: HistoryChartProps) => {
     return (
         <ReportCard
-            label="History"
+            label="History test runs"
             sxContent={{p: 0}}
             sxCard={sx}
             content={<HistoryTestRuns histStatistics={histStatistics} selectedStatus={selectedStatus}/>}
         />
     );
 };
-export default DashboardHistoryChartCard;
+export default HistoryTestRunCharts;

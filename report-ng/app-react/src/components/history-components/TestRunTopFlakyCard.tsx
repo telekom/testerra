@@ -86,7 +86,7 @@ const TestRunTopFlakyCard = ({histStatistics, sx, viewport}: TestRunTopFlakyProp
                                 disabled={!method.methodId}
                                 onClick={() => {
                                     if (method.methodId) {
-                                        navigate(`/method/${method.methodId}`);
+                                        navigate(`/method/${method.methodId}/method-history`);
                                     }
                                 }}
                             >

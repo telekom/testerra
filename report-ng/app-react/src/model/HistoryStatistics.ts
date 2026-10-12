@@ -121,6 +121,11 @@ export class HistoryStatistics {
         return this._classHistory;
     }
 
+    getMethodHistory(classIdentifier: string, methodIdentifier: string): MethodHistoryStatistics | undefined {
+        return this._classHistory.find(classHistory => classHistory.identifier === classIdentifier)
+            ?.methods.find(method => method.identifier === methodIdentifier);
+    }
+
     getTotalRunCount(): number {
         return this._historyAggregateStatistics.length;
     }

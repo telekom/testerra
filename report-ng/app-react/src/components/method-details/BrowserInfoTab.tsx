@@ -52,7 +52,7 @@ interface ISessionInformation {
     videoId?: string;
 }
 
-const BrowserInfo = () => {
+const BrowserInfoTab = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const {executionMngr} = useReportData();
     const theme = useTheme();
@@ -235,4 +235,4 @@ const BrowserInfo = () => {
     );
 };
 
-export default BrowserInfo;
+export default BrowserInfoTab;

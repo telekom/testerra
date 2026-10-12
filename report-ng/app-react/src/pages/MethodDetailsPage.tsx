@@ -22,7 +22,6 @@
 import { useParams } from "react-router";
 import TabNavigation from "../widgets/TabNavigation.tsx";
 import Box from "@mui/material/Box";
-import {useTheme} from "@mui/material";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {routesConfig} from "../router/mainRouter.tsx";
 import {generateTabsFromRoutes} from "../utils/generateTabsFromRoutes.ts";
@@ -40,7 +39,6 @@ const MethodDetailsPage = () => {
     const params = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const theme = useTheme();
     const methodDetailsRoute = routesConfig[0].children?.find((route) => route.path === "method/:methodId?");
     const tabs = useMemo(() => generateTabsFromRoutes(methodDetailsRoute?.children), [methodDetailsRoute?.children]);
     const getTabBaseRoute = (route: string) => route.split("/:")[0];
@@ -52,9 +50,19 @@ const MethodDetailsPage = () => {
         return executionMngr.getMethodDetails(params.methodId);
     }, [executionMngr, params.methodId]);
 
+    const methodHistory = useMemo(() => methodDetail
+        ? executionMngr?.getHistoryStatistics().getMethodHistory(
+            methodDetail.classStatistics.classIdentifier,
+            methodDetail.identifier
+        )
+        : undefined, [executionMngr, methodDetail]);
+
     const tabsWithCounts = useMemo(() => {
-        if (!methodDetail) return tabs;
+        if (!methodDetail) return tabs.filter(tab => tab.route !== "method-history");
         return tabs.map(tab => {
+            if (tab.route === "method-history") {
+                return {...tab, visible: (methodHistory?.getRunCount() ?? 0) > 0};
+            }
             if (tab.route === "details") {
                 const count = methodDetail.errorContexts.length;
                 return {...tab, count, visible: methodDetail.numDetails > 0};
@@ -75,7 +83,7 @@ const MethodDetailsPage = () => {
             }
             return tab;
         }).filter(tab => tab.visible !== false);
-    }, [tabs, methodDetail]);
+    }, [tabs, methodDetail, methodHistory]);
 
     useEffect(() => {
         if (tabsWithCounts.length === 0) {
@@ -122,12 +130,12 @@ const MethodDetailsPage = () => {
     if (!methodDetail) return <NoResultsCard title="No method selected" />;
 
     return (
-    <Box sx={theme.custom.methodDetailsPage.container}>
+    <Box sx={{width: "100%"}}>
         <GeneralDetails methodDetail={methodDetail} previousDetail={previousDetail} nextDetail={nextDetail}/>
         <PriorityMessagesCard promptLogs={methodDetail.promptLogs} />
         <TabNavigation tabs={tabsWithCounts} withTopPadding={true}/>
 
-        <Box sx={theme.custom.methodDetailsPage.outletContainer}>
+        <Box>
             {/* Placeholder to render child component from router */}
             <Outlet context={methodDetail}/>
         </Box>

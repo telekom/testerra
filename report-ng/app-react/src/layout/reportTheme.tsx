@@ -28,7 +28,6 @@ import {
     generalDetails,
     codeView,
     steps,
-    methodDetailsPage,
     durationCard,
     priorityMessages,
     sessionInfo,
@@ -41,7 +40,6 @@ import {
     type ReportThemeCodeViewStyles,
     type ReportThemeGeneralDetailsStyles,
     type ReportThemeStepsStyles,
-    type ReportThemeMethodDetailsPageStyles,
     type ReportThemeDurationCardStyles,
     type ReportThemePriorityMessagesStyles,
     type ReportThemeSessionInfoStyles,
@@ -74,7 +72,6 @@ export const reportTheme = createTheme({
         generalDetails,
         codeView,
         steps,
-        methodDetailsPage,
         durationCard,
         priorityMessages,
         sessionInfo,
@@ -179,7 +176,6 @@ declare module "@mui/material/styles" {
             generalDetails: ReportThemeGeneralDetailsStyles;
             codeView: ReportThemeCodeViewStyles;
             steps: ReportThemeStepsStyles;
-            methodDetailsPage: ReportThemeMethodDetailsPageStyles;
             durationCard: ReportThemeDurationCardStyles;
             priorityMessages: ReportThemePriorityMessagesStyles;
             sessionInfo: ReportThemeSessionInfoStyles;
@@ -199,7 +195,6 @@ declare module "@mui/material/styles" {
             generalDetails?: Partial<ReportThemeGeneralDetailsStyles>;
             codeView?: Partial<ReportThemeCodeViewStyles>;
             steps?: Partial<ReportThemeStepsStyles>;
-            methodDetailsPage?: Partial<ReportThemeMethodDetailsPageStyles>;
             durationCard?: Partial<ReportThemeDurationCardStyles>;
             priorityMessages?: Partial<ReportThemePriorityMessagesStyles>;
             sessionInfo?: Partial<ReportThemeSessionInfoStyles>;

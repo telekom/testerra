@@ -156,7 +156,7 @@ const toLogEntries = (logMessages: LogMessage[]): ILogEntry[] => {
     }));
 };
 
-const Steps = () => {
+const StepsTab = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const {executionMngr} = useReportData();
     const {stepId} = useParams();
@@ -334,4 +334,4 @@ const Steps = () => {
         </>
     );
 };
-export default Steps;
+export default StepsTab;

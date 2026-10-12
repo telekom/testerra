@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2026, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ * (C) 2026, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -32,8 +32,8 @@ import Echart from "../../widgets/Echart.tsx";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 import {formatDate} from "../../utils/dateFormatter.ts";
 import {buildChartTooltip} from "../../utils/chartTooltip.ts";
-import {escapeHtml} from "../../utils/escapeHtml.ts";
 import type {TestRunViewport} from "./TestRunChart.tsx";
+import {reportTheme} from "../../layout/reportTheme.tsx";
 
 interface DurationChartCardProps {
     histStatistics: HistoryStatistics;
@@ -77,13 +77,21 @@ const DurationChartCard = ({histStatistics, sx, onViewportChange}: DurationChart
                 if (!run) {
                     return "";
                 }
+                const listItemStyle = "display:grid;grid-template-columns:8ch auto;column-gap:8px;align-items:center;margin:2px 0;";
+                const listItems = `<li style="${listItemStyle}"><span>Duration</span><span>${formatDuration(run.duration ?? 0)}</span></li>
+                    <li style="${listItemStyle}"><span>Started</span><span>${run.started}</span></li>
+                    <li style="${listItemStyle}"><span>Ended</span><span>${run.ended}</span></li>
+                `;
 
                 return buildChartTooltip({
-                    header: {content: `Run ${run.runIndex} - Tests: ${run.testCases}`},
+                    header: {
+                        content: `Run ${run.runIndex} - Tests: ${run.testCases}`,
+                        style: {
+                            backgroundColor: reportTheme.palette.lightGrey.light,
+                        },
+                    },
                     body: {
-                        content: `Duration: ${run.duration === null ? "Unavailable" : formatDuration(run.duration)}
-                            <br><br>Started: ${escapeHtml(run.started)}
-                            <br>Ended: ${escapeHtml(run.ended)}`,
+                        content: listItems
                     },
                 });
             },

@@ -24,6 +24,12 @@ import {HistoricalMethodRun} from "./HistoricalMethodRun.ts";
 import {MethodType, ResultStatusType} from "./report-model/framework_pb.ts";
 import {Statistics} from "./Statistics.ts";
 
+export interface FailureAspectHistoryData {
+    message: string;
+    count: number;
+    statusCounts: Map<ResultStatusType, number>;
+}
+
 export class MethodHistoryStatistics extends Statistics {
     private readonly _identifier: string;
     private readonly _relatedMethods: string[] = [];
@@ -165,20 +171,24 @@ export class MethodHistoryStatistics extends Statistics {
         return this._getAverageDuration(this._getMethodRunsInRange(startIndex, endIndex));
     }
 
-    getErrorCount() {
-        const errorCount = new Map<string, number>();
+    getFailureAspectHistory(): FailureAspectHistoryData[] {
+        const failureAspects = new Map<string, FailureAspectHistoryData>();
         this._runs.forEach(run => {
-            const failureAspects = run.failureAspects;
-            if (failureAspects.length > 0) {
-                failureAspects.forEach(error => {
-                    if (error) {
-                        const currentErrorCount = errorCount.get(error) || 0;
-                        errorCount.set(error, currentErrorCount + 1);
-                    }
-                });
-            }
+            const status = run.context.resultStatus ?? ResultStatusType.NO_RUN;
+            run.failureAspects.forEach(message => {
+                if (message) {
+                    const aspect = failureAspects.get(message) ?? {
+                        message,
+                        count: 0,
+                        statusCounts: new Map<ResultStatusType, number>(),
+                    };
+                    aspect.count++;
+                    aspect.statusCounts.set(status, (aspect.statusCounts.get(status) ?? 0) + 1);
+                    failureAspects.set(message, aspect);
+                }
+            });
         });
-        return errorCount;
+        return Array.from(failureAspects.values());
     }
 
     getRunWithHistoryIndex(historyIndex: number) {

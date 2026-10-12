@@ -23,6 +23,7 @@ import {HistoryAggregateStatistics} from "./HistoryAggregateStatistics.ts";
 import {ClassHistory} from "./ClassHistory.ts";
 import { History } from "./report-model/report_pb.ts";
 import {MethodHistoryStatistics} from "./MethodHistoryStatistics.ts";
+import {ResultStatusType} from "./report-model/framework_pb.ts";
 
 export class HistoryStatistics {
     private _historyAggregateStatistics: HistoryAggregateStatistics[] = [];
@@ -55,20 +56,24 @@ export class HistoryStatistics {
                     classHistoryMap.set(classIdentifier, classHistory);
                 }
 
-                clsStat.methods.forEach((method) => {
-                    const relatedMethodsKey = this._buildRelatedMethodsKey(method.relatedMethods);
-                    let methodHistory = classHistory.methods.find(
-                        methodHistoryStatistics => {
-                            return methodHistoryStatistics.identifier === method.identifier
-                                && this._buildRelatedMethodsKey(methodHistoryStatistics.relatedMethods) === relatedMethodsKey;
+                // Retried attempts are intermediate results; only the final attempt belongs in method history.
+                // Filter before grouping and counting so all method-history charts and statistics use final results.
+                clsStat.methods
+                    .filter(method => method.context.resultStatus !== ResultStatusType.FAILED_RETRIED)
+                    .forEach((method) => {
+                        const relatedMethodsKey = this._buildRelatedMethodsKey(method.relatedMethods);
+                        let methodHistory = classHistory.methods.find(
+                            methodHistoryStatistics => {
+                                return methodHistoryStatistics.identifier === method.identifier
+                                    && this._buildRelatedMethodsKey(methodHistoryStatistics.relatedMethods) === relatedMethodsKey;
+                            }
+                        );
+                        if (!methodHistory) {
+                            methodHistory = new MethodHistoryStatistics(method);
+                            classHistory.addMethod(methodHistory);
                         }
-                    );
-                    if (!methodHistory) {
-                        methodHistory = new MethodHistoryStatistics(method);
-                        classHistory.addMethod(methodHistory);
-                    }
-                    methodHistory.addRun(method, currentHistoryIndex);
-                });
+                        methodHistory.addRun(method, currentHistoryIndex);
+                    });
             });
         });
 

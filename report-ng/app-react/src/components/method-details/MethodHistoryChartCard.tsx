@@ -16,10 +16,11 @@ import {reportTheme} from "../../layout/reportTheme.tsx";
 
 interface MethodHistoryChartCardProps {
     methodHistoryStatistics: MethodHistoryStatistics;
+    selectedFailureAspect?: string;
     sx?: SxProps<Theme>;
 }
 
-const MethodHistoryChartCard = ({methodHistoryStatistics, sx}: MethodHistoryChartCardProps) => {
+const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect, sx}: MethodHistoryChartCardProps) => {
     const theme = useTheme();
     const missingRunColor = theme.palette.text.disabled;
     console.log(methodHistoryStatistics);
@@ -50,10 +51,14 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, sx}: MethodHistoryChar
                 duration: context?.startTime !== undefined && context.endTime !== undefined
                     ? formatDuration(context.endTime - context.startTime)
                     : "Unavailable",
-                itemStyle: {color: noRun ? missingRunColor : StatusService.getColor(status)},
+                itemStyle: {
+                    color: noRun ? missingRunColor : StatusService.getColor(status),
+                    opacity: selectedFailureAspect === undefined || run?.failureAspects.includes(selectedFailureAspect)
+                        ? 1 : 0.38,
+                },
             };
         });
-    }, [methodHistoryStatistics, missingRunColor]);
+    }, [methodHistoryStatistics, missingRunColor, selectedFailureAspect]);
 
     const option: EChartsOption = useMemo(() => ({
         grid: {

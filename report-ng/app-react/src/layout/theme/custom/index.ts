@@ -31,3 +31,4 @@ export {sessionInfo, type ReportThemeSessionInfoStyles} from "./sessionInfo";
 export {dependencies, type ReportThemeDependenciesStyles} from "./dependencies";
 export {errorDetails, type ReportThemeErrorDetailsStyles} from "./errorDetails";
 export {testTimings, type ReportThemeTestTimingsStyles} from "./testTimings";
+export {chart, type ReportThemeChartColors} from "./chart";

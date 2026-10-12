@@ -125,15 +125,15 @@ const TestTimings = () => {
 
     const seriesData = useMemo(() => {
         if (!selectedMethod || bars.length === 0) {
-            return chartData.map(v => ({value: v, itemStyle: {color: theme.custom.testTimings.barColor}}));
+            return chartData.map(v => ({value: v, itemStyle: {color: theme.custom.chart.blue.main}}));
         }
         // Highlight only the bar containing the selected method.
         const highlightIndex = bars.findIndex(bar => bar.methodList.some(m => m.id === selectedMethod.id));
         return chartData.map((v, i) => ({
             value: v,
-            itemStyle: {color: i === highlightIndex ? theme.custom.testTimings.barColor : theme.custom.testTimings.barColorPale},
+            itemStyle: {color: i === highlightIndex ? theme.custom.chart.blue.main : theme.custom.chart.blue.light},
         }));
-    }, [chartData, bars, selectedMethod, theme.custom.testTimings.barColor, theme.custom.testTimings.barColorPale]);
+    }, [chartData, bars, selectedMethod, theme.custom.chart.blue.main, theme.custom.chart.blue.light]);
 
     const option: EChartsOption = useMemo(() => ({
         grid: {
@@ -203,9 +203,9 @@ const TestTimings = () => {
         series: [{
             data: seriesData,
             type: "bar",
-            itemStyle: {color: theme.custom.testTimings.barColor},
+            itemStyle: {color: theme.custom.chart.blue.main},
         }],
-    }), [labels, seriesData, bars, rangeNum, theme.custom.testTimings.barColor, configurationChipColor]);
+    }), [labels, seriesData, bars, rangeNum, theme.custom.chart.blue.main, configurationChipColor]);
 
     const handleBarClick = useCallback((params: CallbackDataParams) => {
         const methodIds = bars[params.dataIndex]?.methodList.map(m => m.id);

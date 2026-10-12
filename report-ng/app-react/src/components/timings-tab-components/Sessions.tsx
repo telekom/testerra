@@ -30,9 +30,7 @@ import {MetricType} from "../../model/report-model/framework_pb";
 import {buildChartTooltip} from "../../utils/chartTooltip";
 import {reportTheme} from "../../layout/reportTheme.tsx";
 import {formatDuration} from "../../utils/durationFormatter.ts";
-
-const SESSION_COLOR = '#6897EA';
-const BASEURL_COLOR = '#75C6CB';
+import {useTheme} from "@mui/material/styles";
 
 interface ISessionInformation {
     sessionName: string;
@@ -54,6 +52,9 @@ interface IDots {
 
 const Sessions = () => {
     const {executionMngr} = useReportData();
+    const theme = useTheme();
+    const sessionColor = theme.custom.chart.blue.main;
+    const baseUrlColor = theme.custom.chart.turquoise.main;
 
     const {dots, testStartTime, testEndTime} = useMemo(() => {
         if (!executionMngr) {
@@ -132,22 +133,22 @@ const Sessions = () => {
                 name: 'Session load',
                 type: 'scatter',
                 data: [],
-                itemStyle: {color: SESSION_COLOR},
+                itemStyle: {color: sessionColor},
             },
             {
                 name: 'Base URL load',
                 type: 'scatter',
                 data: [],
-                itemStyle: {color: BASEURL_COLOR},
+                itemStyle: {color: baseUrlColor},
             },
         ];
 
         for (const dot of dots) {
             const dataPoints: object[] = [
-                {value: dot.sessionValues, itemStyle: {color: SESSION_COLOR}},
+                {value: dot.sessionValues, itemStyle: {color: sessionColor}},
             ];
             if (dot.baseUrlValues) {
-                dataPoints.push({value: dot.baseUrlValues, itemStyle: {color: BASEURL_COLOR}});
+                dataPoints.push({value: dot.baseUrlValues, itemStyle: {color: baseUrlColor}});
             }
             seriesList.push({
                 name: 'Session',
@@ -163,8 +164,8 @@ const Sessions = () => {
             legend: {
                 top: 0,
                 data: [
-                    {name: 'Session load', itemStyle: {color: SESSION_COLOR}},
-                    {name: 'Base URL load', itemStyle: {color: BASEURL_COLOR}},
+                    {name: 'Session load', itemStyle: {color: sessionColor}},
+                    {name: 'Base URL load', itemStyle: {color: baseUrlColor}},
                 ],
             },
             dataZoom: [
@@ -247,7 +248,7 @@ const Sessions = () => {
             },
             series: seriesList,
         };
-    }, [dots, testStartTime, testEndTime]);
+    }, [dots, testStartTime, testEndTime, sessionColor, baseUrlColor]);
 
     return (
         <ReportCard

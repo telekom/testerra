@@ -35,6 +35,7 @@ import {
     dependencies,
     errorDetails,
     testTimings,
+    chart,
     type ReportThemeLogConsoleStyles,
     type ReportThemeLogLineStyles,
     type ReportThemeCodeViewStyles,
@@ -47,6 +48,7 @@ import {
     type ReportThemeDependenciesStyles,
     type ReportThemeErrorDetailsStyles,
     type ReportThemeTestTimingsStyles,
+    type ReportThemeChartColors,
     type Status
 } from "./reportThemeCustom";
 
@@ -78,7 +80,8 @@ export const reportTheme = createTheme({
         sessionInfo,
         dependencies,
         errorDetails,
-        testTimings
+        testTimings,
+        chart
     },
     cssVariables: {
         nativeColor: true,
@@ -183,6 +186,7 @@ declare module "@mui/material/styles" {
             dependencies: ReportThemeDependenciesStyles;
             errorDetails: ReportThemeErrorDetailsStyles;
             testTimings: ReportThemeTestTimingsStyles;
+            chart: ReportThemeChartColors;
         }
     }
 
@@ -202,6 +206,7 @@ declare module "@mui/material/styles" {
             dependencies?: Partial<ReportThemeDependenciesStyles>;
             errorDetails?: Partial<ReportThemeErrorDetailsStyles>;
             testTimings?: Partial<ReportThemeTestTimingsStyles>;
+            chart?: Partial<ReportThemeChartColors>;
         }
     }
 

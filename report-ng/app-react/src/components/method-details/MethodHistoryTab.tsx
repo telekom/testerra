@@ -6,6 +6,7 @@ import {useReportData} from "../../provider/DataProvider.tsx";
 import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 import MethodHistoryChartCard from "./MethodHistoryChartCard.tsx";
 import MethodStatusShareCard from "./MethodStatusShareCard.tsx";
+import MethodHistoryStatisticsCard from "./MethodHistoryStatisticsCard.tsx";
 
 const MethodHistoryTab = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
@@ -33,6 +34,12 @@ const MethodHistoryTab = () => {
                 </Grid>
                 <Grid size={{xs: 12, sm: 6, lg: 3}}>
                     <MethodStatusShareCard
+                        methodHistoryStatistics={methodHistory}
+                        sx={theme.mixins.cardHeight(5)}
+                    />
+                </Grid>
+                <Grid size={{xs: 12, sm: 6, lg: 3}}>
+                    <MethodHistoryStatisticsCard
                         methodHistoryStatistics={methodHistory}
                         sx={theme.mixins.cardHeight(5)}
                     />

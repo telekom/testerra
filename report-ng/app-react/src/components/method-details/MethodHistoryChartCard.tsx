@@ -5,7 +5,7 @@ import type {EChartsOption} from "echarts-for-react";
 import type {TooltipComponentFormatterCallbackParams} from "echarts";
 import type {MethodHistoryStatistics} from "../../model/MethodHistoryStatistics.ts";
 import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
-import {StatusService} from "../../model/status-service.tsx";
+import {type ResultStatus, StatusService} from "../../model/status-service.tsx";
 import Echart from "../../widgets/Echart.tsx";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import {formatDate} from "../../utils/dateFormatter.ts";
@@ -23,7 +23,6 @@ interface MethodHistoryChartCardProps {
 const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect, sx}: MethodHistoryChartCardProps) => {
     const theme = useTheme();
     const missingRunColor = theme.palette.text.disabled;
-    console.log(methodHistoryStatistics);
     const chartData = useMemo(() => {
         const runs = methodHistoryStatistics.runs;
         if (runs.length === 0) {
@@ -77,34 +76,36 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect,
                 if (!run) {
                     return "";
                 }
+                let listItemStyle = "", listItems = "", status: ResultStatus = ResultStatusType.NO_RUN, errorMessageContent = "";
+                if (!run.noRun) {
+                    listItemStyle = "display:grid;grid-template-columns:8ch auto;column-gap:8px;align-items:center;margin:2px 0;";
+                    listItems = `<li style="${listItemStyle}"><span>Duration</span><span>${formatDuration(run.duration ?? 0)}</span></li>
+                                <li style="${listItemStyle}"><span>Started</span><span>${run.started}</span></li>
+                                <li style="${listItemStyle}"><span>Ended</span><span>${run.ended}</span></li>
+                            `;
 
-                const listItemStyle = "display:grid;grid-template-columns:8ch auto;column-gap:8px;align-items:center;margin:2px 0;";
-                const listItems = `<li style="${listItemStyle}"><span>Duration</span><span>${formatDuration(run.duration ?? 0)}</span></li>
-                    <li style="${listItemStyle}"><span>Started</span><span>${run.started}</span></li>
-                    <li style="${listItemStyle}"><span>Ended</span><span>${run.ended}</span></li>
-                `;
-
-                const errorMessage = run.errorMessage.length > 400
-                    ? `${run.errorMessage.slice(0, 397)}...`
-                    : run.errorMessage;
-                const errorMessageContent = errorMessage
-                    ? `<div style="margin-bottom:
-                            8px;padding-bottom:
-                            6px;border-bottom:1px solid ${reportTheme.palette.lightGrey.main};
-                            white-space:pre-wrap;
-                            max-width: 400px;">${escapeHtml(errorMessage)}</div>`
-                    : "";
-                const status = StatusService.getStatusByLabel(run.statusName)
-
+                    const errorMessage = run.errorMessage.length > 400
+                        ? `${run.errorMessage.slice(0, 397)}...`
+                        : run.errorMessage;
+                    errorMessageContent = errorMessage
+                        ? `<div style="margin-bottom:
+                                        8px;padding-bottom:
+                                        6px;border-bottom:1px solid ${reportTheme.palette.lightGrey.main};
+                                        white-space:pre-wrap;
+                                        max-width: 400px;">${escapeHtml(errorMessage)}</div>`
+                        : "";
+                    status = StatusService.getStatusByLabel(run.statusName)
+                }
                 return buildChartTooltip({
                     header: {
-                        content: run.noRun ? "No Run" : `Run ${run.historyIndex} - ${buildTooltipStatusBadge(status)}`,
+                        content: run.noRun ? null : `Run ${run.historyIndex} - ${buildTooltipStatusBadge(status)}`,
                         style: {
                             backgroundColor: reportTheme.palette.lightGrey.light,
                         },
                     },
-                    body: run.noRun ? undefined : {
-                        content: [
+                    body: {
+                        content: run.noRun ? "No execution in this test run." :
+                            [
                             errorMessageContent,
                             listItems,
                         ],

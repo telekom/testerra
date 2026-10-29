@@ -21,7 +21,7 @@
 
 import React, {forwardRef} from 'react';
 import type {EChartsOption, EChartsReactProps} from 'echarts-for-react';
-import ReactEChartsCore from 'echarts-for-react/lib/core';
+import ReactEChartsCore from 'echarts-for-react/esm/core';
 import * as echarts from 'echarts/core';
 import {BarChart, CustomChart, LineChart, PieChart, ScatterChart} from 'echarts/charts';
 import {DataZoomComponent, GraphicComponent, GridComponent, LegendComponent, TitleComponent, ToolboxComponent, TooltipComponent,} from 'echarts/components';

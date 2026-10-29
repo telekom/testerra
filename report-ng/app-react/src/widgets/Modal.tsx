@@ -167,18 +167,26 @@ const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], 
             open={open}
             onClose={onClose}
             maxWidth="xl"
+            sx={{"& .MuiDialog-paper": {minWidth: "min(960px, calc(100% - 64px))"}}}
         >
-            <Box sx={{p: 1}}>
-                <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 1}}>
+            <Box sx={{p: 1, flexShrink: 0}}>
+                <Box sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    gap: 1,
+                    "& .MuiIconButton-root": {flexShrink: 0},
+                }}>
                     <Box sx={{width: 40}}/>
-                    <Box sx={{display: "flex", alignItems: "flex-start", gap: 1, flex: 1}}>
+                    <Box sx={{display: "flex", alignItems: "flex-start", gap: 1, flex: 1, minWidth: 0}}>
                         {hasMultipleScreenshots && (
                             <IconButton aria-label="Previous screenshot" onClick={goLeft}>
                                 <KeyboardArrowLeftIcon/>
                             </IconButton>
                         )}
-                        <Stack direction={"row"} gap={6}>
-                            <List disablePadding sx={{mx: 1.5, py: 1}}>
+                        <Stack direction={{xs: "column", md: "row"}} gap={{xs: 1, md: 6}}
+                               sx={{minWidth: 0, overflowWrap: "anywhere"}}>
+                            <List disablePadding sx={{mx: 1.5, py: 1, minWidth: 0}}>
                                 <DetailKeyValueListItem
                                     label="Title"
                                     value={<Typography variant="caption">{currentScreenshot?.meta?.Title ?? "-"}</Typography>}
@@ -213,7 +221,7 @@ const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], 
                                 )}
                             </List>
 
-                            <List disablePadding sx={{mx: 1.5, py: 1}}>
+                            <List disablePadding sx={{mx: 1.5, py: 1, minWidth: 0}}>
                                 <DetailKeyValueListItem
                                     label="Taken"
                                     value={
@@ -252,25 +260,25 @@ const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], 
                         <CloseIcon/>
                     </IconButton>
                 </Box>
-
-                <DialogContent sx={{pt: 1, pb: 0, px: 0}}>
-                    {error && <Typography color="error">{error}</Typography>}
-                    {imageSrc && (
-                        <Box
-                            component="img"
-                            src={imageSrc}
-                            alt={imageAlt}
-                            sx={{
-                                border: "1px solid #5d6f81",
-                                width: "100%",
-                                maxHeight: "75vh",
-                                objectFit: "contain",
-                                display: "block",
-                            }}
-                        />
-                    )}
-                </DialogContent>
             </Box>
+            <DialogContent sx={{pt: 1, pb: 1, px: 1, overflow: "auto", minHeight: 0}}>
+                {error && <Typography color="error">{error}</Typography>}
+                {imageSrc && (
+                    <Box
+                        component="img"
+                        src={imageSrc}
+                        alt={imageAlt}
+                        sx={{
+                            border: "1px solid #5d6f81",
+                            width: "auto",
+                            height: "auto",
+                            maxWidth: "100%",
+                            boxSizing: "border-box",
+                            display: "block",
+                        }}
+                    />
+                )}
+            </DialogContent>
         </Dialog>
     );
 };

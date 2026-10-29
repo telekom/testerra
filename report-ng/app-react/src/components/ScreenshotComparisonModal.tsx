@@ -189,7 +189,12 @@ const ScreenshotComparisonModal = ({
             open={open}
             onClose={onClose}
             maxWidth={"xl"}
-            sx={{"& .MuiDialog-paper": {position: "relative"}}}
+            sx={{
+                "& .MuiDialog-paper": {
+                    position: "relative",
+                    minWidth: "min(960px, calc(100% - 64px))",
+                },
+            }}
         >
             <IconButton
                 onClick={onClose}
@@ -198,8 +203,9 @@ const ScreenshotComparisonModal = ({
             >
                 <CloseIcon/>
             </IconButton>
-            <Box sx={{px: 1.5, pt: 1.5}}>
-                <Stack direction={"row"} alignItems={"center"} gap={4} width={"100%"} justifyContent={"center"} pt={1}>
+            <Box sx={{pl: 1.5, pr: 7, pt: 1.5, flexShrink: 0}}>
+                <Stack direction={"row"} alignItems={"center"} gap={4} width={"100%"}
+                       justifyContent={"center"} flexWrap={"wrap"} pt={1}>
                     <CompareIcon color="inherit"/>
                     <FormControl size="medium" sx={{minWidth: 180}}>
                         <InputLabel id="comparison-left-label">Left</InputLabel>
@@ -233,7 +239,7 @@ const ScreenshotComparisonModal = ({
                 </Stack>
             </Box>
 
-            <DialogContent sx={{pt: 1, px: 2, pb: 2}}>
+            <DialogContent sx={{pt: 1, px: 2, pb: 2, overflow: "auto", minHeight: 0}}>
                 {error && <Typography color="error">{error}</Typography>}
                 {!error && (!leftSrc || !rightSrc) && (
                     <Typography color="text.secondary">Not enough images available for comparison.</Typography>
@@ -245,10 +251,8 @@ const ScreenshotComparisonModal = ({
                         sx={{
                             position: "relative",
                             width: "fit-content",
-                            maxWidth: "80vw",
-                            maxHeight: "80vh",
+                            maxWidth: "100%",
                             overflow: "hidden",
-                            touchAction: "none",
                             userSelect: "none",
                         }}
                     >
@@ -258,9 +262,9 @@ const ScreenshotComparisonModal = ({
                             alt="Right comparison"
                             sx={{
                                 display: "block",
-                                maxWidth: "80vw",
-                                maxHeight: "80vh",
-                                objectFit: "contain",
+                                width: "auto",
+                                height: "auto",
+                                maxWidth: "100%",
                             }}
                         />
                         <Box
@@ -269,7 +273,8 @@ const ScreenshotComparisonModal = ({
                                 top: 0,
                                 left: 0,
                                 bottom: 0,
-                                width: `${ratio * 100}%`,
+                                width: "100%",
+                                clipPath: `inset(0 ${(1 - ratio) * 100}% 0 0)`,
                                 overflow: "hidden",
                                 zIndex: 2,
                             }}
@@ -280,9 +285,9 @@ const ScreenshotComparisonModal = ({
                                 alt="Left comparison"
                                 sx={{
                                     display: "block",
-                                    maxWidth: "80vw",
-                                    maxHeight: "80vh",
-                                    objectFit: "contain",
+                                    width: "auto",
+                                    height: "auto",
+                                    maxWidth: "100%",
                                 }}
                             />
                         </Box>
@@ -307,6 +312,7 @@ const ScreenshotComparisonModal = ({
                                 width: 2,
                                 zIndex: 3,
                                 cursor: "ew-resize",
+                                touchAction: "none",
                                 "&::before": {
                                     content: '""',
                                     position: "absolute",

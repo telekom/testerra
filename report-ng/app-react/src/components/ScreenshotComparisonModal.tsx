@@ -252,7 +252,7 @@ const ScreenshotComparisonModal = ({
                             position: "relative",
                             width: "fit-content",
                             maxWidth: "100%",
-                            overflow: "hidden",
+                            overflow: "clip",
                             userSelect: "none",
                         }}
                     >
@@ -293,6 +293,19 @@ const ScreenshotComparisonModal = ({
                         </Box>
 
                         <Box
+                            role="slider"
+                            tabIndex={0}
+                            aria-label="Screenshot comparison divider"
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-valuenow={Math.round(ratio * 100)}
+                            onKeyDown={(event) => {
+                                if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                                    event.preventDefault();
+                                    const step = event.key === "ArrowLeft" ? -0.01 : 0.01;
+                                    setRatio(value => Math.min(1, Math.max(0, value + step)));
+                                }
+                            }}
                             onMouseDown={(event) => {
                                 setDragging(true);
                                 moveSlider(event.clientX);
@@ -308,23 +321,47 @@ const ScreenshotComparisonModal = ({
                                 position: "absolute",
                                 top: 0,
                                 bottom: 0,
-                                left: `calc(${ratio * 100}% - 1px)`,
-                                width: 2,
+                                left: `calc(${ratio * 100}% - 16px)`,
+                                width: 32,
                                 zIndex: 3,
                                 cursor: "ew-resize",
                                 touchAction: "none",
                                 "&::before": {
                                     content: '""',
                                     position: "absolute",
-                                    top: "50%",
+                                    top: 0,
+                                    bottom: 0,
                                     left: "50%",
-                                    transform: "translate(-50%, -50%) rotate(45deg)",
-                                    width: 30,
-                                    height: 30,
+                                    transform: "translateX(-50%)",
+                                    width: 2,
                                     backgroundColor: "#f6a821BF",
+                                    boxShadow: "0 0 2px #fff",
+                                },
+                                "&:focus-visible": {
+                                    outline: "2px solid",
+                                    outlineColor: "#f6a821BF",
+                                    outlineOffset: -2,
                                 },
                             }}
-                        />
+                        >
+                            <Box
+                                sx={{
+                                    position: "sticky",
+                                    top: "calc(50% - 16px)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: "50%",
+                                    bgcolor: "#f6a821BF",
+                                    color: "text.primary",
+                                    boxShadow: "0 0 3px #fff",
+                                }}
+                            >
+                                <CompareArrowsIcon fontSize="medium"/>
+                            </Box>
+                        </Box>
                     </Box>
                 )}
             </DialogContent>

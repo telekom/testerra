@@ -35,7 +35,7 @@ const normalizeRelativePath = (path?: string) => {
     if (path.startsWith("/") || path.startsWith("http://") || path.startsWith("https://")) {
         return path;
     }
-    return `..${path.replaceAll("\\", "/")}`;
+    return `../${path.replaceAll("\\", "/")}`;
 };
 
 const LazyVideo = ({fileId}: LazyVideoProps) => {

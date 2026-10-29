@@ -27,6 +27,10 @@ processResourcesTask.configure {
     mustRunAfter(syncBuiltReportResourcesTask)
 }
 
+sourcesJar.configure {
+    mustRunAfter(syncBuiltReportResourcesTask)
+}
+
 tasks.register('buildReport') {
     group = 'build'
     description = 'Builds the report frontend and refreshes report-ng resources.'

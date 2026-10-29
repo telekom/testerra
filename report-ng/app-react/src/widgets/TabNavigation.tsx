@@ -50,14 +50,19 @@ export default function TabNavigation({ tabs, withTopPadding = true }: TabNaviga
             sx={{width: '100%', pb: '24px', pt: withTopPadding ? '24px' : 0}}
         >
             <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
-                <Tabs value={currentTab} onChange={handleChange} variant="fullWidth">
+                <Tabs
+                    value={currentTab}
+                    onChange={handleChange}
+                    variant="fullWidth"
+                    sx={{ minHeight: 48 }}
+                >
                     {tabs.map((tab) => (
                         <Tab
                             key={tab.label}
                             label={tab.count !== undefined ? `${tab.label} (${tab.count})` : tab.label}
                             icon={tab.icon}
                             iconPosition="start"
-                            sx={{ flex: 1 }}
+                            sx={{ flex: 1, minHeight: 48, pt: 0, pb: 0 }}
                         />
                     ))}
                 </Tabs>

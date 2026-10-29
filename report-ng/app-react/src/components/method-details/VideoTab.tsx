@@ -30,7 +30,7 @@ import ReportCard from "../../widgets/ReportCard.tsx";
 import {useScrollToElementById} from "../../hooks/useScrollToElementById.ts";
 import DetailKeyValueListItem from "./DetailKeyValueListItem.tsx";
 
-const Video = () => {
+const VideoTab = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const theme = useTheme();
     const [searchParams] = useSearchParams();
@@ -90,4 +90,4 @@ const Video = () => {
     );
 };
 
-export default Video;
+export default VideoTab;

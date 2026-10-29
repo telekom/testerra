@@ -9,7 +9,7 @@ import {StatusService} from "../../model/status-service.tsx";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 
-const Dependencies = () => {
+const DependenciesTab = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const {executionMngr} = useReportData();
     const theme = useTheme();
@@ -272,4 +272,4 @@ const Dependencies = () => {
         </Box>
     );
 };
-export default Dependencies;
+export default DependenciesTab;

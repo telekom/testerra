@@ -28,25 +28,25 @@ import {
     generalDetails,
     codeView,
     steps,
-    methodDetailsPage,
     durationCard,
     priorityMessages,
     sessionInfo,
     dependencies,
     errorDetails,
     testTimings,
+    chart,
     type ReportThemeLogConsoleStyles,
     type ReportThemeLogLineStyles,
     type ReportThemeCodeViewStyles,
     type ReportThemeGeneralDetailsStyles,
     type ReportThemeStepsStyles,
-    type ReportThemeMethodDetailsPageStyles,
     type ReportThemeDurationCardStyles,
     type ReportThemePriorityMessagesStyles,
     type ReportThemeSessionInfoStyles,
     type ReportThemeDependenciesStyles,
     type ReportThemeErrorDetailsStyles,
     type ReportThemeTestTimingsStyles,
+    type ReportThemeChartColors,
     type Status
 } from "./reportThemeCustom";
 
@@ -72,13 +72,13 @@ export const reportTheme = createTheme({
         generalDetails,
         codeView,
         steps,
-        methodDetailsPage,
         durationCard,
         priorityMessages,
         sessionInfo,
         dependencies,
         errorDetails,
-        testTimings
+        testTimings,
+        chart
     },
     cssVariables: {
         nativeColor: true,
@@ -176,13 +176,13 @@ declare module "@mui/material/styles" {
             generalDetails: ReportThemeGeneralDetailsStyles;
             codeView: ReportThemeCodeViewStyles;
             steps: ReportThemeStepsStyles;
-            methodDetailsPage: ReportThemeMethodDetailsPageStyles;
             durationCard: ReportThemeDurationCardStyles;
             priorityMessages: ReportThemePriorityMessagesStyles;
             sessionInfo: ReportThemeSessionInfoStyles;
             dependencies: ReportThemeDependenciesStyles;
             errorDetails: ReportThemeErrorDetailsStyles;
             testTimings: ReportThemeTestTimingsStyles;
+            chart: ReportThemeChartColors;
         }
     }
 
@@ -195,13 +195,13 @@ declare module "@mui/material/styles" {
             generalDetails?: Partial<ReportThemeGeneralDetailsStyles>;
             codeView?: Partial<ReportThemeCodeViewStyles>;
             steps?: Partial<ReportThemeStepsStyles>;
-            methodDetailsPage?: Partial<ReportThemeMethodDetailsPageStyles>;
             durationCard?: Partial<ReportThemeDurationCardStyles>;
             priorityMessages?: Partial<ReportThemePriorityMessagesStyles>;
             sessionInfo?: Partial<ReportThemeSessionInfoStyles>;
             dependencies?: Partial<ReportThemeDependenciesStyles>;
             errorDetails?: Partial<ReportThemeErrorDetailsStyles>;
             testTimings?: Partial<ReportThemeTestTimingsStyles>;
+            chart?: Partial<ReportThemeChartColors>;
         }
     }
 

@@ -49,7 +49,7 @@ type ErrorDetail = {
     layoutCheckContext?: LayoutCheckContext;
 };
 
-const ErrorDetails = () => {
+const ErrorDetailsTab = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const theme = useTheme();
     const [stackTraceCopiedSnackbarOpen, setStackTraceCopiedSnackbarOpen] = useState(false);
@@ -202,4 +202,4 @@ const ErrorDetails = () => {
     );
 };
 
-export default ErrorDetails;
+export default ErrorDetailsTab;

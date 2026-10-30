@@ -49,6 +49,7 @@ import {
     type ReportThemeChartColors,
     type Status
 } from "./reportThemeCustom";
+import {alpha} from "@mui/material";
 
 export type {Status};
 
@@ -62,7 +63,6 @@ declare module '@mui/material/Chip' {
         lightGrey: true;
     }
 }
-
 
 export const reportTheme = createTheme({
     custom: {
@@ -84,6 +84,11 @@ export const reportTheme = createTheme({
         nativeColor: true,
     },
     palette: {
+        text: {
+            primary: 'rgba(0, 0, 0, 0.87)',
+            secondary: 'rgba(0, 0, 0, 0.6)',
+            disabled: 'rgba(0, 0, 0, 0.38)'
+        },
         primary: {
             main: "#4b4b4b"
         },
@@ -119,11 +124,17 @@ export const reportTheme = createTheme({
             dark: '#B94AA520',
             contrastText: '#B94AA5',
         },
+        // lightGrey: {
+        //     main: '#0000008A',
+        //     light: '#00000017',
+        //     dark: '#0000008A',
+        //     contrastText: '#0000008A',
+        // }
         lightGrey: {
-            main: '#0000008A',
-            light: '#00000017',
-            dark: '#0000008A',
-            contrastText: '#0000008A',
+            main: '#757575',
+            light: '#e8e8e8',
+            dark: '#757575',
+            contrastText: '#ffffff',
         }
     },
     mixins: {
@@ -162,7 +173,25 @@ export const reportTheme = createTheme({
                     },
                 }),
             },
-        }
+        },
+        MuiTooltip: {
+            defaultProps: {
+                arrow: true,
+            },
+            styleOverrides: {
+                tooltip: ({theme}) => ({
+                    backgroundColor: alpha(theme.palette.lightGrey.light, 0.87),
+                    color: theme.palette.text.primary,
+                    fontSize: theme.typography.pxToRem(14),
+                    padding: theme.spacing(1, 1.5),
+                    borderRadius: theme.shape.borderRadius,
+                    maxWidth: 320,
+                }),
+                arrow: ({theme}) => ({
+                    color: alpha(theme.palette.lightGrey.light, 0.87),
+                }),
+            },
+        },
     },
 });
 
@@ -213,6 +242,7 @@ declare module "@mui/material/styles" {
         pink: Palette['primary'];
         lightGrey: Palette['primary']
     }
+
     interface PaletteOptions {
         blue?: PaletteOptions['primary'];
         green?: PaletteOptions['primary'];
@@ -224,6 +254,7 @@ declare module "@mui/material/styles" {
     interface Mixins {
         cardHeight: (units: number) => React.CSSProperties;
     }
+
     interface MixinsOptions {
         cardHeight?: (units: number) => React.CSSProperties;
     }

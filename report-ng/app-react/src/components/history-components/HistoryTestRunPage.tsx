@@ -5,7 +5,7 @@ import {useTheme} from "@mui/material/styles";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
-import TestRunStatisticsCard from "./TestRunStatisticsCard.tsx";
+import TestRunHistoryStatisticsCard from "./TestRunHistoryStatisticsCard.tsx";
 import TestRunTopFailingCard from "./TestRunTopFailingCard.tsx";
 import TestRunTopFlakyCard from "./TestRunTopFlakyCard.tsx";
 import TestRunStatusShareCard from "./TestRunStatusShareCard.tsx";
@@ -77,7 +77,7 @@ const HistoryTestRunPage = () => {
                 </Grid>
                 <Grid size={{xs: 12, sm: 12, lg: 3}}>
                     <Stack direction="column" spacing={2}>
-                        <TestRunStatisticsCard
+                        <TestRunHistoryStatisticsCard
                             histStatistics={historyStatistics}
                             sx={theme.mixins.cardHeight(5)}
                         />

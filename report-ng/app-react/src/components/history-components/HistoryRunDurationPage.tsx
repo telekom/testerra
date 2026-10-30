@@ -8,7 +8,7 @@ import {Grid} from "@mui/material";
 import {useCallback, useState} from "react";
 import DurationLongestRunsCard from "./DurationLongestRunsCard.tsx";
 import DurationLongestMethodsCard from "./DurationLongestMethodsCard.tsx";
-import type {TestRunViewport} from "./TestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 
 const HistoryRunDurationPage = () => {
     const theme = useTheme();

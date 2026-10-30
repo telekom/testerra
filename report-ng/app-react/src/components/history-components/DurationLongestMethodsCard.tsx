@@ -27,7 +27,7 @@ import {Link} from "react-router-dom";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
-import type {TestRunViewport} from "./TestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 
 interface LongestMethodsCardProps {
     histStatistics: HistoryStatistics;

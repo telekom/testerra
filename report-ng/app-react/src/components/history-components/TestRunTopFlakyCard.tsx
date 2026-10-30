@@ -27,7 +27,7 @@ import CelebrationIcon from "@mui/icons-material/Celebration";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {useNavigate} from "react-router-dom";
-import type {TestRunViewport} from "./TestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 
 interface TestRunTopFlakyProps {
     histStatistics: HistoryStatistics;

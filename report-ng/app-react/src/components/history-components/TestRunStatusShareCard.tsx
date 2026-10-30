@@ -25,7 +25,7 @@ import StatusShareCard from "../../widgets/StatusShareCard.tsx";
 import type {StatusShareData} from "../../widgets/StatusShareCard.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {StatusService, type ResultStatus} from "../../model/status-service.tsx";
-import type {TestRunViewport} from "./TestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 
 interface TestRunStatusShareCardProps {
     histStatistics: HistoryStatistics;

@@ -27,7 +27,7 @@ import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
-import type {TestRunViewport} from "./TestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 
 interface LongestRunsCardProps {
     histStatistics: HistoryStatistics;

@@ -50,7 +50,7 @@ interface TestRunChartData {
     duration: string;
 }
 
-const TestRunChart = ({histStatistics, selectedStatus, additionalChartOptions, onViewportChange}: TestRunChartProps) => {
+const TestRunHistoryBarChart = ({histStatistics, selectedStatus, additionalChartOptions, onViewportChange}: TestRunChartProps) => {
     const totalRuns = histStatistics.getTotalRunCount();
     const hasHistory = totalRuns > 1;
     const statuses = useMemo(
@@ -268,4 +268,4 @@ const TestRunChart = ({histStatistics, selectedStatus, additionalChartOptions, o
     );
 };
 
-export default TestRunChart;
+export default TestRunHistoryBarChart;

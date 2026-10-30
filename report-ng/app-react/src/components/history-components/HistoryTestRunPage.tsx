@@ -11,7 +11,7 @@ import TestRunTopFlakyCard from "./TestRunTopFlakyCard.tsx";
 import TestRunStatusShareCard from "./TestRunStatusShareCard.tsx";
 import {useCallback, useMemo, useState} from "react";
 import TestRunChartCard from "./TestRunsChartCard.tsx";
-import type {TestRunViewport} from "./TestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 
 const HistoryTestRunPage = () => {
 

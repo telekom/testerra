@@ -32,7 +32,7 @@ import Echart from "../../widgets/Echart.tsx";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 import {formatDate} from "../../utils/dateFormatter.ts";
 import {buildChartTooltip} from "../../utils/chartTooltip.ts";
-import type {TestRunViewport} from "./TestRunChart.tsx";
+import type {TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 import {reportTheme} from "../../layout/reportTheme.tsx";
 
 interface DurationChartCardProps {

@@ -22,7 +22,7 @@
 import ReportCard from "../../widgets/ReportCard";
 import type {SxProps, Theme} from "@mui/material/styles";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
-import TestRunChart, {type TestRunViewport} from "./TestRunChart.tsx";
+import TestRunHistoryBarChart, {type TestRunViewport} from "./TestRunHistoryBarChart.tsx";
 import {useMemo} from "react";
 import type {EChartsOption} from "echarts-for-react";
 
@@ -78,7 +78,7 @@ const TestRunChartCard = ({histStatistics, selectedStatus, sx, onViewportChange}
             sxContent={{p: 0}}
             sxCard={sx}
             content={
-                <TestRunChart
+                <TestRunHistoryBarChart
                     histStatistics={histStatistics}
                     selectedStatus={selectedStatus}
                     additionalChartOptions={additionalChartOptions}

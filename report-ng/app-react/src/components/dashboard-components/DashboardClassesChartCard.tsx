@@ -145,7 +145,8 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
             axisTick: {show: dataAvailable},
         },
         grid: {
-            containLabel: true,
+            outerBoundsMode: 'same',
+            outerBoundsContain: 'axisLabel',
             show: false,
             top: 16,
             right: 24,

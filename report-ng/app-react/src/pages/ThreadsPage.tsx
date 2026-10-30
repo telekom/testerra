@@ -192,15 +192,6 @@ const ThreadsPage = () => {
         const sliderFromTop = gridHeight + SLIDER_SPACING_FROM_CHART;
         const computedCardHeight = sliderFromTop + 60;
 
-        // Set gridLeftValue dynamically to the longest thread name
-        const longestThreadName = Array.from(threadCategories.keys()).reduce(
-            function (a, b) {
-                return a.length > b.length ? a : b;
-            }
-        );
-        let gridLeftValue = longestThreadName.length * 7;   // Calculate the value for grid:left
-        gridLeftValue = gridLeftValue > 100 ? gridLeftValue : 100;  // Set to default of 100, if lower
-
         const options: EChartsOption = {
             tooltip: {
                 formatter: function (params: TooltipComponentFormatterCallbackParams) {
@@ -247,10 +238,13 @@ const ThreadsPage = () => {
                 }
             ],
             grid: {
-                height: gridHeight,
-                top: 30,
-                bottom: 100,
-                left: gridLeftValue
+                // height: gridHeight,
+                top: 16,
+                bottom: 70,
+                outerBoundsMode: 'same',
+                outerBoundsContain: 'axisLabel',
+                left: 16,
+                right: 16,
             },
             xAxis: {
                 type: 'value',

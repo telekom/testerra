@@ -28,6 +28,7 @@ import Stack from '@mui/material/Stack';
 import DurationCard from "../components/DurationCard.tsx";
 import DashboardClassesChartCard from "../components/dashboard-components/DashboardClassesChartCard";
 import DashboardHistoryChartCard from "../components/dashboard-components/DashboardHistoryChartCard";
+import PriorityMessagesCard from "../components/method-details/PriorityMessagesCard.tsx";
 import {useReportData} from "../provider/DataProvider";
 import {useSearchParams} from "react-router-dom";
 import {useTheme} from '@mui/material/styles';
@@ -48,6 +49,7 @@ const DashboardPage = () => {
     if (!executionMngr) return null;
 
     const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();
+    const globalPromptLogs = executionMngr.getGlobalPromptLogs();
 
     const handleStatusChange = (statusName: string) => {
         const params = new URLSearchParams(searchParams);
@@ -99,6 +101,12 @@ const DashboardPage = () => {
                                                      execStatistics={execStatistics}/>
                     </Stack>
                 </Grid>
+                {globalPromptLogs.length > 0 && (
+                    <Grid size={12}>
+                        <PriorityMessagesCard promptLogs={globalPromptLogs}
+                                              sx={{mt: 0}}/>
+                    </Grid>
+                )}
                 <Grid size={12}>
                     <DashboardClassesChartCard execStatistics={execStatistics}
                                                selectedStatus={selectedStatus}/>

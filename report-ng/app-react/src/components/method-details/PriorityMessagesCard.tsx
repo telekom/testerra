@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import {List, ListItem, Typography, useTheme} from "@mui/material";
+import type {SxProps, Theme} from "@mui/material/styles";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import {LogMessage, LogMessageType, ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import {StatusService} from "../../model/status-service.tsx";
@@ -7,9 +8,11 @@ import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
 
 interface PriorityMessagesCardProps {
     promptLogs: LogMessage[];
+    label?: string;
+    sx?: SxProps<Theme>;
 }
 
-const PriorityMessagesCard = ({promptLogs}: PriorityMessagesCardProps) => {
+const PriorityMessagesCard = ({promptLogs, sx}: PriorityMessagesCardProps) => {
     const theme = useTheme();
 
     if (promptLogs.length === 0) {
@@ -17,9 +20,9 @@ const PriorityMessagesCard = ({promptLogs}: PriorityMessagesCardProps) => {
     }
 
     return (
-        <Box sx={theme.custom.priorityMessages.container}>
+        <Box sx={[theme.custom.priorityMessages.container, ...(Array.isArray(sx) ? sx : [sx])]}>
             <ReportCard
-                label="Priority messages"
+                label="Additional notes"
                 sxContent={theme.custom.priorityMessages.content}
                 content={(
                     <List sx={theme.custom.priorityMessages.list}>
@@ -34,12 +37,17 @@ const PriorityMessagesCard = ({promptLogs}: PriorityMessagesCardProps) => {
                             return (
                                 <ListItem
                                     key={`priority-log-${index}`}
-                                    sx={theme.custom.priorityMessages.listItem(backgroundColor)}
+                                    sx={[
+                                        theme.custom.priorityMessages.listItem(backgroundColor),
+                                        logMessage.type !== LogMessageType.LMT_INFO &&
+                                        theme.custom.priorityMessages.fontColorNotOk
+                                    ]}
                                 >
                                     <Typography variant="caption" component="span">
                                         {classNameConverter(logMessage.loggerName ?? "", ClassName.simpleName) ?? "Logger"}:
                                     </Typography>{" "}
-                                    <Typography variant="caption" component="span">{logMessage.message ?? ""}</Typography>
+                                    <Typography variant="caption"
+                                                component="span">{logMessage.message ?? ""}</Typography>
                                 </ListItem>
                             );
                         })}

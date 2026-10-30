@@ -27,6 +27,7 @@ import ReportChip from "../widgets/ReportChip";
 import {StatusService} from "../model/status-service";
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import CancelIcon from '@mui/icons-material/Cancel';
+import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import {Stack, Typography} from "@mui/material";
 import Link from '@mui/material/Link';
 import type {ChipColor, FiltersState} from "../hooks/useChipListFilters";
@@ -160,6 +161,18 @@ function TestListRow({
                             <Typography variant="caption">
                                 <HighlightText text={detail.failsAnnotation.description} searchWord={activeSearchTerms}/>
                             </Typography>
+                        </Stack>
+                    )}
+                    {detail.promptLogs.length > 0 && (
+                        <Stack direction="row" sx={{gap: 1, alignItems: "center", mt: 1}}>
+                            <SpeakerNotesIcon/>
+                            <Box component="ul" sx={{m: 0, p: 0, listStyle: "none"}}>
+                                {detail.promptLogs.map((logMessage, i) => (
+                                    <Typography key={logMessage.id ?? i} component="li" variant="caption" sx={{display: "block"}}>
+                                        <HighlightText text={logMessage.message ?? ""} searchWord={activeSearchTerms}/>
+                                    </Typography>
+                                ))}
+                            </Box>
                         </Stack>
                     )}
                 </Stack>

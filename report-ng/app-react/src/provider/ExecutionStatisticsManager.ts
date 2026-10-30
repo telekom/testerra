@@ -93,6 +93,11 @@ export class ExecutionStatisticsManager {
         }
     }
 
+    public getGlobalPromptLogs(): LogMessage[] {
+        const logMessageIds = this.executionStatistics.executionContextLogMessageIds ?? [];
+        return Object.values(this.getLogs()).filter(logMessage => logMessage.prompt && logMessageIds.includes(logMessage.id!))
+    }
+
     private getMethodPromptLogs(methodContext: MethodContext) {
         const logMessageIds = methodContext.testSteps
             ?.flatMap(value => value.actions)

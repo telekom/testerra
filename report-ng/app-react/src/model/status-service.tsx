@@ -28,7 +28,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import {ResultStatusType} from "./report-model/framework_pb";
-import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 // direct import -> this way it does not need to be in a component, but this will not be working for multiple themes
 import { reportTheme } from "../layout/reportTheme";
@@ -62,7 +62,7 @@ const STATUS_CONFIG: Record<ResultStatus, StatusInformation> = {
     [ResultStatusType.INFO]: {
         label: "Info",
         color: "black",
-        icon: InfoOutlineIcon,
+        icon: InfoOutlinedIcon,
         key: "info",
     },
     [ResultStatusType.SKIPPED]: {

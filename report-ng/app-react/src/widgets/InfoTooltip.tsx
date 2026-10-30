@@ -19,7 +19,8 @@
  * under the License.
  */
 
-import InfoOutlineIcon from '@mui/icons-material/InfoOutline';import Tooltip from '@mui/material/Tooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 interface InfoTooltipProps {
     text: string
@@ -28,7 +29,7 @@ interface InfoTooltipProps {
 export default function InfoTooltip({text}: InfoTooltipProps) {
     return (
         <Tooltip title={text}>
-            <InfoOutlineIcon color="primary"/>
+            <InfoOutlinedIcon color="primary"/>
         </Tooltip>
     );
 }

@@ -159,8 +159,7 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
                                 <Stack
                                     direction="row"
                                     spacing={0.5}
-                                    alignItems="center"
-                                    color="text.secondary"
+                                    sx={{alignItems: "center", color: "text.secondary"}}
                                 >
                                     <Typography variant="body2">
                                         {item.trend !== 0 ? (item.trend > 0 ? `+${item.trend}` : item.trend) : "± 0"}
@@ -174,7 +173,7 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
             </List>
 
             {historyAvailable && (
-                <Stack direction="row" justifyContent="flex-end" sx={{px: 3, mt: 1, pr: 1}}>
+                <Stack direction="row" sx={{justifyContent: "flex-end", px: 3, mt: 1, pr: 1}}>
                     <Button
                         title="Compare with previous run"
                         component={RouterLink}

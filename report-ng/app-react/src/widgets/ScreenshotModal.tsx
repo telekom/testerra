@@ -178,8 +178,8 @@ const ScreenshotModal = ({open, screenshotIds, initialScreenshotId, sessionConte
                                 <KeyboardArrowLeftIcon/>
                             </IconButton>
                         )}
-                        <Stack direction={{xs: "column", md: "row"}} gap={{xs: 1, md: 6}}
-                               sx={{minWidth: 0, overflowWrap: "anywhere"}}>
+                        <Stack direction={{xs: "column", md: "row"}}
+                               sx={{minWidth: 0, overflowWrap: "anywhere", gap: {xs: 1, md: 6}}}>
                             <List disablePadding sx={{mx: 1.5, py: 1, minWidth: 0}}>
                                 <DetailKeyValueListItem
                                     label="Title"

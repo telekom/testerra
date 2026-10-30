@@ -32,7 +32,7 @@ const ComparisonThumbnail = ({image, onClick}: ComparisonThumbnailProps) => (
                 />
             </Card>
         )}
-        <Typography variant="caption" color="textSecondary">{image.title}</Typography>
+        <Typography variant="caption" color="text.secondary">{image.title}</Typography>
     </Stack>
 );
 

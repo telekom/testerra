@@ -11,10 +11,11 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import PrintIcon from "@mui/icons-material/Print";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import * as React from "react";
 import {useState} from "react";
 import styled from "@emotion/styled";
-import {Divider, ListItemIcon, Typography} from "@mui/material";
+import {Divider, Link as MuiLink, ListItemIcon, Typography} from "@mui/material";
 import logo from "../../assets/logo.png";
 import {blueGrey} from "@mui/material/colors";
 import PrintDialog from "../print/PrintDialog";
@@ -47,6 +48,8 @@ const MainNavigation = () => {
     const [printDialogOpen, setPrintDialogOpen] = useState(false);
     const reportName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.reportName ?? "";
     const executionName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.contextValues?.name ?? "";
+    const buildInformation = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.buildInformation;
+    const buildVersion = buildInformation?.buildVersion;
 
     const toggleDrawer = (open: boolean) => () => {
         setMobileOpen(open);
@@ -143,7 +146,28 @@ const MainNavigation = () => {
                         </ListItemButton>
                     </ListItem>
                 </List>
-
+                {buildVersion && (
+                    <Box sx={{mt: 'auto', p: 2, color: 'text.secondary'}}>
+                        <Typography variant="caption" component="div" sx={{overflowWrap: 'anywhere'}}>
+                            Created with Testerra {buildVersion}{' '}
+                            <MuiLink
+                                href={`https://docs.testerra.io/testerra/${buildVersion}/index.html`}
+                                title="Documentation"
+                                aria-label="Testerra documentation"
+                                target="_blank"
+                                rel="noopener"
+                                color="inherit"
+                            >
+                                <OpenInNewIcon sx={{fontSize: 18, verticalAlign: 'middle'}}/>
+                            </MuiLink>
+                        </Typography>
+                        {buildVersion.includes('SNAPSHOT') && buildInformation.buildTimestamp && (
+                            <Typography variant="caption" component="div">
+                                {buildInformation.buildTimestamp}
+                            </Typography>
+                        )}
+                    </Box>
+                )}
             </Box>
         </Box>
     );

@@ -35,6 +35,7 @@ import type {File as ReportFile, SessionContext} from "../model/report-model/fra
 import {File} from "../model/report-model/framework_pb.ts";
 import Stack from "@mui/material/Stack";
 import DetailKeyValueListItem from "../components/method-details/DetailKeyValueListItem.tsx";
+import {normalizeRelativePath} from "../utils/reportFilePath.ts";
 
 interface ModalProps {
     open: boolean;
@@ -43,13 +44,6 @@ interface ModalProps {
     sessionContexts?: SessionContext[];
     onClose: () => void;
 }
-
-const normalizeRelativePath = (path?: string) => {
-    if (!path) {
-        return "";
-    }
-    return `..${path.replaceAll("\\", "/")}`;
-};
 
 const ScreenshotModal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], onClose}: ModalProps) => {
     const [screenshots, setScreenshots] = useState<ReportFile[]>([]);

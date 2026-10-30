@@ -21,6 +21,7 @@
 
 import {useEffect, useState, type CSSProperties} from "react";
 import {File as ReportFile} from "../model/report-model/framework_pb.ts";
+import {normalizeRelativePath} from "../utils/reportFilePath.ts";
 
 interface LazyImageProps {
     fileId: string;
@@ -28,13 +29,6 @@ interface LazyImageProps {
     style?: CSSProperties;
     onClick?: (file: ReportFile) => void;
 }
-
-const normalizeRelativePath = (path?: string) => {
-    if (!path) {
-        return "";
-    }
-    return `..${path.replaceAll("\\", "/")}`;
-};
 
 const LazyImage = ({fileId, className, style, onClick}: LazyImageProps) => {
     const [file, setFile] = useState<ReportFile | null>(null);

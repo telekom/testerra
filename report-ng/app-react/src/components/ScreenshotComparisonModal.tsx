@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import type {File as ReportFile} from "../model/report-model/framework_pb.ts";
 import {File} from "../model/report-model/framework_pb.ts";
 import Stack from "@mui/material/Stack";
+import {normalizeRelativePath} from "../utils/reportFilePath.ts";
 
 export interface ComparisonImage {
     id: string;
@@ -27,13 +28,6 @@ interface ScreenshotComparisonModalProps {
     initialRightId?: string;
     onClose: () => void;
 }
-
-const normalizeRelativePath = (path?: string) => {
-    if (!path) {
-        return "";
-    }
-    return `..${path.replaceAll("\\", "/")}`;
-};
 
 const getTouchClientX = (touches: { item(index: number): { clientX: number } | null }): number | null => {
     const touch = touches.item(0);

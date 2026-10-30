@@ -21,6 +21,7 @@
 
 import {useEffect, useRef, useState} from "react";
 import {File as ReportFile} from "../model/report-model/framework_pb.ts";
+import {normalizeRelativePath} from "../utils/reportFilePath.ts";
 
 interface LazyVideoProps {
     fileId: string;
@@ -29,14 +30,6 @@ interface LazyVideoProps {
 interface IVideoInfo {
     time: number;
 }
-
-const normalizeRelativePath = (path?: string) => {
-    if (!path) return "";
-    if (path.startsWith("/") || path.startsWith("http://") || path.startsWith("https://")) {
-        return path;
-    }
-    return `../${path.replaceAll("\\", "/")}`;
-};
 
 const LazyVideo = ({fileId}: LazyVideoProps) => {
     const [file, setFile] = useState<ReportFile | null>(null);

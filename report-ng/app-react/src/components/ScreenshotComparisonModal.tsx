@@ -198,8 +198,14 @@ const ScreenshotComparisonModal = ({
                 <CloseIcon/>
             </IconButton>
             <Box sx={{pl: 1.5, pr: 7, pt: 1.5, flexShrink: 0}}>
-                <Stack direction={"row"} alignItems={"center"} gap={4} width={"100%"}
-                       justifyContent={"center"} flexWrap={"wrap"} pt={1}>
+                <Stack direction={"row"} sx={{
+                    alignItems: "center",
+                    gap: 4,
+                    width: "100%",
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                    pt: 1,
+                }}>
                     <CompareIcon color="inherit"/>
                     <FormControl size="medium" sx={{minWidth: 180}}>
                         <InputLabel id="comparison-left-label">Left</InputLabel>

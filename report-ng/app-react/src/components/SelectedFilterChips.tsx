@@ -30,7 +30,7 @@ type SelectedFilterChipsProps = {
 
 const SelectedFilterChips = ({chips, handleClearAllClick}: SelectedFilterChipsProps) => {
     return (
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+        <Stack direction="row" spacing={1} useFlexGap sx={{flexWrap: "wrap"}}>
             {chips.map((chip) => (
                 <ReportChip
                     key={chip.id}

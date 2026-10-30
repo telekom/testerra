@@ -49,7 +49,7 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
             sxCard={sx}
             sxContent={{p: 0}}
             label={
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} sx={{alignItems: "center"}}>
                     <ReportChip key={methodDetails.methodContext.resultStatus}
                                 label={StatusService.getLabel(methodDetails.methodContext.resultStatus ?? "")}
                                 size="medium"
@@ -240,7 +240,7 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                         <Grid size={6}>
                             {previousDetail && (
                                 <Stack direction="column">
-                                    <Typography variant="caption" color="textSecondary"
+                                    <Typography variant="caption" color="text.secondary"
                                                 sx={(theme) => theme.custom.generalDetails.nowrapLabel}>
                                         Previous failed method
                                     </Typography>
@@ -260,10 +260,10 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                                 </Stack>
                             )}
                         </Grid>
-                        <Grid size={6} justifyContent={"flex-end"}>
+                        <Grid size={6} sx={{justifyContent: "flex-end"}}>
                             {nextDetail && (
                                 <Stack direction="column" sx={theme.custom.generalDetails.nextMethodStack}>
-                                    <Typography variant="caption" color="textSecondary"
+                                    <Typography variant="caption" color="text.secondary"
                                                 sx={(theme) => theme.custom.generalDetails.nowrapLabel}>
                                         Next failed method
                                     </Typography>

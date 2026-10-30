@@ -118,7 +118,7 @@ const ErrorDetailsTab = () => {
                             )}
                             details={(
                                 <>
-                                    <Typography variant="subtitle2" sx={theme.custom.errorDetails.detailsTitle} color="textSecondary">
+                                    <Typography variant="subtitle2" sx={theme.custom.errorDetails.detailsTitle} color="text.secondary">
                                         Origin ({scriptSource?.fileName ?? "unknown"})
                                     </Typography>
                                     <CodeView source={scriptSource}/>
@@ -127,7 +127,7 @@ const ErrorDetailsTab = () => {
                             content={(
                                 <>
                                     <Stack direction="row" sx={theme.custom.errorDetails.stackHeader}>
-                                        <Typography variant="subtitle2" color="textSecondary">Stacktrace</Typography>
+                                        <Typography variant="subtitle2" color="text.secondary">Stacktrace</Typography>
                                         <IconButton
                                             size="small"
                                             title="Copy to clipboard"
@@ -163,7 +163,7 @@ const ErrorDetailsTab = () => {
                                                         {stackTraceElements.length > 0 ? (
                                                             <CodeView source={stackTraceSource} showNumbers={false} markingName={methodDetail.methodContext.contextValues?.name}/>
                                                         ) : (
-                                                            <Typography variant="body2" color="textSecondary">
+                                                            <Typography variant="body2" color="text.secondary">
                                                                 No stack trace elements available.
                                                             </Typography>
                                                         )}

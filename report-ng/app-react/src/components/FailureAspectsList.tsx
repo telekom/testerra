@@ -106,7 +106,7 @@ function FailureAspectRow({
                 <Typography>{failureAspect.isMinor ? "Minor" : "Major"}</Typography>
             </Box>
             <Box sx={cellSx(CELL_WIDTHS.status)}>
-                <Stack direction="column" spacing={1} alignItems="flex-start">
+                <Stack direction="column" spacing={1} sx={{alignItems: "flex-start"}}>
                     {statuses.map(status => (
                         <ReportChip
                             label={status.label}

@@ -268,7 +268,7 @@ const StepsTab = () => {
                                                     ))}
 
                                                     {group.screenshotIds.length > 0 && (
-                                                        <Stack direction="row" spacing={3} flexWrap="wrap" useFlexGap>
+                                                        <Stack direction="row" spacing={3} useFlexGap sx={{flexWrap: "wrap"}}>
                                                             {group.screenshotIds.map((screenshotId) => (
                                                                 <Card
                                                                     key={`screenshot-${stepIndex}-${actionIndex}-${groupIndex}-${screenshotId}`}

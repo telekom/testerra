@@ -94,7 +94,7 @@ const TestsPage = () => {
                         <Typography variant="body2">Show configuration methods</Typography>
                     </Stack>
                 </Grid>
-                <Grid size={12} minHeight={36}>
+                <Grid size={12} sx={{minHeight: 36}}>
                     <SelectedFilterChips chips={chips}
                                          handleClearAllClick={clearAll}/>
 

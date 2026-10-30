@@ -25,11 +25,10 @@ import {
     Grid,
     Stack,
     TextField,
-    Typography,
     Autocomplete
 } from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import {useMemo, useRef, useEffect, useCallback, type SyntheticEvent} from "react";
+import {useMemo, useRef, useEffect, useCallback, useState, type SyntheticEvent} from "react";
 import type {
     EChartsOption,
     TooltipComponentFormatterCallbackParams,
@@ -45,7 +44,6 @@ import type {ResultStatus} from '../model/status-service';
 import {ClassName, classNameConverter} from "../utils/classNameConverter.ts";
 import type {MethodContext} from '../model/report-model/framework_pb';
 import Echart, {type EchartRef} from "../widgets/Echart.tsx";
-import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import {useChipListFilters} from "../hooks/useChipListFilters";
 import type {FilterType} from "../hooks/useChipListFilters";
 import StatusSelectInput from "../widgets/StatusSelectInput";
@@ -54,6 +52,7 @@ import SelectedFilterChips from "../components/SelectedFilterChips";
 import {escapeHtml} from "../utils/escapeHtml";
 import {reportTheme} from "../layout/reportTheme";
 import ReportCard from "../widgets/ReportCard.tsx";
+import ReportSnackbar from "../widgets/ReportSnackbar.tsx";
 import {buildChartTooltip, buildTooltipStatusBadge} from "../utils/chartTooltip";
 import {formatDuration} from "../utils/durationFormatter.ts";
 
@@ -341,6 +340,8 @@ const ThreadsPage = () => {
         };
     }, [filters.status, filters.class, filters.method]);
 
+    const [dismissedFilters, setDismissedFilters] = useState<typeof activeFilters | null>(null);
+
     // A timeline entry is highlighted when it matches every active filter.
     // Non-matching entries are never removed, they only get a reduced opacity.
     const matchesActiveFilters = useCallback((value: TimelineEntry['value']) => {
@@ -374,7 +375,7 @@ const ThreadsPage = () => {
     }, [preparedTimeline.options, activeFilters, matchesActiveFilters]);
 
     // The filters never remove entries from the chart, so an over-restrictive filter combination
-    // would silently highlight nothing. This flag drives an explicit hint next to the filter chips.
+    // would silently highlight nothing. This flag drives the no-results snackbar.
     const hasNoHighlightedEntries = useMemo(() => {
         if (!activeFilters.isActive) return false;
         const seriesData = (preparedTimeline.options?.series as CustomSeriesOption[])?.[0]?.data as TimelineEntry[] | undefined;
@@ -516,35 +517,17 @@ const ThreadsPage = () => {
                                             Loading chart data...
                                         </Box>
                                     )}
-                                    {hasNoHighlightedEntries && (
-                                        <Stack
-                                            direction="row"
-                                            spacing={0.5}
-                                            sx={{
-                                                position: "absolute",
-                                                top: 12,
-                                                right: 12,
-                                                zIndex: 1400,
-                                                px: "14px",
-                                                py: "8px",
-                                                borderRadius: "4px",
-                                                backgroundColor: "rgba(0, 0, 0, 0.8)",
-                                                color: "#fff",
-                                                alignItems: "center",
-                                                pointerEvents: "none",
-                                            }}
-                                        >
-                                            <InfoOutlineIcon sx={{fontSize: 14}}/>
-                                            <Typography sx={{fontSize: "13px"}}>
-                                                No entries matching this criteria
-                                            </Typography>
-                                        </Stack>
-                                    )}
                                 </>
                             }/>
                     </Grid>
                 </Grid>
             </Stack>
+            <ReportSnackbar
+                key={JSON.stringify(activeFilters)}
+                text="No entries matching this criteria."
+                open={hasNoHighlightedEntries && dismissedFilters !== activeFilters}
+                onClose={() => setDismissedFilters(activeFilters)}
+            />
         </Box>
     );
 };

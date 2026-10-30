@@ -30,16 +30,15 @@ import {
     AccordionSummary,
     Box,
     IconButton,
-    Snackbar,
     Stack,
     Typography,
     useTheme,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
+import ReportSnackbar from "../../widgets/ReportSnackbar.tsx";
 import LayoutComparison from "../LayoutComparison.tsx";
 import CodeView from "../CodeView.tsx";
 
@@ -179,24 +178,10 @@ const ErrorDetailsTab = () => {
                     );
                 })}
             </Stack>
-            <Snackbar
+            <ReportSnackbar
                 open={stackTraceCopiedSnackbarOpen}
-                autoHideDuration={3000}
-                onClose={(_, reason) => {
-                    if (reason !== "clickaway") setStackTraceCopiedSnackbarOpen(false);     // snackbar needs onClose to close automatically
-                }}
-                message="Stacktrace copied to clipboard"
-                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-                action={(
-                    <IconButton
-                        size="small"
-                        aria-label="close"
-                        color="inherit"
-                        onClick={() => setStackTraceCopiedSnackbarOpen(false)}
-                    >
-                        <CloseIcon fontSize="small"/>
-                    </IconButton>
-                )}
+                text="Stacktrace copied to clipboard"
+                onClose={() => setStackTraceCopiedSnackbarOpen(false)}
             />
         </>
     );

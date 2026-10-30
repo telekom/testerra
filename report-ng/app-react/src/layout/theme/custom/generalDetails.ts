@@ -86,11 +86,15 @@ export const generalDetails: ReportThemeGeneralDetailsStyles = {
     },
     lastScreenshotImage: {
         display: "block",
+        position: "absolute",
+        inset: 0,
         width: "100%",
-        height: "auto",
-        cursor: "pointer",
+        height: "100%",
+        objectFit: "contain",
+        cursor: "pointer"
     },
     lastScreenshotCardContent: {
+        position: "relative",
         p: 0,
         "&:last-child": {
             p: 0,

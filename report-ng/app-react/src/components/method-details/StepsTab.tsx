@@ -35,7 +35,7 @@ import type {MethodDetails} from "../../model/MethodDetails.ts";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import {formatDate} from "../../utils/dateFormatter.ts";
 import LazyImage from "../../widgets/LazyImage.tsx";
-import Modal from "../../widgets/Modal.tsx";
+import ScreenshotModal from "../../widgets/ScreenshotModal.tsx";
 import CodeView from "../CodeView.tsx";
 import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 import {LogConsole} from "../LogConsole.tsx";
@@ -324,7 +324,7 @@ const StepsTab = () => {
                 </Stack>
             </Box>
 
-            <Modal
+            <ScreenshotModal
                 open={isScreenshotModalOpen}
                 screenshotIds={allScreenshotIds}
                 initialScreenshotId={selectedScreenshotId}

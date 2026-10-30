@@ -51,7 +51,7 @@ const normalizeRelativePath = (path?: string) => {
     return `..${path.replaceAll("\\", "/")}`;
 };
 
-const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], onClose}: ModalProps) => {
+const ScreenshotModal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], onClose}: ModalProps) => {
     const [screenshots, setScreenshots] = useState<ReportFile[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [pageSourceFile, setPageSourceFile] = useState<ReportFile | null>(null);
@@ -261,7 +261,7 @@ const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], 
                     </IconButton>
                 </Box>
             </Box>
-            <DialogContent sx={{pt: 1, pb: 1, px: 1, overflow: "auto", minHeight: 0}}>
+            <DialogContent sx={{pt: 1, pb: 1, overflow: "auto", minHeight: 0, alignContent: "center"}}>
                 {error && <Typography color="error">{error}</Typography>}
                 {imageSrc && (
                     <Box
@@ -275,6 +275,7 @@ const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], 
                             maxWidth: "100%",
                             boxSizing: "border-box",
                             display: "block",
+                            mx: "auto"
                         }}
                     />
                 )}
@@ -283,4 +284,4 @@ const Modal = ({open, screenshotIds, initialScreenshotId, sessionContexts = [], 
     );
 };
 
-export default Modal;
+export default ScreenshotModal;

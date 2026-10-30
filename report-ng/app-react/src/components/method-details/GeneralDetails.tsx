@@ -25,7 +25,7 @@ import {Grid, useTheme} from "@mui/material";
 import DurationCard from "../DurationCard.tsx";
 import LazyImage from "../../widgets/LazyImage.tsx";
 import {useState} from "react";
-import Modal from "../../widgets/Modal.tsx";
+import ScreenshotModal from "../../widgets/ScreenshotModal.tsx";
 import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 import CommonDetailsCard from "./CommonDetailsCard.tsx";
 
@@ -92,7 +92,7 @@ const GeneralDetails = ({methodDetail, previousDetail, nextDetail}: GeneralDetai
                     </Grid>
                 </Grid>
 
-                <Modal
+                <ScreenshotModal
                     open={isScreenshotModalOpen}
                     screenshotIds={allScreenshotIds}
                     initialScreenshotId={selectedScreenshotId}

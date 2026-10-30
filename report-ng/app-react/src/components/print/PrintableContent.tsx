@@ -28,7 +28,7 @@ import FailureAspectsList from '../FailureAspectsList';
 import TestList from '../TestList';
 import {StatusService} from '../../model/status-service';
 import DashboardTestResultsCard from '../dashboard-components/DashboardTestResultsCard';
-import DashboardPieChartCard from '../dashboard-components/DashboardPieChartCard';
+import TestRunPieChart from '../TestRunPieChart.tsx';
 import ClassStatisticsTable from '../ClassStatisticsTable.tsx';
 import {formatDuration} from '../../utils/durationFormatter';
 
@@ -146,11 +146,10 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
                                 />
                             </Box>
                             <Box sx={{flex: 1}}>
-                                <DashboardPieChartCard
+                                <TestRunPieChart
                                     execStatistics={executionStatistics}
                                     onChartPieceClick={() => {}}
                                     selectedStatus={null}
-                                    withCard={false}
                                     chartHeight={240}
                                 />
                             </Box>

@@ -2,17 +2,15 @@ import Box from "@mui/material/Box";
 import {Grid} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import LinearProgress from "@mui/material/LinearProgress";
-import Typography from "@mui/material/Typography";
-import {useTheme} from "@mui/material/styles";
 import {useState} from "react";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import {formatDate} from "../../utils/dateFormatter.ts";
 import NoResultsCard from "../../widgets/NoResultsCard.tsx";
-import ReportCard from "../../widgets/ReportCard.tsx";
 import SelectInput from "../../widgets/SelectInput.tsx";
+import RunCompareStatisticsCard from "./RunCompareStatisticsCard.tsx";
+import RunCompareMethodsCard from "./RunCompareMethodsCard.tsx";
 
 const HistoryRunComparisonPage = () => {
-    const theme = useTheme();
     const {executionMngr, isLoading, error} = useReportData();
     const [selectedHistoryIndex, setSelectedHistoryIndex] = useState<number>();
     const historyStatistics = executionMngr?.getHistoryStatistics();
@@ -22,7 +20,7 @@ const HistoryRunComparisonPage = () => {
 
     if (isLoading) return <LinearProgress aria-label="Loading…"/>;
     if (error) return <Alert severity="error">An error occurred: {error.message}</Alert>;
-    if (!historyStatistics) return null;
+    if (!executionMngr || !historyStatistics) return null;
     if (!currentRun || !selectedRun) return <NoResultsCard title="No history available"/>;
 
     return (
@@ -39,26 +37,24 @@ const HistoryRunComparisonPage = () => {
                         }))}
                     />
                 </Grid>
-                <Grid size={{xs: 12, lg: 6}}/>
+                <Grid size={{xs: 12, lg: 9}}/>
                 <Grid size={{xs: 12, lg: 6}}>
-                    <ReportCard
+                    <RunCompareStatisticsCard
                         label="Selected run"
-                        sxCard={theme.mixins.cardHeight(5)}
-                        content={<Typography>Run {selectedRun.historyIndex}</Typography>}
+                        runStatistics={selectedRun}
                     />
                 </Grid>
                 <Grid size={{xs: 12, lg: 6}}>
-                    <ReportCard
+                    <RunCompareStatisticsCard
                         label="Latest run"
-                        sxCard={theme.mixins.cardHeight(5)}
-                        content={<Typography>Run {currentRun.historyIndex}</Typography>}
+                        runStatistics={currentRun}
                     />
                 </Grid>
                 <Grid size={12}>
-                    <ReportCard
-                        label="Method status changes"
-                        sxCard={theme.mixins.cardHeight(5)}
-                        content={<Typography color="text.secondary">Method comparison placeholder</Typography>}
+                    <RunCompareMethodsCard
+                        selectedRun={selectedRun}
+                        currentRun={currentRun}
+                        executionStatistics={executionMngr.getExecutionStatistics()}
                     />
                 </Grid>
             </Grid>

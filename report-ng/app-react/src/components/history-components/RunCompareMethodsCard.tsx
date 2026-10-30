@@ -103,7 +103,7 @@ const RunCompareMethodsCard = ({selectedRun, currentRun, executionStatistics}: R
                                     <TableCell sx={{overflowWrap: "anywhere"}}>
                                         <ListItemText
                                             primary={
-                                                <Stack component="span" direction="row" spacing={1}
+                                                <Stack component="span" direction="row" spacing={2} useFlexGap
                                                        sx={{alignItems: "center", flexWrap: "wrap"}}>
                                                     {method.currentMethodId ? (
                                                         <Link component={RouterLink} to={`/method/${method.currentMethodId}`}>

@@ -11,23 +11,28 @@ dependencies {
 }
 
 def appReact = project(':report-ng:app-react')
-def buildReportRequested = gradle.startParameter.taskNames.any { taskName ->
-    taskName == 'buildReport' || taskName == ':report-ng:buildReport'
-}
+def appReactBuildReportTaskPath = ':report-ng:app-react:buildReport'
+def processResourcesTask = tasks.named('processResources')
+def reportResourcesDirectory = layout.projectDirectory.dir('src/main/resources/report-ng')
 
-tasks.named('processResources') {
-    if (buildReportRequested) {
-        dependsOn(appReact.tasks.named('buildReport'))
-    }
-
+def syncBuiltReportResourcesTask = tasks.register('syncBuiltReportResources', Sync) {
+    dependsOn(appReactBuildReportTaskPath)
     from(appReact.layout.projectDirectory.dir('dist')) {
-        into 'report-ng'
         exclude 'model/**'
     }
+    into(reportResourcesDirectory)
+}
+
+processResourcesTask.configure {
+    mustRunAfter(syncBuiltReportResourcesTask)
+}
+
+sourcesJar.configure {
+    mustRunAfter(syncBuiltReportResourcesTask)
 }
 
 tasks.register('buildReport') {
     group = 'build'
-    description = 'Builds and packages the report-ng frontend into the report-ng artifact.'
-    dependsOn(tasks.named('jar'))
+    description = 'Builds the report frontend and refreshes report-ng resources.'
+    dependsOn(syncBuiltReportResourcesTask, processResourcesTask)
 }

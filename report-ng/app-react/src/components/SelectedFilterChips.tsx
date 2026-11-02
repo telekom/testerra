@@ -19,45 +19,27 @@
  * under the License.
  */
 
-import type {ResultStatus} from "../model/status-service";
-import type {FilterType, FiltersState} from "../hooks/useTestListFilters"
+import type {FilterChip} from "../hooks/useChipListFilters"
 import ReportChip from "../widgets/ReportChip";
 import {Button, Stack} from "@mui/material";
-import {FILTERS} from "../hooks/useTestListFilters";
 
-type SelectedFiltersChipsProps = {
-    selectedFilters: FiltersState,
-    handleDelete: (filter: FilterType, filterToRemove?: string | ResultStatus) => void;
+type SelectedFilterChipsProps = {
+    chips: FilterChip[];
     handleClearAllClick: () => void;
 }
 
-const SelectedFiltersChips = ({selectedFilters, handleDelete, handleClearAllClick}: SelectedFiltersChipsProps) => {
-
-    // loops through each filter type and combines them in one array, e.g. [3, 4, SimpleTest2]
-    const chips = (Object.keys(FILTERS) as FilterType[]).flatMap((filterType) => {
-        const values = selectedFilters[filterType];
-        if (!values || values.length === 0) return [];
-
-        // loops through values for each type and fixes label for status (3 -> Passed)
-        return values.map((value) => {
-            const filterDef = FILTERS[filterType];
-
-            // returns chip for each value
-            return (
-                <ReportChip
-                    key={String(value)}
-                    label={filterDef.getLabel(value)}
-                    color={FILTERS[filterType].color}
-                    handleDelete={() => handleDelete(filterType, value)}
-                    tooltipText={filterDef.tooltipText}
-                />
-            );
-        });
-    });
-
+const SelectedFilterChips = ({chips, handleClearAllClick}: SelectedFilterChipsProps) => {
     return (
-        <Stack direction="row" spacing={1}>
-            {chips}
+        <Stack direction="row" spacing={1} useFlexGap sx={{flexWrap: "wrap"}}>
+            {chips.map((chip) => (
+                <ReportChip
+                    key={chip.id}
+                    label={chip.label}
+                    color={chip.color}
+                    handleDelete={chip.onDelete}
+                    tooltipText={chip.tooltipText}
+                />
+            ))}
 
             {chips.length > 0 && (
                 <Button variant="text" onClick={handleClearAllClick}>
@@ -68,4 +50,4 @@ const SelectedFiltersChips = ({selectedFilters, handleDelete, handleClearAllClic
     )
 };
 
-export default SelectedFiltersChips;
+export default SelectedFilterChips;

@@ -28,7 +28,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import {ResultStatusType} from "./report-model/framework_pb";
-import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 // direct import -> this way it does not need to be in a component, but this will not be working for multiple themes
 import { reportTheme } from "../layout/reportTheme";
@@ -36,7 +36,7 @@ import { reportTheme } from "../layout/reportTheme";
 // Union of numeric status values -> ResultStatus = 0 | 1 | 2 | ...
 export type ResultStatus = typeof ResultStatusType[keyof typeof ResultStatusType];
 
-interface StatusInformation {
+export interface StatusInformation {
     label: string;
     color: string;
     icon?: React.ElementType;
@@ -62,7 +62,7 @@ const STATUS_CONFIG: Record<ResultStatus, StatusInformation> = {
     [ResultStatusType.INFO]: {
         label: "Info",
         color: "black",
-        icon: InfoOutlineIcon,
+        icon: InfoOutlinedIcon,
         key: "info",
     },
     [ResultStatusType.SKIPPED]: {
@@ -183,11 +183,26 @@ export const StatusService = {
         ];
     },
 
-    getStatusByKey(key: string): ResultStatus | null {
+    getFailedStatuses(): ResultStatus[] {
+        return [
+            ResultStatusType.FAILED,
+            ResultStatusType.FAILED_EXPECTED,
+            ResultStatusType.SKIPPED,
+        ];
+    },
+
+    getStatusByKey(key: string): ResultStatus {
         const entry = Object.entries(STATUS_CONFIG).find(
             ([, statusInformation]) => statusInformation.key === key
         );
-        return entry ? Number(entry[0]) as ResultStatus : null;
+        return entry ? Number(entry[0]) as ResultStatus : ResultStatusType.RST_NOT_SET;
+    },
+
+    getStatusByLabel(label: string): ResultStatus {
+        const entry = Object.entries(STATUS_CONFIG).find(
+            ([, statusInformation]) => statusInformation.label === label
+        );
+        return entry ? Number(entry[0]) as ResultStatus : ResultStatusType.RST_NOT_SET;
     },
 
     separateNamespace(namespace:string): {package?: string, class: string} {

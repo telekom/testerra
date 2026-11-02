@@ -1,451 +1,0 @@
-
-È
-42ÁQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerRRun Configuration GenerateScreenshotsInTesterraReportTest.configureChromeOptions() †ç½à¾3*Test workerB42
-Ê
-43ÃPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerUPassed Configuration GenerateScreenshotsInTesterraReportTest.configureChromeOptions() ç½à¾3*Test workerB43
-·
-70°Qeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerARun Configuration GenerateScreenshotsInTesterraReportTest.setUp() ËŠ¿à¾3*Test workerB70
-X
-71Rorg.eclipse.jetty.server.Serverjetty-9.4.3.v20170317 ÎŠ¿à¾3*Test workerB71
-
-72ˆ/org.eclipse.jetty.server.handler.ContextHandler;Started o.e.j.s.h.ContextHandler@44ac94c2{/,null,AVAILABLE} ĞŠ¿à¾3*Test workerB72
-µ
-73®Uio.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest;Use already running WebServer: Address already in use: bind ÑŠ¿à¾3*Test workerB73
-¹
-74²Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerDPassed Configuration GenerateScreenshotsInTesterraReportTest.setUp() ÑŠ¿à¾3*Test workerB74
-Ø
-75ÑQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerMRun Test GenerateScreenshotsInTesterraReportTest.test_Failed_WithScreenShot() ÓŠ¿à¾3* TestNG-test-Screenshot Creator-1B75
-ä
-76İKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerŞNew DesktopWebDriverRequest (sessionKey=default, server=local) with capabilities:
-{
-  "goog:chromeOptions": {
-    "args": "[--disable-dev-shm-usage, --no-sandbox, ...",
-    "extensions": []
-  },
-  "browserName": "chrome"
-} ÕŠ¿à¾3* TestNG-test-Screenshot Creator-1B76
-œ
-77•Jeu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactoryLocal WebDriver is used. ÖŠ¿à¾3* TestNG-test-Screenshot Creator-1B77
-é
-78âKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerdStarted ChromeDriver (sessionKey=default, node=(unknown), userAgent=HeadlessChrome:143) in 00:00.711 ë¿à¾3* TestNG-test-Screenshot Creator-1B78
-ö
-79ïMeu.tsystems.mms.tic.testframework.webdrivermanager.EventLoggingDriverListeneroOpen http://localhost:80/Input/input.html on ChromeDriver: chrome on windows (6c6616f968929b7fba3c4edff22ecbb7) …’¿à¾3* TestNG-test-Screenshot Creator-1B79
-Ê
-81ÃMeu.tsystems.mms.tic.testframework.webdrivermanager.EventLoggingDriverListenerCSwitched to window "Input test" (http://localhost/Input/input.html) ”¿à¾3* TestNG-test-Screenshot Creator-1B81
-´
-84­Keu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager/Shutting down ChromeDriver (sessionKey=default) €–¿à¾3* TestNG-test-Screenshot Creator-1B84
-ÿ
-85øPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerPFailed Test GenerateScreenshotsInTesterraReportTest.test_Failed_WithScreenShot() š—¿à¾3* TestNG-test-Screenshot Creator-12¢
-java.lang.AssertionError'Failed' on reached Page.'org.testng.Assert.fail(Assert.java:111)¡io.testerra.report.test.pretest_status.simple.GenerateScreenshotsInTesterraReportTest.test_Failed_WithScreenShot(GenerateScreenshotsInTesterraReportTest.java:45)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B85
-İ
-86ÖQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerRRun Test GenerateScreenshotsInTesterraReportTest.test_GenerateScreenshotManually() ÔŠ¿à¾3* TestNG-test-Screenshot Creator-2B86
-ä
-87İKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerŞNew DesktopWebDriverRequest (sessionKey=default, server=local) with capabilities:
-{
-  "goog:chromeOptions": {
-    "args": "[--disable-dev-shm-usage, --no-sandbox, ...",
-    "extensions": []
-  },
-  "browserName": "chrome"
-} ÕŠ¿à¾3* TestNG-test-Screenshot Creator-2B87
-œ
-88•Jeu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactoryLocal WebDriver is used. ÖŠ¿à¾3* TestNG-test-Screenshot Creator-2B88
-é
-89âKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerdStarted ChromeDriver (sessionKey=default, node=(unknown), userAgent=HeadlessChrome:143) in 00:00.709 ‚‘¿à¾3* TestNG-test-Screenshot Creator-2B89
-ö
-90ïMeu.tsystems.mms.tic.testframework.webdrivermanager.EventLoggingDriverListeneroOpen http://localhost:80/Input/input.html on ChromeDriver: chrome on windows (10df129661756bc37e8e484b93cb12a9) ä“¿à¾3* TestNG-test-Screenshot Creator-2B90
-´
-93­Keu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager/Shutting down ChromeDriver (sessionKey=default) š—¿à¾3* TestNG-test-Screenshot Creator-2B93
-ß
-94ØPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerUPassed Test GenerateScreenshotsInTesterraReportTest.test_GenerateScreenshotManually() ˜™¿à¾3* TestNG-test-Screenshot Creator-2B94
-ç
-95àQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker\Run Configuration GenerateScreenshotsInTesterraReportTest.closeExclusiveSessionOfTestClass() ›™¿à¾3* TestNG-test-Screenshot Creator-2B95
-é
-96âPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker_Passed Configuration GenerateScreenshotsInTesterraReportTest.closeExclusiveSessionOfTestClass() œ™¿à¾3* TestNG-test-Screenshot Creator-2B96
-å
-97ŞQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerZRun Configuration GenerateScreenshotsInTesterraReportTest.closeExclusiveWebDriverSession() ™¿à¾3* TestNG-test-Screenshot Creator-2B97
-ç
-98àPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker]Passed Configuration GenerateScreenshotsInTesterraReportTest.closeExclusiveWebDriverSession() ™¿à¾3* TestNG-test-Screenshot Creator-2B98
-¸
-44±Qeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerBRun Configuration GeneratePassedStatusInTesterraReportTest.setUp() «ç½à¾3*Test workerB44
-€
-45zorg.eclipse.jetty.util.logBLogging initialized @3924ms to org.eclipse.jetty.util.log.Slf4jLog Áç½à¾3*Test workerB45
-X
-46Rorg.eclipse.jetty.server.Serverjetty-9.4.3.v20170317 ›è½à¾3*Test workerB46
-
-47ˆ/org.eclipse.jetty.server.handler.ContextHandler;Started o.e.j.s.h.ContextHandler@6ae5e1cf{/,null,AVAILABLE} »è½à¾3*Test workerB47
-
-48‰*org.eclipse.jetty.server.AbstractConnectorAStarted ServerConnector@7a3f3bc4{HTTP/1.1,[http/1.1]}{0.0.0.0:80} Ñè½à¾3*Test workerB48
-R
-49Lorg.eclipse.jetty.server.ServerStarted @4069ms Òè½à¾3*Test workerB49
-º
-50³Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerEPassed Configuration GeneratePassedStatusInTesterraReportTest.setUp() Óè½à¾3*Test workerB50
-Ø
-100ĞQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerHRun Test GeneratePassedStatusInTesterraReportTest.test_Optional_Assert() ıè½à¾3*#TestNG-test-Passed Status Creator-1B100
-¯
-101§Keu.tsystems.mms.tic.testframework.execution.testng.DefaultOptionalAssertion%Failed optional assertion: minor fail €é½à¾3*#TestNG-test-Passed Status Creator-1B101
-º
-103²3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ‚é½à¾3*#TestNG-test-Passed Status Creator-1B103
-Ú
-104ÒPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerKPassed Test GeneratePassedStatusInTesterraReportTest.test_Optional_Assert() „é½à¾3*#TestNG-test-Passed Status Creator-1B104
-Ï
-107ÇQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker?Run Test GeneratePassedStatusInTesterraReportTest.test_Passed() şè½à¾3*#TestNG-test-Passed Status Creator-2B107
-Ñ
-108ÉPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerBPassed Test GeneratePassedStatusInTesterraReportTest.test_Passed() ‚é½à¾3*#TestNG-test-Passed Status Creator-2B108
-ë
-105ãQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker[Run Configuration GeneratePassedStatusInTesterraReportTest.closeExclusiveWebDriverSession() ‘é½à¾3*#TestNG-test-Passed Status Creator-1B105
-í
-106åPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker^Passed Configuration GeneratePassedStatusInTesterraReportTest.closeExclusiveWebDriverSession() ’é½à¾3*#TestNG-test-Passed Status Creator-1B106
-¸
-52±Qeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerBRun Configuration GenerateFailedStatusInTesterraReportTest.setUp() ›é½à¾3*Test workerB52
-X
-53Rorg.eclipse.jetty.server.Serverjetty-9.4.3.v20170317  é½à¾3*Test workerB53
-
-54ˆ/org.eclipse.jetty.server.handler.ContextHandler;Started o.e.j.s.h.ContextHandler@4c81e7c2{/,null,AVAILABLE} ¡é½à¾3*Test workerB54
-¶
-55¯Vio.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest;Use already running WebServer: Address already in use: bind ¢é½à¾3*Test workerB55
-º
-56³Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerEPassed Configuration GenerateFailedStatusInTesterraReportTest.setUp() ¤é½à¾3*Test workerB56
-Û
-110ÓQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerKRun Test GenerateFailedStatusInTesterraReportTest.test_failedPageNotFound() ©é½à¾3*#TestNG-test-Failed Status Creator-3B110
-é
-111áKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerŞNew DesktopWebDriverRequest (sessionKey=default, server=local) with capabilities:
-{
-  "goog:chromeOptions": {
-    "args": "[--disable-dev-shm-usage, --no-sandbox, ...",
-    "extensions": []
-  },
-  "browserName": "chrome"
-} ‹ê½à¾3*#TestNG-test-Failed Status Creator-3B111
-¡
-112™Jeu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactoryLocal WebDriver is used. ”ê½à¾3*#TestNG-test-Failed Status Creator-3B112
-î
-113æKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerdStarted ChromeDriver (sessionKey=default, node=(unknown), userAgent=HeadlessChrome:143) in 00:01.366 éö½à¾3*#TestNG-test-Failed Status Creator-3B113
-ª
-115¢Meu.tsystems.mms.tic.testframework.webdrivermanager.EventLoggingDriverListenerSwitched to window "" (data:,) †½¾à¾3*#TestNG-test-Failed Status Creator-3B115
-¹
-118±Keu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager/Shutting down ChromeDriver (sessionKey=default) Œ¾¾à¾3*#TestNG-test-Failed Status Creator-3B118
-Â2
-119º2Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerNFailed Test GenerateFailedStatusInTesterraReportTest.test_failedPageNotFound() ¥¿¾à¾3*#TestNG-test-Failed Status Creator-32µ
-Aeu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;Could not create instance of NonExistingPage on "" (data:,)~eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPageWithCheckRule(DefaultPageFactory.java:111)peu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPage(DefaultPageFactory.java:77) io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest.test_failedPageNotFound(GenerateFailedStatusInTesterraReportTest.java:54)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)2ª
-Deu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError>Expected that NonExistingPage -> nonExisting displayed is true©eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertion$UiElementAssertionProvider.wrapAssertionError(DefaultUiElementAssertion.java:67)Œeu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion.wrapAssertionErrorRecursive(AbstractPropertyAssertion.java:106)‰eu.tsystems.mms.tic.testframework.internal.asserts.AbstractTestedPropertyAssertion.testSequence(AbstractTestedPropertyAssertion.java:120)leu.tsystems.mms.tic.testframework.internal.asserts.DefaultBinaryAssertion.is(DefaultBinaryAssertion.java:36)^eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion.is(BinaryAssertion.java:30)eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertion.displayed(UiElementBaseAssertion.java:46)‰eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction.pCheckField(GuiElementCheckFieldAction.java:121)ˆeu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction.checkField(GuiElementCheckFieldAction.java:143)€eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractCheckFieldAction.execute(AbstractCheckFieldAction.java:91)reu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction.run(AbstractFieldAction.java:45):java.base/java.util.ArrayList.forEach(ArrayList.java:1596)xeu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage.lambda$checkAnnotatedFields$0(AbstractPage.java:168)6java.base/java.lang.Iterable.forEach(Iterable.java:75)oeu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage.checkAnnotatedFields(AbstractPage.java:164)jeu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage.checkUiElements(AbstractPage.java:126)~eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPageWithCheckRule(DefaultPageFactory.java:109)peu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPage(DefaultPageFactory.java:77) io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest.test_failedPageNotFound(GenerateFailedStatusInTesterraReportTest.java:54)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B119
-Ï
-122ÇQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker?Run Test GenerateFailedStatusInTesterraReportTest.test_Failed() «é½à¾3*#TestNG-test-Failed Status Creator-2B122
-º
-124²3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ³é½à¾3*#TestNG-test-Failed Status Creator-2B124
-ì
-125äPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerBFailed Test GenerateFailedStatusInTesterraReportTest.test_Failed() Áé½à¾3*#TestNG-test-Failed Status Creator-22˜
-java.lang.AssertionErrorCreating TestStatus 'Failed''org.testng.Assert.fail(Assert.java:111)”io.testerra.report.test.pretest_status.simple.GenerateFailedStatusInTesterraReportTest.test_Failed(GenerateFailedStatusInTesterraReportTest.java:39)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B125
-Ø
-126ĞQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerHRun Test GenerateFailedStatusInTesterraReportTest.test_AssertCollector() ªé½à¾3*#TestNG-test-Failed Status Creator-1B126
-º
-128²3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ­é½à¾3*#TestNG-test-Failed Status Creator-1B128
-º
-130²3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ®é½à¾3*#TestNG-test-Failed Status Creator-1B130
-º
-131²3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ±é½à¾3*#TestNG-test-Failed Status Creator-1B131
-Ï
-132ÇPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerKFailed Test GenerateFailedStatusInTesterraReportTest.test_AssertCollector() ³é½à¾3*#TestNG-test-Failed Status Creator-12ò
-java.lang.AssertionError6The following assertions failed:
-1) failed1
-2) failed2‰eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker.onMethodEnd(MethodContextUpdateWorker.java:76)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)Pcom.google.common.eventbus.Subscriber.invokeSubscriberMethod(Subscriber.java:84)hcom.google.common.eventbus.Subscriber$SynchronizedSubscriber.invokeSubscriberMethod(Subscriber.java:141)Pcom.google.common.eventbus.Subscriber.lambda$dispatchEvent$0(Subscriber.java:70)Pcom.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)Gcom.google.common.eventbus.Subscriber.dispatchEvent(Subscriber.java:67)]com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher.dispatch(Dispatcher.java:112);com.google.common.eventbus.EventBus.post(EventBus.java:262)eeu.tsystems.mms.tic.testframework.report.TesterraListener.pAfterInvocation(TesterraListener.java:360)deu.tsystems.mms.tic.testframework.report.TesterraListener.afterInvocation(TesterraListener.java:293)norg.testng.internal.invokers.InvokedMethodListenerInvoker.invokeListener(InvokedMethodListenerInvoker.java:60)Worg.testng.internal.invokers.BaseInvoker.runInvokedMethodListeners(BaseInvoker.java:82)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:746)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B132
-ë
-120ãQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker[Run Configuration GenerateFailedStatusInTesterraReportTest.closeExclusiveWebDriverSession() ª¿¾à¾3*#TestNG-test-Failed Status Creator-3B120
-í
-121åPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker^Passed Configuration GenerateFailedStatusInTesterraReportTest.closeExclusiveWebDriverSession() ª¿¾à¾3*#TestNG-test-Failed Status Creator-3B121
-¹
-58²Qeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerCRun Configuration GenerateSkippedStatusInTesterraReportTest.setUp() ¬¿¾à¾3*Test workerB58
-X
-59Rorg.eclipse.jetty.server.Serverjetty-9.4.3.v20170317 ¯¿¾à¾3*Test workerB59
-
-60ˆ/org.eclipse.jetty.server.handler.ContextHandler;Started o.e.j.s.h.ContextHandler@46878216{/,null,AVAILABLE} ²¿¾à¾3*Test workerB60
-·
-61°Wio.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest;Use already running WebServer: Address already in use: bind ³¿¾à¾3*Test workerB61
-»
-62´Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerFPassed Configuration GenerateSkippedStatusInTesterraReportTest.setUp() ´¿¾à¾3*Test workerB62
-Ñ
-134ÉQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker@Run Test GenerateSkippedStatusInTesterraReportTest.test_Failed() »¿¾à¾3*$TestNG-test-Skipped Status Creator-1B134
-»
-136³3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ½¿¾à¾3*$TestNG-test-Skipped Status Creator-1B136
-ğ
-137èPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerCFailed Test GenerateSkippedStatusInTesterraReportTest.test_Failed() ½¿¾à¾3*$TestNG-test-Skipped Status Creator-12š
-java.lang.AssertionErrorCreating TestStatus 'Failed''org.testng.Assert.fail(Assert.java:111)–io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest.test_Failed(GenerateSkippedStatusInTesterraReportTest.java:37)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B137
-Ú
-138ÒQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerIRun Test GenerateSkippedStatusInTesterraReportTest.test_SkippedNoStatus() ¼¿¾à¾3*$TestNG-test-Skipped Status Creator-3B138
-Ë
-140ÃPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerMSkipped Test GenerateSkippedStatusInTesterraReportTest.test_SkippedNoStatus() ¾¿¾à¾3*$TestNG-test-Skipped Status Creator-32ë
-org.testng.SkipExceptionTest Skipped.Ÿio.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest.test_SkippedNoStatus(GenerateSkippedStatusInTesterraReportTest.java:42)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B140
-ä
-141ÜQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerSRun Configuration GenerateSkippedStatusInTesterraReportTest.dataProviderWithError() Á¿¾à¾3*$TestNG-test-Skipped Status Creator-2B141
-»
-143³3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. Å¿¾à¾3*$TestNG-test-Skipped Status Creator-2B143
-‡
-144ÿPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerVFailed Configuration GenerateSkippedStatusInTesterraReportTest.dataProviderWithError() Å¿¾à¾3*$TestNG-test-Skipped Status Creator-22–
-java.lang.RuntimeException2java.lang.RuntimeException: Error in DataProvider.rorg.testng.internal.invokers.MethodInvocationHelper.invokeMethodNoCheckedException(MethodInvocationHelper.java:58)gorg.testng.internal.invokers.MethodInvocationHelper.invokeDataProvider(MethodInvocationHelper.java:159)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:809)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:734)Xorg.testng.internal.invokers.ParameterHandler.handleParameters(ParameterHandler.java:72)Xorg.testng.internal.invokers.ParameterHandler.createParameters(ParameterHandler.java:51)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:946)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)2…
-java.lang.RuntimeExceptionError in DataProvider. io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest.dataProviderWithError(GenerateSkippedStatusInTesterraReportTest.java:52)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)`org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:86)rorg.testng.internal.invokers.MethodInvocationHelper.invokeMethodNoCheckedException(MethodInvocationHelper.java:54)gorg.testng.internal.invokers.MethodInvocationHelper.invokeDataProvider(MethodInvocationHelper.java:159)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:809)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:734)Xorg.testng.internal.invokers.ParameterHandler.handleParameters(ParameterHandler.java:72)Xorg.testng.internal.invokers.ParameterHandler.createParameters(ParameterHandler.java:51)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:946)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B144
-ä
-147ÜQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerSRun Test GenerateSkippedStatusInTesterraReportTest.test_Skipped_DependingOnFailed() Å¿¾à¾3*$TestNG-test-Skipped Status Creator-5B147
-½
-149µPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerWSkipped Test GenerateSkippedStatusInTesterraReportTest.test_Skipped_DependingOnFailed() È¿¾à¾3*$TestNG-test-Skipped Status Creator-52Ó	
-java.lang.ThrowableïMethod io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest.test_Skipped_DependingOnFailed() on instance io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest@2ebcbf9d depends on not successfully finished methods 
-[io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest.test_Failed() on instance io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest@2ebcbf9d]Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:159)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B149
-í
-150åQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker\Run Configuration GenerateSkippedStatusInTesterraReportTest.closeExclusiveWebDriverSession() Ï¿¾à¾3*$TestNG-test-Skipped Status Creator-2B150
-ï
-151çPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker_Passed Configuration GenerateSkippedStatusInTesterraReportTest.closeExclusiveWebDriverSession() Ñ¿¾à¾3*$TestNG-test-Skipped Status Creator-2B151
-ñ
-153éQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker`Run Configuration GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.beforeMethodFailing() ¾¿¾à¾3*$TestNG-test-Skipped Status Creator-4B153
-»
-155³3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ¾¿¾à¾3*$TestNG-test-Skipped Status Creator-4B155
-É
-156ÁPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkercFailed Configuration GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.beforeMethodFailing() À¿¾à¾3*$TestNG-test-Skipped Status Creator-42Ó
-java.lang.AssertionErrorError in @BeforeMethod'org.testng.Assert.fail(Assert.java:111)¼io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.beforeMethodFailing(GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.java:33)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)morg.testng.internal.invokers.MethodInvocationHelper$2.runConfigurationMethod(MethodInvocationHelper.java:462)aeu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook.runHook(ConfigMethodHook.java:49)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:386)gorg.testng.internal.invokers.MethodInvocationHelper.invokeConfigurable(MethodInvocationHelper.java:476)\org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:397)Worg.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)Oorg.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:600)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B156
-ú
-157òQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkeriRun Test GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.test_Skipped_AfterErrorInBeforeMethod() Ì¿¾à¾3*$TestNG-test-Skipped Status Creator-4B157
-Ó
-159ËPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkermSkipped Test GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.test_Skipped_AfterErrorInBeforeMethod() Í¿¾à¾3*$TestNG-test-Skipped Status Creator-42Ó
-java.lang.AssertionErrorError in @BeforeMethod'org.testng.Assert.fail(Assert.java:111)¼io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.beforeMethodFailing(GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.java:33)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)morg.testng.internal.invokers.MethodInvocationHelper$2.runConfigurationMethod(MethodInvocationHelper.java:462)aeu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook.runHook(ConfigMethodHook.java:49)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:386)gorg.testng.internal.invokers.MethodInvocationHelper.invokeConfigurable(MethodInvocationHelper.java:476)\org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:397)Worg.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)Oorg.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:600)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B159
-ü
-160ôQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerkRun Configuration GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.closeExclusiveWebDriverSession() Õ¿¾à¾3*$TestNG-test-Skipped Status Creator-4B160
-ş
-161öPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkernPassed Configuration GenerateSkippedStatusViaBeforeMethodInTesterraReportTest.closeExclusiveWebDriverSession() Õ¿¾à¾3*$TestNG-test-Skipped Status Creator-4B161
-À
-64¹Qeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerJRun Configuration GenerateExpectedFailedStatusInTesterraReportTest.setUp() ×¿¾à¾3*Test workerB64
-X
-65Rorg.eclipse.jetty.server.Serverjetty-9.4.3.v20170317 Ù¿¾à¾3*Test workerB65
-
-66ˆ/org.eclipse.jetty.server.handler.ContextHandler;Started o.e.j.s.h.ContextHandler@213bd66a{/,null,AVAILABLE} Ú¿¾à¾3*Test workerB66
-Ç
-67Àgio.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest;Use already running WebServer: Address already in use: bind Û¿¾à¾3*Test workerB67
-Â
-68»Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerMPassed Configuration GenerateExpectedFailedStatusInTesterraReportTest.setUp() Û¿¾à¾3*Test workerB68
-ç
-163ßQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerURun Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedPassed() à¿¾à¾3*%TestNG-test-Expected Status Creator-5B163
-ë
-164ãPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerZRepaired Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedPassed() á¿¾à¾3*%TestNG-test-Expected Status Creator-5B164
-í
-165åQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker[Run Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedPageNotFound() Ş¿¾à¾3*%TestNG-test-Expected Status Creator-4B165
-ë
-166ãKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerŞNew DesktopWebDriverRequest (sessionKey=default, server=local) with capabilities:
-{
-  "goog:chromeOptions": {
-    "args": "[--disable-dev-shm-usage, --no-sandbox, ...",
-    "extensions": []
-  },
-  "browserName": "chrome"
-} ã¿¾à¾3*%TestNG-test-Expected Status Creator-4B166
-£
-167›Jeu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactoryLocal WebDriver is used. ä¿¾à¾3*%TestNG-test-Expected Status Creator-4B167
-ğ
-168èKeu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManagerdStarted ChromeDriver (sessionKey=default, node=(unknown), userAgent=HeadlessChrome:143) in 00:00.874 ÀÇ¾à¾3*%TestNG-test-Expected Status Creator-4B168
-¬
-170¤Meu.tsystems.mms.tic.testframework.webdrivermanager.EventLoggingDriverListenerSwitched to window "" (data:,) Ÿˆ¿à¾3*%TestNG-test-Expected Status Creator-4B170
-»
-173³Keu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager/Shutting down ChromeDriver (sessionKey=default) ¬‰¿à¾3*%TestNG-test-Expected Status Creator-4B173
-Ÿ3
-174—3Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkergExpected Failed Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedPageNotFound() ÂŠ¿à¾3*%TestNG-test-Expected Status Creator-42Ö
-Aeu.tsystems.mms.tic.testframework.exceptions.PageFactoryException;Could not create instance of NonExistingPage on "" (data:,)~eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPageWithCheckRule(DefaultPageFactory.java:111)peu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPage(DefaultPageFactory.java:77)Áio.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedPageNotFound(GenerateExpectedFailedStatusInTesterraReportTest.java:75)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)2Ë
-Deu.tsystems.mms.tic.testframework.exceptions.UiElementAssertionError>Expected that NonExistingPage -> nonExisting displayed is true©eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultUiElementAssertion$UiElementAssertionProvider.wrapAssertionError(DefaultUiElementAssertion.java:67)Œeu.tsystems.mms.tic.testframework.internal.asserts.AbstractPropertyAssertion.wrapAssertionErrorRecursive(AbstractPropertyAssertion.java:106)‰eu.tsystems.mms.tic.testframework.internal.asserts.AbstractTestedPropertyAssertion.testSequence(AbstractTestedPropertyAssertion.java:120)leu.tsystems.mms.tic.testframework.internal.asserts.DefaultBinaryAssertion.is(DefaultBinaryAssertion.java:36)^eu.tsystems.mms.tic.testframework.internal.asserts.BinaryAssertion.is(BinaryAssertion.java:30)eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.UiElementBaseAssertion.displayed(UiElementBaseAssertion.java:46)‰eu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction.pCheckField(GuiElementCheckFieldAction.java:121)ˆeu.tsystems.mms.tic.testframework.pageobjects.internal.action.GuiElementCheckFieldAction.checkField(GuiElementCheckFieldAction.java:143)€eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractCheckFieldAction.execute(AbstractCheckFieldAction.java:91)reu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction.run(AbstractFieldAction.java:45):java.base/java.util.ArrayList.forEach(ArrayList.java:1596)xeu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage.lambda$checkAnnotatedFields$0(AbstractPage.java:168)6java.base/java.lang.Iterable.forEach(Iterable.java:75)oeu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage.checkAnnotatedFields(AbstractPage.java:164)jeu.tsystems.mms.tic.testframework.pageobjects.internal.AbstractPage.checkUiElements(AbstractPage.java:126)~eu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPageWithCheckRule(DefaultPageFactory.java:109)peu.tsystems.mms.tic.testframework.pageobjects.internal.DefaultPageFactory.createPage(DefaultPageFactory.java:77)Áio.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedPageNotFound(GenerateExpectedFailedStatusInTesterraReportTest.java:75)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B174
-ğ
-177èQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker^Run Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedAssertCollector() ä¿¾à¾3*%TestNG-test-Expected Status Creator-3B177
-¼
-179´3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. æ¿¾à¾3*%TestNG-test-Expected Status Creator-3B179
-¼
-181´3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. æ¿¾à¾3*%TestNG-test-Expected Status Creator-3B181
-¼
-182´3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. ç¿¾à¾3*%TestNG-test-Expected Status Creator-3B182
-ğ
-183èPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerjExpected Failed Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedAssertCollector() ê¿¾à¾3*%TestNG-test-Expected Status Creator-32ò
-java.lang.AssertionError6The following assertions failed:
-1) failed1
-2) failed2‰eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker.onMethodEnd(MethodContextUpdateWorker.java:76)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)Pcom.google.common.eventbus.Subscriber.invokeSubscriberMethod(Subscriber.java:84)hcom.google.common.eventbus.Subscriber$SynchronizedSubscriber.invokeSubscriberMethod(Subscriber.java:141)Pcom.google.common.eventbus.Subscriber.lambda$dispatchEvent$0(Subscriber.java:70)Pcom.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)Gcom.google.common.eventbus.Subscriber.dispatchEvent(Subscriber.java:67)]com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher.dispatch(Dispatcher.java:112);com.google.common.eventbus.EventBus.post(EventBus.java:262)eeu.tsystems.mms.tic.testframework.report.TesterraListener.pAfterInvocation(TesterraListener.java:360)deu.tsystems.mms.tic.testframework.report.TesterraListener.afterInvocation(TesterraListener.java:293)norg.testng.internal.invokers.InvokedMethodListenerInvoker.invokeListener(InvokedMethodListenerInvoker.java:60)Worg.testng.internal.invokers.BaseInvoker.runInvokedMethodListeners(BaseInvoker.java:82)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:746)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B183
-ã
-184ÛQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerQRun Test GenerateExpectedFailedStatusInTesterraReportTest.test_PassedAfterRetry() á¿¾à¾3*%TestNG-test-Expected Status Creator-1B184
-¼
-186´3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. â¿¾à¾3*%TestNG-test-Expected Status Creator-1B186
-ª
-187¢Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerTFailed Test GenerateExpectedFailedStatusInTesterraReportTest.test_PassedAfterRetry() ã¿¾à¾3*%TestNG-test-Expected Status Creator-12Â
-java.lang.AssertionError#test_FailedToPassedHistoryWithRetry'org.testng.Assert.fail(Assert.java:111)·io.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest.test_PassedAfterRetry(GenerateExpectedFailedStatusInTesterraReportTest.java:49)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B187
-ñ
-190éQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker_Run Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedWithTicketString() å¿¾à¾3*%TestNG-test-Expected Status Creator-6B190
-¼
-192´3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. æ¿¾à¾3*%TestNG-test-Expected Status Creator-6B192
-Í
-193ÅPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerkExpected Failed Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedWithTicketString() ç¿¾à¾3*%TestNG-test-Expected Status Creator-62Î
-java.lang.AssertionError Expected fail with ticket string'org.testng.Assert.fail(Assert.java:111)Æio.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailedWithTicketString(GenerateExpectedFailedStatusInTesterraReportTest.java:101)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B193
-á
-194ÙQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerORun Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailed() â¿¾à¾3*%TestNG-test-Expected Status Creator-2B194
-¼
-196´3eu.tsystems.mms.tic.testframework.utils.UITestUtilsHCould not create screenshots: No sessions found in current test context. å¿¾à¾3*%TestNG-test-Expected Status Creator-2B196
-“
-197‹Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker[Expected Failed Test GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailed() æ¿¾à¾3*%TestNG-test-Expected Status Creator-22¤
-java.lang.AssertionErrorNo Oil.'org.testng.Assert.fail(Assert.java:111)µio.testerra.report.test.pretest_status.expected.failed.GenerateExpectedFailedStatusInTesterraReportTest.test_expectedFailed(GenerateExpectedFailedStatusInTesterraReportTest.java:59)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)dorg.testng.internal.invokers.MethodInvocationHelper$1.runTestMethod(MethodInvocationHelper.java:260)]eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook.runHook(TestMethodHook.java:55)Xeu.tsystems.mms.tic.testframework.report.TesterraListener.run(TesterraListener.java:381)corg.testng.internal.invokers.MethodInvocationHelper.invokeHookable(MethodInvocationHelper.java:274)Korg.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:678)Oorg.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)Morg.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B197
-ã
-188ÛQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkerQRun Test GenerateExpectedFailedStatusInTesterraReportTest.test_PassedAfterRetry() é¿¾à¾3*%TestNG-test-Expected Status Creator-1B188
-è
-189àPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerWRecovered Test GenerateExpectedFailedStatusInTesterraReportTest.test_PassedAfterRetry() ì¿¾à¾3*%TestNG-test-Expected Status Creator-1B189
-õ
-175íQeu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorkercRun Configuration GenerateExpectedFailedStatusInTesterraReportTest.closeExclusiveWebDriverSession() ÇŠ¿à¾3*%TestNG-test-Expected Status Creator-4B175
-÷
-176ïPeu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorkerfPassed Configuration GenerateExpectedFailedStatusInTesterraReportTest.closeExclusiveWebDriverSession() ÈŠ¿à¾3*%TestNG-test-Expected Status Creator-4B176
-Œ
-198„1eu.tsystems.mms.tic.testframework.common.Testerra4#################################################### ÆŞ½à¾3*Test workerB198
-Œ
-199„1eu.tsystems.mms.tic.testframework.common.Testerra4#                     .8t .                        # ¡ß½à¾3*Test workerB199
-Œ
-200„1eu.tsystems.mms.tic.testframework.common.Testerra4#                    .8t ;;                        # ¡ß½à¾3*Test workerB200
-Œ
-201„1eu.tsystems.mms.tic.testframework.common.Testerra4#                   :@S %S8:;                      # ¡ß½à¾3*Test workerB201
-Œ
-202„1eu.tsystems.mms.tic.testframework.common.Testerra4#                   88   8   ;.                    # ¡ß½à¾3*Test workerB202
-Œ
-203„1eu.tsystems.mms.tic.testframework.common.Testerra4#                 .X8.   SS .8 ;                   # ¡ß½à¾3*Test workerB203
-Œ
-204„1eu.tsystems.mms.tic.testframework.common.Testerra4#                 @8.     88.  X..8                # ¢ß½à¾3*Test workerB204
-Œ
-205„1eu.tsystems.mms.tic.testframework.common.Testerra4#       .SX.    88        %S @..S X8               # ¢ß½à¾3*Test workerB205
-Œ
-206„1eu.tsystems.mms.tic.testframework.common.Testerra4#       .88 8.  SS          8 ;   %8@t             # ¢ß½à¾3*Test workerB206
-Œ
-207„1eu.tsystems.mms.tic.testframework.common.Testerra4#       @8 88;ttX;.         ::     @8;@@           # ¢ß½à¾3*Test workerB207
-Œ
-208„1eu.tsystems.mms.tic.testframework.common.Testerra4#      88.  @X:X;                   @S :@@         # £ß½à¾3*Test workerB208
-Œ
-209„1eu.tsystems.mms.tic.testframework.common.Testerra4#    .88.   .XX:                    .8.. ;8@       # £ß½à¾3*Test workerB209
-Œ
-210„1eu.tsystems.mms.tic.testframework.common.Testerra4#    X@                               X@ . 8S      # £ß½à¾3*Test workerB210
-Œ
-211„1eu.tsystems.mms.tic.testframework.common.Testerra4#  .%@:                                X8.  ;8X    # £ß½à¾3*Test workerB211
-Œ
-212„1eu.tsystems.mms.tic.testframework.common.Testerra4#  tt@XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXSS%@8@8S::  # £ß½à¾3*Test workerB212
-Œ
-213„1eu.tsystems.mms.tic.testframework.common.Testerra4#                                                  # ¤ß½à¾3*Test workerB213
-Œ
-214„1eu.tsystems.mms.tic.testframework.common.Testerra4#    T    E     S     T     E    R     R     A     # ¤ß½à¾3*Test workerB214
-Œ
-215„1eu.tsystems.mms.tic.testframework.common.Testerra4#                                                  # ¤ß½à¾3*Test workerB215
-Œ
-216„1eu.tsystems.mms.tic.testframework.common.Testerra4#                    2-SNAPSHOT                    # ¤ß½à¾3*Test workerB216
-Œ
-217„1eu.tsystems.mms.tic.testframework.common.Testerra4#################################################### ¤ß½à¾3*Test workerB217
-Œ
-218„1eu.tsystems.mms.tic.testframework.common.Testerra4# build.java.version: 11                           # ¥ß½à¾3*Test workerB218
-Œ
-219„1eu.tsystems.mms.tic.testframework.common.Testerra4# build.os.name:      Windows 11                   # ¥ß½à¾3*Test workerB219
-Œ
-220„1eu.tsystems.mms.tic.testframework.common.Testerra4# build.os.arch:      amd64                        # ¥ß½à¾3*Test workerB220
-Œ
-221„1eu.tsystems.mms.tic.testframework.common.Testerra4# build.os.version:   10.0                         # ¥ß½à¾3*Test workerB221
-Œ
-222„1eu.tsystems.mms.tic.testframework.common.Testerra4# build.user.name:    mgn                          # ¥ß½à¾3*Test workerB222
-Œ
-223„1eu.tsystems.mms.tic.testframework.common.Testerra4# build.timestamp:    Tue Jan 06 11:36:13 CET 2026 # ¦ß½à¾3*Test workerB223
-Œ
-224„1eu.tsystems.mms.tic.testframework.common.Testerra4#################################################### ¦ß½à¾3*Test workerB224
-µ
-225­1eu.tsystems.mms.tic.testframework.common.Testerra]Register IoC modules: CoreHook, DriverUiHook, DriverUi_Desktop, ReportModelHook, ReportNgHook äá½à¾3*Test workerB225
-ª
-226¢=eu.tsystems.mms.tic.testframework.report.TestStatusController.Generated Report for UI-Test DEFAULT: 1 Passed ‹é½à¾3*#TestNG-test-Passed Status Creator-2B226
-ª
-227¢=eu.tsystems.mms.tic.testframework.report.TestStatusController.Generated Report for UI-Test DEFAULT: 2 Passed Œé½à¾3*#TestNG-test-Passed Status Creator-1B227
-´
-228¬=eu.tsystems.mms.tic.testframework.report.TestStatusController8Generated Report for UI-Test DEFAULT: 1 Failed, 2 Passed Èé½à¾3*#TestNG-test-Failed Status Creator-1B228
-´
-229¬=eu.tsystems.mms.tic.testframework.report.TestStatusController8Generated Report for UI-Test DEFAULT: 2 Failed, 2 Passed Êé½à¾3*#TestNG-test-Failed Status Creator-2B229
-´
-230¬=eu.tsystems.mms.tic.testframework.report.TestStatusController8Generated Report for UI-Test DEFAULT: 3 Failed, 2 Passed §¿¾à¾3*#TestNG-test-Failed Status Creator-3B230
-µ
-231­=eu.tsystems.mms.tic.testframework.report.TestStatusController8Generated Report for UI-Test DEFAULT: 4 Failed, 2 Passed ¾¿¾à¾3*$TestNG-test-Skipped Status Creator-1B231
-
-232ˆ=eu.tsystems.mms.tic.testframework.report.TestStatusControllerFound SkipException À¿¾à¾3*$TestNG-test-Skipped Status Creator-3B232
-À
-233¸=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 1 Skipped, 2 Passed À¿¾à¾3*$TestNG-test-Skipped Status Creator-3B233
-
-234ˆ=eu.tsystems.mms.tic.testframework.report.TestStatusControllerFound SkipException Á¿¾à¾3*$TestNG-test-Skipped Status Creator-3B234
-À
-235¸=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 1 Skipped, 2 Passed Å¿¾à¾3*$TestNG-test-Skipped Status Creator-3B235
-˜
-236Peu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker^Skipped Test GenerateSkippedStatusInTesterraReportTest.test_Skipped_AfterErrorInDataProvider() É¿¾à¾3*$TestNG-test-Skipped Status Creator-22Ÿ
-
-org.testng.SkipException.Method skipped because of failed data providerjeu.tsystems.mms.tic.testframework.report.TesterraListener.onDataProviderFailure(TesterraListener.java:583)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:821)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:734)Xorg.testng.internal.invokers.ParameterHandler.handleParameters(ParameterHandler.java:72)Xorg.testng.internal.invokers.ParameterHandler.createParameters(ParameterHandler.java:51)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:946)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)2…
-java.lang.RuntimeExceptionError in DataProvider. io.testerra.report.test.pretest_status.simple.GenerateSkippedStatusInTesterraReportTest.dataProviderWithError(GenerateSkippedStatusInTesterraReportTest.java:52)ejava.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103):java.base/java.lang.reflect.Method.invoke(Method.java:580)aorg.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)`org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:86)rorg.testng.internal.invokers.MethodInvocationHelper.invokeMethodNoCheckedException(MethodInvocationHelper.java:54)gorg.testng.internal.invokers.MethodInvocationHelper.invokeDataProvider(MethodInvocationHelper.java:159)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:809)Dorg.testng.internal.Parameters.handleParameters(Parameters.java:734)Xorg.testng.internal.invokers.ParameterHandler.handleParameters(ParameterHandler.java:72)Xorg.testng.internal.invokers.ParameterHandler.createParameters(ParameterHandler.java:51)[org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:946)Porg.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)Zorg.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)Lorg.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)Qjava.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)Bjava.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)Oorg.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)Yjava.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)Yjava.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)0java.base/java.lang.Thread.run(Thread.java:1583)B236
-À
-237¸=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 2 Skipped, 2 Passed Ë¿¾à¾3*$TestNG-test-Skipped Status Creator-5B237
-
-238ˆ=eu.tsystems.mms.tic.testframework.report.TestStatusControllerFound SkipException Ë¿¾à¾3*$TestNG-test-Skipped Status Creator-2B238
-À
-239¸=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 3 Skipped, 2 Passed Ì¿¾à¾3*$TestNG-test-Skipped Status Creator-2B239
-À
-240¸=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 3 Skipped, 2 Passed Í¿¾à¾3*$TestNG-test-Skipped Status Creator-5B240
-À
-241¸=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 4 Skipped, 2 Passed Ñ¿¾à¾3*$TestNG-test-Skipped Status Creator-4B241
-À
-242¸=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 4 Skipped, 2 Passed Ó¿¾à¾3*$TestNG-test-Skipped Status Creator-4B242
-Á
-243¹=eu.tsystems.mms.tic.testframework.report.TestStatusControllerCGenerated Report for UI-Test DEFAULT: 4 Failed, 4 Skipped, 3 Passed á¿¾à¾3*%TestNG-test-Expected Status Creator-5B243
-Ë
-244Ã@eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzerJFound retry cause: exception message="test_FailedToPassedHistoryWithRetry" å¿¾à¾3*%TestNG-test-Expected Status Creator-1B244
-¿
-245·@eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer>Send signal for retrying the test (1/1): test_PassedAfterRetry ç¿¾à¾3*%TestNG-test-Expected Status Creator-1B245
-Ì
-246Ä=eu.tsystems.mms.tic.testframework.report.TestStatusControllerNGenerated Report for UI-Test DEFAULT: 1 Retried, 4 Failed, 4 Skipped, 3 Passed ç¿¾à¾3*%TestNG-test-Expected Status Creator-1B246
-ß
-247×=eu.tsystems.mms.tic.testframework.report.TestStatusControlleraGenerated Report for UI-Test DEFAULT: 1 Retried, 4 Failed, 1 Expected Failed, 4 Skipped, 3 Passed è¿¾à¾3*%TestNG-test-Expected Status Creator-2B247
-ß
-248×=eu.tsystems.mms.tic.testframework.report.TestStatusControlleraGenerated Report for UI-Test DEFAULT: 1 Retried, 4 Failed, 2 Expected Failed, 4 Skipped, 3 Passed ê¿¾à¾3*%TestNG-test-Expected Status Creator-6B248
-ß
-249×=eu.tsystems.mms.tic.testframework.report.TestStatusControlleraGenerated Report for UI-Test DEFAULT: 1 Retried, 4 Failed, 3 Expected Failed, 4 Skipped, 3 Passed ì¿¾à¾3*%TestNG-test-Expected Status Creator-3B249
-ß
-250×=eu.tsystems.mms.tic.testframework.report.TestStatusControlleraGenerated Report for UI-Test DEFAULT: 1 Retried, 4 Failed, 3 Expected Failed, 4 Skipped, 4 Passed í¿¾à¾3*%TestNG-test-Expected Status Creator-1B250
-ß
-251×=eu.tsystems.mms.tic.testframework.report.TestStatusControlleraGenerated Report for UI-Test DEFAULT: 1 Retried, 4 Failed, 4 Expected Failed, 4 Skipped, 4 Passed ÄŠ¿à¾3*%TestNG-test-Expected Status Creator-4B251
-Ú
-252Ò=eu.tsystems.mms.tic.testframework.report.TestStatusControlleraGenerated Report for UI-Test DEFAULT: 1 Retried, 5 Failed, 4 Expected Failed, 4 Skipped, 4 Passed —¿à¾3* TestNG-test-Screenshot Creator-1B252
-Ú
-253Ò=eu.tsystems.mms.tic.testframework.report.TestStatusControlleraGenerated Report for UI-Test DEFAULT: 1 Retried, 5 Failed, 4 Expected Failed, 4 Skipped, 5 Passed ™™¿à¾3* TestNG-test-Screenshot Creator-2B253
-
-254•9eu.tsystems.mms.tic.testframework.report.TesterraListener=Triggering report generation after successful test execution. ¡™¿à¾3*Test workerB254
-
-255•=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener9*** Stats: ********************************************** ¢™¿à¾3*Test workerB255
-ˆ
-256€=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener$*** Stats: ExecutionContext: DEFAULT ¢™¿à¾3*Test workerB256
-
-257x=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: SuiteContexts:  1 ¤™¿à¾3*Test workerB257
-
-258x=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: TestContexts:   5 ¥™¿à¾3*Test workerB258
-
-259x=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: ClassContexts:  6 ¥™¿à¾3*Test workerB259
-€
-260y=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: MethodContexts: 34 ¥™¿à¾3*Test workerB260
-
-261•=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener9*** Stats: ********************************************** ¦™¿à¾3*Test workerB261
-“
-262‹=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener/*** Stats: Test Methods Count: 19 (18 relevant) ¦™¿à¾3*Test workerB262
-w
-263p=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: Failed: 5 §™¿à¾3*Test workerB263
-x
-264q=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: Retried: 1 §™¿à¾3*Test workerB264
-€
-265y=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: Expected Failed: 4 §™¿à¾3*Test workerB265
-x
-266q=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener*** Stats: Skipped: 4 ¨™¿à¾3*Test workerB266
-™
-267‘=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener5*** Stats: Passed: 5 âŠƒ Recovered: 1 âŠƒ Repaired: 1 ¨™¿à¾3*Test workerB267
-
-268•=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener9*** Stats: ********************************************** ¨™¿à¾3*Test workerB268
-
-269†=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener**** Stats: ExecutionContext Status: Failed ©™¿à¾3*Test workerB269
-Œ
-270„=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener(*** Stats: FailureCorridor Enabled: true ª™¿à¾3*Test workerB270
-
-271•=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener9*** Stats: ********************************************** ª™¿à¾3*Test workerB271
-±
-272©=eu.tsystems.mms.tic.testframework.report.ExecutionEndListenerM*** Stats: FailureCorridor Status : H-M-L: 3-2*-0 (3-1-0) Skipped: 4 -NOT OK- ­™¿à¾3*Test workerB272
-
-273•=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener9*** Stats: ********************************************** ®™¿à¾3*Test workerB273
-ƒ
-274|=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener *** Stats: Duration: 23 s 888 ms ²™¿à¾3*Test workerB274
-
-275•=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener9*** Stats: ********************************************** ²™¿à¾3*Test workerB275
-•
-276=eu.tsystems.mms.tic.testframework.report.ExecutionEndListener1Report generated after successful test execution. ³™¿à¾3*Test workerB276

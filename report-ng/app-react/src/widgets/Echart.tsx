@@ -1,42 +1,84 @@
-import React from 'react';
-import type {EChartsOption} from 'echarts-for-react';
-import ReactEChartsCore from 'echarts-for-react/lib/core';
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import React, {forwardRef} from 'react';
+import type {EChartsOption, EChartsReactProps} from 'echarts-for-react';
+import ReactEChartsCore from 'echarts-for-react/esm/core';
 import * as echarts from 'echarts/core';
-import {BarChart, LineChart, PieChart} from 'echarts/charts';
-import {GridComponent, LegendComponent, TitleComponent, TooltipComponent} from 'echarts/components';
+import {BarChart, CustomChart, LineChart, PieChart, ScatterChart} from 'echarts/charts';
+import {DataZoomComponent, GraphicComponent, GridComponent, LegendComponent, TitleComponent, ToolboxComponent, TooltipComponent,} from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
+import Box from "@mui/material/Box";
+import {ECHARTS_THEME_NAME, echartsTheme} from "../layout/echartsTheme";
 
 export interface EChartProps {
     option: EChartsOption;
     width?: number;
-    height?: number;
-    onEvents?: Record<string, (params: any, chart: any) => void>;
+    height?: number | string;
+    onEvents?: EChartsReactProps['onEvents'];
     notMerge?: boolean;
+    autoResize?: boolean;
+    onChartReady?: EChartsReactProps['onChartReady'];
 }
 
 echarts.use([
-    BarChart, LineChart, PieChart,
-    GridComponent, TooltipComponent, LegendComponent, TitleComponent,
+    BarChart, CustomChart, LineChart, PieChart, ScatterChart,
+    GridComponent, TooltipComponent, LegendComponent, TitleComponent, DataZoomComponent, ToolboxComponent, GraphicComponent,
     CanvasRenderer,
 ]);
 
-const Echart: React.FC<EChartProps> = ({option, width, height, onEvents, notMerge}) => {
-    const style: React.CSSProperties = {
-        ...(width !== undefined ? {width} : {}),
-        ...(height !== undefined ? {height} : {}),
-    };
-    const opts = {
-        ...(width !== undefined ? {width} : {}),
-        ...(height !== undefined ? {height} : {}),
-    };
+echarts.registerTheme(ECHARTS_THEME_NAME, echartsTheme);
 
-    // TODO fix resize
+export type EchartRef = ReactEChartsCore;
 
-    return (
-        <div style={style}>
-            <ReactEChartsCore echarts={echarts} option={option} opts={opts} autoResize={false} onEvents={onEvents} notMerge={notMerge}/>
-        </div>
-    )
-};
+const Echart = forwardRef<ReactEChartsCore, EChartProps>(
+    ({option, width, height, onEvents, notMerge, autoResize = false, onChartReady}, ref) => {
+        const style: React.CSSProperties = {
+            width: width ?? '100%',
+            height: height ?? '100%',
+        };
+        const opts = {
+            ...(width !== undefined ? {width} : {}),
+            ...(typeof height === 'number' ? {height} : {}),
+        };
+
+        return (
+            <Box sx={{flex: 1, minHeight: 0}}>
+                <ReactEChartsCore
+                    ref={ref}
+                    echarts={echarts}
+                    option={option}
+                    theme={ECHARTS_THEME_NAME}
+                    opts={opts}
+                    autoResize={autoResize}
+                    onEvents={onEvents}
+                    notMerge={notMerge}
+                    onChartReady={onChartReady}
+                    style={style}
+                />
+            </Box>
+        );
+    }
+);
+
+Echart.displayName = "Echart";
 
 export default Echart;

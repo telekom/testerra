@@ -20,7 +20,7 @@
  */
 
 import type {ILogEntry} from "../model/Logs";
-import {dateFormatter} from "./dateFormatter";
+import {formatDate} from "./dateFormatter";
 
 // helper function to flatten a log entry's stack trace into a list of readable lines (string array)
 export function flattenStackTrace(log: ILogEntry): string[] {
@@ -60,7 +60,7 @@ export function checkMatches(log: ILogEntry, searchText?: string) {
         : "";
     const foundInLoggerName = loggerClass.toLowerCase().includes(lowerTerm);
 
-    const foundInTimeStamp = String(dateFormatter(log.timestamp, "short"))
+    const foundInTimeStamp = String(formatDate(log.timestamp, "short"))
         .toLowerCase()
         .includes(lowerTerm);
 

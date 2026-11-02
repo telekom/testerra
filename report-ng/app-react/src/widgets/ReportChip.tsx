@@ -21,7 +21,7 @@
 
 import Chip from "@mui/material/Chip";
 import type {SxProps, Theme} from '@mui/material/styles';
-import type {ChipColor} from "../hooks/useTestListFilters";
+import type {ChipColor} from "../hooks/useChipListFilters";
 import Tooltip from '@mui/material/Tooltip';
 
 type ReportChipProps = {
@@ -37,7 +37,7 @@ type ReportChipProps = {
 const ReportChip = ({label, sx, handleDelete, color, size, tooltipText, handleClick}: ReportChipProps) => {
     return (
         <Tooltip title={tooltipText}>
-            <Chip label={label} sx={sx} onDelete={handleDelete} color={color} size={size} onClick={() => handleClick ? handleClick(): undefined}/>
+            <Chip label={label} sx={sx} onDelete={handleDelete} color={color} size={size} onClick={handleClick}/>
         </Tooltip>
     );
 }

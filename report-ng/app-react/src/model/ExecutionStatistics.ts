@@ -80,4 +80,8 @@ export class ExecutionStatistics extends Statistics {
         return this._uniqueFailureAspects;
     }
 
+    get getExecutionAggregate(): ExecutionAggregate {
+        return this.executionAggregate;
+    }
+
 }

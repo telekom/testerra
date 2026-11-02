@@ -29,6 +29,9 @@ import {ClassName, classNameConverter} from "../../utils/classNameConverter";
 import {FailureAspectStatistics} from "../../model/FailureAspectStatistics";
 import {useNavigate} from "react-router-dom";
 import {ExecutionStatistics} from "../../model/ExecutionStatistics";
+import Box from "@mui/material/Box";
+import {Typography} from "@mui/material";
+import React from "react";
 
 interface DashboardFailureAspectsProps {
     sx?: SxProps<Theme>,
@@ -52,16 +55,17 @@ const DashboardFailureAspectsCard = ({sx, execStatistics}: DashboardFailureAspec
     })
 
     const failureAspectsLabel = (
-        <>
-            Top 3 Failure Aspects (
-            <Link href="#/failureAspects?type=major">{majorFailures} Major</Link>
-            {" | "}
-            <Link href="#/failureAspects?type=minor">{minorFailures} Minor</Link>
-            )
-        </>
+        <Box>
+            <Typography variant="subtitle2" color="primary">Top 3 Failure Aspects (
+                <Link href="#/failureAspects?type=major">{majorFailures} Major</Link>
+                {" | "}
+                <Link href="#/failureAspects?type=minor">{minorFailures} Minor</Link>
+                )
+            </Typography>
+        </Box>
     );
 
-    let itemList: { primaryText: string, icon: React.ReactNode }[] = []
+    const itemList: { primaryText: string, icon: React.ReactNode }[] = []
     topFailureAspects.forEach(failureAspect => {
         const item = {
             primaryText: classNameConverter(failureAspect.relevantCause!.className!, ClassName.simpleName) + ": " + failureAspect.message,
@@ -81,11 +85,13 @@ const DashboardFailureAspectsCard = ({sx, execStatistics}: DashboardFailureAspec
     }
 
     return (
-        <ReportCard label={failureAspectsLabel} sxContent={{p: 0, ":last-child": {padding: 0}}}
-                    tooltipText="The most critical errors that caused the highest number of failed test cases"
-                    sxCard={sx}>
-            <ButtonList list={itemList} disablePadding={true} handleClick={gotoFailureAspect}/>
-        </ReportCard>
+        <ReportCard
+            label={failureAspectsLabel}
+            sxContent={{p: 0, ":last-child": {padding: 0}}}
+            tooltipText="The most critical errors that caused the highest number of failed test cases"
+            sxCard={sx}
+            content={<ButtonList list={itemList} disablePadding={true} handleClick={gotoFailureAspect}/>}
+        />
     );
 };
 export default DashboardFailureAspectsCard;

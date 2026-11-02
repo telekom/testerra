@@ -1,63 +1,40 @@
-import Echart from "../../widgets/Echart";
-import ReportCard from "../../widgets/ReportCard";
-import {StatusService} from "../../model/status-service";
-import type {SxProps, Theme} from "@mui/material/styles";
+/*
+ * Testerra
+ *
+ * (C) 2026, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
-interface DashboardPieChartProps {
-    execStatistics: any;
-    onChartPieceClick: (newPiece: string) => void;
-    selectedStatus: string | null;
-    sx?: SxProps<Theme>
+import ReportCard from "../../widgets/ReportCard";
+import type {SxProps, Theme} from "@mui/material/styles";
+import TestRunPieChart, {type TestRunPieChartProps} from "../TestRunPieChart.tsx";
+
+interface DashboardPieChartProps extends TestRunPieChartProps {
+    sx?: SxProps<Theme>;
 }
 
-const DashboardPieChartCard = ({execStatistics, onChartPieceClick, selectedStatus, sx}: DashboardPieChartProps) => {
-
-    let data = []
-    for (const status of StatusService.getRelevantStatuses()) {
-        const statusGroup = StatusService.getGroup(status);
-        const statusInformation = StatusService.get(status);
-
-        const dataItem = {
-            value: execStatistics.getSummarizedStatusCount(statusGroup),
-            name: statusInformation.label,
-            itemStyle: {
-                color: statusInformation.color
-            },
-            selected: selectedStatus === statusInformation.label  // highlighting if selected
-        }
-        data.push(dataItem)
-    }
-
-    const option = {
-        tooltip: {
-            formatter: '{b}: {c}'
-        },
-        series: [
-            {
-                name: 'Tests',
-                type: 'pie',
-                radius: [50, 120],
-                selectedMode: 'single', // how many items can be selected at once
-                selectedOffset: 5,      // how far slice is away from rest of the pie
-                data: data,
-                label: {
-                    formatter: '{d}%',
-                    position: 'inside'
-                }
-            }
-        ]
-    };
-
-    const onEvents = {
-        click: (params: any) => {
-            onChartPieceClick(params.data.name);
-        }
-    };
-
+const DashboardPieChartCard = ({sx, ...chartProps}: DashboardPieChartProps) => {
     return (
-        <ReportCard label="Breakdown" sxCard={sx}>
-            <Echart option={option} onEvents={onEvents} notMerge={true}/>
-        </ReportCard>
+        <ReportCard
+            label="Breakdown"
+            sxCard={sx}
+            sxContent={{p: 0, ":last-child": {padding: 0}}}
+            content={<TestRunPieChart {...chartProps}/>}
+        />
     );
 };
 export default DashboardPieChartCard;

@@ -1,5 +1,8 @@
 # Testerra ReportNG with React
 
+The navigation footer displays the Testerra version used to create the report and links to its documentation.
+For SNAPSHOT versions, it also displays the build timestamp, matching the legacy report.
+
 Install deps
 ````shell
 bun install
@@ -18,6 +21,11 @@ npm run build
 bunx --bun vite build
 ````
 
+## Add local testdata
+
+* Create a new folder `public` in the root of the project
+* Execute a test
+* From the created report copy the `model`, `screenshot` and `video` folders into the `public` folder
 
 ## Basic information from project generation 
 

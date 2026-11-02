@@ -1,7 +1,6 @@
 
 import {createHashRouter, type RouteObject, Navigate} from 'react-router-dom';
 import MainLayout from "../layout/MainLayout.tsx";
-import AboutPage from "../pages/AboutPage.tsx";
 import TimingsPage from "../pages/TimingsPage.tsx";
 import DashboardPage from "../pages/DashboardPage.tsx";
 import MethodDetailsPage from "../pages/MethodDetailsPage.tsx";
@@ -10,16 +9,38 @@ import TestsPage from "../pages/TestsPage";
 
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ListIcon from '@mui/icons-material/List';
 import SmsFailedIcon from '@mui/icons-material/SmsFailed';
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import DevicesIcon from '@mui/icons-material/Devices';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 import CodeIcon from '@mui/icons-material/Code';
+import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import type {JSX} from "react";
 import TestTimings from "../components/timings-tab-components/TestTimings";
 import Sessions from "../components/timings-tab-components/Sessions";
 import FailureAspectsPage from "../pages/FailureAspectsPage";
 import LogsPage from "../pages/LogsPage";
+import ErrorDetailsTab from "../components/method-details/ErrorDetailsTab.tsx";
+import StepsTab from "../components/method-details/StepsTab.tsx";
+import BrowserInfoTab from "../components/method-details/BrowserInfoTab.tsx";
+import DependenciesTab from "../components/method-details/DependenciesTab.tsx";
+import VideoTab from "../components/method-details/VideoTab.tsx";
+import ThreadsPage from "../pages/ThreadsPage.tsx";
+import HistoryPage from "../pages/HistoryPage.tsx";
+import {HistoryRounded} from "@mui/icons-material";
+import AreaChartIcon from "@mui/icons-material/AreaChart";
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import ViewComfyIcon from "@mui/icons-material/ViewComfy";
+import HistoryTestRunPage from "../components/history-components/HistoryTestRunPage.tsx";
+import HistoryRunComparisonPage from "../components/history-components/HistoryRunComparisonPage.tsx";
+import HistoryRunDurationPage from "../components/history-components/HistoryRunDurationPage.tsx";
+import HistoryTestClassesPage from "../components/history-components/HistoryTestClassesPage.tsx";
+import MethodHistoryTab from "../components/method-details/MethodHistoryTab.tsx";
 
 // Custom attributes for menu elements
 export interface RouteHandle {
@@ -41,7 +62,7 @@ export const routesConfig: RouteObject[] = [
             {
                 path: "Tests",
                 element: <TestsPage/>,
-                handle: {label: "Tests", show: true, icon: <AnalyticsRoundedIcon />} as RouteHandle
+                handle: {label: "Tests", show: true, icon: <FormatListBulletedRoundedIcon />} as RouteHandle
             },
             {
                 path: "failureAspects",
@@ -54,9 +75,9 @@ export const routesConfig: RouteObject[] = [
                 handle: {label: "Logs", show: true, icon: <CodeIcon />} as RouteHandle
             },
             {
-                path: "about",
-                element: <AboutPage/>,
-                handle: {label: "About", show: true, icon: <InfoRoundedIcon />} as RouteHandle
+                path: "threads",
+                element: <ThreadsPage/>,
+                handle: {label: "Threads", show: true, icon: <ClearAllIcon />} as RouteHandle
             },
             {
                 path: "timings",
@@ -81,8 +102,76 @@ export const routesConfig: RouteObject[] = [
                 ]
             },
             {
+                path: "history",
+                element: <HistoryPage/>,
+                handle: {label: "History", show: true, icon: <HistoryRounded />} as RouteHandle,
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="run-history" replace />
+                    },
+                    {
+                        path: "run-history",
+                        element: <HistoryTestRunPage />,
+                        handle: {label: "Test run", show: true, icon: <AreaChartIcon />} as RouteHandle
+                    },
+                    {
+                        path: "run-comparison",
+                        element: <HistoryRunComparisonPage />,
+                        handle: {label: "Run comparison", show: true, icon: <CompareArrowsIcon />} as RouteHandle
+                    },
+                    {
+                        path: "duration-history",
+                        element: <HistoryRunDurationPage />,
+                        handle: {label: "Run duration", show: true, icon: <TimelineIcon />} as RouteHandle
+                    },
+                    {
+                        path: "classes-history",
+                        element: <HistoryTestClassesPage />,
+                        handle: {label: "Test classes", show: true, icon: <ViewComfyIcon />} as RouteHandle
+                    },
+                ]
+            },
+            {
                 path: "method/:methodId?",
-                element: <MethodDetailsPage />
+                element: <MethodDetailsPage />,
+                children: [
+                    // makes sure that never only /method/{id} is rendered but always /method/{id}/details
+                    {
+                        index: true,
+                        element: <Navigate to="details" replace />
+                    },
+                    {
+                        path: "details",
+                        element: <ErrorDetailsTab/>,
+                        handle: {label: "Error Details", show: true, icon: <CenterFocusStrongIcon />} as RouteHandle
+                    },
+                    {
+                        path: "steps/:stepId?",
+                        element: <StepsTab/>,
+                        handle: {label: "Steps", show: true, icon: <ListIcon />} as RouteHandle
+                    },
+                    {
+                        path: "browser-info",
+                        element: <BrowserInfoTab/>,
+                        handle: {label: "Browser Info", show: true, icon: <DevicesIcon />} as RouteHandle
+                    },
+                    {
+                        path: "video",
+                        element: <VideoTab/>,
+                        handle: {label: "Video ", show: true, icon: <PlayCircleIcon />} as RouteHandle
+                    },
+                    {
+                        path: "dependencies",
+                        element: <DependenciesTab/>,
+                        handle: {label: "Dependencies ", show: true, icon: <AccountTreeIcon />} as RouteHandle
+                    },
+                    {
+                        path: "method-history",
+                        element: <MethodHistoryTab/>,
+                        handle: {label: "Method history", show: true, icon: <HistoryRounded/>} as RouteHandle
+                    }
+                ]
             },
             {
                 path: '*',

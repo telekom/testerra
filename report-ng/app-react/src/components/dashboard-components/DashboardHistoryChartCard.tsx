@@ -1,84 +1,43 @@
-import Echart from "../../widgets/Echart";
+/*
+ * Testerra
+ *
+ * (C) 2026, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import ReportCard from "../../widgets/ReportCard";
 import type {SxProps, Theme} from "@mui/material/styles";
+import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
+import TestRunHistoryBarChart from "../history-components/TestRunHistoryBarChart.tsx";
 
 interface DashboardHistoryChartProps {
+    histStatistics: HistoryStatistics
+    selectedStatus: string | null;
     sx?: SxProps<Theme>
 }
 
-const DashboardHistoryChartCard = ({sx}: DashboardHistoryChartProps) => {
-
-    const option = {
-        grid: {
-            top: '3%',
-            left: '3%',
-            right: '3%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: [
-            {
-                type: 'category',
-                axisLabel: {
-                    show: false
-                },
-                boundaryGap: false,
-                splitLine: {
-                    show: true
-                }
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value',
-                axisLine: {
-                    show: true
-                },
-                axisLabel: {
-                    show: false
-                },
-                splitLine: {
-                    show: false
-                }
-            }
-        ],
-        series: [{
-            data: [1000, 1100, 1100, 1200, 1290, 1330, 1320],
-            type: 'line',
-            areaStyle: {
-                color: 'rgba(20,20,20,0.05)'
-            },
-            lineStyle: {
-                color: 'rgba(255,255,255,0)',
-                width: 0
-            },
-            silent: true,
-            symbol: 'none',
-            emphasis: {
-                focus: 'none'
-            },
-            tooltip: {
-                show: false
-            }
-        }],
-        graphic: {
-            type: 'text',
-            left: 'center',
-            top: 'center',
-            silent: true,
-            z: 10,
-            style: {
-                text: 'No history available',
-                font: '28px Roboto',
-                fill: '#55555'
-            }
-        }
-    };
-
+const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: DashboardHistoryChartProps) => {
     return (
-        <ReportCard label="History" sxContent={{p: 0}} sxCard={sx}>
-            <Echart option={option}/>
-        </ReportCard>
+        <ReportCard
+            label="History"
+            sxContent={{p: 0}}
+            sxCard={sx}
+            content={<TestRunHistoryBarChart histStatistics={histStatistics} selectedStatus={selectedStatus}/>}
+        />
     );
 };
 export default DashboardHistoryChartCard;

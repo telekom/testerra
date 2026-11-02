@@ -29,7 +29,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import {useEffect, useMemo, useState} from "react";
 import {LogConsole} from "../components/LogConsole";
 import {useReportData} from "../provider/DataProvider";
-import LinearProgress from "@mui/material/LinearProgress";
+import LoadingBar from "../widgets/LoadingBar.tsx";
 import Alert from "@mui/material/Alert";
 import type {ILogEntry} from "../model/Logs";
 import {logLevelNameConverter} from "../utils/logLevelNameConverter";
@@ -143,9 +143,9 @@ const LogsPage = () => {
         );
     }, [searchTerm, matchedIndexes.length, currentMatchPosition]);
 
-    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
+    if (isLoading) return <LoadingBar/>;
     if (error)
-        return <Alert severity="error">An error occured: {error?.message}</Alert>;
+        return <Alert severity="error">An error occurred: {error?.message}</Alert>;
     if (!executionMngr) return null;
 
     return (

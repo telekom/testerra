@@ -13,7 +13,7 @@ Cleans the application build environment (including `node_modules`)
 gradle npmClean
 ```
 
-Builds the Report NG from `app` and copies the files to `src/main/resources`.
+Builds the Report NG from `app-react` and copies the files to `src/main/resources`.
 
 ```shell
 gradle buildReport
@@ -21,5 +21,5 @@ gradle buildReport
 
 ## Testing
 
-When using the report with integration tests from source (without built JAR),
-you need to run `buildReport` before `processResources` in `build` or `test` in order to be able to access the resources.
+`build` and `test` in module `report-ng` do not trigger `buildReport` automatically.
+For `integration-tests` and `report-ng-tests`, `test` runs `buildReport` before and refresh the resources.

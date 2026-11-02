@@ -10,13 +10,16 @@ import Drawer, {drawerClasses} from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import PrintIcon from "@mui/icons-material/Print";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import * as React from "react";
-import {useEffect} from "react";
+import {useState} from "react";
 import styled from "@emotion/styled";
-import {Divider, ListItemIcon, Typography} from "@mui/material";
+import {Divider, Link as MuiLink, ListItemIcon, Typography} from "@mui/material";
 import logo from "../../assets/logo.png";
-import "./MainNavigation.css";
-import { blueGrey } from "@mui/material/colors";
+import {blueGrey} from "@mui/material/colors";
+import PrintDialog from "../print/PrintDialog";
+import {useReportData} from "../../provider/DataProvider";
 
 const drawerWidth = 240;
 
@@ -24,10 +27,12 @@ const MenuDrawer = styled(Drawer)({
     width: drawerWidth,
     flexShrink: 0,
     boxSizing: 'border-box',
-    mt: 10,
+    marginTop: '64px',
     [`& .${drawerClasses.paper}`]: {
         width: drawerWidth,
         boxSizing: 'border-box',
+        top: 64,
+        height: 'calc(100% - 64px)',
     },
 });
 
@@ -38,7 +43,13 @@ const MainNavigation = () => {
 
     const menuRoutes = routesConfig[0].children || [];
     const location = useLocation();
+    const {executionMngr} = useReportData();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [printDialogOpen, setPrintDialogOpen] = useState(false);
+    const reportName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.reportName ?? "";
+    const executionName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.contextValues?.name ?? "";
+    const buildInformation = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.buildInformation;
+    const buildVersion = buildInformation?.buildVersion;
 
     const toggleDrawer = (open: boolean) => () => {
         setMobileOpen(open);
@@ -57,12 +68,6 @@ const MainNavigation = () => {
         }
     }
 
-
-    useEffect(() => {
-        console.log('Pfad hat sich geändert zu:', location.pathname);
-        console.table(location); // Zeigt die Daten schick als Tabelle an
-    }, [location]);
-
     const isRouteActive = (routePath: string): boolean => {
         // check regex: path can either match exactly or start with a trailing "/" and further characters
         // (prevents that "/" path is always highlighted or subroutes are not highlighted)
@@ -71,39 +76,23 @@ const MainNavigation = () => {
     }
 
     const drawerContent = (
-        <Box
-            data-testid="sidebar"
-            sx={{height: '100%', overflow: 'hidden'}}>
-            <Box>
-                <Toolbar
-                    sx={{
-                        backgroundColor: 'primary.main',
-                        color: 'primary.contrastText',
-                    }}
-                >
-                    <img src={logo} className="logo" alt="Testerra report"/>
-                    <Typography variant="h6" sx={{pl: 1}}>Test project</Typography>
-                </Toolbar>
-            </Box>
-
+        <Box sx={{height: '100%', overflow: 'hidden'}}>
             <Box
                 sx={{
                     overflow: 'auto',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    backgroundColor: 'grey.100'
+                    backgroundColor: 'grey.100',
                 }}
             >
+                {/*<List>*/}
+                {/*    <ListItem>*/}
+                {/*        <ListItemText>{executionName}</ListItemText>*/}
+                {/*    </ListItem>*/}
+                {/*</List>*/}
+                {/*<Divider/>*/}
                 <List>
-                    <ListItem>
-                        <ListItemText>Regression</ListItemText>
-                    </ListItem>
-                </List>
-                <Divider/>
-                <List
-                    data-testid="main-nav"
-                >
                     {menuRoutes
                         .filter((route) => (route.handle as RouteHandle)?.show)
                         .map((route, index) => {
@@ -116,7 +105,7 @@ const MainNavigation = () => {
                             return (
                                 <ListItem
                                     disablePadding
-                                    data-testid={'menu-' + label}
+                                    qa-item={'menu-' + label}
                                     key={index}
                                     sx={
                                         isActive
@@ -143,30 +132,78 @@ const MainNavigation = () => {
                         })
                     }
                 </List>
-
+                <Divider/>
+                <List>
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={() => {
+                            setMobileOpen(false);
+                            setPrintDialogOpen(true);
+                        }}>
+                            <ListItemIcon>
+                                <PrintIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Print Report"/>
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+                {buildVersion && (
+                    <Box sx={{mt: 'auto', p: 2, color: 'text.secondary'}}>
+                        <Typography variant="caption" component="div" sx={{overflowWrap: 'anywhere'}}>
+                            Created with Testerra {buildVersion}{' '}
+                            <MuiLink
+                                href={`https://docs.testerra.io/testerra/${buildVersion}/index.html`}
+                                title="Documentation"
+                                aria-label="Testerra documentation"
+                                target="_blank"
+                                rel="noopener"
+                                color="inherit"
+                            >
+                                <OpenInNewIcon sx={{fontSize: 18, verticalAlign: 'middle'}}/>
+                            </MuiLink>
+                        </Typography>
+                        {buildVersion.includes('SNAPSHOT') && buildInformation.buildTimestamp && (
+                            <Typography variant="caption" component="div">
+                                {buildInformation.buildTimestamp}
+                            </Typography>
+                        )}
+                    </Box>
+                )}
             </Box>
         </Box>
     );
 
     return (
         <>
-            {/* Horizontal top bar with burger button that appears if the screen width is too small */}
             <AppBar
                 position="fixed"
                 sx={{
-                    display: {xs: 'block', md: 'none'},
-                    bgcolor: 'background.paper',
-                    color: 'text.primary',
+                    width: {xs: "100%", md: `${drawerWidth}px`},
+                    left: 0,
+                    right: "auto",
+                    boxSizing: 'border-box',
+                    backgroundColor: 'primary.main',
+                    color: 'primary.contrastText',
                 }}
             >
                 <Toolbar>
-                    <Typography variant="h6" sx={{flexGrow: 1}}>
-                        Test project
+                    <Box component="img" src={logo} alt="Testerra report" sx={{width: 60, height: 60}}/>
+                    <Typography
+                        variant="h6"
+                        sx={{flexGrow: 1, pl: 1, display: {xs: "none", md: "block"}}}
+                    >
+                        Report
                     </Typography>
-
-                    <IconButton onClick={toggleDrawer(true)}>
-                        <MenuIcon/>
-                    </IconButton>
+                    <Box sx={{display: {xs: "block", md: "none"}}}>
+                        <Typography>
+                            {reportName}
+                        </Typography>
+                        <Typography variant="body2">Execution: {executionName}</Typography>
+                    </Box>
+                    <Box sx={{display: {xs: 'block', md: 'none'}, ml: "auto"}}>
+                        <IconButton onClick={toggleDrawer(true)} color="inherit">
+                            <MenuIcon/>
+                        </IconButton>
+                    </Box>
                 </Toolbar>
             </AppBar>
 
@@ -179,6 +216,8 @@ const MainNavigation = () => {
                     display: {xs: 'block', md: 'none'},
                     [`& .${drawerClasses.paper}`]: {
                         width: drawerWidth,
+                        top: 64,
+                        height: 'calc(100% - 64px)',
                     },
                 }}
             >
@@ -197,6 +236,12 @@ const MainNavigation = () => {
             >
                 {drawerContent}
             </MenuDrawer>
+
+            <PrintDialog
+                open={printDialogOpen}
+                onClose={() => setPrintDialogOpen(false)}
+                executionStatistics={executionMngr?.getExecutionStatistics() || null}
+            />
         </>
     );
 };

@@ -74,13 +74,13 @@ public class GeneratePassedCheckTestsTTReportTest extends AbstractTestSitesTest 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
 
-        log().info("It is gonna be ok.", Loggable.prompt);
+        log().info("It is gonna be ok in method.", Loggable.prompt);
 
         // some test activities ...
-        log().warn("Warn me!", Loggable.prompt);
+        log().warn("Warn me in method!", Loggable.prompt);
 
         // some test activities ...
-        log().error("Tell me more!", Loggable.prompt);
+        log().error("Tell me more in mthod!", Loggable.prompt);
     }
 
     @Test(groups = {Groups.EXT})
@@ -88,11 +88,11 @@ public class GeneratePassedCheckTestsTTReportTest extends AbstractTestSitesTest 
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         visitTestPage(driver, testPage);
 
-        new Thread(() -> log().info("It is gonna be ok.", Loggable.prompt)).start();
+        new Thread(() -> log().info("It is gonna be ok on dashboard.", Loggable.prompt)).start();
 
-        new Thread(() -> log().warn("Warn me!", Loggable.prompt)).start();
+        new Thread(() -> log().warn("Warn me on dashboard!", Loggable.prompt)).start();
 
-        new Thread(() -> log().error("Tell me more!", Loggable.prompt)).start();
+        new Thread(() -> log().error("Tell me more on dashboard!", Loggable.prompt)).start();
     }
 
     @Test(groups = {Groups.EXT})

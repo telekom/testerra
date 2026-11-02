@@ -23,6 +23,9 @@ import {Outlet} from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -32,9 +35,12 @@ import MainNavigation from "../components/navigation/MainNavigation.tsx";
 import {reportTheme} from "./reportTheme.tsx";
 import {ThemeProvider} from "@mui/material/styles";
 import {Stack} from "@mui/material";
-import Toolbar from "@mui/material/Toolbar";
+import {useReportData} from "../provider/DataProvider.tsx";
 
 const MainLayout = () => {
+    const {executionMngr} = useReportData();
+    const reportName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.runConfig?.reportName ?? "";
+    const executionName = executionMngr?.getExecutionStatistics().getExecutionAggregate.executionContext?.contextValues?.name ?? "";
 
     return (
 
@@ -42,6 +48,7 @@ const MainLayout = () => {
             <CssBaseline/>
             <Box sx={{
                 display: 'flex',
+                height: '100vh',
             }}
             >
                 <MainNavigation/>
@@ -51,18 +58,47 @@ const MainLayout = () => {
                     sx={{
                         flexGrow: 1,
                         overflow: 'auto',
+                        position: "relative",
                     }}
                 >
-                    {/*Useful to have spacing so that there is not overlap if the nav bar is horizontally on top of the page*/}
-                    <Toolbar sx={{display: {xs: 'block', md: 'none'}}}/>
+                    <AppBar
+                        position="sticky"
+                        sx={{
+                            // left: {xs: 0, md: "240px"},
+                            display: {xs: 'none', md: 'block'},
+                            width: "100%",
+                            backgroundColor: "primary.main",
+                            color: "primary.contrastText",
+                            right: 0
+                        }}
+                    >
+                        <Toolbar>
+                            <Box sx={{display: 'flex', alignItems: 'baseline', gap: 2}}>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        overflowX: "auto",
+                                        overflowY: "hidden",
+                                        whiteSpace: "nowrap",
+                                    }}
+                                >
+                                    {reportName}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Execution: {executionName}
+                                </Typography>
+                            </Box>
 
+                        </Toolbar>
+                    </AppBar>
+                    <Toolbar sx={{display: {xs: 'block', md: 'none'}}}/>
                     <Stack
                         spacing={2}
                         sx={{
                             alignItems: 'center',
                             mx: 3,
                             pb: 5,
-                            mt: {xs: 3, md: 3},
+                            mt: 3,
                         }}
                     >
                         <Outlet/>

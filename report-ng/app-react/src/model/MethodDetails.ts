@@ -43,9 +43,11 @@ export class MethodDetails {
     promptLogs!: LogMessage[];
     private _identifier: string | null = null;
     static readonly FAILS_ANNOTATION_NAME = "eu.tsystems.mms.tic.testframework.annotations.Fails";
+    static readonly TEST_ANNOTATION_NAME = "org.testng.annotations.Test";
+    static readonly XRAY_ANNOTATION_NAME = "eu.tsystems.mms.tic.testerra.plugins.xray.annotation.XrayTest";
     private _decodedAnnotations = {};
     private _failureAspects: FailureAspectStatistics[] | null = null;
-
+    private _numDetails = -1;
 
     constructor(methodContext: MethodContext, classStatistics: ClassStatistics)
      {
@@ -55,6 +57,14 @@ export class MethodDetails {
 
     get failsAnnotation() {
         return this.decodeAnnotation(MethodDetails.FAILS_ANNOTATION_NAME);
+    }
+
+    get testAnnotation() {
+        return this.decodeAnnotation(MethodDetails.TEST_ANNOTATION_NAME);
+    }
+
+    get xrayAnnotation() {
+        return this.decodeAnnotation(MethodDetails.XRAY_ANNOTATION_NAME);
     }
 
     get identifier() {
@@ -73,6 +83,23 @@ export class MethodDetails {
             }
         }
         return this._identifier;
+    }
+
+    get numDetails() {
+        if (this._numDetails === -1) {
+            this._numDetails = this.failureAspects.length
+                + Object.keys(this.methodContext.customContexts!).length
+            ;
+        }
+        return this._numDetails;
+    }
+
+    get failedStep() {
+        const { testSteps, failedStepIndex } = this.methodContext;
+        if (testSteps && failedStepIndex !== undefined && failedStepIndex >= 0) {
+            return testSteps[failedStepIndex] ?? null;
+        }
+        return null;
     }
 
     private _decode(from: { [p: string]: string } | undefined, name: string, to: { [p: string]: any }): any {

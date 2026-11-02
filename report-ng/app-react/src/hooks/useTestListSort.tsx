@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {MethodDetails} from "../model/MethodDetails";
 
 export type OrderDirection = "asc" | "desc";
@@ -38,7 +38,7 @@ export function useTestListSort() {
     const [orderBy, setOrderBy] = useState<SortableColumn>("runIndex");             // currently sorted column
 
     // function for sorting; uses order direction and column that should be sorted
-    function buildComparator(order: OrderDirection, orderBy: SortableColumn) {
+    const buildComparator = useCallback((order: OrderDirection, orderBy: SortableColumn) => {
         const getSortAccessor = sortAccessors[orderBy];
         const sortingDirection = order === "asc" ? 1 : -1;
 
@@ -51,7 +51,7 @@ export function useTestListSort() {
             // number comparison (multiplied by sortingDirection to invert sorting direction if necessary)
             return sortingDirection * ((aValue as number) - (bValue as number));
         };
-    }
+    }, []);
 
     const handleRequestSort = (property: SortableColumn) => {
         const isAsc = orderBy === property && orderDirection === "asc";

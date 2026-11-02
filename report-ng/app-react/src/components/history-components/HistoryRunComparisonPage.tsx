@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import {Grid} from "@mui/material";
 import Alert from "@mui/material/Alert";
-import LinearProgress from "@mui/material/LinearProgress";
+import LoadingBar from "../../widgets/LoadingBar.tsx";
 import {useState} from "react";
 import {useReportData} from "../../provider/DataProvider.tsx";
 import {formatDate} from "../../utils/dateFormatter.ts";
@@ -18,7 +18,7 @@ const HistoryRunComparisonPage = () => {
     const availableRuns = historyStatistics?.getHistoryAggregateStatistics().slice(0, -1).reverse() ?? [];
     const selectedRun = availableRuns.find(run => run.historyIndex === selectedHistoryIndex) ?? availableRuns[0];
 
-    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
+    if (isLoading) return <LoadingBar/>;
     if (error) return <Alert severity="error">An error occurred: {error.message}</Alert>;
     if (!executionMngr || !historyStatistics) return null;
     if (!currentRun || !selectedRun) return <NoResultsCard title="No history available"/>;

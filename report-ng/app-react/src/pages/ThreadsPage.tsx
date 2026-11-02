@@ -21,7 +21,6 @@
 
 import Box from "@mui/material/Box";
 import {
-    CircularProgress,
     Grid,
     Stack,
     TextField,
@@ -55,6 +54,7 @@ import ReportCard from "../widgets/ReportCard.tsx";
 import ReportSnackbar from "../widgets/ReportSnackbar.tsx";
 import {buildChartTooltip, buildTooltipStatusBadge} from "../utils/chartTooltip";
 import {formatDuration} from "../utils/durationFormatter.ts";
+import LoadingBar from "../widgets/LoadingBar.tsx";
 
 // Types
 interface MethodInfo {
@@ -437,9 +437,7 @@ const ThreadsPage = () => {
         [methodLookup, filters.method]
     );
 
-    if (isLoading) {
-        return <CircularProgress/>;
-    }
+    if (isLoading) return <LoadingBar/>;
 
     return (
         <Box sx={{width: '100%'}}>

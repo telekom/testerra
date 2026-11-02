@@ -38,7 +38,7 @@ import NoResultsCard from "../widgets/NoResultsCard.tsx";
 import {formatDuration} from "../utils/durationFormatter"
 import {useTestListSort} from "../hooks/useTestListSort";
 import TableSort from "../widgets/TableSort";
-import LinearProgress from '@mui/material/LinearProgress';
+import LoadingBar from "../widgets/LoadingBar.tsx";
 import Alert from '@mui/material/Alert';
 import {List, type RowComponentProps, useDynamicRowHeight} from "react-window";
 
@@ -338,8 +338,8 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         [rows, activeSearchTerms]
     );
 
-    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
-    if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
+    if (isLoading) return <LoadingBar/>;
+    if (error) return <Alert severity="error">An error occurred: {error?.message}</Alert>
     if (!executionMngr) return null;
 
     if (filteredMethodDetails.length < 1) {

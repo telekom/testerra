@@ -3,7 +3,7 @@ import {Grid, Stack} from "@mui/material";
 import {useSearchParams} from "react-router-dom";
 import {useTheme} from "@mui/material/styles";
 import {useReportData} from "../../provider/DataProvider.tsx";
-import LinearProgress from "@mui/material/LinearProgress";
+import LoadingBar from "../../widgets/LoadingBar.tsx";
 import Alert from "@mui/material/Alert";
 import TestRunHistoryStatisticsCard from "./TestRunHistoryStatisticsCard.tsx";
 import TestRunTopFailingCard from "./TestRunTopFailingCard.tsx";
@@ -47,8 +47,8 @@ const HistoryTestRunPage = () => {
     // const statusMenuItems: number[] = []
     // const selectedStatuses: ResultStatus[] = []
 
-    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
-    if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
+    if (isLoading) return <LoadingBar/>;
+    if (error) return <Alert severity="error">An error occurred: {error?.message}</Alert>
     if (!executionMngr || !historyStatistics) return null;
 
     return (

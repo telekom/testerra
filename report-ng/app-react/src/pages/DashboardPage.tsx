@@ -33,9 +33,9 @@ import {useReportData} from "../provider/DataProvider";
 import {useSearchParams} from "react-router-dom";
 import {useTheme} from '@mui/material/styles';
 import {ExecutionStatistics} from "../model/ExecutionStatistics";
-import LinearProgress from "@mui/material/LinearProgress";
 import Alert from "@mui/material/Alert";
 import {Grid} from "@mui/material";
+import LoadingBar from "../widgets/LoadingBar.tsx";
 
 const DashboardPage = () => {
 
@@ -44,8 +44,8 @@ const DashboardPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const selectedStatus = searchParams.get("status");
 
-    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
-    if (error) return <Alert severity="error">An error occured: {error?.message}</Alert>
+    if (isLoading) return <LoadingBar/>;
+    if (error) return <Alert severity="error">An error occurred: {error?.message}</Alert>
     if (!executionMngr) return null;
 
     const execStatistics: ExecutionStatistics = executionMngr.getExecutionStatistics();

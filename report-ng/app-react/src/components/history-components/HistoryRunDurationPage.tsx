@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import LinearProgress from "@mui/material/LinearProgress";
+import LoadingBar from "../../widgets/LoadingBar.tsx";
 import Alert from "@mui/material/Alert";
 import {useTheme} from "@mui/material/styles";
 import {useReportData} from "../../provider/DataProvider.tsx";
@@ -21,7 +21,7 @@ const HistoryRunDurationPage = () => {
             : nextViewport);
     }, []);
 
-    if (isLoading) return <LinearProgress aria-label="Loading…"/>;
+    if (isLoading) return <LoadingBar/>;
     if (error) return <Alert severity="error">An error occurred: {error.message}</Alert>;
     if (!historyStatistics) return null;
 

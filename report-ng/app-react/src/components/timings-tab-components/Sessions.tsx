@@ -31,6 +31,8 @@ import {buildChartTooltip} from "../../utils/chartTooltip";
 import {reportTheme} from "../../layout/reportTheme.tsx";
 import {formatDuration} from "../../utils/durationFormatter.ts";
 import {useTheme} from "@mui/material/styles";
+import LoadingBar from "../../widgets/LoadingBar.tsx";
+import Alert from "@mui/material/Alert";
 
 interface ISessionInformation {
     sessionName: string;
@@ -51,7 +53,7 @@ interface IDots {
 }
 
 const Sessions = () => {
-    const {executionMngr} = useReportData();
+    const {executionMngr, isLoading, error} = useReportData();
     const theme = useTheme();
     const sessionColor = theme.custom.chart.blue.main;
     const baseUrlColor = theme.custom.chart.turquoise.main;
@@ -249,6 +251,10 @@ const Sessions = () => {
             series: seriesList,
         };
     }, [dots, testStartTime, testEndTime, sessionColor, baseUrlColor]);
+
+    if (isLoading) return <LoadingBar/>;
+    if (error) return <Alert severity="error">An error occurred: {error.message}</Alert>;
+    if (!executionMngr) return null;
 
     return (
         <ReportCard

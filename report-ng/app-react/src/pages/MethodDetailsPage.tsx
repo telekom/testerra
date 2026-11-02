@@ -28,7 +28,7 @@ import {generateTabsFromRoutes} from "../utils/generateTabsFromRoutes.ts";
 import GeneralDetails from "../components/method-details/GeneralDetails.tsx";
 import PriorityMessagesCard from "../components/method-details/PriorityMessagesCard.tsx";
 import {useReportData} from "../provider/DataProvider.tsx";
-import LinearProgress from "@mui/material/LinearProgress";
+import LoadingBar from "../widgets/LoadingBar.tsx";
 import Alert from "@mui/material/Alert";
 import {MethodDetails} from "../model/MethodDetails.ts";
 import {useEffect, useMemo} from "react";
@@ -123,7 +123,7 @@ const MethodDetailsPage = () => {
         return {previousDetail, nextDetail};
     }, [executionMngr, methodDetail]);
 
-    if (isLoading) return <LinearProgress aria-label="Loading…" />;
+    if (isLoading) return <LoadingBar/>;
     if (error) return <Alert severity="error">An error occurred: {error?.message}</Alert>
     if (!executionMngr) return null;
 

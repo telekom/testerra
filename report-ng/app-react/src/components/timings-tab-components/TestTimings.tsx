@@ -42,6 +42,8 @@ import {buildDurationBuckets, type DurationBucket} from "./durationBuckets";
 import {escapeHtml} from "../../utils/escapeHtml";
 import {buildChartTooltip, buildTooltipMethodBadge, buildTooltipStatusBadge} from "../../utils/chartTooltip";
 import {reportTheme} from "../../layout/reportTheme.tsx";
+import LoadingBar from "../../widgets/LoadingBar.tsx";
+import Alert from "@mui/material/Alert";
 
 const TEST_NUMBER_LIMIT = 10;
 
@@ -59,7 +61,7 @@ interface MethodOption {
 }
 
 const TestTimings = () => {
-    const {executionMngr} = useReportData();
+    const {executionMngr, isLoading, error} = useReportData();
     const navigate = useNavigate();
     const theme = useTheme();
     // const isMobileLayout = useMediaQuery(theme.breakpoints.down("md"));
@@ -219,6 +221,10 @@ const TestTimings = () => {
             });
         }
     }, [bars, navigate, showConfigMethods]);
+
+    if (isLoading) return <LoadingBar/>;
+    if (error) return <Alert severity="error">An error occurred: {error.message}</Alert>;
+    if (!executionMngr) return null;
 
     return (
         <Box sx={theme.custom.testTimings.container}>

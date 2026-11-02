@@ -34,6 +34,8 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {FailureAspectStatistics} from "../model/FailureAspectStatistics";
 import NoResultsCard from "../widgets/NoResultsCard.tsx";
 import {List, type RowComponentProps, useDynamicRowHeight} from "react-window";
+import LoadingBar from "../widgets/LoadingBar.tsx";
+import Alert from "@mui/material/Alert";
 
 interface FailureAspectRow {
     failureAspect: FailureAspectStatistics;
@@ -136,7 +138,7 @@ interface FailureAspectListProps {
 const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAspectListProps) => {
 
     const navigate = useNavigate();
-    const {executionMngr} = useReportData();
+    const {executionMngr, isLoading, error} = useReportData();
 
     const filteredFailureAspects = useMemo(() => {
         if (!executionMngr) return [];
@@ -203,6 +205,10 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
         () => ({rows, activeSearchTerms, onStatusClick: clickStatusChip}),
         [rows, activeSearchTerms, clickStatusChip],
     );
+
+    if (isLoading) return <LoadingBar/>;
+    if (error) return <Alert severity="error">An error occurred: {error?.message}</Alert>
+    if (!executionMngr) return null;
 
     if (filteredFailureAspects.length < 1) {
         return <NoResultsCard title="No failure aspects matching this criteria"/>

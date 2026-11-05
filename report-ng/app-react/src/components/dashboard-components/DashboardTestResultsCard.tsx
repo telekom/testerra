@@ -54,8 +54,13 @@ const getSecondaryStatusLabel = (
     status: ResultStatusType, execStatistics: ExecutionStatistics
 ) => {
     switch (status) {
-        case ResultStatusType.FAILED:
-            return " + " + execStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED) + " Retried";
+        case ResultStatusType.FAILED: {
+            const retriedCount = execStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED);
+            if (retriedCount > 0) {
+                return " + " + execStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED) + " Retried";
+            }
+            return "";
+        }
 
         case ResultStatusType.PASSED: {
             const repairedCount = execStatistics.getStatusCount(ResultStatusType.REPAIRED);
@@ -184,7 +189,7 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
                         startIcon={<CompareArrowsIcon />}
                         sx={{textTransform: "none", minWidth: "auto", px: 0.5}}
                     >
-                        Run comparison
+                        Compare runs
                     </Button>
                 </Stack>
             )}

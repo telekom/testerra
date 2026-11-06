@@ -34,7 +34,6 @@ const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: Dashboa
     return (
         <ReportCard
             label="History"
-            sxContent={{p: 0}}
             sxCard={sx}
             content={<TestRunHistoryBarChart histStatistics={histStatistics} selectedStatus={selectedStatus}/>}
         />

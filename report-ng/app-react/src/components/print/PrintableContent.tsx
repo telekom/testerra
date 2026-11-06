@@ -103,6 +103,7 @@ const PrintableContent = forwardRef<HTMLDivElement, PrintableContentProps>(
             <ReportCard
                 label="Test Report Information"
                 sxCard={{boxShadow: "none", border: "1px solid rgba(0, 0, 0, .12)"}}
+                sxContent={{px: 2, py: 1}}
                 details={
                     <Box sx={{display: 'grid', gridTemplateColumns: '150px 1fr', gap: 1}}>
                         <Typography variant="body2">

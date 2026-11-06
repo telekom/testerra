@@ -60,7 +60,6 @@ const RunCompareMethodsCard = ({selectedRun, currentRun, executionStatistics}: R
     return (
         <ReportCard
             label="Method status changes"
-            sxContent={{p: 0}}
             content={comparisons.length > 0 ? (
                 <TableContainer>
                     <Table

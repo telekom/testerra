@@ -179,7 +179,6 @@ const DurationChartCard = ({histStatistics, sx, onViewportChange}: DurationChart
         <ReportCard
             label="History run duration"
             sxCard={sx}
-            sxContent={{p: 0}}
             content={hasHistory ? (
                 <Echart
                     option={option}

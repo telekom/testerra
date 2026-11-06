@@ -75,7 +75,6 @@ const TestRunChartCard = ({histStatistics, selectedStatus, sx, onViewportChange}
     return (
         <ReportCard
             label="History test runs"
-            sxContent={{p: 0}}
             sxCard={sx}
             content={
                 <TestRunHistoryBarChart

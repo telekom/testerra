@@ -162,7 +162,6 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect,
         <ReportCard
             label="Previous runs"
             sxCard={sx}
-            sxContent={{p: 0}}
             content={chartData.length > 0 ? (
                 <Echart option={option} notMerge autoResize/>
             ) : (

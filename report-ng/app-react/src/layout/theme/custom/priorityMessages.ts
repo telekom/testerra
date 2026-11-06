@@ -3,7 +3,6 @@ import type {SystemStyleObject} from "@mui/system";
 
 export type ReportThemePriorityMessagesStyles = {
     container: SystemStyleObject<Theme>;
-    content: SystemStyleObject<Theme>;
     fontColorNotOk: SystemStyleObject<Theme>;
     list: SystemStyleObject<Theme>;
     listItem: (backgroundColor: string) => SystemStyleObject<Theme>;
@@ -12,10 +11,6 @@ export type ReportThemePriorityMessagesStyles = {
 export const priorityMessages: ReportThemePriorityMessagesStyles = {
     container: {
         mt: 3,
-    },
-    content: {
-        p: 0,
-        ":last-child": {p: 0},
     },
     fontColorNotOk: {
         color: "white",

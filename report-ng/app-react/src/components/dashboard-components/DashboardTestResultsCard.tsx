@@ -204,7 +204,6 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
         <ReportCard
             label={label}
             content={content}
-            sxContent={{p: 0, ":last-child": {padding: 0}}}
             sxCard={sx}
         />
     );

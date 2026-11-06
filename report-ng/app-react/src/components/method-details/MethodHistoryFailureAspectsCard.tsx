@@ -106,7 +106,6 @@ const MethodHistoryFailureAspectsCard = ({
         <ReportCard
             label="Common failure aspects"
             sxCard={sx}
-            sxContent={{p: 0}}
             content={failureAspects.length > 0 ? (
                 <Echart
                     option={option}

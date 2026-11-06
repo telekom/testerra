@@ -104,6 +104,7 @@ const ErrorDetailsTab = () => {
                             key={`${errorDetail.failureAspect.identifier}-${index}`}
                             sxCard={{boxShadow: 4}}
                             sxHeader={theme.custom.errorDetails.cardHeader(statusColor)}
+                            sxContent={{p: 2}}
                             label={(
                                 <Box>
                                     <Typography variant="h5" sx={theme.custom.errorDetails.title}>

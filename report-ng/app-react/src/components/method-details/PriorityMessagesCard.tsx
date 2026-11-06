@@ -44,7 +44,6 @@ const PriorityMessagesCard = ({promptLogs, sx}: PriorityMessagesCardProps) => {
         <Box sx={[theme.custom.priorityMessages.container, ...(Array.isArray(sx) ? sx : [sx])]}>
             <ReportCard
                 label="Additional notes"
-                sxContent={theme.custom.priorityMessages.content}
                 content={(
                     <List sx={theme.custom.priorityMessages.list}>
                         {promptLogs.map((logMessage, index) => {

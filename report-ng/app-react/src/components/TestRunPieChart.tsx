@@ -60,7 +60,7 @@ const TestRunPieChart = ({execStatistics, onChartPieceClick, selectedStatus, cha
             {
                 name: "Tests",
                 type: "pie",
-                radius: ["42%", "89%"],
+                radius: ["40%", "85%"],
                 center: ["50%", "50%"],
                 selectedMode: onChartPieceClick ? "single" : false,
                 selectedOffset: 5,

@@ -84,7 +84,6 @@ const DashboardDurationCard = ({sx, start, end}: DashboardDurationProps) => {
 
     return (
         <ReportCard label="Duration"
-                    sxContent={theme.custom.durationCard.content}
                     sxCard={sx}
                     content={
                         <Stack direction="column" spacing={2}

@@ -49,8 +49,13 @@ public abstract class AbstractReportTest extends AbstractTest implements Propert
     public void setUp() throws Exception {
         PROPERTY_MANAGER.loadProperties("local.properties");
 
+        Long port = PROPERTY_MANAGER.getLongProperty("server.port", 8081);
+        boolean startServer = PROPERTY_MANAGER.getBooleanProperty("server.active", true);
+
         try {
-            staticServer.start(8081);
+            if (startServer) {
+                staticServer.start(port.intValue());
+            }
         } catch (BindException e) {
             log().warn("Use already running WebServer: " + e.getMessage());
         }
@@ -76,16 +81,17 @@ public abstract class AbstractReportTest extends AbstractTest implements Propert
      * Open a custom Webdriver session with the default test page.
      *
      * @param reportPageClass report page that should be reached
-     * @param driver {@link WebDriver} Current Instance
-     * @param directory {@link TestPage} page to open
+     * @param driver          {@link WebDriver} Current Instance
+     * @param directory       {@link TestPage} page to open
      */
     public <T extends AbstractReportPage> T visitReportPage(final Class<T> reportPageClass, final WebDriver driver, final String directory) {
         Assert.assertTrue(serverRootDir.exists(), String.format("Server root directory '%s' doesn't exists", serverRootDir));
 
         File reportDir = new File(serverRootDir, directory);
         Assert.assertTrue(reportDir.exists(), String.format("Report directory '%s' doesn't exists", reportDir));
-
-        final String baseUrl = String.format("http://localhost:%d/%s", staticServer.getPort(), directory);
+        String host = PROPERTY_MANAGER.getProperty("server.host");
+        long port = PROPERTY_MANAGER.getLongProperty("server.port", 8081);
+        final String baseUrl = String.format("http://%s:%d/%s", host, port, directory);
         driver.get(baseUrl);
 
         return PAGE_FACTORY.createPage(reportPageClass, driver);

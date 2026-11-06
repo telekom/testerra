@@ -30,7 +30,8 @@ import {FailureAspectStatistics} from "../../model/FailureAspectStatistics";
 import {useNavigate} from "react-router-dom";
 import {ExecutionStatistics} from "../../model/ExecutionStatistics";
 import Box from "@mui/material/Box";
-import {Typography} from "@mui/material";
+import {Stack, Typography} from "@mui/material";
+import CelebrationIcon from "@mui/icons-material/Celebration";
 import React from "react";
 
 interface DashboardFailureAspectsProps {
@@ -90,7 +91,14 @@ const DashboardFailureAspectsCard = ({sx, execStatistics}: DashboardFailureAspec
             sxContent={{p: 0, ":last-child": {padding: 0}}}
             tooltipText="The most critical errors that caused the highest number of failed test cases"
             sxCard={sx}
-            content={<ButtonList list={itemList} disablePadding={true} handleClick={gotoFailureAspect}/>}
+            content={itemList.length > 0 ? (
+                <ButtonList list={itemList} disablePadding={true} handleClick={gotoFailureAspect}/>
+            ) : (
+                <Stack direction="row" spacing={1} sx={{height: "100%", alignItems: "center", justifyContent: "center"}}>
+                    <CelebrationIcon/>
+                    <Typography>No failure aspects</Typography>
+                </Stack>
+            )}
         />
     );
 };

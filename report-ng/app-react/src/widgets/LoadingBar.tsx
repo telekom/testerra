@@ -19,7 +19,6 @@
  * under the License.
  */
 
-
 import LinearProgress from "@mui/material/LinearProgress";
 
 const LoadingBar = () => {

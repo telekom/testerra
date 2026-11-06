@@ -64,9 +64,9 @@ const TestRunChartCard = ({histStatistics, selectedStatus, sx, onViewportChange}
             // Adapt grid for data-zoom slider & reset zoom button
             grid: {
                 top: "50px",
-                left: "1%",
-                right: "3%",
-                bottom: "55px",
+                left: "15px",
+                right: "15px",
+                bottom: "60px",
                 containLabel: true
             }
         };

@@ -23,6 +23,7 @@ interface MethodHistoryChartCardProps {
 const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect, sx}: MethodHistoryChartCardProps) => {
     const theme = useTheme();
     const missingRunColor = theme.palette.text.disabled;
+
     const chartData = useMemo(() => {
         const runs = methodHistoryStatistics.runs;
         if (runs.length === 0) {
@@ -38,6 +39,9 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect,
             const context = run?.context.contextValues;
             const status = run?.context.resultStatus ?? ResultStatusType.NO_RUN;
             const noRun = !run || status === ResultStatusType.NO_RUN;
+            const durationValue= context?.startTime !== undefined && context.endTime !== undefined
+                ? formatDuration(context.endTime - context.startTime)
+                : "Unavailable";
 
             return {
                 value: [index, 0],
@@ -47,9 +51,7 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect,
                 errorMessage: run?.combinedErrorMessage ?? "",
                 started: formatDate(context?.startTime, "long"),
                 ended: formatDate(context?.endTime, "long"),
-                duration: context?.startTime !== undefined && context.endTime !== undefined
-                    ? formatDuration(context.endTime - context.startTime)
-                    : "Unavailable",
+                duration: durationValue,
                 itemStyle: {
                     color: noRun ? missingRunColor : StatusService.getColor(status),
                     opacity: selectedFailureAspect === undefined || run?.failureAspects.includes(selectedFailureAspect)
@@ -79,7 +81,7 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect,
                 let listItemStyle = "", listItems = "", status: ResultStatus = ResultStatusType.NO_RUN, errorMessageContent = "";
                 if (!run.noRun) {
                     listItemStyle = "display:grid;grid-template-columns:8ch auto;column-gap:8px;align-items:center;margin:2px 0;";
-                    listItems = `<li style="${listItemStyle}"><span>Duration</span><span>${formatDuration(run.duration ?? 0)}</span></li>
+                    listItems = `<li style="${listItemStyle}"><span>Duration</span><span>${run.duration}</span></li>
                                 <li style="${listItemStyle}"><span>Started</span><span>${run.started}</span></li>
                                 <li style="${listItemStyle}"><span>Ended</span><span>${run.ended}</span></li>
                             `;
@@ -133,7 +135,7 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect,
                 z: 1,
             },
         ],
-    }), [chartData, theme.palette.common.white, theme.palette.divider]);
+    }), [chartData, theme.palette.divider]);
 
     return (
         <ReportCard

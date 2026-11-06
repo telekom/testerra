@@ -95,9 +95,5 @@ export const generalDetails: ReportThemeGeneralDetailsStyles = {
     },
     lastScreenshotCardContent: {
         position: "relative",
-        p: 0,
-        "&:last-child": {
-            p: 0,
-        },
     },
 };

@@ -52,7 +52,7 @@ interface IDots {
     information: ISessionInformation;
 }
 
-const Sessions = () => {
+const SessionsTab = () => {
     const {executionMngr, isLoading, error} = useReportData();
     const theme = useTheme();
     const sessionColor = theme.custom.chart.blue.main;
@@ -164,7 +164,7 @@ const Sessions = () => {
 
         return {
             legend: {
-                top: 0,
+                top: 10,
                 data: [
                     {name: 'Session load', itemStyle: {color: sessionColor}},
                     {name: 'Base URL load', itemStyle: {color: baseUrlColor}},
@@ -172,8 +172,8 @@ const Sessions = () => {
             },
             dataZoom: [
                 {type: 'inside', yAxisIndex: [0]},
-                {type: 'slider', xAxisIndex: [0]},
-                {type: 'slider', yAxisIndex: [0], right: '4%'},
+                {type: 'slider', xAxisIndex: [0], bottom: '15px'},
+                {type: 'slider', yAxisIndex: [0], right: '15px'},
             ],
             toolbox: {
                 itemSize: 25,
@@ -183,9 +183,9 @@ const Sessions = () => {
                 },
             },
             grid: {
-                left: 50,
-                right: 100,
-                top: 40,
+                left: 25,
+                right: 50,
+                top: 50,
                 bottom: 60,
                 outerBoundsMode: 'same',
                 outerBoundsContain: 'axisLabel',
@@ -245,7 +245,7 @@ const Sessions = () => {
             },
             yAxis: {
                 type: 'value',
-                name: 'Load duration in seconds',
+                name: 'Load duration\nin seconds',
                 nameLocation: 'end',
             },
             series: seriesList,
@@ -264,4 +264,4 @@ const Sessions = () => {
     );
 };
 
-export default Sessions;
+export default SessionsTab;

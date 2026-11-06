@@ -20,8 +20,8 @@ import ClearAllIcon from '@mui/icons-material/ClearAll';
 import CodeIcon from '@mui/icons-material/Code';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import type {JSX} from "react";
-import TestTimings from "../components/timings-tab-components/TestTimings";
-import Sessions from "../components/timings-tab-components/Sessions";
+import TestTimingsTab from "../components/timings-tab-components/TestTimingsTab.tsx";
+import SessionsTab from "../components/timings-tab-components/SessionsTab.tsx";
 import FailureAspectsPage from "../pages/FailureAspectsPage";
 import LogsPage from "../pages/LogsPage";
 import ErrorDetailsTab from "../components/method-details/ErrorDetailsTab.tsx";
@@ -91,12 +91,12 @@ export const routesConfig: RouteObject[] = [
                     },
                     {
                         path: "test-timings",
-                        element: <TestTimings/>,
+                        element: <TestTimingsTab/>,
                         handle: {label: "Tests", show: true, icon: <ListIcon />} as RouteHandle
                     },
                     {
                         path: "sessions",
-                        element: <Sessions/>,
+                        element: <SessionsTab/>,
                         handle: {label: "Sessions", show: true, icon: <OpenInNewIcon />} as RouteHandle
                     },
                 ]

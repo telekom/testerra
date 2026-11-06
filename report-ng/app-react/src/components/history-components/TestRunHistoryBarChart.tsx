@@ -120,10 +120,10 @@ const TestRunHistoryBarChart = ({histStatistics, selectedStatus, additionalChart
 
     const baseOption: EChartsOption = useMemo(() => ({
         grid: {
-            top: '5%',
-            left: '3%',
-            right: '3%',
-            bottom: '2%',
+            top: '15px',
+            left: '15px',
+            right: '15px',
+            bottom: '15px',
             outerBoundsMode: "same",
             outerBoundsContain: "axisLabel"
         },

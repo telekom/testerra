@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Martin Großmann, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import {useMemo} from "react";
 import {Stack, Typography} from "@mui/material";
 import type {SxProps, Theme} from "@mui/material/styles";
@@ -10,19 +31,19 @@ import ReportCard from "../../widgets/ReportCard.tsx";
 import {escapeHtml} from "../../utils/escapeHtml.ts";
 import {buildChartTooltip} from "../../utils/chartTooltip.ts";
 
-interface MethodFailureAspectsCardProps {
+interface MethodHistoryFailureAspectsCardProps {
     methodHistoryStatistics: MethodHistoryStatistics;
     selectedFailureAspect?: string;
     onSelectFailureAspect: (failureAspect: string | undefined) => void;
     sx?: SxProps<Theme>;
 }
 
-const MethodFailureAspectsCard = ({
+const MethodHistoryFailureAspectsCard = ({
     methodHistoryStatistics,
     selectedFailureAspect,
     onSelectFailureAspect,
     sx,
-}: MethodFailureAspectsCardProps) => {
+}: MethodHistoryFailureAspectsCardProps) => {
     const failureAspects = useMemo(() => methodHistoryStatistics.getFailureAspectHistory()
         .sort((a, b) => b.count - a.count), [methodHistoryStatistics]);
     const statuses = useMemo(() => Array.from(new Set(
@@ -30,8 +51,17 @@ const MethodFailureAspectsCard = ({
     )).sort((a, b) => a - b), [failureAspects]);
 
     const option = useMemo((): EChartsOption => ({
-        grid: {top: 55, bottom: 20, left: 50, right: 50, containLabel: true},
-        legend: {type: "scroll", top: 5},
+        grid: {
+            top: 55,
+            bottom: 20,
+            left: 50,
+            right: 50,
+            containLabel: true
+        },
+        legend: {
+            type: "scroll",
+            top: 5
+        },
         tooltip: {
             trigger: "item",
             appendToBody: true,
@@ -76,7 +106,6 @@ const MethodFailureAspectsCard = ({
         <ReportCard
             label="Common failure aspects"
             sxCard={sx}
-            sxContent={{p: 0}}
             content={failureAspects.length > 0 ? (
                 <Echart
                     option={option}
@@ -101,4 +130,4 @@ const MethodFailureAspectsCard = ({
     );
 };
 
-export default MethodFailureAspectsCard;
+export default MethodHistoryFailureAspectsCard;

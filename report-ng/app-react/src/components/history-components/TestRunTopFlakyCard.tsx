@@ -76,7 +76,6 @@ const TestRunTopFlakyCard = ({histStatistics, sx, viewport}: TestRunTopFlakyProp
         <ReportCard
             label="Top 3 flaky tests"
             tooltipText="Test cases with a high frequency of status changes in the currently visible viewport of the overview chart"
-            sxContent={{p: 0}}
             sxCard={sx}
             content={topFlakyTests.length > 0 ? (
                 <List dense sx={{py: 0}}>

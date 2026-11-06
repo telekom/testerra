@@ -36,6 +36,13 @@ export interface ReportCardProps {
     tooltipText?: string;
 }
 
+const cardContentStyles = (sx: SxProps<Theme> = {}) =>
+    (Array.isArray(sx) ? sx : [sx]).map(style =>
+        typeof style === "boolean" ? style : (theme: Theme) => ({
+            "&, &:last-child": typeof style === "function" ? style(theme) : style,
+        })
+    );
+
 const ReportCard = ({
                         label,
                         content,
@@ -43,7 +50,7 @@ const ReportCard = ({
                         footer,
                         sxCard,
                         sxHeader,
-                        sxContent = {pt: 1, pb: 1},
+                        sxContent,
                         tooltipText
                     }: ReportCardProps) => {
     const sections = [
@@ -65,10 +72,16 @@ const ReportCard = ({
         : label;
 
     return (
-        <Card sx={{p: 0, display: "flex", flexDirection: "column", height: "100%", ...sxCard}}>
+        <Card sx={[
+            {p: 0, display: "flex", flexDirection: "column", height: "100%"},
+            ...(Array.isArray(sxCard) ? sxCard : [sxCard]),
+        ]}>
             {label && (
                 <>
-                    <CardContent sx={{pt: 1, pb: 1, ...sxHeader}}>
+                    <CardContent sx={[
+                        ...cardContentStyles({pt: 1, pb: 1}),
+                        ...cardContentStyles(sxHeader),
+                    ]}>
                         <Stack direction="row" sx={{justifyContent: "space-between", alignItems: "center"}}>
                             {labelContent}
                             {tooltipText && <InfoTooltip text={tooltipText}/>}
@@ -83,15 +96,13 @@ const ReportCard = ({
                     <React.Fragment key={index}>
                         {index > 0 && <Divider/>}
                         <CardContent
-                            sx={{
-                                ...sxContent,
-                                ...(section.key === "content"
+                            sx={[
+                                ...cardContentStyles({p: 0}),
+                                ...cardContentStyles(sxContent),
+                                section.key === "content"
                                     ? {flex: 1, minHeight: 0, display: "flex", flexDirection: "column"}
-                                    : {flex: "0 0 auto"}),
-                                ...(section.key === "footer"
-                                    ? {pb: 1, "&:last-child": {pb: 1}}
-                                    : {}),
-                            }}
+                                    : {flex: "0 0 auto"},
+                            ]}
                         >
                             {section.content}
                         </CardContent>

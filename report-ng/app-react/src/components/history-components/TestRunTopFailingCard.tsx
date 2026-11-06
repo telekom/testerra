@@ -70,7 +70,6 @@ const TestRunTopFailingCard = ({histStatistics, sx, viewport}: TestRunTopFailing
         <ReportCard
             label="Top 3 failing tests"
             tooltipText="Test cases that aren't passed since multiple runs"
-            sxContent={{p: 0}}
             sxCard={sx}
             content={topFailingTests.length > 0 ? (
                 <List dense sx={{py: 0}}>

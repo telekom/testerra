@@ -47,7 +47,6 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
     return (
         <ReportCard
             sxCard={sx}
-            sxContent={{p: 0}}
             label={
                 <Stack direction="row" spacing={2} sx={{alignItems: "center"}}>
                     <ReportChip key={methodDetails.methodContext.resultStatus}

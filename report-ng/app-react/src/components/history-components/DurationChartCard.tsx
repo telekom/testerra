@@ -97,10 +97,10 @@ const DurationChartCard = ({histStatistics, sx, onViewportChange}: DurationChart
             },
         },
         grid: {
-            top: "80px",
-            left: "3%",
-            right: "3%",
-            bottom: "55px",
+            top: "65px",
+            left: "15px",
+            right: "15px",
+            bottom: "60px",
             outerBoundsMode: "same",
             outerBoundsContain: "axisLabel",
         },
@@ -179,7 +179,6 @@ const DurationChartCard = ({histStatistics, sx, onViewportChange}: DurationChart
         <ReportCard
             label="History run duration"
             sxCard={sx}
-            sxContent={{p: 0}}
             content={hasHistory ? (
                 <Echart
                     option={option}

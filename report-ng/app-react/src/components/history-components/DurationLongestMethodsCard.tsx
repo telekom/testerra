@@ -67,7 +67,6 @@ const DurationLongestMethodsCard = ({histStatistics, viewport, sx}: LongestMetho
             label="Longest methods"
             tooltipText="The methods with the longest average execution durations in the selected range"
             sxCard={sx}
-            sxContent={{p: 0}}
             content={longestMethods.length > 0 ? (
                 <List dense sx={{py: 0}}>
                     {longestMethods.map((method, index) => (

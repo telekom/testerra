@@ -60,7 +60,7 @@ interface MethodOption {
     name: string;
 }
 
-const TestTimings = () => {
+const TestTimingsTab = () => {
     const {executionMngr, isLoading, error} = useReportData();
     const navigate = useNavigate();
     const theme = useTheme();
@@ -140,9 +140,9 @@ const TestTimings = () => {
     const option: EChartsOption = useMemo(() => ({
         grid: {
             left: 50,
-            right: 100,
+            right: 80,
             top: 40,
-            bottom: 16,
+            bottom: 15,
             outerBoundsMode: 'same',
             outerBoundsContain: 'axisLabel',
         },
@@ -274,4 +274,4 @@ const TestTimings = () => {
         </Box>
     );
 };
-export default TestTimings;
+export default TestTimingsTab;

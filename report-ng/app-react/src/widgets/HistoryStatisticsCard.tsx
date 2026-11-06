@@ -26,7 +26,6 @@ const HistoryStatisticsCard = ({
 }: HistoryStatisticsCardProps) => (
     <ReportCard
         label="History statistics"
-        sxContent={{p: 0}}
         sxCard={sx}
         content={(
             <List dense sx={{py: 0}}>

@@ -24,6 +24,7 @@ import {ResultStatusType} from "../../model/report-model/framework_pb";
 import {StatusService} from "../../model/status-service";
 import type {SxProps, Theme} from "@mui/material/styles";
 import type {ExecutionStatistics} from "../../model/ExecutionStatistics";
+import type {HistoryAggregateStatistics} from "../../model/HistoryAggregateStatistics";
 import {Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography} from "@mui/material";
 import NorthEastIcon from "@mui/icons-material/NorthEast";
 import SouthEastIcon from "@mui/icons-material/SouthEast";
@@ -50,12 +51,37 @@ interface DashboardResultItem {
     trend: number;
 }
 
+const getPrimaryText = (status: ResultStatusType, execStatistics: ExecutionStatistics) => {
+    const label = StatusService.get(status).label;
+    let statusCount = 0;
+    switch (status) {
+        case ResultStatusType.FAILED:
+            statusCount = execStatistics.overallFailed;
+            break;
+        case ResultStatusType.FAILED_EXPECTED:
+            statusCount = execStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED);
+            break;
+        case ResultStatusType.SKIPPED:
+            statusCount = execStatistics.overallSkipped;
+            break;
+        case ResultStatusType.PASSED:
+            statusCount = execStatistics.overallPassed;
+            break;
+    }
+    return `${statusCount} ${label}`;
+}
+
 const getSecondaryStatusLabel = (
     status: ResultStatusType, execStatistics: ExecutionStatistics
 ) => {
     switch (status) {
-        case ResultStatusType.FAILED:
-            return " + " + execStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED) + " Retried";
+        case ResultStatusType.FAILED: {
+            const retriedCount = execStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED);
+            if (retriedCount > 0) {
+                return " + " + execStatistics.getStatusCount(ResultStatusType.FAILED_RETRIED) + " Retried";
+            }
+            return "";
+        }
 
         case ResultStatusType.PASSED: {
             const repairedCount = execStatistics.getStatusCount(ResultStatusType.REPAIRED);
@@ -86,7 +112,36 @@ const getTrendIcon = (trend: number) => {
     return <EastIcon fontSize="small"/>;
 };
 
-const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStatus, sx, withCard = true}: DashboardTestResultsProps) => {
+const getTrend = (
+    status: ResultStatusType,
+    execStatistics: ExecutionStatistics,
+    previousRun: HistoryAggregateStatistics | undefined
+) => {
+    if (!previousRun) {
+        return 0;
+    }
+
+    switch (status) {
+        case ResultStatusType.FAILED:
+            return execStatistics.overallFailed - (previousRun.overallFailed ?? 0);
+        case ResultStatusType.FAILED_EXPECTED:
+            return execStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED) - (previousRun.getStatusCount(ResultStatusType.FAILED_EXPECTED) ?? 0);
+        case ResultStatusType.SKIPPED:
+            return execStatistics.overallSkipped - (previousRun.overallSkipped ?? 0);
+        case ResultStatusType.PASSED:
+            return execStatistics.overallPassed - (previousRun.overallPassed ?? 0);
+        default:
+            return 0;
+    }
+};
+
+const DashboardTestResultsCard = ({
+                                      execStatistics,
+                                      onListItemClick,
+                                      selectedStatus,
+                                      sx,
+                                      withCard = true
+                                  }: DashboardTestResultsProps) => {
     const {executionMngr} = useReportData();
     const historyStatistics = executionMngr?.getHistoryStatistics();
     const historyAvailable = withCard && (historyStatistics?.getTotalRunCount() ?? 0) >= 2;
@@ -97,32 +152,13 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
     const itemList = StatusService.getRelevantStatuses()
         .map((status) => {
             const statusInformation = StatusService.get(status);
-            const trend = (() => {
-                if (!historyAvailable || !previousRun) {
-                    return 0;
-                }
-
-                switch (status) {
-                    case ResultStatusType.FAILED:
-                        return execStatistics.overallFailed - (previousRun.overallFailed ?? 0);
-                    case ResultStatusType.FAILED_EXPECTED:
-                        return execStatistics.getStatusCount(ResultStatusType.FAILED_EXPECTED) - (previousRun.getStatusCount(ResultStatusType.FAILED_EXPECTED) ?? 0);
-                    case ResultStatusType.SKIPPED:
-                        return execStatistics.overallSkipped - (previousRun.overallSkipped ?? 0);
-                    case ResultStatusType.PASSED:
-                        return execStatistics.overallPassed - (previousRun.overallPassed ?? 0);
-                    default:
-                        return 0;
-                }
-            })();
-
             return {
                 key: statusInformation.label,
-                primaryText: execStatistics.getStatusCount(status) + " " + statusInformation.label,
+                primaryText: getPrimaryText(status, execStatistics),
                 secondaryText: getSecondaryStatusLabel(status, execStatistics),
                 icon: StatusService.getIcon(status),
                 selected: selectedStatus === statusInformation.label,
-                trend
+                trend: getTrend(status, execStatistics, previousRun)
             };
         }) satisfies DashboardResultItem[];
 
@@ -181,10 +217,10 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
                         variant="text"
                         size="small"
                         color="inherit"
-                        startIcon={<CompareArrowsIcon />}
+                        startIcon={<CompareArrowsIcon/>}
                         sx={{textTransform: "none", minWidth: "auto", px: 0.5}}
                     >
-                        Run comparison
+                        Compare runs
                     </Button>
                 </Stack>
             )}
@@ -199,7 +235,6 @@ const DashboardTestResultsCard = ({execStatistics, onListItemClick, selectedStat
         <ReportCard
             label={label}
             content={content}
-            sxContent={{p: 0, ":last-child": {padding: 0}}}
             sxCard={sx}
         />
     );

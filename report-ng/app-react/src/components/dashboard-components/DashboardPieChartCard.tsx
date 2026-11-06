@@ -32,7 +32,6 @@ const DashboardPieChartCard = ({sx, ...chartProps}: DashboardPieChartProps) => {
         <ReportCard
             label="Breakdown"
             sxCard={sx}
-            sxContent={{p: 0, ":last-child": {padding: 0}}}
             content={<TestRunPieChart {...chartProps}/>}
         />
     );

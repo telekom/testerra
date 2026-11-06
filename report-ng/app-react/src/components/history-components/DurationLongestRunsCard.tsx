@@ -60,7 +60,6 @@ const DurationLongestRunsCard = ({histStatistics, viewport, sx}: LongestRunsCard
         <ReportCard
             label="Longest runs"
             sxCard={sx}
-            sxContent={{p: 0}}
             content={longestRuns.length > 0 ? (
                 <List dense sx={{py: 0}}>
                     {longestRuns.map(run => (

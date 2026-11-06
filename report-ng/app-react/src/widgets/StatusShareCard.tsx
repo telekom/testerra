@@ -101,7 +101,6 @@ const StatusShareCard = ({statusData, tooltipText, sx}: StatusShareCardProps) =>
             label="Status share"
             tooltipText={tooltipText}
             sxCard={sx}
-            sxContent={{p: 0, ":last-child": {padding: 0}}}
             content={statusData.length > 0 ? (
                 <Echart option={chartOption} autoResize={true}/>
             ) : (

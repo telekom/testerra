@@ -126,6 +126,7 @@ const BrowserInfoTab = () => {
                 <Box key={session.sessionId} id={session.sessionId}>
                     <ReportCard
                         label={`Session: ${session.sessionName}`}
+                        sxContent={{p: 2}}
                         content={
                         <Grid container spacing={2}>
                             <Grid size={6}>

@@ -52,6 +52,7 @@ const VideoTab = () => {
                 <Box key={session.contextValues?.id} id={session.contextValues?.id}>
                     <ReportCard
                         label={`Session: ${session.contextValues?.name}`}
+                        sxContent={{p: 2}}
                         content={
                         <Grid container spacing={2}>
                             <Grid size={2}>

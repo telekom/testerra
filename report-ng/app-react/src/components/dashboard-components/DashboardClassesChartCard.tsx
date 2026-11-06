@@ -186,6 +186,7 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
 
     return (
         <ReportCard
+            testId={"test-classes-chart-card"}
             label="Test Classes"
             content={<Echart option={option} height={height} onEvents={{click: handleBarClick}} notMerge={true} autoResize={true}/>}
         />

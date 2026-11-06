@@ -87,6 +87,7 @@ const DashboardFailureAspectsCard = ({sx, execStatistics}: DashboardFailureAspec
 
     return (
         <ReportCard
+            testId={"failure-aspects-card"}
             label={failureAspectsLabel}
             tooltipText="The most critical errors that caused the highest number of failed test cases"
             sxCard={sx}

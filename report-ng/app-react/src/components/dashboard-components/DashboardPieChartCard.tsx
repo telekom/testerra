@@ -32,7 +32,9 @@ const DashboardPieChartCard = ({sx, ...chartProps}: DashboardPieChartProps) => {
         <ReportCard
             label="Breakdown"
             sxCard={sx}
-            content={<TestRunPieChart {...chartProps}/>}
+            testId={"breakdown-chart-card"}
+            content={<TestRunPieChart {...chartProps}
+            />}
         />
     );
 };

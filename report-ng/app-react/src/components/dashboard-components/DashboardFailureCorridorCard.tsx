@@ -52,6 +52,7 @@ const DashboardFailureCorridorCard = ({executionContext, sx}: DashboardFailureCo
 
     return (
         <ReportCard
+            testId={"failure-corridor-card"}
             label="Failure Corridor"
             sxContent={{p: 2}}
             tooltipText="The severity distribution of failed test cases in relation to the defined test goal"

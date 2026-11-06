@@ -233,6 +233,7 @@ const DashboardTestResultsCard = ({
 
     return (
         <ReportCard
+            testId={"test-results-card"}
             label={label}
             content={content}
             sxCard={sx}

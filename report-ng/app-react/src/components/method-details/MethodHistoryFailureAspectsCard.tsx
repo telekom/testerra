@@ -31,19 +31,19 @@ import ReportCard from "../../widgets/ReportCard.tsx";
 import {escapeHtml} from "../../utils/escapeHtml.ts";
 import {buildChartTooltip} from "../../utils/chartTooltip.ts";
 
-interface MethodFailureAspectsCardProps {
+interface MethodHistoryFailureAspectsCardProps {
     methodHistoryStatistics: MethodHistoryStatistics;
     selectedFailureAspect?: string;
     onSelectFailureAspect: (failureAspect: string | undefined) => void;
     sx?: SxProps<Theme>;
 }
 
-const MethodFailureAspectsCard = ({
+const MethodHistoryFailureAspectsCard = ({
     methodHistoryStatistics,
     selectedFailureAspect,
     onSelectFailureAspect,
     sx,
-}: MethodFailureAspectsCardProps) => {
+}: MethodHistoryFailureAspectsCardProps) => {
     const failureAspects = useMemo(() => methodHistoryStatistics.getFailureAspectHistory()
         .sort((a, b) => b.count - a.count), [methodHistoryStatistics]);
     const statuses = useMemo(() => Array.from(new Set(
@@ -51,8 +51,17 @@ const MethodFailureAspectsCard = ({
     )).sort((a, b) => a - b), [failureAspects]);
 
     const option = useMemo((): EChartsOption => ({
-        grid: {top: 55, bottom: 20, left: 50, right: 50, containLabel: true},
-        legend: {type: "scroll", top: 5},
+        grid: {
+            top: 55,
+            bottom: 20,
+            left: 50,
+            right: 50,
+            containLabel: true
+        },
+        legend: {
+            type: "scroll",
+            top: 5
+        },
         tooltip: {
             trigger: "item",
             appendToBody: true,
@@ -122,4 +131,4 @@ const MethodFailureAspectsCard = ({
     );
 };
 
-export default MethodFailureAspectsCard;
+export default MethodHistoryFailureAspectsCard;

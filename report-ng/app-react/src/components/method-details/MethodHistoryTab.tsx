@@ -28,7 +28,7 @@ import NoResultsCard from "../../widgets/NoResultsCard.tsx";
 import MethodHistoryChartCard from "./MethodHistoryChartCard.tsx";
 import MethodStatusShareCard from "./MethodStatusShareCard.tsx";
 import MethodHistoryStatisticsCard from "./MethodHistoryStatisticsCard.tsx";
-import MethodFailureAspectsCard from "./MethodFailureAspectsCard.tsx";
+import MethodHistoryFailureAspectsCard from "./MethodHistoryFailureAspectsCard.tsx";
 import type {MethodHistoryStatistics} from "../../model/MethodHistoryStatistics.ts";
 
 const MethodHistoryTab = () => {
@@ -75,7 +75,7 @@ const MethodHistoryTab = () => {
                     />
                 </Grid>
                 <Grid size={{xs: 12, lg: 6}}>
-                    <MethodFailureAspectsCard
+                    <MethodHistoryFailureAspectsCard
                         methodHistoryStatistics={methodHistory}
                         selectedFailureAspect={selectedFailureAspect}
                         onSelectFailureAspect={failureAspect => setFailureAspectSelection({methodHistory, failureAspect})}

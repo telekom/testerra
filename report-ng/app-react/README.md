@@ -27,6 +27,15 @@ bunx --bun vite build
 * Execute a test
 * From the created report copy the `model`, `screenshot` and `video` folders into the `public` folder
 
+## Chart state for UI tests
+
+Chart wrappers expose JSON attributes derived from the data passed to ECharts:
+
+* `[data-testid="test-classes-chart"]`: `data-visible-classes` contains the class labels in chart order.
+* `[data-testid="test-run-pie-chart"]`: `data-values` contains objects with `name` (status label) and `value` (grouped test count), including zero counts. `data-selected-statuses` contains the selected status labels, or `[]` when nothing is selected.
+
+Scope selectors to the relevant card when a page contains multiple charts. These attributes describe the chart input, not completion of canvas rendering or animations.
+
 ## Basic information from project generation 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

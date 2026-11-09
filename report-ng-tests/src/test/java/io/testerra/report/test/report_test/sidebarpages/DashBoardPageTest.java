@@ -57,6 +57,19 @@ public class DashBoardPageTest extends AbstractReportTest {
 //        reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
 //    }
 
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
+    public void testT01_reportTestResult(Status status, int amount, String subtext) {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Check whether the count test results are correct");
+        String result = reportDashBoardPage.getTestResultText(status);
+        ASSERT.assertContains(result, String.format("%s %s", amount, status.title));
+        if (subtext != null) {
+            ASSERT.assertContains(result, subtext);
+        }
+    }
+
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderStatusClasses")
     public void testT02_showCorrectTestClassesWhenFilterTestResults(Status status, List<String> testClasses) throws JsonProcessingException {
         TestStep.begin("Navigate to dashboard page.");
@@ -67,6 +80,10 @@ public class DashBoardPageTest extends AbstractReportTest {
         List filteredClasses = reportDashBoardPage.getFilteredTestclasses();
         ASSERT.assertTrue(CollectionUtils.isEqualCollection(testClasses, filteredClasses), "Testclasses chart");
     }
+
+
+
+    /***/
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForNavigationBetweenDifferentPages")
     public void testT03_navigationTowardsDifferentPagesDashBoardPage(ReportSidebarPageType type, Class<AbstractReportPage> pageClass) {
@@ -118,17 +135,17 @@ public class DashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertCorrectBarsLength(threshold);
     }
 
-    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
-    public void testT07_reportPercentages(int amount, Status status) {
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertPieChartContainsTestState(status);
-
-        TestStep.begin("Check whether the displayed percentages are correct");
-        reportDashBoardPage.assertPieChartPercentages(amount, status);
-    }
+//    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
+//    public void testT07_reportPercentages(int amount, Status status) {
+//        TestStep.begin("Navigate to dashboard page.");
+//        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+//
+//        TestStep.begin("Check whether each test status displays the correct test classes.");
+//        reportDashBoardPage.assertPieChartContainsTestState(status);
+//
+//        TestStep.begin("Check whether the displayed percentages are correct");
+//        reportDashBoardPage.assertPieChartPercentages(amount, status);
+//    }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT08_barChartFilterHovering(Status status) {

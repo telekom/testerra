@@ -68,10 +68,11 @@ public class TestDataProvider {
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
-                {5, Status.FAILED},
-                {4, Status.FAILED_EXPECTED},
-                {4, Status.SKIPPED},
-                {5, Status.PASSED}
+                {Status.PASSED, 5, "1 Repaired"},
+                {Status.PASSED, 5, "1 Recovered"},
+                {Status.FAILED, 5, "1 Retried"},
+                {Status.FAILED_EXPECTED, 4, null},
+                {Status.SKIPPED, 4, null},
         };
     }
 

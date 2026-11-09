@@ -86,6 +86,11 @@ public class ReportDashBoardPage extends AbstractReportPage {
         super(driver);
     }
 
+    public String getTestResultText(Status status) {
+        UiElement item = this.getTestResultItem(status);
+        return item.waitFor().text().getActual();
+    }
+
     public String getTestsPerStatus(final Status testStatus) {
 
         String testsPerStatus = "not_existing";

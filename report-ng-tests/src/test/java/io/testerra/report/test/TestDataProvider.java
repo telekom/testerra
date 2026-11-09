@@ -16,6 +16,7 @@ import io.testerra.report.test.pages.utils.TestData;
 import org.testng.annotations.DataProvider;
 
 import java.util.List;
+import java.util.Map;
 
 public class TestDataProvider {
 
@@ -57,10 +58,19 @@ public class TestDataProvider {
     @DataProvider(parallel = false)
     public static Object[][] dataProviderStatusClasses() {
         return new Object[][]{
-                {Status.PASSED, List.of("GenerateExpectedFailedStatusInTesterraReportTest", "GenerateScreenshotsInTesterraReportTest", "GeneratePassedStatusInTesterraReportTest")},
-                {Status.FAILED, List.of("GenerateFailedStatusInTesterraReportTest", "GenerateScreenshotsInTesterraReportTest", "GenerateSkippedStatusInTesterraReportTest")},
-                {Status.FAILED_EXPECTED, List.of("GenerateExpectedFailedStatusInTesterraReportTest")},
-                {Status.SKIPPED, List.of("GenerateSkippedStatusInTesterraReportTest", "GenerateSkippedStatusViaBeforeMethodInTesterraReportTest")}
+                {Status.PASSED, List.of(
+                        Map.of("name", "GenerateExpectedFailedStatusInTesterraReportTest", "value", 2),
+                        Map.of("name", "GenerateScreenshotsInTesterraReportTest", "value", 1),
+                        Map.of("name", "GeneratePassedStatusInTesterraReportTest", "value", 2))},
+                {Status.FAILED, List.of(
+                        Map.of("name", "GenerateFailedStatusInTesterraReportTest", "value", 3),
+                        Map.of("name", "GenerateScreenshotsInTesterraReportTest", "value", 1),
+                        Map.of("name", "GenerateSkippedStatusInTesterraReportTest", "value", 1))},
+                {Status.FAILED_EXPECTED, List.of(
+                        Map.of("name", "GenerateExpectedFailedStatusInTesterraReportTest", "value", 4))},
+                {Status.SKIPPED, List.of(
+                        Map.of("name", "GenerateSkippedStatusInTesterraReportTest", "value", 3),
+                        Map.of("name", "GenerateSkippedStatusViaBeforeMethodInTesterraReportTest", "value", 1))}
         };
     }
 

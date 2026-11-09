@@ -109,6 +109,11 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
     const visibleClasses = classes.map(classStatistics =>
         classNameConverter(classStatistics.classIdentifier, ClassName.simpleName)
     );
+    const series = statuses.map(createSeries);
+    const values = visibleClasses.map((name, index) => ({
+        name,
+        value: series.reduce((count, statusSeries) => count + (statusSeries.data[index]?.value ?? 0), 0),
+    }));
     const height = classes.length * 48 + 60;    // space per bar + offset for first bar
     const option = {
         tooltip: {
@@ -164,7 +169,7 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
                 fill: '#777',
             },
         },
-        series: statuses.map(createSeries),
+        series,
     };
 
     const handleBarClick = useCallback((params: CallbackDataParams) => {
@@ -193,7 +198,7 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
             content={
                 <Box
                     data-testid="test-classes-chart"
-                    data-visible-classes={JSON.stringify(visibleClasses)}
+                    data-visible-classes={JSON.stringify(values)}
                     sx={{display: "flex", flex: 1, minHeight: 0, flexDirection: "column"}}
                 >
                     <Echart option={option} height={height} onEvents={{click: handleBarClick}} notMerge={true} autoResize={true}/>

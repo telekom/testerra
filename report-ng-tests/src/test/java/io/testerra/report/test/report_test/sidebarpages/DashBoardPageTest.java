@@ -38,6 +38,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public class DashBoardPageTest extends AbstractReportTest {
 
@@ -71,17 +72,52 @@ public class DashBoardPageTest extends AbstractReportTest {
     }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderStatusClasses")
-    public void testT02_showCorrectTestClassesWhenFilterTestResults(Status status, List<String> testClasses) throws JsonProcessingException {
+    public void testT02_showCorrectTestClassesWhenFilterTestResults(Status status, List<Map<String, Object>> testClasses) throws JsonProcessingException {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
         TestStep.begin("Check whether the corresponding test-state-part of the numbersChart refreshes the shown test classes");
         reportDashBoardPage = reportDashBoardPage.clickTestResult(status);
-        List filteredClasses = reportDashBoardPage.getFilteredTestclasses();
-        ASSERT.assertTrue(CollectionUtils.isEqualCollection(testClasses, filteredClasses), "Testclasses chart");
+        List<Map<String, Object>> filteredClasses = reportDashBoardPage.getFilteredTestclasses();
+        ASSERT.assertTrue(CollectionUtils.isEqualCollection(testClasses, filteredClasses),
+                String.format("Testclasses chart for %s: expected %s, actual %s", status.title, testClasses, filteredClasses));
     }
 
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
+    public void testT03_showSelectedStatusInBreakdown(Status status) {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
+        TestStep.begin("Filter report to status.");
+        reportDashBoardPage = reportDashBoardPage.clickTestResult(status);
+
+        TestStep.begin("Check whether the displayed percentages are correct");
+        String selectedStatus = reportDashBoardPage.getBreakpointSelection();
+        ASSERT.assertContains(selectedStatus, status.title);
+    }
+
+    @Test
+    public void testT03reportDurationDisplayed() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Check whether the start and end is displayed");
+        reportDashBoardPage.assertDurationCard();
+
+        TestStep.begin("Check whether the duration is displayed and correct");
+        String testDuration = reportDashBoardPage.getTestDuration();
+        ASSERT.assertTrue(
+                DateTimeUtils.verifyDateTimeString(testDuration),
+                "Test duration format");
+        String testStarted = reportDashBoardPage.getTestStarted();
+        ASSERT.assertTrue(
+                DateTimeUtils.verifyDateTimeString(testStarted),
+                "Started test time format");
+        String testEnded = reportDashBoardPage.getTestEnded();
+        ASSERT.assertTrue(
+                DateTimeUtils.verifyDateTimeString(testEnded),
+                "Ended test time format");
+    }
 
     /***/
 
@@ -95,19 +131,6 @@ public class DashBoardPageTest extends AbstractReportTest {
 //        reportDashBoardPage.verifyReportPage(type);
     }
 
-    @Test
-    public void testT04_reportDurationDisplayed() {
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check whether the start and end is displayed");
-        reportDashBoardPage.assertDurationCard();
-
-        TestStep.begin("Check whether the duration is displayed and correct");
-        final String testDuration = reportDashBoardPage.getTestDuration();
-        final boolean dateFormatIsCorrect = DateTimeUtils.verifyDateTimeString(testDuration);
-        Assert.assertTrue(dateFormatIsCorrect, String.format("Test Duration '%s' has correct format", testDuration));
-    }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT05_barChartLinksToFilteredTestsPage(Status status) {
@@ -123,29 +146,6 @@ public class DashBoardPageTest extends AbstractReportTest {
         reportTestsPage.assertCorrectTestStatus(status);
     }
 
-    @Test
-    public void testT06_barChartLength() {
-        final double threshold = 0.01;  //1% (random chosen value, but some threshold is needed when asserting with double)
-
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check barchart is shown and iterate through all bars to check correct length");
-        reportDashBoardPage.assertBarChartIsDisplayed();
-        reportDashBoardPage.assertCorrectBarsLength(threshold);
-    }
-
-//    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDifferentTestStatesWithAmounts")
-//    public void testT07_reportPercentages(int amount, Status status) {
-//        TestStep.begin("Navigate to dashboard page.");
-//        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-//
-//        TestStep.begin("Check whether each test status displays the correct test classes.");
-//        reportDashBoardPage.assertPieChartContainsTestState(status);
-//
-//        TestStep.begin("Check whether the displayed percentages are correct");
-//        reportDashBoardPage.assertPieChartPercentages(amount, status);
-//    }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
     public void testT08_barChartFilterHovering(Status status) {

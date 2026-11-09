@@ -22,41 +22,49 @@
 
 package io.testerra.report.test.pages.utils;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.Locale;
 
 public class DateTimeUtils {
 
-//    public static final SimpleDateFormat formatMilliSeconds = new SimpleDateFormat("SSS'ms'");
-    public static final SimpleDateFormat formatSeconds = new SimpleDateFormat("s's'");
-    public static final SimpleDateFormat formatMinutes = new SimpleDateFormat("mm'mins' s's'");
-    public static final SimpleDateFormat formatHours = new SimpleDateFormat("H'h' mm'mins' s's'");
-
+    public static final DateTimeFormatter formatDateTime =
+            DateTimeFormatter.ofPattern("EEE, dd MMM uuuu, HH:mm:ss", Locale.ENGLISH)
+                    .withResolverStyle(ResolverStyle.STRICT);
+    public static final DateTimeFormatter formatSecondsAndMillis =
+            DateTimeFormatter.ofPattern("s's' SSS'ms'").withResolverStyle(ResolverStyle.STRICT);
+    public static final DateTimeFormatter formatMinutes =
+            DateTimeFormatter.ofPattern("mm'm' s's' SSS'ms'").withResolverStyle(ResolverStyle.STRICT);
+    public static final DateTimeFormatter formatHours =
+            DateTimeFormatter.ofPattern("H'h' mm'm' s's' SSS'ms'").withResolverStyle(ResolverStyle.STRICT);
 
     public static boolean verifyDateTimeString(final String dateTimeString) {
-       return verifyFormat(dateTimeString);
+        return verifyFormat(dateTimeString);
     }
 
     private static boolean verifyFormat(final String dateTimeString) {
-//        if (isParsable(dateTimeString, DateTimeUtils.formatMilliSeconds)) {
-//            return true;
-//        }
-
-        if (isParsable(dateTimeString, DateTimeUtils.formatSeconds)) {
+        try {
+            LocalDateTime.parse(dateTimeString, formatDateTime);
+            return true;
+        } catch (DateTimeParseException e) {
+            // Try the duration formats below.
+        }
+        if (isParsable(dateTimeString, formatSecondsAndMillis)) {
             return true;
         }
-
-        if (isParsable(dateTimeString, DateTimeUtils.formatMinutes)) {
+        if (isParsable(dateTimeString, formatMinutes)) {
             return true;
         }
-
-        return isParsable(dateTimeString, DateTimeUtils.formatHours);
+        return isParsable(dateTimeString, formatHours);
     }
 
-    public static boolean isParsable(final String dateTimeString, final SimpleDateFormat format) {
+    private static boolean isParsable(final String dateTimeString, final DateTimeFormatter format) {
         try {
             format.parse(dateTimeString);
             return true;
-        } catch (Exception e) {
+        } catch (DateTimeParseException e) {
             return false;
         }
     }

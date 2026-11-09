@@ -92,21 +92,22 @@ const DashboardDurationCard = ({sx, start, end}: DashboardDurationProps) => {
                             <Stack direction="row" spacing={1}
                                   sx={theme.custom.durationCard.header}>
                                 <TimerIcon/>
-                                <Typography variant="h5">{formatDuration(executionInfo.duration)}</Typography>
+                                <Typography data-testid={"duration-value"}
+                                            variant="h5">{formatDuration(executionInfo.duration)}</Typography>
                             </Stack>
                             <Grid container sx={theme.custom.durationCard.metaGrid}>
                                 <Grid size={3}>
                                     <Typography variant="caption" color="primary">Started</Typography>
                                 </Grid>
                                 <Grid size={9}>
-                                    <Typography
+                                    <Typography data-testid={"started-value"}
                                         variant="caption">{formatDate(executionInfo.started, "long")}</Typography>
                                 </Grid>
                                 <Grid size={3}>
                                     <Typography variant="caption" color="primary">Ended</Typography>
                                 </Grid>
                                 <Grid size={9}>
-                                    <Typography
+                                    <Typography data-testid={"ended-value"}
                                         variant="caption">{formatDate(executionInfo.ended, "long")}</Typography>
                                 </Grid>
 

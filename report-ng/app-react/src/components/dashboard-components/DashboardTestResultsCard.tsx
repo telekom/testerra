@@ -168,7 +168,7 @@ const DashboardTestResultsCard = ({
         <Stack sx={{height: "100%"}}>
             <List sx={{p: 0}}>
                 {itemList.map((item) => (
-                    <ListItem key={item.key} disablePadding>
+                    <ListItem data-testId={item.key} key={item.key} disablePadding>
                         <ListItemButton
                             sx={{alignItems: "center"}}
                             selected={item.selected}

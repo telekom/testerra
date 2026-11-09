@@ -22,6 +22,7 @@
 
 package io.testerra.report.test.report_test.sidebarpages;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
@@ -32,40 +33,39 @@ import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.DateTimeUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class ReportDashBoardPageTest extends AbstractReportTest {
+public class DashBoardPageTest extends AbstractReportTest {
 
-    // TODO: Cannot locate PieChart elements
-    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates",
-            enabled = false
-    )
-    public void testT01_showCorrectTestClassesWhenClickingOnPieChart(Status status) {
+//    // Cannot locate PieChart elements
+//    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates",
+//            enabled = false
+//    )
+//    public void testT01_showCorrectTestClassesWhenClickingOnPieChart(Status status) {
+//        TestStep.begin("Navigate to dashboard page.");
+//        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+//
+//        TestStep.begin("Check whether each test status displays the correct test classes.");
+//        reportDashBoardPage.assertPieChartContainsTestState(status);
+//
+//        TestStep.begin("Check whether the corresponding test-state-part of the pieChart refreshes the shown test classes");
+//        reportDashBoardPage = reportDashBoardPage.clickPieChartPart(status);
+//        reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
+//    }
+
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderStatusClasses")
+    public void testT02_showCorrectTestClassesWhenFilterTestResults(Status status, List<String> testClasses) throws JsonProcessingException {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertPieChartContainsTestState(status);
-
-        TestStep.begin("Check whether the corresponding test-state-part of the pieChart refreshes the shown test classes");
-        reportDashBoardPage = reportDashBoardPage.clickPieChartPart(status);
-        reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
-    }
-
-    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
-    public void testT02_showCorrectTestClassesWhenClickingOnNumbersChart(Status status) {
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check whether each test status displays the correct test classes.");
-        reportDashBoardPage.assertNumbersChartContainsTestState(status);
 
         TestStep.begin("Check whether the corresponding test-state-part of the numbersChart refreshes the shown test classes");
-        reportDashBoardPage = reportDashBoardPage.clickNumberChartPart(status);
-        reportDashBoardPage.assertCorrectBarChartsAreDisplayed();
+        reportDashBoardPage = reportDashBoardPage.clickTestResult(status);
+        List filteredClasses = reportDashBoardPage.getFilteredTestclasses();
+        ASSERT.assertTrue(CollectionUtils.isEqualCollection(testClasses, filteredClasses), "Testclasses chart");
     }
 
     @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForNavigationBetweenDifferentPages")
@@ -101,7 +101,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
 
         TestStep.begin("Check whether clicking on barchart bars navigates to tests page with correct filter.");
-        reportDashBoardPage = reportDashBoardPage.clickNumberChartPart(status);
+        reportDashBoardPage = reportDashBoardPage.clickTestResult(status);
         ReportTestsPage reportTestsPage = reportDashBoardPage.navigateToFilteredTestPageByClickingBarChartBar();
         reportTestsPage.assertCorrectTestStatus(status);
     }
@@ -139,7 +139,7 @@ public class ReportDashBoardPageTest extends AbstractReportTest {
         reportDashBoardPage.assertNumbersChartContainsTestState(status);
 
         TestStep.begin("Show corresponding bars to test state");
-        reportDashBoardPage = reportDashBoardPage.clickNumberChartPart(status);
+        reportDashBoardPage = reportDashBoardPage.clickTestResult(status);
 
         TestStep.begin("Check whether hovering above a bar in barchart let a popup appear with correct content");
         reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(status);

@@ -78,6 +78,7 @@ const MainNavigation = () => {
     const drawerContent = (
         <Box sx={{height: '100%', overflow: 'hidden'}}>
             <Box
+                data-testid={"main-menu"}
                 sx={{
                     overflow: 'auto',
                     height: '100%',
@@ -105,8 +106,8 @@ const MainNavigation = () => {
                             return (
                                 <ListItem
                                     disablePadding
-                                    qa-item={'menu-' + label}
                                     key={index}
+                                    data-testid={`menu-${label.toLocaleLowerCase()}`}
                                     sx={
                                         isActive
                                             ? itemClasses.selectedItem

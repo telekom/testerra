@@ -15,6 +15,8 @@ import io.testerra.report.test.pages.utils.LogLevel;
 import io.testerra.report.test.pages.utils.TestData;
 import org.testng.annotations.DataProvider;
 
+import java.util.List;
+
 public class TestDataProvider {
 
     @DataProvider(parallel = true)
@@ -51,6 +53,17 @@ public class TestDataProvider {
                 {Status.SKIPPED}
         };
     }
+
+    @DataProvider(parallel = false)
+    public static Object[][] dataProviderStatusClasses() {
+        return new Object[][]{
+                {Status.PASSED, List.of("GenerateExpectedFailedStatusInTesterraReportTest", "GenerateScreenshotsInTesterraReportTest", "GeneratePassedStatusInTesterraReportTest")},
+                {Status.FAILED, List.of("GenerateFailedStatusInTesterraReportTest", "GenerateScreenshotsInTesterraReportTest", "GenerateSkippedStatusInTesterraReportTest")},
+                {Status.FAILED_EXPECTED, List.of("GenerateExpectedFailedStatusInTesterraReportTest")},
+                {Status.SKIPPED, List.of("GenerateSkippedStatusInTesterraReportTest", "GenerateSkippedStatusViaBeforeMethodInTesterraReportTest")}
+        };
+    }
+
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {

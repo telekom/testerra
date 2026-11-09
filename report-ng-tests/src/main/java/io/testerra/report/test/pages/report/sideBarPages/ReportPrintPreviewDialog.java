@@ -17,7 +17,8 @@ public class ReportPrintPreviewDialog extends AbstractReportPage {
     }
 
     public void checkIFrameTitle(){
-        String titleText = title.expect().text().getActual();
-        iFrameTitle.expect().text().isContaining(titleText);
+        throw new RuntimeException("Implement me");
+//        String titleText = title.expect().text().getActual();
+//        iFrameTitle.expect().text().isContaining(titleText);
     }
 }

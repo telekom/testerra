@@ -1,7 +1,8 @@
 dependencies {
     implementation project(':integration-tests')
-
     implementation driver_ui_desktop
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.4'
+    implementation 'org.apache.commons:commons-collections4:4.5.0'
     testImplementation project(':report-ng')
 }
 

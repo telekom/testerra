@@ -31,7 +31,7 @@ public abstract class AbstractReportPage extends ReportSideBar {
 
     @Check
     protected final UiElement pageContent = find(By.tagName("main"));
-    protected PreparedLocator cardboxLocator = LOCATE.prepare("//div[contains(@class, 'MuiCard-root') and .//h6[contains(text(), '%s')]]");
+    protected PreparedLocator cardboxLocator = LOCATE.prepare("//div[contains(@class, 'MuiCard-root') and @data-testid='%s']");
 
     /**
      * Constructor for existing sessions.

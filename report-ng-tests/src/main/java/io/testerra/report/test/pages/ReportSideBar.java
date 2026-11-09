@@ -29,34 +29,30 @@ import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 public abstract class ReportSideBar extends Page {
 
-    @Check
-    protected final UiElement title = find(By.xpath("//div[contains(@class, 'MuiToolbar') and ./img]//h6"));
+//    @Check
+//    protected final UiElement title = find(By.xpath("//div[contains(@class, 'MuiToolbar') and ./img]//h6"));
 
     @Check
-    private final UiElement sideBar = find(By.xpath("//div[@data-testid = 'sidebar']"));
-    private final PreparedLocator menuLinkLocator = LOCATE.prepare("//li[@data-testid = '%s']//a");
+    private final UiElement mainMenu = find(By.xpath("//div[@data-testid = 'main-menu']"));
+    private final PreparedLocator menuLinkLocator = LOCATE.prepare("//li[@data-testid = '%s']");
     @Check
-    private final UiElement menuDashboardLink = sideBar.find(menuLinkLocator.with("menu-Dashboard"));
+    private final UiElement menuDashboardLink = mainMenu.find(menuLinkLocator.with("menu-dashboard"));
     @Check
-    private final UiElement menuTestsLink = sideBar.find(menuLinkLocator.with("menu-Tests"));
+    private final UiElement menuTestsLink = mainMenu.find(menuLinkLocator.with("menu-tests"));
     @Check
-    private final UiElement menuFailureAspectsLink = sideBar.find(menuLinkLocator.with("menu-Failure Aspects"));
+    private final UiElement menuFailureAspectsLink = mainMenu.find(menuLinkLocator.with("menu-failure aspects"));
     @Check
-    private final UiElement menuLogsLink = sideBar.find(menuLinkLocator.with("menu-Logs"));
+    private final UiElement menuLogsLink = mainMenu.find(menuLinkLocator.with("menu-logs"));
 //    @Check
-    private final UiElement menuThreadsLink = sideBar.find(menuLinkLocator.with("menu-Threads"));
+    private final UiElement menuThreadsLink = mainMenu.find(menuLinkLocator.with("menu-threads"));
 //    @Check
-    private final UiElement menuHistoryLink = sideBar.find(menuLinkLocator.with("menu-History"));
+    private final UiElement menuHistoryLink = mainMenu.find(menuLinkLocator.with("menu-history"));
 //    @Check
-    private final UiElement menuPrintReportLink = sideBar.find(menuLinkLocator.with("menu-Print Report"));
+    private final UiElement menuPrintReportLink = mainMenu.find(menuLinkLocator.with("menu-print report"));
     @Check
-    private final UiElement menuTimingsLink = sideBar.find(menuLinkLocator.with("menu-Timings"));
+    private final UiElement menuTimingsLink = mainMenu.find(menuLinkLocator.with("menu-timings"));
 
 
     public ReportSideBar(WebDriver driver) {

@@ -30,6 +30,7 @@ import type {CallbackDataParams} from "echarts/types/dist/shared";
 import {createSearchParams, useNavigate} from "react-router-dom";
 import {buildChartTooltip, buildTooltipStatusBadge} from "../../utils/chartTooltip";
 import {reportTheme} from "../../layout/reportTheme.tsx";
+import Box from "@mui/material/Box";
 
 interface DashboardClassesChartProps {
     execStatistics: ExecutionStatistics;
@@ -105,6 +106,9 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
     });
 
     const dataAvailable = classes.length > 0;
+    const visibleClasses = classes.map(classStatistics =>
+        classNameConverter(classStatistics.classIdentifier, ClassName.simpleName)
+    );
     const height = classes.length * 48 + 60;    // space per bar + offset for first bar
     const option = {
         tooltip: {
@@ -133,9 +137,7 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
         yAxis: {
             type: 'category',
             inverse: true,      // failed on top
-            data: classes.map(classStatistics =>
-                classNameConverter(classStatistics.classIdentifier, ClassName.simpleName)
-            ),
+            data: visibleClasses,
             axisLabel: {
                 show: dataAvailable,
                 width: 400,
@@ -188,7 +190,15 @@ const DashboardClassesChartCard: React.FC<DashboardClassesChartProps> = ({execSt
         <ReportCard
             testId={"test-classes-chart-card"}
             label="Test Classes"
-            content={<Echart option={option} height={height} onEvents={{click: handleBarClick}} notMerge={true} autoResize={true}/>}
+            content={
+                <Box
+                    data-testid="test-classes-chart"
+                    data-visible-classes={JSON.stringify(visibleClasses)}
+                    sx={{display: "flex", flex: 1, minHeight: 0, flexDirection: "column"}}
+                >
+                    <Echart option={option} height={height} onEvents={{click: handleBarClick}} notMerge={true} autoResize={true}/>
+                </Box>
+            }
         />
     );
 };

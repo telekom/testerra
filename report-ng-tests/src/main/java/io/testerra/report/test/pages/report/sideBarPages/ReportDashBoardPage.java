@@ -66,8 +66,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement testStartElement = durationCard.find(By.xpath("//span[@data-testid = 'started-value']"));
     private final UiElement testEndElement = durationCard.find(By.xpath("//span[@data-testid = 'ended-value']"));
 
-
-
     // Test classes
     @Check
     private final UiElement testclassesCard = pageContent.find(this.cardboxLocator.with("test-classes-chart-card"));
@@ -86,7 +84,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     private final UiElement priorityMessagesElement = find(this.cardboxLocator.with("priority-messages-card"));
 
-    private final String xPathToPieChartPart = "//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']";
 
     public ReportDashBoardPage(WebDriver driver) {
         super(driver);
@@ -99,12 +96,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
 
     public String getBreakpointSelection() {
         return this.breakdownChart.waitFor().attribute("data-selected-statuses").getActual();
-    }
-
-    // TODO: cannot get elements of PieChart
-    private UiElement getPieChartPart(final Status status) {
-        return breakdownCard.find(
-                By.xpath(String.format(xPathToPieChartPart, getTitleWithSpaceReplacement(status))));
     }
 
     public ReportDashBoardPage clickTestResult(Status status) {
@@ -123,11 +114,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
                 classes,
                 new TypeReference<>() {
                 });
-    }
-
-    public void assertNumbersChartContainsTestState(Status status) {
-        UiElement testResultItem = this.getTestResultItem(status);
-        testResultItem.expect().displayed().is(true, "<there should be a chart displayed, containing the amounts of each test state>");
     }
 
     public void assertDurationCard() {
@@ -154,92 +140,15 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     // Test classes chart
-    public void assertPopupWhileHoveringWithCorrectContent(Status status) {
-        for (UiElement bar : segmentsOfBarsPerTestStatus.list().stream().collect(Collectors.toList())) {
-            bar.hover();
-            TimerUtils.sleep(5_000);
-            PreparedLocator tooltip = LOCATE.prepare("//div[contains(@class, 'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-y-label' and contains(text(), '%s')]");
-            UiElement tooltipElement = testclassesCard.find(tooltip.with(status.title));
-            tooltipElement.assertThat().present(true);
-        }
-    }
-
-    public void assertBarChartIsDisplayed() {
-        long barListLength = barChartPartPerTestStatus.list().stream().count();
-        Assert.assertEquals(barListLength, 4, "There should be 4 entries, 1 for each test state!");
-    }
-
-    public void assertCorrectBarsLength(double threshold) {
-        final double lengthUnit = getOneLengthUnit();
-        Assert.assertNotEquals(lengthUnit, 0, "The length of a bar in the barchart representing one test should not be 0!");
-
-        List<UiElement> barTypeList = barChartPartPerTestStatus.list().stream().collect(Collectors.toList());
-        for (UiElement barType : barTypeList) {
-            List<UiElement> bars = barType.find(By.xpath("//*")).list().stream().collect(Collectors.toList());
-            for (UiElement bar : bars) {
-                final String valAsString = getBuggedAttributePerJavascriptExecutor(bar, "val", 1);
-                Assert.assertNotNull(valAsString, "There should be a attribute 'val' with the expected length of 1!");
-
-                int amountOfLengthUnits = Integer.parseInt(valAsString);
-                double upperBound = (lengthUnit * amountOfLengthUnits) * (1 + threshold);
-                double lowerBound = (lengthUnit * amountOfLengthUnits) * (1 - threshold);
-                final String barWidth = getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8);
-                double actualBarLength = Double.parseDouble(Objects.requireNonNull(barWidth));
-                Assert.assertTrue(lowerBound <= actualBarLength && actualBarLength <= upperBound,
-                        String.format("BarWidth got too much deviation to excepted bounds! %f not in [%f, %f]", actualBarLength, lowerBound, upperBound));
-            }
-        }
-    }
-
-    private double getOneLengthUnit() {
-        List<UiElement> barTypeList = barChartPartPerTestStatus.list().stream().collect(Collectors.toList());
-        for (UiElement barType : barTypeList) {
-            List<UiElement> bars = barType.find(By.xpath("//*")).list().stream().collect(Collectors.toList());
-            for (UiElement bar : bars) {
-                if (bar.expect().attribute("val").getActual().equals("1")) {
-                    String barWidth = getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8);
-                    Assert.assertNotNull(barWidth, "GuiElement attribute value is null!");
-                    return Double.parseDouble(barWidth);
-                }
-            }
-        }
-        return 0;
-    }
-
-    private String getBuggedAttributePerJavascriptExecutor(UiElement uiElement, String attribute, int expectedLengthOfValue) {
-        try {
-
-            final Object[] aa = {null};
-
-            String jsScript = "var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;";
-            uiElement.findWebElement(webElement -> {
-                aa[0] = JSUtils.executeScript(uiElement.getWebDriver(), jsScript, webElement);
-            });
-
-            // JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
-            // Object aa = executor.executeScript("var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;", element);
-
-            String listOfAllAttributes = aa[0].toString();
-            int attributeSubstringStart = listOfAllAttributes.indexOf(attribute);
-            int lengthOfAttributeSequence = attribute.length() + expectedLengthOfValue + 1;
-
-            String subStringOfOneAttribute = listOfAllAttributes.substring(attributeSubstringStart, attributeSubstringStart + lengthOfAttributeSequence);
-
-            if (subStringOfOneAttribute.contains("=0,")) {
-                return "0";
-            }
-            // parsed String might contain additional attributes besides the intended attribute
-            if (subStringOfOneAttribute.contains(",")) {
-                // cut off after ","
-                String[] split = subStringOfOneAttribute.split(",");
-                subStringOfOneAttribute = split[0];
-            }
-
-            return subStringOfOneAttribute.split("=")[1];
-        } catch (Exception e) {
-            return "0";
-        }
-    }
+//    public void assertPopupWhileHoveringWithCorrectContent(Status status) {
+//        for (UiElement bar : segmentsOfBarsPerTestStatus.list().stream().collect(Collectors.toList())) {
+//            bar.hover();
+//            TimerUtils.sleep(5_000);
+//            PreparedLocator tooltip = LOCATE.prepare("//div[contains(@class, 'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-y-label' and contains(text(), '%s')]");
+//            UiElement tooltipElement = testclassesCard.find(tooltip.with(status.title));
+//            tooltipElement.assertThat().present(true);
+//        }
+//    }
 
     public void assertFailureCorridorValue(final String failureCorridorType, final int value) {
         final UiElement failureCorridor = getFailureCorridorPart(failureCorridorType);
@@ -283,10 +192,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
                 .stream()
                 .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toList());
-    }
-
-    private String getTitleWithSpaceReplacement(Status status) {
-        return status.title.replace(" ", "x");
     }
 
 

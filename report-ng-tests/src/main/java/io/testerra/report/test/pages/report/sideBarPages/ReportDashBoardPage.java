@@ -26,22 +26,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ReportDashBoardPage extends AbstractReportPage {
@@ -56,6 +49,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement testResultCard = pageContent.find(this.cardboxLocator.with("test-results-card"));
     PreparedLocator testResultElement = LOCATE.prepare("//li[@data-testid='%s']");
 
+    // History card
     @Check
     private final UiElement historyCard = pageContent.find(this.cardboxLocator.with("history-chart-card"));
 
@@ -65,6 +59,10 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement testDurationElement = durationCard.find(By.xpath("//h5[@data-testid = 'duration-value']"));
     private final UiElement testStartElement = durationCard.find(By.xpath("//span[@data-testid = 'started-value']"));
     private final UiElement testEndElement = durationCard.find(By.xpath("//span[@data-testid = 'ended-value']"));
+
+    // Failure corridor card
+    private final UiElement failureCorridorCard = pageContent.find(this.cardboxLocator.with("failure-corridor-card"));
+    private PreparedLocator failureCorridorChip = LOCATE.prepare("//div[@data-testid = '%s']");
 
     // Test classes
     @Check
@@ -77,10 +75,11 @@ public class ReportDashBoardPage extends AbstractReportPage {
     private final UiElement segmentsOfBarsPerTestStatus = barChartPartPerTestStatus.find(By.xpath("//*"));
 
     // Failure aspects
+    @Check
     private final UiElement failureAspectsCard = pageContent.find(this.cardboxLocator.with("failure-aspects-card"));
-    private final UiElement majorLink = failureAspectsCard.find(By.xpath("//*[contains(text(), 'Major')]"));
-    private final UiElement minorLink = failureAspectsCard.find(By.xpath("//*[contains(text(), 'Minor')]"));
-    private final UiElement topFailuresLink = failureAspectsCard.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
+    private final UiElement majorLink = failureAspectsCard.find(By.xpath("//a[contains(@href, 'major')]"));
+    private final UiElement minorLink = failureAspectsCard.find(By.xpath("//a[contains(@href, 'minor')]"));
+    private final UiElement topFailuresLink = failureAspectsCard.find(By.xpath("//li"));
 
     private final UiElement priorityMessagesElement = find(this.cardboxLocator.with("priority-messages-card"));
 
@@ -150,27 +149,8 @@ public class ReportDashBoardPage extends AbstractReportPage {
 //        }
 //    }
 
-    public void assertFailureCorridorValue(final String failureCorridorType, final int value) {
-        final UiElement failureCorridor = getFailureCorridorPart(failureCorridorType);
-        final String text = failureCorridor.expect().text().getActual();
-
-        Assert.assertTrue(text.contains(String.valueOf(value)),
-                String.format("Failure Corridor '%s' has value '%s'", failureCorridor, value));
-    }
-
-    public void assertFailureCorridorValuesAreCorrectClassified(String failureCorridorType, long bound) {
-        UiElement failureCorridor = getFailureCorridorPart(failureCorridorType);
-        int displayedAmount = Integer.parseInt(failureCorridor.expect().text().getActual().split(" ")[0]);
-        if (displayedAmount <= bound) {
-            Assert.assertTrue(failureCorridor.waitFor().attribute("class").getActual().contains("status-passed"), "Corridor should be classified correctly!");
-        } else {
-            Assert.assertTrue(failureCorridor.waitFor().attribute("class").getActual().contains("status-failed"), "Corridor should be classified correctly!");
-        }
-    }
-
-    private UiElement getFailureCorridorPart(final String failureCorridorType) {
-        String xPathToFailureCorridor = "//*[contains(@class.bind,'Corridor') and contains(text(), '%s')]";
-        return find(By.xpath(String.format(xPathToFailureCorridor, failureCorridorType)));
+    public TestableUiElement getFailureCorridorElement(String failureCorridorType) {
+        return this.failureCorridorCard.find(this.failureCorridorChip.with(failureCorridorType));
     }
 
     public void assertTopFailureAspectsAreDisplayed() {
@@ -187,7 +167,7 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return createPage(ReportFailureAspectsPage.class);
     }
 
-    public List<String> getOrderListOfTopFailureAspects() {
+    public List<String> getListOfFailureAspects() {
         return topFailuresLink.list()
                 .stream()
                 .map(uiElement -> uiElement.expect().text().getActual())

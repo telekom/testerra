@@ -25,6 +25,7 @@ package io.testerra.report.test.pages.report.sideBarPages;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementList;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.utils.FailureAspectType;
@@ -35,37 +36,42 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class ReportFailureAspectsPage extends AbstractReportPage {
 
     @Check
-    private final UiElement testTypeSelect = pageContent.find(By.xpath("//mdc-select[@label='Type']"));
+    private final UiElement typeSelect = pageContent.find(By.xpath("//div[@data-testid = 'failure-type']"));
 
     @Check
-    private final UiElement testInputSearch = pageContent.find(By.xpath("//label[@label='Search']//input"));
+    private final UiElement inputSearch = pageContent.find(By.xpath("//div[@data-testid = 'failure-text']//input"));
 
     @Check
-    private final UiElement testShowExpectedFailsButton = pageContent.find(By.xpath("//button[@role='switch']"));
+    private final UiElement showExpectedFailsButton = pageContent.find(By.xpath("//span[@data-testid = 'failure-expected-switch']"));
 
     @Check
-    private final UiElement failureAspectsTable = pageContent.find(By.xpath("//tbody[@ref='content']"));
+    private final UiElement failureAspectsTable = pageContent.find(By.xpath("//div[@data-testid = 'failure-aspects-list']"));
+    private PreparedLocator cell = LOCATE.prepare("//div[@data-testid = '%s']");
 
 
     // failureAspect can contain apostrophes
     PreparedLocator subFailureAspectRow = LOCATE.prepare(".//tr[.//td[contains(.,\"%s\") and contains(., \"%s\")]]");
 
-    public enum FailureAspectsTableEntry {
-        RANK(0), FAILURE_ASPECT(1), STATUS(2);
+    public enum FailureAspectsColumn {
+        RANK("rank"),
+        FAILURE_ASPECT("failure"),
+        TYPE("type"),
+        STATUS("status");
 
-        private final int value;
+        private final String id;
 
-        FailureAspectsTableEntry(final int value) {
-            this.value = value;
+        FailureAspectsColumn(final String id) {
+            this.id = id;
         }
 
-        public int index() {
-            return this.value;
+        public String id() {
+            return this.id;
         }
     }
 
@@ -78,16 +84,17 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         super(driver);
     }
 
-    public List<UiElement> getColumns(final FailureAspectsTableEntry entry) {
-        return getColumns(entry.index());
-    }
-
-    private List<UiElement> getColumns(int column) {
+    public List<UiElement> getColumns(final FailureAspectsColumn entry) {
         List<UiElement> returnList = new ArrayList<>();
-        for (UiElement tableRows : failureAspectsTable.find(By.xpath("//tr")).list()) {
-            List<UiElement> tableColumns = tableRows.find(By.xpath("//td")).list().stream().collect(Collectors.toList());
-            returnList.add(tableColumns.get(column));
+        final UiElementList<UiElement> tableRows = this.getRows();
+        for(UiElement row : tableRows) {
+            returnList.add(row.find(this.cell.with(entry.id())));
         }
+
+//        for (UiElement tableRows : failureAspectsTable.find(By.xpath("//tr")).list()) {
+//            List<UiElement> tableColumns = tableRows.find(By.xpath("//td")).list().stream().collect(Collectors.toList());
+//            returnList.add(tableColumns.get(column));
+//        }
         return returnList;
     }
 
@@ -96,6 +103,20 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
      *
      * @return boolean
      */
+    public boolean checkFailureStatusInRows(final Status status) {
+        final UiElementList<UiElement> tableRows = this.getRows();
+        AtomicBoolean expectedStatus = new AtomicBoolean(true);
+        tableRows.stream().forEach(row -> {
+            UiElement statusCell = row.find(By.xpath("//div[@data-testid = 'status']"));
+            String statusText = statusCell.waitFor().text().getActual();
+            if(!statusText.contains(status.title)) {
+                expectedStatus.set(false);
+            }
+        });
+
+        return expectedStatus.get();
+    }
+
     public boolean getContainsFailedStateExistenceInEachRow() {
         final List<UiElement> tableRows = failureAspectsTable.find(By.xpath("./tr")).list().stream().collect(Collectors.toList());
         boolean statusContainsFailed = false;
@@ -117,14 +138,14 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public List<String> getOrderListOfTopFailureAspects() {
-        return getColumns(FailureAspectsTableEntry.FAILURE_ASPECT)
+        return getColumns(FailureAspectsColumn.FAILURE_ASPECT)
                 .stream()
                 .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toList());
     }
 
     public void assertRankColumnDescends() {
-        final List<UiElement> columns = getColumns(FailureAspectsTableEntry.RANK);
+        final List<UiElement> columns = getColumns(FailureAspectsColumn.RANK);
         int expectedRankNumber = 1;
 
         for (UiElement column : columns) {
@@ -134,7 +155,7 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public void assertFailureAspectsColumnContainsCorrectAspects(String filter) {
-        getColumns(FailureAspectsTableEntry.FAILURE_ASPECT)
+        getColumns(FailureAspectsColumn.FAILURE_ASPECT)
                 .stream()
                 .map(uiElement -> uiElement.expect().text().getActual())
                 .map(String::toUpperCase)
@@ -151,13 +172,13 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public ReportFailureAspectsPage search(String s) {
-        testInputSearch.clear();
-        testInputSearch.type(s);
+        inputSearch.clear();
+        inputSearch.type(s);
         return createPage(ReportFailureAspectsPage.class);
     }
 
     public ReportFailureAspectsPage clickShowExpectedFailedButton() {
-        testShowExpectedFailsButton.click();
+        showExpectedFailsButton.click();
         return createPage(ReportFailureAspectsPage.class);
     }
 
@@ -197,6 +218,10 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public ReportFailureAspectsPage selectFailureAspect(FailureAspectType failureAspectType) {
-        return selectDropBoxElement(this.testTypeSelect, failureAspectType.value(), ReportFailureAspectsPage.class);
+        return selectDropBoxElement(this.typeSelect, failureAspectType.value(), ReportFailureAspectsPage.class);
+    }
+
+    private UiElementList<UiElement> getRows() {
+        return this.failureAspectsTable.find(By.xpath("//div[@data-testid = 'row']")).list();
     }
 }

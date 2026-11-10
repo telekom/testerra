@@ -1,6 +1,6 @@
 package io.testerra.report.test;
 
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
@@ -18,7 +18,7 @@ import org.testng.annotations.DataProvider;
 import java.util.List;
 import java.util.Map;
 
-public class TestDataProvider {
+public class TestDataProvider implements PropertyManagerProvider {
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestMethodForEachStatus() {
@@ -182,11 +182,10 @@ public class TestDataProvider {
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderFailureCorridorBounds() {
-        new DefaultPropertyManager().loadProperties("report-ng-tests/src/test/resources/test.properties");
         return new Object[][]{
-                {"High", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.high"), 3},
-                {"Mid", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.mid"), 2},
-                {"Low", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.low"), 0}
+                {"High", PROPERTY_MANAGER.getLongProperty("tt.failure.corridor.allowed.failed.tests.high"), 3},
+                {"Mid", PROPERTY_MANAGER.getLongProperty("tt.failure.corridor.allowed.failed.tests.mid"), 2},
+                {"Low", PROPERTY_MANAGER.getLongProperty("tt.failure.corridor.allowed.failed.tests.low"), 0}
         };
     }
 
@@ -296,7 +295,7 @@ public class TestDataProvider {
                 // retried
                 {new TestData("test_PassedAfterRetry", Status.RETRIED)},
                 // failed data provider method
-                {new TestData( "dataProviderWithError", Status.FAILED)},
+                {new TestData("dataProviderWithError", Status.FAILED)},
                 // failed before method
                 {new TestData("beforeMethodFailing", Status.FAILED)}
         };

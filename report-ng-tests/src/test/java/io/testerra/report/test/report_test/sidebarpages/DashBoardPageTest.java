@@ -23,6 +23,7 @@
 package io.testerra.report.test.report_test.sidebarpages;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import io.testerra.report.test.AbstractReportTest;
@@ -31,7 +32,6 @@ import io.testerra.report.test.pages.AbstractReportPage;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.report.sideBarPages.ReportDashBoardPage;
 import io.testerra.report.test.pages.report.sideBarPages.ReportFailureAspectsPage;
-import io.testerra.report.test.pages.report.sideBarPages.ReportTestsPage;
 import io.testerra.report.test.pages.utils.DateTimeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.testng.Assert;
@@ -81,7 +81,7 @@ public class DashBoardPageTest extends AbstractReportTest {
     }
 
     @Test
-    public void testT04reportDurationDisplayed() {
+    public void testT04_reportDurationDisplayed() {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
@@ -103,17 +103,65 @@ public class DashBoardPageTest extends AbstractReportTest {
                 "Ended test time format");
     }
 
-    /***/
-
-    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForNavigationBetweenDifferentPages")
-    public void testT03_navigationTowardsDifferentPagesDashBoardPage(ReportSidebarPageType type, Class<AbstractReportPage> pageClass) {
+    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderFailureCorridorBounds")
+    public void testT05_failureCorridorCorrectness(String failureCorridorType, long bound, int currentValue) {
         TestStep.begin("Navigate to dashboard page.");
         ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
 
-        TestStep.begin("Navigate to '" + type.name() + "' page, check whether page was reached and navigate back to 'Dashboard' page.");
-        reportDashBoardPage.gotoToReportPage(type, pageClass);
-//        reportDashBoardPage.verifyReportPage(type);
+        TestStep.begin("Check displayed and compare failure corridor values to allowed bounds");
+        TestableUiElement element = reportDashBoardPage.getFailureCorridorElement(failureCorridorType);
+        String label = element.waitFor().text().getActual();
+        ASSERT.assertContains(label, String.format("%s %s", currentValue, failureCorridorType), String.format("%s chip", failureCorridorType));
+        ASSERT.assertContains(label, String.format("of %s", bound), "Allowed bounds");
     }
+
+    @Test
+    public void testT06_topFailureAspectsMajorLink() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Check top failure aspects are displayed");
+        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
+
+        TestStep.begin("Check Major failure aspects link works correct");
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMajorFailureAspectsLink();
+        final boolean hasFailedState = reportFailureAspectsPage.checkFailureStatusInRows(Status.FAILED);
+        Assert.assertTrue(hasFailedState, "FailureAspectsPage contains State 'Failed'");
+    }
+
+    @Test
+    public void testT07_topFailureAspectsMinorLink() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Check top failure aspects are displayed");
+        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
+
+        TestStep.begin("Check Minor failure aspects link works correct");
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMinorFailureAspectsLink();
+        final boolean hasFailedState = reportFailureAspectsPage.checkFailureStatusInRows(Status.FAILED);
+        Assert.assertFalse(hasFailedState, "FailureAspectsPage contains State 'Failed'");
+
+    }
+
+    @Test
+    public void testT08_topFailureAspectsOrderedList() {
+        TestStep.begin("Navigate to dashboard page.");
+        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
+
+        TestStep.begin("Check top failure aspects are displayed");
+        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
+
+        TestStep.begin("Check order of listed failure aspects is correct");
+        final List<String> dashboardList = reportDashBoardPage.getListOfFailureAspects();
+        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
+
+        final List<String> failureAspectsList = reportFailureAspectsPage.getOrderListOfTopFailureAspects();
+        Assert.assertEquals(dashboardList, failureAspectsList.subList(0, 3), "Shown Top failure aspects on 'ReportDashBoardPage' and 'FailureAspectsPage' are the same");
+    }
+
+
+    /***********/
 
 
     // TODO: Clicking in chart not solved
@@ -147,60 +195,6 @@ public class DashBoardPageTest extends AbstractReportTest {
 //        reportDashBoardPage.assertPopupWhileHoveringWithCorrectContent(status);
 //    }
 
-    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderFailureCorridorBounds")
-    public void testT09_failureCorridorCorrectness(String failureCorridorType, long bound, int currentValue) {
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check displayed and compare failure corridor values to allowed bounds");
-        reportDashBoardPage.assertFailureCorridorValue(failureCorridorType, currentValue);
-        reportDashBoardPage.assertFailureCorridorValuesAreCorrectClassified(failureCorridorType, bound);
-    }
-
-    @Test
-    public void testT10_topFailureAspectsMajorLink() {
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check top failure aspects are displayed");
-        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
-
-        TestStep.begin("Check Major failure aspects link works correct");
-        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMajorFailureAspectsLink();
-        final boolean hasFailedState = reportFailureAspectsPage.getContainsFailedStateExistenceInEachRow();
-        Assert.assertTrue(hasFailedState, "FailureAspectsPage contains State 'Failed'");
-    }
-
-    @Test
-    public void testT11_topFailureAspectsMinorLink() {
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check top failure aspects are displayed");
-        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
-
-        TestStep.begin("Check Minor failure aspects link works correct");
-        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.clickMinorFailureAspectsLink();
-        final boolean hasFailedState = reportFailureAspectsPage.getContainsFailedStateExistenceInEachRow();
-        Assert.assertFalse(hasFailedState, "FailureAspectsPage contains State 'Failed'");
-
-    }
-
-    @Test
-    public void testT12_topFailureAspectsOrderedList() {
-        TestStep.begin("Navigate to dashboard page.");
-        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-
-        TestStep.begin("Check top failure aspects are displayed");
-        reportDashBoardPage.assertTopFailureAspectsAreDisplayed();
-
-        TestStep.begin("Check order of listed failure aspects is correct");
-        final List<String> topFailureAspectsOnReportDashboardPage = reportDashBoardPage.getOrderListOfTopFailureAspects();
-        ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
-
-        final List<String> topFailureAspectsOnReportFailureAspectsPage = reportFailureAspectsPage.getOrderListOfTopFailureAspects();
-        Assert.assertEquals(topFailureAspectsOnReportDashboardPage, topFailureAspectsOnReportFailureAspectsPage.subList(0, 3), "Shown Top failure aspects on 'ReportDashBoardPage' and 'FailureAspectsPage' are the same");
-    }
 
     @Test
     public void testT13_historyChartLayout() {

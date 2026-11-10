@@ -90,11 +90,6 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
         for(UiElement row : tableRows) {
             returnList.add(row.find(this.cell.with(entry.id())));
         }
-
-//        for (UiElement tableRows : failureAspectsTable.find(By.xpath("//tr")).list()) {
-//            List<UiElement> tableColumns = tableRows.find(By.xpath("//td")).list().stream().collect(Collectors.toList());
-//            returnList.add(tableColumns.get(column));
-//        }
         return returnList;
     }
 
@@ -118,7 +113,7 @@ public class ReportFailureAspectsPage extends AbstractReportPage {
     }
 
     public boolean getContainsFailedStateExistenceInEachRow() {
-        final List<UiElement> tableRows = failureAspectsTable.find(By.xpath("./tr")).list().stream().collect(Collectors.toList());
+        final UiElementList<UiElement> tableRows = this.getRows();
         boolean statusContainsFailed = false;
 
         for (final UiElement row : tableRows) {

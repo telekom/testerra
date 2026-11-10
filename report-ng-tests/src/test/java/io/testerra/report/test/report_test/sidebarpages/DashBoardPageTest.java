@@ -164,22 +164,6 @@ public class DashBoardPageTest extends AbstractReportTest {
     /***********/
 
 
-    // TODO: Clicking in chart not solved
-//    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
-//    public void testT05_barChartLinksToFilteredTestsPage(Status status) {
-//        TestStep.begin("Navigate to dashboard page.");
-//        ReportDashBoardPage reportDashBoardPage = this.gotoDashBoardOnGeneralReport(WEB_DRIVER_MANAGER.getWebDriver());
-//
-//        TestStep.begin("Check whether each test status displays the correct test classes.");
-//        reportDashBoardPage.assertNumbersChartContainsTestState(status);
-//
-//        TestStep.begin("Check whether clicking on barchart bars navigates to tests page with correct filter.");
-//        reportDashBoardPage = reportDashBoardPage.clickTestResult(status);
-//        ReportTestsPage reportTestsPage = reportDashBoardPage.navigateToFilteredTestPageByClickingBarChartBar();
-//        reportTestsPage.assertCorrectTestStatus(status);
-//    }
-
-
 //    @Test(dataProviderClass = TestDataProvider.class, dataProvider = "dataProviderForDashBoardTestStates")
 //    public void testT08_barChartFilterHovering(Status status) {
 //        TestStep.begin("Navigate to dashboard page.");

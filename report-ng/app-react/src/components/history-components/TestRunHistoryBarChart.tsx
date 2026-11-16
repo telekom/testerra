@@ -156,11 +156,12 @@ const TestRunHistoryBarChart = ({histStatistics, selectedStatus, additionalChart
                 const testCases = values.reduce((sum, value) => sum + value, 0);
                 const runNumber = firstPointData?.runIndex ?? 0;
 
+                const statusListItemStyle = "display:grid;grid-template-columns:14ch 5ch;column-gap:8px;align-items:center;margin:2px 0;";
                 const statusListItems = rows
                     .filter(row => row.value > 0)
                     .map(row => {
                         const status = StatusService.getStatusByLabel(row.seriesName);
-                        return `<li style="display:grid;grid-template-columns:14ch 5ch;column-gap:8px;align-items:center;margin:2px 0;">                            
+                        return `<li style="${statusListItemStyle}">                            
                             <span>
                                 ${buildTooltipStatusBadge(status)}
                             </span>

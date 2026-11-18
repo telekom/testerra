@@ -25,16 +25,14 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
-import java.util.Properties;
 import org.openqa.selenium.Proxy;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 /**
  * Tests class for {@link ProxyUtils} and {@link WebDriverProxyUtils}
@@ -138,7 +136,6 @@ public class ProxyUtilsTest extends TesterraTest {
 
         Assert.assertEquals(proxy.getHttpProxy(), PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS);
         Assert.assertEquals(proxy.getSslProxy(), PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS);
-        Assert.assertNull(proxy.getFtpProxy());
         Assert.assertNull(proxy.getSocksProxy());
     }
 }

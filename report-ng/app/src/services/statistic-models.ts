@@ -32,6 +32,7 @@ import IClassContext = data.ClassContext;
 import IErrorContext = data.ErrorContext;
 import IStackTraceCause = data.StackTraceCause;
 
+// migrated: ok
 class Statistics {
     private _statusConverter: StatusConverter;
     private _resultStatuses: { [key: number]: number } = {};
@@ -120,6 +121,7 @@ class Statistics {
     }
 }
 
+// migrated OK
 export class ExecutionStatistics extends Statistics {
     private _classStatistics: ClassStatistics[] = [];
     private _uniqueFailureAspects: FailureAspectStatistics[] = [];
@@ -197,6 +199,7 @@ export class ExecutionStatistics extends Statistics {
     }
 }
 
+// migrated OK
 export class HistoryStatistics {
     private _historyAggregateStatistics: HistoryAggregateStatistics[] = [];
     private _classHistory: ClassHistory[] = [];
@@ -327,6 +330,7 @@ export class HistoryStatistics {
     }
 }
 
+// migrated OK
 export class ClassHistoryStatistics extends Statistics {
     private readonly _identifier: string;
     private _methods: HistoricalMethod[] = [];
@@ -356,6 +360,7 @@ export class ClassHistoryStatistics extends Statistics {
     }
 }
 
+// migrated OK
 export class HistoricalMethod {
     private readonly _methodContext: IMethodContext;
     private readonly _methodIdentifier: string;
@@ -425,6 +430,7 @@ export class HistoricalMethod {
     }
 }
 
+// migrated OK
 export class HistoryAggregateStatistics extends Statistics {
     private readonly _classMap: Map<string, ClassHistoryStatistics>;
     private readonly _classIdMap: Map<string, string>;
@@ -483,6 +489,7 @@ export class HistoryAggregateStatistics extends Statistics {
     }
 }
 
+// migrated OK
 export class HistoricalMethodRun {
     private readonly _historyIndex: number = 0;
     private readonly _context: IMethodContext;
@@ -524,6 +531,7 @@ export class HistoricalMethodRun {
     }
 }
 
+// migrated OK
 export class ClassHistory {
     private readonly _identifier: string;
     private _methods: MethodHistoryStatistics[] = [];
@@ -566,6 +574,7 @@ export class ClassHistory {
     }
 }
 
+// migrated OK
 export class MethodHistoryStatistics extends Statistics {
     private readonly _identifier: string;
     private readonly _relatedMethods: string[] = [];
@@ -753,6 +762,7 @@ export class MethodHistoryStatistics extends Statistics {
     }
 }
 
+// migrated OK
 export class ClassStatistics extends Statistics {
     private _configStatistics = new Statistics();
     private _methodContexts: IMethodContext[] = [];
@@ -783,7 +793,7 @@ export class ClassStatistics extends Statistics {
     }
 }
 
-
+// migrated OK
 export class FailureAspectStatistics extends Statistics {
     private _irrelevantClassNameNeedles = ["TimeoutException"];
     private _methodContexts: IMethodContext[] = [];

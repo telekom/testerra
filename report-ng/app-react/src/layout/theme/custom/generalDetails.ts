@@ -1,0 +1,81 @@
+import type {Theme} from "@mui/material/styles";
+import type {SystemStyleObject} from "@mui/system";
+import type {CSSProperties} from "react";
+
+export type ReportThemeGeneralDetailsStyles = {
+    listItem: SystemStyleObject<Theme>;
+    failedInListItem: SystemStyleObject<Theme>;
+    nowrapLabel: SystemStyleObject<Theme>;
+    wrapText: SystemStyleObject<Theme>;
+    truncateText: SystemStyleObject<Theme>;
+    blockLink: SystemStyleObject<Theme>;
+    compactWrappedText: SystemStyleObject<Theme>;
+    topSpacingText: SystemStyleObject<Theme>;
+    failsStack: SystemStyleObject<Theme>;
+    footerContainer: SystemStyleObject<Theme>;
+    nextMethodStack: SystemStyleObject<Theme>;
+    lastScreenshotImage: CSSProperties;
+    lastScreenshotCardContent: SystemStyleObject<Theme>;
+};
+
+export const generalDetails: ReportThemeGeneralDetailsStyles = {
+    listItem: {
+        gap: 1,
+        alignItems: "baseline",
+    },
+    failedInListItem: {
+        gap: "8px",
+        alignItems: "center",
+    },
+    nowrapLabel: {
+        whiteSpace: "nowrap",
+    },
+    wrapText: {
+        whiteSpace: "normal",
+        overflowWrap: "anywhere",
+    },
+    truncateText: {
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+    },
+    blockLink: {
+        minWidth: 0,
+        display: "block",
+        maxWidth: "100%",
+    },
+    compactWrappedText: {
+        display: "block",
+        lineHeight: 1.15,
+        m: 0,
+    },
+    topSpacingText: {
+        mt: 1,
+    },
+    failsStack: {
+        px: 2,
+        py: 1,
+        alignItems: "center",
+        my: 1,
+    },
+    footerContainer: {
+        px: 2,
+        py: 1,
+        mt: "0 !important",
+    },
+    nextMethodStack: {
+        alignItems: "flex-start",
+        maxWidth: "100%",
+    },
+    lastScreenshotImage: {
+        display: "block",
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        cursor: "pointer"
+    },
+    lastScreenshotCardContent: {
+        position: "relative",
+    },
+};

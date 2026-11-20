@@ -22,11 +22,11 @@
 import {Box, FormControl, MenuItem} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import ReportChip from "./ReportChip";
 import type {SxProps, Theme} from "@mui/material/styles";
 import {StatusService} from "../model/status-service";
 import type {ResultStatus} from "../model/status-service";
 import {useState} from "react";
+import StatusChip from "./StatusChip.tsx";
 
 type SelectInputProps = {
     label: string
@@ -36,22 +36,13 @@ type SelectInputProps = {
     sx?: SxProps<Theme>;
 }
 
-type StatusMenuItem = {
-    status: ResultStatus;
-    statusInformation: NonNullable<ReturnType<typeof StatusService.get>>;
-}
-
 const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: SelectInputProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const availableMenuItems = menuItems
         .filter(status => !selectedStatuses?.includes(status as ResultStatus))
-        .map(status => ({
-            status: status as ResultStatus,
-            statusInformation: StatusService.get(String(status)),
-        }))
-        .filter((item): item is StatusMenuItem => item.statusInformation !== null)
-        .toSorted((a, b) => a.statusInformation.label.localeCompare(b.statusInformation.label));
+        .map(status => status as ResultStatus)
+        .toSorted((a, b) => StatusService.getLabel(String(a)).localeCompare(StatusService.getLabel(String(b))));
 
     return (
         <Box sx={sx}>
@@ -80,11 +71,9 @@ const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: S
                             <em>All status selected</em>
                         </MenuItem>
                     )}
-                    {availableMenuItems.map(({status, statusInformation}) => (
+                    {availableMenuItems.map(status => (
                         <MenuItem key={status} value={status}>
-                            <ReportChip label={statusInformation.label}
-                                        size="small"
-                                        sx={{background: statusInformation.color, color: "white"}}/>
+                            <StatusChip status={status}/>
                         </MenuItem>
                     ))}
                 </Select>

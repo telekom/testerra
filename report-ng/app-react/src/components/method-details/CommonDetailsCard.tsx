@@ -21,7 +21,7 @@
 
 import ReportCard from "../../widgets/ReportCard.tsx";
 import ReportChip from "../../widgets/ReportChip.tsx";
-import {StatusService} from "../../model/status-service.tsx";
+import StatusChip from "../../widgets/StatusChip.tsx";
 import type {MethodDetails} from "../../model/MethodDetails.ts";
 import Stack from "@mui/material/Stack";
 import {Grid, Typography, useTheme} from "@mui/material";
@@ -49,21 +49,17 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
             sxCard={sx}
             label={
                 <Stack direction="row" spacing={2} sx={{alignItems: "center"}}>
-                    <ReportChip key={methodDetails.methodContext.resultStatus}
-                                label={StatusService.getLabel(methodDetails.methodContext.resultStatus ?? "")}
-                                size="medium"
-                                sx={theme.custom.generalDetails.statusChip(StatusService.getColor(methodDetails.methodContext.resultStatus ?? ""))}/>
+                    <StatusChip status={methodDetails.methodContext.resultStatus ?? ResultStatusType.RST_NOT_SET}/>
                     <Typography color="black"
                                 sx={(theme) => theme.custom.generalDetails.wrapText}>{methodDetails.identifier}</Typography>
                     {methodDetails.methodContext.methodType == 2 &&
-                        <ReportChip label="Configuration" size="small" color="lightGrey"
-                                   sx={theme.custom.generalDetails.configurationChip}/>}
+                        <ReportChip label="Configuration" size="small" color={"lightGrey"} sx={{color: "white"}}/>}
                 </Stack>
             }
             details={
                 (methodDetails.testAnnotation?.description ||
-                 methodDetails.xrayAnnotation?.ticketUrls?.length > 0 ||
-                 methodDetails.failsAnnotation) ? (
+                    methodDetails.xrayAnnotation?.ticketUrls?.length > 0 ||
+                    methodDetails.failsAnnotation) ? (
                     <>
                         {methodDetails.testAnnotation?.description && (
                             <Typography variant="body2" sx={theme.custom.generalDetails.topSpacingText}>
@@ -76,20 +72,20 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                                 {methodDetails.xrayAnnotation.ticketUrls.map((ticketUrl: string, index: number) => (
                                     <span key={`xray-ticket-${index}`}>
                                        <Link href={ticketUrl}>{ticketUrl}</Link>
-                                       {index < methodDetails.xrayAnnotation.ticketUrls.length - 1 ? " " : ""}
+                                        {index < methodDetails.xrayAnnotation.ticketUrls.length - 1 ? " " : ""}
                                     </span>
                                 ))}
                             </Typography>
                         )}
                         {methodDetails.failsAnnotation && (
                             <Stack direction="row" spacing={1} sx={theme.custom.generalDetails.failsStack}>
-                                <ReportChip label="@Fails" size="small"
-                                           sx={theme.custom.generalDetails.failsChip}/>
+                                <StatusChip status={ResultStatusType.FAILED_EXPECTED} label="@Fails"/>
                                 {methodDetails.methodContext.resultStatus == ResultStatusType.FAILED_EXPECTED && (
                                     <>
-                                       {methodDetails.failsAnnotation.description && (
-                                           <Typography variant="body2">{methodDetails.failsAnnotation.description}</Typography>
-                                       )}
+                                        {methodDetails.failsAnnotation.description && (
+                                            <Typography
+                                                variant="body2">{methodDetails.failsAnnotation.description}</Typography>
+                                        )}
                                         {methodDetails.failsAnnotation.ticketString && (
                                             <Typography variant="body2">
                                                 Ticket: {methodDetails.failsAnnotation.ticketString}
@@ -99,19 +95,21 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                                 )}
                                 {methodDetails.methodContext.resultStatus !== ResultStatusType.FAILED_EXPECTED && methodDetails.failsAnnotation.validator && (
                                     <Stack spacing={0}>
-                                        <Typography variant="body2">Your conditions for Expected fails were not fulfilled:</Typography>
-                                        <Typography variant="body2">{methodDetails.failsAnnotation.validator}</Typography>
+                                        <Typography variant="body2">Your conditions for Expected fails were not
+                                            fulfilled:</Typography>
+                                        <Typography
+                                            variant="body2">{methodDetails.failsAnnotation.validator}</Typography>
                                     </Stack>
                                 )}
                             </Stack>
                         )}
                     </>
-               ) : undefined
+                ) : undefined
             }
             content={(
                 <Grid container>
                     <Grid size={6}>
-                        <Box sx={{ pl: 2}}>
+                        <Box sx={{pl: 2}}>
                             <List sx={{flex: 1, minWidth: 0}}>
                                 <DetailKeyValueListItem
                                     label="Class"
@@ -171,7 +169,7 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                     </Grid>
 
                     <Grid size={6}>
-                        <Box sx={{ pl: 2}}>
+                        <Box sx={{pl: 2}}>
                             <List sx={{flex: 1, minWidth: 0}}>
                                 {methodDetails.failedStep && (
                                     <DetailKeyValueListItem

@@ -55,9 +55,9 @@ const STATUS_CONFIG: Record<ResultStatus, StatusInformation> = {
         key: "na",
     },
     [ResultStatusType.NO_RUN]: {
-        label: "Running",
-        color: reportTheme.custom.statusColors.crashed,
-        key: "running",
+        label: "No run",
+        color: reportTheme.custom.statusColors.norun,
+        key: "norun",
     },
     [ResultStatusType.INFO]: {
         label: "Info",

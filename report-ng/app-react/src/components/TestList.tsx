@@ -24,13 +24,13 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import {useReportData} from "../provider/DataProvider";
 import ReportChip from "../widgets/ReportChip";
-import {StatusService} from "../model/status-service";
+import {type ResultStatus, StatusService} from "../model/status-service";
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import {Stack, Typography} from "@mui/material";
 import Link from '@mui/material/Link';
-import type {ChipColor, FiltersState} from "../hooks/useChipListFilters";
+import type {FiltersState} from "../hooks/useChipListFilters";
 import {MethodDetails} from "../model/MethodDetails";
 import {ClassName, classNameConverter} from "../utils/classNameConverter";
 import HighlightText from "../utils/highlightText";
@@ -41,6 +41,8 @@ import TableSort from "../widgets/TableSort";
 import LoadingBar from "../widgets/LoadingBar.tsx";
 import Alert from '@mui/material/Alert';
 import {List, type RowComponentProps, useDynamicRowHeight} from "react-window";
+import StatusChip from "../widgets/StatusChip.tsx";
+import {ResultStatusType} from "../model/report-model/framework_pb.ts";
 
 // Precomputed row data: expensive derivations are calculated once in useMemo,
 // not on every render. This avoids calling StatusService.get/separateNamespace,
@@ -49,9 +51,7 @@ interface MethodRow {
     detail: MethodDetails;
     id: string;
     displayClassName: string;
-    testStatusLabel: string;
-    testStatusColor: string;
-    failsAnnotationColor: string;
+    testStatus: ResultStatus;
     startTimeString: string;
     durationString: string;
     processedFailureAspects: Array<{
@@ -90,7 +90,7 @@ function TestListRow({
     activeSearchTerms,
 }: RowComponentProps<TestListRowProps>) {
     const row = rows[index];
-    const {detail, id, displayClassName, testStatusLabel, testStatusColor, failsAnnotationColor, startTimeString, durationString, processedFailureAspects} = row;
+    const {detail, id, displayClassName, testStatus, startTimeString, durationString, processedFailureAspects} = row;
 
     return (
         <Box
@@ -106,11 +106,7 @@ function TestListRow({
         >
             {/* Status */}
             <Box sx={{...cellSx(CELL_WIDTHS.status), display: "flex", alignItems: "center"}}>
-                <ReportChip
-                    label={testStatusLabel}
-                    size="small"
-                    sx={{background: testStatusColor, color: "white"}}
-                />
+                <StatusChip status={testStatus}/>
             </Box>
 
             {/* Run Index */}
@@ -144,7 +140,7 @@ function TestListRow({
                             </Typography>
                         </Link>
                         {detail.methodContext.methodType == 2 && (
-                            <ReportChip label="Configuration" size="small" color={"lightGrey" as ChipColor} sx={{color: "white"}}/>
+                            <ReportChip label="Configuration" size="small" color={"lightGrey"} sx={{color: "white"}}/>
                         )}
                     </Stack>
                     {processedFailureAspects.map((fa, i) => (
@@ -157,7 +153,7 @@ function TestListRow({
                     ))}
                     {detail.failsAnnotation?.description && (
                         <Stack direction="row" sx={{gap: 1, alignItems: "center", mt: 1}}>
-                            <CancelIcon sx={{color: failsAnnotationColor}}/>
+                            <CancelIcon sx={{color: StatusService.getColor(testStatus)}}/>
                             <Typography variant="caption">
                                 <HighlightText text={detail.failsAnnotation.description} searchWord={activeSearchTerms}/>
                             </Typography>
@@ -297,14 +293,12 @@ const TestList = ({filters, searchText, showConfigurationMethods,}: TestListProp
         sortedMethodDetails.map(detail => {
             const startTime = detail.methodContext.contextValues?.startTime ?? 0;
             const endTime = detail.methodContext.contextValues?.endTime ?? 0;
-            const testStatus = StatusService.get(detail.methodContext.resultStatus!);
+            const testStatus = detail.methodContext.resultStatus ?? ResultStatusType.RST_NOT_SET;
             return {
                 detail,
                 id: detail.methodContext.contextValues?.id ?? "",
                 displayClassName: StatusService.separateNamespace(detail.classStatistics.classIdentifier ?? "").class,
-                testStatusLabel: testStatus.label,
-                testStatusColor: testStatus.color,
-                failsAnnotationColor: testStatus.color,
+                testStatus: testStatus,
                 startTimeString: new Date(startTime).toLocaleTimeString(),
                 durationString: formatDuration(endTime - startTime),
                 processedFailureAspects: detail.failureAspects.map(fa => ({

@@ -1,7 +1,6 @@
 import type {Theme} from "@mui/material/styles";
 import type {SystemStyleObject} from "@mui/system";
 import type {CSSProperties} from "react";
-import {statusColors} from "./status";
 
 export type ReportThemeGeneralDetailsStyles = {
     listItem: SystemStyleObject<Theme>;
@@ -11,9 +10,6 @@ export type ReportThemeGeneralDetailsStyles = {
     truncateText: SystemStyleObject<Theme>;
     blockLink: SystemStyleObject<Theme>;
     compactWrappedText: SystemStyleObject<Theme>;
-    statusChip: (statusColor: string) => SystemStyleObject<Theme>;
-    configurationChip: SystemStyleObject<Theme>;
-    failsChip: SystemStyleObject<Theme>;
     topSpacingText: SystemStyleObject<Theme>;
     failsStack: SystemStyleObject<Theme>;
     footerContainer: SystemStyleObject<Theme>;
@@ -51,20 +47,6 @@ export const generalDetails: ReportThemeGeneralDetailsStyles = {
         display: "block",
         lineHeight: 1.15,
         m: 0,
-    },
-    statusChip: (statusColor: string) => ({
-        background: statusColor,
-        color: "white",
-        fontSize: "16px",
-        fontWeight: "400",
-    }),
-    configurationChip: {
-        color: "white",
-        fontWeight: "400",
-    },
-    failsChip: {
-        background: statusColors.expected_failed,
-        color: "white",
     },
     topSpacingText: {
         mt: 1,

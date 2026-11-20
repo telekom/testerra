@@ -27,29 +27,17 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {Link as RouterLink} from "react-router-dom";
 import type {HistoryAggregateStatistics} from "../../model/HistoryAggregateStatistics.ts";
 import type {ExecutionStatistics} from "../../model/ExecutionStatistics.ts";
-import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
-import {StatusService} from "../../model/status-service";
 import {compareRunMethods} from "./runComparison.ts";
 import {ClassName, classNameConverter} from "../../utils/classNameConverter.ts";
 import ReportCard from "../../widgets/ReportCard.tsx";
 import ReportChip from "../../widgets/ReportChip.tsx";
+import StatusChip from "../../widgets/StatusChip.tsx";
 
 interface RunCompareMethodsCardProps {
     selectedRun: HistoryAggregateStatistics;
     currentRun: HistoryAggregateStatistics;
     executionStatistics: ExecutionStatistics;
 }
-
-const StatusChip = ({status}: {status: ResultStatusType}) => (
-    <ReportChip
-        label={status === ResultStatusType.NO_RUN ? "No run" : StatusService.getLabel(status)}
-        size="small"
-        sx={{
-            backgroundColor: status === ResultStatusType.NO_RUN ? "text.disabled" : StatusService.getColor(status),
-            color: "white",
-        }}
-    />
-);
 
 const RunCompareMethodsCard = ({selectedRun, currentRun, executionStatistics}: RunCompareMethodsCardProps) => {
     const comparisons = useMemo(

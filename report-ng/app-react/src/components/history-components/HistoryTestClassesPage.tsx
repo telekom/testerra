@@ -87,6 +87,8 @@ const HistoryTestClassesPage = () => {
         setSearchParams(nextSearchParams, {replace: true});
     };
 
+    const selectClass = (identifier: string) => updateFilters(identifier, "");
+
     const hasHistory = historyStatistics.getTotalRunCount() > 1;
     const classFilterValue = selectedClass;
     const statusFilterValue = selectedStatus ? StatusService.get(selectedStatus).key : "";
@@ -100,7 +102,7 @@ const HistoryTestClassesPage = () => {
                             <SelectInput
                                 label="Class"
                                 value={classFilterValue}
-                                onChange={value => updateFilters(value, "")}
+                                onChange={selectClass}
                                 menuItems={classMenuItems}
                             />
                         </Grid>
@@ -119,6 +121,7 @@ const HistoryTestClassesPage = () => {
                         historyStatistics={historyStatistics}
                         selectedClass={selectedClass || undefined}
                         selectedStatus={selectedStatus}
+                        onSelectClass={selectClass}
                     />
                 </Grid>
             </Grid>

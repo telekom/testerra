@@ -57,6 +57,7 @@ interface TestClassCompareChartProps {
     historyStatistics: HistoryStatistics;
     selectedClass?: string;
     selectedStatus?: ResultStatus;
+    onSelectClass: (identifier: string) => void;
 }
 
 interface ChartAxisEvent {
@@ -65,7 +66,7 @@ interface ChartAxisEvent {
     value?: string;
 }
 
-const TestClassCompareChartCard = ({historyStatistics, selectedClass, selectedStatus}: TestClassCompareChartProps) => {
+const TestClassCompareChartCard = ({historyStatistics, selectedClass, selectedStatus, onSelectClass}: TestClassCompareChartProps) => {
     const navigate = useNavigate();
 
     // constants
@@ -223,9 +224,9 @@ const TestClassCompareChartCard = ({historyStatistics, selectedClass, selectedSt
             type: "category",
             inverse: true,
             data: rowIds,
-            triggerEvent: Boolean(selectedClass),
+            triggerEvent: true,
             axisLabel: {
-                color: (identifier: string) => methodLinks.has(identifier)
+                color: (identifier: string) => !selectedClass || methodLinks.has(identifier)
                     ? "blue"
                     : reportTheme.palette.text.primary,
                 formatter: (identifier: string) => {
@@ -366,18 +367,23 @@ const TestClassCompareChartCard = ({historyStatistics, selectedClass, selectedSt
                         autoResize={true}
                         onEvents={{
                             click: (event: ChartAxisEvent) => {
-                                const target = event.componentType === "yAxis" && event.targetType === "axisLabel"
-                                    ? methodLinks.get(event.value ?? "")
-                                    : undefined;
+                                if (event.componentType !== "yAxis" || event.targetType !== "axisLabel" || !event.value) {
+                                    return;
+                                }
+                                if (!selectedClass) {
+                                    onSelectClass(event.value);
+                                    return;
+                                }
+                                const target = methodLinks.get(event.value);
                                 if (target) {
                                     navigate(target);
                                 }
                             },
                             mousemove: (event: ChartAxisEvent, chart: EChartsType) => {
-                                const isMethodLink = event.componentType === "yAxis"
+                                const isLink = event.componentType === "yAxis"
                                     && event.targetType === "axisLabel"
-                                    && methodLinks.has(event.value ?? "");
-                                chart.getZr().setCursorStyle(isMethodLink ? "pointer" : "default");
+                                    && (!selectedClass || methodLinks.has(event.value ?? ""));
+                                chart.getZr().setCursorStyle(isLink ? "pointer" : "default");
                             },
                         }}
                     />

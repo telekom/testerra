@@ -21,7 +21,7 @@
 import {Typography, useTheme} from "@mui/material";
 import ReportCard from "../../widgets/ReportCard";
 import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
+import ReportChip from "../../widgets/ReportChip";
 import type {SxProps, Theme} from "@mui/material/styles";
 import {FailureCorridorValue, type ExecutionContext} from "../../model/report-model/framework_pb";
 
@@ -60,7 +60,7 @@ const DashboardFailureCorridorCard = ({executionContext, sx}: DashboardFailureCo
                 <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
                     {chipList.map((chip) => (
                         <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>
-                            <Chip label={chip.label} sx={{background: chip.chipColor, color: "white"}}/>
+                            <ReportChip label={chip.label} sx={{background: chip.chipColor, color: "white"}} size={"small"}/>
                             <Typography color="primary"> of {chip.limit} </Typography>
                         </Stack>
                     ))}

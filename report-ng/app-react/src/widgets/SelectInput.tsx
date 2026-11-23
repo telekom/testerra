@@ -23,6 +23,7 @@ import {Box, FormControl, MenuItem} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import type {SxProps, Theme} from "@mui/material/styles";
+import {useId} from "react";
 
 type SelectInputProps<T> = {
     label: string,
@@ -33,14 +34,15 @@ type SelectInputProps<T> = {
 }
 
 const SelectInput = <T extends string | number>({label, value, onChange, menuItems, sx}: SelectInputProps<T>) => {
+    const id = useId();
 
     return (
         <Box sx={sx}>
             <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+                <InputLabel id={`${id}-label`}>{label}</InputLabel>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    labelId={`${id}-label`}
+                    id={id}
                     value={value}
                     label={label}
                     onChange={e => onChange?.(e.target.value as T)}

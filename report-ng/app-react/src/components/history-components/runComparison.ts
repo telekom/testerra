@@ -37,16 +37,48 @@ export interface RunMethodComparison {
     currentMethodId?: string;
 }
 
+// Same related-method identity as HistoryStatistics, so repeated configuration invocations are kept apart.
+const buildRelatedMethodsKey = (relatedMethods: string[]) => Array.from(new Set(relatedMethods)).sort().join("|");
+
+const buildMethodKey = (classIdentifier: string, method: HistoricalMethod) => {
+    const relatedMethodsKey = buildRelatedMethodsKey(method.relatedMethods);
+    return `${classIdentifier}.${method.identifier}${relatedMethodsKey ? ` [${relatedMethodsKey}]` : ""}`;
+};
+
 const indexMethods = (classes: Iterable<{identifier: string; methods: HistoricalMethod[]}>) => {
     const methods = new Map<string, {method: HistoricalMethod; classIdentifier: string}>();
     for (const cls of classes) {
         for (const method of cls.methods) {
             if (method.context.resultStatus !== ResultStatusType.FAILED_RETRIED) {
-                methods.set(`${cls.identifier}.${method.identifier}`, {method, classIdentifier: cls.identifier});
+                methods.set(buildMethodKey(cls.identifier, method), {method, classIdentifier: cls.identifier});
             }
         }
     }
     return methods;
+};
+
+const buildExecutionClasses = (executionStatistics: ExecutionStatistics) => {
+    const methodsById = new Map<string, HistoricalMethod>();
+    const classes = executionStatistics.classStatistics.map(cls => ({
+        identifier: cls.classIdentifier,
+        methods: cls.methodContexts.map(context => {
+            const method = new HistoricalMethod(context);
+            const methodId = context.contextValues?.id;
+            if (methodId) {
+                methodsById.set(methodId, method);
+            }
+            return method;
+        }),
+    }));
+    methodsById.forEach(method => {
+        (method.context.relatedMethodContextIds ?? []).forEach(relatedId => {
+            const related = methodsById.get(relatedId);
+            if (related) {
+                method.addRelatedMethods(related.identifier);
+            }
+        });
+    });
+    return classes;
 };
 
 export const compareRunMethods = (
@@ -56,10 +88,7 @@ export const compareRunMethods = (
 ): RunMethodComparison[] => {
     const selectedMethods = indexMethods(selectedRun.classes.values());
     const currentMethods = indexMethods(currentRun.classes.values());
-    const executionMethods = indexMethods(executionStatistics.classStatistics.map(cls => ({
-        identifier: cls.classIdentifier,
-        methods: cls.methodContexts.map(context => new HistoricalMethod(context)),
-    })));
+    const executionMethods = indexMethods(buildExecutionClasses(executionStatistics));
     const methodPaths = new Set([...selectedMethods.keys(), ...currentMethods.keys()]);
     const comparisons: RunMethodComparison[] = [];
 

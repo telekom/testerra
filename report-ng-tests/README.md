@@ -15,10 +15,16 @@ gradle test -P pretestRNGExtended=true
 ```
 
 ## Run report history pretests
+Runs the history pretests 11 times (`-PpretestHistoryIndex=1..11`).
+
+Linux / macOS:
 ```shell
-for i in `seq 1 10`; do
-    gradle test -PpretestHistoryIndex=${'$'}i -Dtt.report.dir=/src/test/resources/reports/report-history -Dtt.report.name=PreTest_History
-done
+./report-ng-tests/run-history-pretests.sh
+```
+
+Windows (PowerShell):
+```powershell
+.\report-ng-tests\run-history-pretests.ps1
 ```
 
 ## Start Test of generated Testerra Report

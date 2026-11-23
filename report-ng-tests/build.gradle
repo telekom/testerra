@@ -41,10 +41,15 @@ test {
         System.setProperty("history.index", historyIndex as String)
         System.setProperty("tt.report.dir", "src/test/resources/reports/report-history")
         System.setProperty("tt.report.name", "Generated Report for History UI-Test")
-        if (historyIndex > 5) {
-            s = ['src/test/resources/testng/Pretest_HistoryTest_2.xml']
-        } else {
-            s = ['src/test/resources/testng/Pretest_HistoryTest_1.xml']
+        switch (historyIndex) {
+            case 6..10:
+                s = ['src/test/resources/testng/Pretest_HistoryTest_2.xml']
+                break
+            case 11:
+                s = ['src/test/resources/testng/Pretest_HistoryTest_3.xml']
+                break
+            default:
+                s = ['src/test/resources/testng/Pretest_HistoryTest_1.xml']
         }
     }
 

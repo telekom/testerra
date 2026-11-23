@@ -53,6 +53,7 @@ const TestRunTopFlakyCard = ({histStatistics, sx, viewport}: TestRunTopFlakyProp
 
         const startIndex = viewport?.start ?? Math.min(...availableRuns);
         const endIndex = viewport?.end ?? Math.max(...availableRuns);
+        const latestRunIndex = histStatistics.getLastEntry()?.historyIndex ?? Math.max(...availableRuns);
         const methods = histStatistics.getClassHistory().flatMap(classItem => classItem.methods);
 
         return methods
@@ -61,7 +62,7 @@ const TestRunTopFlakyCard = ({histStatistics, sx, viewport}: TestRunTopFlakyProp
                 name: method.identifier,
                 flakiness: method.getFlakinessInRange(startIndex, endIndex),
                 passingStreak: method.getPassingStreakInRange(startIndex, endIndex),
-                methodId: method.getIdOfRun(endIndex) ?? null,
+                methodId: method.getIdOfRun(latestRunIndex) ?? null,
             }))
             .filter(method => method.flakiness > 0.1)
             .sort((a, b) => b.flakiness - a.flakiness)
@@ -79,26 +80,38 @@ const TestRunTopFlakyCard = ({histStatistics, sx, viewport}: TestRunTopFlakyProp
             sxCard={sx}
             content={topFlakyTests.length > 0 ? (
                 <List dense sx={{py: 0}}>
-                    {topFlakyTests.map((method) => (
-                        <ListItem key={`${method.name}-${method.flakiness}`} disablePadding>
-                            <ListItemButton
-                                disabled={!method.methodId}
-                                onClick={() => {
-                                    if (method.methodId) {
-                                        navigate(`/method/${method.methodId}/method-history`);
-                                    }
-                                }}
-                            >
+                    {topFlakyTests.map((method) => {
+                        const methodId = method.methodId;
+                        const flakinessText = `Flakiness: ${method.flakiness}% (${method.passingStreak === 0 ? "Currently failing" : `Passed since ${method.passingStreak} ${method.passingStreak === 1 ? "run" : "runs"}`})`;
+                        const itemContent = (
+                            <>
                                 <ListItemIcon>
                                     <FlakyIcon color="error"/>
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={<Typography>{method.name}</Typography>}
-                                    secondary={`Flakiness: ${method.flakiness}% (${method.passingStreak === 0 ? "Currently failing" : `Passed since ${method.passingStreak} ${method.passingStreak === 1 ? "run" : "runs"}`})`}
+                                    secondary={methodId ? flakinessText : (
+                                        <>
+                                            {flakinessText}
+                                            <Typography component="span" variant="caption" sx={{fontStyle: "italic", pl: 1}}>
+                                                Not part of the current run.
+                                            </Typography>
+                                        </>
+                                    )}
                                 />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
+                            </>
+                        );
+
+                        return (
+                            <ListItem key={`${method.name}-${method.flakiness}`} disablePadding={!!methodId}>
+                                {methodId ? (
+                                    <ListItemButton onClick={() => navigate(`/method/${methodId}/method-history`)}>
+                                        {itemContent}
+                                    </ListItemButton>
+                                ) : itemContent}
+                            </ListItem>
+                        );
+                    })}
                 </List>
             ) : (
                 <Stack direction="row" spacing={1} sx={{height: "100%", alignItems: "center", justifyContent: "center"}}>

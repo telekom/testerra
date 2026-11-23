@@ -52,6 +52,7 @@ const TestRunTopFailingCard = ({histStatistics, sx, viewport}: TestRunTopFailing
 
         const startIndex = viewport?.start ?? Math.min(...availableRuns);
         const endIndex = viewport?.end ?? Math.max(...availableRuns);
+        const latestRunIndex = histStatistics.getLastEntry()?.historyIndex ?? Math.max(...availableRuns);
         const methods = histStatistics.getClassHistory().flatMap(classItem => classItem.methods);
 
         return methods
@@ -60,7 +61,7 @@ const TestRunTopFailingCard = ({histStatistics, sx, viewport}: TestRunTopFailing
             .map(method => ({
                 name: method.identifier,
                 failingStreak: method.getFailingStreakInRange(startIndex, endIndex),
-                methodId: method.getIdOfRun(endIndex) ?? null,
+                methodId: method.getIdOfRun(latestRunIndex) ?? null,
             }))
             .sort((a, b) => b.failingStreak - a.failingStreak)
             .slice(0, 3);
@@ -73,26 +74,38 @@ const TestRunTopFailingCard = ({histStatistics, sx, viewport}: TestRunTopFailing
             sxCard={sx}
             content={topFailingTests.length > 0 ? (
                 <List dense sx={{py: 0}}>
-                    {topFailingTests.map((method) => (
-                        <ListItem key={`${method.name}-${method.failingStreak}`} disablePadding>
-                            <ListItemButton
-                                disabled={!method.methodId}
-                                onClick={() => {
-                                    if (method.methodId) {
-                                        navigate(`/method/${method.methodId}/method-history`);
-                                    }
-                                }}
-                            >
+                    {topFailingTests.map((method) => {
+                        const methodId = method.methodId;
+                        const failingText = `Failing since ${method.failingStreak} ${method.failingStreak === 1 ? "run" : "runs"}`;
+                        const itemContent = (
+                            <>
                                 <ListItemIcon>
                                     <HighlightOffIcon color="error"/>
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={<Typography>{method.name}</Typography>}
-                                    secondary={`Failing since ${method.failingStreak} ${method.failingStreak === 1 ? "run" : "runs"}`}
+                                    secondary={methodId ? failingText : (
+                                        <>
+                                            {failingText}
+                                            <Typography component="span" variant="caption" sx={{fontStyle: "italic", pl: 1}}>
+                                                Not part of the current run.
+                                            </Typography>
+                                        </>
+                                    )}
                                 />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
+                            </>
+                        );
+
+                        return (
+                            <ListItem key={`${method.name}-${method.failingStreak}`} disablePadding={!!methodId}>
+                                {methodId ? (
+                                    <ListItemButton onClick={() => navigate(`/method/${methodId}/method-history`)}>
+                                        {itemContent}
+                                    </ListItemButton>
+                                ) : itemContent}
+                            </ListItem>
+                        );
+                    })}
                 </List>
             ) : (
                 <Stack direction="row" spacing={1} sx={{height: "100%", alignItems: "center", justifyContent: "center"}}>

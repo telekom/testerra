@@ -19,9 +19,9 @@
  * under the License.
  */
 
-import {useMemo} from "react";
+import {type ReactNode, useMemo} from "react";
 import {
-    Link, ListItemText, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,
+    Box, Link, ListItemText, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {Link as RouterLink} from "react-router-dom";
@@ -96,20 +96,30 @@ const RunCompareMethodsCard = ({selectedRun, currentRun, executionStatistics}: R
                                                         <Link component={RouterLink} to={`/method/${method.currentMethodId}`}>
                                                             {method.methodName}
                                                         </Link>
-                                                    ) : `Method not found in current run: ${method.methodName}`}
+                                                    ) : `${method.methodName}`}
                                                     {method.isConfiguration && (
                                                         <ReportChip label="Configuration" size="small"
                                                                     color="lightGrey" sx={{color: "white"}}/>
                                                     )}
                                                 </Stack>
                                             }
-                                            secondary={[
-                                                method.currentMethodId ? undefined : method.methodPath,
-                                                ...method.relatedTestMethods.map(name => `(for test method ${name})`),
-                                                method.changedFailureAspect && method.selectedStatus === method.currentStatus
-                                                    ? "Changed failure aspect" : undefined,
-                                            ].filter(Boolean).join("\n") || undefined}
-                                            slotProps={{secondary: {sx: {whiteSpace: "pre-line"}}}}
+                                            secondary={(() => {
+                                                const lines: ReactNode[] = [
+                                                    method.currentMethodId ? undefined : (
+                                                        <Typography component="span" variant="caption" sx={{fontStyle: "italic"}}>
+                                                            Not part of the current run: {method.methodPath}
+                                                        </Typography>
+                                                    ),
+                                                    ...method.relatedTestMethods.map(name => `(for test method ${name})`),
+                                                    method.changedFailureAspect && method.selectedStatus === method.currentStatus
+                                                        ? "Changed failure aspect" : undefined,
+                                                ].filter(Boolean);
+                                                return lines.length > 0
+                                                    ? lines.map((line, i) => (
+                                                        <Box component="span" key={i} sx={{display: "block"}}>{line}</Box>
+                                                    ))
+                                                    : undefined;
+                                            })()}
                                         />
                                     </TableCell>
                                 </TableRow>

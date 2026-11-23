@@ -37,11 +37,12 @@ export interface RunMethodComparison {
     currentMethodId?: string;
 }
 
-// Same related-method identity as HistoryStatistics, so repeated configuration invocations are kept apart.
 const buildRelatedMethodsKey = (relatedMethods: string[]) => Array.from(new Set(relatedMethods)).sort().join("|");
 
 const buildMethodKey = (classIdentifier: string, method: HistoricalMethod) => {
-    const relatedMethodsKey = buildRelatedMethodsKey(method.relatedMethods);
+    const relatedMethodsKey = method.context.methodType === MethodType.TEST_METHOD
+        ? ""
+        : buildRelatedMethodsKey(method.relatedMethods);
     return `${classIdentifier}.${method.identifier}${relatedMethodsKey ? ` [${relatedMethodsKey}]` : ""}`;
 };
 

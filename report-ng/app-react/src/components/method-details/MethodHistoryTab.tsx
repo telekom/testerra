@@ -34,13 +34,14 @@ import type {MethodHistoryStatistics} from "../../model/MethodHistoryStatistics.
 const MethodHistoryTab = () => {
     const methodDetail = useOutletContext<MethodDetails | undefined>();
     const {executionMngr} = useReportData();
+    const historyStatistics = executionMngr?.getHistoryStatistics();
     const theme = useTheme();
     const methodHistory = useMemo(() => methodDetail
-        ? executionMngr?.getHistoryStatistics().getMethodHistory(
+        ? historyStatistics?.getMethodHistory(
             methodDetail.classStatistics.classIdentifier,
             methodDetail.identifier
         )
-        : undefined, [executionMngr, methodDetail]);
+        : undefined, [historyStatistics, methodDetail]);
     const [failureAspectSelection, setFailureAspectSelection] = useState<{
         methodHistory: MethodHistoryStatistics;
         failureAspect: string | undefined;
@@ -48,7 +49,7 @@ const MethodHistoryTab = () => {
     const selectedFailureAspect = failureAspectSelection?.methodHistory === methodHistory
         ? failureAspectSelection?.failureAspect : undefined;
 
-    if (!methodHistory || methodHistory.getRunCount() === 0) {
+    if (!historyStatistics || !methodHistory || methodHistory.getRunCount() === 0) {
         return <NoResultsCard title="No method history available"/>;
     }
 
@@ -58,6 +59,7 @@ const MethodHistoryTab = () => {
                 <Grid size={12}>
                     <MethodHistoryChartCard
                         methodHistoryStatistics={methodHistory}
+                        availableRuns={historyStatistics.availableRuns}
                         selectedFailureAspect={selectedFailureAspect}
                         sx={theme.mixins.cardHeight(3)}
                     />

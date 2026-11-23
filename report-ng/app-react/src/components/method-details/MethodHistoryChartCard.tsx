@@ -37,25 +37,19 @@ import {reportTheme} from "../../layout/reportTheme.tsx";
 
 interface MethodHistoryChartCardProps {
     methodHistoryStatistics: MethodHistoryStatistics;
+    availableRuns: number[];
     selectedFailureAspect?: string;
     sx?: SxProps<Theme>;
 }
 
-const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect, sx}: MethodHistoryChartCardProps) => {
+const MethodHistoryChartCard = ({methodHistoryStatistics, availableRuns, selectedFailureAspect, sx}: MethodHistoryChartCardProps) => {
     const theme = useTheme();
     const missingRunColor = theme.palette.text.disabled;
 
     const chartData = useMemo(() => {
-        const runs = methodHistoryStatistics.runs;
-        if (runs.length === 0) {
-            return [];
-        }
-        const runsByIndex = new Map(runs.map(run => [run.historyIndex, run]));
-        const start = Math.min(...runsByIndex.keys());
-        const end = Math.max(...runsByIndex.keys());
+        const runsByIndex = new Map(methodHistoryStatistics.runs.map(run => [run.historyIndex, run]));
 
-        return Array.from({length: end - start + 1}, (_, index) => {
-            const historyIndex = start + index;
+        return availableRuns.map((historyIndex, index) => {
             const run = runsByIndex.get(historyIndex);
             const context = run?.context.contextValues;
             const status = run?.context.resultStatus ?? ResultStatusType.NO_RUN;
@@ -80,7 +74,7 @@ const MethodHistoryChartCard = ({methodHistoryStatistics, selectedFailureAspect,
                 },
             };
         });
-    }, [methodHistoryStatistics, missingRunColor, selectedFailureAspect]);
+    }, [methodHistoryStatistics, availableRuns, missingRunColor, selectedFailureAspect]);
 
     const option: EChartsOption = useMemo(() => ({
         grid: {

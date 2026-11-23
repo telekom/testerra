@@ -23,7 +23,7 @@ import {HistoryAggregateStatistics} from "./HistoryAggregateStatistics.ts";
 import {ClassHistory} from "./ClassHistory.ts";
 import { History } from "./report-model/report_pb.ts";
 import {MethodHistoryStatistics} from "./MethodHistoryStatistics.ts";
-import {ResultStatusType} from "./report-model/framework_pb.ts";
+import {MethodType, ResultStatusType} from "./report-model/framework_pb.ts";
 
 export class HistoryStatistics {
     private _historyAggregateStatistics: HistoryAggregateStatistics[] = [];
@@ -61,11 +61,13 @@ export class HistoryStatistics {
                 clsStat.methods
                     .filter(method => method.context.resultStatus !== ResultStatusType.FAILED_RETRIED)
                     .forEach((method) => {
-                        const relatedMethodsKey = this._buildRelatedMethodsKey(method.relatedMethods);
                         let methodHistory = classHistory.methods.find(
                             methodHistoryStatistics => {
                                 return methodHistoryStatistics.identifier === method.identifier
-                                    && this._buildRelatedMethodsKey(methodHistoryStatistics.relatedMethods) === relatedMethodsKey;
+                                    && methodHistoryStatistics.isTestMethod() === (method.context.methodType === MethodType.TEST_METHOD)
+                                    && (method.context.methodType === MethodType.TEST_METHOD
+                                        || this._buildRelatedMethodsKey(methodHistoryStatistics.relatedMethods)
+                                            === this._buildRelatedMethodsKey(method.relatedMethods));
                             }
                         );
                         if (!methodHistory) {

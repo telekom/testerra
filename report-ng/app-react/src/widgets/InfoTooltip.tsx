@@ -29,7 +29,9 @@ interface InfoTooltipProps {
 export default function InfoTooltip({text}: InfoTooltipProps) {
     return (
         <Tooltip title={text}>
-            <InfoOutlinedIcon color="primary"/>
+            <span tabIndex={0} role="img" aria-label={text} style={{display: "inline-flex"}}>
+                <InfoOutlinedIcon color="primary"/>
+            </span>
         </Tooltip>
     );
 }

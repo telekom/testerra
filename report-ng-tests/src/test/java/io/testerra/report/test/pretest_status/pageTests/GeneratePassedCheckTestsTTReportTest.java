@@ -80,7 +80,7 @@ public class GeneratePassedCheckTestsTTReportTest extends AbstractTestSitesTest 
         log().warn("Warn me in method!", Loggable.prompt);
 
         // some test activities ...
-        log().error("Tell me more in mthod!", Loggable.prompt);
+        log().error("Tell me more in method!", Loggable.prompt);
     }
 
     @Test(groups = {Groups.EXT})

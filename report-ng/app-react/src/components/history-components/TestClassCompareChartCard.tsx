@@ -28,10 +28,11 @@ import type {
     CustomSeriesRenderItemParams,
     CustomSeriesRenderItemReturn,
     EChartsType,
-    TooltipComponentFormatterCallbackParams
+    TooltipComponentFormatterCallbackParams,
+    TooltipComponentPositionCallback,
 } from "echarts";
 import ReportCard from "../../widgets/ReportCard.tsx";
-import Echart from "../../widgets/Echart.tsx";
+import Echart, {type EchartRef} from "../../widgets/Echart.tsx";
 import type {HistoryStatistics} from "../../model/HistoryStatistics.ts";
 import {ResultStatusType} from "../../model/report-model/framework_pb.ts";
 import {StatusService} from "../../model/status-service.tsx";
@@ -79,6 +80,7 @@ const TestClassCompareChartCard = ({historyStatistics, selectedClass, selectedSt
     const cardBorderSpacing = 20;       // To ensure the grid's width stays smaller than the card
 
     const chartContainerRef = useRef<HTMLDivElement>(null);
+    const chartRef = useRef<EchartRef>(null);
     const [containerWidth, setContainerWidth] = useState(0);
 
     const compareData = useMemo(() => buildTestClassCompareData(historyStatistics), [historyStatistics]);
@@ -138,9 +140,29 @@ const TestClassCompareChartCard = ({historyStatistics, selectedClass, selectedSt
         },
         tooltip: hasHistory ? {
             trigger: "item",
-            appendToBody: true,
             confine: false,
+            appendToBody: true,
             borderColor: reportTheme.palette.lightGrey.light,
+            /* The position calculation is needed because of the flexible chart height. In case the chart is longer then the viewport,
+            a toolip on an item near the viewport border occurs browser scroll elements which has an impact on the tooltip rendering.
+            */
+            position: ((point, _params, _element, _rect, size) => {
+                const chartRect = chartRef.current!.getEchartsInstance().getDom().getBoundingClientRect();
+                const scaleX = chartRect.width / size.viewSize[0];
+                const scaleY = chartRect.height / size.viewSize[1];
+                const margin = 4;
+                const offset = 20;
+                const positionAxis = (cursor: number, contentSize: number, viewportSize: number) => {
+                    const preferred = cursor + offset;
+                    const candidate = preferred + contentSize + margin <= viewportSize
+                        ? preferred
+                        : cursor - contentSize - offset;
+                    return Math.max(margin, Math.min(candidate, viewportSize - contentSize - margin));
+                };
+                const x = positionAxis(chartRect.left + point[0] * scaleX, size.contentSize[0], document.documentElement.clientWidth);
+                const y = positionAxis(chartRect.top + point[1] * scaleY, size.contentSize[1], document.documentElement.clientHeight);
+                return [(x - chartRect.left) / scaleX, (y - chartRect.top) / scaleY];
+            }) satisfies TooltipComponentPositionCallback,
             formatter: (params: TooltipComponentFormatterCallbackParams) => {
                 if (Array.isArray(params)) {
                     return "";
@@ -361,6 +383,7 @@ const TestClassCompareChartCard = ({historyStatistics, selectedClass, selectedSt
                 <Box ref={chartContainerRef}
                      sx={{height: "100%", display: "flex", flexDirection: "column", overflowX: "auto", pt: 1}}>
                     <Echart
+                        ref={chartRef}
                         option={option}
                         width={chartWidth}
                         notMerge={true}

@@ -33,6 +33,7 @@ export interface ReportCardProps {
     sxCard?: SxProps<Theme>;
     sxHeader?: SxProps<Theme>;
     sxContent?: SxProps<Theme>;
+    testId?: string;
     tooltipText?: string;
 }
 
@@ -51,6 +52,7 @@ const ReportCard = ({
                         sxCard,
                         sxHeader,
                         sxContent,
+                        testId,
                         tooltipText
                     }: ReportCardProps) => {
     const sections = [
@@ -72,10 +74,11 @@ const ReportCard = ({
         : label;
 
     return (
-        <Card sx={[
-            {p: 0, display: "flex", flexDirection: "column", height: "100%"},
-            ...(Array.isArray(sxCard) ? sxCard : [sxCard]),
-        ]}>
+        <Card data-testid={testId}
+              sx={[
+                  {p: 0, display: "flex", flexDirection: "column", height: "100%"},
+                  ...(Array.isArray(sxCard) ? sxCard : [sxCard]),
+              ]}>
             {label && (
                 <>
                     <CardContent sx={[

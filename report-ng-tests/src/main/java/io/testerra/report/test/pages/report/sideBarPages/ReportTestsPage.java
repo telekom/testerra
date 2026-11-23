@@ -133,10 +133,6 @@ public class ReportTestsPage extends AbstractReportPage {
         return tableHead.find(By.xpath(headerRowLocator));
     }
 
-    public void pageLoaded() {
-        verifyReportPage(ReportSidebarPageType.TESTS);
-    }
-
     public void assertMethodColumnMatchesFilter(String filter) {
         getColumnWithoutHead(TestsTableEntry.METHOD)
                 .forEach(uiElement -> uiElement.expect().text().contains(filter).is(true,

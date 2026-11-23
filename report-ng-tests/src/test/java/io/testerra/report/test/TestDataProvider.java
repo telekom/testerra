@@ -1,6 +1,6 @@
 package io.testerra.report.test;
 
-import eu.tsystems.mms.tic.testframework.common.DefaultPropertyManager;
+import eu.tsystems.mms.tic.testframework.common.PropertyManagerProvider;
 import eu.tsystems.mms.tic.testframework.report.Status;
 import io.testerra.report.test.pages.ReportSidebarPageType;
 import io.testerra.report.test.pages.pretest.NonExistingPage;
@@ -15,7 +15,10 @@ import io.testerra.report.test.pages.utils.LogLevel;
 import io.testerra.report.test.pages.utils.TestData;
 import org.testng.annotations.DataProvider;
 
-public class TestDataProvider {
+import java.util.List;
+import java.util.Map;
+
+public class TestDataProvider implements PropertyManagerProvider {
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestMethodForEachStatus() {
@@ -42,7 +45,7 @@ public class TestDataProvider {
         };
     }
 
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public static Object[][] dataProviderForDashBoardTestStates() {
         return new Object[][]{
                 {Status.PASSED},
@@ -52,13 +55,34 @@ public class TestDataProvider {
         };
     }
 
+    @DataProvider(parallel = false)
+    public static Object[][] dataProviderStatusClasses() {
+        return new Object[][]{
+                {Status.PASSED, List.of(
+                        Map.of("name", "GenerateExpectedFailedStatusInTesterraReportTest", "value", 2),
+                        Map.of("name", "GenerateScreenshotsInTesterraReportTest", "value", 1),
+                        Map.of("name", "GeneratePassedStatusInTesterraReportTest", "value", 2))},
+                {Status.FAILED, List.of(
+                        Map.of("name", "GenerateFailedStatusInTesterraReportTest", "value", 3),
+                        Map.of("name", "GenerateScreenshotsInTesterraReportTest", "value", 1),
+                        Map.of("name", "GenerateSkippedStatusInTesterraReportTest", "value", 1))},
+                {Status.FAILED_EXPECTED, List.of(
+                        Map.of("name", "GenerateExpectedFailedStatusInTesterraReportTest", "value", 4))},
+                {Status.SKIPPED, List.of(
+                        Map.of("name", "GenerateSkippedStatusInTesterraReportTest", "value", 3),
+                        Map.of("name", "GenerateSkippedStatusViaBeforeMethodInTesterraReportTest", "value", 1))}
+        };
+    }
+
+
     @DataProvider(parallel = true)
     public static Object[][] dataProviderForDifferentTestStatesWithAmounts() {
         return new Object[][]{
-                {5, Status.FAILED},
-                {4, Status.FAILED_EXPECTED},
-                {4, Status.SKIPPED},
-                {5, Status.PASSED}
+                {Status.PASSED, 5, "1 Repaired"},
+                {Status.PASSED, 5, "1 Recovered"},
+                {Status.FAILED, 5, "1 Retried"},
+                {Status.FAILED_EXPECTED, 4, null},
+                {Status.SKIPPED, 4, null},
         };
     }
 
@@ -158,11 +182,10 @@ public class TestDataProvider {
 
     @DataProvider(parallel = true)
     public static Object[][] dataProviderFailureCorridorBounds() {
-        new DefaultPropertyManager().loadProperties("report-ng-tests/src/test/resources/test.properties");
         return new Object[][]{
-                {"High", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.high"), 3},
-                {"Mid", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.mid"), 2},
-                {"Low", new DefaultPropertyManager().getLongProperty("tt.failure.corridor.allowed.failed.tests.low"), 0}
+                {"High", PROPERTY_MANAGER.getLongProperty("tt.failure.corridor.allowed.failed.tests.high"), 3},
+                {"Mid", PROPERTY_MANAGER.getLongProperty("tt.failure.corridor.allowed.failed.tests.mid"), 2},
+                {"Low", PROPERTY_MANAGER.getLongProperty("tt.failure.corridor.allowed.failed.tests.low"), 0}
         };
     }
 
@@ -272,7 +295,7 @@ public class TestDataProvider {
                 // retried
                 {new TestData("test_PassedAfterRetry", Status.RETRIED)},
                 // failed data provider method
-                {new TestData( "dataProviderWithError", Status.FAILED)},
+                {new TestData("dataProviderWithError", Status.FAILED)},
                 // failed before method
                 {new TestData("beforeMethodFailing", Status.FAILED)}
         };

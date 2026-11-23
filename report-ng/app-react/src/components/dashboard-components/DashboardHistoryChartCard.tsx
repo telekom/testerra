@@ -33,6 +33,7 @@ interface DashboardHistoryChartProps {
 const DashboardHistoryChartCard = ({histStatistics, selectedStatus, sx}: DashboardHistoryChartProps) => {
     return (
         <ReportCard
+            testId={"history-chart-card"}
             label="History"
             sxCard={sx}
             content={<TestRunHistoryBarChart histStatistics={histStatistics} selectedStatus={selectedStatus}/>}

@@ -79,6 +79,7 @@ function FailureAspectRow({
     return (
         <Box
             style={style}
+            data-testid={"row"}
             sx={{
                 display: "flex",
                 alignItems: "stretch",
@@ -88,10 +89,10 @@ function FailureAspectRow({
                 "&:hover": {bgcolor: "action.hover"},
             }}
         >
-            <Box sx={{...cellSx(CELL_WIDTHS.rank), display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <Box data-testid={"rank"} sx={{...cellSx(CELL_WIDTHS.rank), display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <Typography>{failureAspect.index + 1}</Typography>
             </Box>
-            <Box sx={{...cellSx(CELL_WIDTHS.failureAspect), display: "flex", alignItems: "center", overflowWrap: "anywhere"}}>
+            <Box data-testid={"failure"} sx={{...cellSx(CELL_WIDTHS.failureAspect), display: "flex", alignItems: "center", overflowWrap: "anywhere"}}>
                 <Link
                     component={RouterLink}
                     to={{
@@ -104,10 +105,10 @@ function FailureAspectRow({
                     </Typography>
                 </Link>
             </Box>
-            <Box sx={{...cellSx(CELL_WIDTHS.type), display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <Box data-testid={"type"} sx={{...cellSx(CELL_WIDTHS.type), display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <Typography>{failureAspect.isMinor ? "Minor" : "Major"}</Typography>
             </Box>
-            <Box sx={cellSx(CELL_WIDTHS.status)}>
+            <Box data-testid={"status"} sx={cellSx(CELL_WIDTHS.status)}>
                 <Stack direction="column" spacing={1} sx={{alignItems: "flex-start"}}>
                     {statuses.map(status => (
                         <ReportChip
@@ -235,6 +236,7 @@ const FailureAspectsList = ({searchText, expectedFailedChecked, type}: FailureAs
             </Box>
             <List
                 aria-label="Failure aspects"
+                data-testid={"failure-aspects-list"}
                 rowComponent={FailureAspectRow}
                 rowCount={rows.length}
                 rowHeight={rowHeight}

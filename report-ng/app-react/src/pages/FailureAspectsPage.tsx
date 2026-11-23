@@ -86,6 +86,7 @@ const FailureAspectsPage = () => {
                         <InputLabel>Type</InputLabel>
                         <Select
                             value={type}
+                            data-testid={"failure-type"}
                             label="Type"
                             onChange={(e) => handleTypeChanged(e.target.value)}
                         >
@@ -98,6 +99,7 @@ const FailureAspectsPage = () => {
                 <Grid size={8}>
                     <TextField
                         label="Search"
+                        data-testid={"failure-text"}
                         value={searchText}
                         onChange={(e) => {
                             setSearchText(e.target.value);
@@ -117,13 +119,16 @@ const FailureAspectsPage = () => {
                 <Grid size={2} sx={{alignContent: "center"}}>
                     <Stack direction="row" sx={{alignItems: "center"}}>
                         <Switch checked={expectedFailedChecked}
+                                data-testid={"failure-expected-switch"}
                                 onChange={handleExpectedFailedChecked}/>
                         <Typography variant="body2">Show expected failed</Typography>
                     </Stack>
                 </Grid>
                 <Grid size={12}>
-                    <FailureAspectsList searchText={searchText} expectedFailedChecked={expectedFailedChecked}
-                                        type={type}/>
+                    <FailureAspectsList
+                        searchText={searchText}
+                        expectedFailedChecked={expectedFailedChecked}
+                        type={type}/>
                 </Grid>
             </Grid>
         </Box>

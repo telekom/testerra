@@ -34,15 +34,16 @@ const DashboardFailureCorridorCard = ({executionContext, sx}: DashboardFailureCo
     const theme = useTheme();
 
     const chipList = [
-        {label: "High", value: FailureCorridorValue.FCV_HIGH},
-        {label: "Mid", value: FailureCorridorValue.FCV_MID},
-        {label: "Low", value: FailureCorridorValue.FCV_LOW}
-    ].map(({label, value}) => {
+        {name: "High", value: FailureCorridorValue.FCV_HIGH},
+        {name: "Mid", value: FailureCorridorValue.FCV_MID},
+        {name: "Low", value: FailureCorridorValue.FCV_LOW}
+    ].map(({name, value}) => {
         const count = executionContext?.failureCorridorCounts?.[value] ?? 0;
         const limit = executionContext?.failureCorridorLimits?.[value] ?? 0;
 
         return {
-            label: `${count} ${label}`,
+            name,
+            count,
             chipColor: count <= limit
                 ? theme.custom.statusColors.passed
                 : theme.custom.statusColors.failed,
@@ -52,18 +53,29 @@ const DashboardFailureCorridorCard = ({executionContext, sx}: DashboardFailureCo
 
     return (
         <ReportCard
+            testId={"failure-corridor-card"}
             label="Failure Corridor"
             sxContent={{p: 2}}
             tooltipText="The severity distribution of failed test cases in relation to the defined test goal"
             sxCard={sx}
             content={(
                 <Stack direction="column" spacing={1} sx={{alignItems: "center"}}>
-                    {chipList.map((chip) => (
-                        <Stack direction="row" key={chip.label} spacing={1} sx={{alignItems: "center"}}>
-                            <ReportChip label={chip.label} sx={{background: chip.chipColor, color: "white"}} size={"small"}/>
-                            <Typography color="primary"> of {chip.limit} </Typography>
-                        </Stack>
-                    ))}
+                    {chipList.map((chip) => {
+                        const label = `${chip.count} ${chip.name}`;
+                        return (
+                            <Stack
+                                direction="row"
+                                data-testid={chip.name}
+                                key={chip.name}
+                                spacing={1}
+                                sx={{alignItems: "center"}}>
+                                <ReportChip
+                                    label={label}
+                                    sx={{background: chip.chipColor, color: "white"}}size={"small"}/>
+                                <Typography color="primary"> of {chip.limit} </Typography>
+                            </Stack>
+                        );
+                    })}
                 </Stack>
             )}
         />

@@ -187,12 +187,13 @@ const ThreadsPage = () => {
         }
 
         // Some calculations for chart presentation
-        const gridHeight = Math.max(threadCategories.size * THREAD_HEIGHT, 200);
+        const gridHeight = Math.max(threadCategories.size * THREAD_HEIGHT, THREAD_HEIGHT);
         const sliderFromTop = gridHeight + SLIDER_SPACING_FROM_CHART;
         const computedCardHeight = sliderFromTop + 60;
 
         const options: EChartsOption = {
             tooltip: {
+                appendToBody: true,
                 formatter: function (params: TooltipComponentFormatterCallbackParams) {
                     if (!params || Array.isArray(params) || !params.value) return '';
                     const value = params.value as TimelineEntry['value'];

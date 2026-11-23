@@ -26,10 +26,10 @@ plugins {
 // Deactivate JAR publishing
 project.afterEvaluate {
     println "Deactivate publishing for " + project.name
-    project.tasks.each { t ->
-        if (t.name.startsWith("publish") || t.name.contains("MavenCentral")) {
-            t.enabled = false
-        }
+    project.tasks.matching { t ->
+        t.name.startsWith("publish") || t.name.contains("MavenCentral")
+    }.configureEach { t ->
+        t.enabled = false
     }
 }
 
@@ -38,18 +38,14 @@ node {
     version = "24.12.0"
 }
 
-task buildReport(type: NpmTask) {
-    dependsOn(npm_install)
+tasks.register('buildReport', NpmTask) {
+    dependsOn(tasks.named('npmInstall'))
     args = ['run', 'build']
 }
 
-//build.dependsOn(buildReport)
-
-task cleanNpm {
+tasks.register('cleanNpm') {
     doLast {
         delete "node_modules"
         delete "dist"
     }
 }
-
-//clean.dependsOn(npmClean)

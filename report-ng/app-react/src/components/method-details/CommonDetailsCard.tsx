@@ -67,7 +67,7 @@ const CommonDetailsCard = ({methodDetails, sx, previousDetail, nextDetail}: Comm
                             </Typography>
                         )}
                         {methodDetails.xrayAnnotation?.ticketUrls?.length > 0 && (
-                            <Typography variant="body2" sx={theme.custom.generalDetails.topSpacingText}>
+                            <Typography variant="body2" sx={{...theme.custom.generalDetails.topSpacingText, px: 2}}>
                                 Related Tickets:{" "}
                                 {methodDetails.xrayAnnotation.ticketUrls.map((ticketUrl: string, index: number) => (
                                     <span key={`xray-ticket-${index}`}>

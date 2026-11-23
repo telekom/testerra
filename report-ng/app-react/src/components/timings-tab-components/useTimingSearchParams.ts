@@ -31,7 +31,7 @@ export function useTimingSearchParams() {
     // Read filter state from URL so view state is shareable/bookmarkable.
     const rangeNumParam = searchParams.get("rangeNum");
     const parsedRangeNum = Number(rangeNumParam);
-    const rangeNum = parsedRangeNum > 0 ? parsedRangeNum : DEFAULT_RANGE_NUM;
+    const rangeNum = [5, 10, 15, 20].includes(parsedRangeNum) ? parsedRangeNum : DEFAULT_RANGE_NUM;
     const showConfigMethods = searchParams.get("config") === "true";
     const methodIdParam = searchParams.get("methodId");
 

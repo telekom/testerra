@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCoreDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import org.openqa.selenium.Keys;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -47,8 +48,27 @@ public class UiElementLogger extends AbstractGuiElementCoreDecorator implements 
 
     @Override
     public void type(String text) {
-        beforeDelegation("type", "\"" + (guiElement.hasSensitiveData() ? "*****************" : text) + "\"");
+        beforeDelegation("type", toLogParameter(text));
         decoratedCore.type(text);
         afterDelegation();
+    }
+
+    @Override
+    public void sendKeys(CharSequence... charSequences) {
+        beforeDelegation("sendKeys", Arrays.stream(charSequences).map(this::toLogParameter).toArray());
+        decoratedCore.sendKeys(charSequences);
+        afterDelegation();
+    }
+
+    private String toLogParameter(CharSequence charSequence) {
+        // Control keys can be logged independent of the element being marked sensitive
+        if (charSequence.length() == 1) {
+            Keys key = Keys.getKeyFromUnicode(charSequence.charAt(0));
+            if (key != null) return "Keys." + key.name();
+        }
+        if (guiElement.hasSensitiveData()) {
+            return "\"*****************\"";
+        }
+        return "\"" + charSequence + "\"";
     }
 }

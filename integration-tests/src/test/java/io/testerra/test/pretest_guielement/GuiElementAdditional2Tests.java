@@ -23,6 +23,12 @@ public class GuiElementAdditional2Tests extends AbstractTestSitesTest {
         Assert.assertTrue(input.hasSensitiveData());
 
         input.type("testT02_SensitiveData");
+        input.sendKeys("testT02_SensitiveDataSendKeys");
+
+        // Check that the sensitiveData flag is inherited by list()
+        GuiElement listItem = (GuiElement) input.list().first();
+        Assert.assertTrue(listItem.hasSensitiveData());
+        listItem.type("testT02_SensitiveDataByList");
     }
 
 }

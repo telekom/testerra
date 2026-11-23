@@ -59,11 +59,23 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest implements 
      */
     @Test
     public void testT02_SensitiveData() {
-        final String searchStringSensitiveData = "facade.UiElementLogger - type(\"*****************\") on UiElement(By.id: 1)";
-        final String searchStringNotExists = "type \"testT02_SensitiveData\" on By.id: 1";
+        assertSensitiveDataAreCensored(
+                "facade.UiElementLogger - type(\"*****************\") on UiElement(By.id: 1)",
+                "testT02_SensitiveData"
+        );
+        assertSensitiveDataAreCensored(
+                "facade.UiElementLogger - sendKeys(\"*****************\") on UiElement(By.id: 1)",
+                "testT02_SensitiveDataSendKeys"
+        );
+        assertSensitiveDataAreCensored(
+                "facade.UiElementLogger - type(\"*****************\") on UiElement(By.id: 1[1])",
+                "testT02_SensitiveDataByList"
+        );
+    }
 
+    private void assertSensitiveDataAreCensored(String searchStringSensitiveData, String searchStringNotExists) {
         List<String> foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringSensitiveData);
-        Assert.assertEquals(foundEntries.size(), 1, String.format("Log should contains string '%s'", searchStringSensitiveData));
+        Assert.assertEquals(foundEntries.size(), 1, String.format("Log should contain string '%s'", searchStringSensitiveData));
 
         foundEntries = LOG_4_J_FILE_READER.filterLogForString(searchStringNotExists);
         Assert.assertEquals(foundEntries.size(), 0, String.format("Log should not contain string '%s'", searchStringNotExists));

@@ -52,6 +52,7 @@ const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: S
                     multiple
                     value={selectedStatuses}
                     label={label}
+                    inputProps={{"aria-label": label}}
                     open={isOpen}
                     onOpen={() => setIsOpen(true)}
                     onClose={() => setIsOpen(false)}

@@ -69,6 +69,7 @@ public class GuiElementData implements
         this.name = parent.name;
         this.guiElement = parent.guiElement;
         this.shadowRoot = parent.shadowRoot;
+        this.sensitiveData = parent.sensitiveData;
     }
 
     public GuiElementData(WebDriver webDriver, Locator locator) {

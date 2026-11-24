@@ -55,6 +55,11 @@ CHROME_DEV_TOOLS
 
 == Change geolocation
 
+[NOTE]
+====
+* "Geo Location — almost all sites use the IP address to determine physical location, so setting an emulated geolocation rarely has the desired effect." (https://www.selenium.dev/documentation/webdriver/bidi/cdp/)
+====
+
 [source, java]
 ----
 
@@ -181,7 +186,7 @@ public class ChromeDevToolsTests extends TesterraTest implements
 .'Broken' page resources
 [source, java]
 ----
-import org.openqa.selenium.devtools.v142.log.model.LogEntry;
+import org.openqa.selenium.devtools.v152.log.model.LogEntry;
 ...
 
 public class ChromeDevToolsTests extends TesterraTest implements
@@ -222,9 +227,9 @@ public class ChromeDevToolsTests extends TesterraTest implements
 
 [source, java]
 ----
-import org.openqa.selenium.devtools.v142.network.Network;
-import org.openqa.selenium.devtools.v142.network.model.RequestWillBeSent;
-import org.openqa.selenium.devtools.v142.network.model.ResponseReceived;
+import org.openqa.selenium.devtools.v152.network.Network;
+import org.openqa.selenium.devtools.v152.network.model.RequestWillBeSent;
+import org.openqa.selenium.devtools.v152.network.model.ResponseReceived;
 ...
 
 public class ChromeDevToolsTests extends TesterraTest implements

@@ -16,7 +16,7 @@ import * as React from "react";
 import {useState} from "react";
 import styled from "@emotion/styled";
 import {Divider, Link as MuiLink, ListItemIcon, Typography} from "@mui/material";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo_180_w.png";
 import {blueGrey} from "@mui/material/colors";
 import PrintDialog from "../print/PrintDialog";
 import {useReportData} from "../../provider/DataProvider";

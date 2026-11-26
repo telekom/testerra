@@ -1,7 +1,7 @@
-/*
+/*!
  * Testerra
  *
- * (C) 2022, Clemens Große, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,20 +19,18 @@
  * under the License.
  */
 
-package io.testerra.report.test.pages;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+// Test status
+$passed:    #417336;
+$skipped:   #f7af3e; //#8a929a;
+$failed:    #e63946;
+$crashed:   #5d6f81;
+$running:   #0089b6;
+$failedExpected: #4f031b;
 
-public abstract class ReportHeader extends Page {
+// Navigation
+$primary-color: #007bff;
+$nav-bg: #222;
+$text-light: #fff;
+$active-color: #ffcc00;
 
-    @Check
-    protected final UiElement title = find(By.xpath("//mdc-top-app-bar-title"));
-
-    public ReportHeader(WebDriver driver) {
-        super(driver);
-    }
-}

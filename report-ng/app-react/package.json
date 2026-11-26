@@ -1,0 +1,49 @@
+{
+  "name": "app3",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "generateProto": "npx protoc --plugin=.\\node_modules\\.bin\\protoc-gen-ts_proto --ts_proto_opt=outputJsonMethods=false --ts_proto_opt=outputPartialMethods=false --ts_proto_opt=unrecognizedEnum=false --ts_proto_opt=outputIndex=true --ts_proto_opt=forceLong=number --ts_proto_opt=useOptionals=all --ts_proto_opt=esModuleInterop=true --ts_proto_opt=enumsAsLiterals=true --ts_proto_opt=fileSuffix=_pb --ts_proto_out=src/model/report-model --proto_path=../../report-model/src/main/proto report.proto"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.2.9",
+    "@mui/icons-material": "^9.5.0",
+    "@mui/material": "^9.5.0",
+    "echarts-for-react": "^3.0.5",
+    "highlight.js": "^11.11.1",
+    "luxon": "^3.7.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.11.0",
+    "react-to-print": "^3.3.0",
+    "react-window": "^2.2.7",
+    "vis-data": "^8.0.4",
+    "vis-network": "^10.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@protobuf-ts/protoc": "^2.11.1",
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "protoc": "^33.2.0",
+    "sass": "^1.97.2",
+    "ts-proto": "^2.11.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^8.3.5"
+  }
+}

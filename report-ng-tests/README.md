@@ -14,6 +14,19 @@ Generate Testerra Report with additional status
 gradle test -P pretestRNGExtended=true
 ```
 
+## Run report history pretests
+Runs the history pretests 11 times (`-PpretestHistoryIndex=1..11`).
+
+Linux / macOS:
+```shell
+./report-ng-tests/run-history-pretests.sh
+```
+
+Windows (PowerShell):
+```powershell
+.\report-ng-tests\run-history-pretests.ps1
+```
+
 ## Start Test of generated Testerra Report
 UI-Test of formerly generated Testerra Report
 

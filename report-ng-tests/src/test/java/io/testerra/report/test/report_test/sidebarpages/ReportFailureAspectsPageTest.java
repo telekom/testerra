@@ -86,9 +86,9 @@ public class ReportFailureAspectsPageTest extends AbstractReportTest {
         ReportFailureAspectsPage reportFailureAspectsPage = reportDashBoardPage.gotoToReportPage(ReportSidebarPageType.FAILURE_ASPECTS, ReportFailureAspectsPage.class);
 
         TestStep.begin("Check whether the table become adjusted correctly when 'show expected failed' button is enabled!");
-        int amountOfAspectsButtonEnabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsTableEntry.STATUS).size();
+        int amountOfAspectsButtonEnabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsColumn.STATUS).size();
         reportFailureAspectsPage = reportFailureAspectsPage.clickShowExpectedFailedButton();
-        int amountOfAspectsButtonDisabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsTableEntry.STATUS).size();
+        int amountOfAspectsButtonDisabled = reportFailureAspectsPage.getColumns(ReportFailureAspectsPage.FailureAspectsColumn.STATUS).size();
         Assert.assertTrue(amountOfAspectsButtonDisabled < amountOfAspectsButtonEnabled,
                 "There should be more aspects listed, when expected fails button is enabled!");
     }

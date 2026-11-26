@@ -1,0 +1,86 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import {Box, FormControl, MenuItem} from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import type {SxProps, Theme} from "@mui/material/styles";
+import {StatusService} from "../model/status-service";
+import type {ResultStatus} from "../model/status-service";
+import {useState} from "react";
+import StatusChip from "./StatusChip.tsx";
+
+type SelectInputProps = {
+    label: string
+    selectedStatuses?: ResultStatus[],
+    onChange: (value: ResultStatus[]) => void;
+    menuItems: number[];
+    sx?: SxProps<Theme>;
+}
+
+const StatusSelectInput = ({label, selectedStatuses, onChange, menuItems, sx}: SelectInputProps) => {
+
+    const [isOpen, setIsOpen] = useState(false);
+    const availableMenuItems = menuItems
+        .filter(status => !selectedStatuses?.includes(status as ResultStatus))
+        .map(status => status as ResultStatus)
+        .toSorted((a, b) => StatusService.getLabel(String(a)).localeCompare(StatusService.getLabel(String(b))));
+
+    return (
+        <Box sx={sx}>
+            <FormControl fullWidth>
+                <InputLabel>{label}</InputLabel>
+                <Select
+                    multiple
+                    value={selectedStatuses}
+                    label={label}
+                    inputProps={{"aria-label": label}}
+                    open={isOpen}
+                    onOpen={() => setIsOpen(true)}
+                    onClose={() => setIsOpen(false)}
+                    onChange={(e) => {
+                        onChange(e.target.value as ResultStatus[]);
+                        setIsOpen(false);
+                    }}
+                    sx={{height: "56px"}}
+                    renderValue={(selected: ResultStatus[]) => {
+                        if (!selected?.length) return "";
+                        if (selected.length === 1) return "1 status selected";
+                        return `${selected.length} statuses selected`;
+                    }}
+                >
+                    {availableMenuItems.length === 0 && (
+                        <MenuItem disabled>
+                            <em>All status selected</em>
+                        </MenuItem>
+                    )}
+                    {availableMenuItems.map(status => (
+                        <MenuItem key={status} value={status}>
+                            <StatusChip status={status}/>
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </Box>
+    );
+}
+
+export default StatusSelectInput;

@@ -22,5 +22,11 @@
 package io.testerra.report.test.pages;
 
 public enum ReportSidebarPageType {
-    DASHBOARD, TESTS, FAILURE_ASPECTS, LOGS, THREADS, HISTORY, PRINT_REPORT
+    DASHBOARD,
+    TESTS,
+    FAILURE_ASPECTS,
+    LOGS,
+    THREADS,
+    HISTORY,
+    PRINT_REPORT
 }

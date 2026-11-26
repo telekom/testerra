@@ -1,0 +1,28 @@
+import type {Theme} from "@mui/material/styles";
+import type {SystemStyleObject} from "@mui/system";
+
+export type ReportThemePriorityMessagesStyles = {
+    container: SystemStyleObject<Theme>;
+    fontColorNotOk: SystemStyleObject<Theme>;
+    list: SystemStyleObject<Theme>;
+    listItem: (backgroundColor: string) => SystemStyleObject<Theme>;
+};
+
+export const priorityMessages: ReportThemePriorityMessagesStyles = {
+    container: {
+        mt: 3,
+    },
+    fontColorNotOk: {
+        color: "white",
+    },
+    list: {
+        p: 0,
+    },
+    listItem: (backgroundColor: string) => ({
+        display: "block",
+        px: 1.5,
+        py: 0.5,
+        lineHeight: 1,
+        backgroundColor,
+    }),
+};

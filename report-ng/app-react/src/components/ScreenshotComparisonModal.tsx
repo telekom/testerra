@@ -1,0 +1,393 @@
+/*
+ * Testerra
+ *
+ * (C) 2026, Selina Natschke, Deutsche Telekom MMS GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import {useEffect, useMemo, useRef, useState} from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import CompareIcon from "@mui/icons-material/Compare";
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import CloseIcon from "@mui/icons-material/Close";
+import type {File as ReportFile} from "../model/report-model/framework_pb.ts";
+import {File} from "../model/report-model/framework_pb.ts";
+import Stack from "@mui/material/Stack";
+import {normalizeRelativePath} from "../utils/reportFilePath.ts";
+
+export interface ComparisonImage {
+    id: string;
+    title: string;
+}
+
+interface ScreenshotComparisonModalProps {
+    open: boolean;
+    images: ComparisonImage[];
+    initialLeftId?: string;
+    initialRightId?: string;
+    onClose: () => void;
+}
+
+const getTouchClientX = (touches: { item(index: number): { clientX: number } | null }): number | null => {
+    const touch = touches.item(0);
+    return touch ? touch.clientX : null;
+};
+
+const ScreenshotComparisonModal = ({
+                                       open,
+                                       images,
+                                       initialLeftId,
+                                       initialRightId,
+                                       onClose
+                                   }: ScreenshotComparisonModalProps) => {
+    const [filesById, setFilesById] = useState<Record<string, ReportFile>>({});
+    const [leftId, setLeftId] = useState<string | undefined>(undefined);
+    const [rightId, setRightId] = useState<string | undefined>(undefined);
+    const [ratio, setRatio] = useState(0.5);
+    const [dragging, setDragging] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchFile = async (fileId: string) => {
+            const response = await fetch(`model/files/${fileId}`);
+            if (!response.ok) {
+                throw new Error(`Cannot load model/files/${fileId}: ${response.status}`);
+            }
+            const buffer = await response.arrayBuffer();
+            return File.decode(new Uint8Array(buffer));
+        };
+
+        const fetchFiles = async () => {
+            if (!open || images.length === 0) {
+                return;
+            }
+
+            const pairs = await Promise.all(
+                images.map(async image => [image.id, await fetchFile(image.id)] as const)
+            );
+
+            if (!isMounted) {
+                return;
+            }
+
+            setFilesById(Object.fromEntries(pairs));
+            setError(null);
+        };
+
+        fetchFiles().catch((caughtError) => {
+            if (isMounted) {
+                setFilesById({});
+                setError(caughtError instanceof Error ? caughtError.message : "Cannot load comparison images.");
+            }
+        });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [open, images]);
+
+    const availableImages = useMemo(() => {
+        return images.filter(image => Boolean(filesById[image.id]?.relativePath));
+    }, [images, filesById]);
+
+    useEffect(() => {
+        if (!open || availableImages.length < 2) {
+            return;
+        }
+
+        const fallbackLeft = availableImages[0].id;
+        const leftCandidate = availableImages.some(image => image.id === initialLeftId) ? initialLeftId : fallbackLeft;
+        const fallbackRight = availableImages.find(image => image.id !== leftCandidate)?.id;
+        const rightCandidate = availableImages.some(image => image.id === initialRightId && image.id !== leftCandidate)
+            ? initialRightId
+            : fallbackRight;
+
+        setLeftId(leftCandidate);
+        setRightId(rightCandidate);
+        setRatio(0.5);
+    }, [open, availableImages, initialLeftId, initialRightId]);
+
+    useEffect(() => {
+        if (!leftId || !rightId) {
+            return;
+        }
+
+        if (leftId === rightId) {
+            const replacement = availableImages.find(image => image.id !== leftId)?.id;
+            setRightId(replacement);
+        }
+    }, [leftId, rightId, availableImages]);
+
+    const moveSlider = (clientX: number) => {
+        const container = containerRef.current;
+        if (!container) {
+            return;
+        }
+
+        const rect = container.getBoundingClientRect();
+        if (rect.width <= 0) {
+            return;
+        }
+
+        const nextRatio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+        setRatio(nextRatio);
+    };
+
+    useEffect(() => {
+        if (!dragging) {
+            return;
+        }
+
+        const onMouseMove = (event: MouseEvent) => {
+            moveSlider(event.clientX);
+        };
+        const onMouseUp = () => {
+            setDragging(false);
+        };
+        const onTouchMove = (event: TouchEvent) => {
+            const clientX = getTouchClientX(event.touches);
+            if (clientX !== null) {
+                moveSlider(clientX);
+            }
+        };
+        const onTouchEnd = () => {
+            setDragging(false);
+        };
+
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("mouseup", onMouseUp);
+        window.addEventListener("touchmove", onTouchMove);
+        window.addEventListener("touchend", onTouchEnd);
+
+        return () => {
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseup", onMouseUp);
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("touchend", onTouchEnd);
+        };
+    }, [dragging]);
+
+    const leftOptions = availableImages.filter(image => image.id !== rightId);
+    const rightOptions = availableImages.filter(image => image.id !== leftId);
+    const leftImage = leftId ? filesById[leftId] : undefined;
+    const rightImage = rightId ? filesById[rightId] : undefined;
+    const leftSrc = normalizeRelativePath(leftImage?.relativePath);
+    const rightSrc = normalizeRelativePath(rightImage?.relativePath);
+
+    return (
+        <Dialog
+            open={open}
+            onClose={onClose}
+            maxWidth={"xl"}
+            sx={{
+                "& .MuiDialog-paper": {
+                    position: "relative",
+                    minWidth: "min(960px, calc(100% - 64px))",
+                },
+            }}
+        >
+            <IconButton
+                onClick={onClose}
+                aria-label="Close comparison dialog"
+                sx={{position: "absolute", top: 8, right: 8, zIndex: 10}}
+            >
+                <CloseIcon/>
+            </IconButton>
+            <Box sx={{pl: 1.5, pr: 7, pt: 1.5, flexShrink: 0}}>
+                <Stack direction={"row"} sx={{
+                    alignItems: "center",
+                    gap: 4,
+                    width: "100%",
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                    pt: 1,
+                }}>
+                    <CompareIcon color="inherit"/>
+                    <FormControl size="medium" sx={{minWidth: 180}}>
+                        <InputLabel id="comparison-left-label">Left</InputLabel>
+                        <Select
+                            labelId="comparison-left-label"
+                            label="Left"
+                            value={leftId ?? ""}
+                            onChange={(event) => setLeftId(String(event.target.value))}
+                        >
+                            {leftOptions.map(image => (
+                                <MenuItem key={image.id} value={image.id}>{image.title}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    <CompareArrowsIcon color="inherit"/>
+
+                    <FormControl size="medium" sx={{minWidth: 180}}>
+                        <InputLabel id="comparison-right-label">Right</InputLabel>
+                        <Select
+                            labelId="comparison-right-label"
+                            label="Right"
+                            value={rightId ?? ""}
+                            onChange={(event) => setRightId(String(event.target.value))}
+                        >
+                            {rightOptions.map(image => (
+                                <MenuItem key={image.id} value={image.id}>{image.title}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Stack>
+            </Box>
+
+            <DialogContent sx={{pt: 1, px: 2, pb: 2, overflow: "auto", minHeight: 0}}>
+                {error && <Typography color="error">{error}</Typography>}
+                {!error && (!leftSrc || !rightSrc) && (
+                    <Typography color="text.secondary">Not enough images available for comparison.</Typography>
+                )}
+
+                {leftSrc && rightSrc && (
+                    <Box
+                        ref={containerRef}
+                        sx={{
+                            position: "relative",
+                            width: "fit-content",
+                            maxWidth: "100%",
+                            overflow: "clip",
+                            userSelect: "none",
+                        }}
+                    >
+                        <Box
+                            component="img"
+                            src={rightSrc}
+                            alt="Right comparison"
+                            sx={{
+                                display: "block",
+                                width: "auto",
+                                height: "auto",
+                                maxWidth: "100%",
+                            }}
+                        />
+                        <Box
+                            sx={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                bottom: 0,
+                                width: "100%",
+                                clipPath: `inset(0 ${(1 - ratio) * 100}% 0 0)`,
+                                overflow: "hidden",
+                                zIndex: 2,
+                            }}
+                        >
+                            <Box
+                                component="img"
+                                src={leftSrc}
+                                alt="Left comparison"
+                                sx={{
+                                    display: "block",
+                                    width: "auto",
+                                    height: "auto",
+                                    maxWidth: "100%",
+                                }}
+                            />
+                        </Box>
+
+                        <Box
+                            role="slider"
+                            tabIndex={0}
+                            aria-label="Screenshot comparison divider"
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-valuenow={Math.round(ratio * 100)}
+                            onKeyDown={(event) => {
+                                if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                                    event.preventDefault();
+                                    const step = event.key === "ArrowLeft" ? -0.01 : 0.01;
+                                    setRatio(value => Math.min(1, Math.max(0, value + step)));
+                                }
+                            }}
+                            onMouseDown={(event) => {
+                                setDragging(true);
+                                moveSlider(event.clientX);
+                            }}
+                            onTouchStart={(event) => {
+                                setDragging(true);
+                                const clientX = getTouchClientX(event.touches);
+                                if (clientX !== null) {
+                                    moveSlider(clientX);
+                                }
+                            }}
+                            sx={{
+                                position: "absolute",
+                                top: 0,
+                                bottom: 0,
+                                left: `calc(${ratio * 100}% - 16px)`,
+                                width: 32,
+                                zIndex: 3,
+                                cursor: "ew-resize",
+                                touchAction: "none",
+                                "&::before": {
+                                    content: '""',
+                                    position: "absolute",
+                                    top: 0,
+                                    bottom: 0,
+                                    left: "50%",
+                                    transform: "translateX(-50%)",
+                                    width: 2,
+                                    backgroundColor: "#f6a821BF",
+                                    boxShadow: "0 0 2px #fff",
+                                },
+                                "&:focus-visible": {
+                                    outline: "2px solid",
+                                    outlineColor: "#f6a821BF",
+                                    outlineOffset: -2,
+                                },
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    position: "sticky",
+                                    top: "calc(50% - 16px)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: "50%",
+                                    bgcolor: "#f6a821BF",
+                                    color: "text.primary",
+                                    boxShadow: "0 0 3px #fff",
+                                }}
+                            >
+                                <CompareArrowsIcon fontSize="medium"/>
+                            </Box>
+                        </Box>
+                    </Box>
+                )}
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+export default ScreenshotComparisonModal;

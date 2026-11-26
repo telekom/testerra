@@ -21,158 +21,116 @@
 
 package io.testerra.report.test.pages.report.sideBarPages;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.PreparedLocator;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.report.Status;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import io.testerra.report.test.pages.AbstractReportPage;
-import io.testerra.report.test.pages.ReportSidebarPageType;
-import io.testerra.report.test.pages.utils.RegExUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ReportDashBoardPage extends AbstractReportPage {
 
+    // Pie chart
     @Check
-    private final UiElement testsElement = pageContent.find(By.xpath(".//mdc-card[.//div[contains(text(), 'Tests')]]"));
-    @Check
-    private final UiElement historyChart = pageContent.find(By.xpath(".//mdc-card[./div[contains(text(), 'History')]]"));
+    private final UiElement breakdownCard = pageContent.find(this.cardboxLocator.with("breakdown-chart-card"));
+    private final UiElement breakdownChart = breakdownCard.find(By.xpath("//div[@data-testid = 'test-run-pie-chart']"));
 
+    // Test results card
     @Check
-    private final UiElement testDurationElement = pageContent.find(By.tagName("test-duration-card"));
+    private final UiElement testResultCard = pageContent.find(this.cardboxLocator.with("test-results-card"));
+    PreparedLocator testResultElement = LOCATE.prepare("//li[@data-testid='%s']");
 
-    private final UiElement testStartElement = testDurationElement.find(By.xpath("//span[contains(text(), 'Started')]/following-sibling::span"));
-    private final UiElement testEndElement = testDurationElement.find(By.xpath("//span[contains(text(), 'Ended')]/following-sibling::span"));
-
+    // History card
     @Check
-    private final UiElement testResultElement = pageContent.find(By.tagName("test-results-chart"));    //pieChart
-    @Check
-    private final UiElement testClassesElement = pageContent.find(By.tagName("test-classes-card"));
+    private final UiElement historyCard = pageContent.find(this.cardboxLocator.with("history-chart-card"));
 
-    private final UiElement barChartElement = testClassesElement
+    // Duration card
+    @Check
+    private final UiElement durationCard = pageContent.find(this.cardboxLocator.with("duration-card"));
+    private final UiElement testDurationElement = durationCard.find(By.xpath("//h5[@data-testid = 'duration-value']"));
+    private final UiElement testStartElement = durationCard.find(By.xpath("//span[@data-testid = 'started-value']"));
+    private final UiElement testEndElement = durationCard.find(By.xpath("//span[@data-testid = 'ended-value']"));
+
+    // Failure corridor card
+    private final UiElement failureCorridorCard = pageContent.find(this.cardboxLocator.with("failure-corridor-card"));
+    private PreparedLocator failureCorridorChip = LOCATE.prepare("//div[@data-testid = '%s']");
+
+    // Test classes
+    @Check
+    private final UiElement testclassesCard = pageContent.find(this.cardboxLocator.with("test-classes-chart-card"));
+    private final UiElement testClassesChart = testclassesCard.find(By.xpath("//div[@data-testid='test-classes-chart']"));
+
+    private final UiElement barChartElement = testclassesCard
             .find(By.xpath("//*[contains(@class,'apexcharts-bar-series') and contains(@class,'apexcharts-plot-series')]"));
-
     private final UiElement barChartPartPerTestStatus = barChartElement.find(By.xpath("//*[@class='apexcharts-series']"));
     private final UiElement segmentsOfBarsPerTestStatus = barChartPartPerTestStatus.find(By.xpath("//*"));
 
-    private final UiElement testTopFailureAspectsElement = pageContent.find(By.xpath(".//mdc-card[*/div[contains(text(), 'Failure Aspects')]]"));
-    private final UiElement majorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Major')]"));
-    private final UiElement minorLink = testTopFailureAspectsElement.find(By.xpath("//*[contains(text(), 'Minor')]"));
-    private final UiElement topFailuresLink = testTopFailureAspectsElement.find(By.xpath("/mdc-list//span[@class='mdc-list-item__content']"));
+    // Failure aspects
+    @Check
+    private final UiElement failureAspectsCard = pageContent.find(this.cardboxLocator.with("failure-aspects-card"));
+    private final UiElement majorLink = failureAspectsCard.find(By.xpath("//a[contains(@href, 'major')]"));
+    private final UiElement minorLink = failureAspectsCard.find(By.xpath("//a[contains(@href, 'minor')]"));
+    private final UiElement topFailuresLink = failureAspectsCard.find(By.xpath("//li"));
 
-    private final UiElement priorityMessagesElement = find(By.xpath("//mdc-card[./div[text()='Priority messages']]"));
+    private final UiElement priorityMessagesElement = find(this.cardboxLocator.with("priority-messages-card"));
 
-    private final String xPathToPieChartPart = "//*[@class='apexcharts-series apexcharts-pie-series' and @seriesName='%s']";
 
     public ReportDashBoardPage(WebDriver driver) {
         super(driver);
     }
 
-    public void pageLoaded() {
-        verifyReportPage(ReportSidebarPageType.DASHBOARD);
+    public String getTestResultText(Status status) {
+        UiElement item = this.getTestResultItem(status);
+        return item.waitFor().text().getActual();
     }
 
-    public String getTestsPerStatus(final Status testStatus) {
-
-        String testsPerStatus = "not_existing";
-
-        final UiElement testsStatusElement;
-        switch (testStatus) {
-            // retried status is within element of failed status
-            case RETRIED:
-                testsStatusElement = testsElement.find((getXpathToTestsPerStatus(Status.FAILED)));
-                break;
-            // repaired and recovered status are within element of passed status
-            case REPAIRED:
-            case RECOVERED:
-                testsStatusElement = testsElement.find((getXpathToTestsPerStatus(Status.PASSED)));
-                break;
-            // remaining test status have dedicated elements
-            default:
-                testsStatusElement = testsElement.find((getXpathToTestsPerStatus(testStatus)));
-                break;
-        }
-
-        final List<UiElement> listOfAmountInformation = testsStatusElement.find(By.xpath("./mdc-list-item-primary-text/span")).list().stream().collect(Collectors.toList());
-
-
-        // for passed when repaired executions exist
-        if (listOfAmountInformation.size() > 1) {
-            final List<UiElement> listOfStatusInformation = testsStatusElement.find(By.xpath("./mdc-list-item-secondary-text/span")).list().stream().collect(Collectors.toList());
-            for (int i = 0; i < listOfStatusInformation.size(); i++) {
-                if (listOfStatusInformation.get(i).expect().text().getActual().contains(testStatus.title)) {
-                    testsPerStatus = listOfAmountInformation.get(i).expect().text().getActual() + " " + listOfStatusInformation.get(i).expect().text().getActual();
-                }
-            }
-        } else {
-            testsPerStatus = testsStatusElement.expect().text().getActual().replace("\n", " ");
-        }
-
-        return testsPerStatus;
+    public String getBreakpointSelection() {
+        return this.breakdownChart.waitFor().attribute("data-selected-statuses").getActual();
     }
 
-    private By getXpathToTestsPerStatus(final Status testStatus) {
-        final String xPathToTestsPerStatusTemplate = ".//mdc-list-item[.//mdc-icon[@title = '%s']]//span[contains(@class, 'mdc-list-item__content')]";
-        return By.xpath(String.format(xPathToTestsPerStatusTemplate, testStatus.title));
-    }
-
-    public void assertPieChartContainsTestState(final Status status) {
-        UiElement pieChartPart = getPieChartPart(status);
-        //pieChartPart.asserts("There should be a pie chart displayed!").assertIsDisplayed();
-        pieChartPart.expect().displayed().is(true, "There should be a pie chart displayed!");
-    }
-
-    public ReportDashBoardPage clickPieChartPart(final Status status) {
-        UiElement pieChartPart = getPieChartPart(status);
-        pieChartPart.click();
+    public ReportDashBoardPage clickTestResult(Status status) {
+        UiElement item = this.getTestResultItem(status);
+        item.click();
         return createPage(ReportDashBoardPage.class);
     }
 
-    private UiElement getPieChartPart(final Status status) {
-        return testResultElement.find(
-                By.xpath(String.format(xPathToPieChartPart, getTitleWithSpaceReplacement(status))));
+    private UiElement getTestResultItem(Status status) {
+        return testResultCard.find(this.testResultElement.with(status.title));
     }
 
-    public ReportDashBoardPage clickNumberChartPart(Status status) {
-        UiElement testClassesNumberChartElement = testsElement.find(By.xpath(String.format("//mdc-list-item[.//mdc-icon[@title='%s']]", status.title)));
-        testClassesNumberChartElement.click();
-        return createPage(ReportDashBoardPage.class);
+    public List<Map<String, Object>> getFilteredTestclasses() throws JsonProcessingException {
+        String classes = this.testClassesChart.waitFor().attribute("data-visible-classes").getActual();
+        return new ObjectMapper().readValue(
+                classes,
+                new TypeReference<>() {
+                });
     }
 
-    public void assertCorrectBarChartsAreDisplayed() {
-        List<UiElement> barList = barChartPartPerTestStatus.list().stream().collect(Collectors.toList());
-        Assert.assertEquals(barList.size(), 1, "There should be just 1 entry!");
-    }
-
-
-    public void assertNumbersChartContainsTestState(Status status) {
-        String testClassesNumberChartPath = String.format("//mdc-list-item//mdc-icon[@title='%s']", status.title);
-        UiElement testClassesNumberChart = testsElement.find(By.xpath(testClassesNumberChartPath));
-        testClassesNumberChart.expect().displayed().is(true, "<there should be a chart displayed, containing the amounts of each test state>");
-        //testClassesNumberChart.asserts("There should be a chart displayed containing the amounts of each test state!").assertIsDisplayed();
-    }
-
-    public void assertStartTimeIsDisplayed() {
-        testStartElement.expect().displayed().is(true, "Test Start Element is displayed");
-    }
-
-    public void assertEndedTimeIsDisplayed() {
-        testEndElement.expect().displayed().is(true, "Test End Element is displayed");
+    public void assertDurationCard() {
+        this.testDurationElement.assertThat().displayed().is(true, "Test Duration element is displayed");
+        this.testStartElement.assertThat().displayed().is(true, "Test Start Element is displayed");
+        this.testEndElement.assertThat().displayed().is(true, "Test End Element is displayed");
     }
 
     public String getTestDuration() {
-        UiElement durationGuiElement = testDurationElement.find(By.xpath("//div[contains(@class,'card-content')]"));
-        return durationGuiElement.expect().text().getActual().split("\n")[1];
+        return this.testDurationElement.waitFor().text().getActual().trim();
+    }
+
+    public String getTestStarted() {
+        return this.testStartElement.waitFor().text().getActual();
+    }
+
+    public String getTestEnded() {
+        return this.testEndElement.waitFor().text().getActual();
     }
 
     public ReportTestsPage navigateToFilteredTestPageByClickingBarChartBar() {
@@ -180,148 +138,23 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return createPage(ReportTestsPage.class);
     }
 
-    public void assertPieChartPercentages(int expectedAmount, Status status) {
-        //iterate through tests card and sum up all "main" numbers of all test states (f.e. not retried or recovered)
-        int amountOfTests = testsElement.find(By.xpath("//mdc-list-item")).list()
-                .stream()
-                .map(uiElement -> uiElement.expect().text().getActual())
-                .map(i -> RegExUtils.getRegExpResultOfString(RegExUtils.RegExp.DIGITS_ONLY, i))
-                .map(Integer::parseInt)
-                .mapToInt(i -> i)
-                .sum();
-
-        //there are two different GuiElements for each pie chart part, one contains graphics, the other contains percentage content
-        //the GuiElement with percentage-content got no direct information which test state is corresponding, BUT: it got equivalent index
-        //even if there is an attribute "data:realIndex", it is somehow not accessible, BUT: there is another attribute "rel" which is accessible
-        //"data:realIndex" = "rel" - 1
-        int index = Integer.parseInt(
-                testResultElement.find(
-                        By.xpath(String.format(xPathToPieChartPart, getTitleWithSpaceReplacement(status)))
-                ).expect().attribute("rel").getActual()) - 1;
-        UiElement pieChartPart = testResultElement.find(By.xpath("//*[@class='apexcharts-datalabels']")).list().stream().collect(Collectors.toList()).get(index);
-        String percentageString = getPercentagesFromReportByStates(expectedAmount, amountOfTests);
-        //pieChartPart.asserts(String.format("The pie chart should contain percentage labels with correct content.[Actual:%s]", pieChartPart.getText())).assertText(percentageString);
-        pieChartPart.expect().text().is(percentageString, String.format("The pie chart should contain percentage labels with correct content.[Actual:%s]", pieChartPart.expect().text().getActual()));
-    }
-
-    private String getPercentagesFromReportByStates(double amount, double total) {
-        DecimalFormat df = new DecimalFormat("##.# %", new DecimalFormatSymbols(Locale.ENGLISH));
-        return df.format(amount / total).replace(" ", "");
-    }
-
     // Test classes chart
-    public void assertPopupWhileHoveringWithCorrectContent(Status status) {
-        for (UiElement bar : segmentsOfBarsPerTestStatus.list().stream().collect(Collectors.toList())) {
-            bar.hover();
-            TimerUtils.sleep(5_000);
-            PreparedLocator tooltip = LOCATE.prepare("//div[contains(@class, 'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-y-label' and contains(text(), '%s')]");
-            UiElement tooltipElement = testClassesElement.find(tooltip.with(status.title));
-            tooltipElement.assertThat().present(true);
-        }
-    }
+//    public void assertPopupWhileHoveringWithCorrectContent(Status status) {
+//        for (UiElement bar : segmentsOfBarsPerTestStatus.list().stream().collect(Collectors.toList())) {
+//            bar.hover();
+//            TimerUtils.sleep(5_000);
+//            PreparedLocator tooltip = LOCATE.prepare("//div[contains(@class, 'apexcharts-tooltip')]//span[@class='apexcharts-tooltip-text-y-label' and contains(text(), '%s')]");
+//            UiElement tooltipElement = testclassesCard.find(tooltip.with(status.title));
+//            tooltipElement.assertThat().present(true);
+//        }
+//    }
 
-    public void assertBarChartIsDisplayed() {
-        long barListLength = barChartPartPerTestStatus.list().stream().count();
-        Assert.assertEquals(barListLength, 4, "There should be 4 entries, 1 for each test state!");
-    }
-
-    public void assertCorrectBarsLength(double threshold) {
-        final double lengthUnit = getOneLengthUnit();
-        Assert.assertNotEquals(lengthUnit, 0, "The length of a bar in the barchart representing one test should not be 0!");
-
-        List<UiElement> barTypeList = barChartPartPerTestStatus.list().stream().collect(Collectors.toList());
-        for (UiElement barType : barTypeList) {
-            List<UiElement> bars = barType.find(By.xpath("//*")).list().stream().collect(Collectors.toList());
-            for (UiElement bar : bars) {
-                final String valAsString = getBuggedAttributePerJavascriptExecutor(bar, "val", 1);
-                Assert.assertNotNull(valAsString, "There should be a attribute 'val' with the expected length of 1!");
-
-                int amountOfLengthUnits = Integer.parseInt(valAsString);
-                double upperBound = (lengthUnit * amountOfLengthUnits) * (1 + threshold);
-                double lowerBound = (lengthUnit * amountOfLengthUnits) * (1 - threshold);
-                final String barWidth = getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8);
-                double actualBarLength = Double.parseDouble(Objects.requireNonNull(barWidth));
-                Assert.assertTrue(lowerBound <= actualBarLength && actualBarLength <= upperBound,
-                        String.format("BarWidth got too much deviation to excepted bounds! %f not in [%f, %f]", actualBarLength, lowerBound, upperBound));
-            }
-        }
-    }
-
-    private double getOneLengthUnit() {
-        List<UiElement> barTypeList = barChartPartPerTestStatus.list().stream().collect(Collectors.toList());
-        for (UiElement barType : barTypeList) {
-            List<UiElement> bars = barType.find(By.xpath("//*")).list().stream().collect(Collectors.toList());
-            for (UiElement bar : bars) {
-                if (bar.expect().attribute("val").getActual().equals("1")) {
-                    String barWidth = getBuggedAttributePerJavascriptExecutor(bar, "barWidth", 8);
-                    Assert.assertNotNull(barWidth, "GuiElement attribute value is null!");
-                    return Double.parseDouble(barWidth);
-                }
-            }
-        }
-        return 0;
-    }
-
-    private String getBuggedAttributePerJavascriptExecutor(UiElement uiElement, String attribute, int expectedLengthOfValue) {
-        try {
-
-            final Object[] aa = {null};
-
-            String jsScript = "var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;";
-            uiElement.findWebElement(webElement -> {
-                aa[0] = JSUtils.executeScript(uiElement.getWebDriver(), jsScript, webElement);
-            });
-
-            // JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
-            // Object aa = executor.executeScript("var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;", element);
-
-            String listOfAllAttributes = aa[0].toString();
-            int attributeSubstringStart = listOfAllAttributes.indexOf(attribute);
-            int lengthOfAttributeSequence = attribute.length() + expectedLengthOfValue + 1;
-
-            String subStringOfOneAttribute = listOfAllAttributes.substring(attributeSubstringStart, attributeSubstringStart + lengthOfAttributeSequence);
-
-            if (subStringOfOneAttribute.contains("=0,")) {
-                return "0";
-            }
-            // parsed String might contain additional attributes besides the intended attribute
-            if (subStringOfOneAttribute.contains(",")) {
-                // cut off after ","
-                String[] split = subStringOfOneAttribute.split(",");
-                subStringOfOneAttribute = split[0];
-            }
-
-            return subStringOfOneAttribute.split("=")[1];
-        } catch (Exception e) {
-            return "0";
-        }
-    }
-
-    public void assertFailureCorridorValue(final String failureCorridorType, final int value) {
-        final UiElement failureCorridor = getFailureCorridorPart(failureCorridorType);
-        final String text = failureCorridor.expect().text().getActual();
-
-        Assert.assertTrue(text.contains(String.valueOf(value)),
-                String.format("Failure Corridor '%s' has value '%s'", failureCorridor, value));
-    }
-
-    public void assertFailureCorridorValuesAreCorrectClassified(String failureCorridorType, long bound) {
-        UiElement failureCorridor = getFailureCorridorPart(failureCorridorType);
-        int displayedAmount = Integer.parseInt(failureCorridor.expect().text().getActual().split(" ")[0]);
-        if (displayedAmount <= bound) {
-            Assert.assertTrue(failureCorridor.waitFor().attribute("class").getActual().contains("status-passed"), "Corridor should be classified correctly!");
-        } else {
-            Assert.assertTrue(failureCorridor.waitFor().attribute("class").getActual().contains("status-failed"), "Corridor should be classified correctly!");
-        }
-    }
-
-    private UiElement getFailureCorridorPart(final String failureCorridorType) {
-        String xPathToFailureCorridor = "//*[contains(@class.bind,'Corridor') and contains(text(), '%s')]";
-        return find(By.xpath(String.format(xPathToFailureCorridor, failureCorridorType)));
+    public TestableUiElement getFailureCorridorElement(String failureCorridorType) {
+        return this.failureCorridorCard.find(this.failureCorridorChip.with(failureCorridorType));
     }
 
     public void assertTopFailureAspectsAreDisplayed() {
-        testTopFailureAspectsElement.expect().displayed().is(true);
+        failureAspectsCard.expect().displayed().is(true);
     }
 
     public ReportFailureAspectsPage clickMajorFailureAspectsLink() {
@@ -334,15 +167,11 @@ public class ReportDashBoardPage extends AbstractReportPage {
         return createPage(ReportFailureAspectsPage.class);
     }
 
-    public List<String> getOrderListOfTopFailureAspects() {
+    public List<String> getListOfFailureAspects() {
         return topFailuresLink.list()
                 .stream()
                 .map(uiElement -> uiElement.expect().text().getActual())
                 .collect(Collectors.toList());
-    }
-
-    private String getTitleWithSpaceReplacement(Status status) {
-        return status.title.replace(" ", "x");
     }
 
 
@@ -362,6 +191,6 @@ public class ReportDashBoardPage extends AbstractReportPage {
     }
 
     public void assertHistoryChartMatchesScreenshot(double pixelDistance) {
-        this.historyChart.expect().screenshot().pixelDistance("history_chart_dashboard").isLowerThan(pixelDistance);
+        this.historyCard.expect().screenshot().pixelDistance("history_chart_dashboard").isLowerThan(pixelDistance);
     }
 }

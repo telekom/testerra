@@ -41,9 +41,9 @@ public class PriorityMessagesTest extends AbstractReportTest {
         String methodName = "preTest08_priorityMessagesTest";
         String className = "GeneratePassedCheckTestsTTReportTest";
         String[] priorityMessages = new String[]{
-                "GeneratePassedCheckTestsTTReportTest: It is gonna be ok.",
-                "GeneratePassedCheckTestsTTReportTest: Warn me!",
-                "GeneratePassedCheckTestsTTReportTest: Tell me more!"
+                "GeneratePassedCheckTestsTTReportTest: It is gonna be ok in method.",
+                "GeneratePassedCheckTestsTTReportTest: Warn me in method!",
+                "GeneratePassedCheckTestsTTReportTest: Tell me more in method!"
         };
         String[] states= new String[]{
                 "status-skipped",
@@ -65,9 +65,9 @@ public class PriorityMessagesTest extends AbstractReportTest {
     public void testT02_checkGlobalPriorityMessages(){
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String[] priorityMessages = new String[]{
-                "GeneratePassedCheckTestsTTReportTest: It is gonna be ok.",
-                "GeneratePassedCheckTestsTTReportTest: Warn me!",
-                "GeneratePassedCheckTestsTTReportTest: Tell me more!"
+                "GeneratePassedCheckTestsTTReportTest: It is gonna be ok on dashboard.",
+                "GeneratePassedCheckTestsTTReportTest: Warn me on dashboard!",
+                "GeneratePassedCheckTestsTTReportTest: Tell me more on dashboard!"
         };
         String[] states= new String[]{
                 "status-skipped",
@@ -86,9 +86,9 @@ public class PriorityMessagesTest extends AbstractReportTest {
         WebDriver driver = WEB_DRIVER_MANAGER.getWebDriver();
         String methodName = "preTest08_priorityMessagesTest";
         String[] priorityMessages = new String[]{
-                "It is gonna be ok.",
-                "Warn me!",
-                "Tell me more!"
+                "It is gonna be ok in method.",
+                "Warn me in method!",
+                "Tell me more in method!"
         };
 
         TestStep.begin("Navigate to tests page");

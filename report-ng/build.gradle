@@ -10,15 +10,29 @@ dependencies {
     implementation "com.google.protobuf:protobuf-java:$protobufVersion"
 }
 
-task destClean {
-    doLast {
-        delete "src/main/resources/report-ng"
+def appReact = project(':report-ng:app-react')
+def appReactBuildReportTaskPath = ':report-ng:app-react:buildReport'
+def processResourcesTask = tasks.named('processResources')
+def reportResourcesDirectory = layout.projectDirectory.dir('src/main/resources/report-ng')
+
+def syncBuiltReportResourcesTask = tasks.register('syncBuiltReportResources', Sync) {
+    dependsOn(appReactBuildReportTaskPath)
+    from(appReact.layout.projectDirectory.dir('dist')) {
+        exclude 'model/**'
     }
+    into(reportResourcesDirectory)
 }
 
-clean.dependsOn(destClean)
+processResourcesTask.configure {
+    mustRunAfter(syncBuiltReportResourcesTask)
+}
 
-processResources.dependsOn(project("app").build)
+sourcesJar.configure {
+    mustRunAfter(syncBuiltReportResourcesTask)
+}
 
-// Build the report app into resources before building the librar
-//compileJava.dependsOn(project("app").build)
+tasks.register('buildReport') {
+    group = 'build'
+    description = 'Builds the report frontend and refreshes report-ng resources.'
+    dependsOn(syncBuiltReportResourcesTask, processResourcesTask)
+}
